@@ -12,9 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.container.Container
 import com.github.zsoltk.composeribs.client.container.ContainerBuilder
 import com.github.zsoltk.composeribs.ui.Rf1Theme
-import com.github.zsoltk.composeribs.Random
-
-()
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

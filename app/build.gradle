@@ -7,7 +7,7 @@ android {
     compileSdk 30
 
     defaultConfig {
-        applicationId "com.zsoltk.composeribsrandom"
+        applicationId "com.github.zsoltk.composeribs"
         minSdk 22
         targetSdk 30
         versionCode 1
