@@ -11,6 +11,7 @@ import com.github.zsoltk.composeribs.client.container.Container.Routing
 import com.github.zsoltk.composeribs.client.container.Container.Routing.Child1
 import com.github.zsoltk.composeribs.client.container.Container.Routing.Child2
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.Placeholder
 import com.github.zsoltk.composeribs.core.RibView
 
 class ContainerView(
@@ -28,8 +29,11 @@ class ContainerView(
             Text("Container")
             Column(Modifier.padding(24.dp)) {
                 // v0:
-//                Child1()
-//                Child2()
+                +Placeholder<Child1>()
+                +Placeholder<Child2>()
+
+                // or simply:
+                +Placeholder<Routing>()
 
                 // v1: this should be good
 //                backStack.active()
