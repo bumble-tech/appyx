@@ -1,71 +1,113 @@
 package com.github.zsoltk.composeribs.core
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateMapOf
 
 class Node<T>(
     private val view: RibView<T>,
     private val subtreeController: SubtreeController<T>? = null
 ) {
+    private val children = mutableStateMapOf<RoutingKey<T>, ChildEntry<T>>()
 
-    /**
-     * Notes
-     *  - the whole below is to allow off-screen stuff living on
-     *  - but as a 1st step maybe it's not needed, and only compose on-screen stuff + bundles
-     *  - yes this would kill bg listening and being up-to-date
-     *  - but
-     *      1. maybe it's a good tradeoff, and re-subscribing to stuff should be sufferable
-     *      2. or maybe we can launch from child into parent's scope
-     */
+    @SuppressLint("RememberReturnType")
     @Composable
-    fun Compose(withView: Boolean) {
+    fun Compose() {
         subtreeController?.let {
-            WithBackStack(withView, it.backStack.elements, it.resolver)
+            WithBackStack(it, it.backStack.elements)
+//            with(it) {
+//                LaunchedEffect(backStack.elements) {
+//                    manageRemoved(children)
+//                    manageOffScreen(children)
+//                    manageOnScreen(children)
+//                }
+//            }
+//
+//            val composedViews = children
+//                .filter { it.value.onScreen }
+//                .mapValues {
+//                    val node = it.value.node
+//                    requireNotNull(node) { "Node for on-screen entry should have been resolved" }
+//                    node.view
+//                }
+//
+//            view.Compose(composedViews)
+
         } ?: run {
-            view.Compose(withView, emptyList())
+            view.Compose(emptyMap())
         }
     }
 
     @Composable
-    private fun WithBackStack(withView: Boolean, elements: List<T>, resolver: Resolver<T>) {
-        val children = elements.mapIndexed { index, routing ->
-            remember(index, routing) { resolver(routing) }
-        }
+    private fun WithBackStack(
+        subtreeController: SubtreeController<T>,
+        elements: List<T>
+    ) {
+//        LaunchedEffect(elements) {
+            subtreeController.manageRemoved(children)
+            subtreeController.manageOffScreen(children)
+            subtreeController.manageOnScreen(children)
+//        }
 
-//        view.Compose(withView)
+        val composedViews = children
+            .filter { it.value.onScreen }
+            .mapValues {
+                val node = it.value.node
+                requireNotNull(node) { "Node for on-screen entry should have been resolved" }
+                node.view
+            }
+
+        view.Compose(composedViews)
     }
 
-//    private fun SubtreeController<T>.manageRemoved(children: MutableMap<T, ChildEntry>) {
-//        children.keys.forEach { routing ->
-//            if (!backStack.elements.contains(routing)) {
-//                children.remove(routing)
-//            }
-//        }
-//    }
 
-    private fun SubtreeController<T>.manageOffScreen(children: MutableMap<T, ChildEntry>) {
-        backStack.offScreen.forEach { routing ->
-            children[routing]?.let { entry ->
-                // Remove from screen
-                if (entry.withView) {
-                    children[routing] = entry.copy(withView = false)
+    // TODO need a different mechanism, as this would also remove permanents (if any)
+    private fun SubtreeController<T>.manageRemoved(children: MutableMap<RoutingKey<T>, ChildEntry<T>>) {
+        val all = backStack.all
+
+        children.keys.forEach { routingKey ->
+            if (!all.contains(routingKey)) {
+                children.remove(routingKey)
+            }
+        }
+    }
+
+    private fun SubtreeController<T>.manageOffScreen(children: MutableMap<RoutingKey<T>, ChildEntry<T>>) {
+        backStack.offScreen.forEach { routingKey -> // (idx, routing) ->
+//            val routingKey = RoutingKey(idx, routing)
+
+            children[routingKey]?.let { entry ->
+                if (entry.onScreen) {
+                    children[routingKey] = entry.copy(onScreen = false)
                 }
             } ?: run {
-                // Add as off-screen
-                children[routing] = ChildEntry(
-                    withView = false,
-                    rib = resolver(routing)
+                children[routingKey] = ChildEntry(
+                    routing = routingKey.routing,
+                    onScreen = false
                 )
             }
         }
     }
 
-    private fun SubtreeController<T>.manageOnScreen(children: MutableMap<T, ChildEntry>) {
-        backStack.current.let { routing ->
-            children[routing] = ChildEntry(
-                withView = true,
-                rib = resolver(routing)
-            )
+    private fun SubtreeController<T>.manageOnScreen(children: MutableMap<RoutingKey<T>, ChildEntry<T>>) {
+        backStack.onScreen.forEach { routingKey -> // (idx, routing) ->
+//            val routingKey = children.keys.find { it.id == idx && it.routing == routing } ?: RoutingKey(idx, routing)
+
+            children[routingKey]?.let { entry ->
+                if (!entry.onScreen) {
+                    children[routingKey] = entry.copy(
+                        onScreen = true,
+                        node = entry.node ?: resolver(routingKey.routing)
+                    )
+                }
+            } ?: run {
+                children[routingKey] = ChildEntry(
+                    routing = routingKey.routing,
+                    node = resolver(routingKey.routing),
+                    onScreen = true
+                )
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ import com.github.zsoltk.composeribs.core.RibView
 class Child2View : RibView<Routing>() {
 
     @Composable
-    override fun Compose(children: List<Routing>) {
+    override fun Compose() {
         Column(Modifier.padding(24.dp)) {
             Text("Child2")
             var counter by remember { mutableStateOf(1) }
@@ -32,5 +32,5 @@ class Child2View : RibView<Routing>() {
 @Preview
 @Composable
 fun Child2Preview() {
-    Child2View().Compose(emptyList())
+    Child2View().Compose()
 }

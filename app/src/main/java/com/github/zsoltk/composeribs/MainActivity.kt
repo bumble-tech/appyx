@@ -20,14 +20,14 @@ class MainActivity : AppCompatActivity() {
             Rf1Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Random()
+//                    Random()
 
-//                    Column {
-//                        Greeting("Android")
-//                        ContainerBuilder(object : Container.Dependency {})
-//                            .build()
-//                            .Compose(withView = true)
-//                    }
+                    Column {
+                        Greeting("Android")
+                        ContainerBuilder(object : Container.Dependency {})
+                            .build()
+                            .Compose()
+                    }
                 }
             }
         }
@@ -47,7 +47,7 @@ fun DefaultPreview() {
 //            Greeting("Android")
             ContainerBuilder(object : Container.Dependency {})
                 .build()
-                .Compose(withView = true)
+                .Compose()
         }
     }
 }
