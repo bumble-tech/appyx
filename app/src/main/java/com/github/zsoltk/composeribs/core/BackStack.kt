@@ -1,43 +1,45 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.compose.runtime.mutableStateListOf
+import java.util.UUID
+
+typealias BackStackElement<T> = RoutingElement<T, BackStack.TransitionState>
 
 class BackStack<T>(
     initialElement: T
 ) {
 
     private data class LocalRoutingKey<T>(
-        val listIndex: Int,
-        override val routing: T
+        override val routing: T,
+        val uuid: UUID = UUID.randomUUID(),
     ) : RoutingKey<T>
 
+    enum class TransitionState {
+        ADDED, ACTIVE, INACTIVE, REMOVED
+    }
 
-    val elements = mutableStateListOf(initialElement)
-
-    // TODO move to RoutingSource
-    val active: List<RoutingKey<T>>
-        get() = listOf(LocalRoutingKey(elements.lastIndex, current))
-
-    val current: T
-        get() = elements.last()
-
-    val all: List<RoutingKey<T>>
-        get() = elements.mapIndexed { idx, element ->
-            LocalRoutingKey(idx, element)
-        }
-
-    val offScreen: List<RoutingKey<T>>
-        get() = if (elements.isEmpty()) emptyList() else elements.subList(0, elements.lastIndex).mapIndexed { idx, element ->
-            LocalRoutingKey(idx, element)
-        }
-
-    val onScreen: List<RoutingKey<T>>
-        get() = listOf(
-            LocalRoutingKey(elements.lastIndex, elements.last())
+    val elements = mutableStateListOf(
+        BackStackElement(
+            routingKey = LocalRoutingKey(initialElement),
+            targetState = TransitionState.ACTIVE
         )
+    )
+
+    val currentRouting: T
+        // TODO find last active rather
+        get() = elements.last().routingKey.routing
+
+    val offScreen: List<BackStackElement<T>>
+        get() = if (elements.isEmpty()) emptyList() else elements.subList(0, elements.lastIndex)
+
+    val onScreen: List<BackStackElement<T>>
+        get() = listOf(elements.last())
 
     fun push(element: T) {
-        elements += element
+        elements += BackStackElement(
+            routingKey = LocalRoutingKey(element),
+            targetState = TransitionState.ACTIVE
+        )
     }
 
     fun pop() {

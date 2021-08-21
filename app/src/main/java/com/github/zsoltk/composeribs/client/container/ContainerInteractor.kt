@@ -8,7 +8,7 @@ class ContainerInteractor(
 ) {
 
     fun pushRouting() {
-        val newRouting = when (backStack.current) {
+        val newRouting = when (backStack.currentRouting) {
             Child1 -> Child2
             Child2 -> Child1
         }

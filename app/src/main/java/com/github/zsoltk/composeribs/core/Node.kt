@@ -2,8 +2,8 @@ package com.github.zsoltk.composeribs.core
 
 import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
 class Node<T>(
     private val view: RibView<T>,
@@ -42,7 +42,7 @@ class Node<T>(
     @Composable
     private fun WithBackStack(
         subtreeController: SubtreeController<T>,
-        elements: List<T>
+        elements: SnapshotStateList<BackStackElement<T>>
     ) {
         // FIXME
 //        LaunchedEffect(elements) {
@@ -65,18 +65,16 @@ class Node<T>(
 
     // TODO need a different mechanism, as this would also remove permanents (if any)
     private fun SubtreeController<T>.manageRemoved(children: MutableMap<RoutingKey<T>, ChildEntry<T>>) {
-        val all = backStack.all
-
         children.keys.forEach { routingKey ->
-            if (!all.contains(routingKey)) {
+            if (backStack.elements.firstOrNull { it.routingKey == routingKey} == null) {
                 children.remove(routingKey)
             }
         }
     }
 
     private fun SubtreeController<T>.manageOffScreen(children: MutableMap<RoutingKey<T>, ChildEntry<T>>) {
-        backStack.offScreen.forEach { routingKey -> // (idx, routing) ->
-//            val routingKey = RoutingKey(idx, routing)
+        backStack.offScreen.forEach { element ->
+            val routingKey = element.routingKey
 
             children[routingKey]?.let { entry ->
                 if (entry.onScreen) {
@@ -92,8 +90,8 @@ class Node<T>(
     }
 
     private fun SubtreeController<T>.manageOnScreen(children: MutableMap<RoutingKey<T>, ChildEntry<T>>) {
-        backStack.onScreen.forEach { routingKey -> // (idx, routing) ->
-//            val routingKey = children.keys.find { it.id == idx && it.routing == routing } ?: RoutingKey(idx, routing)
+        backStack.onScreen.forEach { element ->
+            val routingKey = element.routingKey
 
             children[routingKey]?.let { entry ->
                 if (!entry.onScreen) {
