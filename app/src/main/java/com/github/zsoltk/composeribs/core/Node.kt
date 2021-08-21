@@ -44,6 +44,7 @@ class Node<T>(
         subtreeController: SubtreeController<T>,
         elements: List<T>
     ) {
+        // FIXME
 //        LaunchedEffect(elements) {
             subtreeController.manageRemoved(children)
             subtreeController.manageOffScreen(children)
