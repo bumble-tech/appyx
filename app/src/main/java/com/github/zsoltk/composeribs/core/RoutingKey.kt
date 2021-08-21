@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core
 
-data class RoutingKey<T>(
-    val id: Int, // TODO Int -> Any
+interface RoutingKey<T> {
+
     val routing: T
-)
+}
