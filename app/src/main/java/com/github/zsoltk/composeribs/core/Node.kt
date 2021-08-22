@@ -8,7 +8,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
@@ -19,7 +19,8 @@ class Node<T>(
     private val view: RibView<T>,
     private val subtreeController: SubtreeController<T>? = null
 ) {
-    private val children = mutableStateMapOf<RoutingKey<T>, NodeChildEntry<T>>()
+    private val children = mutableMapOf<RoutingKey<T>, NodeChildEntry<T>>()
+    private val keys = mutableStateListOf<RoutingKey<T>>()
 
     @SuppressLint("RememberReturnType")
     @Composable
@@ -27,7 +28,7 @@ class Node<T>(
         subtreeController?.let {
             WithBackStack(it, it.backStack.elements)
         } ?: run {
-            view.Compose(emptyMap())
+            view.Compose(emptyList())
         }
     }
 
@@ -38,15 +39,16 @@ class Node<T>(
     ) {
         // FIXME
 //        LaunchedEffect(elements) {
-            subtreeController.manageRemoved(children)
-            subtreeController.manageOffScreen(children)
-            subtreeController.manageOnScreen(children)
+            subtreeController.manageRemoved()
+            subtreeController.manageOffScreen()
+            subtreeController.manageOnScreen()
 //        }
 
-        val composedViews = children
-            .filter { it.value.onScreen }
-            .mapValues { childEntry ->
-                val node = childEntry.value.node
+        val composedViews = keys
+            .map { children[it]!! }
+            .filter { it.onScreen }
+            .map { childEntry ->
+                val node = childEntry.node
                 requireNotNull(node) { "Node for on-screen entry should have been resolved" }
 
                 val modifier = elements
@@ -69,7 +71,7 @@ class Node<T>(
                         Modifier.background(color = color.value)
                     } ?: Modifier
 
-                // TODO optimise
+                // TODO optimise (only update modifier, don't create new object)
                 ViewChildEntry(
                     key = childEntry.key,
                     view = node.view,
@@ -81,15 +83,16 @@ class Node<T>(
     }
 
     // TODO need a different mechanism, as this would also remove permanents (if any)
-    private fun SubtreeController<T>.manageRemoved(children: MutableMap<RoutingKey<T>, NodeChildEntry<T>>) {
+    private fun SubtreeController<T>.manageRemoved() {
         children.keys.forEach { routingKey ->
             if (backStack.elements.firstOrNull { it.routingKey == routingKey} == null) {
                 children.remove(routingKey)
+                keys.remove(routingKey)
             }
         }
     }
 
-    private fun SubtreeController<T>.manageOffScreen(children: MutableMap<RoutingKey<T>, NodeChildEntry<T>>) {
+    private fun SubtreeController<T>.manageOffScreen() {
         backStack.offScreen.forEach { element ->
             val routingKey = element.routingKey
 
@@ -98,15 +101,17 @@ class Node<T>(
                     children[routingKey] = entry.copy(onScreen = false)
                 }
             } ?: run {
-                children[routingKey] = NodeChildEntry(
-                    routing = routingKey.routing,
+                val entry = NodeChildEntry(
+                    key = routingKey,
                     onScreen = false
                 )
+                children[routingKey] = entry
+                keys.add(routingKey)
             }
         }
     }
 
-    private fun SubtreeController<T>.manageOnScreen(children: MutableMap<RoutingKey<T>, NodeChildEntry<T>>) {
+    private fun SubtreeController<T>.manageOnScreen() {
         backStack.onScreen.forEach { element ->
             val routingKey = element.routingKey
 
@@ -118,11 +123,14 @@ class Node<T>(
                     )
                 }
             } ?: run {
-                children[routingKey] = NodeChildEntry(
-                    routing = routingKey.routing,
+                val entry = NodeChildEntry(
+                    key = routingKey,
                     node = resolver(routingKey.routing),
                     onScreen = true
                 )
+
+                children[routingKey] = entry
+                keys.add(routingKey)
             }
         }
     }
