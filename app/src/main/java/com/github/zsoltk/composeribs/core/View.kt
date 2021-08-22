@@ -2,16 +2,17 @@ package com.github.zsoltk.composeribs.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 
 abstract class RibView<T> {
 
     // FIXME with Scope
-    var children: Map<RoutingKey<T>, RibView<*>> = mapOf()
+    var children: Map<RoutingKey<T>, ViewChildEntry<*>> = mapOf()
 
     @Composable
-    fun Compose(children: Map<RoutingKey<T>, RibView<*>>) {
+    fun Compose(children: Map<RoutingKey<T>, ViewChildEntry<*>>) {
         // FIXME with Scope
         this.children = children
         Compose()
@@ -26,10 +27,11 @@ abstract class RibView<T> {
             children.filter { it.key.routing is V || it.key.routing!!::class.java.isAssignableFrom(V::class.java) }
         }
 
-        filtered.forEach {
-            // TODO get modifier for transition
-            Box(modifier = Modifier) {
-                it.value.Compose()
+        filtered.values.forEach { child ->
+            key(child.key) {
+                Box(modifier = child.modifier) {
+                    child.view.Compose()
+                }
             }
         }
     }
