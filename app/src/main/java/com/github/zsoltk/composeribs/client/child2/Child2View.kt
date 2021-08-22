@@ -21,10 +21,10 @@ class Child2View : RibView<Routing>() {
     override fun Compose() {
         Column(Modifier.padding(24.dp)) {
             Text("Child2")
-            var counter by remember { mutableStateOf(1) }
-            Button(onClick = { counter++ }) {
-                Text(text = "Local state: $counter")
-            }
+//            var counter by remember { mutableStateOf(1) }
+//            Button(onClick = { counter++ }) {
+//                Text(text = "Local state: $counter")
+//            }
         }
     }
 }
