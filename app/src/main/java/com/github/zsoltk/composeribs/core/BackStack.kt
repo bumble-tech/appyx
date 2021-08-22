@@ -1,29 +1,34 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.compose.runtime.mutableStateListOf
-import java.util.UUID
+import com.github.zsoltk.composeribs.core.BackStack.TransitionState.*
+import java.util.concurrent.atomic.AtomicInteger
 
 typealias BackStackElement<T> = RoutingElement<T, BackStack.TransitionState>
 
 class BackStack<T>(
-    initialElement: T
+    initialElement: T,
 ) {
 
-    private data class LocalRoutingKey<T>(
+    data class LocalRoutingKey<T>(
         override val routing: T,
-        val uuid: UUID = UUID.randomUUID(),
+        val uuid: Int,
     ) : RoutingKey<T>
 
     enum class TransitionState {
         ADDED, ACTIVE, INACTIVE, REMOVED
     }
 
+    private val tmpCounter = AtomicInteger(1)
+
     val elements = mutableStateListOf(
         BackStackElement(
-            routingKey = LocalRoutingKey(initialElement),
-            targetState = TransitionState.ACTIVE
+            routingKey = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
+            targetState = ACTIVE
         )
     )
+
+    val pendingRemoval = mutableStateListOf<BackStackElement<T>>()
 
     val currentRouting: T
         // TODO find last active rather
@@ -36,22 +41,37 @@ class BackStack<T>(
         get() = elements // listOf(elements.last())
 
     fun push(element: T) {
-        elements[elements.lastIndex] = elements.last().copy(
-            targetState = TransitionState.INACTIVE
-        )
-        elements += BackStackElement(
-            routingKey = LocalRoutingKey(element),
-            targetState = TransitionState.ADDED
-        )
-        elements[elements.lastIndex] = elements.last().copy(
-            targetState = TransitionState.ACTIVE
-        )
+        with(elements) {
+            elements[lastIndex] = elements[lastIndex].copy(
+                targetState = INACTIVE
+            )
+            elements += BackStackElement(
+                routingKey = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
+                targetState = ADDED
+            )
+            elements[lastIndex] = elements[lastIndex].copy(
+                targetState = ACTIVE
+            )
+        }
     }
 
     fun pop() {
-        elements.removeLast()
-        elements[elements.lastIndex] = elements.last().copy(
-            targetState = TransitionState.ACTIVE
-        )
+        with(elements) {
+            if (size > 1) {
+                val popped = elements.removeLast()
+                pendingRemoval.add(
+                    popped.copy(
+                        targetState = REMOVED
+                    )
+                )
+                elements[lastIndex] = elements[lastIndex].copy(
+                    targetState = ACTIVE
+                )
+            }
+        }
+    }
+
+    fun doRemove(key: RoutingKey<T>) {
+        pendingRemoval.removeAll { it.routingKey == key }
     }
 }
