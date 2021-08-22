@@ -1,22 +1,14 @@
 package com.github.zsoltk.composeribs.core
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.MutableTransitionState
-import androidx.compose.animation.core.Transition
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.core.updateTransition
-import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 
 @Suppress("TransitionPropertiesLabel")
 class Node<T>(
     private val view: RibView<T>,
-    private val subtreeController: SubtreeController<T>? = null
+    private val subtreeController: SubtreeController<T, *>? = null
 ) {
     private val children = mutableMapOf<RoutingKey<T>, NodeChildEntry<T>>()
     private val keys = mutableStateListOf<RoutingKey<T>>()
@@ -33,72 +25,49 @@ class Node<T>(
 
     @Composable
     private fun WithBackStack(
-        subtreeController: SubtreeController<T>
+        subtreeController: SubtreeController<T, *>
     ) {
         // FIXME
 //        LaunchedEffect(elements) {
-//            subtreeController.manageRemoved()
             subtreeController.manageOffScreen()
             subtreeController.manageOnScreen()
 //        }
-
-        val elements = subtreeController.backStack.elements
-        val removals = subtreeController.backStack.pendingRemoval
 
         val composedViews = keys
             .map { children[it]!! }
             .filter { it.onScreen }
             .map { childEntry ->
-                val node = childEntry.node
-                requireNotNull(node) { "Node for on-screen entry should have been resolved" }
+                key(childEntry.key) {
+                    val node = childEntry.node
+                    requireNotNull(node) { "Node for on-screen entry should have been resolved" }
 
-                val element =
-                    elements.firstOrNull { it.routingKey == childEntry.key }
-                        ?: removals.firstOrNull { it.routingKey == childEntry.key }
-
-                val modifier = element
-                    ?.let { backStackElement ->
-                        val currentState = remember { MutableTransitionState(BackStack.TransitionState.ADDED) }
-                        currentState.targetState = backStackElement.targetState
-                        val transition: Transition<BackStack.TransitionState> = updateTransition(currentState)
-                        val color = transition.animateColor(
-                            transitionSpec = { tween(3500) },
-                            targetValueByState = {
-                                when (it) {
-                                    BackStack.TransitionState.ADDED -> Color.Blue
-                                    BackStack.TransitionState.ACTIVE -> Color.Green
-                                    BackStack.TransitionState.INACTIVE -> Color.LightGray
-                                    BackStack.TransitionState.REMOVED -> Color.Red
-                                }
-                        })
-
-                        when (transition.currentState) {
-                            BackStack.TransitionState.INACTIVE -> {} // TODO callback to set ChildEntry.onScreen to false
-                            BackStack.TransitionState.REMOVED -> {
-                                subtreeController.backStack.doRemove(childEntry.key)
-                                children.remove(childEntry.key)
-                                keys.remove(childEntry.key)
-                            }
-                            else -> {}
+                    val modifier = subtreeController.whatever(
+                        key = childEntry.key,
+                        onRemovedFromScreen = {
+                            // TODO callback to set ChildEntry.onScreen to false
+                        },
+                        onDestroyed = {
+                            subtreeController.routingSource.doRemove(childEntry.key)
+                            children.remove(childEntry.key)
+                            keys.remove(childEntry.key)
                         }
+                    )
 
-                        Modifier.background(color = color.value)
-                    } ?: Modifier.background(color = Color.Magenta )
-
-                // TODO optimise (only update modifier, don't create new object)
-                ViewChildEntry(
-                    key = childEntry.key,
-                    view = node.view,
-                    modifier =  modifier
-                )
+                    // TODO optimise (only update modifier, don't create new object)
+                    ViewChildEntry(
+                        key = childEntry.key,
+                        view = node.view,
+                        modifier =  modifier
+                    )
+                }
             }
 
         view.Compose(composedViews)
     }
 
-    private fun SubtreeController<T>.manageOffScreen() {
-        backStack.offScreen.forEach { element ->
-            val routingKey = element.routingKey
+    private fun SubtreeController<T, *>.manageOffScreen() {
+        routingSource.offScreen.forEach { element ->
+            val routingKey = element.key
 
             children[routingKey]?.let { entry ->
                 if (entry.onScreen) {
@@ -115,9 +84,9 @@ class Node<T>(
         }
     }
 
-    private fun SubtreeController<T>.manageOnScreen() {
-        backStack.onScreen.forEach { element ->
-            val routingKey = element.routingKey
+    private fun SubtreeController<T, *>.manageOnScreen() {
+        routingSource.onScreen.forEach { element ->
+            val routingKey = element.key
 
             children[routingKey]?.let { entry ->
                 if (!entry.onScreen) {

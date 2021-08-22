@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.github.zsoltk.composeribs.core.BackStack.TransitionState.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -8,7 +9,7 @@ typealias BackStackElement<T> = RoutingElement<T, BackStack.TransitionState>
 
 class BackStack<T>(
     initialElement: T,
-) {
+) : RoutingSource<T, BackStack.TransitionState> {
 
     data class LocalRoutingKey<T>(
         override val routing: T,
@@ -16,41 +17,46 @@ class BackStack<T>(
     ) : RoutingKey<T>
 
     enum class TransitionState {
-        ADDED, ACTIVE, INACTIVE, REMOVED
+        CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED;
+
+        companion object {
+            fun default() = CREATED
+        }
     }
 
     private val tmpCounter = AtomicInteger(1)
 
-    val elements = mutableStateListOf(
-        BackStackElement(
-            routingKey = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
-            targetState = ACTIVE
+    override val elements: SnapshotStateList<RoutingElement<T, TransitionState>> =
+        mutableStateListOf(
+            BackStackElement(
+                key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
+                targetState = ON_SCREEN
+            )
         )
-    )
 
-    val pendingRemoval = mutableStateListOf<BackStackElement<T>>()
+    override val pendingRemoval: SnapshotStateList<RoutingElement<T, TransitionState>> =
+        mutableStateListOf()
 
     val currentRouting: T
-        // TODO find last active rather
-        get() = elements.last().routingKey.routing
+        get() = elements.last().key.routing
 
-    val offScreen: List<BackStackElement<T>>
+    override val offScreen: List<BackStackElement<T>>
         get() = emptyList() // if (elements.isEmpty()) emptyList() else elements.subList(0, elements.lastIndex)
 
-    val onScreen: List<BackStackElement<T>>
+    override val onScreen: List<BackStackElement<T>>
         get() = elements // listOf(elements.last())
 
     fun push(element: T) {
         with(elements) {
             elements[lastIndex] = elements[lastIndex].copy(
-                targetState = INACTIVE
+                targetState = STASHED_IN_BACK_STACK
             )
             elements += BackStackElement(
-                routingKey = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
-                targetState = ADDED
+                key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
+                targetState = CREATED
             )
             elements[lastIndex] = elements[lastIndex].copy(
-                targetState = ACTIVE
+                targetState = ON_SCREEN
             )
         }
     }
@@ -61,17 +67,17 @@ class BackStack<T>(
                 val popped = elements.removeLast()
                 pendingRemoval.add(
                     popped.copy(
-                        targetState = REMOVED
+                        targetState = DESTROYED
                     )
                 )
                 elements[lastIndex] = elements[lastIndex].copy(
-                    targetState = ACTIVE
+                    targetState = ON_SCREEN
                 )
             }
         }
     }
 
-    fun doRemove(key: RoutingKey<T>) {
-        pendingRemoval.removeAll { it.routingKey == key }
+    override fun doRemove(key: RoutingKey<T>) {
+        pendingRemoval.removeAll { it.key == key }
     }
 }

@@ -27,8 +27,9 @@ class ContainerBuilder(
                 onPopRoutingClicked = { interactor.popRouting() }
             ),
             subtreeController = SubtreeController(
-                backStack = backStack,
-                resolver = ContainerResolver(builders)
+                routingSource = backStack,
+                resolver = ContainerResolver(builders),
+                transitionHandler = ContainerTransitionHandler
             )
         )
     }
