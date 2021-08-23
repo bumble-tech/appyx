@@ -18,11 +18,7 @@ open class BackStack<T>(
     ) : RoutingKey<T>
 
     enum class TransitionState {
-        CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED;
-
-        companion object {
-            fun default() = CREATED
-        }
+        CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED
     }
 
     private val tmpCounter = AtomicInteger(1)
@@ -31,6 +27,7 @@ open class BackStack<T>(
         mutableStateListOf(
             BackStackElement(
                 key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
+                fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 onScreen = true
             )
@@ -55,11 +52,9 @@ open class BackStack<T>(
             )
             elements += BackStackElement(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
-                targetState = CREATED,
+                fromState = CREATED,
+                targetState = ON_SCREEN,
                 onScreen = true
-            )
-            elements[lastIndex] = elements[lastIndex].copy(
-                targetState = ON_SCREEN
             )
         }
     }
@@ -74,6 +69,7 @@ open class BackStack<T>(
                     )
                 )
                 elements[lastIndex] = elements[lastIndex].copy(
+                    fromState = STASHED_IN_BACK_STACK,
                     targetState = ON_SCREEN,
                     onScreen = true
                 )

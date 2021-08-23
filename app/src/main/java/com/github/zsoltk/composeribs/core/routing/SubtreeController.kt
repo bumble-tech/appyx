@@ -23,7 +23,8 @@ data class SubtreeController<T, S>(
 
         return element?.let {
             transitionHandler.handle(
-                transitionState = element.targetState,
+                fromState = element.fromState,
+                toState = element.targetState,
                 onTransitionOffScreenFinished = onTransitionOffScreenFinished,
                 onTransitionRemoveFinished = onTransitionRemoveFinished
             )

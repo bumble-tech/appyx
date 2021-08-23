@@ -7,7 +7,8 @@ interface TransitionHandler<S> {
 
     @Composable
     fun handle(
-        transitionState: S,
+        fromState: S,
+        toState: S,
         onTransitionOffScreenFinished: () -> Unit,
         onTransitionRemoveFinished: () -> Unit,
     ): Modifier

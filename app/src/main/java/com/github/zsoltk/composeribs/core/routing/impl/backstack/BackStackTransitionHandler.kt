@@ -12,18 +12,21 @@ abstract class BackStackTransitionHandler : TransitionHandler<BackStack.Transiti
 
     @Composable
     override fun handle(
-        transitionState: BackStack.TransitionState,
+        fromState: BackStack.TransitionState,
+        toState: BackStack.TransitionState,
         onTransitionOffScreenFinished: () -> Unit,
         onTransitionRemoveFinished: () -> Unit,
     ): Modifier {
-        val currentState = remember { MutableTransitionState(BackStack.TransitionState.default()) }
-        currentState.targetState = transitionState
+        val currentState = remember { MutableTransitionState(fromState) }
+        currentState.targetState = toState
         val transition: Transition<BackStack.TransitionState> = updateTransition(currentState)
 
-        when (transition.currentState) {
-            BackStack.TransitionState.STASHED_IN_BACK_STACK -> onTransitionOffScreenFinished()
-            BackStack.TransitionState.DESTROYED -> onTransitionRemoveFinished()
-            else -> {}
+        if (transition.currentState == currentState.targetState) {
+            when (currentState.targetState) {
+                BackStack.TransitionState.STASHED_IN_BACK_STACK -> onTransitionOffScreenFinished()
+                BackStack.TransitionState.DESTROYED -> onTransitionRemoveFinished()
+                else -> {}
+            }
         }
 
         return map(transition)

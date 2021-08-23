@@ -19,7 +19,7 @@ object ContainerTransitionHandler : BackStackTransitionHandler() {
     override fun map(transition: Transition<BackStack.TransitionState>): Modifier {
         val width = LocalConfiguration.current.screenWidthDp
         val offset = transition.animateOffset(
-            transitionSpec = { tween(3500) },
+            transitionSpec = { tween(1500) },
             targetValueByState = {
                 when (it) {
                     BackStack.TransitionState.CREATED -> Offset(1.0f * width, 0f)
