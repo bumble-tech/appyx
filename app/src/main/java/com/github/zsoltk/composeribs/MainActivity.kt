@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 //                    Random()
 
                     Column {
-                        Greeting("Android")
                         ContainerBuilder(object : Container.Dependency {})
                             .build()
                             .Compose()
@@ -34,17 +33,12 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     Rf1Theme {
         Column {
-//            Greeting("Android")
             ContainerBuilder(object : Container.Dependency {})
                 .build()
                 .Compose()

@@ -12,8 +12,9 @@ class ContainerResolver(
     override fun invoke(routing: Routing): Node<*> =
         with(builders) {
             when (routing) {
-                Child1 -> child1Builder.build()
-                Child2 -> child2Builder.build()
+                is Child -> childBuilder.build(routing.i)
+                is Child1 -> child1Builder.build()
+                is Child2 -> child2Builder.build()
             }
         }
 }

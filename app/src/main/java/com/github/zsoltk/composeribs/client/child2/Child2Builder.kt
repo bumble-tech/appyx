@@ -1,11 +1,11 @@
 package com.github.zsoltk.composeribs.client.child2
 
-import com.github.zsoltk.composeribs.core.Builder
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.builder.SimpleBuilder
 
 class Child2Builder(
     private val dependency: Child2.Dependency
-) : Builder() {
+) : SimpleBuilder() {
 
     val builders = Child2ChildBuilders()
 
