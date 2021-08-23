@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.client.container
+package com.github.zsoltk.composeribs.core.routing.impl.backstack
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
@@ -9,17 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
-import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStackTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-object ContainerTransitionHandler : BackStackTransitionHandler() {
+class BackStackSlider(
+    private val transitionSpec: BackStackTransitionSpec = { tween(1500) }
+) : BackStackTransitionHandler() {
 
     @Composable
     override fun map(transition: Transition<BackStack.TransitionState>): Modifier {
         val width = LocalConfiguration.current.screenWidthDp
         val offset = transition.animateOffset(
-            transitionSpec = { tween(1500) },
+            transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
                     BackStack.TransitionState.CREATED -> Offset(1.0f * width, 0f)
