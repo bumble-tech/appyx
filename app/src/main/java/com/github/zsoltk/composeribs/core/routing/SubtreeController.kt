@@ -12,9 +12,7 @@ data class SubtreeController<T, S>(
 ) {
 
     @Composable
-    fun whatever(
-        key: RoutingKey<T>
-    ): Modifier {
+    fun getModifierSnapshot(key: RoutingKey<T>): Modifier {
         val element =
             routingSource.elements.firstOrNull { it.key == key }
                 ?: routingSource.pendingRemoval.firstOrNull { it.key == key }

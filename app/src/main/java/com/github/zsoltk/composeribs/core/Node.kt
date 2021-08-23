@@ -50,7 +50,7 @@ class Node<T>(
                     val node = childEntry.node
                     requireNotNull(node) { "Node for on-screen entry should have been resolved" }
 
-                    val modifier = subtreeController.whatever(
+                    val modifier = subtreeController.getModifierSnapshot(
                         key = childEntry.key
                     )
 
