@@ -20,14 +20,10 @@ class ContainerView(
     @Composable
     override fun Compose() {
         Column(Modifier.padding(24.dp)) {
-//            PermanentChild1() // this should be good like this, by routing
-
-//            if (children.contains())
-
             Text("Container")
             Column(Modifier.padding(24.dp)) {
-//                placeholder<Child1>()
-//                placeholder<Child2>()
+                // placeholder<Child1>()
+                // placeholder<Child2>()
                 placeholder<Routing>()
             }
             Button(onClick = onPushRoutingClicked) {
