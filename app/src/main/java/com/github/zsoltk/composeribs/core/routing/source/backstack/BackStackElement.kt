@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core.routing.impl.backstack
+package com.github.zsoltk.composeribs.core.routing.source.backstack
 
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 

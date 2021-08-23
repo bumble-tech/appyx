@@ -1,7 +1,7 @@
 package com.github.zsoltk.composeribs.client.container
 
 import com.github.zsoltk.composeribs.client.container.Container.Routing.*
-import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 
 class ContainerInteractor(
     private val backStack: BackStack<Container.Routing>

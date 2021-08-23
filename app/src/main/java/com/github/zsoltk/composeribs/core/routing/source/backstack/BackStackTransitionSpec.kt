@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core.routing.impl.backstack
+package com.github.zsoltk.composeribs.core.routing.source.backstack
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.Transition

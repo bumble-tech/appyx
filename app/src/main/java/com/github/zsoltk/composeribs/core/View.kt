@@ -11,7 +11,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 
 abstract class RibView<T> {
 
