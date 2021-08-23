@@ -5,10 +5,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
-data class SubtreeController<T, S>(
+class SubtreeController<T, S>(
     val routingSource: RoutingSource<T, S>,
     val resolver: Resolver<T>,
-    val transitionHandler: TransitionHandler<S>
+    private val transitionHandler: TransitionHandler<S>
 ) {
 
     @Composable
