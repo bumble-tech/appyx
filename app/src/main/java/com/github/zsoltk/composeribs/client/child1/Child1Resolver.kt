@@ -3,7 +3,7 @@
 //import com.github.zsoltk.composeribs.client.child1.Child1.Routing
 //import com.github.zsoltk.composeribs.client.child1.Child1.Routing.*
 //import com.github.zsoltk.composeribs.core.Node
-//import com.github.zsoltk.composeribs.core.Resolver
+//import com.github.zsoltk.composeribs.core.routing.Resolver
 //
 //class Child1Resolver(
 //    private val builders: Child1ChildBuilders

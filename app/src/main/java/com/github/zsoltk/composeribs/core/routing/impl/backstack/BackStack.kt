@@ -1,8 +1,11 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.routing.impl.backstack
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import com.github.zsoltk.composeribs.core.BackStack.TransitionState.*
+import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
+import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStack.TransitionState.*
 import java.util.concurrent.atomic.AtomicInteger
 
 typealias BackStackElement<T> = RoutingElement<T, BackStack.TransitionState>

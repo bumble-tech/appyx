@@ -7,8 +7,8 @@ import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.github.zsoltk.composeribs.core.BackStack
-import com.github.zsoltk.composeribs.core.BackStackTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStackTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
 object ContainerTransitionHandler : BackStackTransitionHandler() {

@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.routing.impl.backstack
 
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
@@ -6,6 +6,7 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.routing.TransitionHandler
 
 abstract class BackStackTransitionHandler : TransitionHandler<BackStack.TransitionState> {
 

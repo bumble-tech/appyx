@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.routing
 
 import androidx.compose.runtime.snapshots.SnapshotStateList
 

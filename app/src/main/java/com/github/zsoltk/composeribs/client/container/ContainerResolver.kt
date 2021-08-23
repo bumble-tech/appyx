@@ -3,7 +3,7 @@ package com.github.zsoltk.composeribs.client.container
 import com.github.zsoltk.composeribs.client.container.Container.Routing
 import com.github.zsoltk.composeribs.client.container.Container.Routing.*
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.Resolver
+import com.github.zsoltk.composeribs.core.routing.Resolver
 
 class ContainerResolver(
     private val builders: ContainerChildBuilders

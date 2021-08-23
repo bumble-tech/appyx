@@ -1,10 +1,10 @@
 package com.github.zsoltk.composeribs.client.container
 
 import com.github.zsoltk.composeribs.client.container.Container.Routing
-import com.github.zsoltk.composeribs.core.BackStack
+import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStack
 import com.github.zsoltk.composeribs.core.Builder
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SubtreeController
+import com.github.zsoltk.composeribs.core.routing.SubtreeController
 
 class ContainerBuilder(
     private val dependency: Container.Dependency

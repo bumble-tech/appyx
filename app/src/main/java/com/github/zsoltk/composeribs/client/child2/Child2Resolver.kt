@@ -3,7 +3,7 @@ package com.github.zsoltk.composeribs.client.child2//package com.github.zsoltk.c
 //import com.github.zsoltk.composeribs.client.child2.Child2.Routing
 //import com.github.zsoltk.composeribs.client.child2.Child2.Routing.*
 //import com.github.zsoltk.composeribs.core.Node
-//import com.github.zsoltk.composeribs.core.Resolver
+//import com.github.zsoltk.composeribs.core.routing.Resolver
 //
 //class Child2Resolver(
 //    private val builders: Child2ChildBuilders
