@@ -8,9 +8,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.impl.backstack.BackStack.TransitionState.*
 import java.util.concurrent.atomic.AtomicInteger
 
-typealias BackStackElement<T> = RoutingElement<T, BackStack.TransitionState>
-
-class BackStack<T>(
+open class BackStack<T>(
     initialElement: T,
 ) : RoutingSource<T, BackStack.TransitionState> {
 
@@ -33,7 +31,8 @@ class BackStack<T>(
         mutableStateListOf(
             BackStackElement(
                 key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                onScreen = true
             )
         )
 
@@ -44,10 +43,10 @@ class BackStack<T>(
         get() = elements.last().key.routing
 
     override val offScreen: List<BackStackElement<T>>
-        get() = emptyList() // if (elements.isEmpty()) emptyList() else elements.subList(0, elements.lastIndex)
+        get() = elements.filter { !it.onScreen }
 
     override val onScreen: List<BackStackElement<T>>
-        get() = elements // listOf(elements.last())
+        get() = elements.filter { it.onScreen }
 
     fun push(element: T) {
         with(elements) {
@@ -56,7 +55,8 @@ class BackStack<T>(
             )
             elements += BackStackElement(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
-                targetState = CREATED
+                targetState = CREATED,
+                onScreen = true
             )
             elements[lastIndex] = elements[lastIndex].copy(
                 targetState = ON_SCREEN
@@ -74,7 +74,18 @@ class BackStack<T>(
                     )
                 )
                 elements[lastIndex] = elements[lastIndex].copy(
-                    targetState = ON_SCREEN
+                    targetState = ON_SCREEN,
+                    onScreen = true
+                )
+            }
+        }
+    }
+
+    override fun doMarkOffScreen(key: RoutingKey<T>) {
+        elements.toList().forEachIndexed { index, routingElement ->
+            if (routingElement.key == key) {
+                elements[index] = routingElement.copy(
+                    onScreen = false
                 )
             }
         }

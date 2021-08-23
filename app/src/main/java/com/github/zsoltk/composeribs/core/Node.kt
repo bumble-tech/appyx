@@ -45,10 +45,10 @@ class Node<T>(
 
                     val modifier = subtreeController.whatever(
                         key = childEntry.key,
-                        onRemovedFromScreen = {
-                            // TODO callback to set ChildEntry.onScreen to false
+                        onTransitionOffScreenFinished = {
+                            subtreeController.routingSource.doMarkOffScreen(childEntry.key)
                         },
-                        onDestroyed = {
+                        onTransitionRemoveFinished = {
                             subtreeController.routingSource.doRemove(childEntry.key)
                             children.remove(childEntry.key)
                             keys.remove(childEntry.key)

@@ -12,5 +12,7 @@ interface RoutingSource<T, S> {
 
     val offScreen: List<RoutingElement<T, S>>
 
+    fun doMarkOffScreen(key: RoutingKey<T>)
+
     fun doRemove(key: RoutingKey<T>)
 }
