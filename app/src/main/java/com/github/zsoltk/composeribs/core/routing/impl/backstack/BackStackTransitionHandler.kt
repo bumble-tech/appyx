@@ -14,19 +14,14 @@ abstract class BackStackTransitionHandler : TransitionHandler<BackStack.Transiti
     override fun handle(
         fromState: BackStack.TransitionState,
         toState: BackStack.TransitionState,
-        onTransitionOffScreenFinished: () -> Unit,
-        onTransitionRemoveFinished: () -> Unit,
+        onTransitionFinished: (BackStack.TransitionState) -> Unit,
     ): Modifier {
         val currentState = remember { MutableTransitionState(fromState) }
         currentState.targetState = toState
         val transition: Transition<BackStack.TransitionState> = updateTransition(currentState)
 
         if (transition.currentState == currentState.targetState) {
-            when (currentState.targetState) {
-                BackStack.TransitionState.STASHED_IN_BACK_STACK -> onTransitionOffScreenFinished()
-                BackStack.TransitionState.DESTROYED -> onTransitionRemoveFinished()
-                else -> {}
-            }
+            onTransitionFinished(currentState.targetState)
         }
 
         return map(transition)

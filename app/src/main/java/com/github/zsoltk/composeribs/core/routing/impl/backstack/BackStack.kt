@@ -23,6 +23,12 @@ open class BackStack<T>(
 
     private val tmpCounter = AtomicInteger(1)
 
+    private lateinit var onRemoved: (RoutingKey<T>) -> Unit
+
+    override fun onRemoved(block: (RoutingKey<T>) -> Unit) {
+        onRemoved = block
+    }
+
     override val elements: SnapshotStateList<RoutingElement<T, TransitionState>> =
         mutableStateListOf(
             BackStackElement(
@@ -77,7 +83,15 @@ open class BackStack<T>(
         }
     }
 
-    override fun doMarkOffScreen(key: RoutingKey<T>) {
+    override fun onTransitionFinished(key: RoutingKey<T>, targetState: TransitionState) {
+        when (targetState) {
+            STASHED_IN_BACK_STACK -> markOffScreen(key)
+            DESTROYED -> remove(key)
+            else -> {}
+        }
+    }
+
+    private fun markOffScreen(key: RoutingKey<T>) {
         elements.toList().forEachIndexed { index, routingElement ->
             if (routingElement.key == key) {
                 elements[index] = routingElement.copy(
@@ -87,7 +101,8 @@ open class BackStack<T>(
         }
     }
 
-    override fun doRemove(key: RoutingKey<T>) {
+    private fun remove(key: RoutingKey<T>) {
         pendingRemoval.removeAll { it.key == key }
+        onRemoved(key)
     }
 }

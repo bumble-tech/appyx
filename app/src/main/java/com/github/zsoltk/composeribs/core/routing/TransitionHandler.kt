@@ -6,10 +6,5 @@ import androidx.compose.ui.Modifier
 interface TransitionHandler<S> {
 
     @Composable
-    fun handle(
-        fromState: S,
-        toState: S,
-        onTransitionOffScreenFinished: () -> Unit,
-        onTransitionRemoveFinished: () -> Unit,
-    ): Modifier
+    fun handle(fromState: S, toState: S, onTransitionFinished: (S) -> Unit): Modifier
 }

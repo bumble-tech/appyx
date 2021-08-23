@@ -15,6 +15,13 @@ class Node<T>(
     private val children = mutableMapOf<RoutingKey<T>, NodeChildEntry<T>>()
     private val keys = mutableStateListOf<RoutingKey<T>>()
 
+    init {
+        subtreeController?.routingSource?.onRemoved {
+            children.remove(it)
+            keys.remove(it)
+        }
+    }
+
     @SuppressLint("RememberReturnType")
     @Composable
     fun Compose() {
@@ -44,15 +51,7 @@ class Node<T>(
                     requireNotNull(node) { "Node for on-screen entry should have been resolved" }
 
                     val modifier = subtreeController.whatever(
-                        key = childEntry.key,
-                        onTransitionOffScreenFinished = {
-                            subtreeController.routingSource.doMarkOffScreen(childEntry.key)
-                        },
-                        onTransitionRemoveFinished = {
-                            subtreeController.routingSource.doRemove(childEntry.key)
-                            children.remove(childEntry.key)
-                            keys.remove(childEntry.key)
-                        }
+                        key = childEntry.key
                     )
 
                     // TODO optimise (only update modifier, don't create new object)

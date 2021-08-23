@@ -12,7 +12,7 @@ interface RoutingSource<T, S> {
 
     val offScreen: List<RoutingElement<T, S>>
 
-    fun doMarkOffScreen(key: RoutingKey<T>)
+    fun onRemoved(block: (RoutingKey<T>) -> Unit)
 
-    fun doRemove(key: RoutingKey<T>)
+    fun onTransitionFinished(key: RoutingKey<T>, targetState: S)
 }

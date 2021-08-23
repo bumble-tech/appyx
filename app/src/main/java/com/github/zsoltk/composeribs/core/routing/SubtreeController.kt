@@ -13,9 +13,7 @@ data class SubtreeController<T, S>(
 
     @Composable
     fun whatever(
-        key: RoutingKey<T>,
-        onTransitionOffScreenFinished: () -> Unit,
-        onTransitionRemoveFinished: () -> Unit,
+        key: RoutingKey<T>
     ): Modifier {
         val element =
             routingSource.elements.firstOrNull { it.key == key }
@@ -25,8 +23,9 @@ data class SubtreeController<T, S>(
             transitionHandler.handle(
                 fromState = element.fromState,
                 toState = element.targetState,
-                onTransitionOffScreenFinished = onTransitionOffScreenFinished,
-                onTransitionRemoveFinished = onTransitionRemoveFinished
+                onTransitionFinished = {
+                    routingSource.onTransitionFinished(key, it)
+                }
             )
         } ?: Modifier.background(color = Color.Magenta ) // TODO return Modifier and log error instead
     }
