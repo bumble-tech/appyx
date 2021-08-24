@@ -9,11 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
+import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider(
     private val transitionSpec: BackStackTransitionSpec = { tween(1500) }
-) : BackStackTransitionHandler() {
+) : UpdateTransitionHandler<BackStack.TransitionState>() {
 
     @Composable
     override fun map(transition: Transition<BackStack.TransitionState>): Modifier {
