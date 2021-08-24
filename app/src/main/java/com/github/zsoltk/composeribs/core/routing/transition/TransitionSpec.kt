@@ -1,8 +1,8 @@
-package com.github.zsoltk.composeribs.core.routing.source.backstack
+package com.github.zsoltk.composeribs.core.routing.transition
 
 import androidx.compose.animation.core.FiniteAnimationSpec
 import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 
-typealias BackStackTransitionSpec = @Composable Transition.Segment<BackStack.TransitionState>.() -> FiniteAnimationSpec<Offset>
+typealias TransitionSpec<S, T> = @Composable Transition.Segment<S>.() -> FiniteAnimationSpec<T>
