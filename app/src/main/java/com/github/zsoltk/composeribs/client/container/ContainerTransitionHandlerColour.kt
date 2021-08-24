@@ -11,7 +11,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-object ContainerTransitionHandlerColour : UpdateTransitionHandler() {
+object ContainerTransitionHandlerColour : UpdateTransitionHandler<BackStack.TransitionState>() {
 
     @Composable
     override fun map(transition: Transition<BackStack.TransitionState>): Modifier {

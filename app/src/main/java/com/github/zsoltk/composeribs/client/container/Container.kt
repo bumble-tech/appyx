@@ -8,6 +8,8 @@ interface Container {
         data class Child(val i: Int) : Routing()
         object Child1 : Routing()
         object Child2 : Routing()
+        object Child3 : Routing()
+        object Child4 : Routing()
     }
 }
 
