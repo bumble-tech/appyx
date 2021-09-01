@@ -28,16 +28,16 @@ class ChildView(
     override fun Compose() {
         Box(modifier = Modifier
             .fillMaxSize()
-            .background(
-                color = when (i) {
-                    1 -> manatee
-                    2 -> sizzling_red
-                    3 -> atomic_tangerine
-                    4 -> silver_sand
-                    else -> Color.Unspecified
-                },
-                shape = RoundedCornerShape(6.dp)
-            )
+//            .background(
+//                color = when (i) {
+//                    1 -> manatee
+//                    2 -> sizzling_red
+//                    3 -> atomic_tangerine
+//                    4 -> silver_sand
+//                    else -> Color.Unspecified
+//                },
+//                shape = RoundedCornerShape(6.dp)
+//            )
         ) {
             Column(
                 modifier = Modifier.padding(24.dp)

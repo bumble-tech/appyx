@@ -7,6 +7,8 @@ import com.github.zsoltk.composeribs.core.builder.SimpleBuilder
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
+import com.github.zsoltk.composeribs.core.routing.source.modal.Modal
+import com.github.zsoltk.composeribs.core.routing.source.modal.ModalTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 
@@ -17,7 +19,7 @@ class ContainerBuilder(
     val builders = ContainerChildBuilders()
 
     override fun build(): Node<*> =
-        buildVariant2()
+        buildVariant3()
 
     fun buildVariant1(): Node<*> {
         val backStack = BackStack<Routing>(
@@ -72,6 +74,32 @@ class ContainerBuilder(
             view = ContainerTilesView(
                 onSelect = { interactor.select(it) },
                 onRemoveSelected = { interactor.removeSelected() }
+            ),
+            subtreeController = scTiles,
+        )
+    }
+
+    fun buildVariant3(): Node<*> {
+        val modal = Modal(
+            initialElements = emptyList<Routing>()
+        )
+
+        val interactor = ContainerInteractorModal(
+            modal = modal
+        )
+
+        val scTiles = SubtreeController(
+            routingSource = modal,
+            resolver = ContainerResolver(builders),
+            transitionHandler = ModalTransitionHandler(
+                transitionSpec = { tween(500) }
+            )
+        )
+
+        return Node(
+            view = ContainerModalView(
+                onShowModal = { interactor.showModal() },
+                onMakeFullScreen = { interactor.makeFullScreen() }
             ),
             subtreeController = scTiles,
         )
