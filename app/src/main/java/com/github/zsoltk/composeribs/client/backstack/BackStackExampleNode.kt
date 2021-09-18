@@ -69,7 +69,10 @@ class BackStackExampleNode(
                     Text(text = "Push routing")
                 }
                 Spacer(modifier = Modifier.size(12.dp))
-                Button(onClick = { backStack.pop()} ) {
+                Button(
+                    onClick = { backStack.pop()},
+                    enabled = backStack.elements.size > 1
+                ) {
                     Text(text = "Pop routing")
                 }
             }
