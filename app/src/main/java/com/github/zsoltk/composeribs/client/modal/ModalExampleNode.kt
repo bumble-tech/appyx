@@ -1,7 +1,6 @@
-package com.github.zsoltk.composeribs.client.container.modal
+package com.github.zsoltk.composeribs.client.modal
 
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,13 +14,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.client.container.modal.ModalExampleNode.Routing
-import com.github.zsoltk.composeribs.client.container.modal.ModalExampleNode.Routing.Child
+import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
+import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.modal.Modal

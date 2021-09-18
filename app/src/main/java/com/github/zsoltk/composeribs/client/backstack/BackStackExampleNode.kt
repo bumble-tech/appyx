@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.client.container.backstack
+package com.github.zsoltk.composeribs.client.backstack
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.client.container.backstack.BackStackExampleNode.Routing
-import com.github.zsoltk.composeribs.client.container.backstack.BackStackExampleNode.Routing.Child
+import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing
+import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
