@@ -18,18 +18,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.client.tiles.ContainerTilesNode.Routing
-import com.github.zsoltk.composeribs.client.tiles.ContainerTilesNode.Routing.Child1
-import com.github.zsoltk.composeribs.client.tiles.ContainerTilesNode.Routing.Child2
-import com.github.zsoltk.composeribs.client.tiles.ContainerTilesNode.Routing.Child3
-import com.github.zsoltk.composeribs.client.tiles.ContainerTilesNode.Routing.Child4
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child1
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child2
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 
-class ContainerTilesNode(
+class TilesExampleNode(
     private val tiles: Tiles<Routing> = Tiles(initialElements = listOf(
         Child1, Child2, Child3, Child4
     ))
