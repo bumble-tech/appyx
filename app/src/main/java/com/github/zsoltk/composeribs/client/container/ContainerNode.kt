@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.client.container
 
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,23 +16,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.*
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.BackStackExample
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.node
 import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
+import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
 
 class ContainerNode(
     private val backStack: BackStack<Routing> = BackStack(initialElement = Picker)
 ) : Node<Routing>(
     subtreeController = SubtreeController(
         routingSource = backStack,
-        transitionHandler = BackStackSlider(
-            transitionSpec = { tween(1000) }
+        transitionHandler = CombinedHandler(
+            listOf(
+                BackStackSlider(transitionSpec = { tween(1000) }),
+                BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),
+            )
         )
     )
 ) {
