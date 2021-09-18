@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.client.container
+package com.github.zsoltk.composeribs.client.container.off
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Transition

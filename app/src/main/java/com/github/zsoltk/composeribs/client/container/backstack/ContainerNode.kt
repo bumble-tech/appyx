@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.client.container
+package com.github.zsoltk.composeribs.client.container.backstack
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,21 +9,33 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.zsoltk.composeribs.client.container.Container.Routing
-import com.github.zsoltk.composeribs.client.container.Container.Routing.Child1
-import com.github.zsoltk.composeribs.client.container.Container.Routing.Child2
-import com.github.zsoltk.composeribs.core.RibView
+import com.github.zsoltk.composeribs.client.child.ChildBuilder
+import com.github.zsoltk.composeribs.client.container.backstack.ContainerNode.Routing
+import com.github.zsoltk.composeribs.client.container.backstack.ContainerNode.Routing.Child
+import com.github.zsoltk.composeribs.core.InnerNode
+import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import kotlin.random.Random
 
-class ContainerView(
-    private val onPushRoutingClicked: () -> Unit,
-    private val onPopRoutingClicked: () -> Unit
-) : RibView<Routing>() {
+class ContainerNode(
+    private val backStack: BackStack<Routing>
+) : InnerNode<Routing>() {
+
+    sealed class Routing {
+        data class Child(val counter: Int) : Routing()
+    }
+
+    private val childBuilder = ChildBuilder()
+
+    override fun invoke(routing: Routing): Node<*> =
+        when (routing) {
+            is Child -> childBuilder.build(routing.counter)
+        }
 
     @Composable
     override fun Compose() {
@@ -34,10 +46,11 @@ class ContainerView(
             Text("Container")
 
 //            Column(Modifier.padding(24.dp)) {
-            Box(Modifier
-                .padding(top = 12.dp, bottom = 12.dp)
-                .fillMaxWidth()
-                .fillMaxHeight(0.75f)
+            Box(
+                Modifier
+                    .padding(top = 12.dp, bottom = 12.dp)
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.75f)
             ) {
                 // placeholder<Child1>()
                 // placeholder<Child2>()
@@ -45,11 +58,11 @@ class ContainerView(
             }
 
             Row {
-                Button(onClick = onPushRoutingClicked) {
+                Button(onClick = { backStack.push(Child(Random.nextInt(9999))) }) {
                     Text(text = "Push routing")
                 }
                 Spacer(modifier = Modifier.size(12.dp))
-                Button(onClick = onPopRoutingClicked) {
+                Button(onClick = { backStack.pop()} ) {
                     Text(text = "Pop routing")
                 }
             }

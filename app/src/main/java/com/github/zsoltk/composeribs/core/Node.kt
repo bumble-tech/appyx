@@ -9,7 +9,7 @@ import com.github.zsoltk.composeribs.core.routing.SubtreeController
 
 @Suppress("TransitionPropertiesLabel")
 class Node<T>(
-    private val view: RibView<T>,
+    private val composable: InnerNode<T>,
     private val subtreeController: SubtreeController<T, *>? = null
 ) {
     private val children = mutableMapOf<RoutingKey<T>, NodeChildEntry<T>>()
@@ -28,7 +28,7 @@ class Node<T>(
         subtreeController?.let {
             WithBackStack(it)
         } ?: run {
-            view.Compose(emptyList())
+            composable.Compose(emptyList())
         }
     }
 
@@ -57,13 +57,13 @@ class Node<T>(
                     // TODO optimise (only update modifier, don't create new object)
                     ViewChildEntry(
                         key = childEntry.key,
-                        view = node.view,
+                        composable = node.composable,
                         modifier =  modifier
                     )
                 }
             }
 
-        view.Compose(composedViews)
+        composable.Compose(composedViews)
     }
 
     private fun SubtreeController<T, *>.manageOffScreen() {

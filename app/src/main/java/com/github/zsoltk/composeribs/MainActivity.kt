@@ -6,11 +6,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.tooling.preview.Preview
-import com.github.zsoltk.composeribs.client.container.Container
-import com.github.zsoltk.composeribs.client.container.ContainerBuilder
+import com.github.zsoltk.composeribs.client.container.backstack.ContainerBuilder
 import com.github.zsoltk.composeribs.ui.Rf1Theme
 
 class MainActivity : AppCompatActivity() {
@@ -20,12 +19,9 @@ class MainActivity : AppCompatActivity() {
             Rf1Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-//                    Random()
-
                     Column {
-                        ContainerBuilder(object : Container.Dependency {})
-                            .build()
-                            .Compose()
+                        val node = remember { ContainerBuilder().build() }
+                        node.Compose()
                     }
                 }
             }
@@ -39,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 fun DefaultPreview() {
     Rf1Theme {
         Column {
-            ContainerBuilder(object : Container.Dependency {})
+            ContainerBuilder()
                 .build()
                 .Compose()
         }

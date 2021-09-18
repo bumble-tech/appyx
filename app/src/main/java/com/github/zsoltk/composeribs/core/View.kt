@@ -6,9 +6,10 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.CombinedModifier
 import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 
-abstract class RibView<T> {
+abstract class InnerNode<T> : Resolver<T> {
 
     // FIXME with Scope
     var children: List<ViewChildEntry<*>> = listOf()
@@ -39,7 +40,7 @@ abstract class RibView<T> {
             key(child.key) {
                 val clientModifier = modifier(child.key as RoutingKey<T>)
                 Box(modifier = clientModifier.then(child.modifier)) {
-                    child.view.Compose()
+                    child.composable.Compose()
                 }
             }
         }
