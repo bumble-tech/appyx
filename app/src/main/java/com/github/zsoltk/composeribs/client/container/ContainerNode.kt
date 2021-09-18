@@ -31,7 +31,7 @@ class ContainerNode(
     subtreeController = SubtreeController(
         routingSource = backStack,
         transitionHandler = BackStackSlider(
-            transitionSpec = { tween(1500) }
+            transitionSpec = { tween(1000) }
         )
     )
 ) {
@@ -54,9 +54,7 @@ class ContainerNode(
     @Composable
     override fun View() {
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
+            modifier = Modifier.fillMaxSize()
         ) {
             placeholder<Routing>()
         }
@@ -65,7 +63,9 @@ class ContainerNode(
     @Composable
     fun ExamplesList() {
         Box(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(

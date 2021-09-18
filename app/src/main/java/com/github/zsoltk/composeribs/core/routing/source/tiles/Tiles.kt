@@ -5,7 +5,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles.TransitionState.*
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -82,6 +81,16 @@ open class Tiles<T>(
         }
     }
 
+    fun deselectAll() {
+        elements.toList().forEachIndexed { index, routingElement ->
+            if (routingElement.targetState == SELECTED) {
+                elements[index] = routingElement.copy(
+                    targetState = STANDARD
+                )
+            }
+        }
+    }
+
     fun toggleSelection(key: RoutingKey<T>) {
         elements.toList().forEachIndexed { index, routingElement ->
             if (routingElement.key == key) {
@@ -126,5 +135,14 @@ open class Tiles<T>(
     private fun remove(key: RoutingKey<T>) {
         pendingRemoval.removeAll { it.key == key }
         onRemoved(key)
+    }
+
+    override fun canHandleBackPress(): Boolean =
+        elements.any {
+            it.targetState == SELECTED
+        }
+
+    override fun onBackPressed() {
+        deselectAll()
     }
 }

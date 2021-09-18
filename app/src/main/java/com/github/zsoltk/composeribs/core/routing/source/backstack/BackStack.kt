@@ -105,4 +105,11 @@ open class BackStack<T>(
         pendingRemoval.removeAll { it.key == key }
         onRemoved(key)
     }
+
+    override fun canHandleBackPress(): Boolean =
+        elements.size > 1
+
+    override fun onBackPressed() {
+        pop()
+    }
 }

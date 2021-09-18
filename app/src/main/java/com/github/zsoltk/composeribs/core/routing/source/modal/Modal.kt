@@ -94,6 +94,21 @@ open class Modal<T>(
         }
     }
 
+    fun revert() {
+        elements.toList().forEachIndexed { index, routingElement ->
+            if (routingElement.targetState == FULL_SCREEN) {
+                elements[index] = routingElement.copy(
+                    targetState = MODAL
+                )
+            }
+            if (routingElement.targetState == MODAL) {
+                elements[index] = routingElement.copy(
+                    targetState = CREATED
+                )
+            }
+        }
+    }
+
 
     fun destroy(key: RoutingKey<T>) {
         elements.toList().forEachIndexed { index, routingElement ->
@@ -116,5 +131,14 @@ open class Modal<T>(
     private fun remove(key: RoutingKey<T>) {
         pendingRemoval.removeAll { it.key == key }
         onRemoved(key)
+    }
+
+    override fun canHandleBackPress(): Boolean =
+        elements.any {
+            it.targetState == MODAL || it.targetState == FULL_SCREEN
+        }
+
+    override fun onBackPressed() {
+        revert()
     }
 }

@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core
 
-import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -41,6 +41,12 @@ abstract class Node<T>(
 
     @Composable
     fun Compose() {
+        subtreeController?.routingSource?.let {
+            BackHandler(it.canHandleBackPress()) {
+                it.onBackPressed()
+            }
+        }
+
         subtreeController?.let {
             ViewWithSubtree(it)
         } ?: run {

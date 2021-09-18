@@ -12,6 +12,12 @@ interface RoutingSource<T, S> {
 
     val offScreen: List<RoutingElement<T, S>>
 
+    // FIXME make sure this isn't getting spammed on transition,
+    //  or at least cache value for distinct routing states
+    fun canHandleBackPress(): Boolean
+
+    fun onBackPressed()
+
     fun onRemoved(block: (RoutingKey<T>) -> Unit)
 
     fun onTransitionFinished(key: RoutingKey<T>, targetState: S)
