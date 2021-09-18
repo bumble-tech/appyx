@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.client.container.backstack
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,31 +15,37 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.github.zsoltk.composeribs.client.child.ChildBuilder
+import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.container.backstack.ContainerNode.Routing
 import com.github.zsoltk.composeribs.client.container.backstack.ContainerNode.Routing.Child
-import com.github.zsoltk.composeribs.core.InnerNode
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import kotlin.random.Random
 
 class ContainerNode(
-    private val backStack: BackStack<Routing>
-) : InnerNode<Routing>() {
+    private val backStack: BackStack<Routing> = BackStack(initialElement = Child(0))
+) : Node<Routing>(
+    subtreeController = SubtreeController(
+        routingSource = backStack,
+        transitionHandler = BackStackSlider(
+            transitionSpec = { tween(1500) }
+        )
+    )
+) {
 
     sealed class Routing {
         data class Child(val counter: Int) : Routing()
     }
 
-    private val childBuilder = ChildBuilder()
-
-    override fun invoke(routing: Routing): Node<*> =
+    override fun resolve(routing: Routing): Node<*> =
         when (routing) {
-            is Child -> childBuilder.build(routing.counter)
+            is Child -> ChildNode(routing.counter)
         }
 
     @Composable
-    override fun Compose() {
+    override fun View() {
         Column(modifier = Modifier
             .fillMaxSize()
             .padding(24.dp)

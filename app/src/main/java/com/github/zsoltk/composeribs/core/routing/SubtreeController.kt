@@ -8,7 +8,6 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 
 class SubtreeController<T, S>(
     val routingSource: RoutingSource<T, S>,
-    val resolver: Resolver<T>,
     private val transitionHandler: TransitionHandler<S>
 ) {
 
