@@ -16,15 +16,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.client.container.backstack.ContainerNode.Routing
-import com.github.zsoltk.composeribs.client.container.backstack.ContainerNode.Routing.Child
+import com.github.zsoltk.composeribs.client.container.backstack.BackStackExampleNode.Routing
+import com.github.zsoltk.composeribs.client.container.backstack.BackStackExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import kotlin.random.Random
 
-class ContainerNode(
+class BackStackExampleNode(
     private val backStack: BackStack<Routing> = BackStack(initialElement = Child(0))
 ) : Node<Routing>(
     subtreeController = SubtreeController(
