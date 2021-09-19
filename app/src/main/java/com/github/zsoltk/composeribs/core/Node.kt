@@ -7,6 +7,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.SubtreeController
@@ -14,7 +15,7 @@ import com.github.zsoltk.composeribs.core.routing.SubtreeController
 @Suppress("TransitionPropertiesLabel")
 abstract class Node<T>(
     private val subtreeController: SubtreeController<T, *>? = null
-) : Resolver<T> {
+) : Resolver<T>, Renderable {
 
     data class ChildEntry<T>(
         val key: RoutingKey<T>,
@@ -139,10 +140,6 @@ abstract class Node<T>(
         // FIXME with Scope
         this.viewChildren = children
         View()
-    }
-
-    @Composable
-    open fun View() {
     }
 
     @Composable
