@@ -30,7 +30,7 @@ import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 class ContainerNode(
-    private val backStack: BackStackNoTransitions<Routing> = BackStackNoTransitions(initialElement = Picker),
+    private val backStack: BackStack<Routing> = BackStack(initialElement = Picker),
     private val transitionHandler: UpdateTransitionHandler<BackStack.TransitionState> = CombinedHandler(
         listOf(
             BackStackSlider(transitionSpec = { tween(1000) }),
@@ -56,40 +56,42 @@ class ContainerNode(
             is TilesExample -> TilesExampleNode()
         }
 
-    @OptIn(ExperimentalAnimationApi::class)
-    @Composable
-    override fun View(foo: StateObject) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Subtree(routingSource = backStack) {
-                children<Routing> { child, routingElement ->
-                    // TODO you can also use routingElement.fromState / targetState for e.g. updateTransition
-                    AnimatedVisibility(
-                        visible = routingElement.onScreen,
-                        enter = fadeIn(animationSpec = tween(1000)),
-                        exit = fadeOut(animationSpec = tween(1000)),
-                    ) {
-                        child()
-                    }
-                }
-            }
-        }
-    }
-
-    // TODO experiment with this variant too (transitionHandler0
+//    @OptIn(ExperimentalAnimationApi::class)
 //    @Composable
-//    fun View2() {
-//        Box(
-//            modifier = Modifier.fillMaxSize()
-//        ) {
-//            Subtree(routingSource = backStack, transitionHandler) {
-//                children<Routing> { transitionModifier, child ->
-//                    Box(modifier = transitionModifier) {
+//    override fun View(foo: StateObject) {
+//        Box(modifier = Modifier.fillMaxSize()) {
+//            Subtree(backStack) {
+//                // TODO consider move <Routing> to Subtree, remove children
+//                children<Routing> { child, routingElement ->
+//                    // TODO you can also use routingElement.fromState / targetState for e.g. updateTransition
+//                    AnimatedVisibility(
+//                        visible = routingElement.onScreen,
+//                        enter = fadeIn(animationSpec = tween(1000)),
+//                        exit = fadeOut(animationSpec = tween(1000)),
+//                    ) {
 //                        child()
 //                    }
 //                }
 //            }
 //        }
 //    }
+
+    // TODO experiment with this variant too (transitionHandler)
+    @Composable
+    override fun View(foo: StateObject) {
+        Box(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Subtree(backStack, transitionHandler) {
+                // TODO consider move <Routing> to Subtree, remove children
+                children<Routing> { transitionModifier, child ->
+                    Box(modifier = transitionModifier) {
+                        child()
+                    }
+                }
+            }
+        }
+    }
 
     @Composable
     fun ExamplesList() {

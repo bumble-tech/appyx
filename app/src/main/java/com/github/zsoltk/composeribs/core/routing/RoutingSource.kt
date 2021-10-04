@@ -21,7 +21,7 @@ interface RoutingSource<T, S> {
 
     fun onBackPressed()
 
-//    fun onRemoved(block: (RoutingKey<T>) -> Unit)
+    fun onRemoved(block: (RoutingKey<T>) -> Unit)
 
     fun onTransitionFinished(key: RoutingKey<T>)
 }

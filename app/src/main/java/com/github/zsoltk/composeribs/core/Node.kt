@@ -27,18 +27,21 @@ abstract class Node<T>(
     private val keys = mutableStateListOf<RoutingKey<T>>()
 
     init {
-        routingSource?.elementsObservable?.let {
-            Observable.wrap(it).subscribe { elements ->
-                val routingSourceKeys = elements.map { it.key }
-                val localKeys = children.keys
-                val newKeys = routingSourceKeys.minus(localKeys)
-                val removedKeys = localKeys.minus(routingSourceKeys)
-                newKeys.forEach { routingKey ->
-                    addChild(routingKey)
-                }
+        routingSource?.let {
+            it.onRemoved { routingKey -> removeChild(routingKey) }
+            it.elementsObservable.let {
+                Observable.wrap(it).subscribe { elements ->
+                    val routingSourceKeys = elements.map { it.key }
+                    val localKeys = children.keys
+                    val newKeys = routingSourceKeys.minus(localKeys)
+                    val removedKeys = localKeys.minus(routingSourceKeys)
+                    newKeys.forEach { routingKey ->
+                        addChild(routingKey)
+                    }
 
-                removedKeys.forEach { routingKey ->
-                    removeChild(routingKey)
+                    removedKeys.forEach { routingKey ->
+                        removeChild(routingKey)
+                    }
                 }
             }
         }

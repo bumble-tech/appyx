@@ -88,18 +88,19 @@ class SubtreeTransitionScope<T, S>(
 ) {
 
     @Composable
-    inline fun <reified V : T> children(
+    inline fun <reified V : T> Node<T>.children(
         block: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
     ) {
-        // TODO consider
-        val node = LocalNode.current?.let { it as Node<T> }
-            ?: error("Subtree can't be invoked outside of a Node's Composable context")
+//        // TODO consider
+//        val node = LocalNode.current?.let { it as Node<T> }
+//            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val onScreen = remember {
-            routingSource.onScreen
-                .filter { it.key is V || it.key.routing!!::class.java.isAssignableFrom(V::class.java) }
-                .map { it to node.childOrCreate(it.key) }
-        }
+        val onScreen =
+//            remember {
+            this@SubtreeTransitionScope.routingSource.onScreen
+                .filter { it.key.routing is V || it.key.routing!!::class.java.isAssignableFrom(V::class.java) }
+                .map { it to childOrCreate(it.key) }
+//        }
 
         onScreen.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
@@ -108,7 +109,7 @@ class SubtreeTransitionScope<T, S>(
                         fromState = routingElement.fromState,
                         toState = routingElement.targetState,
                         onTransitionFinished = {
-                            routingSource.onTransitionFinished(childEntry.key)
+                            this@SubtreeTransitionScope.routingSource.onTransitionFinished(childEntry.key)
                         })
 
                 block(

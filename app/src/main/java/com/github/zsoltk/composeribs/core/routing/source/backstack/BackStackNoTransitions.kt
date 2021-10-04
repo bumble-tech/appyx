@@ -82,6 +82,10 @@ open class BackStackNoTransitions<T>(
     override fun onTransitionFinished(key: RoutingKey<T>) {
     }
 
+    // TODO cleanup interface, this shouldn't be here
+    override fun onRemoved(block: (RoutingKey<T>) -> Unit) {
+    }
+
     override fun canHandleBackPress(): Boolean =
         elements.size > 1
 

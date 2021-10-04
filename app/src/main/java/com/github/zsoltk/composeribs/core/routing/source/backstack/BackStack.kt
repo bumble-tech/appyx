@@ -25,11 +25,11 @@ open class BackStack<T>(
 
     private val tmpCounter = AtomicInteger(1)
 
-//    private lateinit var onRemoved: (RoutingKey<T>) -> Unit
+    private lateinit var onRemoved: (RoutingKey<T>) -> Unit
 
-//    override fun onRemoved(block: (RoutingKey<T>) -> Unit) {
-//        onRemoved = block
-//    }
+    override fun onRemoved(block: (RoutingKey<T>) -> Unit) {
+        onRemoved = block
+    }
 
     private val elements = mutableListOf(
         BackStackElement(
@@ -56,7 +56,7 @@ open class BackStack<T>(
         get() = elements.filter { !it.onScreen }
 
     override val onScreen: List<BackStackElement<T>>
-        get() = elements.filter { it.onScreen }
+        get() = (elements + pendingRemoval).filter { it.onScreen }
 
     fun push(element: T) {
         with(elements) {
@@ -124,7 +124,7 @@ open class BackStack<T>(
 
     private fun remove(key: RoutingKey<T>) {
         pendingRemoval.removeAll { it.key == key }
-//        onRemoved(key)
+        onRemoved(key)
     }
 
     override fun canHandleBackPress(): Boolean =
