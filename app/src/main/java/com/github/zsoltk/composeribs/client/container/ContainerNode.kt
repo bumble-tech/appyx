@@ -1,47 +1,44 @@
 package com.github.zsoltk.composeribs.client.container
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.StateObject
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.BackStackExample
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.*
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.node
-import com.github.zsoltk.composeribs.core.routing.SubtreeController
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackNoTransitions
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
+import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 class ContainerNode(
-    private val backStack: BackStack<Routing> = BackStack(initialElement = Picker)
-) : Node<Routing>(
-    subtreeController = SubtreeController(
-        routingSource = backStack,
-        transitionHandler = CombinedHandler(
-            listOf(
-                BackStackSlider(transitionSpec = { tween(1000) }),
-                BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),
-            )
+    private val backStack: BackStackNoTransitions<Routing> = BackStackNoTransitions(initialElement = Picker),
+    private val transitionHandler: UpdateTransitionHandler<BackStack.TransitionState> = CombinedHandler(
+        listOf(
+            BackStackSlider(transitionSpec = { tween(1000) }),
+            BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),
         )
     )
+) : Node<Routing>(
+    routingSource = backStack,
 ) {
 
     sealed class Routing {
@@ -59,14 +56,40 @@ class ContainerNode(
             is TilesExample -> TilesExampleNode()
         }
 
+    @OptIn(ExperimentalAnimationApi::class)
     @Composable
-    override fun View() {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            placeholder<Routing>()
+    override fun View(foo: StateObject) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            Subtree(routingSource = backStack) {
+                children<Routing> { child, routingElement ->
+                    // TODO you can also use routingElement.fromState / targetState for e.g. updateTransition
+                    AnimatedVisibility(
+                        visible = routingElement.onScreen,
+                        enter = fadeIn(animationSpec = tween(1000)),
+                        exit = fadeOut(animationSpec = tween(1000)),
+                    ) {
+                        child()
+                    }
+                }
+            }
         }
     }
+
+    // TODO experiment with this variant too (transitionHandler0
+//    @Composable
+//    fun View2() {
+//        Box(
+//            modifier = Modifier.fillMaxSize()
+//        ) {
+//            Subtree(routingSource = backStack, transitionHandler) {
+//                children<Routing> { transitionModifier, child ->
+//                    Box(modifier = transitionModifier) {
+//                        child()
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     @Composable
     fun ExamplesList() {
