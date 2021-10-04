@@ -21,6 +21,7 @@ import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.SubtreeVariant
 import com.github.zsoltk.composeribs.core.node
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
@@ -61,7 +62,6 @@ class ContainerNode(
 //    override fun View(foo: StateObject) {
 //        Box(modifier = Modifier.fillMaxSize()) {
 //            Subtree(backStack) {
-//                // TODO consider move <Routing> to Subtree, remove children
 //                children<Routing> { child, routingElement ->
 //                    // TODO you can also use routingElement.fromState / targetState for e.g. updateTransition
 //                    AnimatedVisibility(
@@ -76,20 +76,26 @@ class ContainerNode(
 //        }
 //    }
 
-    // TODO experiment with this variant too (transitionHandler)
     @Composable
     override fun View(foo: StateObject) {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
+            // TODO variant 1
             Subtree(backStack, transitionHandler) {
-                // TODO consider move <Routing> to Subtree, remove children
                 children<Routing> { transitionModifier, child ->
                     Box(modifier = transitionModifier) {
                         child()
                     }
                 }
             }
+
+            // TODO variant 2, decide which one is better
+//            SubtreeVariant(backStack, transitionHandler) { transitionModifier, child ->
+//                Box(modifier = transitionModifier) {
+//                    child()
+//                }
+//            }
         }
     }
 
