@@ -1,11 +1,20 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
+import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import io.reactivex.Observable
 
 val LocalNode = compositionLocalOf<Node<*>?> { null }
@@ -84,4 +93,25 @@ abstract class Node<T>(
             View(children)
         }
     }
+
+    @Composable
+    fun <S> ChildNode(
+        routingElement: RoutingElement<T, S>?,
+        transitionHandler: TransitionHandler<S> = JumpToEndTransitionHandler(),
+        decorator: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
+            Box(modifier = modifier) {
+                child()
+            }
+        }
+    ) {
+        if (routingElement == null) return
+        AnimatedChildNode(
+            routingSource = routingSource as RoutingSource<T, S>, // TODO HOW TO FIX?
+            routingElement = routingElement,
+            childEntry = childOrCreate(routingElement.key),
+            transitionHandler = transitionHandler,
+            decorator = decorator,
+        )
+    }
+
 }
