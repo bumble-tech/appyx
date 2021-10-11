@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing
 
-interface RoutingKey<T> {
+import android.os.Parcelable
 
-    val routing: T
+interface RoutingKey<Key> : Parcelable {
+    val routing: Key
 }

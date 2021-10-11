@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.client.container
 
+import android.os.Parcelable
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -27,23 +28,26 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Tile
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.node
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
-    private val backStack: BackStack<Routing> = BackStack(initialElement = Picker),
-    private val transitionHandler: UpdateTransitionHandler<BackStack.TransitionState> = CombinedHandler(
+    savedStateMap: SavedStateMap?,
+    private val backStack: BackStack<Routing> = BackStack(
+        initialElement = Picker,
+        savedStateMap = savedStateMap,
+    ),
+    private val transitionHandler: UpdateTransitionHandler<TransitionState> = CombinedHandler(
         listOf(
             BackStackSlider(transitionSpec = { tween(1000) }),
             BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),
@@ -51,21 +55,29 @@ class ContainerNode(
     )
 ) : Node<Routing>(
     routingSource = backStack,
+    savedStateMap = savedStateMap,
 ) {
 
-    sealed class Routing {
+    sealed class Routing : Parcelable {
+        @Parcelize
         object Picker : Routing()
+
+        @Parcelize
         object BackStackExample : Routing()
+
+        @Parcelize
         object TilesExample : Routing()
+
+        @Parcelize
         object ModalExample : Routing()
     }
 
-    override fun resolve(routing: Routing): Node<*> =
+    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
         when (routing) {
             is Picker -> node { ExamplesList() }
-            is BackStackExample -> BackStackExampleNode()
-            is ModalExample -> ModalExampleNode()
-            is TilesExample -> TilesExampleNode()
+            is BackStackExample -> BackStackExampleNode(savedStateMap)
+            is ModalExample -> ModalExampleNode(savedStateMap)
+            is TilesExample -> TilesExampleNode(savedStateMap)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)
@@ -97,10 +109,10 @@ class ContainerNode(
                 children<Routing> { transitionModifier, child ->
                     val background = transition.animateColor(label = "color") { state ->
                         when (state) {
-                            CREATED -> Color.Yellow
-                            ON_SCREEN -> Color.Red
-                            STASHED_IN_BACK_STACK -> Color.Blue
-                            DESTROYED -> Color.Black
+                            TransitionState.Created -> Color.Yellow
+                            TransitionState.OnScreen -> Color.Red
+                            TransitionState.StashedInBackstack -> Color.Blue
+                            TransitionState.Destroyed -> Color.Black
                         }
 
                     }

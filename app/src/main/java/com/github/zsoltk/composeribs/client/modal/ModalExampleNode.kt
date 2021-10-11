@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.client.modal
 
+import android.os.Parcelable
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -7,30 +8,24 @@ import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
-//import com.github.zsoltk.composeribs.core.routing.source.modal.Modal
-//import com.github.zsoltk.composeribs.core.routing.source.modal.ModalElement
-//import com.github.zsoltk.composeribs.core.routing.source.modal.ModalTransitionHandler
+import com.github.zsoltk.composeribs.core.SavedStateMap
+import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(
-//    private val modal: Modal<Routing> = Modal(
-//        initialElements = listOf(Child(0))
-//    )
+    savedStateMap: SavedStateMap?,
 ) : Node<Routing>(
-//    subtreeController = SubtreeController(
-        routingSource = null // modal,
-//        transitionHandler = ModalTransitionHandler(
-//            transitionSpec = { tween(1500) }
-//        )
-//    )
+    routingSource = null,
+    savedStateMap = savedStateMap,
 ) {
 
-    sealed class Routing {
+    sealed class Routing : Parcelable {
+        @Parcelize
         data class Child(val counter: Int) : Routing()
     }
 
-    override fun resolve(routing: Routing): Node<*> =
+    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
         when (routing) {
-            is Child -> ChildNode(routing.counter)
+            is Child -> ChildNode(routing.counter, savedStateMap)
         }
 
     @Composable
@@ -82,5 +77,5 @@ class ModalExampleNode(
 @Preview
 @Composable
 fun ModalPreview() {
-    ModalExampleNode().Compose()
+    ModalExampleNode(null).Compose()
 }

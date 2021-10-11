@@ -1,6 +1,8 @@
 package com.github.zsoltk.composeribs.core
 
+import android.os.Parcelable
 import androidx.activity.compose.BackHandler
+import androidx.annotation.CallSuper
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -8,6 +10,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -32,18 +35,23 @@ import kotlinx.coroutines.launch
 val LocalNode = compositionLocalOf<Node<*>?> { null }
 
 @Suppress("TransitionPropertiesLabel")
-abstract class Node<T>(
+abstract class Node<T : Parcelable>(
     val routingSource: RoutingSource<T, *>? = null,
+    savedStateMap: SavedStateMap?,
 ) : Resolver<T>, Renderable {
 
     class ChildEntry<T>(
         val key: RoutingKey<T>,
-        private val resolver: Resolver<T>
+        private val resolver: Resolver<T>,
+        private val savedStateMap: SavedStateMap? = null,
     ) {
-        val node: Node<*> by lazy(LazyThreadSafetyMode.NONE) { resolver.resolve(key.routing) }
+        internal val nodeLazy = lazy(LazyThreadSafetyMode.NONE) {
+            resolver.resolve(key.routing, savedStateMap)
+        }
+        val node: Node<*> get() = nodeLazy.value
     }
 
-    private val _children = MutableStateFlow(emptyMap<RoutingKey<T>, ChildEntry<T>>())
+    private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
     protected val children: StateFlow<Map<RoutingKey<T>, ChildEntry<T>>> = _children.asStateFlow()
 
     private var transitionsInBackgroundJob: Job? = null
@@ -75,6 +83,11 @@ abstract class Node<T>(
             }
         }
     }
+
+    private fun SavedStateMap.restoreChildren(): Map<RoutingKey<T>, ChildEntry<T>>? =
+        (get(KEY_CHILDREN_STATE) as? Map<RoutingKey<T>, SavedStateMap>)?.mapValues {
+            ChildEntry(it.key, this@Node, it.value)
+        }
 
     fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry<T> {
         return _children.updateAndGet {
@@ -152,7 +165,7 @@ abstract class Node<T>(
     }
 
     @Composable
-    fun <S> ChildNode(
+    fun <S : Parcelable> AnimatedChildNode(
         routingElement: RoutingElement<T, S>?,
         transitionHandler: TransitionHandler<S> = JumpToEndTransitionHandler(),
         decorator: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
@@ -169,6 +182,33 @@ abstract class Node<T>(
             transitionHandler = transitionHandler,
             decorator = decorator,
         )
+    }
+
+    @CallSuper
+    open fun onSaveInstanceState(scope: SaverScope): SavedStateMap {
+        val map = mutableMapOf<String, Any>()
+        if (routingSource != null) {
+            val state = routingSource.saveInstanceState()
+            if (state != null) map[KEY_ROUTING_SOURCE] = state
+        }
+        val children = _children.value
+        if (children.isNotEmpty()) {
+            val childrenState =
+                children
+                    .mapValues { pair ->
+                        pair.value.nodeLazy.let {
+                            if (it.isInitialized()) it.value.onSaveInstanceState(scope)
+                            else null
+                        }
+                    }
+            if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] = childrenState
+        }
+        return map
+    }
+
+    companion object {
+        const val KEY_ROUTING_SOURCE = "RoutingSource"
+        const val KEY_CHILDREN_STATE = "ChildrenState"
     }
 
 }

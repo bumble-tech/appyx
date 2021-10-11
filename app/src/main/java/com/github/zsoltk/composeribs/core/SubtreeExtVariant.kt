@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core
 
+import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.map
 
 
 @Composable
-inline fun <reified V : T, reified T, reified S> Node<T>.SubtreeVariant(
+inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Node<T>.SubtreeVariant(
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
     block: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,

@@ -8,15 +8,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.core.LeafNode
-import com.github.zsoltk.composeribs.ui.*
+import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.ui.atomic_tangerine
+import com.github.zsoltk.composeribs.ui.manatee
+import com.github.zsoltk.composeribs.ui.md_amber_500
+import com.github.zsoltk.composeribs.ui.md_blue_500
+import com.github.zsoltk.composeribs.ui.md_blue_grey_500
+import com.github.zsoltk.composeribs.ui.md_cyan_500
+import com.github.zsoltk.composeribs.ui.md_grey_500
+import com.github.zsoltk.composeribs.ui.md_indigo_500
+import com.github.zsoltk.composeribs.ui.md_light_blue_500
+import com.github.zsoltk.composeribs.ui.md_light_green_500
+import com.github.zsoltk.composeribs.ui.md_lime_500
+import com.github.zsoltk.composeribs.ui.md_pink_500
+import com.github.zsoltk.composeribs.ui.md_teal_500
+import com.github.zsoltk.composeribs.ui.silver_sand
+import com.github.zsoltk.composeribs.ui.sizzling_red
+import kotlin.random.Random
 
 class ChildNode(
-    private val i: Int
-) : LeafNode() {
+    private val i: Int,
+    savedStateMap: SavedStateMap?
+) : LeafNode(
+    savedStateMap = savedStateMap,
+) {
 
     private val colors = listOf(
         manatee,
@@ -36,7 +56,12 @@ class ChildNode(
         md_blue_grey_500
     )
 
-    private val color = colors.random()
+    private val colorIndex =
+        savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?: Random.nextInt(colors.size)
+    private val color = colors[colorIndex]
+
+    override fun onSaveInstanceState(scope: SaverScope): SavedStateMap =
+        super.onSaveInstanceState(scope) + mapOf(KEY_COLOR_INDEX to colorIndex)
 
     @Composable
     override fun View() {
@@ -55,10 +80,14 @@ class ChildNode(
             }
         }
     }
+
+    companion object {
+        private const val KEY_COLOR_INDEX = "ColorIndex"
+    }
 }
 
 @Preview
 @Composable
 fun ChildPreview() {
-    ChildNode(1).Compose()
+    ChildNode(1, null).Compose()
 }

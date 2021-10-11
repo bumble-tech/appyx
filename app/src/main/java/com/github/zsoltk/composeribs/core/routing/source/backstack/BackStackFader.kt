@@ -21,7 +21,7 @@ class BackStackFader(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    BackStack.TransitionState.ON_SCREEN -> 1f
+                    BackStack.TransitionState.OnScreen -> 1f
                     else -> 0f
                 }
             })
