@@ -22,7 +22,7 @@ inline fun <reified V : T, reified T, reified S> Node<T>.SubtreeVariant(
 
     onScreen.forEach { (routingElement, childEntry) ->
         key(childEntry.key) {
-            val transitionModifier =
+            val transitionScope =
                 transitionHandler.handle(
                     fromState = routingElement.fromState,
                     toState = routingElement.targetState,
@@ -31,7 +31,7 @@ inline fun <reified V : T, reified T, reified S> Node<T>.SubtreeVariant(
                     })
 
             block(
-                transitionModifier = transitionModifier,
+                transitionModifier = transitionScope.transitionModifier,
                 child = { childEntry.node.Compose() },
             )
         }
