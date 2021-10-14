@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core
 
+import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
@@ -89,7 +90,7 @@ class SubtreeTransitionScope<T, S>(
 
     @Composable
     inline fun <reified V : T> Node<T>.children(
-        block: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
+        block: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
     ) {
 //        // TODO consider
 //        val node = LocalNode.current?.let { it as Node<T> }
@@ -104,19 +105,31 @@ class SubtreeTransitionScope<T, S>(
 
         onScreen.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
-                val transitionModifier =
+                val transitionScope =
                     transitionHandler.handle(
                         fromState = routingElement.fromState,
                         toState = routingElement.targetState,
                         onTransitionFinished = {
-                            this@SubtreeTransitionScope.routingSource.onTransitionFinished(childEntry.key)
+                            this@SubtreeTransitionScope.routingSource.onTransitionFinished(
+                                childEntry.key
+                            )
                         })
 
-                block(
-                    transitionModifier = transitionModifier,
+                transitionScope.block(
+                    transitionModifier = transitionScope.transitionModifier,
                     child = { childEntry.node.Compose() },
                 )
             }
         }
     }
 }
+
+interface ChildTransitionScope<S> {
+    val transition: Transition<S>
+    val transitionModifier: Modifier
+}
+
+internal class ChildTransitionScopeImpl<S>(
+    override val transition: Transition<S>,
+    override val transitionModifier: Modifier
+) : ChildTransitionScope<S>
