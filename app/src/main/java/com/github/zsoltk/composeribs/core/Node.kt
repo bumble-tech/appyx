@@ -98,7 +98,7 @@ abstract class Node<T>(
     fun <S> ChildNode(
         routingElement: RoutingElement<T, S>?,
         transitionHandler: TransitionHandler<S> = JumpToEndTransitionHandler(),
-        decorator: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
+        decorator: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
             Box(modifier = modifier) {
                 child()
             }

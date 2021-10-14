@@ -21,22 +21,22 @@ fun <Routing, State> AnimatedChildNode(
     routingElement: RoutingElement<Routing, State>,
     childEntry: Node.ChildEntry<Routing>,
     transitionHandler: TransitionHandler<State> = JumpToEndTransitionHandler(),
-    decorator: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
+    decorator: @Composable ChildTransitionScope<State>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
         Box(modifier = modifier) {
             child()
         }
     }
 ) {
     key(childEntry.key) {
-        val transitionModifier =
+        val transitionScope =
             transitionHandler.handle(
                 fromState = routingElement.fromState,
                 toState = routingElement.targetState,
                 onTransitionFinished = {
                     routingSource.onTransitionFinished(childEntry.key)
                 })
-        decorator(
-            transitionModifier = transitionModifier,
+        transitionScope.decorator(
+            transitionModifier = transitionScope.transitionModifier,
             child = { childEntry.node.Compose() },
         )
     }
