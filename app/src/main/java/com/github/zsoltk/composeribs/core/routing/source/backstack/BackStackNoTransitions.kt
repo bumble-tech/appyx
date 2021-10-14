@@ -1,4 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
+/*
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -93,3 +94,4 @@ open class BackStackNoTransitions<T>(
         pop()
     }
 }
+*/

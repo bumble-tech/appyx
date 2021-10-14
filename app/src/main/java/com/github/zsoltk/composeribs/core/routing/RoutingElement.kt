@@ -4,5 +4,6 @@ data class RoutingElement<T, S>(
     val key: RoutingKey<T>,
     val fromState: S,
     val targetState: S,
-    val onScreen: Boolean
+    // TODO Should be calculated from targetState
+    val onScreen: Boolean,
 )

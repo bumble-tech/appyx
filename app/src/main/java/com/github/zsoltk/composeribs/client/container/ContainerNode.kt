@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.StateObject
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -86,7 +85,7 @@ class ContainerNode(
 //    }
 
     @Composable
-    override fun View(foo: StateObject) {
+    override fun View() {
         Box(
             modifier = Modifier.fillMaxSize()
         ) {
