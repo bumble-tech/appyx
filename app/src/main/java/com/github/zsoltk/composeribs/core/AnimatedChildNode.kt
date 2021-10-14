@@ -50,7 +50,6 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, 
         remember { mutableStateOf(emptyList()) }
     }
 
-// TODO FIX ME NULL POINTER MIGRATE TO FLOW
 @Composable
 fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S>?> =
     if (this != null) {
@@ -61,7 +60,6 @@ fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S
         remember { mutableStateOf(null) }
     }
 
-// TODO FIX ME NULL POINTER MIGRATE TO FLOW
 @Composable
 fun <R, S> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, S>?> =
     if (this != null) {
