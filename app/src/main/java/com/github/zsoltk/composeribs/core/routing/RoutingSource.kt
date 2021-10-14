@@ -1,12 +1,15 @@
 package com.github.zsoltk.composeribs.core.routing
 
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import io.reactivex.ObservableSource
 
 interface RoutingSource<T, S> {
 
-    val elements: SnapshotStateList<RoutingElement<T, S>>
+    // TODO replace rx
+    val elementsObservable: ObservableSource<List<RoutingElement<T, S>>>
 
-    val pendingRemoval: SnapshotStateList<RoutingElement<T, S>>
+//    val pendingRemoval: SnapshotStateList<RoutingElement<T, S>>
+
+    val all: List<RoutingElement<T, S>>
 
     val onScreen: List<RoutingElement<T, S>>
 
@@ -20,5 +23,5 @@ interface RoutingSource<T, S> {
 
     fun onRemoved(block: (RoutingKey<T>) -> Unit)
 
-    fun onTransitionFinished(key: RoutingKey<T>, targetState: S)
+    fun onTransitionFinished(key: RoutingKey<T>)
 }

@@ -3,164 +3,115 @@ package com.github.zsoltk.composeribs.core
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.key
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
+import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
-import com.github.zsoltk.composeribs.core.routing.SubtreeController
+import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
+import io.reactivex.Observable
+
+val LocalNode = compositionLocalOf<Node<*>?> { null }
+
 
 @Suppress("TransitionPropertiesLabel")
 abstract class Node<T>(
-    private val subtreeController: SubtreeController<T, *>? = null
+    val routingSource: RoutingSource<T, *>? = null,
 ) : Resolver<T>, Renderable {
 
-    data class ChildEntry<T>(
+    class ChildEntry<T>(
         val key: RoutingKey<T>,
-        val node: Node<*>? = null,
-        val onScreen: Boolean,
-    )
+        private val resolver: Resolver<T>
+    ) {
+        val node: Node<*> by lazy { resolver.resolve(key.routing) }
+    }
 
-    // TODO consider if it's possible to merge into ChildEntry (and if it's wise at all to do so)
-    data class ViewChildEntry<T>(
-        val key: RoutingKey<*>,
-        val composable: Node<T>,
-        val modifier: Modifier = Modifier, // TODO var
-    )
-
-    private val children = mutableMapOf<RoutingKey<T>, ChildEntry<T>>()
+    val children = mutableStateMapOf<RoutingKey<T>, ChildEntry<T>>()
     private val keys = mutableStateListOf<RoutingKey<T>>()
 
     init {
-        subtreeController?.routingSource?.onRemoved {
-            children.remove(it)
-            keys.remove(it)
+        routingSource?.let {
+            it.onRemoved { routingKey -> removeChild(routingKey) }
+            it.elementsObservable.let {
+                Observable.wrap(it).subscribe { elements ->
+                    val routingSourceKeys = elements.map { it.key }
+                    val localKeys = children.keys
+                    val newKeys = routingSourceKeys.minus(localKeys)
+                    val removedKeys = localKeys.minus(routingSourceKeys)
+                    newKeys.forEach { routingKey ->
+                        addChild(routingKey)
+                    }
+
+                    removedKeys.forEach { routingKey ->
+                        removeChild(routingKey)
+                    }
+                }
+            }
         }
+    }
+
+    private fun addChild(routingKey: RoutingKey<T>) {
+        val entry = ChildEntry(
+            key = routingKey,
+            resolver = this
+        )
+
+        children[routingKey] = entry
+        keys.add(routingKey)
+    }
+
+    private fun removeChild(routingKey: RoutingKey<T>) {
+        children.remove(routingKey)
+        keys.remove(routingKey)
+    }
+
+    fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry<T> {
+        if (!children.containsKey(routingKey)) {
+            addChild(routingKey)
+        }
+
+        return children[routingKey]!! // .node
     }
 
     @Composable
     fun Compose() {
-        subtreeController?.routingSource?.let {
-            BackHandler(it.canHandleBackPress()) {
-                it.onBackPressed()
+        CompositionLocalProvider(
+            LocalNode provides this
+        ) {
+            routingSource?.let {
+                BackHandler(it.canHandleBackPress()) {
+                    it.onBackPressed()
+                }
             }
-        }
 
-        subtreeController?.let {
-            ViewWithSubtree(it)
-        } ?: run {
-            View(emptyList())
+            View(children)
         }
     }
 
     @Composable
-    private fun ViewWithSubtree(
-        subtreeController: SubtreeController<T, *>
+    fun <S> ChildNode(
+        routingElement: RoutingElement<T, S>?,
+        transitionHandler: TransitionHandler<S> = JumpToEndTransitionHandler(),
+        decorator: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
+            Box(modifier = modifier) {
+                child()
+            }
+        }
     ) {
-        // FIXME
-//        LaunchedEffect(elements) {
-            subtreeController.manageOffScreen()
-            subtreeController.manageOnScreen()
-//        }
-
-        val composedViews = keys
-            .map { children[it]!! }
-            .filter { it.onScreen }
-            .map { childEntry ->
-                key(childEntry.key) {
-                    val node = childEntry.node
-                    requireNotNull(node) { "Node for on-screen entry should have been resolved" }
-
-                    val modifier = subtreeController.getModifierSnapshot(
-                        key = childEntry.key
-                    )
-
-                    // TODO optimise (only update modifier, don't create new object)
-                    ViewChildEntry(
-                        key = childEntry.key,
-                        composable = node,
-                        modifier =  modifier
-                    )
-                }
-            }
-
-        View(composedViews)
+        if (routingElement == null) return
+        AnimatedChildNode(
+            routingSource = routingSource as RoutingSource<T, S>, // TODO HOW TO FIX?
+            routingElement = routingElement,
+            childEntry = childOrCreate(routingElement.key),
+            transitionHandler = transitionHandler,
+            decorator = decorator,
+        )
     }
 
-    private fun SubtreeController<T, *>.manageOffScreen() {
-        routingSource.offScreen.forEach { element ->
-            val routingKey = element.key
-
-            children[routingKey]?.let { entry ->
-                if (entry.onScreen) {
-                    children[routingKey] = entry.copy(onScreen = false)
-                }
-            } ?: run {
-                val entry = ChildEntry(
-                    key = routingKey,
-                    onScreen = false
-                )
-                children[routingKey] = entry
-                keys.add(routingKey)
-            }
-        }
-    }
-
-    private fun SubtreeController<T, *>.manageOnScreen() {
-        routingSource.onScreen.forEach { element ->
-            val routingKey = element.key
-
-            children[routingKey]?.let { entry ->
-                if (!entry.onScreen) {
-                    children[routingKey] = entry.copy(
-                        onScreen = true,
-                        node = entry.node ?: resolve(routingKey.routing)
-                    )
-                }
-            } ?: run {
-                val entry = ChildEntry(
-                    key = routingKey,
-                    node = resolve(routingKey.routing),
-                    onScreen = true
-                )
-
-                children[routingKey] = entry
-                keys.add(routingKey)
-            }
-        }
-    }
-
-    // FIXME with Scope
-    var viewChildren: List<ViewChildEntry<*>> = listOf()
-
-    @Composable
-    fun View(children: List<ViewChildEntry<*>>) {
-        // FIXME with Scope
-        this.viewChildren = children
-        View()
-    }
-
-    @Composable
-    inline fun <reified V : T> placeholder(
-        modifier: (RoutingKey<T>) -> Modifier = { Modifier },
-        filter: (RoutingKey<out V>) -> Boolean = { true },
-    ) {
-        val filtered = remember(viewChildren, V::class.java) {
-            viewChildren.filter {
-                (it.key.routing is V || it.key.routing!!::class.java.isAssignableFrom(V::class.java)) &&
-                    filter.invoke(it.key as RoutingKey<V>)
-            }
-        }
-
-        filtered.forEach { child ->
-            key(child.key) {
-                val clientModifier = modifier(child.key as RoutingKey<T>)
-                Box(modifier = clientModifier.then(child.modifier)) {
-                    child.composable.Compose()
-                }
-            }
-        }
-    }
 }

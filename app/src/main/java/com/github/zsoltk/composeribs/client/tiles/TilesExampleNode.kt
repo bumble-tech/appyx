@@ -1,20 +1,18 @@
 package com.github.zsoltk.composeribs.client.tiles
 
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshots.StateObject
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
@@ -24,22 +22,19 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.routing.RoutingKey
-import com.github.zsoltk.composeribs.core.routing.SubtreeController
+import com.github.zsoltk.composeribs.core.childrenAsState
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
+import com.github.zsoltk.composeribs.core.visibleChildAsState
 
 class TilesExampleNode(
-    private val tiles: Tiles<Routing> = Tiles(initialElements = listOf(
-        Child1, Child2, Child3, Child4
-    ))
-) : Node<Routing>(
-    subtreeController = SubtreeController(
-        routingSource = tiles,
-        transitionHandler = TilesTransitionHandler(
-            transitionSpec = { tween(1500) }
+    private val tiles: Tiles<Routing> = Tiles(
+        initialElements = listOf(
+            Child1, Child2, Child3, Child4
         )
     )
+) : Node<Routing>(
+    routingSource = tiles,
 ) {
 
     sealed class Routing {
@@ -58,51 +53,59 @@ class TilesExampleNode(
         }
 
     @Composable
-    override fun View() {
-        val modifier: (RoutingKey<Routing>) -> Modifier = {
-            Modifier
-                .widthIn(max = 150.dp)
-                .heightIn(max = 250.dp)
-                .clickable { tiles.toggleSelection(it) }
-        }
+    override fun View(foo: StateObject) {
+        val handler = TilesTransitionHandler()
+        Column(modifier = Modifier.fillMaxSize()) {
 
-        Box(Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.6f)
-                    .padding(24.dp),
-            ) {
-                Text("Container")
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
+            val children by tiles.childrenAsState()
+
+            children.forEachIndexed { index, routingElement ->
+
+                if (index % 2 == 1) {
+                    Text(
+                        text = "AD BANNER GOES HERE",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                    )
+                }
+
+                ChildNode(
+                    routingElement = routingElement,
+                    transitionHandler = handler,
+                ) { modifier, child ->
+                    Box(modifier = modifier
                         .fillMaxWidth()
-                        .padding(top = 12.dp, bottom = 6.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-
-                    placeholder<Child1>(modifier)
-                    placeholder<Child2>(modifier)
-                }
-                Row(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .padding(top = 6.dp, bottom = 12.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    placeholder<Child3>(modifier)
-                    placeholder<Child4>(modifier)
-
-//                placeholder<Routing.Child>(modifier) { it.i % 4 == 3 }
-//                placeholder<Routing.Child>(modifier) { it.i % 4 == 2 }
+                        .height(100.dp)
+                        .clickable {
+                            tiles.toggleSelection(routingElement.key)
+                        }
+                    ) {
+                        child()
+                    }
                 }
 
-                Button(onClick = { tiles.removeSelected() } ) {
-                    Text("Remove selected")
-                }
             }
+
+            Button(
+                onClick = { tiles.removeSelected() },
+                modifier = Modifier.align(CenterHorizontally)
+            ) {
+                Text(text = "Remove")
+            }
+
+            Text(text = "Child1 separately", modifier = Modifier.align(CenterHorizontally))
+
+            val child1 by tiles.visibleChildAsState(Child1::class)
+            val c = child1
+
+            if (c != null) {
+                ChildNode(
+                    routingElement = c,
+                    transitionHandler = handler,
+                )
+            }
+
         }
     }
 }

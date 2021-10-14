@@ -5,31 +5,22 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.*
 import com.jakewharton.rxrelay2.BehaviorRelay
 import io.reactivex.ObservableSource
 import java.util.concurrent.atomic.AtomicInteger
 
-open class BackStack<T>(
+open class BackStackNoTransitions<T>(
     initialElement: T,
-) : RoutingSource<T, BackStack.TransitionState> {
+) : RoutingSource<T, TransitionState> {
 
     data class LocalRoutingKey<T>(
         override val routing: T,
         val uuid: Int,
     ) : RoutingKey<T>
 
-    enum class TransitionState {
-        CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED
-    }
-
     private val tmpCounter = AtomicInteger(1)
-
-    private lateinit var onRemoved: (RoutingKey<T>) -> Unit
-
-    override fun onRemoved(block: (RoutingKey<T>) -> Unit) {
-        onRemoved = block
-    }
 
     private val elements = mutableListOf(
         BackStackElement(
@@ -43,9 +34,6 @@ open class BackStack<T>(
     private val elementsRelay: BehaviorRelay<List<RoutingElement<T, TransitionState>>> = BehaviorRelay.createDefault(elements)
     override val elementsObservable: ObservableSource<List<RoutingElement<T, TransitionState>>> = elementsRelay
 
-    val pendingRemoval: SnapshotStateList<RoutingElement<T, TransitionState>> =
-        mutableStateListOf()
-
     val currentRouting: T
         get() = elements.last().key.routing
 
@@ -56,12 +44,13 @@ open class BackStack<T>(
         get() = elements.filter { !it.onScreen }
 
     override val onScreen: List<BackStackElement<T>>
-        get() = (elements + pendingRemoval).filter { it.onScreen }
+        get() = elements.filter { it.onScreen }
 
     fun push(element: T) {
         with(elements) {
             elements[lastIndex] = elements[lastIndex].copy(
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                onScreen = false
             )
             elements += BackStackElement(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
@@ -78,11 +67,6 @@ open class BackStack<T>(
         with(elements) {
             if (size > 1) {
                 val popped = elements.removeLast()
-                pendingRemoval.add(
-                    popped.copy(
-                        targetState = DESTROYED
-                    )
-                )
                 elements[lastIndex] = elements[lastIndex].copy(
                     fromState = STASHED_IN_BACK_STACK,
                     targetState = ON_SCREEN,
@@ -94,37 +78,12 @@ open class BackStack<T>(
         elementsRelay.accept(elements)
     }
 
+    // TODO cleanup interface, this shouldn't be here
     override fun onTransitionFinished(key: RoutingKey<T>) {
-        elements.toList().forEachIndexed { index, routingElement ->
-            if (routingElement.key == key) {
-                val targetState = routingElement.targetState
-                elements[index] = routingElement.copy(
-                    fromState = targetState
-                )
-
-                when (targetState) {
-                    STASHED_IN_BACK_STACK -> markOffScreen(key)
-                    DESTROYED -> remove(key)
-                    else -> {
-                    }
-                }
-            }
-        }
     }
 
-    private fun markOffScreen(key: RoutingKey<T>) {
-        elements.toList().forEachIndexed { index, routingElement ->
-            if (routingElement.key == key) {
-                elements[index] = routingElement.copy(
-                    onScreen = false
-                )
-            }
-        }
-    }
-
-    private fun remove(key: RoutingKey<T>) {
-        pendingRemoval.removeAll { it.key == key }
-        onRemoved(key)
+    // TODO cleanup interface, this shouldn't be here
+    override fun onRemoved(block: (RoutingKey<T>) -> Unit) {
     }
 
     override fun canHandleBackPress(): Boolean =
