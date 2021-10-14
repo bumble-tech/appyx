@@ -11,7 +11,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshots.StateObject
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -53,7 +52,7 @@ class TilesExampleNode(
         }
 
     @Composable
-    override fun View(foo: StateObject) {
+    override fun View() {
         val handler = TilesTransitionHandler()
         Column(modifier = Modifier.fillMaxSize()) {
 

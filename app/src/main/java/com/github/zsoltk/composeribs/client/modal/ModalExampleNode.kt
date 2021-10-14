@@ -2,7 +2,6 @@ package com.github.zsoltk.composeribs.client.modal
 
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.StateObject
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
@@ -35,7 +34,7 @@ class ModalExampleNode(
         }
 
     @Composable
-    override fun View(foo: StateObject) {
+    override fun View() {
         Text("Modal placeholder")
 //        Box(Modifier.fillMaxSize()) {
 //            Row(
@@ -85,4 +84,3 @@ class ModalExampleNode(
 fun ModalPreview() {
     ModalExampleNode().Compose()
 }
-

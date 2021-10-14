@@ -3,12 +3,8 @@ package com.github.zsoltk.composeribs.core.routing.source.tiles
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles.TransitionState.CREATED
-import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles.TransitionState.DESTROYED
-import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles.TransitionState.SELECTED
-import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles.TransitionState.STANDARD
-import com.jakewharton.rxrelay2.BehaviorRelay
-import io.reactivex.ObservableSource
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import java.util.concurrent.atomic.AtomicInteger
 
 open class Tiles<T>(
@@ -28,11 +24,7 @@ open class Tiles<T>(
 
     private lateinit var onRemoved: (RoutingKey<T>) -> Unit
 
-    override fun onRemoved(block: (RoutingKey<T>) -> Unit) {
-        onRemoved = block
-    }
-
-    private val elementsRelay: BehaviorRelay<List<RoutingElement<T, TransitionState>>> =
+/*    private val elementsRelay: BehaviorRelay<List<RoutingElement<T, TransitionState>>> =
         BehaviorRelay.createDefault(
             initialElements.map {
                 TilesElement(
@@ -44,29 +36,36 @@ open class Tiles<T>(
             }
         )
     override val elementsObservable: ObservableSource<List<RoutingElement<T, TransitionState>>> =
-        elementsRelay
+        elementsRelay*/
 
-    override val offScreen: List<TilesElement<T>> = emptyList()
+    override val all: StateFlow<List<RoutingElement<T, TransitionState>>> =
+        MutableStateFlow(emptyList())
 
-    override val onScreen: List<TilesElement<T>>
-        get() = elementsRelay.value!!.filter { it.onScreen }
+    override val offScreen: StateFlow<List<TilesElement<T>>> =
+        MutableStateFlow(emptyList())
 
-    override val all: List<RoutingElement<T, TransitionState>>
-        get() = elementsRelay.value!!
+    override val onScreen: StateFlow<List<TilesElement<T>>> =
+        MutableStateFlow(emptyList())
+
+    override val canHandleBackPress: StateFlow<Boolean> =
+        MutableStateFlow(false)
+
+    /*override val all: List<RoutingElement<T, TransitionState>>
+        get() = state.value*/
 
     fun add(element: T) {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!! + TilesElement(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
                 fromState = CREATED,
                 targetState = STANDARD,
                 onScreen = true
             )
-        )
+        )*/
     }
 
     fun select(key: RoutingKey<T>) {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!!.map {
                 if (it.key == key && it.targetState == STANDARD) {
                     it.copy(targetState = SELECTED)
@@ -74,11 +73,11 @@ open class Tiles<T>(
                     it
                 }
             }
-        )
+        )*/
     }
 
     fun deselect(key: RoutingKey<T>) {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!!.map {
                 if (it.key == key && it.targetState == SELECTED) {
                     it.copy(targetState = STANDARD)
@@ -86,11 +85,11 @@ open class Tiles<T>(
                     it
                 }
             }
-        )
+        )*/
     }
 
     fun deselectAll() {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!!.map {
                 if (it.targetState == SELECTED) {
                     it.copy(targetState = STANDARD)
@@ -98,11 +97,11 @@ open class Tiles<T>(
                     it
                 }
             }
-        )
+        )*/
     }
 
     fun toggleSelection(key: RoutingKey<T>) {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!!.map {
                 if (it.key == key) {
                     it.copy(targetState = if (it.targetState == SELECTED) STANDARD else SELECTED)
@@ -110,11 +109,11 @@ open class Tiles<T>(
                     it
                 }
             }
-        )
+        )*/
     }
 
     fun removeSelected() {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!!.map {
                 if (it.targetState == SELECTED) {
                     it.copy(targetState = DESTROYED)
@@ -122,11 +121,11 @@ open class Tiles<T>(
                     it
                 }
             }
-        )
+        )*/
     }
 
     fun destroy(key: RoutingKey<T>) {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!!.map {
                 if (it.key == key) {
                     it.copy(targetState = DESTROYED)
@@ -134,11 +133,11 @@ open class Tiles<T>(
                     it
                 }
             }
-        )
+        )*/
     }
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
-        elementsRelay.accept(
+        /*elementsRelay.accept(
             elementsRelay.value!!.mapNotNull {
                 if (it.key == key) {
                     if (it.targetState == DESTROYED) {
@@ -151,11 +150,8 @@ open class Tiles<T>(
                     it
                 }
             }
-        )
+        )*/
     }
-
-    override fun canHandleBackPress(): Boolean =
-        elementsRelay.value!!.any { it.targetState == SELECTED }
 
     override fun onBackPressed() {
         deselectAll()

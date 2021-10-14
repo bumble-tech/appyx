@@ -2,12 +2,14 @@ package com.github.zsoltk.composeribs.core
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
+import kotlinx.coroutines.flow.map
 
 
 @Composable
@@ -39,15 +41,15 @@ class SubtreeScope<T, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val rsOnScreen = this@SubtreeScope.routingSource.onScreen
+        val children by this@SubtreeScope.routingSource.all
+            .map { list ->
+                list
+                    .filter { it.key.routing is V && it.onScreen }
+                    .map { childOrCreate(it.key) }
+            }
+            .collectAsState(initial = emptyList())
 
-        val onScreen = remember(rsOnScreen) {
-            rsOnScreen
-                .filter { it.key.routing is V || it.key.routing!!::class.java.isAssignableFrom(V::class.java) }
-                .map { childOrCreate(it.key) }
-        }
-
-        onScreen.forEach { childEntry ->
+        children.forEach { childEntry ->
             key(childEntry.key) {
                 block(
                     child = { childEntry.node.Compose() }
@@ -64,15 +66,14 @@ class SubtreeScope<T, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val all = this@SubtreeScope.routingSource.all
-        val children =
-//            remember(all) { // TODO proper key for remember
-            all
-                .filter { it.key.routing is V || it.key.routing!!::class.java.isAssignableFrom(V::class.java) }
-                .map { childOrCreate(it.key) to it }
-//        }
+        val children by this@SubtreeScope.routingSource.all
+            .map {
+                it.filter { it.key.routing is V }
+                    .map { it to childOrCreate(it.key) }
+            }
+            .collectAsState(initial = emptyList())
 
-        children.forEach { (childEntry, routingElement) ->
+        children.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
                 block(
                     child = { childEntry.node.Compose() },
@@ -96,14 +97,15 @@ class SubtreeTransitionScope<T, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val onScreen =
-//            remember {
-            this@SubtreeTransitionScope.routingSource.onScreen
-                .filter { it.key.routing is V || it.key.routing!!::class.java.isAssignableFrom(V::class.java) }
-                .map { it to childOrCreate(it.key) }
-//        }
+        val children by this@SubtreeTransitionScope.routingSource.all
+            .map { list ->
+                list
+                    .filter { it.key.routing is V && it.onScreen }
+                    .map { it to childOrCreate(it.key) }
+            }
+            .collectAsState(initial = emptyList())
 
-        onScreen.forEach { (routingElement, childEntry) ->
+        children.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
                 val transitionScope =
                     transitionHandler.handle(
