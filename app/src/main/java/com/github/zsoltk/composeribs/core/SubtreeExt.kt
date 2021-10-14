@@ -41,10 +41,10 @@ class SubtreeScope<T, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by this@SubtreeScope.routingSource.all
+        val children by this@SubtreeScope.routingSource.onScreen
             .map { list ->
                 list
-                    .filter { it.key.routing is V && it.onScreen }
+                    .filter { it.key.routing is V }
                     .map { childOrCreate(it.key) }
             }
             .collectAsState(initial = emptyList())
@@ -97,10 +97,10 @@ class SubtreeTransitionScope<T, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by this@SubtreeTransitionScope.routingSource.all
+        val children by this@SubtreeTransitionScope.routingSource.onScreen
             .map { list ->
                 list
-                    .filter { it.key.routing is V && it.onScreen }
+                    .filter { it.key.routing is V }
                     .map { it to childOrCreate(it.key) }
             }
             .collectAsState(initial = emptyList())
