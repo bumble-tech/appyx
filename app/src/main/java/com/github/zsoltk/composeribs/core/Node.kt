@@ -4,10 +4,14 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
@@ -16,6 +20,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -40,6 +45,8 @@ abstract class Node<T>(
 
     private val _children = MutableStateFlow(emptyMap<RoutingKey<T>, ChildEntry<T>>())
     protected val children: StateFlow<Map<RoutingKey<T>, ChildEntry<T>>> = _children.asStateFlow()
+
+    private var transitionsInBackgroundJob: Job? = null
 
     init {
         routingSource?.let { source ->
@@ -92,7 +99,55 @@ abstract class Node<T>(
                 }
             }
 
+            TransitionsInBackgroundManager()
+
             View()
+        }
+    }
+
+    /**
+     * [RoutingSource.onTransitionFinished] is invoked by Composable function when animation is finished.
+     * When application is in background, recomposition is paused, so we never invoke the callback.
+     * Because we do not care about animations in background and still want to have
+     * business-logic-driven routing in background, we need to instantly invoke the callback.
+     */
+    @Composable
+    private fun TransitionsInBackgroundManager() {
+        val lifecycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifecycleOwner) {
+            val observer = object : DefaultLifecycleObserver {
+                override fun onStart(owner: LifecycleOwner) {
+                    manageTransitionsInForeground()
+                }
+
+                override fun onStop(owner: LifecycleOwner) {
+                    manageTransitionsInBackground()
+                }
+            }
+            lifecycleOwner.lifecycle.addObserver(observer)
+            onDispose {
+                lifecycleOwner.lifecycle.removeObserver(observer)
+                manageTransitionsInBackground()
+            }
+        }
+    }
+
+    private fun manageTransitionsInBackground() {
+        if (transitionsInBackgroundJob != null || routingSource == null) return
+        // TODO Close context when destroyed (wait for lifecycle), memory leak now
+        transitionsInBackgroundJob = GlobalScope.launch {
+            routingSource.all.collect { elements ->
+                elements
+                    .filter { it.fromState != it.targetState }
+                    .forEach { routingSource.onTransitionFinished(it.key) }
+            }
+        }
+    }
+
+    private fun manageTransitionsInForeground() {
+        transitionsInBackgroundJob?.run {
+            cancel()
+            transitionsInBackgroundJob = null
         }
     }
 
