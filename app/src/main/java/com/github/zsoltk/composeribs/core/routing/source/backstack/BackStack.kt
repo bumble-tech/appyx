@@ -37,7 +37,14 @@ class BackStack<T : Parcelable>(
         object Destroyed : TransitionState()
     }
 
-    private val tmpCounter = AtomicInteger(1)
+    // TODO Replace with UUID for restoration simplicity?
+    private val tmpCounter = AtomicInteger(
+        savedStateMap
+            ?.restoreHistory()
+            ?.maxOf { (it.key as LocalRoutingKey<*>).uuid }
+            ?.inc()
+            ?: 1
+    )
 
     private val state = MutableStateFlow(
         savedStateMap?.restoreHistory() ?: listOf(
