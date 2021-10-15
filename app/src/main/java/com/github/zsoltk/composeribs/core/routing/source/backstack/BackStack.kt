@@ -45,7 +45,7 @@ open class BackStack<T>(
         state.unsuspendedMap { list -> list.filter { !it.onScreen } }
 
     override val onScreen: StateFlow<List<BackStackElement<T>>> =
-        state.unsuspendedMap { list -> list.filter { !it.onScreen } }
+        state.unsuspendedMap { list -> list.filter { it.onScreen } }
 
     override val canHandleBackPress: StateFlow<Boolean> =
         state.unsuspendedMap { list -> list.count { it.targetState == STASHED_IN_BACK_STACK } > 0 }
