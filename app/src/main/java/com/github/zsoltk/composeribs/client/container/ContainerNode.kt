@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,6 +38,8 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFade
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ContainerNode(
     private val backStack: BackStack<Routing> = BackStack(initialElement = Picker),
@@ -137,6 +140,17 @@ class ContainerNode(
                 Spacer(modifier = Modifier.size(24.dp))
                 Button(onClick = { backStack.push(Routing.ModalExample) }) {
                     Text(text = "Modal example")
+                }
+                Spacer(modifier = Modifier.size(24.dp))
+                val scope = rememberCoroutineScope()
+                Button(onClick = {
+                    scope.launch {
+                        delay(3_000)
+                        backStack.push(Routing.BackStackExample)
+                        backStack.push(Routing.TilesExample)
+                    }
+                }) {
+                    Text(text = "Trigger double navigation in 3 seconds")
                 }
             }
         }
