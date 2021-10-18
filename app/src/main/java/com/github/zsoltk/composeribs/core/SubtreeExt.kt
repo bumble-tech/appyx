@@ -6,11 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import kotlinx.coroutines.flow.map
+import kotlin.reflect.KClass
 
 
 @Composable
@@ -92,6 +94,14 @@ class SubtreeTransitionScope<T : Parcelable, S : Parcelable>(
 
     @Composable
     inline fun <reified V : T> Node<T>.children(
+        noinline block: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
+    ) {
+        children(V::class, block)
+    }
+
+    @Composable
+    fun Node<T>.children(
+        clazz: KClass<out T>,
         block: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
     ) {
 //        // TODO consider
@@ -101,27 +111,30 @@ class SubtreeTransitionScope<T : Parcelable, S : Parcelable>(
         val children by this@SubtreeTransitionScope.routingSource.onScreen
             .map { list ->
                 list
-                    .filter { it.key.routing is V }
+                    .filter { clazz.isInstance(it.key.routing) }
                     .map { it to childOrCreate(it.key) }
             }
             .collectAsState(initial = emptyList())
 
+        val saveableStateHolder = rememberSaveableStateHolder()
         children.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
-                val transitionScope =
-                    transitionHandler.handle(
-                        fromState = routingElement.fromState,
-                        toState = routingElement.targetState,
-                        onTransitionFinished = {
-                            this@SubtreeTransitionScope.routingSource.onTransitionFinished(
-                                childEntry.key
-                            )
-                        })
+                saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
+                    val transitionScope =
+                        transitionHandler.handle(
+                            fromState = routingElement.fromState,
+                            toState = routingElement.targetState,
+                            onTransitionFinished = {
+                                this@SubtreeTransitionScope.routingSource.onTransitionFinished(
+                                    childEntry.key
+                                )
+                            })
 
-                transitionScope.block(
-                    transitionModifier = transitionScope.transitionModifier,
-                    child = { childEntry.node.Compose() },
-                )
+                    transitionScope.block(
+                        transitionModifier = transitionScope.transitionModifier,
+                        child = { childEntry.node.Compose() },
+                    )
+                }
             }
         }
     }
