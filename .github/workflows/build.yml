@@ -1,0 +1,14 @@
+name: Build
+on: [ pull_request, push ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v2
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+          cache: 'gradle'
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew compileDebugKotlin
