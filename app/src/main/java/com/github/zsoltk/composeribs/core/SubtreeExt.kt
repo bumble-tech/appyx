@@ -23,7 +23,7 @@ fun <T, S> Subtree(
 }
 
 @Composable
-fun <T, S> Subtree(
+fun <T: Any, S> Subtree(
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
@@ -86,7 +86,7 @@ class SubtreeScope<T, S>(
     }
 }
 
-class SubtreeTransitionScope<T, S>(
+class SubtreeTransitionScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>,
     val transitionHandler: TransitionHandler<S>,
 ) {
