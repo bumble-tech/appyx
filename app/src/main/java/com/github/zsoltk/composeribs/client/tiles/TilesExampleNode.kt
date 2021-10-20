@@ -21,34 +21,34 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.childrenAsState
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 import com.github.zsoltk.composeribs.core.visibleChildAsState
 
 class TilesExampleNode(
+    savedStateMap: SavedStateMap?,
     private val tiles: Tiles<Routing> = Tiles(
         initialElements = listOf(
             Child1, Child2, Child3, Child4
         )
-    )
+    ),
 ) : Node<Routing>(
     routingSource = tiles,
+    savedStateMap = savedStateMap,
 ) {
 
-    sealed class Routing {
-        object Child1 : Routing()
-        object Child2 : Routing()
-        object Child3 : Routing()
-        object Child4 : Routing()
+    enum class Routing {
+        Child1, Child2, Child3, Child4,
     }
 
-    override fun resolve(routing: Routing): Node<*> =
+    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
         when (routing) {
-            Child1 -> ChildNode(1)
-            Child2 -> ChildNode(2)
-            Child3 -> ChildNode(3)
-            Child4 -> ChildNode(4)
+            Child1 -> ChildNode(1, savedStateMap)
+            Child2 -> ChildNode(2, savedStateMap)
+            Child3 -> ChildNode(3, savedStateMap)
+            Child4 -> ChildNode(4, savedStateMap)
         }
 
     @Composable
@@ -69,7 +69,7 @@ class TilesExampleNode(
                     )
                 }
 
-                ChildNode(
+                AnimatedChildNode(
                     routingElement = routingElement,
                     transitionHandler = handler,
                 ) { modifier, child ->
@@ -99,7 +99,7 @@ class TilesExampleNode(
             val c = child1
 
             if (c != null) {
-                ChildNode(
+                AnimatedChildNode(
                     routingElement = c,
                     transitionHandler = handler,
                 )

@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing
 
-interface RoutingKey<T> {
-
-    val routing: T
+interface RoutingKey<Key> {
+    val routing: Key
 }

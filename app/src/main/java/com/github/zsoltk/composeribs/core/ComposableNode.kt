@@ -4,7 +4,9 @@ import androidx.compose.runtime.Composable
 
 open class ComposableNode(
     private val composable: @Composable () -> Unit
-) : LeafNode() {
+) : LeafNode(
+    savedStateMap = null,
+) {
 
     @Composable
     override fun View() {
