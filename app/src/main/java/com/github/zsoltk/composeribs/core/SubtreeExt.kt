@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core
 
-import android.os.Parcelable
 import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -16,7 +15,7 @@ import kotlin.reflect.KClass
 
 
 @Composable
-fun <T : Parcelable, S : Parcelable> Subtree(
+fun <T, S> Subtree(
     routingSource: RoutingSource<T, S>,
     block: @Composable SubtreeScope<T, S>.() -> Unit
 ) {
@@ -24,7 +23,7 @@ fun <T : Parcelable, S : Parcelable> Subtree(
 }
 
 @Composable
-fun <T : Parcelable, S : Parcelable> Subtree(
+fun <T, S> Subtree(
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
@@ -32,7 +31,7 @@ fun <T : Parcelable, S : Parcelable> Subtree(
     block(SubtreeTransitionScope(routingSource, transitionHandler))
 }
 
-class SubtreeScope<T : Parcelable, S : Parcelable>(
+class SubtreeScope<T, S>(
     val routingSource: RoutingSource<T, S>
 ) {
 
@@ -87,7 +86,7 @@ class SubtreeScope<T : Parcelable, S : Parcelable>(
     }
 }
 
-class SubtreeTransitionScope<T : Parcelable, S : Parcelable>(
+class SubtreeTransitionScope<T, S>(
     val routingSource: RoutingSource<T, S>,
     val transitionHandler: TransitionHandler<S>,
 ) {

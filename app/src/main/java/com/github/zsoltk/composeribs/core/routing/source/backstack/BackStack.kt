@@ -10,31 +10,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import java.util.concurrent.atomic.AtomicInteger
 
-class BackStack<T : Parcelable>(
+class BackStack<T>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
 ) : RoutingSource<T, BackStack.TransitionState> {
 
     @Parcelize
-    data class LocalRoutingKey<T : Parcelable>(
-        override val routing: T,
+    data class LocalRoutingKey<T>(
+        override val routing: @RawValue T,
         val uuid: Int,
-    ) : RoutingKey<T>
+    ) : RoutingKey<T>, Parcelable
 
-    sealed class TransitionState : Parcelable {
-        @Parcelize
-        object Created : TransitionState()
-
-        @Parcelize
-        object OnScreen : TransitionState()
-
-        @Parcelize
-        object StashedInBackstack : TransitionState()
-
-        @Parcelize
-        object Destroyed : TransitionState()
+    enum class TransitionState {
+        CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
     // TODO Replace with UUID for restoration simplicity?
@@ -50,8 +41,8 @@ class BackStack<T : Parcelable>(
         savedStateMap?.restoreHistory() ?: listOf(
             BackStackElement(
                 key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
-                fromState = TransitionState.OnScreen,
-                targetState = TransitionState.OnScreen,
+                fromState = TransitionState.ON_SCREEN,
+                targetState = TransitionState.ON_SCREEN,
                 onScreen = true,
             )
         )
@@ -67,20 +58,20 @@ class BackStack<T : Parcelable>(
         state.unsuspendedMap { list -> list.filter { it.onScreen } }
 
     override val canHandleBackPress: StateFlow<Boolean> =
-        state.unsuspendedMap { list -> list.count { it.targetState == TransitionState.StashedInBackstack } > 0 }
+        state.unsuspendedMap { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
 
     fun push(element: T) {
         state.update { list ->
             list.map {
-                if (it.targetState == TransitionState.OnScreen) {
-                    it.copy(targetState = TransitionState.StashedInBackstack)
+                if (it.targetState == TransitionState.ON_SCREEN) {
+                    it.copy(targetState = TransitionState.STASHED_IN_BACK_STACK)
                 } else {
                     it
                 }
             } + BackStackElement(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
-                fromState = TransitionState.Created,
-                targetState = TransitionState.OnScreen,
+                fromState = TransitionState.CREATED,
+                targetState = TransitionState.ON_SCREEN,
                 onScreen = true
             )
         }
@@ -88,16 +79,16 @@ class BackStack<T : Parcelable>(
 
     fun pop() {
         state.update { list ->
-            val destroyIndex = list.indexOfLast { it.targetState == TransitionState.OnScreen }
+            val destroyIndex = list.indexOfLast { it.targetState == TransitionState.ON_SCREEN }
             val unStashIndex =
-                list.indexOfLast { it.targetState == TransitionState.StashedInBackstack }
+                list.indexOfLast { it.targetState == TransitionState.STASHED_IN_BACK_STACK }
             require(destroyIndex != -1) { "Nothing to destroy, state=$list" }
             require(unStashIndex != -1) { "Nothing to remove from stash, state=$list" }
             list.mapIndexed { index, element ->
                 when (index) {
-                    destroyIndex -> element.copy(targetState = TransitionState.Destroyed)
+                    destroyIndex -> element.copy(targetState = TransitionState.DESTROYED)
                     unStashIndex -> element.copy(
-                        targetState = TransitionState.OnScreen,
+                        targetState = TransitionState.ON_SCREEN,
                         onScreen = true
                     )
                     else -> element
@@ -111,12 +102,12 @@ class BackStack<T : Parcelable>(
             list.mapNotNull {
                 if (it.key == key) {
                     when (it.targetState) {
-                        TransitionState.Destroyed ->
+                        TransitionState.DESTROYED ->
                             null
-                        TransitionState.StashedInBackstack ->
+                        TransitionState.STASHED_IN_BACK_STACK ->
                             it.copy(fromState = it.targetState, onScreen = false)
-                        TransitionState.Created,
-                        TransitionState.OnScreen ->
+                        TransitionState.CREATED,
+                        TransitionState.ON_SCREEN ->
                             it.copy(fromState = it.targetState, onScreen = true)
                     }
                 } else {
@@ -133,7 +124,7 @@ class BackStack<T : Parcelable>(
     override fun saveInstanceState(): Any =
         state.value.mapNotNull {
             // Sanitize outputs, removing all transitions
-            if (it.targetState != TransitionState.Destroyed) {
+            if (it.targetState != TransitionState.DESTROYED) {
                 it.copy(fromState = it.targetState)
             } else {
                 null

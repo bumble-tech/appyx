@@ -19,10 +19,10 @@ object ContainerTransitionHandlerColour : UpdateTransitionHandler<BackStack.Tran
             transitionSpec = { tween(3500) },
             targetValueByState = {
                 when (it) {
-                    BackStack.TransitionState.Created -> Color.Blue
-                    BackStack.TransitionState.OnScreen -> Color.Green
-                    BackStack.TransitionState.StashedInBackstack -> Color.LightGray
-                    BackStack.TransitionState.Destroyed -> Color.Red
+                    BackStack.TransitionState.CREATED -> Color.Blue
+                    BackStack.TransitionState.ON_SCREEN -> Color.Green
+                    BackStack.TransitionState.STASHED_IN_BACK_STACK -> Color.LightGray
+                    BackStack.TransitionState.DESTROYED -> Color.Red
                 }
             })
 
