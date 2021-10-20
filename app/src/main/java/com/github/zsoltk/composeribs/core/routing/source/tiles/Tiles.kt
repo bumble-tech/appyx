@@ -10,30 +10,21 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import java.util.concurrent.atomic.AtomicInteger
 
-class Tiles<T : Parcelable>(
+class Tiles<T>(
     initialElements: List<T>,
 ) : RoutingSource<T, Tiles.TransitionState> {
 
     @Parcelize
-    data class LocalRoutingKey<T : Parcelable>(
-        override val routing: T,
+    data class LocalRoutingKey<T>(
+        override val routing: @RawValue T,
         val uuid: Int,
-    ) : RoutingKey<T>
+    ) : RoutingKey<T>, Parcelable
 
-    sealed class TransitionState : Parcelable {
-        @Parcelize
-        object Created : TransitionState()
-
-        @Parcelize
-        object Standard : TransitionState()
-
-        @Parcelize
-        object Selected : TransitionState()
-
-        @Parcelize
-        object Destroyed : TransitionState()
+    enum class TransitionState {
+        CREATED, STANDARD, SELECTED, DESTROYED
     }
 
     private val tmpCounter = AtomicInteger(1)
@@ -42,8 +33,8 @@ class Tiles<T : Parcelable>(
         initialElements.map {
             TilesElement(
                 key = LocalRoutingKey(it, tmpCounter.incrementAndGet()),
-                fromState = TransitionState.Created,
-                targetState = TransitionState.Standard,
+                fromState = TransitionState.CREATED,
+                targetState = TransitionState.STANDARD,
                 onScreen = true
             )
         }
@@ -59,14 +50,14 @@ class Tiles<T : Parcelable>(
         get() = all
 
     override val canHandleBackPress: StateFlow<Boolean> =
-        state.unsuspendedMap { list -> list.any { it.targetState == TransitionState.Selected } }
+        state.unsuspendedMap { list -> list.any { it.targetState == TransitionState.SELECTED } }
 
     fun add(element: T) {
         state.update { list ->
             list + TilesElement(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
-                fromState = TransitionState.Created,
-                targetState = TransitionState.Standard,
+                fromState = TransitionState.CREATED,
+                targetState = TransitionState.STANDARD,
                 onScreen = true
             )
         }
@@ -75,8 +66,8 @@ class Tiles<T : Parcelable>(
     fun select(key: RoutingKey<T>) {
         state.update { list ->
             list.map {
-                if (it.key == key && it.targetState == TransitionState.Standard) {
-                    it.copy(targetState = TransitionState.Selected)
+                if (it.key == key && it.targetState == TransitionState.STANDARD) {
+                    it.copy(targetState = TransitionState.SELECTED)
                 } else {
                     it
                 }
@@ -87,8 +78,8 @@ class Tiles<T : Parcelable>(
     fun deselect(key: RoutingKey<T>) {
         state.update { list ->
             list.map {
-                if (it.key == key && it.targetState == TransitionState.Selected) {
-                    it.copy(targetState = TransitionState.Standard)
+                if (it.key == key && it.targetState == TransitionState.SELECTED) {
+                    it.copy(targetState = TransitionState.STANDARD)
                 } else {
                     it
                 }
@@ -99,8 +90,8 @@ class Tiles<T : Parcelable>(
     fun deselectAll() {
         state.update { list ->
             list.map {
-                if (it.targetState == TransitionState.Selected) {
-                    it.copy(targetState = TransitionState.Standard)
+                if (it.targetState == TransitionState.SELECTED) {
+                    it.copy(targetState = TransitionState.STANDARD)
                 } else {
                     it
                 }
@@ -113,8 +104,8 @@ class Tiles<T : Parcelable>(
             list.map {
                 if (it.key == key) {
                     when (it.targetState) {
-                        TransitionState.Selected -> it.copy(targetState = TransitionState.Standard)
-                        TransitionState.Standard -> it.copy(targetState = TransitionState.Selected)
+                        TransitionState.SELECTED -> it.copy(targetState = TransitionState.STANDARD)
+                        TransitionState.STANDARD -> it.copy(targetState = TransitionState.SELECTED)
                         else -> it
                     }
                 } else {
@@ -127,8 +118,8 @@ class Tiles<T : Parcelable>(
     fun removeSelected() {
         state.update { list ->
             list.map {
-                if (it.targetState == TransitionState.Selected) {
-                    it.copy(targetState = TransitionState.Destroyed)
+                if (it.targetState == TransitionState.SELECTED) {
+                    it.copy(targetState = TransitionState.DESTROYED)
                 } else {
                     it
                 }
@@ -140,7 +131,7 @@ class Tiles<T : Parcelable>(
         state.update { list ->
             list.map {
                 if (it.key == key) {
-                    it.copy(targetState = TransitionState.Destroyed)
+                    it.copy(targetState = TransitionState.DESTROYED)
                 } else {
                     it
                 }
@@ -152,7 +143,7 @@ class Tiles<T : Parcelable>(
         state.update { list ->
             list.mapNotNull {
                 if (it.key == key) {
-                    if (it.targetState == TransitionState.Destroyed) {
+                    if (it.targetState == TransitionState.DESTROYED) {
                         null
                     } else {
                         it.copy(fromState = it.targetState)

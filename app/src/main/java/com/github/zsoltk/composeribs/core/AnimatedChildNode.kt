@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core
 
-import android.os.Parcelable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -17,7 +16,7 @@ import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
-fun <Routing : Parcelable, State : Parcelable> AnimatedChildNode(
+fun <Routing, State> AnimatedChildNode(
     routingSource: RoutingSource<Routing, State>,
     routingElement: RoutingElement<Routing, State>,
     childEntry: Node.ChildEntry<Routing>,
@@ -44,7 +43,7 @@ fun <Routing : Parcelable, State : Parcelable> AnimatedChildNode(
 }
 
 @Composable
-fun <R : Parcelable, S : Parcelable> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, S>>> =
+fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, S>>> =
     if (this != null) {
         all.collectAsState()
     } else {
@@ -52,7 +51,7 @@ fun <R : Parcelable, S : Parcelable> RoutingSource<R, S>?.childrenAsState(): Sta
     }
 
 @Composable
-fun <R : Parcelable, S : Parcelable> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S>?> =
+fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S>?> =
     if (this != null) {
         all
             .map { it.findLast { it.onScreen } }
@@ -62,7 +61,7 @@ fun <R : Parcelable, S : Parcelable> RoutingSource<R, S>?.visibleChildAsState():
     }
 
 @Composable
-fun <R : Parcelable, S : Parcelable> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, S>?> =
+fun <R, S> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, S>?> =
     if (this != null) {
         all
             .map { it.findLast { routingClazz.isInstance(it.key.routing) && it.onScreen } }

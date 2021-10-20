@@ -3,7 +3,7 @@ package com.github.zsoltk.composeribs.core.routing
 import android.os.Parcelable
 import kotlinx.coroutines.flow.StateFlow
 
-interface RoutingSource<Key : Parcelable, State : Parcelable> {
+interface RoutingSource<Key, State> {
 
     val all: StateFlow<List<RoutingElement<Key, State>>>
 

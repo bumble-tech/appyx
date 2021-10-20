@@ -109,10 +109,10 @@ class ContainerNode(
                 children<Routing> { transitionModifier, child ->
                     val background = transition.animateColor(label = "color") { state ->
                         when (state) {
-                            TransitionState.Created -> Color.Yellow
-                            TransitionState.OnScreen -> Color.Red
-                            TransitionState.StashedInBackstack -> Color.Blue
-                            TransitionState.Destroyed -> Color.Black
+                            TransitionState.CREATED -> Color.Yellow
+                            TransitionState.ON_SCREEN -> Color.Red
+                            TransitionState.STASHED_IN_BACK_STACK -> Color.Blue
+                            TransitionState.DESTROYED -> Color.Black
                         }
 
                     }

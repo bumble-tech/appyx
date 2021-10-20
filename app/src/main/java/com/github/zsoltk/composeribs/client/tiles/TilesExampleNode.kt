@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.client.tiles
 
-import android.os.Parcelable
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +26,6 @@ import com.github.zsoltk.composeribs.core.childrenAsState
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 import com.github.zsoltk.composeribs.core.visibleChildAsState
-import kotlinx.parcelize.Parcelize
 
 class TilesExampleNode(
     savedStateMap: SavedStateMap?,
@@ -41,18 +39,8 @@ class TilesExampleNode(
     savedStateMap = savedStateMap,
 ) {
 
-    sealed class Routing : Parcelable {
-        @Parcelize
-        object Child1 : Routing()
-
-        @Parcelize
-        object Child2 : Routing()
-
-        @Parcelize
-        object Child3 : Routing()
-
-        @Parcelize
-        object Child4 : Routing()
+    enum class Routing {
+        Child1, Child2, Child3, Child4,
     }
 
     override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =

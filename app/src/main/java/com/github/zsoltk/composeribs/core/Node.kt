@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core
 
-import android.os.Parcelable
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.compose.foundation.layout.Box
@@ -35,7 +34,7 @@ import kotlinx.coroutines.launch
 val LocalNode = compositionLocalOf<Node<*>?> { null }
 
 @Suppress("TransitionPropertiesLabel")
-abstract class Node<T : Parcelable>(
+abstract class Node<T>(
     val routingSource: RoutingSource<T, *>? = null,
     savedStateMap: SavedStateMap?,
 ) : Resolver<T>, Renderable {
@@ -165,7 +164,7 @@ abstract class Node<T : Parcelable>(
     }
 
     @Composable
-    fun <S : Parcelable> AnimatedChildNode(
+    fun <S> AnimatedChildNode(
         routingElement: RoutingElement<T, S>?,
         transitionHandler: TransitionHandler<S> = JumpToEndTransitionHandler(),
         decorator: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->

@@ -23,10 +23,10 @@ class TilesTransitionHandler(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    Tiles.TransitionState.Created -> 0f
-                    Tiles.TransitionState.Standard -> 0.75f
-                    Tiles.TransitionState.Selected -> 1.0f
-                    Tiles.TransitionState.Destroyed -> 0f
+                    Tiles.TransitionState.CREATED -> 0f
+                    Tiles.TransitionState.STANDARD -> 0.75f
+                    Tiles.TransitionState.SELECTED -> 1.0f
+                    Tiles.TransitionState.DESTROYED -> 0f
                 }
             })
 
@@ -34,7 +34,7 @@ class TilesTransitionHandler(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    Tiles.TransitionState.Destroyed -> 1f
+                    Tiles.TransitionState.DESTROYED -> 1f
                     else -> 0f
                 }
             })

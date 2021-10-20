@@ -24,10 +24,10 @@ class BackStackSlider(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    BackStack.TransitionState.Created -> Offset(1.0f * width, 0f)
-                    BackStack.TransitionState.OnScreen -> Offset(0f, 0f)
-                    BackStack.TransitionState.StashedInBackstack -> Offset(-1.0f * width, 0f)
-                    BackStack.TransitionState.Destroyed -> Offset(1.0f * width, 0f)
+                    BackStack.TransitionState.CREATED -> Offset(1.0f * width, 0f)
+                    BackStack.TransitionState.ON_SCREEN -> Offset(0f, 0f)
+                    BackStack.TransitionState.STASHED_IN_BACK_STACK -> Offset(-1.0f * width, 0f)
+                    BackStack.TransitionState.DESTROYED -> Offset(1.0f * width, 0f)
                 }
             })
 
