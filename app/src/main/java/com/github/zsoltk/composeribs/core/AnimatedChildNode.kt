@@ -8,6 +8,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
@@ -19,7 +20,7 @@ import kotlin.reflect.KClass
 fun <Routing, State> AnimatedChildNode(
     routingSource: RoutingSource<Routing, State>,
     routingElement: RoutingElement<Routing, State>,
-    childEntry: Node.ChildEntry<Routing>,
+    childEntry: ChildEntry.Eager<Routing>,
     transitionHandler: TransitionHandler<State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
         Box(modifier = modifier) {

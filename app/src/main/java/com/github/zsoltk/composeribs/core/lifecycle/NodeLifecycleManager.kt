@@ -3,8 +3,8 @@ package com.github.zsoltk.composeribs.core.lifecycle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.routing.RoutingKey
+import com.github.zsoltk.composeribs.core.children.ChildEntry
+import com.github.zsoltk.composeribs.core.children.ChildEntryMap
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.scan
@@ -37,15 +37,20 @@ internal class NodeLifecycleManager<Routing>(
         lifecycle.coroutineScope.launch {
             val lifecycleState = lifecycle.changesAsFlow()
 
+            // observe both routingSource and children
             combine(
                 lifecycleState,
+                routingSource.all,
                 host.children(),
-                ::Pair
-            ).collect { (state, children) ->
-                children.values.forEach { child ->
-                    val maxLifecycle = routingSource.maxLifecycleState(child.key)
+                ::Triple
+            ).collect { (state, elements, children) ->
+                elements.forEach { element ->
+                    val maxLifecycle = routingSource.maxLifecycleState(element.key)
                     val current = minOf(state, maxLifecycle)
-                    child.lazyNode?.changeState(current)
+                    when (val child = children[element.key]) {
+                        is ChildEntry.Eager -> child.node.changeState(current)
+                        is ChildEntry.Lazy -> Unit
+                    }
                 }
             }
         }
@@ -62,7 +67,10 @@ internal class NodeLifecycleManager<Routing>(
                     if (scan.prev != null && scan.current != null) {
                         val removedKeys = scan.prev.keys - scan.current.keys
                         removedKeys.forEach { key ->
-                            scan.prev[key]?.lazyNode?.changeState(Lifecycle.State.DESTROYED)
+                            val removedChild = scan.prev[key]
+                            if (removedChild is ChildEntry.Eager) {
+                                removedChild.node.changeState(Lifecycle.State.DESTROYED)
+                            }
                         }
                     }
                 }
@@ -76,13 +84,17 @@ internal class NodeLifecycleManager<Routing>(
         if (state == Lifecycle.State.DESTROYED) {
             // lifecycle.coroutineScope is closed at this moment
             // need to clean up children as they are out of sync now
-            host.children().value.values.forEach { it.lazyNode?.changeState(state) }
+            host.children().value.values.forEach { child ->
+                if (child is ChildEntry.Eager) {
+                    child.node.changeState(Lifecycle.State.DESTROYED)
+                }
+            }
         }
     }
 
     private class ScanResult<Routing>(
-        val prev: Map<RoutingKey<Routing>, Node.ChildEntry<Routing>>? = null,
-        val current: Map<RoutingKey<Routing>, Node.ChildEntry<Routing>>? = null,
+        val prev: ChildEntryMap<Routing>? = null,
+        val current: ChildEntryMap<Routing>? = null,
     )
 
 }

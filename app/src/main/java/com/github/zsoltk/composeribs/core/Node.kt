@@ -15,6 +15,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
+import com.github.zsoltk.composeribs.core.children.ChildEntry
+import com.github.zsoltk.composeribs.core.children.ChildEntryMap
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManagerHost
@@ -31,6 +33,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 
 val LocalNode = compositionLocalOf<Node<*>?> { null }
@@ -38,45 +41,11 @@ val LocalNode = compositionLocalOf<Node<*>?> { null }
 abstract class Node<T>(
     val routingSource: RoutingSource<T, *>? = null,
     savedStateMap: SavedStateMap?,
-    private val childMode: ChildMode = ChildMode.LAZY,
+    private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
 ) : Resolver<T>, Renderable, LifecycleOwner {
 
-    // custom equals/hashCode for MutableStateFlow and equality checks
-    class ChildEntry<T>(
-        val key: RoutingKey<T>,
-        private val resolver: Resolver<T>,
-        childMode: ChildMode,
-        private var savedStateMap: SavedStateMap? = null,
-    ) {
-        var lazyNode: Node<*>? = null
-            private set
-        val node: Node<*>
-            get() {
-                createNode()
-                return requireNotNull(lazyNode) { "Should be already created" }
-            }
-
-        init {
-            if (childMode == ChildMode.EAGER) createNode()
-        }
-
-        private fun createNode() {
-            if (lazyNode == null) {
-                lazyNode = resolver.resolve(key.routing, savedStateMap)
-                savedStateMap = null
-            }
-        }
-
-        override fun equals(other: Any?): Boolean =
-            (other as? ChildEntry<*>)?.let { entry -> entry.key == key } ?: false
-
-        override fun hashCode(): Int =
-            key.hashCode()
-
-    }
-
     private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
-    protected val children: StateFlow<Map<RoutingKey<T>, ChildEntry<T>>> = _children.asStateFlow()
+    protected val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
     private val nodeLifecycleManager = NodeLifecycleManager(NodeLifecycleManagerHostImpl())
     private var transitionsInBackgroundJob: Job? = null
 
@@ -99,9 +68,8 @@ abstract class Node<T>(
                 val removedKeys = localKeys - routingSourceKeys
                 val mutableMap = map.toMutableMap()
                 newKeys.forEach { key ->
-                    mutableMap[key] = ChildEntry(
-                        key = key, childMode = childMode, resolver = this@Node,
-                    )
+                    mutableMap[key] =
+                        ChildEntry.create(key, this@Node, null, childMode)
                 }
                 removedKeys.forEach { key ->
                     mutableMap.remove(key)
@@ -111,14 +79,28 @@ abstract class Node<T>(
         }
     }
 
-    private fun SavedStateMap.restoreChildren(): Map<RoutingKey<T>, ChildEntry<T>>? =
+    private fun SavedStateMap.restoreChildren(): ChildEntryMap<T>? =
         (get(KEY_CHILDREN_STATE) as? Map<RoutingKey<T>, SavedStateMap>)?.mapValues {
-            ChildEntry(it.key, this@Node, childMode, it.value)
+            ChildEntry.create(it.key, this@Node, it.value, childMode)
         }
 
-    // TODO Change function name? We always create ChildEntry for every node in routing source
-    fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry<T> {
-        return _children.value[routingKey] ?: error("Child should be created in the previous step")
+    fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry.Eager<T> {
+        val value = _children.value
+        val child = value[routingKey]
+            ?: error("Rendering and children management is out of sync: requested $routingKey but have only ${value.keys}")
+        return when (child) {
+            is ChildEntry.Eager ->
+                child
+            is ChildEntry.Lazy ->
+                _children.updateAndGet { map ->
+                    val updateChild = map[routingKey]
+                        ?: error("Requested child $routingKey disappeared")
+                    when (updateChild) {
+                        is ChildEntry.Eager -> map
+                        is ChildEntry.Lazy -> map.plus(routingKey to updateChild.initialize())
+                    }
+                }[routingKey] as ChildEntry.Eager<T>
+        }
     }
 
     @Composable
@@ -207,8 +189,11 @@ abstract class Node<T>(
         if (children.isNotEmpty()) {
             val childrenState =
                 children
-                    .mapValues { pair ->
-                        pair.value.lazyNode?.onSaveInstanceState(scope)
+                    .mapValues { (_, entry) ->
+                        when (entry) {
+                            is ChildEntry.Eager -> entry.node.onSaveInstanceState(scope)
+                            is ChildEntry.Lazy -> entry.savedStateMap
+                        }
                     }
             if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] = childrenState
         }
@@ -222,17 +207,6 @@ abstract class Node<T>(
         nodeLifecycleManager.changeState(state)
     }
 
-    /** When to create child nodes? */
-    enum class ChildMode {
-
-        /** When routing state was changed. */
-        EAGER,
-
-        /** When node rendering was requested. */
-        LAZY,
-
-    }
-
     private inner class NodeLifecycleManagerHostImpl : NodeLifecycleManagerHost<T> {
 
         override val lifecycleOwner: LifecycleOwner
@@ -241,10 +215,7 @@ abstract class Node<T>(
         override val routingSource: RoutingSource<T, *>?
             get() = this@Node.routingSource
 
-        override fun child(element: RoutingKey<T>): ChildEntry<*> =
-            childOrCreate(element)
-
-        override fun children(): StateFlow<Map<RoutingKey<T>, ChildEntry<T>>> =
+        override fun children(): StateFlow<ChildEntryMap<T>> =
             _children
 
     }
