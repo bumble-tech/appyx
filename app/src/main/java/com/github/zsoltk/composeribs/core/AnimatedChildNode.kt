@@ -54,7 +54,7 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, 
 fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S>?> =
     if (this != null) {
         all
-            .map { it.findLast { it.onScreen } }
+            .map { it.findLast { isOnScreen(it.key) } }
             .collectAsState(initial = null)
     } else {
         remember { mutableStateOf(null) }
@@ -64,7 +64,7 @@ fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S
 fun <R, S> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, S>?> =
     if (this != null) {
         all
-            .map { it.findLast { routingClazz.isInstance(it.key.routing) && it.onScreen } }
+            .map { it.findLast { routingClazz.isInstance(it.key.routing) && isOnScreen(it.key) } }
             .collectAsState(initial = null)
     } else {
         remember { mutableStateOf(null) }

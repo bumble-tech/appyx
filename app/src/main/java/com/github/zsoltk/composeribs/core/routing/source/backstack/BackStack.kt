@@ -43,7 +43,6 @@ class BackStack<T>(
                 key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
                 fromState = TransitionState.ON_SCREEN,
                 targetState = TransitionState.ON_SCREEN,
-                onScreen = true,
             )
         )
     )
@@ -52,10 +51,10 @@ class BackStack<T>(
         state
 
     override val offScreen: StateFlow<List<BackStackElement<T>>> =
-        state.unsuspendedMap { list -> list.filter { !it.onScreen } }
+        state.unsuspendedMap { list -> list.filter { it.isOnScreen() } }
 
     override val onScreen: StateFlow<List<BackStackElement<T>>> =
-        state.unsuspendedMap { list -> list.filter { it.onScreen } }
+        state.unsuspendedMap { list -> list.filter { it.isOnScreen() } }
 
     override val canHandleBackPress: StateFlow<Boolean> =
         state.unsuspendedMap { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
@@ -72,7 +71,6 @@ class BackStack<T>(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.ON_SCREEN,
-                onScreen = true
             )
         }
     }
@@ -87,10 +85,7 @@ class BackStack<T>(
             list.mapIndexed { index, element ->
                 when (index) {
                     destroyIndex -> element.copy(targetState = TransitionState.DESTROYED)
-                    unStashIndex -> element.copy(
-                        targetState = TransitionState.ON_SCREEN,
-                        onScreen = true
-                    )
+                    unStashIndex -> element.copy(targetState = TransitionState.ON_SCREEN)
                     else -> element
                 }
             }
@@ -105,10 +100,10 @@ class BackStack<T>(
                         TransitionState.DESTROYED ->
                             null
                         TransitionState.STASHED_IN_BACK_STACK ->
-                            it.copy(fromState = it.targetState, onScreen = false)
+                            it.copy(fromState = it.targetState)
                         TransitionState.CREATED,
                         TransitionState.ON_SCREEN ->
-                            it.copy(fromState = it.targetState, onScreen = true)
+                            it.copy(fromState = it.targetState)
                     }
                 } else {
                     it
@@ -133,5 +128,19 @@ class BackStack<T>(
 
     private fun SavedStateMap.restoreHistory() =
         this[Node.KEY_ROUTING_SOURCE] as? List<BackStackElement<T>>
+
+    private fun BackStackElement<T>.isOnScreen(): Boolean =
+        when (targetState) {
+            TransitionState.CREATED ->
+                error("Impossible target state")
+            TransitionState.ON_SCREEN ->
+                true
+            TransitionState.STASHED_IN_BACK_STACK,
+            TransitionState.DESTROYED ->
+                fromState == TransitionState.ON_SCREEN
+        }
+
+    override fun isOnScreen(key: RoutingKey<T>): Boolean =
+        state.value.find { it.key == key }?.isOnScreen() ?: false
 
 }

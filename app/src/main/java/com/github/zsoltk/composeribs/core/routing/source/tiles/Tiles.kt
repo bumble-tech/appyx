@@ -1,7 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles
 
 import android.os.Parcelable
-import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.unsuspendedMap
@@ -35,12 +34,11 @@ class Tiles<T>(
                 key = LocalRoutingKey(it, tmpCounter.incrementAndGet()),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
-                onScreen = true
             )
         }
     )
 
-    override val all: StateFlow<List<RoutingElement<T, TransitionState>>> =
+    override val all: StateFlow<List<TilesElement<T>>> =
         state.asStateFlow()
 
     override val offScreen: StateFlow<List<TilesElement<T>>> =
@@ -58,7 +56,6 @@ class Tiles<T>(
                 key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
-                onScreen = true
             )
         }
     }

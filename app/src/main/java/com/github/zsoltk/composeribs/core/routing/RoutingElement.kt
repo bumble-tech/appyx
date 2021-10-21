@@ -9,6 +9,4 @@ data class RoutingElement<Key, State>(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    // TODO Should be calculated from targetState
-    val onScreen: Boolean,
 ) : Parcelable

@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing
 
-import android.os.Parcelable
+import androidx.lifecycle.Lifecycle
 import kotlinx.coroutines.flow.StateFlow
 
 interface RoutingSource<Key, State> {
@@ -22,5 +22,16 @@ interface RoutingSource<Key, State> {
      * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
      */
     fun saveInstanceState(): Any? = null
+
+    /**
+     * @return [key] should be rendered on the screen based on its [State].
+     */
+    fun isOnScreen(key: RoutingKey<Key>): Boolean = true
+
+    /**
+     * @return Maximum lifecycle state of node representing [key].
+     */
+    fun maxLifecycleState(key: RoutingKey<Key>): Lifecycle.State =
+        if (isOnScreen(key)) Lifecycle.State.RESUMED else Lifecycle.State.CREATED
 
 }
