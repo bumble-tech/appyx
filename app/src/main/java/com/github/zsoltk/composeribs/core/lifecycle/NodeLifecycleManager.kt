@@ -33,21 +33,19 @@ internal class NodeLifecycleManager<Routing>(
     }
 
     private fun manageChildrenLifecycle() {
-        host.routingSource?.apply {
-            lifecycle.coroutineScope.launch {
-                val lifecycleState = lifecycle.changesAsFlow()
+        val routingSource = host.routingSource ?: return
+        lifecycle.coroutineScope.launch {
+            val lifecycleState = lifecycle.changesAsFlow()
 
-                combine(
-                    lifecycleState,
-                    all,
-                    ::Pair
-                ).collect { (state, elements) ->
-                    elements.forEach { element ->
-                        val maxLifecycle = maxLifecycleState(element.key)
-                        val current = minOf(state, maxLifecycle)
-                        val child = host.child(element.key)
-                        child.node.changeState(current)
-                    }
+            combine(
+                lifecycleState,
+                host.children(),
+                ::Pair
+            ).collect { (state, children) ->
+                children.values.forEach { child ->
+                    val maxLifecycle = routingSource.maxLifecycleState(child.key)
+                    val current = minOf(state, maxLifecycle)
+                    child.lazyNode?.changeState(current)
                 }
             }
         }
