@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing
 
-import android.os.Parcelable
 import kotlinx.coroutines.flow.StateFlow
 
 interface RoutingSource<Key, State> {
@@ -22,5 +21,10 @@ interface RoutingSource<Key, State> {
      * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
      */
     fun saveInstanceState(): Any? = null
+
+    /**
+     * @return [key] should be rendered on the screen based on its [State].
+     */
+    fun isOnScreen(key: RoutingKey<Key>): Boolean = true
 
 }

@@ -5,7 +5,6 @@ import androidx.annotation.CallSuper
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
@@ -13,7 +12,13 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.coroutineScope
+import com.github.zsoltk.composeribs.core.children.ChildEntry
+import com.github.zsoltk.composeribs.core.children.ChildEntryMap
+import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
+import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
@@ -25,7 +30,6 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,51 +41,46 @@ import kotlinx.coroutines.launch
 
 val LocalNode = compositionLocalOf<Node<*>?> { null }
 
-@Suppress("TransitionPropertiesLabel")
 abstract class Node<T>(
-    val routingSource: RoutingSource<T, *>? = null,
+    final override val routingSource: RoutingSource<T, *>? = null,
     savedStateMap: SavedStateMap?,
+    private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     plugins: List<Plugin> = emptyList()
-) : Resolver<T>, Renderable {
-
-    class ChildEntry<T>(
-        val key: RoutingKey<T>,
-        private val resolver: Resolver<T>,
-        private val savedStateMap: SavedStateMap? = null,
-    ) {
-        internal val nodeLazy = lazy(LazyThreadSafetyMode.NONE) {
-            resolver.resolve(key.routing, savedStateMap)
-        }
-        val node: Node<*> get() = nodeLazy.value
-    }
+) : Resolver<T>,
+    Renderable,
+    LifecycleOwner,
+    Parent<T> {
 
     private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
-    protected val children: StateFlow<Map<RoutingKey<T>, ChildEntry<T>>> = _children.asStateFlow()
+    final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
 
+    private val nodeLifecycleManager = NodeLifecycleManager(this)
     private var transitionsInBackgroundJob: Job? = null
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
 
     init {
+        lifecycle.addObserver(LifecycleLogger)
         routingSource?.let { source ->
-            // TODO Close context when destroyed (wait for lifecycle), memory leak now
-            // TODO Fix potential multithreading
-            GlobalScope.launch { source.syncChildrenWithRoutingSource() }
+            lifecycle.coroutineScope.launch { source.syncChildrenWithRoutingSource() }
         }
+        nodeLifecycleManager.start()
+        manageTransitions()
         plugins<NodeAware>().forEach { it.init(this) }
     }
 
     private suspend fun RoutingSource<T, *>.syncChildrenWithRoutingSource() {
         all.collect { elements ->
-            _children.update {
+            _children.update { map ->
                 val routingSourceKeys =
                     elements.mapTo(HashSet(elements.size)) { element -> element.key }
-                val localKeys = it.keys
-                val newKeys = routingSourceKeys.minus(localKeys)
-                val removedKeys = localKeys.minus(routingSourceKeys)
-                val mutableMap = it.toMutableMap()
+                val localKeys = map.keys
+                val newKeys = routingSourceKeys - localKeys
+                val removedKeys = localKeys - routingSourceKeys
+                val mutableMap = map.toMutableMap()
                 newKeys.forEach { key ->
-                    mutableMap[key] = ChildEntry(key = key, resolver = this@Node)
+                    mutableMap[key] =
+                        ChildEntry.create(key, this@Node, null, childMode)
                 }
                 removedKeys.forEach { key ->
                     mutableMap.remove(key)
@@ -91,26 +90,35 @@ abstract class Node<T>(
         }
     }
 
-    private fun SavedStateMap.restoreChildren(): Map<RoutingKey<T>, ChildEntry<T>>? =
+    private fun SavedStateMap.restoreChildren(): ChildEntryMap<T>? =
         (get(KEY_CHILDREN_STATE) as? Map<RoutingKey<T>, SavedStateMap>)?.mapValues {
-            ChildEntry(it.key, this@Node, it.value)
+            ChildEntry.create(it.key, this@Node, it.value, childMode)
         }
 
-    fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry<T> {
-        return _children.updateAndGet {
-            if (!it.containsKey(routingKey)) {
-                it + (routingKey to ChildEntry(key = routingKey, resolver = this@Node))
-            } else {
-                it
-            }
-        }[routingKey] // .node
-            ?: throw IllegalStateException("Child should be created in the previous step")
+    fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry.Eager<T> {
+        val value = _children.value
+        val child = value[routingKey]
+            ?: error("Rendering and children management is out of sync: requested $routingKey but have only ${value.keys}")
+        return when (child) {
+            is ChildEntry.Eager ->
+                child
+            is ChildEntry.Lazy ->
+                _children.updateAndGet { map ->
+                    val updateChild = map[routingKey]
+                        ?: error("Requested child $routingKey disappeared")
+                    when (updateChild) {
+                        is ChildEntry.Eager -> map
+                        is ChildEntry.Lazy -> map.plus(routingKey to updateChild.initialize())
+                    }
+                }[routingKey] as ChildEntry.Eager<T>
+        }
     }
 
     @Composable
     fun Compose() {
         CompositionLocalProvider(
-            LocalNode provides this
+            LocalNode provides this,
+            LocalLifecycleOwner provides this,
         ) {
             routingSource?.let { source ->
                 val canHandleBackPress by source.canHandleBackPress.collectAsState()
@@ -118,8 +126,6 @@ abstract class Node<T>(
                     source.onBackPressed()
                 }
             }
-
-            TransitionsInBackgroundManager()
 
             View()
         }
@@ -131,11 +137,9 @@ abstract class Node<T>(
      * Because we do not care about animations in background and still want to have
      * business-logic-driven routing in background, we need to instantly invoke the callback.
      */
-    @Composable
-    private fun TransitionsInBackgroundManager() {
-        val lifecycleOwner = LocalLifecycleOwner.current
-        DisposableEffect(lifecycleOwner) {
-            val observer = object : DefaultLifecycleObserver {
+    private fun manageTransitions() {
+        lifecycle.addObserver(
+            object : DefaultLifecycleObserver {
                 override fun onStart(owner: LifecycleOwner) {
                     manageTransitionsInForeground()
                 }
@@ -144,18 +148,12 @@ abstract class Node<T>(
                     manageTransitionsInBackground()
                 }
             }
-            lifecycleOwner.lifecycle.addObserver(observer)
-            onDispose {
-                lifecycleOwner.lifecycle.removeObserver(observer)
-                manageTransitionsInBackground()
-            }
-        }
+        )
     }
 
     private fun manageTransitionsInBackground() {
         if (transitionsInBackgroundJob != null || routingSource == null) return
-        // TODO Close context when destroyed (wait for lifecycle), memory leak now
-        transitionsInBackgroundJob = GlobalScope.launch {
+        transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
             routingSource.all.collect { elements ->
                 elements
                     .filter { it.fromState != it.targetState }
@@ -215,10 +213,10 @@ abstract class Node<T>(
         if (children.isNotEmpty()) {
             val childrenState =
                 children
-                    .mapValues { pair ->
-                        pair.value.nodeLazy.let {
-                            if (it.isInitialized()) it.value.onSaveInstanceState(scope)
-                            else null
+                    .mapValues { (_, entry) ->
+                        when (entry) {
+                            is ChildEntry.Eager -> entry.node.onSaveInstanceState(scope)
+                            is ChildEntry.Lazy -> entry.savedStateMap
                         }
                     }
             if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] = childrenState
@@ -236,6 +234,13 @@ abstract class Node<T>(
                 pluginsState
             }
         if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
+    }
+
+    final override fun getLifecycle(): Lifecycle =
+        nodeLifecycleManager.lifecycle
+
+    internal fun updateLifecycleState(state: Lifecycle.State) {
+        nodeLifecycleManager.updateLifecycleState(state)
     }
 
     companion object {
