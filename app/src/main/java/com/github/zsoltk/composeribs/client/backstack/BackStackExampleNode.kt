@@ -25,6 +25,8 @@ import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 

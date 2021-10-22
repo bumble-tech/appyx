@@ -64,39 +64,6 @@ class BackStack<T>(
     override val canHandleBackPress: StateFlow<Boolean> =
         state.unsuspendedMap { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
 
-    fun push(element: T) {
-        state.update { list ->
-            list.map {
-                if (it.targetState == TransitionState.ON_SCREEN) {
-                    it.copy(targetState = TransitionState.STASHED_IN_BACK_STACK)
-                } else {
-                    it
-                }
-            } + BackStackElement(
-                key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
-                fromState = TransitionState.CREATED,
-                targetState = TransitionState.ON_SCREEN,
-            )
-        }
-    }
-
-    fun pop() {
-        state.update { list ->
-            val destroyIndex = list.indexOfLast { it.targetState == TransitionState.ON_SCREEN }
-            val unStashIndex =
-                list.indexOfLast { it.targetState == TransitionState.STASHED_IN_BACK_STACK }
-            require(destroyIndex != -1) { "Nothing to destroy, state=$list" }
-            require(unStashIndex != -1) { "Nothing to remove from stash, state=$list" }
-            list.mapIndexed { index, element ->
-                when (index) {
-                    destroyIndex -> element.copy(targetState = TransitionState.DESTROYED)
-                    unStashIndex -> element.copy(targetState = TransitionState.ON_SCREEN)
-                    else -> element
-                }
-            }
-        }
-    }
-
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { list ->
             list.mapNotNull {
@@ -124,7 +91,7 @@ class BackStack<T>(
     }
 
     override fun onBackPressed() {
-        pop()
+        // TODO: To be done
     }
 
     override fun saveInstanceState(): Any =

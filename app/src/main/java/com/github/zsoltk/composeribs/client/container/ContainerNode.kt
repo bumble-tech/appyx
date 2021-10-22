@@ -35,6 +35,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 import kotlinx.coroutines.delay
