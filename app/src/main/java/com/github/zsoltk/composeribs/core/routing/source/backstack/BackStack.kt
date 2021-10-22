@@ -28,6 +28,11 @@ class BackStack<T>(
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
+    interface Operation<T> : (List<BackStackElement<T>>) -> List<BackStackElement<T>> {
+
+        fun isApplicable(elements: List<BackStackElement<T>>): Boolean
+    }
+
     // TODO Replace with UUID for restoration simplicity?
     private val tmpCounter = AtomicInteger(
         savedStateMap
