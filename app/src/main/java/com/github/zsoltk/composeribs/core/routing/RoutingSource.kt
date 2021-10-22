@@ -22,4 +22,9 @@ interface RoutingSource<Key, State> {
      */
     fun saveInstanceState(): Any? = null
 
+    /**
+     * @return [key] should be rendered on the screen based on its [State].
+     */
+    fun isOnScreen(key: RoutingKey<Key>): Boolean = true
+
 }
