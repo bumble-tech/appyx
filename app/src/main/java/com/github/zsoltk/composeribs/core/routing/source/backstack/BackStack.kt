@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import java.util.concurrent.atomic.AtomicInteger
 
 class BackStack<T>(
     initialElement: T,
@@ -28,13 +27,14 @@ class BackStack<T>(
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
-    interface Operation<T> : (List<BackStackElement<T>>) -> List<BackStackElement<T>> {
+    interface Operation<T> :
+            (List<BackStackElement<T>>, UuidGenerator) -> List<BackStackElement<T>> {
 
         fun isApplicable(elements: List<BackStackElement<T>>): Boolean
     }
 
     // TODO Replace with UUID for restoration simplicity?
-    private val tmpCounter = AtomicInteger(
+    private val tmpCounter = UuidGenerator(
         savedStateMap
             ?.restoreHistory()
             ?.maxOf { (it.key as LocalRoutingKey<*>).uuid }
@@ -119,7 +119,7 @@ class BackStack<T>(
 
     fun perform(operation: Operation<T>) {
         if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
+            state.update { operation(it, tmpCounter) }
         }
     }
 
