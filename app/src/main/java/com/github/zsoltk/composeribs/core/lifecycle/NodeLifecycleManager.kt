@@ -48,7 +48,7 @@ internal class NodeLifecycleManager<Routing>(
                     val maxLifecycle = routingSource.maxLifecycleState(element.key)
                     val current = minOf(state, maxLifecycle)
                     when (val child = children[element.key]) {
-                        is ChildEntry.Eager -> child.node.changeState(current)
+                        is ChildEntry.Eager -> child.node.updateLifecycleState(current)
                         is ChildEntry.Lazy -> Unit
                     }
                 }
@@ -69,7 +69,7 @@ internal class NodeLifecycleManager<Routing>(
                         removedKeys.forEach { key ->
                             val removedChild = scan.prev[key]
                             if (removedChild is ChildEntry.Eager) {
-                                removedChild.node.changeState(Lifecycle.State.DESTROYED)
+                                removedChild.node.updateLifecycleState(Lifecycle.State.DESTROYED)
                             }
                         }
                     }
@@ -77,7 +77,7 @@ internal class NodeLifecycleManager<Routing>(
         }
     }
 
-    fun changeState(state: Lifecycle.State) {
+    fun updateLifecycleState(state: Lifecycle.State) {
         if (lifecycle.currentState != state) {
             lifecycleRegistry.currentState = state
         }
@@ -86,7 +86,7 @@ internal class NodeLifecycleManager<Routing>(
             // need to clean up children as they are out of sync now
             host.children().value.values.forEach { child ->
                 if (child is ChildEntry.Eager) {
-                    child.node.changeState(Lifecycle.State.DESTROYED)
+                    child.node.updateLifecycleState(Lifecycle.State.DESTROYED)
                 }
             }
         }

@@ -33,13 +33,13 @@ fun <N : Node<*>> NodeHost(factory: NodeFactory<N>) {
     }
     node.Compose()
     DisposableEffect(key1 = node) {
-        onDispose { node.changeState(Lifecycle.State.DESTROYED) }
+        onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
     }
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(key1 = lifecycle) {
-        node.changeState(lifecycle.currentState)
+        node.updateLifecycleState(lifecycle.currentState)
         val observer = LifecycleEventObserver { source, _ ->
-            node.changeState(source.lifecycle.currentState)
+            node.updateLifecycleState(source.lifecycle.currentState)
         }
         lifecycle.addObserver(observer)
         onDispose { lifecycle.removeObserver(observer) }

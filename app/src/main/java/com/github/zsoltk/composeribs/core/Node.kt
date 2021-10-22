@@ -203,8 +203,8 @@ abstract class Node<T>(
     override fun getLifecycle(): Lifecycle =
         nodeLifecycleManager.lifecycle
 
-    internal fun changeState(state: Lifecycle.State) {
-        nodeLifecycleManager.changeState(state)
+    internal fun updateLifecycleState(state: Lifecycle.State) {
+        nodeLifecycleManager.updateLifecycleState(state)
     }
 
     private inner class NodeLifecycleManagerHostImpl : NodeLifecycleManagerHost<T> {
