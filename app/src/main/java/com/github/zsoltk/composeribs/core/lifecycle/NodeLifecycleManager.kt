@@ -45,7 +45,9 @@ internal class NodeLifecycleManager<Routing>(
                 ::Triple
             ).collect { (state, elements, children) ->
                 elements.forEach { element ->
-                    val maxLifecycle = routingSource.maxLifecycleState(element.key)
+                    val maxLifecycle =
+                        if (routingSource.isOnScreen(element.key)) Lifecycle.State.RESUMED
+                        else Lifecycle.State.CREATED
                     val current = minOf(state, maxLifecycle)
                     when (val child = children[element.key]) {
                         is ChildEntry.Eager -> child.node.updateLifecycleState(current)
