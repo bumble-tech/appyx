@@ -57,7 +57,7 @@ abstract class Node<T>(
         routingSource?.let { source ->
             lifecycle.coroutineScope.launch { source.syncChildrenWithRoutingSource() }
         }
-        nodeLifecycleManager.observe()
+        nodeLifecycleManager.start()
         manageTransitions()
     }
 

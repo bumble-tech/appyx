@@ -28,7 +28,7 @@ internal class NodeLifecycleManager<Routing>(
         lifecycleRegistry.currentState = Lifecycle.State.CREATED
     }
 
-    fun observe() {
+    fun start() {
         manageChildrenLifecycle()
         updateRemovedChildren()
     }
