@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.integration
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.mapSaver
@@ -22,15 +23,7 @@ fun interface NodeFactory<N : Node<*>> {
  */
 @Composable
 fun <N : Node<*>> NodeHost(factory: NodeFactory<N>) {
-    val node by rememberSaveable(
-        inputs = arrayOf(),
-        stateSaver = mapSaver(
-            save = { node -> node.onSaveInstanceState(this) },
-            restore = { state -> factory.create(restoreState = state) },
-        ),
-    ) {
-        mutableStateOf(factory.create(restoreState = null))
-    }
+    val node by rememberNode(factory)
     node.Compose()
     DisposableEffect(node) {
         onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
@@ -45,3 +38,15 @@ fun <N : Node<*>> NodeHost(factory: NodeFactory<N>) {
         onDispose { lifecycle.removeObserver(observer) }
     }
 }
+
+@Composable
+fun <N : Node<*>> rememberNode(factory: NodeFactory<N>): State<N> =
+    rememberSaveable(
+        inputs = arrayOf(),
+        stateSaver = mapSaver(
+            save = { node -> node.onSaveInstanceState(this) },
+            restore = { state -> factory.create(restoreState = state) },
+        ),
+    ) {
+        mutableStateOf(factory.create(restoreState = null))
+    }
