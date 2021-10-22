@@ -122,6 +122,12 @@ class BackStack<T>(
         }
     }
 
+    fun perform(operation: Operation<T>) {
+        if (operation.isApplicable(state.value)) {
+            state.update { operation(it) }
+        }
+    }
+
     override fun onBackPressed() {
         pop()
     }
