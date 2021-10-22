@@ -29,7 +29,7 @@ internal class NodeLifecycleManager<Routing>(
 
     fun observe() {
         manageChildrenLifecycle()
-        destroyRemovedChildren()
+        updateRemovedChildren()
     }
 
     private fun manageChildrenLifecycle() {
@@ -58,7 +58,7 @@ internal class NodeLifecycleManager<Routing>(
         }
     }
 
-    private fun destroyRemovedChildren() {
+    private fun updateRemovedChildren() {
         lifecycle.coroutineScope.launch {
             host
                 .children()
