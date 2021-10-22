@@ -21,7 +21,7 @@ internal class NodeLifecycleManager<Routing>(
     private val parent: Parent<Routing>,
 ) {
 
-    private val lifecycleRegistry = LifecycleRegistry(parent.lifecycleOwner)
+    private val lifecycleRegistry = LifecycleRegistry(parent)
 
     val lifecycle: Lifecycle
         get() = lifecycleRegistry
@@ -44,7 +44,7 @@ internal class NodeLifecycleManager<Routing>(
             combine(
                 lifecycleState,
                 routingSource.all,
-                parent.children(),
+                parent.children,
                 ::Triple
             ).collect { (state, elements, children) ->
                 elements.forEach { element ->
@@ -64,7 +64,7 @@ internal class NodeLifecycleManager<Routing>(
     private fun updateRemovedChildren() {
         lifecycle.coroutineScope.launch {
             parent
-                .children()
+                .children
                 .scan(ScanResult<Routing>()) { previous, current ->
                     ScanResult(previous.current, current)
                 }
@@ -89,7 +89,7 @@ internal class NodeLifecycleManager<Routing>(
         if (state == Lifecycle.State.DESTROYED) {
             // lifecycle.coroutineScope is closed at this moment
             // need to clean up children as they are out of sync now
-            parent.children().value.values.forEach { child ->
+            parent.children.value.values.forEach { child ->
                 if (child is ChildEntry.Eager) {
                     child.node.updateLifecycleState(Lifecycle.State.DESTROYED)
                 }
@@ -102,13 +102,11 @@ internal class NodeLifecycleManager<Routing>(
         val current: ChildEntryMap<Routing>? = null,
     )
 
-    interface Parent<Routing> {
-
-        val lifecycleOwner: LifecycleOwner
+    interface Parent<Routing> : LifecycleOwner {
 
         val routingSource: RoutingSource<Routing, *>?
 
-        fun children(): StateFlow<ChildEntryMap<Routing>>
+        val children: StateFlow<ChildEntryMap<Routing>>
 
     }
 

@@ -38,14 +38,18 @@ import kotlinx.coroutines.launch
 val LocalNode = compositionLocalOf<Node<*>?> { null }
 
 abstract class Node<T>(
-    val routingSource: RoutingSource<T, *>? = null,
+    final override val routingSource: RoutingSource<T, *>? = null,
     savedStateMap: SavedStateMap?,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
-) : Resolver<T>, Renderable, LifecycleOwner {
+) : Resolver<T>,
+    Renderable,
+    LifecycleOwner,
+    NodeLifecycleManager.Parent<T> {
 
     private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
-    protected val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
-    private val nodeLifecycleManager = NodeLifecycleManager(NodeLifecycleManagerParentImpl())
+    final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
+
+    private val nodeLifecycleManager = NodeLifecycleManager(this)
     private var transitionsInBackgroundJob: Job? = null
 
     init {
@@ -199,24 +203,11 @@ abstract class Node<T>(
         return map
     }
 
-    override fun getLifecycle(): Lifecycle =
+    final override fun getLifecycle(): Lifecycle =
         nodeLifecycleManager.lifecycle
 
     internal fun updateLifecycleState(state: Lifecycle.State) {
         nodeLifecycleManager.updateLifecycleState(state)
-    }
-
-    private inner class NodeLifecycleManagerParentImpl : NodeLifecycleManager.Parent<T> {
-
-        override val lifecycleOwner: LifecycleOwner
-            get() = this@Node
-
-        override val routingSource: RoutingSource<T, *>?
-            get() = this@Node.routingSource
-
-        override fun children(): StateFlow<ChildEntryMap<T>> =
-            _children
-
     }
 
     companion object {
