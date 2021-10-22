@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing
 
-import android.os.Parcelable
 import kotlinx.coroutines.flow.StateFlow
 
 interface RoutingSource<Key, State> {
