@@ -19,7 +19,6 @@ import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.ChildEntryMap
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
-import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManagerHost
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
@@ -46,7 +45,7 @@ abstract class Node<T>(
 
     private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
     protected val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
-    private val nodeLifecycleManager = NodeLifecycleManager(NodeLifecycleManagerHostImpl())
+    private val nodeLifecycleManager = NodeLifecycleManager(NodeLifecycleManagerParentImpl())
     private var transitionsInBackgroundJob: Job? = null
 
     init {
@@ -207,7 +206,7 @@ abstract class Node<T>(
         nodeLifecycleManager.updateLifecycleState(state)
     }
 
-    private inner class NodeLifecycleManagerHostImpl : NodeLifecycleManagerHost<T> {
+    private inner class NodeLifecycleManagerParentImpl : NodeLifecycleManager.Parent<T> {
 
         override val lifecycleOwner: LifecycleOwner
             get() = this@Node

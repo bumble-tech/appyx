@@ -1,10 +1,13 @@
 package com.github.zsoltk.composeribs.core.lifecycle
 
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.ChildEntryMap
+import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.scan
@@ -15,10 +18,10 @@ import kotlinx.coroutines.launch
  * and updates lifecycle of children nodes when updated.
  */
 internal class NodeLifecycleManager<Routing>(
-    private val host: NodeLifecycleManagerHost<Routing>,
+    private val parent: Parent<Routing>,
 ) {
 
-    private val lifecycleRegistry = LifecycleRegistry(host.lifecycleOwner)
+    private val lifecycleRegistry = LifecycleRegistry(parent.lifecycleOwner)
 
     val lifecycle: Lifecycle
         get() = lifecycleRegistry
@@ -33,7 +36,7 @@ internal class NodeLifecycleManager<Routing>(
     }
 
     private fun manageChildrenLifecycle() {
-        val routingSource = host.routingSource ?: return
+        val routingSource = parent.routingSource ?: return
         lifecycle.coroutineScope.launch {
             val lifecycleState = lifecycle.changesAsFlow()
 
@@ -41,7 +44,7 @@ internal class NodeLifecycleManager<Routing>(
             combine(
                 lifecycleState,
                 routingSource.all,
-                host.children(),
+                parent.children(),
                 ::Triple
             ).collect { (state, elements, children) ->
                 elements.forEach { element ->
@@ -60,7 +63,7 @@ internal class NodeLifecycleManager<Routing>(
 
     private fun updateRemovedChildren() {
         lifecycle.coroutineScope.launch {
-            host
+            parent
                 .children()
                 .scan(ScanResult<Routing>()) { previous, current ->
                     ScanResult(previous.current, current)
@@ -86,7 +89,7 @@ internal class NodeLifecycleManager<Routing>(
         if (state == Lifecycle.State.DESTROYED) {
             // lifecycle.coroutineScope is closed at this moment
             // need to clean up children as they are out of sync now
-            host.children().value.values.forEach { child ->
+            parent.children().value.values.forEach { child ->
                 if (child is ChildEntry.Eager) {
                     child.node.updateLifecycleState(Lifecycle.State.DESTROYED)
                 }
@@ -98,5 +101,15 @@ internal class NodeLifecycleManager<Routing>(
         val prev: ChildEntryMap<Routing>? = null,
         val current: ChildEntryMap<Routing>? = null,
     )
+
+    interface Parent<Routing> {
+
+        val lifecycleOwner: LifecycleOwner
+
+        val routingSource: RoutingSource<Routing, *>?
+
+        fun children(): StateFlow<ChildEntryMap<Routing>>
+
+    }
 
 }
