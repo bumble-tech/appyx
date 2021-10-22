@@ -1,13 +1,11 @@
 package com.github.zsoltk.composeribs.core.lifecycle
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
+import com.github.zsoltk.composeribs.core.Parent
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.ChildEntryMap
-import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.scan
@@ -101,13 +99,5 @@ internal class NodeLifecycleManager<Routing>(
         val prev: ChildEntryMap<Routing>? = null,
         val current: ChildEntryMap<Routing>? = null,
     )
-
-    interface Parent<Routing> : LifecycleOwner {
-
-        val routingSource: RoutingSource<Routing, *>?
-
-        val children: StateFlow<ChildEntryMap<Routing>>
-
-    }
 
 }

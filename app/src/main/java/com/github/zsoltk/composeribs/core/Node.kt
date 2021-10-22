@@ -44,7 +44,7 @@ abstract class Node<T>(
 ) : Resolver<T>,
     Renderable,
     LifecycleOwner,
-    NodeLifecycleManager.Parent<T> {
+    Parent<T> {
 
     private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
     final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
