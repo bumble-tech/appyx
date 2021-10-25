@@ -6,6 +6,11 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElem
 import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
+/**
+ * Operation:
+ *
+ * [A, B, C] + Push(D) = [A, B, C, D]
+ */
 internal class Push<T>(
     private val element: T
 ) : Operation<T> {
