@@ -5,6 +5,7 @@ import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Pop
 import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +16,7 @@ import kotlinx.parcelize.RawValue
 class BackStack<T>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
+    private val backPressedOperation: Operation<T> = Pop()
 ) : RoutingSource<T, BackStack.TransitionState> {
 
     @Parcelize
@@ -91,7 +93,7 @@ class BackStack<T>(
     }
 
     override fun onBackPressed() {
-        // TODO: To be done
+        perform(backPressedOperation)
     }
 
     override fun saveInstanceState(): Any =
@@ -120,5 +122,4 @@ class BackStack<T>(
 
     override fun isOnScreen(key: RoutingKey<T>): Boolean =
         state.value.find { it.key == key }?.isOnScreen() ?: false
-
 }
