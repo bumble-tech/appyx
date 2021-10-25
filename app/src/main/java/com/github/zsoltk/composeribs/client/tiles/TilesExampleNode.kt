@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,7 +21,7 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.SavedStateMap
-import com.github.zsoltk.composeribs.core.childrenAsState
+import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 import com.github.zsoltk.composeribs.core.visibleChildAsState
@@ -56,7 +55,7 @@ class TilesExampleNode(
         val handler = TilesTransitionHandler()
         Column(modifier = Modifier.fillMaxSize()) {
 
-            val children by tiles.childrenAsState()
+            /*val children by tiles.childrenAsState()
 
             children.forEachIndexed { index, routingElement ->
 
@@ -84,6 +83,21 @@ class TilesExampleNode(
                     }
                 }
 
+            }*/
+
+            Subtree(routingSource = tiles, transitionHandler = handler) {
+                children<Routing> { transitionModifier, child ->
+                    Box(modifier = transitionModifier
+                        .fillMaxWidth()
+                        .height(100.dp)
+                        .clickable {
+                            // TODO No access to child id
+                            // tiles.toggleSelection(child)
+                        }
+                    ) {
+                        child()
+                    }
+                }
             }
 
             Button(
@@ -98,12 +112,12 @@ class TilesExampleNode(
             val child1 by tiles.visibleChildAsState(Child1::class)
             val c = child1
 
-            if (c != null) {
+            /*if (c != null) {
                 AnimatedChildNode(
                     routingElement = c,
                     transitionHandler = handler,
                 )
-            }
+            }*/
 
         }
     }
