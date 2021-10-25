@@ -10,7 +10,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
  *
  * [A, B, C] + Remove(id of B) = [A, C]
  */
-internal class Remove<T>(
+internal class Remove<T : Any>(
     private val key: RoutingKey<T>
 ) : BackStack.Operation<T> {
 
@@ -37,6 +37,6 @@ internal class Remove<T>(
     }
 }
 
-fun <T> BackStack<T>.remove(key: RoutingKey<T>) {
+fun <T : Any> BackStack<T>.remove(key: RoutingKey<T>) {
     perform(Remove(key))
 }

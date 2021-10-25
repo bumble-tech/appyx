@@ -11,7 +11,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  *
  * [A, B, C] + NewRoot(D) = [ D ]
  */
-internal class NewRoot<T>(
+internal class NewRoot<T : Any>(
     private val element: T
 ) : Operation<T> {
 
@@ -30,6 +30,6 @@ internal class NewRoot<T>(
     )
 }
 
-fun <T> BackStack<T>.newRoot(element: T) {
+fun <T : Any> BackStack<T>.newRoot(element: T) {
     perform(NewRoot(element))
 }

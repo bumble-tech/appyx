@@ -10,7 +10,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  *
  * [A, B, C] + Replace(D) = [A, B, D]
  */
-internal class Replace<T>(
+internal class Replace<T: Any>(
     private val element: T
 ) : BackStack.Operation<T> {
 
@@ -27,6 +27,6 @@ internal class Replace<T>(
     )
 }
 
-fun <T> BackStack<T>.replace(element: T) {
+fun <T: Any> BackStack<T>.replace(element: T) {
     perform(Replace(element))
 }

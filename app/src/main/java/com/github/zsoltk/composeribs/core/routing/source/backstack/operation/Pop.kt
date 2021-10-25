@@ -10,7 +10,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
  *
  * [A, B, C] + Pop = [A, B]
  */
-internal class Pop<T> : Operation<T> {
+internal class Pop<T : Any> : Operation<T> {
 
     override fun isApplicable(elements: List<BackStackElement<T>>): Boolean =
         elements.size > 1
@@ -36,6 +36,6 @@ internal class Pop<T> : Operation<T> {
     }
 }
 
-fun <T> BackStack<T>.pop() {
+fun <T : Any> BackStack<T>.pop() {
     perform(Pop())
 }

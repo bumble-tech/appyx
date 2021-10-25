@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-class BackStack<T>(
+class BackStack<T : Any>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
     private val backPressedOperation: Operation<T> = Pop()
