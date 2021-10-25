@@ -1,12 +1,10 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.compose.animation.core.Transition
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -30,15 +28,17 @@ fun <T : Any, S> Subtree(
     clipTransitionToBounds: Boolean = true,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
 ) {
-    var size by remember { mutableStateOf(IntSize.Zero) }
-    Box(
-        Modifier
-            .fillMaxSize()
-            .onSizeChanged {
-                size = it
-            }
-    ) {
-        block(SubtreeTransitionScope(routingSource, transitionHandler, TransitionParams(size, clipTransitionToBounds)))
+    BoxWithConstraints {
+        block(
+            SubtreeTransitionScope(
+                routingSource,
+                transitionHandler,
+                TransitionParams(
+                    IntSize(constraints.maxWidth, constraints.maxHeight),
+                    clipTransitionToBounds
+                )
+            )
+        )
     }
 }
 

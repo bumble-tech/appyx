@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -27,14 +28,7 @@ fun <Routing, State> AnimatedChildNode(
     }
 ) {
     key(childEntry.key) {
-        var size by remember { mutableStateOf(IntSize.Zero) }
-        Box(
-            Modifier
-                .fillMaxSize()
-                .onSizeChanged {
-                    size = it
-                }
-        ) {
+        BoxWithConstraints {
             val transitionScope =
                 transitionHandler.handle(
                     fromState = routingElement.fromState,
@@ -42,7 +36,12 @@ fun <Routing, State> AnimatedChildNode(
                     onTransitionFinished = {
                         routingSource.onTransitionFinished(childEntry.key)
                     },
-                    params = TransitionParams(size, true)
+                    params = TransitionParams(
+                        IntSize(
+                            constraints.maxWidth,
+                            constraints.maxHeight
+                        ), true
+                    )
                 )
             transitionScope.decorator(
                 transitionModifier = transitionScope.transitionModifier,
