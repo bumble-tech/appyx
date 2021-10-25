@@ -246,7 +246,7 @@ abstract class Node<T>(
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"
         const val KEY_CHILDREN_STATE = "ChildrenState"
-        const val KEY_PLUGINS_STATE = "ChildrenState"
+        const val KEY_PLUGINS_STATE = "PluginsState"
     }
 
 }
