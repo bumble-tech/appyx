@@ -1,11 +1,14 @@
 package com.github.zsoltk.composeribs.core
 
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.scan
 
 /**
  * Regular non-suspend version of [StateFlow.map] function
@@ -29,3 +32,17 @@ fun <T, R> StateFlow<T>.unsuspendedMap(mapper: (T) -> R): StateFlow<R> =
             this@unsuspendedMap.map { mapper(it) }.distinctUntilChanged().collect(collector)
         }
     }
+
+@OptIn(ExperimentalCoroutinesApi::class)
+internal fun <T> Flow<T>.withPrevious(): Flow<CompareValues<T>> =
+    scan(CompareValues(currentNullable = null)) { previous, current ->
+        CompareValues(previous.currentNullable, current)
+    }
+
+internal class CompareValues<T>(
+    val previous: T? = null,
+    internal val currentNullable: T?,
+) {
+    val current: T
+        get() = currentNullable ?: error("Should not be invoked")
+}

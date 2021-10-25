@@ -5,10 +5,9 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import com.github.zsoltk.composeribs.core.Parent
 import com.github.zsoltk.composeribs.core.children.ChildEntry
-import com.github.zsoltk.composeribs.core.children.ChildEntryMap
+import com.github.zsoltk.composeribs.core.withPrevious
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.scan
 import kotlinx.coroutines.launch
 
 /**
@@ -63,14 +62,12 @@ internal class NodeLifecycleManager<Routing>(
         lifecycle.coroutineScope.launch {
             parent
                 .children
-                .scan(ScanResult<Routing>()) { previous, current ->
-                    ScanResult(previous.current, current)
-                }
-                .collect { scan ->
-                    if (scan.prev != null && scan.current != null) {
-                        val removedKeys = scan.prev.keys - scan.current.keys
+                .withPrevious()
+                .collect { value ->
+                    if (value.previous != null) {
+                        val removedKeys = value.previous.keys - value.current.keys
                         removedKeys.forEach { key ->
-                            val removedChild = scan.prev[key]
+                            val removedChild = value.previous[key]
                             if (removedChild is ChildEntry.Eager) {
                                 removedChild.node.updateLifecycleState(Lifecycle.State.DESTROYED)
                             }
@@ -94,10 +91,5 @@ internal class NodeLifecycleManager<Routing>(
             }
         }
     }
-
-    private class ScanResult<Routing>(
-        val prev: ChildEntryMap<Routing>? = null,
-        val current: ChildEntryMap<Routing>? = null,
-    )
 
 }
