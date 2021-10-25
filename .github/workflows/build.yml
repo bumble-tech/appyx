@@ -11,4 +11,4 @@ jobs:
           distribution: 'adopt'
           cache: 'gradle'
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew compileDebugKotlin
+      - run: ./gradlew build

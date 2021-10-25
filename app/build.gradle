@@ -19,7 +19,6 @@ android {
             useSupportLibrary true
         }
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -44,6 +43,9 @@ android {
         resources {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
+    }
+    lintOptions {
+        abortOnError false
     }
 }
 
