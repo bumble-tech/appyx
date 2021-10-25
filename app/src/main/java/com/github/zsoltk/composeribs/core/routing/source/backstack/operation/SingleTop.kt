@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
+import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 
 /**
@@ -16,16 +17,16 @@ internal class SingleTop<T : Any>(
 
 ) : BackStack.Operation<T> {
 
-    override fun isApplicable(elements: List<BackStackElement<T>>): Boolean = true
+    override fun isApplicable(elements: Elements<T>): Boolean = true
 
     override fun invoke(
-        elements: List<BackStackElement<T>>,
+        elements: Elements<T>,
         uuidGenerator: UuidGenerator
-    ): List<BackStackElement<T>> {
+    ): Elements<T> {
         val targetClass = element.javaClass
         val lastIndexOfSameClass = elements.indexOfLast { targetClass.isInstance(it.key.routing) }
 
-        val operation: (List<BackStackElement<T>>, UuidGenerator) -> List<BackStackElement<T>> =
+        val operation: (Elements<T>, UuidGenerator) -> Elements<T> =
             if (lastIndexOfSameClass == -1) {
                 Push(element)
             } else {
@@ -41,23 +42,23 @@ internal class SingleTop<T : Any>(
 
     private class SingleTopReactivateBackStackOperation<T : Any>(
         private val position: Int
-    ) : (List<BackStackElement<T>>, UuidGenerator) -> List<BackStackElement<T>> {
+    ) : (Elements<T>, UuidGenerator) -> Elements<T> {
 
         override fun invoke(
-            elements: List<BackStackElement<T>>,
+            elements: Elements<T>,
             uuidGenerator: UuidGenerator
-        ): List<BackStackElement<T>> = elements.dropLast(elements.size - position - 1)
+        ): Elements<T> = elements.dropLast(elements.size - position - 1)
     }
 
     private class SingleTopReplaceBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int
-    ) : (List<BackStackElement<T>>, UuidGenerator) -> List<BackStackElement<T>> {
+    ) : (Elements<T>, UuidGenerator) -> Elements<T> {
 
         override fun invoke(
-            elements: List<BackStackElement<T>>,
+            elements: Elements<T>,
             uuidGenerator: UuidGenerator
-        ): List<BackStackElement<T>> =
+        ): Elements<T> =
             elements.dropLast(elements.size - position) + BackStackElement(
                 key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
                 fromState = BackStack.TransitionState.CREATED,

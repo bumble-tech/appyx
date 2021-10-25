@@ -2,7 +2,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
+import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 
 /**
@@ -14,22 +14,22 @@ internal class Remove<T : Any>(
     private val key: RoutingKey<T>
 ) : BackStack.Operation<T> {
 
-    override fun isApplicable(elements: List<BackStackElement<T>>) =
+    override fun isApplicable(elements: Elements<T>) =
         elements.hasContentWithKey()
 
     override fun invoke(
-        elements: List<BackStackElement<T>>,
+        elements: Elements<T>,
         uuidGenerator: UuidGenerator
-    ): List<BackStackElement<T>> =
+    ): Elements<T> =
         when {
             elements.hasContentWithKey() -> removeContent(elements)
             else -> elements
         }
 
-    private fun List<BackStackElement<T>>.hasContentWithKey() =
+    private fun Elements<T>.hasContentWithKey() =
         find { it.key == key } != null
 
-    private fun removeContent(elements: List<BackStackElement<T>>): List<BackStackElement<T>> {
+    private fun removeContent(elements: Elements<T>): Elements<T> {
         val toRemove = elements.find { it.key == key }
 
         requireNotNull(toRemove)

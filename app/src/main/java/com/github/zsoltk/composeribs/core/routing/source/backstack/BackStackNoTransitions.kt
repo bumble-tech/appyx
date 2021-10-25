@@ -41,10 +41,10 @@ open class BackStackNoTransitions<T>(
     override val all: List<RoutingElement<T, TransitionState>>
         get() = elements
 
-    override val offScreen: List<BackStackElement<T>>
+    override val offScreen: Elements<T>
         get() = elements.filter { !it.onScreen }
 
-    override val onScreen: List<BackStackElement<T>>
+    override val onScreen: Elements<T>
         get() = elements.filter { it.onScreen }
 
     fun push(element: T) {

@@ -1,10 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.*
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
-import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
  * Operation:
@@ -15,13 +12,13 @@ internal class Push<T : Any>(
     private val element: T
 ) : Operation<T> {
 
-    override fun isApplicable(elements: List<BackStackElement<T>>): Boolean =
+    override fun isApplicable(elements: Elements<T>): Boolean =
         element != elements.current?.key?.routing
 
     override fun invoke(
-        elements: List<BackStackElement<T>>,
+        elements: Elements<T>,
         uuidGenerator: UuidGenerator
-    ): List<BackStackElement<T>> {
+    ): Elements<T> {
         return elements.map {
             if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
                 it.copy(targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK)

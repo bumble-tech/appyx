@@ -2,7 +2,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
+import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 
 /**
@@ -12,13 +12,13 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
  */
 internal class Pop<T : Any> : Operation<T> {
 
-    override fun isApplicable(elements: List<BackStackElement<T>>): Boolean =
+    override fun isApplicable(elements: Elements<T>): Boolean =
         elements.size > 1
 
     override fun invoke(
-        elements: List<BackStackElement<T>>,
+        elements: Elements<T>,
         uuidGenerator: UuidGenerator
-    ): List<BackStackElement<T>> {
+    ): Elements<T> {
 
         val destroyIndex =
             elements.indexOfLast { it.targetState == BackStack.TransitionState.ON_SCREEN }
