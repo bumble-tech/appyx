@@ -1,13 +1,11 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -29,17 +27,29 @@ fun <Routing, State> AnimatedChildNode(
     }
 ) {
     key(childEntry.key) {
-        val transitionScope =
-            transitionHandler.handle(
-                fromState = routingElement.fromState,
-                toState = routingElement.targetState,
-                onTransitionFinished = {
-                    routingSource.onTransitionFinished(childEntry.key)
-                })
-        transitionScope.decorator(
-            transitionModifier = transitionScope.transitionModifier,
-            child = { childEntry.node.Compose() },
-        )
+        var size by remember { mutableStateOf(IntSize.Zero) }
+        Box(
+            Modifier
+                .fillMaxSize()
+                .onSizeChanged {
+                    size = it
+                }
+        ) {
+            val transitionScope =
+                transitionHandler.handle(
+                    fromState = routingElement.fromState,
+                    toState = routingElement.targetState,
+                    onTransitionFinished = {
+                        routingSource.onTransitionFinished(childEntry.key)
+                    },
+                    params = TransitionParams(size, true)
+                )
+            transitionScope.decorator(
+                transitionModifier = transitionScope.transitionModifier,
+                child = { childEntry.node.Compose() },
+            )
+        }
+
     }
 }
 

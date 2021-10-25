@@ -6,11 +6,15 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import com.github.zsoltk.composeribs.core.TransitionParams
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider(
@@ -18,8 +22,17 @@ class BackStackSlider(
 ) : UpdateTransitionHandler<BackStack.TransitionState>() {
 
     @Composable
-    override fun map(transition: Transition<BackStack.TransitionState>): Modifier {
-        val width = LocalConfiguration.current.screenWidthDp
+    override fun map(
+        transition: Transition<BackStack.TransitionState>,
+        params: TransitionParams
+    ): Modifier {
+        val width: Int = with(LocalDensity.current) {
+            if (params.clipToBounds) {
+                params.bounds.width.toDp().value.roundToInt()
+            } else {
+                LocalConfiguration.current.screenWidthDp
+            }
+        }
         val offset = transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
@@ -31,7 +44,13 @@ class BackStackSlider(
                 }
             })
 
-        return Modifier
+
+        return if (params.clipToBounds) {
+            Modifier.clipToBounds()
+        } else {
+            Modifier
+        }
             .offset(Dp(offset.value.x), Dp(offset.value.y))
+
     }
 }

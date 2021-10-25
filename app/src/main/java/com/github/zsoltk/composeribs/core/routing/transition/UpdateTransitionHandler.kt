@@ -8,11 +8,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.ChildTransitionScope
 import com.github.zsoltk.composeribs.core.ChildTransitionScopeImpl
+import com.github.zsoltk.composeribs.core.TransitionParams
 
 abstract class UpdateTransitionHandler<S> : TransitionHandler<S> {
 
     @Composable
     override fun handle(
+        params: TransitionParams,
         fromState: S,
         toState: S,
         onTransitionFinished: (S) -> Unit
@@ -24,9 +26,14 @@ abstract class UpdateTransitionHandler<S> : TransitionHandler<S> {
         if (transition.currentState == currentState.targetState) {
             onTransitionFinished(currentState.targetState)
         }
-        return ChildTransitionScopeImpl(transition, map(transition))
+        return ChildTransitionScopeImpl(
+            transition, map(
+                transition,
+                params = params
+            )
+        )
     }
 
     @Composable
-    abstract fun map(transition: Transition<S>): Modifier
+    abstract fun map(transition: Transition<S>, params: TransitionParams): Modifier
 }

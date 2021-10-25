@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.github.zsoltk.composeribs.core.TransitionParams
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
@@ -14,7 +15,7 @@ import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHan
 object ContainerTransitionHandlerColour : UpdateTransitionHandler<BackStack.TransitionState>() {
 
     @Composable
-    override fun map(transition: Transition<BackStack.TransitionState>): Modifier {
+    override fun map(transition: Transition<BackStack.TransitionState>, params: TransitionParams): Modifier {
         val color = transition.animateColor(
             transitionSpec = { tween(3500) },
             targetValueByState = {
