@@ -1,7 +1,6 @@
 package com.github.zsoltk.composeribs.core.children
 
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey

@@ -8,7 +8,6 @@ import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import kotlinx.parcelize.Parcelize
 

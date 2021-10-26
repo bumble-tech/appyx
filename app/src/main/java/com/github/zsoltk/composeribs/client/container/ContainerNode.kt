@@ -28,7 +28,6 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Tile
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node
