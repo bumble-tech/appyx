@@ -20,8 +20,12 @@ internal class Replace<T : Any>(
     ): Elements<T> {
         require(elements.isNotEmpty()) { "No element to be replaced, state=$elements" }
 
-        return elements.apply {
-            last().copy(targetState = BackStack.TransitionState.DESTROYED)
+        return elements.mapIndexed { index, element ->
+            if (index == elements.lastIndex) {
+                element.copy(targetState = BackStack.TransitionState.DESTROYED)
+            } else {
+                element
+            }
         } + BackStackElement(
             key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
             fromState = BackStack.TransitionState.CREATED,
