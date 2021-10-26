@@ -36,9 +36,12 @@ internal class Remove<T : Any>(
         val toRemoveIndex = elements.indexOf(toRemove)
         val toRemovePreviousIndex = toRemoveIndex - 1
         return if (toRemoveIndex == elements.lastIndex) {
-            elements.apply {
-                getOrNull(toRemoveIndex)?.copy(targetState = BackStack.TransitionState.DESTROYED)
-                getOrNull(toRemovePreviousIndex)?.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+            elements.mapIndexed { index, element ->
+                when (index) {
+                    toRemoveIndex -> element.copy(targetState = BackStack.TransitionState.DESTROYED)
+                    toRemovePreviousIndex -> element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+                    else -> element
+                }
             }
         } else {
             elements.minus(toRemove)
