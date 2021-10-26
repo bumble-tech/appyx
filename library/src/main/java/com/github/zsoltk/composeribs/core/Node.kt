@@ -258,7 +258,7 @@ abstract class Node<T>(
     }
 
     fun upNavigation() {
-        parent?.handleUpNavigation()
+        parent?.handleUpNavigation() ?: routingSource?.onUpNavigation()
     }
 
     private fun handleUpNavigation() {

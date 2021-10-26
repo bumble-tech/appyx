@@ -1,15 +1,7 @@
 package com.github.zsoltk.composeribs.client.backstack
 
 import android.os.Parcelable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,9 +13,9 @@ import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routi
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import kotlinx.parcelize.Parcelize
@@ -38,7 +30,7 @@ class BackStackExampleNode(
 ) : Node<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
-) {
+), UpNavigationHandler {
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -85,6 +77,15 @@ class BackStackExampleNode(
                     }
                 }
             }
+        }
+    }
+
+    override fun handleUpNavigation(): Boolean {
+        return if (backStack.canHandleBackPress.value) {
+            backStack.pop()
+            true
+        } else {
+            false
         }
     }
 }

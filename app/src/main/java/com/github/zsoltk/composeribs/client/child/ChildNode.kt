@@ -95,6 +95,10 @@ class ChildNode(
                     Button(onClick = { counter++ }) {
                         Text("Increment")
                     }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(onClick = { upNavigation() }) {
+                        Text("Go up")
+                    }
                 }
             }
         }
