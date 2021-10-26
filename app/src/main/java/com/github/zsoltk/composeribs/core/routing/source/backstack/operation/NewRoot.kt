@@ -21,7 +21,9 @@ internal class NewRoot<T : Any>(
     ): Elements<T> {
         val last = elements.lastOrNull()?.copy(targetState = BackStack.TransitionState.DESTROYED)
 
-        return listOfNotNull(
+        requireNotNull(last) { "No previous elements, state=$elements" }
+
+        return listOf(
             last,
             BackStackElement(
                 key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
