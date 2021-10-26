@@ -19,6 +19,10 @@ import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.ChildEntryMap
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
+import com.github.zsoltk.composeribs.core.plugin.NodeAware
+import com.github.zsoltk.composeribs.core.plugin.Plugin
+import com.github.zsoltk.composeribs.core.plugin.Saveable
+import com.github.zsoltk.composeribs.core.plugin.plugins
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
@@ -41,6 +45,7 @@ abstract class Node<T>(
     final override val routingSource: RoutingSource<T, *>? = null,
     savedStateMap: SavedStateMap?,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
+    plugins: List<Plugin> = emptyList()
 ) : Resolver<T>,
     Renderable,
     LifecycleOwner,
@@ -52,6 +57,8 @@ abstract class Node<T>(
     private val nodeLifecycleManager = NodeLifecycleManager(this)
     private var transitionsInBackgroundJob: Job? = null
 
+    val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
+
     init {
         lifecycle.addObserver(LifecycleLogger)
         routingSource?.let { source ->
@@ -59,6 +66,7 @@ abstract class Node<T>(
         }
         nodeLifecycleManager.start()
         manageTransitions()
+        plugins<NodeAware>().forEach { it.init(this) }
     }
 
     private suspend fun RoutingSource<T, *>.syncChildrenWithRoutingSource() {
@@ -184,10 +192,23 @@ abstract class Node<T>(
     @CallSuper
     open fun onSaveInstanceState(scope: SaverScope): SavedStateMap {
         val map = mutableMapOf<String, Any>()
+        saveRoutingState(map)
+        saveChildrenState(scope, map)
+        savePluginsState(scope, map)
+        return map
+    }
+
+    private fun saveRoutingState(map: MutableMap<String, Any>) {
         if (routingSource != null) {
             val state = routingSource.saveInstanceState()
             if (state != null) map[KEY_ROUTING_SOURCE] = state
         }
+    }
+
+    private fun saveChildrenState(
+        scope: SaverScope,
+        map: MutableMap<String, Any>
+    ) {
         val children = _children.value
         if (children.isNotEmpty()) {
             val childrenState =
@@ -200,7 +221,19 @@ abstract class Node<T>(
                     }
             if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] = childrenState
         }
-        return map
+    }
+
+    private fun savePluginsState(
+        scope: SaverScope,
+        map: MutableMap<String, Any>
+    ) {
+        val aggregatedPluginState = plugins<Saveable>()
+            .map { saveable -> saveable.onSavedInstanceState(scope) }
+            .fold(mutableMapOf<String, Any?>()) { pluginsState, pluginSaved ->
+                pluginsState.putAll(pluginSaved)
+                pluginsState
+            }
+        if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
     }
 
     final override fun getLifecycle(): Lifecycle =
@@ -213,6 +246,7 @@ abstract class Node<T>(
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"
         const val KEY_CHILDREN_STATE = "ChildrenState"
+        const val KEY_PLUGINS_STATE = "PluginsState"
     }
 
 }
