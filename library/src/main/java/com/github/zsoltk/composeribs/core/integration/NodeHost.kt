@@ -11,9 +11,10 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 
 fun interface NodeFactory<N : Node<*>> {
-    fun create(restoreState: Map<String, Any>?): N
+    fun create(buildContext: BuildContext): N
 }
 
 /**
@@ -45,8 +46,8 @@ fun <N : Node<*>> rememberNode(factory: NodeFactory<N>): State<N> =
         inputs = arrayOf(),
         stateSaver = mapSaver(
             save = { node -> node.onSaveInstanceState(this) },
-            restore = { state -> factory.create(restoreState = state) },
+            restore = { state -> factory.create(buildContext = BuildContext.root(state)) },
         ),
     ) {
-        mutableStateOf(factory.create(restoreState = null))
+        mutableStateOf(factory.create(buildContext = BuildContext.root(null)))
     }

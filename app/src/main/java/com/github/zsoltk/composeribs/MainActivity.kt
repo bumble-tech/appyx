@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.container.ContainerNode
 import com.github.zsoltk.composeribs.core.integration.NodeHost
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.ui.Rf1Theme
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
-                        NodeHost { ContainerNode(savedStateMap = it) }
+                        NodeHost { ContainerNode(buildContext = it) }
                     }
                 }
             }
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 fun DefaultPreview() {
     Rf1Theme {
         Column {
-            ContainerNode(savedStateMap = null).Compose()
+            ContainerNode(buildContext = BuildContext.root(null)).Compose()
         }
     }
 }

@@ -23,20 +23,21 @@ import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
 class BackStackExampleNode(
-    savedStateMap: SavedStateMap?,
+    buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Child(0),
-        savedStateMap = savedStateMap,
+        savedStateMap = buildContext.savedStateMap,
     )
 ) : Node<Routing>(
     routingSource = backStack,
-    savedStateMap = savedStateMap,
+    buildContext = buildContext,
 ) {
 
     sealed class Routing : Parcelable {
@@ -44,9 +45,9 @@ class BackStackExampleNode(
         data class Child(val counter: Int) : Routing()
     }
 
-    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            is Child -> ChildNode(routing.counter, savedStateMap)
+            is Child -> ChildNode(routing.counter, buildContext)
         }
 
     @Composable

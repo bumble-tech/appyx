@@ -30,6 +30,7 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
@@ -42,10 +43,10 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
-    savedStateMap: SavedStateMap?,
+    buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Picker,
-        savedStateMap = savedStateMap,
+        savedStateMap = buildContext.savedStateMap,
     ),
     private val transitionHandler: UpdateTransitionHandler<TransitionState> = CombinedHandler(
         listOf(
@@ -55,7 +56,7 @@ class ContainerNode(
     )
 ) : Node<Routing>(
     routingSource = backStack,
-    savedStateMap = savedStateMap,
+    buildContext = buildContext,
 ) {
 
     sealed class Routing : Parcelable {
@@ -72,12 +73,12 @@ class ContainerNode(
         object ModalExample : Routing()
     }
 
-    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            is Picker -> node { ExamplesList() }
-            is BackStackExample -> BackStackExampleNode(savedStateMap)
-            is ModalExample -> ModalExampleNode(savedStateMap)
-            is TilesExample -> TilesExampleNode(savedStateMap)
+            is Picker -> node(buildContext) { ExamplesList() }
+            is BackStackExample -> BackStackExampleNode(buildContext)
+            is ModalExample -> ModalExampleNode(buildContext)
+            is TilesExample -> TilesExampleNode(buildContext)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)

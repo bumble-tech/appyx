@@ -19,10 +19,9 @@ import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.ChildEntryMap
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
-import com.github.zsoltk.composeribs.core.plugin.NodeAware
-import com.github.zsoltk.composeribs.core.plugin.Plugin
-import com.github.zsoltk.composeribs.core.plugin.Saveable
-import com.github.zsoltk.composeribs.core.plugin.plugins
+import com.github.zsoltk.composeribs.core.modality.AncestryInfo
+import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.plugin.*
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
@@ -43,13 +42,16 @@ val LocalNode = compositionLocalOf<Node<*>?> { null }
 
 abstract class Node<T>(
     final override val routingSource: RoutingSource<T, *>? = null,
-    savedStateMap: SavedStateMap?,
+    buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     plugins: List<Plugin> = emptyList()
 ) : Resolver<T>,
     Renderable,
     LifecycleOwner,
     Parent<T> {
+
+    private val savedStateMap: SavedStateMap? = buildContext.savedStateMap
+    private val ancestryInfo: AncestryInfo = buildContext.ancestryInfo
 
     private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
     final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
@@ -58,6 +60,12 @@ abstract class Node<T>(
     private var transitionsInBackgroundJob: Job? = null
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
+
+    private val parent: Node<*>? =
+        when (ancestryInfo) {
+            is AncestryInfo.Child -> ancestryInfo.anchor
+            is AncestryInfo.Root -> null
+        }
 
     init {
         lifecycle.addObserver(LifecycleLogger)
@@ -80,7 +88,7 @@ abstract class Node<T>(
                 val mutableMap = map.toMutableMap()
                 newKeys.forEach { key ->
                     mutableMap[key] =
-                        ChildEntry.create(key, this@Node, null, childMode)
+                        ChildEntry.create(key, this@Node, null.toBuildContext(), childMode)
                 }
                 removedKeys.forEach { key ->
                     mutableMap.remove(key)
@@ -92,8 +100,14 @@ abstract class Node<T>(
 
     private fun SavedStateMap.restoreChildren(): ChildEntryMap<T>? =
         (get(KEY_CHILDREN_STATE) as? Map<RoutingKey<T>, SavedStateMap>)?.mapValues {
-            ChildEntry.create(it.key, this@Node, it.value, childMode)
+            ChildEntry.create(it.key, this@Node, it.value.toBuildContext(), childMode)
         }
+
+    private fun SavedStateMap?.toBuildContext(): BuildContext =
+        BuildContext(
+            ancestryInfo = AncestryInfo.Child(this@Node),
+            savedStateMap = this
+        )
 
     fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry.Eager<T> {
         val value = _children.value
@@ -216,7 +230,7 @@ abstract class Node<T>(
                     .mapValues { (_, entry) ->
                         when (entry) {
                             is ChildEntry.Eager -> entry.node.onSaveInstanceState(scope)
-                            is ChildEntry.Lazy -> entry.savedStateMap
+                            is ChildEntry.Lazy -> entry.buildContext.savedStateMap
                         }
                     }
             if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] = childrenState
@@ -241,6 +255,18 @@ abstract class Node<T>(
 
     internal fun updateLifecycleState(state: Lifecycle.State) {
         nodeLifecycleManager.updateLifecycleState(state)
+    }
+
+    fun upNavigation() {
+        parent?.handleUpNavigation()
+    }
+
+    private fun handleUpNavigation() {
+        val subtreeHandlers = plugins.filterIsInstance<UpNavigationHandler>()
+
+        if (subtreeHandlers.none { it.handleUpNavigation() }) {
+            upNavigation()
+        }
     }
 
     companion object {
