@@ -14,7 +14,6 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
  */
 internal class SingleTop<T : Any>(
     private val element: T
-
 ) : BackStack.Operation<T> {
 
     override fun isApplicable(elements: Elements<T>): Boolean = true
@@ -47,7 +46,18 @@ internal class SingleTop<T : Any>(
         override fun invoke(
             elements: Elements<T>,
             uuidGenerator: UuidGenerator
-        ): Elements<T> = elements.dropLast(elements.size - position - 1)
+        ): Elements<T> {
+            val last = elements.last().copy(targetState = BackStack.TransitionState.DESTROYED)
+            val newElements = elements.dropLast(elements.size - position - 1)
+
+            return newElements.mapIndexed { index, element ->
+                if (index == elements.lastIndex) {
+                    element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+                } else {
+                    element
+                }
+            } + last
+        }
     }
 
     private class SingleTopReplaceBackStackOperation<T : Any>(
@@ -58,12 +68,16 @@ internal class SingleTop<T : Any>(
         override fun invoke(
             elements: Elements<T>,
             uuidGenerator: UuidGenerator
-        ): Elements<T> =
-            elements.dropLast(elements.size - position) + BackStackElement(
+        ): Elements<T> {
+            val last = elements.last().copy(targetState = BackStack.TransitionState.DESTROYED)
+            val newElements = elements.dropLast(elements.size - position)
+
+            return newElements + last + BackStackElement(
                 key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,
             )
+        }
     }
 }
 
