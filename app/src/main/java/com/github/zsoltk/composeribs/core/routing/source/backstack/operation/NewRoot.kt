@@ -18,13 +18,18 @@ internal class NewRoot<T : Any>(
     override fun invoke(
         elements: Elements<T>,
         uuidGenerator: UuidGenerator
-    ): Elements<T> = listOf(
-        BackStackElement(
-            key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
-            fromState = BackStack.TransitionState.CREATED,
-            targetState = BackStack.TransitionState.ON_SCREEN,
+    ): Elements<T> {
+        val last = elements.lastOrNull()?.copy(targetState = BackStack.TransitionState.DESTROYED)
+
+        return listOfNotNull(
+            last,
+            BackStackElement(
+                key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
+                fromState = BackStack.TransitionState.CREATED,
+                targetState = BackStack.TransitionState.ON_SCREEN,
+            )
         )
-    )
+    }
 }
 
 fun <T : Any> BackStack<T>.newRoot(element: T) {
