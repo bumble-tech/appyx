@@ -22,18 +22,27 @@ internal class Remove<T : Any>(
         uuidGenerator: UuidGenerator
     ): Elements<T> =
         when {
-            elements.hasContentWithKey() -> removeContent(elements)
+            elements.hasContentWithKey() -> updateContent(elements)
             else -> elements
         }
 
     private fun Elements<T>.hasContentWithKey() =
         find { it.key == key } != null
 
-    private fun removeContent(elements: Elements<T>): Elements<T> {
+    private fun updateContent(elements: Elements<T>): Elements<T> {
         val toRemove = elements.find { it.key == key }
 
         requireNotNull(toRemove)
-        return elements.minus(toRemove)
+        val toRemoveIndex = elements.indexOf(toRemove)
+        val toRemovePreviousIndex = toRemoveIndex - 1
+        return if (toRemoveIndex == elements.lastIndex) {
+            elements.apply {
+                getOrNull(toRemoveIndex)?.copy(targetState = BackStack.TransitionState.DESTROYED)
+                getOrNull(toRemovePreviousIndex)?.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+            }
+        } else {
+            elements.minus(toRemove)
+        }
     }
 }
 
