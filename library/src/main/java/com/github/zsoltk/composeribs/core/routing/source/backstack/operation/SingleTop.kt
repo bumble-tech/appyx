@@ -1,9 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.source.backstack.*
 
 /**
  * Operation:
@@ -47,16 +44,18 @@ internal class SingleTop<T : Any>(
             elements: Elements<T>,
             uuidGenerator: UuidGenerator
         ): Elements<T> {
-            val last = elements.last().copy(targetState = BackStack.TransitionState.DESTROYED)
+            val last = elements.current
+            requireNotNull(last)
+
             val newElements = elements.dropLast(elements.size - position - 1)
 
             return newElements.mapIndexed { index, element ->
-                if (index == elements.lastIndex) {
+                if (index == newElements.lastIndex) {
                     element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
                 } else {
                     element
                 }
-            } + last
+            } + last.copy(targetState = BackStack.TransitionState.DESTROYED)
         }
     }
 
@@ -69,10 +68,12 @@ internal class SingleTop<T : Any>(
             elements: Elements<T>,
             uuidGenerator: UuidGenerator
         ): Elements<T> {
-            val last = elements.last().copy(targetState = BackStack.TransitionState.DESTROYED)
+            val last = elements.current
+            requireNotNull(last)
+
             val newElements = elements.dropLast(elements.size - position)
 
-            return newElements + last + BackStackElement(
+            return newElements + last.copy(targetState = BackStack.TransitionState.DESTROYED) + BackStackElement(
                 key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,
