@@ -44,8 +44,8 @@ internal class SingleTop<T : Any>(
             elements: Elements<T>,
             uuidGenerator: UuidGenerator
         ): Elements<T> {
-            val last = elements.current
-            requireNotNull(last)
+            val current = elements.current
+            requireNotNull(current)
 
             val newElements = elements.dropLast(elements.size - position - 1)
 
@@ -55,7 +55,7 @@ internal class SingleTop<T : Any>(
                 } else {
                     element
                 }
-            } + last.copy(targetState = BackStack.TransitionState.DESTROYED)
+            } + current.copy(targetState = BackStack.TransitionState.DESTROYED)
         }
     }
 
@@ -68,12 +68,12 @@ internal class SingleTop<T : Any>(
             elements: Elements<T>,
             uuidGenerator: UuidGenerator
         ): Elements<T> {
-            val last = elements.current
-            requireNotNull(last)
+            val current = elements.current
+            requireNotNull(current)
 
             val newElements = elements.dropLast(elements.size - position)
 
-            return newElements + last.copy(targetState = BackStack.TransitionState.DESTROYED) + BackStackElement(
+            return newElements + current.copy(targetState = BackStack.TransitionState.DESTROYED) + BackStackElement(
                 key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,
