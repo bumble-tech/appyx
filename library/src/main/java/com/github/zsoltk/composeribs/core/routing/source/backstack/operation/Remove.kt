@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
 /**
  * Operation:
@@ -34,10 +35,8 @@ internal class Remove<T : Any>(
 
         requireNotNull(toRemove)
         val toRemoveIndex = elements.indexOf(toRemove)
-        val lastIndex =
-            elements.indexOfLast { it.targetState == BackStack.TransitionState.ON_SCREEN }
 
-        return if (toRemoveIndex == lastIndex) {
+        return if (toRemoveIndex == elements.currentIndex) {
             val unStashIndex =
                 elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
             require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }

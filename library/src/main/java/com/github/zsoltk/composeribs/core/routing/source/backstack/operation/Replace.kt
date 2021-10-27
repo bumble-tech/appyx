@@ -20,11 +20,8 @@ internal class Replace<T : Any>(
     ): Elements<T> {
         require(elements.isNotEmpty()) { "No element to be replaced, state=$elements" }
 
-        val lastIndex =
-            elements.indexOfLast { it.targetState == BackStack.TransitionState.ON_SCREEN }
-
         return elements.mapIndexed { index, element ->
-            if (index == lastIndex) {
+            if (index == elements.currentIndex) {
                 element.copy(targetState = BackStack.TransitionState.DESTROYED)
             } else {
                 element

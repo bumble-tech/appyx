@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
 /**
  * Operation:
@@ -20,8 +21,7 @@ internal class Pop<T : Any> : Operation<T> {
         uuidGenerator: UuidGenerator
     ): Elements<T> {
 
-        val destroyIndex =
-            elements.indexOfLast { it.targetState == BackStack.TransitionState.ON_SCREEN }
+        val destroyIndex = elements.currentIndex
         val unStashIndex =
             elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
         require(destroyIndex != -1) { "Nothing to destroy, state=$elements" }
