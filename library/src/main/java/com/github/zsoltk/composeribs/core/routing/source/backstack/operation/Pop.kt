@@ -13,7 +13,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 internal class Pop<T : Any> : Operation<T> {
 
     override fun isApplicable(elements: Elements<T>): Boolean =
-        elements.size > 1
+        elements.isNotEmpty()
 
     override fun invoke(
         elements: Elements<T>,
