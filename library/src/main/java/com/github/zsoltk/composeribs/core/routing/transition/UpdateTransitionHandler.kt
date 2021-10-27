@@ -6,7 +6,6 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.IntSize
@@ -16,14 +15,13 @@ import com.github.zsoltk.composeribs.core.ChildTransitionScopeImpl
 abstract class UpdateTransitionHandler<S>(open val isClipToBounds: Boolean = false) :
     TransitionHandler<S> {
 
-    private fun Modifier.clipBounds(): Modifier =
-        composed {
-            if (isClipToBounds) {
-                this.clipToBounds()
-            } else {
-                this
-            }
+    private val clipToBoundsModifier : Modifier by lazy(LazyThreadSafetyMode.NONE) {
+        if (isClipToBounds) {
+            Modifier.clipToBounds()
+        } else {
+            Modifier
         }
+    }
 
     @Composable
     private fun convertParamsToBounds(transitionParams: TransitionParams): IntSize {
@@ -53,8 +51,7 @@ abstract class UpdateTransitionHandler<S>(open val isClipToBounds: Boolean = fal
         }
         return ChildTransitionScopeImpl(
             transition = transition,
-            transitionModifier = Modifier
-                .clipBounds()
+            transitionModifier = clipToBoundsModifier
                 .then(
                     map(
                         transition = transition,
