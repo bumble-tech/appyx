@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
@@ -35,9 +36,9 @@ fun <T : Any, S> Subtree(
                 routingSource,
                 transitionHandler,
                 TransitionParams(
-                    boundsDp = IntSize(
-                        width = maxWidth.value.roundToInt(),
-                        height = maxHeight.value.roundToInt()
+                    bounds = TransitionBounds(
+                        width = maxWidth,
+                        height = maxHeight
                     )
                 )
             )

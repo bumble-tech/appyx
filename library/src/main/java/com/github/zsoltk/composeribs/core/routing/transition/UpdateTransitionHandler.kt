@@ -8,15 +8,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.platform.LocalDensity
 import com.github.zsoltk.composeribs.core.ChildTransitionScope
 import com.github.zsoltk.composeribs.core.ChildTransitionScopeImpl
 
-abstract class UpdateTransitionHandler<S>(open val isClipToBounds: Boolean = false) :
+abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false) :
     TransitionHandler<S> {
 
-    private val clipToBoundsModifier : Modifier by lazy(LazyThreadSafetyMode.NONE) {
-        if (isClipToBounds) {
+    private val clipToBoundsModifier: Modifier by lazy(LazyThreadSafetyMode.NONE) {
+        if (clipToBounds) {
             Modifier.clipToBounds()
         } else {
             Modifier
@@ -24,14 +24,17 @@ abstract class UpdateTransitionHandler<S>(open val isClipToBounds: Boolean = fal
     }
 
     @Composable
-    private fun convertParamsToBounds(transitionParams: TransitionParams): IntSize {
-        return if (isClipToBounds) {
-            transitionParams.boundsDp
+    private fun convertParamsToBounds(transitionParams: TransitionParams): TransitionBounds {
+        return if (clipToBounds) {
+            transitionParams.bounds
         } else {
-            IntSize(
-                LocalConfiguration.current.screenWidthDp,
-                LocalConfiguration.current.screenHeightDp
-            )
+            with(LocalDensity.current) {
+                val configuration = LocalConfiguration.current
+                TransitionBounds(
+                    width = configuration.screenWidthDp.toDp(),
+                    height = configuration.screenHeightDp.toDp()
+                )
+            }
         }
     }
 
@@ -55,12 +58,12 @@ abstract class UpdateTransitionHandler<S>(open val isClipToBounds: Boolean = fal
                 .then(
                     map(
                         transition = transition,
-                        transitionBoundsDp = convertParamsToBounds(transitionParams)
+                        transitionBounds = convertParamsToBounds(transitionParams)
                     )
                 )
         )
     }
 
     @Composable
-    abstract fun map(transition: Transition<S>, transitionBoundsDp: IntSize): Modifier
+    abstract fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier
 }

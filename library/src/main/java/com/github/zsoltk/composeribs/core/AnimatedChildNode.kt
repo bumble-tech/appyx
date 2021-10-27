@@ -9,6 +9,7 @@ import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
@@ -37,9 +38,9 @@ fun <Routing, State> AnimatedChildNode(
                         routingSource.onTransitionFinished(childEntry.key)
                     },
                     transitionParams = TransitionParams(
-                        boundsDp = IntSize(
-                            width = maxWidth.value.roundToInt(),
-                            height = maxHeight.value.roundToInt()
+                        bounds = TransitionBounds(
+                            width = maxWidth,
+                            height = maxHeight
                         )
                     )
                 )

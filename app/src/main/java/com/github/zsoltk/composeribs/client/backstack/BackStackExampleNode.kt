@@ -63,7 +63,7 @@ class BackStackExampleNode(
                 ) {
                     Subtree(
                         routingSource = backStack,
-                        transitionHandler = BackStackSlider(isClipToBounds = true)
+                        transitionHandler = BackStackSlider(clipToBounds = true)
                     ) {
                         children<Routing> { transitionModifier, child ->
                             Box(modifier = transitionModifier) {

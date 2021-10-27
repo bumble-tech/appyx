@@ -9,6 +9,7 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
@@ -41,9 +42,9 @@ inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Node<
                             routingSource.onTransitionFinished(childEntry.key)
                         },
                         transitionParams = TransitionParams(
-                            boundsDp = IntSize(
-                                width = maxWidth.value.roundToInt(),
-                                height = maxHeight.value.roundToInt()
+                            bounds = TransitionBounds(
+                                width = maxWidth,
+                                height = maxHeight
                             )
                         )
                     )

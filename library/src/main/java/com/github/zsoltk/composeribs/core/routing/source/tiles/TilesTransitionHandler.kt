@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
@@ -19,7 +19,7 @@ class TilesTransitionHandler(
 ) : UpdateTransitionHandler<Tiles.TransitionState>() {
 
     @Composable
-    override fun map(transition: Transition<Tiles.TransitionState>, transitionBoundsDp: IntSize): Modifier {
+    override fun map(transition: Transition<Tiles.TransitionState>, transitionBounds: TransitionBounds): Modifier {
         val scale = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
