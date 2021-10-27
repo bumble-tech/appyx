@@ -6,7 +6,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalConfiguration
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
