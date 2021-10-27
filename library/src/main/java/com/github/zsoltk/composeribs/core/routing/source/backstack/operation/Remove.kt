@@ -34,12 +34,18 @@ internal class Remove<T : Any>(
 
         requireNotNull(toRemove)
         val toRemoveIndex = elements.indexOf(toRemove)
-        val toRemovePreviousIndex = toRemoveIndex - 1
-        return if (toRemoveIndex == elements.lastIndex) {
+        val lastIndex =
+            elements.indexOfLast { it.targetState == BackStack.TransitionState.ON_SCREEN }
+
+        return if (toRemoveIndex == lastIndex) {
+            val unStashIndex =
+                elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
+            require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }
+
             elements.mapIndexed { index, element ->
                 when (index) {
                     toRemoveIndex -> element.copy(targetState = BackStack.TransitionState.DESTROYED)
-                    toRemovePreviousIndex -> element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+                    unStashIndex -> element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
                     else -> element
                 }
             }
