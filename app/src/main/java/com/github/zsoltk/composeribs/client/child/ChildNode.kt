@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.client.child
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.core.LeafNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.LocalUpNavigationHandler
 import com.github.zsoltk.composeribs.ui.atomic_tangerine
 import com.github.zsoltk.composeribs.ui.manatee
 import com.github.zsoltk.composeribs.ui.md_amber_500
@@ -86,6 +88,7 @@ class ChildNode(
             Column(
                 modifier = Modifier.padding(24.dp)
             ) {
+                val upNavigationHandler = LocalUpNavigationHandler.current
                 Text("Child ($i)")
                 Row {
                     // Local UI state should be saved too (both in backstack and onSaveInstanceState)
@@ -96,7 +99,7 @@ class ChildNode(
                         Text("Increment")
                     }
                     Spacer(modifier = Modifier.width(16.dp))
-                    Button(onClick = { upNavigation() }) {
+                    Button(onClick = { upNavigation(upNavigationHandler) }) {
                         Text("Go up")
                     }
                 }

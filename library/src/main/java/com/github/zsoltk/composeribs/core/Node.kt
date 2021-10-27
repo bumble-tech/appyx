@@ -22,11 +22,7 @@ import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.*
-import com.github.zsoltk.composeribs.core.routing.Renderable
-import com.github.zsoltk.composeribs.core.routing.Resolver
-import com.github.zsoltk.composeribs.core.routing.RoutingElement
-import com.github.zsoltk.composeribs.core.routing.RoutingKey
-import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.*
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import kotlinx.coroutines.Job
@@ -257,15 +253,15 @@ abstract class Node<T>(
         nodeLifecycleManager.updateLifecycleState(state)
     }
 
-    fun upNavigation() {
-        parent?.handleUpNavigation() ?: routingSource?.onUpNavigation()
+    fun upNavigation(fallbackUpNavigationHandler: FallbackUpNavigationHandler) {
+        parent?.handleUpNavigation(fallbackUpNavigationHandler) ?: fallbackUpNavigationHandler.handle()
     }
 
-    private fun handleUpNavigation() {
+    private fun handleUpNavigation(fallbackUpNavigationHandler: FallbackUpNavigationHandler) {
         val subtreeHandlers = plugins.filterIsInstance<UpNavigationHandler>()
 
         if (subtreeHandlers.none { it.handleUpNavigation() }) {
-            upNavigation()
+            upNavigation(fallbackUpNavigationHandler)
         }
     }
 

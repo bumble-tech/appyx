@@ -30,7 +30,7 @@ class BackStackExampleNode(
 ) : Node<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
-), UpNavigationHandler {
+) {
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -77,15 +77,6 @@ class BackStackExampleNode(
                     }
                 }
             }
-        }
-    }
-
-    override fun handleUpNavigation(): Boolean {
-        return if (backStack.canHandleBackPress.value) {
-            backStack.pop()
-            true
-        } else {
-            false
         }
     }
 }

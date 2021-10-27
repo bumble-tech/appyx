@@ -5,15 +5,12 @@ import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,6 +28,7 @@ import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
@@ -38,6 +36,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlid
 import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -56,7 +55,9 @@ class ContainerNode(
 ) : Node<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
-) {
+), UpNavigationHandler {
+
+    private val upNavigationOverridesChild: MutableStateFlow<Boolean> = MutableStateFlow(true)
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -164,7 +165,23 @@ class ContainerNode(
                 }) {
                     Text(text = "Trigger double navigation in 3 seconds")
                 }
+                Spacer(modifier = Modifier.size(24.dp))
+                Row {
+                    Checkbox(
+                        checked = upNavigationOverridesChild.collectAsState().value,
+                        onCheckedChange = { upNavigationOverridesChild.value = it }
+                    )
+                    Text(text = "Up navigation overrides child", color = Color.White)
+                }
             }
         }
     }
+
+    override fun handleUpNavigation(): Boolean =
+        if (upNavigationOverridesChild.value && backStack.canHandleBackPress.value) {
+            backStack.pop()
+            true
+        } else {
+            false
+        }
 }

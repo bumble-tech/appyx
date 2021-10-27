@@ -14,8 +14,6 @@ interface RoutingSource<Key, State> {
 
     fun onBackPressed()
 
-    fun onUpNavigation() = onBackPressed()
-
     fun onTransitionFinished(key: RoutingKey<Key>)
 
     /**
