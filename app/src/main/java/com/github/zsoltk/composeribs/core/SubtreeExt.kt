@@ -9,7 +9,9 @@ import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
+import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 
 
@@ -25,7 +27,6 @@ fun <T, S> Subtree(
 fun <T : Any, S> Subtree(
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
-    clipTransitionToBounds: Boolean = true,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
 ) {
     BoxWithConstraints {
@@ -34,8 +35,10 @@ fun <T : Any, S> Subtree(
                 routingSource,
                 transitionHandler,
                 TransitionParams(
-                    IntSize(constraints.maxWidth, constraints.maxHeight),
-                    clipTransitionToBounds
+                    boundsDp = IntSize(
+                        width = maxWidth.value.roundToInt(),
+                        height = maxHeight.value.roundToInt()
+                    )
                 )
             )
         )
@@ -100,7 +103,7 @@ class SubtreeScope<T, S>(
 class SubtreeTransitionScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>,
     val transitionHandler: TransitionHandler<S>,
-    val params: TransitionParams,
+    private val transitionParams: TransitionParams,
 ) {
 
     @Composable
@@ -133,7 +136,7 @@ class SubtreeTransitionScope<T : Any, S>(
                 saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
                     val transitionScope =
                         transitionHandler.handle(
-                            params = params,
+                            transitionParams = transitionParams,
                             fromState = routingElement.fromState,
                             toState = routingElement.targetState,
                             onTransitionFinished = {
@@ -151,11 +154,6 @@ class SubtreeTransitionScope<T : Any, S>(
         }
     }
 }
-
-data class TransitionParams(
-    val bounds: IntSize,
-    val clipToBounds: Boolean
-)
 
 interface ChildTransitionScope<S> {
     val transition: Transition<S>

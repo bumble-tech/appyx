@@ -6,36 +6,27 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import com.github.zsoltk.composeribs.core.TransitionParams
+import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
-import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider(
-    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { tween(1500) }
+    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { tween(1500) },
+    override val isClipToBounds: Boolean = false
 ) : UpdateTransitionHandler<BackStack.TransitionState>() {
 
     @Composable
     override fun map(
         transition: Transition<BackStack.TransitionState>,
-        params: TransitionParams
+        transitionBoundsDp: IntSize
     ): Modifier {
-        val width: Int = with(LocalDensity.current) {
-            if (params.clipToBounds) {
-                params.bounds.width.toDp().value.roundToInt()
-            } else {
-                LocalConfiguration.current.screenWidthDp
-            }
-        }
         val offset = transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
+                val width = transitionBoundsDp.width
                 when (it) {
                     BackStack.TransitionState.CREATED -> Offset(1.0f * width, 0f)
                     BackStack.TransitionState.ON_SCREEN -> Offset(0f, 0f)
@@ -45,12 +36,7 @@ class BackStackSlider(
             })
 
 
-        return if (params.clipToBounds) {
-            Modifier.clipToBounds()
-        } else {
-            Modifier
-        }
-            .offset(Dp(offset.value.x), Dp(offset.value.y))
+        return Modifier.offset(Dp(offset.value.x), Dp(offset.value.y))
 
     }
 }

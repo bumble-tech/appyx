@@ -2,17 +2,17 @@ package com.github.zsoltk.composeribs.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
+import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 
 @Composable
@@ -36,11 +36,11 @@ fun <Routing, State> AnimatedChildNode(
                     onTransitionFinished = {
                         routingSource.onTransitionFinished(childEntry.key)
                     },
-                    params = TransitionParams(
-                        IntSize(
-                            constraints.maxWidth,
-                            constraints.maxHeight
-                        ), true
+                    transitionParams = TransitionParams(
+                        boundsDp = IntSize(
+                            width = maxWidth.value.roundToInt(),
+                            height = maxHeight.value.roundToInt()
+                        )
                     )
                 )
             transitionScope.decorator(

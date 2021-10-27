@@ -61,7 +61,10 @@ class BackStackExampleNode(
                         .fillMaxWidth(0.75f)
                         .fillMaxHeight(0.75f)
                 ) {
-                    Subtree(routingSource = backStack, transitionHandler = BackStackSlider(), clipTransitionToBounds = true) {
+                    Subtree(
+                        routingSource = backStack,
+                        transitionHandler = BackStackSlider(isClipToBounds = true)
+                    ) {
                         children<Routing> { transitionModifier, child ->
                             Box(modifier = transitionModifier) {
                                 child()
