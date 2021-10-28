@@ -3,10 +3,10 @@ package com.github.zsoltk.composeribs.client.backstack
 import android.os.Parcelable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing
@@ -52,7 +52,7 @@ class BackStackExampleNode(
                     Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth()
-                        .fillMaxHeight(0.75f)
+                        .fillMaxHeight(0.60f)
                 ) {
                     Subtree(routingSource = backStack, transitionHandler = BackStackSlider()) {
                         children<Routing> { transitionModifier, child ->
@@ -63,9 +63,22 @@ class BackStackExampleNode(
                     }
                 }
 
+                val selectedRadioButton = rememberSaveable { mutableStateOf("A") }
                 Row {
-                    Button(onClick = { backStack.push(Child("To be done")) }) {
-                        Text(text = "Push routing")
+                    listOf("A", "B", "C", "D").forEach {
+                        Row {
+                            RadioButton(
+                                selected = it == selectedRadioButton.value,
+                                onClick = { selectedRadioButton.value = it }
+                            )
+                            Text(text = it)
+                            Spacer(modifier = Modifier.size(20.dp))
+                        }
+                    }
+                }
+                Row {
+                    Button(onClick = { backStack.push(Child(selectedRadioButton.value)) }) {
+                        Text(text = "Push")
                     }
                     Spacer(modifier = Modifier.size(12.dp))
                     val popAllowed by backStack.canHandleBackPress.collectAsState()
@@ -73,7 +86,7 @@ class BackStackExampleNode(
                         onClick = { backStack.pop() },
                         enabled = popAllowed,
                     ) {
-                        Text(text = "Pop routing")
+                        Text(text = "Pop")
                     }
                 }
             }
