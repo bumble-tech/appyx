@@ -89,7 +89,7 @@ class TilesExampleNode(
                 children<Routing> { transitionModifier, child ->
                     Box(modifier = transitionModifier
                         .fillMaxWidth()
-                        .height(100.dp)
+                        .height(150.dp)
                         .clickable {
                             // TODO No access to child id
                             // tiles.toggleSelection(child)
