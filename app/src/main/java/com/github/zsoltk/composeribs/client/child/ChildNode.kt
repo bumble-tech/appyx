@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.core.LeafNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.ui.atomic_tangerine
 import com.github.zsoltk.composeribs.ui.manatee
 import com.github.zsoltk.composeribs.ui.md_amber_500
@@ -96,7 +95,8 @@ class ChildNode(
                     Button(onClick = { counter++ }) {
                         Text("Increment")
                     }
-                    Spacer(modifier = Modifier.width(16.dp))
+                }
+                Row {
                     Button(onClick = { upNavigation() }) {
                         Text("Go up")
                     }
