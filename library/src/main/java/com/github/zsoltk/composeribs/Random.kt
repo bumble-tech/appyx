@@ -9,7 +9,10 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.github.zsoltk.composeribs.RoutingTransitionState.*
+import com.github.zsoltk.composeribs.RoutingTransitionState.ACTIVE
+import com.github.zsoltk.composeribs.RoutingTransitionState.ADDED
+import com.github.zsoltk.composeribs.RoutingTransitionState.INACTIVE
+import com.github.zsoltk.composeribs.RoutingTransitionState.REMOVED
 
 
 // Defined by RoutingSource, this one would be for BackStack:

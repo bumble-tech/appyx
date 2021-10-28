@@ -23,14 +23,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            CompositionLocalProvider(
-                LocalFallbackUpNavigationHandler provides upNavigationHandler
-            ) {
-                Rf1Theme {
-                    // A surface container using the 'background' color from the theme
-                    Surface(color = MaterialTheme.colors.background) {
-                        Column {
-                            NodeHost { ContainerNode(buildContext = it) }
+            Rf1Theme {
+                // A surface container using the 'background' color from the theme
+                Surface(color = MaterialTheme.colors.background) {
+                    Column {
+                        NodeHost(
+                            upNavigationHandler = upNavigationHandler
+                        ) {
+                            ContainerNode(buildContext = it)
                         }
                     }
                 }

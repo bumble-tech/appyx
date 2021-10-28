@@ -21,8 +21,19 @@ import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.plugin.*
-import com.github.zsoltk.composeribs.core.routing.*
+import com.github.zsoltk.composeribs.core.plugin.NodeAware
+import com.github.zsoltk.composeribs.core.plugin.Plugin
+import com.github.zsoltk.composeribs.core.plugin.plugins
+import com.github.zsoltk.composeribs.core.plugin.Saveable
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.Renderable
+import com.github.zsoltk.composeribs.core.routing.Resolver
+import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
+import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.UpHandler
+import com.github.zsoltk.composeribs.core.routing.UpNavigationDispatcher
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import kotlinx.coroutines.Job
@@ -44,14 +55,12 @@ abstract class Node<T>(
 ) : Resolver<T>,
     Renderable,
     LifecycleOwner,
-    UpNavigationHandler,
     Parent<T> {
 
-    private val savedStateMap: SavedStateMap? = buildContext.savedStateMap
-    private val ancestryInfo: AncestryInfo = buildContext.ancestryInfo
     private val upNavigationDispatcher: UpNavigationDispatcher = UpNavigationDispatcher()
 
-    private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
+    private val _children =
+        MutableStateFlow(buildContext.savedStateMap?.restoreChildren() ?: emptyMap())
     final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
 
     private val nodeLifecycleManager = NodeLifecycleManager(this)
@@ -60,7 +69,7 @@ abstract class Node<T>(
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
 
     private val parent: Node<*>? =
-        when (ancestryInfo) {
+        when (val ancestryInfo = buildContext.ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
         }
@@ -131,7 +140,6 @@ abstract class Node<T>(
         CompositionLocalProvider(
             LocalNode provides this,
             LocalLifecycleOwner provides this,
-            LocalUpNavigationDispatcher provides upNavigationDispatcher,
         ) {
             routingSource?.let { source ->
                 val canHandleBackPress by source.canHandleBackPress.collectAsState()
@@ -141,7 +149,8 @@ abstract class Node<T>(
             }
             val fallbackUpNavigationDispatcher = LocalFallbackUpNavigationHandler.current
             UpHandler(
-                nodeUpNavigation = ::handleUpNavigation,
+                upDispatcher = upNavigationDispatcher,
+                nodeUpNavigation = ::performUpNavigation,
                 fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
             )
 
@@ -270,8 +279,6 @@ abstract class Node<T>(
 
     private fun handleSubtreeUpNavigation(): Boolean =
         plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
-
-    override fun handleUpNavigation(): Boolean = false
 
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"

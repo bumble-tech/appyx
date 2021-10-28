@@ -1,12 +1,12 @@
 package com.github.zsoltk.composeribs.core.routing
 
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
-
-internal val LocalUpNavigationDispatcher: ProvidableCompositionLocal<UpNavigationDispatcher> =
-    compositionLocalOf { throw IllegalStateException("UpNavigationDispatcher is not initialised") }
 
 internal class UpNavigationDispatcher {
 
@@ -35,6 +35,7 @@ internal class UpNavigationDispatcher {
 
 @Composable
 internal fun UpHandler(
+    upDispatcher: UpNavigationDispatcher,
     nodeUpNavigation: () -> Boolean,
     fallbackUpNavigation: () -> Unit,
 ) {
@@ -51,9 +52,6 @@ internal fun UpHandler(
         }
     }
 
-    val upDispatcher = checkNotNull(LocalUpNavigationDispatcher.current) {
-        "No LocalUpNavigationDispatcher was provided via LocalUpNavigationDispatcher"
-    }
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner, upDispatcher) {
         // Add callback to the upDispatcher
