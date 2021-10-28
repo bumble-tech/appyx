@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.client.tiles
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child1
@@ -22,6 +26,7 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 import com.github.zsoltk.composeribs.core.visibleChildAsState
@@ -40,6 +45,20 @@ class TilesExampleNode(
 
     enum class Routing {
         Child1, Child2, Child3, Child4,
+    }
+
+    init {
+        whenChildrenAttached { commonLifecycle: Lifecycle, child1: ChildNode, child2: ChildNode ->
+            commonLifecycle.addObserver(object : DefaultLifecycleObserver {
+                override fun onCreate(owner: LifecycleOwner) {
+                    Log.d("TilesExampleNode", "Children $child1 and $child2 were connected")
+                }
+
+                override fun onDestroy(owner: LifecycleOwner) {
+                    Log.d("TilesExampleNode", "Children $child1 and $child2 were disconnected")
+                }
+            })
+        }
     }
 
     override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
