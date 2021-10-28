@@ -1,3 +1,3 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
-typealias Elements<T> = List<BackStackElement<T>>
+typealias BackStackElements<T> = List<BackStackElement<T>>

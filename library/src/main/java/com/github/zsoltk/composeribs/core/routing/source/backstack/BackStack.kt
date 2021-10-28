@@ -28,9 +28,9 @@ class BackStack<T : Any>(
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
-    interface Operation<T> : (Elements<T>, UuidGenerator) -> Elements<T> {
+    interface Operation<T> : (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> {
 
-        fun isApplicable(elements: Elements<T>): Boolean
+        fun isApplicable(elements: BackStackElements<T>): Boolean
     }
 
     // TODO Replace with UUID for restoration simplicity?
@@ -52,13 +52,13 @@ class BackStack<T : Any>(
         )
     )
 
-    override val all: StateFlow<Elements<T>> =
+    override val all: StateFlow<BackStackElements<T>> =
         state
 
-    override val offScreen: StateFlow<Elements<T>> =
+    override val offScreen: StateFlow<BackStackElements<T>> =
         state.unsuspendedMap { list -> list.filter { it.isOnScreen() } }
 
-    override val onScreen: StateFlow<Elements<T>> =
+    override val onScreen: StateFlow<BackStackElements<T>> =
         state.unsuspendedMap { list -> list.filter { it.isOnScreen() } }
 
     override val canHandleBackPress: StateFlow<Boolean> =
@@ -105,7 +105,7 @@ class BackStack<T : Any>(
         }
 
     private fun SavedStateMap.restoreHistory() =
-        this[Node.KEY_ROUTING_SOURCE] as? Elements<T>
+        this[Node.KEY_ROUTING_SOURCE] as? BackStackElements<T>
 
     private fun BackStackElement<T>.isOnScreen(): Boolean =
         when (targetState) {

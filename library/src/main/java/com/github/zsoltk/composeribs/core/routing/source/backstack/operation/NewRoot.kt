@@ -12,12 +12,12 @@ internal class NewRoot<T : Any>(
     private val element: T
 ) : Operation<T> {
 
-    override fun isApplicable(elements: Elements<T>): Boolean = true
+    override fun isApplicable(elements: BackStackElements<T>): Boolean = true
 
     override fun invoke(
-        elements: Elements<T>,
+        elements: BackStackElements<T>,
         uuidGenerator: UuidGenerator
-    ): Elements<T> {
+    ): BackStackElements<T> {
 
         val current = elements.current
         requireNotNull(current) { "No previous elements, state=$elements" }

@@ -13,16 +13,16 @@ internal class SingleTop<T : Any>(
     private val element: T
 ) : BackStack.Operation<T> {
 
-    override fun isApplicable(elements: Elements<T>): Boolean = true
+    override fun isApplicable(elements: BackStackElements<T>): Boolean = true
 
     override fun invoke(
-        elements: Elements<T>,
+        elements: BackStackElements<T>,
         uuidGenerator: UuidGenerator
-    ): Elements<T> {
+    ): BackStackElements<T> {
         val targetClass = element.javaClass
         val lastIndexOfSameClass = elements.indexOfLast { targetClass.isInstance(it.key.routing) }
 
-        val operation: (Elements<T>, UuidGenerator) -> Elements<T> =
+        val operation: (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> =
             if (lastIndexOfSameClass == -1) {
                 Push(element)
             } else {
@@ -38,12 +38,12 @@ internal class SingleTop<T : Any>(
 
     private class SingleTopReactivateBackStackOperation<T : Any>(
         private val position: Int
-    ) : (Elements<T>, UuidGenerator) -> Elements<T> {
+    ) : (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> {
 
         override fun invoke(
-            elements: Elements<T>,
+            elements: BackStackElements<T>,
             uuidGenerator: UuidGenerator
-        ): Elements<T> {
+        ): BackStackElements<T> {
             val current = elements.current
             requireNotNull(current)
 
@@ -62,12 +62,12 @@ internal class SingleTop<T : Any>(
     private class SingleTopReplaceBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int
-    ) : (Elements<T>, UuidGenerator) -> Elements<T> {
+    ) : (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> {
 
         override fun invoke(
-            elements: Elements<T>,
+            elements: BackStackElements<T>,
             uuidGenerator: UuidGenerator
-        ): Elements<T> {
+        ): BackStackElements<T> {
             val current = elements.current
             requireNotNull(current)
 

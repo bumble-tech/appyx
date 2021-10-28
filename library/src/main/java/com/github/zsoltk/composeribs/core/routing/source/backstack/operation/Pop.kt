@@ -2,7 +2,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
-import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
@@ -13,13 +13,13 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  */
 internal class Pop<T : Any> : Operation<T> {
 
-    override fun isApplicable(elements: Elements<T>): Boolean =
+    override fun isApplicable(elements: BackStackElements<T>): Boolean =
         elements.isNotEmpty()
 
     override fun invoke(
-        elements: Elements<T>,
+        elements: BackStackElements<T>,
         uuidGenerator: UuidGenerator
-    ): Elements<T> {
+    ): BackStackElements<T> {
 
         val destroyIndex = elements.currentIndex
         val unStashIndex =

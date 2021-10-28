@@ -24,8 +24,8 @@ import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
-import com.github.zsoltk.composeribs.core.routing.source.backstack.Elements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.*
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
@@ -215,7 +215,7 @@ class BackStackExampleNode(
         }
     }
 
-    private fun Elements<Routing>.toStateString() = map { element ->
+    private fun BackStackElements<Routing>.toStateString() = map { element ->
         (element.key as BackStack.LocalRoutingKey).let { key ->
             val name = (key.routing as Child).name
             val uuid = key.uuid

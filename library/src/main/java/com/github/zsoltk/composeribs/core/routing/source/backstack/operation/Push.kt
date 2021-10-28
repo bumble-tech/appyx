@@ -12,13 +12,13 @@ internal class Push<T : Any>(
     private val element: T
 ) : Operation<T> {
 
-    override fun isApplicable(elements: Elements<T>): Boolean =
+    override fun isApplicable(elements: BackStackElements<T>): Boolean =
         element != elements.current?.key?.routing
 
     override fun invoke(
-        elements: Elements<T>,
+        elements: BackStackElements<T>,
         uuidGenerator: UuidGenerator
-    ): Elements<T> {
+    ): BackStackElements<T> {
         return elements.map {
             if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
                 it.copy(targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK)

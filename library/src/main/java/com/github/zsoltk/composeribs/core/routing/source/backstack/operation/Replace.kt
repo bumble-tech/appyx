@@ -11,13 +11,13 @@ internal class Replace<T : Any>(
     private val element: T
 ) : BackStack.Operation<T> {
 
-    override fun isApplicable(elements: Elements<T>): Boolean =
+    override fun isApplicable(elements: BackStackElements<T>): Boolean =
         element != elements.current?.key?.routing
 
     override fun invoke(
-        elements: Elements<T>,
+        elements: BackStackElements<T>,
         uuidGenerator: UuidGenerator
-    ): Elements<T> {
+    ): BackStackElements<T> {
         require(elements.isNotEmpty()) { "No element to be replaced, state=$elements" }
 
         return elements.mapIndexed { index, element ->
