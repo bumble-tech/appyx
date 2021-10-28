@@ -30,11 +30,6 @@ abstract class ChildAwareTestBase {
         root = Root()
     }
 
-    fun add(key: Configuration): Node<*> {
-        root.routing.add(key)
-        return (root.children.value.values.find { it.key.routing == key } as ChildEntry.Eager).node
-    }
-
     fun add(vararg key: Configuration): List<Node<*>> {
         root.routing.add(*key)
         return root
@@ -53,10 +48,11 @@ abstract class ChildAwareTestBase {
 
     class Root(
         val routing: TestRoutingSource<Configuration> = TestRoutingSource(),
+        childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
     ) : Node<Configuration>(
         savedStateMap = null,
         routingSource = routing,
-        childMode = ChildEntry.ChildMode.EAGER,
+        childMode = childMode,
     ) {
         override fun resolve(routing: Configuration, savedStateMap: SavedStateMap?): Node<*> =
             when (routing) {
@@ -99,7 +95,13 @@ abstract class ChildAwareTestBase {
         fun add(vararg key: Key) {
             state.update { list ->
                 require(list.none { it.key.routing in key })
-                list + key.map { RoutingElement(RoutingKeyImpl(it), fromState = 0, targetState = 0) }
+                list + key.map {
+                    RoutingElement(
+                        RoutingKeyImpl(it),
+                        fromState = 0,
+                        targetState = 0
+                    )
+                }
             }
         }
 
