@@ -3,11 +3,14 @@ package com.github.zsoltk.composeribs.core.children
 import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.lifecycle.MinimumCombinedLifecycle
+import com.github.zsoltk.composeribs.core.lifecycle.isDestroyed
 import kotlin.reflect.KClass
 import kotlin.reflect.cast
 import kotlin.reflect.safeCast
 
 internal sealed class ChildAwareCallbackInfo {
+
+    abstract fun onRegistered(activeNodes: List<Node<*>>)
 
     class Single<T : Node<*>>(
         private val child: KClass<T>,
@@ -15,8 +18,8 @@ internal sealed class ChildAwareCallbackInfo {
         private val parentLifecycle: Lifecycle,
     ) : ChildAwareCallbackInfo() {
 
-        fun invokeIfRequired(newNode: Node<*>) {
-            if (parentLifecycle.currentState == Lifecycle.State.DESTROYED) return
+        fun onNewNodeAppeared(newNode: Node<*>) {
+            if (parentLifecycle.isDestroyed) return
             val castedNode = child.safeCast(newNode)
             if (castedNode != null) {
                 val lifecycle =
@@ -28,9 +31,9 @@ internal sealed class ChildAwareCallbackInfo {
             }
         }
 
-        fun invokeIfRequired(activeNodes: List<Node<*>>) {
+        override fun onRegistered(activeNodes: List<Node<*>>) {
             activeNodes.forEach { node ->
-                invokeIfRequired(node)
+                onNewNodeAppeared(node)
             }
         }
 
@@ -43,24 +46,30 @@ internal sealed class ChildAwareCallbackInfo {
         private val parentLifecycle: Lifecycle,
     ) : ChildAwareCallbackInfo() {
 
-        fun invokeIfRequired(activeNodes: List<Node<*>>, newNode: Node<*>) {
+        fun onNewNodeAppeared(
+            activeNodes: List<Node<*>>,
+            newNode: Node<*>,
+            ignoreNodes: Set<Node<*>>,
+        ) {
             val second = getOther(newNode) ?: return
             activeNodes
-                .filter { second.isInstance(it) }
-                .forEach {
-                    notify(newNode, it)
-                }
+                .filter { second.isInstance(it) && it != newNode && it !in ignoreNodes }
+                .forEach { notify(newNode, it) }
         }
 
-        fun invokeIfRequired(activeNodes: List<Node<*>>) {
+        override fun onRegistered(activeNodes: List<Node<*>>) {
             activeNodes.forEachIndexed { index, node ->
-                // Do not include already handled nodes to avoid call duplication
-                invokeIfRequired(activeNodes.subList(index + 1, activeNodes.size), node)
+                onNewNodeAppeared(
+                    // Do not include already handled nodes to avoid call duplication
+                    activeNodes = activeNodes.subList(index + 1, activeNodes.size),
+                    newNode = node,
+                    ignoreNodes = emptySet(),
+                )
             }
         }
 
         private fun notify(node1: Node<*>, node2: Node<*>) {
-            if (parentLifecycle.currentState == Lifecycle.State.DESTROYED) return
+            if (parentLifecycle.isDestroyed) return
             val lifecycle =
                 MinimumCombinedLifecycle(
                     parentLifecycle,

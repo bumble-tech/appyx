@@ -35,14 +35,12 @@ class ChildAwareImpl(
                 val addedKeys = value.current.keys - (value.previous?.keys ?: emptySet())
                 if (addedKeys.isEmpty()) return@collect
                 val currentNodes = getCreatedNodes(value.current)
+                val visitedSet = HashSet<Node<*>>()
                 addedKeys.forEach { key ->
-                    val node = when (val addedChild = value.current[key]) {
-                        is ChildEntry.Eager -> addedChild.node
-                        is ChildEntry.Lazy -> null
-                        null -> null
-                    }
+                    val node = value.current[key]?.nodeOrNull
                     if (node != null) {
-                        notifyWhenChanged(node, currentNodes)
+                        notifyWhenChanged(node, currentNodes, visitedSet)
+                        visitedSet.add(node)
                     }
                 }
             }
@@ -56,10 +54,12 @@ class ChildAwareImpl(
                 val commonKeys = value.current.keys.intersect(value.previous.keys)
                 if (commonKeys.isEmpty()) return@collect
                 val nodes = getCreatedNodes(value.current)
+                val visitedSet = HashSet<Node<*>>()
                 commonKeys.forEach { key ->
                     val current = value.current[key]
                     if (current != value.previous[key] && current is ChildEntry.Eager) {
-                        notifyWhenChanged(current.node, nodes)
+                        notifyWhenChanged(current.node, nodes, visitedSet)
+                        visitedSet.add(current.node)
                     }
                 }
             }
@@ -89,21 +89,18 @@ class ChildAwareImpl(
     }
 
     private fun notifyWhenRegistered(callback: ChildAwareCallbackInfo) {
-        when (callback) {
-            is ChildAwareCallbackInfo.Double<*, *> -> callback.invokeIfRequired(
-                getCreatedNodes(children.value)
-            )
-            is ChildAwareCallbackInfo.Single<*> -> callback.invokeIfRequired(
-                getCreatedNodes(children.value)
-            )
-        }
+        callback.onRegistered(getCreatedNodes(children.value))
     }
 
-    private fun notifyWhenChanged(child: Node<*>, nodes: List<Node<*>>) {
+    private fun notifyWhenChanged(child: Node<*>, nodes: List<Node<*>>, ignore: Set<Node<*>>) {
         for (callback in callbacks) {
             when (callback) {
-                is ChildAwareCallbackInfo.Double<*, *> -> callback.invokeIfRequired(nodes, child)
-                is ChildAwareCallbackInfo.Single<*> -> callback.invokeIfRequired(child)
+                is ChildAwareCallbackInfo.Double<*, *> -> callback.onNewNodeAppeared(
+                    activeNodes = nodes,
+                    newNode = child,
+                    ignoreNodes = ignore,
+                )
+                is ChildAwareCallbackInfo.Single<*> -> callback.onNewNodeAppeared(child)
             }
         }
     }

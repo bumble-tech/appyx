@@ -4,7 +4,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import com.github.zsoltk.composeribs.core.Parent
-import com.github.zsoltk.composeribs.core.children.ChildEntry
+import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.withPrevious
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
@@ -49,10 +49,7 @@ internal class NodeLifecycleManager<Routing>(
                         if (routingSource.isOnScreen(element.key)) Lifecycle.State.RESUMED
                         else Lifecycle.State.CREATED
                     val current = minOf(state, maxLifecycle)
-                    when (val child = children[element.key]) {
-                        is ChildEntry.Eager -> child.node.updateLifecycleState(current)
-                        is ChildEntry.Lazy -> Unit
-                    }
+                    children[element.key]?.nodeOrNull?.updateLifecycleState(current)
                 }
             }
         }
@@ -68,9 +65,7 @@ internal class NodeLifecycleManager<Routing>(
                         val removedKeys = value.previous.keys - value.current.keys
                         removedKeys.forEach { key ->
                             val removedChild = value.previous[key]
-                            if (removedChild is ChildEntry.Eager) {
-                                removedChild.node.updateLifecycleState(Lifecycle.State.DESTROYED)
-                            }
+                            removedChild?.nodeOrNull?.updateLifecycleState(Lifecycle.State.DESTROYED)
                         }
                     }
                 }
@@ -85,9 +80,7 @@ internal class NodeLifecycleManager<Routing>(
             // lifecycle.coroutineScope is closed at this moment
             // need to clean up children as they are out of sync now
             parent.children.value.values.forEach { child ->
-                if (child is ChildEntry.Eager) {
-                    child.node.updateLifecycleState(Lifecycle.State.DESTROYED)
-                }
+                child.nodeOrNull?.updateLifecycleState(Lifecycle.State.DESTROYED)
             }
         }
     }
