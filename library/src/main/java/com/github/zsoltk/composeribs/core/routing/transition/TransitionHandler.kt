@@ -6,5 +6,10 @@ import com.github.zsoltk.composeribs.core.ChildTransitionScope
 interface TransitionHandler<S> {
 
     @Composable
-    fun handle(fromState: S, toState: S, onTransitionFinished: (S) -> Unit): ChildTransitionScope<S>
+    fun handle(
+        transitionParams: TransitionParams,
+        fromState: S,
+        toState: S,
+        onTransitionFinished: (S) -> Unit
+    ): ChildTransitionScope<S>
 }

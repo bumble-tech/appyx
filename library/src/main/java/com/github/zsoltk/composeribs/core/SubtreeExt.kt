@@ -1,16 +1,18 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.compose.animation.core.Transition
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
+import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 
 
@@ -23,12 +25,25 @@ fun <T, S> Subtree(
 }
 
 @Composable
-fun <T: Any, S> Subtree(
+fun <T : Any, S> Subtree(
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
 ) {
-    block(SubtreeTransitionScope(routingSource, transitionHandler))
+    BoxWithConstraints {
+        block(
+            SubtreeTransitionScope(
+                routingSource,
+                transitionHandler,
+                TransitionParams(
+                    bounds = TransitionBounds(
+                        width = maxWidth,
+                        height = maxHeight
+                    )
+                )
+            )
+        )
+    }
 }
 
 class SubtreeScope<T, S>(
@@ -89,6 +104,7 @@ class SubtreeScope<T, S>(
 class SubtreeTransitionScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>,
     val transitionHandler: TransitionHandler<S>,
+    private val transitionParams: TransitionParams,
 ) {
 
     @Composable
@@ -121,6 +137,7 @@ class SubtreeTransitionScope<T : Any, S>(
                 saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
                     val transitionScope =
                         transitionHandler.handle(
+                            transitionParams = transitionParams,
                             fromState = routingElement.fromState,
                             toState = routingElement.targetState,
                             onTransitionFinished = {

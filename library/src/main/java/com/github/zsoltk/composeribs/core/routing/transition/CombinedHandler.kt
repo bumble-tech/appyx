@@ -9,9 +9,9 @@ class CombinedHandler<S>(
 ) : UpdateTransitionHandler<S>() {
 
     @Composable
-    override fun map(transition: Transition<S>): Modifier =
+    override fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier =
         handlers
-            .map { it.map(transition) }
+            .map { it.map(transition, transitionBounds = transitionBounds) }
             .fold(Modifier) { acc: Modifier, modifier: Modifier ->
                 acc.then(modifier)
             }
