@@ -48,6 +48,7 @@ abstract class Node<T>(
 
     private val savedStateMap: SavedStateMap? = buildContext.savedStateMap
     private val ancestryInfo: AncestryInfo = buildContext.ancestryInfo
+    private val upNavigationDispatcher: UpNavigationDispatcher = UpNavigationDispatcher()
 
     private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
     final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
@@ -129,6 +130,7 @@ abstract class Node<T>(
         CompositionLocalProvider(
             LocalNode provides this,
             LocalLifecycleOwner provides this,
+            LocalUpNavigationDispatcher provides upNavigationDispatcher,
         ) {
             routingSource?.let { source ->
                 val canHandleBackPress by source.canHandleBackPress.collectAsState()
@@ -136,6 +138,11 @@ abstract class Node<T>(
                     source.onBackPressed()
                 }
             }
+            val fallbackUpNavigationDispatcher = LocalFallbackUpNavigationHandler.current
+            UpHandler(
+                nodeUpNavigation = ::handleUpNavigation,
+                fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
+            )
 
             View()
         }
@@ -253,17 +260,15 @@ abstract class Node<T>(
         nodeLifecycleManager.updateLifecycleState(state)
     }
 
-    fun upNavigation(fallbackUpNavigationHandler: FallbackUpNavigationHandler) {
-        parent?.handleUpNavigation(fallbackUpNavigationHandler) ?: fallbackUpNavigationHandler.handle()
+    fun upNavigation() {
+        upNavigationDispatcher.upNavigation()
     }
 
-    private fun handleUpNavigation(fallbackUpNavigationHandler: FallbackUpNavigationHandler) {
-        val subtreeHandlers = plugins.filterIsInstance<UpNavigationHandler>()
+    private fun handleUpNavigation(): Boolean =
+        handleSubtreeUpNavigation() || parent?.handleUpNavigation() == true
 
-        if (subtreeHandlers.none { it.handleUpNavigation() }) {
-            upNavigation(fallbackUpNavigationHandler)
-        }
-    }
+    private fun handleSubtreeUpNavigation(): Boolean =
+        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"

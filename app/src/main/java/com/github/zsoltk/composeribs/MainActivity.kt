@@ -12,7 +12,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.container.ContainerNode
 import com.github.zsoltk.composeribs.core.integration.NodeHost
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.LocalUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.ui.Rf1Theme
 
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CompositionLocalProvider(
-                LocalUpNavigationHandler provides upNavigationHandler
+                LocalFallbackUpNavigationHandler provides upNavigationHandler
             ) {
                 Rf1Theme {
                     // A surface container using the 'background' color from the theme
