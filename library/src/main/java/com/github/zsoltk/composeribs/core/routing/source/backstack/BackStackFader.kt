@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
@@ -15,7 +16,10 @@ class BackStackFader(
 ) : UpdateTransitionHandler<BackStack.TransitionState>() {
 
     @Composable
-    override fun map(transition: Transition<BackStack.TransitionState>): Modifier {
+    override fun map(
+        transition: Transition<BackStack.TransitionState>,
+        transitionBounds: TransitionBounds
+    ): Modifier {
         val alpha = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
