@@ -66,7 +66,6 @@ class ChildNode(
                 modifier = Modifier.padding(24.dp)
             ) {
                 Text("Child ($name).")
-                Text("Instance (${this@ChildNode.hashCode()}).")
                 Row {
                     // Local UI state should be saved too (both in backstack and onSaveInstanceState)
                     var counter by rememberSaveable { mutableStateOf(0) }
