@@ -14,7 +14,8 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 internal class Pop<T : Any> : Operation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
-        elements.isNotEmpty()
+        elements.any { it.targetState == BackStack.TransitionState.ON_SCREEN } &&
+                elements.any { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
 
     override fun invoke(
         elements: BackStackElements<T>,

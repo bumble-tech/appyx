@@ -28,7 +28,7 @@ internal class Remove<T : Any>(
         }
 
     private fun BackStackElements<T>.hasContentWithKey() =
-        find { it.key == key } != null
+        find { it.key == key && it.targetState != BackStack.TransitionState.DESTROYED } != null
 
     private fun updateContent(elements: BackStackElements<T>): BackStackElements<T> {
         val toRemove = elements.find { it.key == key }
