@@ -151,7 +151,7 @@ abstract class Node<T>(
             UpHandler(
                 upDispatcher = upNavigationDispatcher,
                 nodeUpNavigation = ::performUpNavigation,
-                fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
+                fallbackUpNavigation = { fallbackUpNavigationDispatcher() }
             )
 
             View()
