@@ -55,7 +55,7 @@ class ContainerNode(
 ) : Node<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
-), UpNavigationHandler {
+) {
 
     private val upNavigationOverridesChild: MutableStateFlow<Boolean> = MutableStateFlow(true)
 

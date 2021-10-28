@@ -44,6 +44,7 @@ abstract class Node<T>(
 ) : Resolver<T>,
     Renderable,
     LifecycleOwner,
+    UpNavigationHandler,
     Parent<T> {
 
     private val savedStateMap: SavedStateMap? = buildContext.savedStateMap
@@ -264,11 +265,13 @@ abstract class Node<T>(
         upNavigationDispatcher.upNavigation()
     }
 
-    private fun handleUpNavigation(): Boolean =
-        handleSubtreeUpNavigation() || parent?.handleUpNavigation() == true
+    private fun performUpNavigation(): Boolean =
+        handleSubtreeUpNavigation() || parent?.performUpNavigation() == true
 
     private fun handleSubtreeUpNavigation(): Boolean =
         plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
+
+    override fun handleUpNavigation(): Boolean = false
 
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"
