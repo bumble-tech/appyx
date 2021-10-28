@@ -1,15 +1,7 @@
 package com.github.zsoltk.composeribs.client.backstack
 
 import android.os.Parcelable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -28,12 +20,11 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlid
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import kotlinx.parcelize.Parcelize
-import kotlin.random.Random
 
 class BackStackExampleNode(
     savedStateMap: SavedStateMap?,
     private val backStack: BackStack<Routing> = BackStack(
-        initialElement = Child(0),
+        initialElement = Child("A"),
         savedStateMap = savedStateMap,
     )
 ) : Node<Routing>(
@@ -43,12 +34,12 @@ class BackStackExampleNode(
 
     sealed class Routing : Parcelable {
         @Parcelize
-        data class Child(val counter: Int) : Routing()
+        data class Child(val name: String) : Routing()
     }
 
     override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
         when (routing) {
-            is Child -> ChildNode(routing.counter, savedStateMap)
+            is Child -> ChildNode(routing.name, savedStateMap)
         }
 
     @Composable
@@ -73,7 +64,7 @@ class BackStackExampleNode(
                 }
 
                 Row {
-                    Button(onClick = { backStack.push(Child(Random.nextInt(9999))) }) {
+                    Button(onClick = { backStack.push(Child("To be done")) }) {
                         Text(text = "Push routing")
                     }
                     Spacer(modifier = Modifier.size(12.dp))
