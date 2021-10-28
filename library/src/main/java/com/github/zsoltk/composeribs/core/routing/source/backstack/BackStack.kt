@@ -39,7 +39,7 @@ class BackStack<T : Any>(
             ?.restoreHistory()
             ?.maxOf { (it.key as LocalRoutingKey<*>).uuid }
             ?.inc()
-            ?: 1
+            ?: 0
     )
 
     private val state = MutableStateFlow(
