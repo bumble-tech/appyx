@@ -43,6 +43,12 @@ android {
     lintOptions {
         abortOnError false
     }
+    testOptions {
+        unitTests.all {
+            // interface method default implementation
+            exclude '**/*$DefaultImpls.class'
+        }
+    }
 }
 
 dependencies {
