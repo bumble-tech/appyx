@@ -10,35 +10,28 @@ internal val LocalUpNavigationDispatcher: ProvidableCompositionLocal<UpNavigatio
 
 internal class UpNavigationDispatcher {
 
-    private val upNavigationCallbacks = mutableListOf<UpNavigationCallback>()
+    private var upNavigationCallback: UpNavigationCallback? = null
 
     interface UpNavigationCallback {
         fun onUpNavigationRequested()
     }
 
     fun upNavigation() {
-        upNavigationCallbacks.forEach { it.onUpNavigationRequested() }
+        upNavigationCallback?.onUpNavigationRequested()
+            ?: throw IllegalStateException("Up navigation callback not set")
     }
 
-    fun addUpNavigationCallback(upNavigationCallback: UpNavigationCallback) {
-        upNavigationCallbacks.add(upNavigationCallback)
+    fun addUpNavigationCallback(callback: UpNavigationCallback) {
+        if (upNavigationCallback != null) {
+            throw IllegalStateException("Trying to overwrite up navigation callback")
+        }
+        this.upNavigationCallback = callback
     }
 
-    fun removeUpNavigationCallback(upNavigationCallback: UpNavigationCallback) {
-        upNavigationCallbacks.remove(upNavigationCallback)
+    fun clearUpNavigationCallback() {
+        upNavigationCallback = null
     }
 }
-//fun upNavigation(fallbackUpNavigationHandler: FallbackUpNavigationHandler) {
-//    parent?.handleUpNavigation(fallbackUpNavigationHandler) ?: fallbackUpNavigationHandler.handle()
-//}
-//
-//private fun handleUpNavigation(fallbackUpNavigationHandler: FallbackUpNavigationHandler) {
-//    val subtreeHandlers = plugins.filterIsInstance<UpNavigationHandler>()
-//
-//    if (subtreeHandlers.none { it.handleUpNavigation() }) {
-//        upNavigation(fallbackUpNavigationHandler)
-//    }
-//}
 
 @Composable
 internal fun UpHandler(
@@ -59,15 +52,15 @@ internal fun UpHandler(
     }
 
     val upDispatcher = checkNotNull(LocalUpNavigationDispatcher.current) {
-        "No OnBackPressedDispatcherOwner was provided via LocalOnBackPressedDispatcherOwner"
+        "No LocalUpNavigationDispatcher was provided via LocalUpNavigationDispatcher"
     }
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner, upDispatcher) {
-        // Add callback to the backDispatcher
+        // Add callback to the upDispatcher
         upDispatcher.addUpNavigationCallback(upCallback)
         // When the effect leaves the Composition, remove the callback
         onDispose {
-            upDispatcher.removeUpNavigationCallback(upCallback)
+            upDispatcher.clearUpNavigationCallback()
         }
     }
 }
