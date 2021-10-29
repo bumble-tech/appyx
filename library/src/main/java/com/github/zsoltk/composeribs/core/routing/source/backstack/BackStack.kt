@@ -1,7 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
 import android.os.Parcelable
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -105,7 +105,7 @@ class BackStack<T : Any>(
         }
 
     private fun SavedStateMap.restoreHistory() =
-        this[Node.KEY_ROUTING_SOURCE] as? BackStackElements<T>
+        this[ParentNode.KEY_ROUTING_SOURCE] as? BackStackElements<T>
 
     private fun BackStackElement<T>.isOnScreen(): Boolean =
         when (targetState) {

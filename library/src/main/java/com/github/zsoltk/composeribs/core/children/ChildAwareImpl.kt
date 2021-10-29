@@ -3,6 +3,7 @@ package com.github.zsoltk.composeribs.core.children
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.coroutineScope
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.lifecycle.isDestroyed
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
@@ -16,7 +17,7 @@ import kotlin.reflect.KClass
 class ChildAwareImpl(
     private val children: StateFlow<Map<out RoutingKey<*>, ChildEntry<*>>>,
     private val lifecycle: Lifecycle,
-    coroutineScope: CoroutineScope,
+    coroutineScope: CoroutineScope = lifecycle.coroutineScope,
 ) : ChildAware {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
@@ -35,7 +36,7 @@ class ChildAwareImpl(
                 val addedKeys = value.current.keys - (value.previous?.keys ?: emptySet())
                 if (addedKeys.isEmpty()) return@collect
                 val currentNodes = getCreatedNodes(value.current)
-                val visitedSet = HashSet<Node<*>>()
+                val visitedSet = HashSet<Node>()
                 addedKeys.forEach { key ->
                     val node = value.current[key]?.nodeOrNull
                     if (node != null) {
@@ -54,7 +55,7 @@ class ChildAwareImpl(
                 val commonKeys = value.current.keys.intersect(value.previous.keys)
                 if (commonKeys.isEmpty()) return@collect
                 val nodes = getCreatedNodes(value.current)
-                val visitedSet = HashSet<Node<*>>()
+                val visitedSet = HashSet<Node>()
                 commonKeys.forEach { key ->
                     val current = value.current[key]
                     if (current != value.previous[key] && current is ChildEntry.Eager) {
@@ -65,7 +66,7 @@ class ChildAwareImpl(
             }
     }
 
-    override fun <T : Node<*>> whenChildAttached(
+    override fun <T : Node> whenChildAttached(
         child: KClass<T>,
         callback: ChildCallback<T>
     ) {
@@ -76,7 +77,7 @@ class ChildAwareImpl(
         lifecycle.removeWhenDestroyed(info)
     }
 
-    override fun <T1 : Node<*>, T2 : Node<*>> whenChildrenAttached(
+    override fun <T1 : Node, T2 : Node> whenChildrenAttached(
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
@@ -92,7 +93,7 @@ class ChildAwareImpl(
         callback.onRegistered(getCreatedNodes(children.value))
     }
 
-    private fun notifyWhenChanged(child: Node<*>, nodes: List<Node<*>>, ignore: Set<Node<*>>) {
+    private fun notifyWhenChanged(child: Node, nodes: List<Node>, ignore: Set<Node>) {
         for (callback in callbacks) {
             when (callback) {
                 is ChildAwareCallbackInfo.Double<*, *> -> callback.onNewNodeAppeared(

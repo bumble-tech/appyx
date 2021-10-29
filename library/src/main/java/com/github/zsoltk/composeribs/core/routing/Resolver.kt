@@ -4,5 +4,5 @@ import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 
 interface Resolver<T> {
-    fun resolve(routing: T, buildContext: BuildContext): Node<*>
+    fun resolve(routing: T, buildContext: BuildContext): Node
 }

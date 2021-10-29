@@ -52,7 +52,7 @@ class SubtreeScope<T, S>(
 ) {
 
     @Composable
-    inline fun <reified V : T> Node<T>.visibleChildren(
+    inline fun <reified V : T> ParentNode<T>.visibleChildren(
         block: @Composable (child: @Composable () -> Unit) -> Unit,
     ) {
         // TODO consider instead of Node receiver
@@ -77,7 +77,7 @@ class SubtreeScope<T, S>(
     }
 
     @Composable
-    inline fun <reified V : T> Node<T>.children(
+    inline fun <reified V : T> ParentNode<T>.children(
         block: @Composable (child: @Composable () -> Unit, routingElement: RoutingElement<T, S>) -> Unit,
     ) {
         // TODO consider instead of Node receiver
@@ -109,14 +109,14 @@ class SubtreeTransitionScope<T : Any, S>(
 ) {
 
     @Composable
-    inline fun <reified V : T> Node<T>.children(
+    inline fun <reified V : T> ParentNode<T>.children(
         noinline block: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
     ) {
         children(V::class, block)
     }
 
     @Composable
-    fun Node<T>.children(
+    fun ParentNode<T>.children(
         clazz: KClass<out T>,
         block: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
     ) {

@@ -4,10 +4,10 @@ import com.github.zsoltk.composeribs.core.Node
 
 
 class NodeAwareImpl : NodeAware {
-    override lateinit var node: Node<*>
+    override lateinit var node: Node
         private set
 
-    override fun init(node: Node<*>) {
+    override fun init(node: Node) {
         this.node = node
     }
 }
