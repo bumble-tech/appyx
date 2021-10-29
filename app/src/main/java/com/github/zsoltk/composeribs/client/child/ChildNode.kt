@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.core.LeafNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.ui.atomic_tangerine
 import com.github.zsoltk.composeribs.ui.manatee
 import com.github.zsoltk.composeribs.ui.md_amber_500
@@ -41,10 +42,10 @@ import com.github.zsoltk.composeribs.ui.sizzling_red
 import kotlin.random.Random
 
 class ChildNode(
-    private val i: Int,
-    savedStateMap: SavedStateMap?
+    private val name: String,
+    buildContext: BuildContext
 ) : LeafNode(
-    savedStateMap = savedStateMap,
+    buildContext = buildContext,
 ) {
 
     private val colors = listOf(
@@ -66,7 +67,7 @@ class ChildNode(
     )
 
     private val colorIndex =
-        savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?: Random.nextInt(colors.size)
+        buildContext.savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?: Random.nextInt(colors.size)
     private val color = colors[colorIndex]
 
     override fun onSaveInstanceState(scope: SaverScope): SavedStateMap =
@@ -85,7 +86,7 @@ class ChildNode(
             Column(
                 modifier = Modifier.padding(24.dp)
             ) {
-                Text("Child ($i)")
+                Text("Child ($name).")
                 Row {
                     // Local UI state should be saved too (both in backstack and onSaveInstanceState)
                     var counter by rememberSaveable { mutableStateOf(0) }
@@ -93,6 +94,11 @@ class ChildNode(
                     Spacer(modifier = Modifier.width(16.dp))
                     Button(onClick = { counter++ }) {
                         Text("Increment")
+                    }
+                }
+                Row {
+                    Button(onClick = { upNavigation() }) {
+                        Text("Go up")
                     }
                 }
             }
@@ -107,5 +113,5 @@ class ChildNode(
 @Preview
 @Composable
 fun ChildPreview() {
-    ChildNode(1, null).Compose()
+    ChildNode("1", BuildContext.root(null)).Compose()
 }

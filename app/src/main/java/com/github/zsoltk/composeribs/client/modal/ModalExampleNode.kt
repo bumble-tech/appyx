@@ -8,24 +8,24 @@ import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(
-    savedStateMap: SavedStateMap?,
+    buildContext: BuildContext,
 ) : Node<Routing>(
     routingSource = null,
-    savedStateMap = savedStateMap,
+    buildContext = buildContext,
 ) {
 
     sealed class Routing : Parcelable {
         @Parcelize
-        data class Child(val counter: Int) : Routing()
+        object Child : Routing()
     }
 
-    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            is Child -> ChildNode(routing.counter, savedStateMap)
+            is Child -> ChildNode("", buildContext)
         }
 
     @Composable
@@ -77,5 +77,5 @@ class ModalExampleNode(
 @Preview
 @Composable
 fun ModalPreview() {
-    ModalExampleNode(null).Compose()
+    ModalExampleNode(BuildContext.root(null)).Compose()
 }

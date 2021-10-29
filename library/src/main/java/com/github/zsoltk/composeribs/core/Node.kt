@@ -23,15 +23,21 @@ import com.github.zsoltk.composeribs.core.children.ChildEntryMap
 import com.github.zsoltk.composeribs.core.children.ChildrenCallback
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
+import com.github.zsoltk.composeribs.core.modality.AncestryInfo
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.plugin.plugins
+import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.UpHandler
+import com.github.zsoltk.composeribs.core.routing.UpNavigationDispatcher
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import kotlinx.coroutines.Job
@@ -48,7 +54,7 @@ val LocalNode = compositionLocalOf<Node<*>?> { null }
 
 abstract class Node<T>(
     final override val routingSource: RoutingSource<T, *>? = null,
-    savedStateMap: SavedStateMap?,
+    buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     plugins: List<Plugin> = emptyList()
 ) : Resolver<T>,
@@ -57,7 +63,10 @@ abstract class Node<T>(
     ChildAware,
     Parent<T> {
 
-    private val _children = MutableStateFlow(savedStateMap?.restoreChildren() ?: emptyMap())
+    private val upNavigationDispatcher: UpNavigationDispatcher = UpNavigationDispatcher()
+
+    private val _children =
+        MutableStateFlow(buildContext.savedStateMap?.restoreChildren() ?: emptyMap())
     final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
 
     private val nodeLifecycleManager = NodeLifecycleManager(this)
@@ -65,6 +74,12 @@ abstract class Node<T>(
     private var transitionsInBackgroundJob: Job? = null
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
+
+    private val parent: Node<*>? =
+        when (val ancestryInfo = buildContext.ancestryInfo) {
+            is AncestryInfo.Child -> ancestryInfo.anchor
+            is AncestryInfo.Root -> null
+        }
 
     init {
         lifecycle.addObserver(LifecycleLogger)
@@ -87,7 +102,7 @@ abstract class Node<T>(
                 val mutableMap = map.toMutableMap()
                 newKeys.forEach { key ->
                     mutableMap[key] =
-                        ChildEntry.create(key, this@Node, null, childMode)
+                        ChildEntry.create(key, this@Node, null.toBuildContext(), childMode)
                 }
                 removedKeys.forEach { key ->
                     mutableMap.remove(key)
@@ -99,8 +114,14 @@ abstract class Node<T>(
 
     private fun SavedStateMap.restoreChildren(): ChildEntryMap<T>? =
         (get(KEY_CHILDREN_STATE) as? Map<RoutingKey<T>, SavedStateMap>)?.mapValues {
-            ChildEntry.create(it.key, this@Node, it.value, childMode)
+            ChildEntry.create(it.key, this@Node, it.value.toBuildContext(), childMode)
         }
+
+    private fun SavedStateMap?.toBuildContext(): BuildContext =
+        BuildContext(
+            ancestryInfo = AncestryInfo.Child(this@Node),
+            savedStateMap = this
+        )
 
     fun childOrCreate(routingKey: RoutingKey<T>): ChildEntry.Eager<T> {
         val value = _children.value
@@ -133,6 +154,12 @@ abstract class Node<T>(
                     source.onBackPressed()
                 }
             }
+            val fallbackUpNavigationDispatcher = LocalFallbackUpNavigationHandler.current
+            UpHandler(
+                upDispatcher = upNavigationDispatcher,
+                nodeUpNavigation = ::performUpNavigation,
+                fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
+            )
 
             View()
         }
@@ -223,7 +250,7 @@ abstract class Node<T>(
                     .mapValues { (_, entry) ->
                         when (entry) {
                             is ChildEntry.Eager -> entry.node.onSaveInstanceState(scope)
-                            is ChildEntry.Lazy -> entry.savedStateMap
+                            is ChildEntry.Lazy -> entry.buildContext.savedStateMap
                         }
                     }
             if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] = childrenState
@@ -264,6 +291,16 @@ abstract class Node<T>(
     ) {
         childAware.whenChildAttached(child, callback)
     }
+
+    fun upNavigation() {
+        upNavigationDispatcher.upNavigation()
+    }
+
+    private fun performUpNavigation(): Boolean =
+        handleSubtreeUpNavigation() || parent?.performUpNavigation() == true
+
+    private fun handleSubtreeUpNavigation(): Boolean =
+        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"

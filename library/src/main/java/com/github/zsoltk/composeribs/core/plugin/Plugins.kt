@@ -19,3 +19,7 @@ interface NodeAware : Plugin {
 interface Saveable : Plugin {
     fun onSavedInstanceState(scope: SaverScope): SavedStateMap
 }
+
+interface UpNavigationHandler : Plugin {
+    fun handleUpNavigation(): Boolean
+}

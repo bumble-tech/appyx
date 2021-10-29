@@ -1,23 +1,23 @@
 package com.github.zsoltk.composeribs.client.container
 
 import android.os.Parcelable
-import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
+import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
@@ -28,24 +28,28 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Tile
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
-    savedStateMap: SavedStateMap?,
+    buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Picker,
-        savedStateMap = savedStateMap,
+        savedStateMap = buildContext.savedStateMap,
     ),
     private val transitionHandler: UpdateTransitionHandler<TransitionState> = CombinedHandler(
         listOf(
@@ -55,8 +59,10 @@ class ContainerNode(
     )
 ) : Node<Routing>(
     routingSource = backStack,
-    savedStateMap = savedStateMap,
-) {
+    buildContext = buildContext,
+), UpNavigationHandler {
+
+    private val upNavigationOverridesChild: MutableStateFlow<Boolean> = MutableStateFlow(true)
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -72,12 +78,12 @@ class ContainerNode(
         object ModalExample : Routing()
     }
 
-    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            is Picker -> node { ExamplesList() }
-            is BackStackExample -> BackStackExampleNode(savedStateMap)
-            is ModalExample -> ModalExampleNode(savedStateMap)
-            is TilesExample -> TilesExampleNode(savedStateMap)
+            is Picker -> node(buildContext) { ExamplesList() }
+            is BackStackExample -> BackStackExampleNode(buildContext)
+            is ModalExample -> ModalExampleNode(buildContext)
+            is TilesExample -> TilesExampleNode(buildContext)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)
@@ -107,16 +113,7 @@ class ContainerNode(
             // TODO variant 1
             Subtree(backStack, transitionHandler) {
                 children<Routing> { transitionModifier, child ->
-                    val background = transition.animateColor(label = "color") { state ->
-                        when (state) {
-                            TransitionState.CREATED -> Color.Yellow
-                            TransitionState.ON_SCREEN -> Color.Red
-                            TransitionState.STASHED_IN_BACK_STACK -> Color.Blue
-                            TransitionState.DESTROYED -> Color.Black
-                        }
-
-                    }
-                    Box(modifier = transitionModifier.background(background.value)) {
+                    Box(modifier = transitionModifier) {
                         child()
                     }
                 }
@@ -164,7 +161,23 @@ class ContainerNode(
                 }) {
                     Text(text = "Trigger double navigation in 3 seconds")
                 }
+                Spacer(modifier = Modifier.size(24.dp))
+                Row {
+                    Checkbox(
+                        checked = upNavigationOverridesChild.collectAsState().value,
+                        onCheckedChange = { upNavigationOverridesChild.value = it }
+                    )
+                    Text(text = "Up navigation overrides child")
+                }
             }
         }
     }
+
+    override fun handleUpNavigation(): Boolean =
+        if (upNavigationOverridesChild.value && backStack.canHandleBackPress.value) {
+            backStack.pop()
+            true
+        } else {
+            false
+        }
 }
