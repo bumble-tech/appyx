@@ -1,7 +1,11 @@
 package com.github.zsoltk.composeribs.client.tiles
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -11,16 +15,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing
-import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.*
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child1
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child2
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 import com.github.zsoltk.composeribs.core.visibleChildAsState
 
 class TilesExampleNode(
-    savedStateMap: SavedStateMap?,
+    buildContext: BuildContext,
     private val tiles: Tiles<Routing> = Tiles(
         initialElements = listOf(
             Child1, Child2, Child3, Child4
@@ -28,19 +35,19 @@ class TilesExampleNode(
     ),
 ) : Node<Routing>(
     routingSource = tiles,
-    savedStateMap = savedStateMap,
+    buildContext = buildContext,
 ) {
 
     enum class Routing {
         Child1, Child2, Child3, Child4,
     }
 
-    override fun resolve(routing: Routing, savedStateMap: SavedStateMap?): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            Child1 -> ChildNode("1", savedStateMap)
-            Child2 -> ChildNode("2", savedStateMap)
-            Child3 -> ChildNode("3", savedStateMap)
-            Child4 -> ChildNode("4", savedStateMap)
+            Child1 -> ChildNode("1", buildContext)
+            Child2 -> ChildNode("2", buildContext)
+            Child3 -> ChildNode("3", buildContext)
+            Child4 -> ChildNode("4", buildContext)
         }
 
     @Composable
@@ -82,7 +89,7 @@ class TilesExampleNode(
                 children<Routing> { transitionModifier, child ->
                     Box(modifier = transitionModifier
                         .fillMaxWidth()
-                        .height(100.dp)
+                        .height(150.dp)
                         .clickable {
                             // TODO No access to child id
                             // tiles.toggleSelection(child)

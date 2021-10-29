@@ -1,7 +1,7 @@
 package com.github.zsoltk.composeribs.core.children
 
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 
@@ -28,10 +28,10 @@ sealed class ChildEntry<T> {
     internal class Lazy<T>(
         override val key: RoutingKey<T>,
         private val resolver: Resolver<T>,
-        val savedStateMap: SavedStateMap?
+        val buildContext: BuildContext,
     ) : ChildEntry<T>() {
         fun initialize(): Eager<T> =
-            Eager(key, resolver.resolve(key.routing, savedStateMap))
+            Eager(key, resolver.resolve(key.routing, buildContext))
     }
 
     /** When to create child nodes? */
@@ -49,14 +49,14 @@ sealed class ChildEntry<T> {
         fun <T> create(
             key: RoutingKey<T>,
             resolver: Resolver<T>,
-            savedStateMap: SavedStateMap?,
+            buildContext: BuildContext,
             childMode: ChildMode,
         ): ChildEntry<T> =
             when (childMode) {
                 ChildMode.EAGER ->
-                    Eager(key, resolver.resolve(key.routing, savedStateMap))
+                    Eager(key, resolver.resolve(key.routing, buildContext))
                 ChildMode.LAZY ->
-                    Lazy(key, resolver, savedStateMap)
+                    Lazy(key, resolver, buildContext)
             }
     }
 

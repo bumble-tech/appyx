@@ -1,12 +1,14 @@
 package com.github.zsoltk.composeribs.core
 
+import com.github.zsoltk.composeribs.core.modality.BuildContext
+
 abstract class LeafNode(
-    savedStateMap: SavedStateMap?
+    buildContext: BuildContext
 ) : Node<Nothing>(
-    savedStateMap = null,
+    buildContext = buildContext,
 ) {
 
-    override fun resolve(routing: Nothing, savedStateMap: SavedStateMap?): Node<*> {
+    override fun resolve(routing: Nothing, buildContext: BuildContext): Node<*> {
         error("Framework error, this should never happen")
     }
 }
