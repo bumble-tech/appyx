@@ -9,12 +9,12 @@
 //    /**
 //     * Never remove anything from screen
 //     */
-//    override val offScreen: List<BackStackElement<T>>
+//    override val offScreen: Elements<T>
 //        get() = emptyList()
 //
 //    /**
 //     * All elements remain on screen
 //     */
-//    override val onScreen: List<BackStackElement<T>>
+//    override val onScreen: Elements<T>
 //        get() = elementsObservable
 //}

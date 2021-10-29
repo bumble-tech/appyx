@@ -1,11 +1,7 @@
 package com.github.zsoltk.composeribs.client.tiles
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -15,10 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing
-import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child1
-import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child2
-import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
-import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
+import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.*
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -44,10 +37,10 @@ class TilesExampleNode(
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            Child1 -> ChildNode(1, buildContext)
-            Child2 -> ChildNode(2, buildContext)
-            Child3 -> ChildNode(3, buildContext)
-            Child4 -> ChildNode(4, buildContext)
+            Child1 -> ChildNode("1", buildContext)
+            Child2 -> ChildNode("2", buildContext)
+            Child3 -> ChildNode("3", buildContext)
+            Child4 -> ChildNode("4", buildContext)
         }
 
     @Composable

@@ -20,12 +20,12 @@ class ModalExampleNode(
 
     sealed class Routing : Parcelable {
         @Parcelize
-        data class Child(val counter: Int) : Routing()
+        object Child : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            is Child -> ChildNode(routing.counter, buildContext)
+            is Child -> ChildNode("", buildContext)
         }
 
     @Composable

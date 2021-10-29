@@ -1,13 +1,7 @@
 package com.github.zsoltk.composeribs.client.child
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -24,25 +18,11 @@ import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.core.LeafNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.ui.atomic_tangerine
-import com.github.zsoltk.composeribs.ui.manatee
-import com.github.zsoltk.composeribs.ui.md_amber_500
-import com.github.zsoltk.composeribs.ui.md_blue_500
-import com.github.zsoltk.composeribs.ui.md_blue_grey_500
-import com.github.zsoltk.composeribs.ui.md_cyan_500
-import com.github.zsoltk.composeribs.ui.md_grey_500
-import com.github.zsoltk.composeribs.ui.md_indigo_500
-import com.github.zsoltk.composeribs.ui.md_light_blue_500
-import com.github.zsoltk.composeribs.ui.md_light_green_500
-import com.github.zsoltk.composeribs.ui.md_lime_500
-import com.github.zsoltk.composeribs.ui.md_pink_500
-import com.github.zsoltk.composeribs.ui.md_teal_500
-import com.github.zsoltk.composeribs.ui.silver_sand
-import com.github.zsoltk.composeribs.ui.sizzling_red
+import com.github.zsoltk.composeribs.ui.*
 import kotlin.random.Random
 
 class ChildNode(
-    private val i: Int,
+    private val name: String,
     buildContext: BuildContext
 ) : LeafNode(
     buildContext = buildContext,
@@ -86,7 +66,7 @@ class ChildNode(
             Column(
                 modifier = Modifier.padding(24.dp)
             ) {
-                Text("Child ($i)")
+                Text("Child ($name).")
                 Row {
                     // Local UI state should be saved too (both in backstack and onSaveInstanceState)
                     var counter by rememberSaveable { mutableStateOf(0) }
@@ -113,5 +93,5 @@ class ChildNode(
 @Preview
 @Composable
 fun ChildPreview() {
-    ChildNode(1, BuildContext.root(null)).Compose()
+    ChildNode("1", BuildContext.root(null)).Compose()
 }
