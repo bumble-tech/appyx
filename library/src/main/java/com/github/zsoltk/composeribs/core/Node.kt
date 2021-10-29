@@ -15,8 +15,12 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
+import com.github.zsoltk.composeribs.core.children.ChildAware
+import com.github.zsoltk.composeribs.core.children.ChildAwareImpl
+import com.github.zsoltk.composeribs.core.children.ChildCallback
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.ChildEntryMap
+import com.github.zsoltk.composeribs.core.children.ChildrenCallback
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleManager
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
@@ -44,6 +48,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
 val LocalNode = compositionLocalOf<Node<*>?> { null }
 
@@ -55,6 +60,7 @@ abstract class Node<T>(
 ) : Resolver<T>,
     Renderable,
     LifecycleOwner,
+    ChildAware,
     Parent<T> {
 
     private val upNavigationDispatcher: UpNavigationDispatcher = UpNavigationDispatcher()
@@ -64,6 +70,7 @@ abstract class Node<T>(
     final override val children: StateFlow<ChildEntryMap<T>> = _children.asStateFlow()
 
     private val nodeLifecycleManager = NodeLifecycleManager(this)
+    private val childAware = ChildAwareImpl(children, lifecycle, lifecycle.coroutineScope)
     private var transitionsInBackgroundJob: Job? = null
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
@@ -268,6 +275,21 @@ abstract class Node<T>(
 
     internal fun updateLifecycleState(state: Lifecycle.State) {
         nodeLifecycleManager.updateLifecycleState(state)
+    }
+
+    override fun <T1 : Node<*>, T2 : Node<*>> whenChildrenAttached(
+        child1: KClass<T1>,
+        child2: KClass<T2>,
+        callback: ChildrenCallback<T1, T2>
+    ) {
+        childAware.whenChildrenAttached(child1, child2, callback)
+    }
+
+    override fun <T : Node<*>> whenChildAttached(
+        child: KClass<T>,
+        callback: ChildCallback<T>
+    ) {
+        childAware.whenChildAttached(child, callback)
     }
 
     fun upNavigation() {

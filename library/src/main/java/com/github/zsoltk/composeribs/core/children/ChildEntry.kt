@@ -24,13 +24,13 @@ sealed class ChildEntry<T> {
         val node: Node<*>
     ) : ChildEntry<T>()
 
-    /** Internal child representation for Lazy mode. */
-    internal class Lazy<T>(
+    /** Child representation for Lazy mode. */
+    class Lazy<T>(
         override val key: RoutingKey<T>,
         private val resolver: Resolver<T>,
         val buildContext: BuildContext,
     ) : ChildEntry<T>() {
-        fun initialize(): Eager<T> =
+        internal fun initialize(): Eager<T> =
             Eager(key, resolver.resolve(key.routing, buildContext))
     }
 
