@@ -1,6 +1,10 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.source.backstack.*
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
  * Operation:

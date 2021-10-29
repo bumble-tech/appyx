@@ -6,4 +6,6 @@ import androidx.compose.runtime.compositionLocalOf
 val LocalFallbackUpNavigationHandler: ProvidableCompositionLocal<FallbackUpNavigationHandler> =
     compositionLocalOf { throw IllegalStateException("FallbackUpNavigationHandler is not initialised") }
 
-fun interface FallbackUpNavigationHandler : () -> Unit
+fun interface FallbackUpNavigationHandler {
+    fun handle()
+}
