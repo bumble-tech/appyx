@@ -7,13 +7,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
-import kotlin.math.roundToInt
 
 
 @Composable

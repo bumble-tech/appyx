@@ -23,9 +23,9 @@ import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
-import com.github.zsoltk.composeribs.core.plugin.plugins
 import com.github.zsoltk.composeribs.core.plugin.Saveable
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
+import com.github.zsoltk.composeribs.core.plugin.plugins
 import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.Renderable
 import com.github.zsoltk.composeribs.core.routing.Resolver
