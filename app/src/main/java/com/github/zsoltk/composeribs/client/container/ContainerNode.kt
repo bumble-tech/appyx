@@ -168,7 +168,7 @@ class ContainerNode(
                         checked = upNavigationOverridesChild.collectAsState().value,
                         onCheckedChange = { upNavigationOverridesChild.value = it }
                     )
-                    Text(text = "Up navigation overrides child", color = Color.White)
+                    Text(text = "Up navigation overrides child")
                 }
             }
         }
