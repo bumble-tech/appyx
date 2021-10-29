@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import com.github.zsoltk.composeribs.core.LeafNode
 import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -50,15 +50,15 @@ abstract class ChildAwareTestBase {
         val routing: TestRoutingSource<Configuration> = TestRoutingSource(),
         childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
     ) : Node<Configuration>(
-        savedStateMap = null,
+        buildContext = BuildContext.root(null),
         routingSource = routing,
         childMode = childMode,
     ) {
-        override fun resolve(routing: Configuration, savedStateMap: SavedStateMap?): Node<*> =
+        override fun resolve(routing: Configuration, buildContext: BuildContext): Node<*> =
             when (routing) {
-                is Configuration.Child1 -> Child1()
-                is Configuration.Child2 -> Child2()
-                is Configuration.Child3 -> Child3()
+                is Configuration.Child1 -> Child1(buildContext)
+                is Configuration.Child2 -> Child2(buildContext)
+                is Configuration.Child3 -> Child3(buildContext)
             }
 
         @Composable
@@ -66,11 +66,13 @@ abstract class ChildAwareTestBase {
         }
     }
 
-    class Child1 : EmptyLeafNode()
-    class Child2 : EmptyLeafNode()
-    class Child3 : EmptyLeafNode()
+    class Child1(buildContext: BuildContext) : EmptyLeafNode(buildContext)
+    class Child2(buildContext: BuildContext) : EmptyLeafNode(buildContext)
+    class Child3(buildContext: BuildContext) : EmptyLeafNode(buildContext)
 
-    abstract class EmptyLeafNode : LeafNode(savedStateMap = null) {
+    abstract class EmptyLeafNode(
+        buildContext: BuildContext
+    ) : LeafNode(buildContext = buildContext) {
         @Composable
         override fun View() {
         }
