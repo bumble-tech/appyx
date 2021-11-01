@@ -46,7 +46,7 @@ abstract class ParentNode<Routing>(
         MutableStateFlow(buildContext.savedStateMap?.restoreChildren() ?: emptyMap())
     val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
 
-    private val nodeLifecycleManager = ChildNodeLifecycleManager(
+    private val childNodeLifecycleManager = ChildNodeLifecycleManager(
         lifecycle = lifecycle,
         routingSource = routingSource,
         children = children,
