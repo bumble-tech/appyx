@@ -153,7 +153,7 @@ abstract class ParentNode<Routing>(
     }
 
     @Composable
-    protected override fun InjectComposable() {
+    final override fun DerivedSetup() {
         val canHandleBackPress by routingSource.canHandleBackPress.collectAsState()
         BackHandler(canHandleBackPress) {
             routingSource.onBackPressed()

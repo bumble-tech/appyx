@@ -54,7 +54,7 @@ abstract class Node(
                 nodeUpNavigation = ::performUpNavigation,
                 fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
             )
-            InjectComposable()
+            DerivedSetup()
             View()
         }
     }
@@ -62,8 +62,9 @@ abstract class Node(
     @Composable
     protected abstract fun View()
 
+    /** Derived classes can declare functional (non-ui) Composable blocks before [View()] is invoked. */
     @Composable
-    protected open fun InjectComposable() {
+    protected open fun DerivedSetup() {
     }
 
     override fun getLifecycle(): Lifecycle =
