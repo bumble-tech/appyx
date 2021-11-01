@@ -20,7 +20,7 @@ interface RoutingSource<Key, State> {
      * Bundle for future state restoration.
      * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
      */
-    fun saveInstanceState(): Any? = null
+    fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {}
 
     /**
      * @return [key] should be rendered on the screen based on its [State].

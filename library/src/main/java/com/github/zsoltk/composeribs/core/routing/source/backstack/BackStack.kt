@@ -15,7 +15,8 @@ import kotlinx.parcelize.RawValue
 
 class BackStack<T : Any>(
     initialElement: T,
-    savedStateMap: SavedStateMap?
+    savedStateMap: SavedStateMap?,
+    private val key: String = Node.KEY_ROUTING_SOURCE,
 ) : RoutingSource<T, BackStack.TransitionState> {
 
     @Parcelize
@@ -94,18 +95,20 @@ class BackStack<T : Any>(
         pop()
     }
 
-    override fun saveInstanceState(): Any =
-        state.value.mapNotNull {
-            // Sanitize outputs, removing all transitions
-            if (it.targetState != TransitionState.DESTROYED) {
-                it.copy(fromState = it.targetState)
-            } else {
-                null
+    override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
+        savedStateMap[key] =
+            state.value.mapNotNull {
+                // Sanitize outputs, removing all transitions
+                if (it.targetState != TransitionState.DESTROYED) {
+                    it.copy(fromState = it.targetState)
+                } else {
+                    null
+                }
             }
-        }
+    }
 
     private fun SavedStateMap.restoreHistory() =
-        this[Node.KEY_ROUTING_SOURCE] as? BackStackElements<T>
+        this[key] as? BackStackElements<T>
 
     private fun BackStackElement<T>.isOnScreen(): Boolean =
         when (targetState) {

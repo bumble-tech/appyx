@@ -233,10 +233,7 @@ abstract class Node<T>(
     }
 
     private fun saveRoutingState(map: MutableMap<String, Any>) {
-        if (routingSource != null) {
-            val state = routingSource.saveInstanceState()
-            if (state != null) map[KEY_ROUTING_SOURCE] = state
-        }
+        routingSource?.saveInstanceState(map)
     }
 
     private fun saveChildrenState(
