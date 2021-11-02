@@ -1,23 +1,10 @@
 package com.github.zsoltk.composeribs.client.backstack
 
 import android.os.Parcelable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
@@ -29,15 +16,9 @@ import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.input.KeyboardType.Companion.Number
 import androidx.compose.ui.unit.dp
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.NEW_ROOT
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.POP
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.PUSH
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.REMOVE
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.REPLACE
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.SINGLE_TOP
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.values
+import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.*
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing
-import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.Child
+import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.*
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.Subtree
@@ -45,19 +26,14 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
-import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.newRoot
-import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
-import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
-import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.remove
-import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.replace
-import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.singleTop
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.*
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 
 class BackStackExampleNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
-        initialElement = Child("A"),
+        initialElement = ChildA,
         savedStateMap = buildContext.savedStateMap,
     )
 ) : Node<Routing>(
@@ -65,14 +41,29 @@ class BackStackExampleNode(
     buildContext = buildContext,
 ) {
 
-    sealed class Routing : Parcelable {
+    sealed class Routing(
+        val name: String
+    ) : Parcelable {
+
         @Parcelize
-        data class Child(val name: String) : Routing()
+        object ChildA : Routing("A")
+
+        @Parcelize
+        object ChildB : Routing("B")
+
+        @Parcelize
+        object ChildC : Routing("C")
+
+        @Parcelize
+        object ChildD : Routing("D")
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
         when (routing) {
-            is Child -> ChildNode(routing.name, buildContext)
+            is ChildA -> ChildNode(routing.name, buildContext)
+            is ChildB -> ChildNode(routing.name, buildContext)
+            is ChildC -> ChildNode(routing.name, buildContext)
+            is ChildD -> ChildNode(routing.name, buildContext)
         }
 
     @Composable
@@ -203,27 +194,27 @@ class BackStackExampleNode(
                         onClick = {
                             when (selectedOperation.value) {
                                 PUSH -> {
-                                    backStack.push(Child(selectedRadioButton.value))
+                                    backStack.push(selectedRadioButton.value.toChild())
                                 }
                                 POP -> {
                                     backStack.pop()
                                 }
                                 REPLACE -> {
-                                    backStack.replace(Child(selectedRadioButton.value))
+                                    backStack.replace(selectedRadioButton.value.toChild())
                                 }
                                 REMOVE -> {
                                     backStack.remove(
                                         BackStack.LocalRoutingKey(
-                                            Child(selectedRadioButton.value),
+                                            selectedRadioButton.value.toChild(),
                                             typedId.value.toInt()
                                         )
                                     )
                                 }
                                 NEW_ROOT -> {
-                                    backStack.newRoot(Child(selectedRadioButton.value))
+                                    backStack.newRoot(selectedRadioButton.value.toChild())
                                 }
                                 SINGLE_TOP -> {
-                                    backStack.singleTop(Child(selectedRadioButton.value))
+                                    backStack.singleTop(selectedRadioButton.value.toChild())
                                 }
                             }
                         }
@@ -244,11 +235,20 @@ class BackStackExampleNode(
 
     private fun BackStackElements<Routing>.toStateString() = map { element ->
         (element.key as BackStack.LocalRoutingKey).let { key ->
-            val name = (key.routing as Child).name
+            val name = key.routing.name
             val uuid = key.uuid
             "$name(id: $uuid)"
         }
     }
+
+    private fun String.toChild() =
+        when (this) {
+            "A" -> ChildA
+            "B" -> ChildB
+            "C" -> ChildC
+            "D" -> ChildD
+            else -> throw IllegalArgumentException("Could not find the corresponding child!")
+        }
 
     enum class Operation(
         val label: String,
