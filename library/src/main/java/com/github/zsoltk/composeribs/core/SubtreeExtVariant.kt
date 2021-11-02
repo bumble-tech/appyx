@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 
 
 @Composable
-inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Node<T>.SubtreeVariant(
+inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> ParentNode<T>.SubtreeVariant(
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
     crossinline block: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,

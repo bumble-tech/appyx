@@ -21,7 +21,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.zsoltk.composeribs.core.LeafNode
+import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.ui.atomic_tangerine
@@ -44,7 +44,7 @@ import kotlin.random.Random
 class ChildNode(
     private val name: String,
     buildContext: BuildContext
-) : LeafNode(
+) : Node(
     buildContext = buildContext,
 ) {
 

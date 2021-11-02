@@ -21,7 +21,7 @@ sealed class ChildEntry<T> {
     /** All public APIs should return this type of child which is ready to work with. */
     class Eager<T>(
         override val key: RoutingKey<T>,
-        val node: Node<*>
+        val node: Node,
     ) : ChildEntry<T>()
 
     /** Child representation for Lazy mode. */

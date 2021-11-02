@@ -2,8 +2,8 @@ package com.github.zsoltk.composeribs.core.children
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
-import com.github.zsoltk.composeribs.core.LeafNode
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
@@ -30,7 +30,7 @@ abstract class ChildAwareTestBase {
         root = Root()
     }
 
-    fun add(vararg key: Configuration): List<Node<*>> {
+    fun add(vararg key: Configuration): List<Node> {
         root.routing.add(*key)
         return root
             .children
@@ -49,12 +49,12 @@ abstract class ChildAwareTestBase {
     class Root(
         val routing: TestRoutingSource<Configuration> = TestRoutingSource(),
         childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
-    ) : Node<Configuration>(
+    ) : ParentNode<Configuration>(
         buildContext = BuildContext.root(null),
         routingSource = routing,
         childMode = childMode,
     ) {
-        override fun resolve(routing: Configuration, buildContext: BuildContext): Node<*> =
+        override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
             when (routing) {
                 is Configuration.Child1 -> Child1(buildContext)
                 is Configuration.Child2 -> Child2(buildContext)
@@ -72,7 +72,7 @@ abstract class ChildAwareTestBase {
 
     abstract class EmptyLeafNode(
         buildContext: BuildContext
-    ) : LeafNode(buildContext = buildContext) {
+    ) : Node(buildContext = buildContext) {
         @Composable
         override fun View() {
         }

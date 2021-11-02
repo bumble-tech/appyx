@@ -24,6 +24,7 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -38,7 +39,7 @@ class TilesExampleNode(
             Child1, Child2, Child3, Child4
         )
     ),
-) : Node<Routing>(
+) : ParentNode<Routing>(
     routingSource = tiles,
     buildContext = buildContext,
 ) {
@@ -61,7 +62,7 @@ class TilesExampleNode(
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             Child1 -> ChildNode("1", buildContext)
             Child2 -> ChildNode("2", buildContext)
