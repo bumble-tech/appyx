@@ -107,25 +107,25 @@ class ContainerNode(
 
     @Composable
     override fun View() {
-        Box(
-            modifier = Modifier.fillMaxSize()
+        // TODO variant 1
+        Subtree(
+            modifier = Modifier.fillMaxSize(),
+            routingSource = backStack,
+            transitionHandler = transitionHandler
         ) {
-            // TODO variant 1
-            Subtree(backStack, transitionHandler) {
-                children<Routing> { transitionModifier, child ->
-                    Box(modifier = transitionModifier) {
-                        child()
-                    }
+            children<Routing> { transitionModifier, child ->
+                Box(modifier = transitionModifier) {
+                    child()
                 }
             }
+        }
 
-            // TODO variant 2, decide which one is better
+        // TODO variant 2, decide which one is better
 //            SubtreeVariant(backStack, transitionHandler) { transitionModifier, child ->
 //                Box(modifier = transitionModifier) {
 //                    child()
 //                }
 //            }
-        }
     }
 
     @Composable
