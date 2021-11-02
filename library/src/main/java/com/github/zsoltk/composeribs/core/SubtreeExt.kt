@@ -27,11 +27,12 @@ fun <T, S> Subtree(
 
 @Composable
 fun <T : Any, S> Subtree(
+    modifier: Modifier,
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
-    block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
+    block: @Composable SubtreeTransitionScope<T, S>.() -> Unit,
 ) {
-    BoxWithConstraints {
+    BoxWithConstraints(modifier) {
         block(
             SubtreeTransitionScope(
                 routingSource,

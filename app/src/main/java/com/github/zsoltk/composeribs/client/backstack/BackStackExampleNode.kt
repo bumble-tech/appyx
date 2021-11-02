@@ -92,19 +92,16 @@ class BackStackExampleNode(
                     Modifier.padding(24.dp),
                     horizontalAlignment = CenterHorizontally
                 ) {
-                    Box(
-                        Modifier
+                    Subtree(
+                        modifier = Modifier
                             .padding(top = 12.dp, bottom = 12.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        routingSource = backStack,
+                        transitionHandler = BackStackSlider(clipToBounds = true)
                     ) {
-                        Subtree(
-                            routingSource = backStack,
-                            transitionHandler = BackStackSlider(clipToBounds = true)
-                        ) {
-                            children<Routing> { transitionModifier, child ->
-                                Box(modifier = transitionModifier) {
-                                    child()
-                                }
+                        children<Routing> { transitionModifier, child ->
+                            Box(modifier = transitionModifier) {
+                                child()
                             }
                         }
                     }

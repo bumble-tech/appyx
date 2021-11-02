@@ -104,16 +104,15 @@ class TilesExampleNode(
 
             }*/
 
-            Subtree(routingSource = tiles, transitionHandler = handler) {
+            Subtree(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp),
+                routingSource = tiles,
+                transitionHandler = handler
+            ) {
                 children<Routing> { transitionModifier, child ->
-                    Box(modifier = transitionModifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .clickable {
-                            // TODO No access to child id
-                            // tiles.toggleSelection(child)
-                        }
-                    ) {
+                    Box(modifier = transitionModifier) {
                         child()
                     }
                 }
