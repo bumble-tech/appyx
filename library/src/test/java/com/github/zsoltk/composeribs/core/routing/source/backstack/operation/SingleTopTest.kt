@@ -10,10 +10,125 @@ import org.junit.Test
 internal class SingleTopTest {
 
     @Test
-    fun `is always applicable`() {
+    fun `applicable when no element of same type`() {
 
-        val elements = emptyList<BackStackElement<Routing>>()
-        val operation = SingleTop<Routing>(element = Routing1)
+        val elements = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing1,
+                uuid = 1,
+                fromState = ON_SCREEN,
+                targetState = ON_SCREEN
+            )
+        )
+        val operation = SingleTop<Routing>(element = Routing2)
+
+        val applicable = operation.isApplicable(elements)
+
+        assertEquals(applicable, true)
+    }
+
+    @Test
+    fun `not applicable when one element of same type and same content but current element on screen same as referenced element`() {
+
+        val elements = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing1,
+                uuid = 1,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 2,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing3,
+                uuid = 3,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing4("Content"),
+                uuid = 4,
+                fromState = ON_SCREEN,
+                targetState = ON_SCREEN
+            )
+        )
+        val operation = SingleTop<Routing>(element = Routing4("Content"))
+
+        val applicable = operation.isApplicable(elements)
+
+        assertEquals(applicable, false)
+    }
+
+    @Test
+    fun `applicable when one element of same type and same content and current element on screen different than referenced element`() {
+
+        val elements = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing1,
+                uuid = 1,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 2,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing4("Content"),
+                uuid = 4,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing3,
+                uuid = 3,
+                fromState = ON_SCREEN,
+                targetState = ON_SCREEN
+            )
+        )
+        val operation = SingleTop<Routing>(element = Routing4("Content"))
+
+        val applicable = operation.isApplicable(elements)
+
+        assertEquals(applicable, true)
+    }
+
+    @Test
+    fun `applicable when one element of same type and different content`() {
+
+        val elements = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing1,
+                uuid = 1,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 2,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing3,
+                uuid = 3,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing4("Content 1"),
+                uuid = 4,
+                fromState = ON_SCREEN,
+                targetState = ON_SCREEN
+            )
+        )
+        val operation = SingleTop<Routing>(element = Routing4("Content 2"))
 
         val applicable = operation.isApplicable(elements)
 

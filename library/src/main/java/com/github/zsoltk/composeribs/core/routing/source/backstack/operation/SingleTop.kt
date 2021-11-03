@@ -1,10 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
-import com.github.zsoltk.composeribs.core.routing.source.backstack.current
+import com.github.zsoltk.composeribs.core.routing.source.backstack.*
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
 
 /**
  * Operation:
@@ -15,34 +12,38 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  */
 internal class SingleTop<T : Any>(
     private val element: T
-) : BackStack.Operation<T> {
+) : Operation<T> {
 
-    override fun isApplicable(elements: BackStackElements<T>): Boolean = true
+    override fun isApplicable(elements: BackStackElements<T>): Boolean =
+        getOperation(elements).isApplicable(elements)
 
     override fun invoke(
         elements: BackStackElements<T>,
         uuidGenerator: UuidGenerator
-    ): BackStackElements<T> {
+    ): BackStackElements<T> = getOperation(elements).invoke(elements, uuidGenerator)
+
+    private fun getOperation(elements: BackStackElements<T>): Operation<T> {
         val targetClass = element.javaClass
         val lastIndexOfSameClass = elements.indexOfLast { targetClass.isInstance(it.key.routing) }
 
-        val operation: (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> =
-            if (lastIndexOfSameClass == -1) {
-                Push(element)
+        return if (lastIndexOfSameClass == -1) {
+            Push(element)
+        } else {
+            if (elements[lastIndexOfSameClass].key.routing == element) {
+                SingleTopReactivateBackStackOperation(element, lastIndexOfSameClass)
             } else {
-                if (elements[lastIndexOfSameClass].key.routing == element) {
-                    SingleTopReactivateBackStackOperation(lastIndexOfSameClass)
-                } else {
-                    SingleTopReplaceBackStackOperation(element, lastIndexOfSameClass)
-                }
+                SingleTopReplaceBackStackOperation(element, lastIndexOfSameClass)
             }
-
-        return operation.invoke(elements, uuidGenerator)
+        }
     }
 
     private class SingleTopReactivateBackStackOperation<T : Any>(
+        private val element: T,
         private val position: Int
-    ) : (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> {
+    ) : Operation<T> {
+
+        override fun isApplicable(elements: BackStackElements<T>): Boolean =
+            element != elements.current?.key?.routing
 
         override fun invoke(
             elements: BackStackElements<T>,
@@ -66,7 +67,9 @@ internal class SingleTop<T : Any>(
     private class SingleTopReplaceBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int
-    ) : (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> {
+    ) : Operation<T> {
+
+        override fun isApplicable(elements: BackStackElements<T>): Boolean = true
 
         override fun invoke(
             elements: BackStackElements<T>,
