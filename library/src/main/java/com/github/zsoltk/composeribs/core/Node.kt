@@ -57,7 +57,7 @@ abstract class Node(
                 fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
             )
             DerivedSetup()
-            Box(modifier = LocalTransitionModifier.current  ?: Modifier) {
+            Box(modifier = LocalTransitionModifier.current ?: Modifier) {
                 // Avoid applying the same transition modifier for the children down in hierarchy
                 // in the cases when their parent doesn't provide one
                 CompositionLocalProvider(LocalTransitionModifier provides null) {
