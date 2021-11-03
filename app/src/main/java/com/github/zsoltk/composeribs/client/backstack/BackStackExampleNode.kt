@@ -29,11 +29,12 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlid
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.*
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
+import kotlin.random.Random
 
 class BackStackExampleNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
-        initialElement = ChildA,
+        initialElement = ChildA(value = DEFAULT_VALUE),
         savedStateMap = buildContext.savedStateMap,
     )
 ) : Node<Routing>(
@@ -45,17 +46,27 @@ class BackStackExampleNode(
         val name: String
     ) : Parcelable {
 
-        @Parcelize
-        object ChildA : Routing("A")
+        abstract val value: String
 
         @Parcelize
-        object ChildB : Routing("B")
+        data class ChildA(
+            override val value: String
+        ) : Routing("A")
 
         @Parcelize
-        object ChildC : Routing("C")
+        data class ChildB(
+            override val value: String
+        ) : Routing("B")
 
         @Parcelize
-        object ChildD : Routing("D")
+        data class ChildC(
+            override val value: String
+        ) : Routing("C")
+
+        @Parcelize
+        data class ChildD(
+            override val value: String
+        ) : Routing("D")
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
@@ -69,7 +80,8 @@ class BackStackExampleNode(
     @Composable
     override fun View() {
         val backStackState = backStack.all.collectAsState()
-        val selectedRadioButton = rememberSaveable { mutableStateOf("") }
+        val selectedChildRadioButton = rememberSaveable { mutableStateOf("") }
+        val defaultOrRandomRadioButton = rememberSaveable { mutableStateOf(DEFAULT_LABEL) }
         val isRadioButtonNeeded = rememberSaveable { mutableStateOf(false) }
         val typedId = rememberSaveable { mutableStateOf("") }
         val isIdNeeded = rememberSaveable { mutableStateOf(false) }
@@ -108,14 +120,29 @@ class BackStackExampleNode(
                             listOf("A", "B", "C", "D").forEach {
                                 Row {
                                     RadioButton(
-                                        selected = it == selectedRadioButton.value,
+                                        selected = it == selectedChildRadioButton.value,
                                         enabled = isRadioButtonNeeded.value,
-                                        onClick = { selectedRadioButton.value = it }
+                                        onClick = { selectedChildRadioButton.value = it }
                                     )
                                     Text(text = it)
                                     Spacer(modifier = Modifier.size(36.dp))
                                 }
                             }
+                        }
+                        Row {
+                            RadioButton(
+                                selected = defaultOrRandomRadioButton.value == DEFAULT_LABEL,
+                                enabled = isRadioButtonNeeded.value,
+                                onClick = { defaultOrRandomRadioButton.value = DEFAULT_LABEL }
+                            )
+                            Text(text = DEFAULT_LABEL)
+                            Spacer(modifier = Modifier.size(36.dp))
+                            RadioButton(
+                                selected = defaultOrRandomRadioButton.value == RANDOM_LABEL,
+                                enabled = isRadioButtonNeeded.value,
+                                onClick = { defaultOrRandomRadioButton.value = RANDOM_LABEL }
+                            )
+                            Text(text = RANDOM_LABEL)
                         }
                     }
                     Spacer(modifier = Modifier.size(8.dp))
@@ -148,7 +175,8 @@ class BackStackExampleNode(
                                 Button(
                                     onClick = {
                                         selectedOperation.value = operation
-                                        selectedRadioButton.value = ""
+                                        selectedChildRadioButton.value = ""
+                                        defaultOrRandomRadioButton.value = DEFAULT_LABEL
                                         typedId.value = ""
                                         isRadioButtonNeeded.value = operation.radioButtonNeeded
                                         isIdNeeded.value = operation.idNeeded
@@ -175,7 +203,7 @@ class BackStackExampleNode(
                     ) {
                         Text(text = "Missing params: ", fontWeight = Bold)
                         val textBuilder = mutableListOf<String>()
-                        if (selectedOperation.value?.radioButtonNeeded == true && selectedRadioButton.value.isEmpty()) {
+                        if (selectedOperation.value?.radioButtonNeeded == true && selectedChildRadioButton.value.isEmpty()) {
                             textBuilder.add("Child")
                             areThereMissingParams.value = true
                         }
@@ -194,27 +222,31 @@ class BackStackExampleNode(
                         onClick = {
                             when (selectedOperation.value) {
                                 PUSH -> {
-                                    backStack.push(selectedRadioButton.value.toChild())
+                                    backStack.push(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
                                 }
                                 POP -> {
                                     backStack.pop()
                                 }
                                 REPLACE -> {
-                                    backStack.replace(selectedRadioButton.value.toChild())
+                                    backStack.replace(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
                                 }
                                 REMOVE -> {
                                     backStack.remove(
                                         BackStack.LocalRoutingKey(
-                                            selectedRadioButton.value.toChild(),
+                                            selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random),
                                             typedId.value.toInt()
                                         )
                                     )
                                 }
                                 NEW_ROOT -> {
-                                    backStack.newRoot(selectedRadioButton.value.toChild())
+                                    backStack.newRoot(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
                                 }
                                 SINGLE_TOP -> {
-                                    backStack.singleTop(selectedRadioButton.value.toChild())
+                                    backStack.singleTop(
+                                        selectedChildRadioButton.value.toChild(
+                                            random = defaultOrRandomRadioButton.value.random
+                                        )
+                                    )
                                 }
                             }
                         }
@@ -241,14 +273,19 @@ class BackStackExampleNode(
         }
     }
 
-    private fun String.toChild() =
-        when (this) {
-            "A" -> ChildA
-            "B" -> ChildB
-            "C" -> ChildC
-            "D" -> ChildD
+    private fun String.toChild(random: Boolean): Routing {
+        val value = if (random) Random.nextInt().toString() else DEFAULT_VALUE
+        return when (this) {
+            "A" -> ChildA(value = value)
+            "B" -> ChildB(value = value)
+            "C" -> ChildC(value = value)
+            "D" -> ChildD(value = value)
             else -> throw IllegalArgumentException("Could not find the corresponding child!")
         }
+    }
+
+    private val String.random
+        get() = this == RANDOM_LABEL
 
     enum class Operation(
         val label: String,
@@ -261,5 +298,12 @@ class BackStackExampleNode(
         REMOVE("Remove", true, true),
         NEW_ROOT("New Root", true, false),
         SINGLE_TOP("Single Top", true, false)
+    }
+
+    companion object {
+
+        private const val DEFAULT_LABEL = "Default"
+        private const val RANDOM_LABEL = "Random"
+        private const val DEFAULT_VALUE = "DEFAULT"
     }
 }
