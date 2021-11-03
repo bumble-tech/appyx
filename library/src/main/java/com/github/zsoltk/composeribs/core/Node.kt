@@ -1,9 +1,11 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.annotation.CallSuper
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.saveable.SaverScope
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
@@ -55,7 +57,13 @@ abstract class Node(
                 fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
             )
             DerivedSetup()
-            View()
+            Box(modifier = LocalTransitionModifier.current ?: Modifier) {
+                // Avoid applying the same transition modifier for the children down in hierarchy
+                // in the cases when their parent doesn't provide one
+                CompositionLocalProvider(LocalTransitionModifier provides null) {
+                    View()
+                }
+            }
         }
     }
 

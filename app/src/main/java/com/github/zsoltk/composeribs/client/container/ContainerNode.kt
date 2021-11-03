@@ -114,10 +114,8 @@ class ContainerNode(
             routingSource = backStack,
             transitionHandler = transitionHandler
         ) {
-            children<Routing> { transitionModifier, child ->
-                Box(modifier = transitionModifier) {
-                    child()
-                }
+            children<Routing> { child ->
+                child()
             }
         }
 
