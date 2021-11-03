@@ -100,10 +100,8 @@ class BackStackExampleNode(
                         routingSource = backStack,
                         transitionHandler = BackStackSlider(clipToBounds = true)
                     ) {
-                        children<Routing> { transitionModifier, child ->
-                            Box(modifier = transitionModifier) {
-                                child()
-                            }
+                        children<Routing> { child ->
+                            child()
                         }
                     }
                     Spacer(modifier = Modifier.size(8.dp))

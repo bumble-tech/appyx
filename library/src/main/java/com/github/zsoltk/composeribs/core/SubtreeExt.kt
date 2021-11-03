@@ -2,10 +2,7 @@ package com.github.zsoltk.composeribs.core
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
@@ -111,7 +108,7 @@ class SubtreeTransitionScope<T : Any, S>(
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.children(
-        noinline block: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
+        noinline block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit) -> Unit,
     ) {
         children(V::class, block)
     }
@@ -119,7 +116,7 @@ class SubtreeTransitionScope<T : Any, S>(
     @Composable
     fun ParentNode<T>.children(
         clazz: KClass<out T>,
-        block: @Composable ChildTransitionScope<S>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
+        block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit) -> Unit,
     ) {
 //        // TODO consider
 //        val node = LocalNode.current?.let { it as Node<T> }
@@ -149,14 +146,19 @@ class SubtreeTransitionScope<T : Any, S>(
                             })
 
                     transitionScope.block(
-                        transitionModifier = transitionScope.transitionModifier,
-                        child = { childEntry.node.Compose() },
+                        child = {
+                            CompositionLocalProvider(LocalTransitionModifier provides transitionScope.transitionModifier) {
+                                childEntry.node.Compose()
+                            }
+                        }
                     )
                 }
             }
         }
     }
 }
+
+val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }
 
 interface ChildTransitionScope<S> {
     val transition: Transition<S>
