@@ -12,11 +12,11 @@ internal class UpNavigationDispatcher(
     private var fallbackUpNavigationCallback: FallbackUpNavigationHandler? = null
 
     fun interface UpNavigationCallback {
-        fun onUpNavigationRequested(): Boolean
+        fun handleUpNavigation(): Boolean
     }
 
     fun upNavigation() {
-        if (nodeNavigationCallback.onUpNavigationRequested()) return
+        if (nodeNavigationCallback.handleUpNavigation()) return
         fallbackUpNavigationCallback?.handle()
             ?: throw IllegalStateException("Up navigation callback not set")
     }
