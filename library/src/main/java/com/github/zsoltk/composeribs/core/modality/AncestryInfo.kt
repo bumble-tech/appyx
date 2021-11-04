@@ -7,7 +7,7 @@ sealed class AncestryInfo {
     object Root : AncestryInfo()
 
     data class Child(
-        val anchor: Node<*>,
+        val anchor: Node,
     ) : AncestryInfo()
 
 }

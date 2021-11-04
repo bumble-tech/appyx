@@ -1,7 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
 import android.os.Parcelable
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -16,7 +16,7 @@ import kotlinx.parcelize.RawValue
 class BackStack<T : Any>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
-    private val key: String = Node.KEY_ROUTING_SOURCE,
+    private val key: String = ParentNode.KEY_ROUTING_SOURCE,
 ) : RoutingSource<T, BackStack.TransitionState> {
 
     @Parcelize

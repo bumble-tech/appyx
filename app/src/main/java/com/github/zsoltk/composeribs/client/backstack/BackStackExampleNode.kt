@@ -40,6 +40,7 @@ import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routi
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
@@ -60,7 +61,7 @@ class BackStackExampleNode(
         initialElement = Child("A"),
         savedStateMap = buildContext.savedStateMap,
     )
-) : Node<Routing>(
+) : ParentNode<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
 ) {
@@ -70,7 +71,7 @@ class BackStackExampleNode(
         data class Child(val name: String) : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Child -> ChildNode(routing.name, buildContext)
         }
@@ -92,20 +93,15 @@ class BackStackExampleNode(
                     Modifier.padding(24.dp),
                     horizontalAlignment = CenterHorizontally
                 ) {
-                    Box(
-                        Modifier
+                    Subtree(
+                        modifier = Modifier
                             .padding(top = 12.dp, bottom = 12.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        routingSource = backStack,
+                        transitionHandler = BackStackSlider(clipToBounds = true)
                     ) {
-                        Subtree(
-                            routingSource = backStack,
-                            transitionHandler = BackStackSlider(clipToBounds = true)
-                        ) {
-                            children<Routing> { transitionModifier, child ->
-                                Box(modifier = transitionModifier) {
-                                    child()
-                                }
-                            }
+                        children<Routing> { child ->
+                            child()
                         }
                     }
                     Spacer(modifier = Modifier.size(8.dp))

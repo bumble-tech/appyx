@@ -8,13 +8,15 @@ import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(
     buildContext: BuildContext,
-) : Node<Routing>(
-    routingSource = null,
+) : ParentNode<Routing>(
+    routingSource = BackStack(Child, buildContext.savedStateMap),
     buildContext = buildContext,
 ) {
 
@@ -23,7 +25,7 @@ class ModalExampleNode(
         object Child : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Child -> ChildNode("", buildContext)
         }

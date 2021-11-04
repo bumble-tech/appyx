@@ -13,7 +13,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
     @Test
     fun `whenChildAttached is invoked for promoted to eager node`() {
         root = Root(childMode = ChildEntry.ChildMode.LAZY)
-        var capturedNode: Node<*>? = null
+        var capturedNode: Node? = null
         root.whenChildAttached<Child1> { _, child ->
             capturedNode = child
         }
@@ -31,7 +31,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
     @Test
     fun `whenChildrenAttached is invoked for promoted to eager nodes`() {
         root = Root(childMode = ChildEntry.ChildMode.LAZY)
-        val capturedNodes = HashSet<Pair<Node<*>, Node<*>>>()
+        val capturedNodes = HashSet<Pair<Node, Node>>()
         root.whenChildrenAttached<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1 to c2
         }
@@ -59,7 +59,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
     @Test
     fun `ignores registration when parent lifecycle is destroyed`() {
         add(Configuration.Child1())
-        var capturedNode: Node<*>? = null
+        var capturedNode: Node? = null
         root.updateLifecycleState(Lifecycle.State.DESTROYED)
         root.whenChildAttached<Child1> { _, child ->
             capturedNode = child

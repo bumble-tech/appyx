@@ -2,10 +2,7 @@ package com.github.zsoltk.composeribs.core
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.key
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
@@ -15,10 +12,10 @@ import kotlinx.coroutines.flow.map
 
 
 @Composable
-inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Node<T>.SubtreeVariant(
+inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> ParentNode<T>.SubtreeVariant(
     routingSource: RoutingSource<T, S>,
     transitionHandler: TransitionHandler<S>,
-    crossinline block: @Composable (transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit,
+    crossinline block: @Composable (child: @Composable () -> Unit) -> Unit,
 ) {
     BoxWithConstraints {
         val onScreen by routingSource
@@ -48,8 +45,11 @@ inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Node<
                     )
 
                 block(
-                    transitionModifier = transitionScope.transitionModifier,
-                    child = { childEntry.node.Compose() },
+                    child = {
+                        CompositionLocalProvider(LocalTransitionModifier provides transitionScope.transitionModifier) {
+                            childEntry.node.Compose()
+                        }
+                    }
                 )
             }
         }

@@ -6,7 +6,7 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 open class ComposableNode(
     buildContext: BuildContext,
     private val composable: @Composable () -> Unit
-) : LeafNode(
+) : Node(
     buildContext = buildContext,
 ) {
 
@@ -16,5 +16,5 @@ open class ComposableNode(
     }
 }
 
-fun node(buildContext: BuildContext, composable: @Composable () -> Unit): Node<*> =
+fun node(buildContext: BuildContext, composable: @Composable () -> Unit): Node =
     ComposableNode(buildContext, composable)
