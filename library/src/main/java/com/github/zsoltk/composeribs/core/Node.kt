@@ -107,8 +107,11 @@ abstract class Node(
         upNavigationDispatcher.upNavigation()
     }
 
+    private fun handleSubtreeUpNavigation(): Boolean =
+        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
+
     protected open fun performUpNavigation(): Boolean =
-        parent?.performUpNavigation() == true
+        handleSubtreeUpNavigation() || parent?.performUpNavigation() == true
 
     companion object {
         const val KEY_PLUGINS_STATE = "PluginsState"

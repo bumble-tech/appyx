@@ -38,7 +38,7 @@ abstract class ParentNode<Routing>(
     buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     plugins: List<Plugin> = emptyList(),
-) : Node(buildContext = buildContext, plugins = plugins),
+) : Node(buildContext = buildContext, plugins = plugins + routingSource),
     Resolver<Routing>,
     ChildAware {
 
