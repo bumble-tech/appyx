@@ -210,6 +210,7 @@ abstract class ParentNode<Routing>(
         childAware.whenChildrenAttached(child1, child2, callback)
     }
 
+    // TODO Investigate how to remove it
     @VisibleForTesting
     internal fun manageTransitionsInTest() {
         manageTransitionsInBackground()

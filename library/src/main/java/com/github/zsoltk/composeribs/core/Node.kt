@@ -116,7 +116,7 @@ abstract class Node(
     protected open fun performUpNavigation(): Boolean =
         handleSubtreeUpNavigation() || parent?.performUpNavigation() == true
 
-    // TODO Remove!!!
+    // TODO Investigate how to remove it
     @VisibleForTesting
     internal fun injectFallbackUpNavigationHandler(handler: FallbackUpNavigationHandler) {
         upNavigationDispatcher.setFallbackUpNavigationCallback(handler)
