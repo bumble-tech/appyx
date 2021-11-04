@@ -17,6 +17,8 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.UpHandler
 import com.github.zsoltk.composeribs.core.routing.UpNavigationDispatcher
@@ -37,7 +39,8 @@ abstract class Node(
         }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
-    private val upNavigationDispatcher: UpNavigationDispatcher = UpNavigationDispatcher()
+    private val upNavigationDispatcher: UpNavigationDispatcher =
+        UpNavigationDispatcher(::performUpNavigation)
 
     init {
         lifecycle.addObserver(LifecycleLogger)
@@ -53,8 +56,7 @@ abstract class Node(
             val fallbackUpNavigationDispatcher = LocalFallbackUpNavigationHandler.current
             UpHandler(
                 upDispatcher = upNavigationDispatcher,
-                nodeUpNavigation = ::performUpNavigation,
-                fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
+                fallbackUpNavigation = fallbackUpNavigationDispatcher,
             )
             DerivedSetup()
             Box(modifier = LocalTransitionModifier.current ?: Modifier) {
