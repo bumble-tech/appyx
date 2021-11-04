@@ -138,9 +138,10 @@ class UpNavigationTest {
         val parentStub = StubUpNavigationHandler()
         val childStub = StubUpNavigationHandler()
         val parent = Parent(upNavigationHandler = parentStub, childUpNavigationHandler = childStub)
+        parent.backStack.push(Parent.Configuration(id = "1"))
 
-        val child = parent.children.value.values.first().nodeOrNull
-        requireNotNull(child).navigateUp()
+        val child1 = parent.children.value.values.find { (it.nodeOrNull as Child).id == "1" }
+        requireNotNull(child1?.nodeOrNull).navigateUp()
 
         childStub.assertInvoked()
         parentStub.assertNotInvoked()
