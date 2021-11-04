@@ -53,4 +53,7 @@ class CombinedRoutingSource<Key>(
         sources.forEach { it.saveInstanceState(savedStateMap) }
     }
 
+    override fun isOnScreen(key: RoutingKey<Key>): Boolean =
+        sources.any { it.isOnScreen(key) }
+
 }
