@@ -39,7 +39,7 @@ internal fun UpHandler(
     fallbackUpNavigation: FallbackUpNavigationHandler,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner, upDispatcher) {
+    DisposableEffect(lifecycleOwner, upDispatcher, fallbackUpNavigation) {
         // Add callback to the upDispatcher
         upDispatcher.setFallbackUpNavigationCallback(fallbackUpNavigation)
         // When the effect leaves the Composition, remove the callback
