@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -207,6 +208,11 @@ abstract class ParentNode<Routing>(
         callback: ChildrenCallback<T1, T2>
     ) {
         childAware.whenChildrenAttached(child1, child2, callback)
+    }
+
+    @VisibleForTesting
+    internal fun manageTransitionsInTest() {
+        manageTransitionsInBackground()
     }
 
     companion object {

@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -114,6 +115,12 @@ abstract class Node(
 
     protected open fun performUpNavigation(): Boolean =
         handleSubtreeUpNavigation() || parent?.performUpNavigation() == true
+
+    // TODO Remove!!!
+    @VisibleForTesting
+    internal fun injectFallbackUpNavigationHandler(handler: FallbackUpNavigationHandler) {
+        upNavigationDispatcher.setFallbackUpNavigationCallback(handler)
+    }
 
     companion object {
         const val KEY_PLUGINS_STATE = "PluginsState"
