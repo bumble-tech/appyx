@@ -264,13 +264,14 @@ class BackStackExampleNode(
     private fun BackStackElements<Routing>.toStateString() = map { element ->
         (element.key as BackStack.LocalRoutingKey).let { key ->
             val name = key.routing.name
+            val value = key.routing.value
             val uuid = key.uuid
-            "$name(id: $uuid)"
+            "$name(Value: $value. Id: $uuid)"
         }
     }
 
     private fun String.toChild(random: Boolean): Routing {
-        val value = if (random) Random.nextInt().toString() else DEFAULT_VALUE
+        val value = if (random) Random.nextInt(1000).toString() else DEFAULT_VALUE
         return when (this) {
             "A" -> ChildA(value = value)
             "B" -> ChildB(value = value)
