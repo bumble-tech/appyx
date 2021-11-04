@@ -12,23 +12,23 @@ interface ChildAwareCommonTestSpec {
 
     val registerBefore: Boolean
 
-    fun add(vararg key: ChildAwareTestBase.Configuration): List<Node<*>>
+    fun add(vararg key: ChildAwareTestBase.Configuration): List<Node>
 
-    fun <T : Node<*>> whenChildAttached(klass: KClass<T>, callback: ChildCallback<T>)
+    fun <T : Node> whenChildAttached(klass: KClass<T>, callback: ChildCallback<T>)
 
-    private inline fun <reified T : Node<*>> whenChildAttached(
+    private inline fun <reified T : Node> whenChildAttached(
         noinline callback: ChildCallback<T>
     ) {
         whenChildAttached(T::class, callback)
     }
 
-    fun <T1 : Node<*>, T2 : Node<*>> whenChildrenAttached(
+    fun <T1 : Node, T2 : Node> whenChildrenAttached(
         klass1: KClass<T1>,
         klass2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
     )
 
-    private inline fun <reified T1 : Node<*>, reified T2 : Node<*>> whenChildrenAttached(
+    private inline fun <reified T1 : Node, reified T2 : Node> whenChildrenAttached(
         noinline callback: ChildrenCallback<T1, T2>
     ) {
         whenChildrenAttached(T1::class, T2::class, callback)
@@ -45,7 +45,7 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildAttached is invoked`() {
-        var capturedNode: Node<*>? = null
+        var capturedNode: Node? = null
         val children = withRegistration(register = {
             whenChildAttached<ChildAwareTestBase.Child1> { _, child ->
                 capturedNode = child
@@ -58,8 +58,8 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `every whenChildAttached is invoked`() {
-        var capturedNode1: Node<*>? = null
-        var capturedNode2: Node<*>? = null
+        var capturedNode1: Node? = null
+        var capturedNode2: Node? = null
 
         val children = withRegistration(register = {
             whenChildAttached<ChildAwareTestBase.Child1> { _, child ->
@@ -94,7 +94,7 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildAttached is not invoked for unrelated child`() {
-        var capturedNode: Node<*>? = null
+        var capturedNode: Node? = null
         withRegistration(register = {
             whenChildAttached<ChildAwareTestBase.Child1> { _, child ->
                 capturedNode = child
@@ -111,7 +111,7 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildrenAttached is invoked`() {
-        val capturedNodes = ArrayList<Node<*>>()
+        val capturedNodes = ArrayList<Node>()
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
                 capturedNodes += c1
@@ -128,8 +128,8 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `every whenChildrenAttached is invoked`() {
-        val capturedNodes1 = ArrayList<Node<*>>()
-        val capturedNodes2 = ArrayList<Node<*>>()
+        val capturedNodes1 = ArrayList<Node>()
+        val capturedNodes2 = ArrayList<Node>()
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
                 capturedNodes1 += c1
@@ -151,7 +151,7 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildrenAttached is invoked multiple times for each instance`() {
-        val capturedNodes = HashSet<Pair<Node<*>, Node<*>>>()
+        val capturedNodes = HashSet<Pair<Node, Node>>()
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
                 capturedNodes += c1 to c2
@@ -177,7 +177,7 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildrenAttached is not invoked for unrelated children`() {
-        val capturedNodes = ArrayList<Node<*>>()
+        val capturedNodes = ArrayList<Node>()
         withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
                 capturedNodes += c1
@@ -194,7 +194,7 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildrenAttached is invoked properly for same class connections`() {
-        val capturedNodes = HashSet<Pair<Node<*>, Node<*>>>()
+        val capturedNodes = HashSet<Pair<Node, Node>>()
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child1> { _, c1, c2 ->
                 capturedNodes += c1 to c2

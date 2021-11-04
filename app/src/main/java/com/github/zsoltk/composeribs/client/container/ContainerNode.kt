@@ -28,6 +28,7 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Tile
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node
@@ -57,7 +58,7 @@ class ContainerNode(
             BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),
         )
     )
-) : Node<Routing>(
+) : ParentNode<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
 ), UpNavigationHandler {
@@ -78,7 +79,7 @@ class ContainerNode(
         object ModalExample : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Picker -> node(buildContext) { ExamplesList() }
             is BackStackExample -> BackStackExampleNode(buildContext)
@@ -107,25 +108,23 @@ class ContainerNode(
 
     @Composable
     override fun View() {
-        Box(
-            modifier = Modifier.fillMaxSize()
+        // TODO variant 1
+        Subtree(
+            modifier = Modifier.fillMaxSize(),
+            routingSource = backStack,
+            transitionHandler = transitionHandler
         ) {
-            // TODO variant 1
-            Subtree(backStack, transitionHandler) {
-                children<Routing> { transitionModifier, child ->
-                    Box(modifier = transitionModifier) {
-                        child()
-                    }
-                }
+            children<Routing> { child ->
+                child()
             }
+        }
 
-            // TODO variant 2, decide which one is better
+        // TODO variant 2, decide which one is better
 //            SubtreeVariant(backStack, transitionHandler) { transitionModifier, child ->
 //                Box(modifier = transitionModifier) {
 //                    child()
 //                }
 //            }
-        }
     }
 
     @Composable

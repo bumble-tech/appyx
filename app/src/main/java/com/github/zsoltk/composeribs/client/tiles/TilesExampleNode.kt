@@ -1,8 +1,6 @@
 package com.github.zsoltk.composeribs.client.tiles
 
 import android.util.Log
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,6 +22,7 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -38,7 +37,7 @@ class TilesExampleNode(
             Child1, Child2, Child3, Child4
         )
     ),
-) : Node<Routing>(
+) : ParentNode<Routing>(
     routingSource = tiles,
     buildContext = buildContext,
 ) {
@@ -61,7 +60,7 @@ class TilesExampleNode(
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             Child1 -> ChildNode("1", buildContext)
             Child2 -> ChildNode("2", buildContext)
@@ -104,18 +103,15 @@ class TilesExampleNode(
 
             }*/
 
-            Subtree(routingSource = tiles, transitionHandler = handler) {
-                children<Routing> { transitionModifier, child ->
-                    Box(modifier = transitionModifier
-                        .fillMaxWidth()
-                        .height(150.dp)
-                        .clickable {
-                            // TODO No access to child id
-                            // tiles.toggleSelection(child)
-                        }
-                    ) {
-                        child()
-                    }
+            Subtree(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp),
+                routingSource = tiles,
+                transitionHandler = handler
+            ) {
+                children<Routing> { child ->
+                    child()
                 }
             }
 

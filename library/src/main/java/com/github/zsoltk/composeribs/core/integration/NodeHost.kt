@@ -16,7 +16,7 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 
-fun interface NodeFactory<N : Node<*>> {
+fun interface NodeFactory<N : Node> {
     fun create(buildContext: BuildContext): N
 }
 
@@ -26,7 +26,7 @@ fun interface NodeFactory<N : Node<*>> {
  * Aligns lifecycle and manages state restoration.
  */
 @Composable
-fun <N : Node<*>> NodeHost(
+fun <N : Node> NodeHost(
     upNavigationHandler: FallbackUpNavigationHandler,
     factory: NodeFactory<N>
 ) {
@@ -51,7 +51,7 @@ fun <N : Node<*>> NodeHost(
 }
 
 @Composable
-fun <N : Node<*>> rememberNode(factory: NodeFactory<N>): State<N> =
+fun <N : Node> rememberNode(factory: NodeFactory<N>): State<N> =
     rememberSaveable(
         inputs = arrayOf(),
         stateSaver = mapSaver(

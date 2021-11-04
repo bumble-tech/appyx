@@ -7,13 +7,13 @@ import com.github.zsoltk.composeribs.core.SavedStateMap
 interface Plugin
 
 
-inline fun <reified P : Plugin> Node<*>.plugins(): List<P> =
+inline fun <reified P : Plugin> Node.plugins(): List<P> =
     this.plugins.filterIsInstance(P::class.java)
 
 interface NodeAware : Plugin {
-    val node: Node<*>
+    val node: Node
 
-    fun init(node: Node<*>) {}
+    fun init(node: Node) {}
 }
 
 interface Saveable : Plugin {
