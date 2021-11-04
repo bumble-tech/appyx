@@ -119,9 +119,10 @@ abstract class ParentNode<Routing>(
         }
     }
 
-    protected fun permanentChild(routing: Routing): ChildEntry.Eager<Routing> {
+    @Composable
+    protected fun permanentChild(routing: Routing) {
         permanentRoutingSource.add(routing)
-        return childOrCreate(PermanentRoutingSource.RoutingKeyImpl(routing))
+        childOrCreate(PermanentRoutingSource.RoutingKeyImpl(routing)).node.Compose()
     }
 
     /**

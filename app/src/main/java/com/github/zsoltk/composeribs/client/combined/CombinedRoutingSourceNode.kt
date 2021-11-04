@@ -94,7 +94,7 @@ class CombinedRoutingSourceNode(
                 .fillMaxWidth()
                 .height(200.dp)
         ) {
-            permanentChild(Routing.Permanent.Child1).node.Compose()
+            permanentChild(Routing.Permanent.Child1)
         }
     }
 
