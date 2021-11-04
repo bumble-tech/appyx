@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.container.ContainerNode
 import com.github.zsoltk.composeribs.core.integration.NodeHost
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.ui.Rf1Theme
 
