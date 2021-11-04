@@ -8,13 +8,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlin.coroutines.EmptyCoroutineContext
 
 class CombinedRoutingSource<Key>(
     val sources: List<RoutingSource<Key, *>>,
-) : RoutingSource<Key, Any> {
+) : RoutingSource<Key, Any?> {
 
     constructor(vararg sources: RoutingSource<Key, *>) : this(sources.toList())
 
@@ -22,19 +21,16 @@ class CombinedRoutingSource<Key>(
     // Eagerly subscription to avoid recomposition with default value
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val all: StateFlow<List<RoutingElement<Key, Any>>> =
+    override val all: StateFlow<List<RoutingElement<Key, Any?>>> =
         combine(sources.map { it.all }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .map { it as List<RoutingElement<Key, Any>> }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<List<RoutingElement<Key, Any>>> =
+    override val onScreen: StateFlow<List<RoutingElement<Key, Any?>>> =
         combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .map { it as List<RoutingElement<Key, Any>> }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val offScreen: StateFlow<List<RoutingElement<Key, Any>>> =
+    override val offScreen: StateFlow<List<RoutingElement<Key, Any?>>> =
         combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .map { it as List<RoutingElement<Key, Any>> }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
