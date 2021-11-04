@@ -10,7 +10,7 @@ import org.junit.Test
 internal class ReplaceTest {
 
     @Test
-    fun `not applicable when current element on screen same as pushed element`() {
+    fun `not applicable when current element on screen same as referenced element`() {
 
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -28,7 +28,7 @@ internal class ReplaceTest {
     }
 
     @Test
-    fun `applicable when current element on screen different than pushed element`() {
+    fun `applicable when current element on screen different than referenced element`() {
 
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
