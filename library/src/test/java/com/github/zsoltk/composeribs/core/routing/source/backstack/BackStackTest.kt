@@ -554,7 +554,7 @@ internal class BackStackTest {
     }
 
     @Test
-    fun `when saving instance state returns list of elements with idle transition`() {
+    fun `when saving instance state stores the elements with idle transition`() {
 
         val initialElement = Routing1
         val storedElements = listOf<BackStackElement<Routing>>(
@@ -585,8 +585,9 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val idleState = backStack.saveInstanceState()
-        val expectedState = listOf<BackStackElement<Routing>>(
+        backStack.saveInstanceState(savedStateMap = savedStateMap)
+
+        val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing4("Content"),
                 uuid = 4,
@@ -600,7 +601,10 @@ internal class BackStackTest {
                 targetState = STASHED_IN_BACK_STACK
             )
         )
-        assertEquals(idleState, expectedState)
+        val expectedSavedStateMap = mutableMapOf<String, Any>().apply {
+            this[KEY_ROUTING_SOURCE] = expectedElements
+        }
+        assertEquals(savedStateMap, expectedSavedStateMap)
     }
 
     @Test
