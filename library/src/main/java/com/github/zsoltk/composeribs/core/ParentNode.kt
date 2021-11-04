@@ -20,7 +20,6 @@ import com.github.zsoltk.composeribs.core.lifecycle.ChildNodeLifecycleManager
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.Plugin
-import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -191,12 +190,6 @@ abstract class ParentNode<Routing>(
                 childrenState
         }
     }
-
-    override fun performUpNavigation(): Boolean =
-        handleSubtreeUpNavigation() || super.performUpNavigation()
-
-    private fun handleSubtreeUpNavigation(): Boolean =
-        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     override fun <T : Node> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
         childAware.whenChildAttached(child, callback)

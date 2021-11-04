@@ -103,18 +103,18 @@ abstract class Node(
                 pluginsState.putAll(pluginSaved)
                 pluginsState
             }
-        if (aggregatedPluginState.isNotEmpty()) map[Node.KEY_PLUGINS_STATE] = aggregatedPluginState
+        if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
     }
 
     fun upNavigation() {
         upNavigationDispatcher.upNavigation()
     }
 
-    private fun handleSubtreeUpNavigation(): Boolean =
+    private fun handleUpNavigationByPlugins(): Boolean =
         plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     protected open fun performUpNavigation(): Boolean =
-        handleSubtreeUpNavigation() || parent?.performUpNavigation() == true
+        handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
 
     // TODO Investigate how to remove it
     @VisibleForTesting

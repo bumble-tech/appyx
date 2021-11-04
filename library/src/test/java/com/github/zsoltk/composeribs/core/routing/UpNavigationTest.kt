@@ -133,6 +133,19 @@ class UpNavigationTest {
         stub.assertInvoked()
     }
 
+    @Test
+    fun `up navigation is intercepted by child plugin before parents one`() {
+        val parentStub = StubUpNavigationHandler()
+        val childStub = StubUpNavigationHandler()
+        val parent = Parent(upNavigationHandler = parentStub, childUpNavigationHandler = childStub)
+
+        val child = parent.children.value.values.first().nodeOrNull
+        requireNotNull(child).upNavigation()
+
+        childStub.assertInvoked()
+        parentStub.assertNotInvoked()
+    }
+
     // endregion
 
     // region Setup
@@ -144,6 +157,7 @@ class UpNavigationTest {
             savedStateMap = buildContext.savedStateMap,
         ),
         upNavigationHandler: UpNavigationHandler? = null,
+        private val childUpNavigationHandler: UpNavigationHandler? = null,
     ) : ParentNode<Parent.Configuration>(
         buildContext = buildContext,
         routingSource = backStack,
@@ -157,7 +171,7 @@ class UpNavigationTest {
         }
 
         override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
-            Child(routing.id, buildContext)
+            Child(routing.id, buildContext, childUpNavigationHandler)
 
         @Composable
         override fun View() {
