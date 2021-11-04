@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode.Companion.KEY_ROUTING_SOURCE
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.LocalRoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
@@ -47,7 +47,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -100,7 +100,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -150,7 +150,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -206,7 +206,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -256,7 +256,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -288,7 +288,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -312,7 +312,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -342,7 +342,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -386,7 +386,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -436,7 +436,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -526,7 +526,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -578,7 +578,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -622,7 +622,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
@@ -657,7 +657,7 @@ internal class BackStackTest {
             )
         )
         val savedStateMap = mutableMapOf<String, Any>().apply {
-            this[Node.KEY_ROUTING_SOURCE] = storedElements
+            this[KEY_ROUTING_SOURCE] = storedElements
         }
         val backStack = BackStack<Routing>(
             initialElement = initialElement,
