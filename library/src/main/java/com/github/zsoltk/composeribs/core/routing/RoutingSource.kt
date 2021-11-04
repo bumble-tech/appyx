@@ -1,8 +1,9 @@
 package com.github.zsoltk.composeribs.core.routing
 
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import kotlinx.coroutines.flow.StateFlow
 
-interface RoutingSource<Key, State> {
+interface RoutingSource<Key, State> : UpNavigationHandler {
 
     val all: StateFlow<List<RoutingElement<Key, State>>>
 
@@ -26,5 +27,8 @@ interface RoutingSource<Key, State> {
      * @return [key] should be rendered on the screen based on its [State].
      */
     fun isOnScreen(key: RoutingKey<Key>): Boolean = true
+
+    override fun handleUpNavigation(): Boolean =
+        canHandleBackPress.value.also { if (it) onBackPressed() }
 
 }

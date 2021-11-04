@@ -97,7 +97,7 @@ class ChildNode(
                     }
                 }
                 Row {
-                    Button(onClick = { upNavigation() }) {
+                    Button(onClick = { navigateUp() }) {
                         Text("Go up")
                     }
                 }
