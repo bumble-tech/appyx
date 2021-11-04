@@ -20,8 +20,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
+import com.github.zsoltk.composeribs.client.combined.CombinedRoutingSourceNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.BackStackExample
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.CombinedRoutingSource
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
@@ -77,6 +79,9 @@ class ContainerNode(
 
         @Parcelize
         object ModalExample : Routing()
+
+        @Parcelize
+        object CombinedRoutingSource : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -85,6 +90,7 @@ class ContainerNode(
             is BackStackExample -> BackStackExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
+            is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)
@@ -148,6 +154,10 @@ class ContainerNode(
                 Spacer(modifier = Modifier.size(24.dp))
                 Button(onClick = { backStack.push(Routing.ModalExample) }) {
                     Text(text = "Modal example")
+                }
+                Spacer(modifier = Modifier.size(24.dp))
+                Button(onClick = { backStack.push(Routing.CombinedRoutingSource) }) {
+                    Text(text = "Combined routing source")
                 }
                 Spacer(modifier = Modifier.size(24.dp))
                 val scope = rememberCoroutineScope()
