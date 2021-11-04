@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlin.coroutines.EmptyCoroutineContext
 
 class CombinedRoutingSource<Key>(
-    private val sources: List<RoutingSource<Key, *>>,
+    val sources: List<RoutingSource<Key, *>>,
 ) : RoutingSource<Key, Any> {
 
     constructor(vararg sources: RoutingSource<Key, *>) : this(sources.toList())

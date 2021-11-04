@@ -24,7 +24,7 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
-import com.github.zsoltk.composeribs.core.routing.source.combined.CombinedRoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.combined.plus
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
@@ -46,7 +46,7 @@ class CombinedRoutingSourceNode(
     ),
 ) : ParentNode<CombinedRoutingSourceNode.Routing>(
     buildContext = buildContext,
-    routingSource = CombinedRoutingSource(permanent, backStack1, backStack2),
+    routingSource = permanent + backStack1 + backStack2,
 ) {
 
     sealed class Routing : Parcelable {
