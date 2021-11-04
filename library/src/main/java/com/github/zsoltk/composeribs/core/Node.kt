@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core
 
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -17,6 +18,8 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
+import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.UpHandler
 import com.github.zsoltk.composeribs.core.routing.UpNavigationDispatcher
@@ -37,7 +40,8 @@ abstract class Node(
         }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
-    private val upNavigationDispatcher: UpNavigationDispatcher = UpNavigationDispatcher()
+    private val upNavigationDispatcher: UpNavigationDispatcher =
+        UpNavigationDispatcher(::performUpNavigation)
 
     init {
         lifecycle.addObserver(LifecycleLogger)
@@ -53,8 +57,7 @@ abstract class Node(
             val fallbackUpNavigationDispatcher = LocalFallbackUpNavigationHandler.current
             UpHandler(
                 upDispatcher = upNavigationDispatcher,
-                nodeUpNavigation = ::performUpNavigation,
-                fallbackUpNavigation = { fallbackUpNavigationDispatcher.handle() }
+                fallbackUpNavigation = fallbackUpNavigationDispatcher,
             )
             DerivedSetup()
             Box(modifier = LocalTransitionModifier.current ?: Modifier) {
@@ -103,12 +106,21 @@ abstract class Node(
         if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
     }
 
-    fun upNavigation() {
+    fun navigateUp() {
         upNavigationDispatcher.upNavigation()
     }
 
+    private fun handleUpNavigationByPlugins(): Boolean =
+        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
+
     protected open fun performUpNavigation(): Boolean =
-        parent?.performUpNavigation() == true
+        handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
+
+    // TODO Investigate how to remove it
+    @VisibleForTesting
+    internal fun injectFallbackUpNavigationHandler(handler: FallbackUpNavigationHandler) {
+        upNavigationDispatcher.setFallbackUpNavigationCallback(handler)
+    }
 
     companion object {
         const val KEY_PLUGINS_STATE = "PluginsState"

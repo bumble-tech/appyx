@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,7 +20,6 @@ import com.github.zsoltk.composeribs.core.lifecycle.ChildNodeLifecycleManager
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.Plugin
-import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -38,7 +38,7 @@ abstract class ParentNode<Routing>(
     buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     plugins: List<Plugin> = emptyList(),
-) : Node(buildContext = buildContext, plugins = plugins),
+) : Node(buildContext = buildContext, plugins = plugins + routingSource),
     Resolver<Routing>,
     ChildAware {
 
@@ -190,12 +190,6 @@ abstract class ParentNode<Routing>(
         }
     }
 
-    override fun performUpNavigation(): Boolean =
-        handleSubtreeUpNavigation() || super.performUpNavigation()
-
-    private fun handleSubtreeUpNavigation(): Boolean =
-        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
-
     override fun <T : Node> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
         childAware.whenChildAttached(child, callback)
     }
@@ -206,6 +200,12 @@ abstract class ParentNode<Routing>(
         callback: ChildrenCallback<T1, T2>
     ) {
         childAware.whenChildrenAttached(child1, child2, callback)
+    }
+
+    // TODO Investigate how to remove it
+    @VisibleForTesting
+    internal fun manageTransitionsInTest() {
+        manageTransitionsInBackground()
     }
 
     companion object {
