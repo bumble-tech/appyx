@@ -106,7 +106,7 @@ abstract class Node(
         if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
     }
 
-    fun upNavigation() {
+    fun navigateUp() {
         upNavigationDispatcher.upNavigation()
     }
 

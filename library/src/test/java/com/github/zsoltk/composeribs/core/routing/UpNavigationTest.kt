@@ -32,7 +32,7 @@ class UpNavigationTest {
         val fallbackStub = StubFallbackUpNavigationHandler()
         child.injectFallbackUpNavigationHandler(fallbackStub)
 
-        child.upNavigation()
+        child.navigateUp()
 
         fallbackStub.assertInvoked()
     }
@@ -44,7 +44,7 @@ class UpNavigationTest {
         val fallbackStub = StubFallbackUpNavigationHandler()
         child.injectFallbackUpNavigationHandler(fallbackStub)
 
-        child.upNavigation()
+        child.navigateUp()
 
         stub.assertInvoked()
         fallbackStub.assertNotInvoked()
@@ -57,7 +57,7 @@ class UpNavigationTest {
         val fallbackStub = StubFallbackUpNavigationHandler()
         child.injectFallbackUpNavigationHandler(fallbackStub)
 
-        child.upNavigation()
+        child.navigateUp()
 
         stub.assertInvoked()
         fallbackStub.assertInvoked()
@@ -73,7 +73,7 @@ class UpNavigationTest {
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
 
-        parent.upNavigation()
+        parent.navigateUp()
 
         fallbackStub.assertInvoked()
     }
@@ -85,7 +85,7 @@ class UpNavigationTest {
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
 
-        parent.upNavigation()
+        parent.navigateUp()
 
         assertEquals(1, parent.children.value.size)
         fallbackStub.assertNotInvoked()
@@ -99,7 +99,7 @@ class UpNavigationTest {
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
 
-        parent.upNavigation()
+        parent.navigateUp()
 
         stub.assertInvoked()
         assertEquals(2, parent.children.value.size)
@@ -114,7 +114,7 @@ class UpNavigationTest {
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
 
-        parent.upNavigation()
+        parent.navigateUp()
 
         stub.assertInvoked()
         assertEquals(1, parent.children.value.size)
@@ -128,7 +128,7 @@ class UpNavigationTest {
         parent.backStack.push(Parent.Configuration(id = "1"))
 
         val child1 = parent.children.value.values.find { (it.nodeOrNull as Child).id == "1" }
-        requireNotNull(child1?.nodeOrNull).upNavigation()
+        requireNotNull(child1?.nodeOrNull).navigateUp()
 
         stub.assertInvoked()
     }
@@ -140,7 +140,7 @@ class UpNavigationTest {
         val parent = Parent(upNavigationHandler = parentStub, childUpNavigationHandler = childStub)
 
         val child = parent.children.value.values.first().nodeOrNull
-        requireNotNull(child).upNavigation()
+        requireNotNull(child).navigateUp()
 
         childStub.assertInvoked()
         parentStub.assertNotInvoked()
