@@ -89,28 +89,6 @@ abstract class Node(
         return map
     }
 
-    private fun saveRoutingState(map: MutableMap<String, Any>) {
-        routingSource?.saveInstanceState(map)
-    }
-
-    private fun saveChildrenState(
-        scope: SaverScope,
-        map: MutableMap<String, Any>
-    ) {
-        val children = _children.value
-        if (children.isNotEmpty()) {
-            val childrenState =
-                children
-                    .mapValues { (_, entry) ->
-                        when (entry) {
-                            is ChildEntry.Eager -> entry.node.onSaveInstanceState(scope)
-                            is ChildEntry.Lazy -> entry.buildContext.savedStateMap
-                        }
-                    }
-            if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] = childrenState
-        }
-    }
-
     private fun savePluginsState(
         scope: SaverScope,
         map: MutableMap<String, Any>
@@ -122,7 +100,7 @@ abstract class Node(
                 pluginsState.putAll(pluginSaved)
                 pluginsState
             }
-        if (aggregatedPluginState.isNotEmpty()) map[Node.KEY_PLUGINS_STATE] = aggregatedPluginState
+        if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
     }
 
     fun upNavigation() {

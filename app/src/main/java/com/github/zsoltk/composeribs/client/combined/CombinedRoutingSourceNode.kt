@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
@@ -43,7 +44,7 @@ class CombinedRoutingSourceNode(
         savedStateMap = buildContext.savedStateMap,
         key = "BackStack2",
     ),
-) : Node<CombinedRoutingSourceNode.Routing>(
+) : ParentNode<CombinedRoutingSourceNode.Routing>(
     buildContext = buildContext,
     routingSource = CombinedRoutingSource(permanent, backStack1, backStack2),
 ) {
@@ -60,7 +61,7 @@ class CombinedRoutingSourceNode(
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node<*> =
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Routing.Configuration.Child -> ChildNode(routing.id, buildContext)
             is Routing.Permanent.Child1 -> ChildNode("Permanent", buildContext)
@@ -111,20 +112,15 @@ class CombinedRoutingSourceNode(
         backStack: BackStack<Routing>,
     ) {
         Text(text = name)
-        Box(
+        Subtree(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp)
+                .height(200.dp),
+            routingSource = backStack,
+            transitionHandler = BackStackFader(transitionSpec = { tween(300) }),
         ) {
-            Subtree(
-                routingSource = backStack,
-                transitionHandler = BackStackFader(transitionSpec = { tween(300) })
-            ) {
-                children<Routing> { modifier, child ->
-                    Box(modifier = modifier) {
-                        child()
-                    }
-                }
+            children<Routing> { child ->
+                child()
             }
         }
 
