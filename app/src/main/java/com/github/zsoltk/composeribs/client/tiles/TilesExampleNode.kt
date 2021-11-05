@@ -28,6 +28,7 @@ import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.removeSelected
 import com.github.zsoltk.composeribs.core.visibleChildAsState
 
 class TilesExampleNode(
