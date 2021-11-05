@@ -16,10 +16,24 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Rou
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing4
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.backStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.backStackKey
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.test.TestCoroutineScope
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 internal class BackStackTest {
+
+    private val testScope = TestCoroutineScope()
+
+    @After
+    fun cleanUp() {
+        testScope.cleanupTestCoroutines()
+    }
 
     @Test
     fun `uuids should start from 1`() {
@@ -182,6 +196,41 @@ internal class BackStackTest {
     }
 
     @Test
+    fun `all gets notified when change in backstack state`() {
+
+        val initialElement = Routing1
+        val backStack = BackStack<Routing>(
+            initialElement = initialElement,
+            savedStateMap = null
+        )
+
+        var state: BackStackElements<Routing>? = null
+        testScope.launch {
+            backStack
+                .all
+                .collect { state = it }
+        }
+
+        backStack.push(Routing2)
+
+        val expectedState = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing1,
+                uuid = 1,
+                fromState = ON_SCREEN,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 2,
+                fromState = CREATED,
+                targetState = ON_SCREEN
+            )
+        )
+        assertEquals(state, expectedState)
+    }
+
+    @Test
     fun `offScreen returns only the offScreen elements`() {
 
         val initialElement = Routing1
@@ -223,6 +272,56 @@ internal class BackStackTest {
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
+                targetState = STASHED_IN_BACK_STACK
+            )
+        )
+        assertEquals(state, expectedState)
+    }
+
+    @Test
+    fun `offScreen gets notified when change in backstack state regarding offscreen elements`() {
+
+        val initialElement = Routing1
+        val storedElements = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing4("Content"),
+                uuid = 4,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = ON_SCREEN
+            ),
+            backStackElement(
+                element = Routing3,
+                uuid = 3,
+                fromState = ON_SCREEN,
+                targetState = DESTROYED
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 2,
+                fromState = ON_SCREEN,
+                targetState = STASHED_IN_BACK_STACK
+            )
+        )
+        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
+        val backStack = BackStack<Routing>(
+            initialElement = initialElement,
+            savedStateMap = savedStateMap
+        )
+
+        var state: BackStackElements<Routing>? = null
+        testScope.launch {
+            backStack
+                .offScreen
+                .collect { state = it }
+        }
+
+        backStack.push(Routing1)
+
+        val expectedState = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing4("Content"),
+                uuid = 4,
+                fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK
             )
         )
@@ -272,6 +371,68 @@ internal class BackStackTest {
     }
 
     @Test
+    fun `onScreen gets notified when change in backstack state regarding onScreen elements`() {
+
+        val initialElement = Routing1
+        val storedElements = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing4("Content"),
+                uuid = 4,
+                fromState = STASHED_IN_BACK_STACK,
+                targetState = ON_SCREEN
+            ),
+            backStackElement(
+                element = Routing3,
+                uuid = 3,
+                fromState = ON_SCREEN,
+                targetState = DESTROYED
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 2,
+                fromState = ON_SCREEN,
+                targetState = STASHED_IN_BACK_STACK
+            )
+        )
+        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
+        val backStack = BackStack<Routing>(
+            initialElement = initialElement,
+            savedStateMap = savedStateMap
+        )
+
+        var state: BackStackElements<Routing>? = null
+        testScope.launch {
+            backStack
+                .onScreen
+                .collect { state = it }
+        }
+
+        backStack.push(Routing2)
+
+        val expectedState = listOf<BackStackElement<Routing>>(
+            backStackElement(
+                element = Routing3,
+                uuid = 3,
+                fromState = ON_SCREEN,
+                targetState = DESTROYED
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 2,
+                fromState = ON_SCREEN,
+                targetState = STASHED_IN_BACK_STACK
+            ),
+            backStackElement(
+                element = Routing2,
+                uuid = 5,
+                fromState = CREATED,
+                targetState = ON_SCREEN
+            )
+        )
+        assertEquals(state, expectedState)
+    }
+
+    @Test
     fun `canHandleBackPress returns true when stashed elements present`() {
 
         val initialElement = Routing1
@@ -290,6 +451,27 @@ internal class BackStackTest {
         )
 
         val canHandleBackPress = backStack.canHandleBackPress.value
+        assertEquals(canHandleBackPress, true)
+    }
+
+    @Test
+    fun `canHandleBackPress gets notified when change in backstack`() {
+
+        val initialElement = Routing1
+        val backStack = BackStack<Routing>(
+            initialElement = initialElement,
+            savedStateMap = null
+        )
+
+        var canHandleBackPress: Boolean? = null
+        testScope.launch {
+            backStack
+                .canHandleBackPress
+                .collect { canHandleBackPress = it }
+        }
+
+        backStack.push(Routing2)
+
         assertEquals(canHandleBackPress, true)
     }
 
