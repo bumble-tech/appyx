@@ -8,6 +8,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class RemoveTest {
@@ -162,7 +163,7 @@ internal class RemoveTest {
         assertEquals(newElements, expectedElements)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `crashes when item to remove on screen but no element stashed`() {
 
         val key = backStackKey<Routing>(
@@ -179,7 +180,9 @@ internal class RemoveTest {
         )
         val operation = Remove(key = key)
 
-        operation.invoke(elements, UuidGenerator(0))
+        assertThrows(IllegalArgumentException::class.java) {
+            operation.invoke(elements, UuidGenerator(0))
+        }
     }
 
     @Test

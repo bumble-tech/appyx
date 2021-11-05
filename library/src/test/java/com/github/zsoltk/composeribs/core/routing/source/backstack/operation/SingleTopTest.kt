@@ -11,6 +11,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Rou
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing4
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class SingleTopTest {
@@ -185,7 +186,7 @@ internal class SingleTopTest {
         assertEquals(newElements, expectedElements)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `crashes when one element of same type and same content but no element on screen`() {
 
         val elements = listOf<BackStackElement<Routing>>(
@@ -216,7 +217,9 @@ internal class SingleTopTest {
         )
         val operation = SingleTop<Routing>(element = Routing4("Content 1"))
 
-        operation.invoke(elements = elements, uuidGenerator = UuidGenerator(2))
+        assertThrows(IllegalArgumentException::class.java) {
+            operation.invoke(elements = elements, uuidGenerator = UuidGenerator(2))
+        }
     }
 
     @Test
@@ -275,7 +278,7 @@ internal class SingleTopTest {
         assertEquals(newElements, expectedElements)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `crashes when one element of same type and different content but no element on screen`() {
 
         val elements = listOf<BackStackElement<Routing>>(
@@ -306,7 +309,9 @@ internal class SingleTopTest {
         )
         val operation = SingleTop<Routing>(element = Routing4("Content 2"))
 
-        operation.invoke(elements = elements, uuidGenerator = UuidGenerator(2))
+        assertThrows(IllegalArgumentException::class.java) {
+            operation.invoke(elements = elements, uuidGenerator = UuidGenerator(2))
+        }
     }
 
     @Test

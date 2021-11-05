@@ -10,6 +10,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Rou
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Test
 
 internal class ReplaceTest {
@@ -68,13 +69,15 @@ internal class ReplaceTest {
         assertEquals(applicable, true)
     }
 
-    @Test(expected = IllegalArgumentException::class)
+    @Test
     fun `crashes when no element on screen`() {
 
         val elements = emptyList<BackStackElement<Routing>>()
         val operation = Replace<Routing>(element = Routing1)
 
-        operation.invoke(elements, UuidGenerator(0))
+        assertThrows(IllegalArgumentException::class.java) {
+            operation.invoke(elements, UuidGenerator(0))
+        }
     }
 
     @Test
