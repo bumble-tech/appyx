@@ -25,15 +25,11 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
-import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
 class CombinedRoutingSourceNode(
     buildContext: BuildContext,
-    private val permanent: PermanentRoutingSource<Routing> = PermanentRoutingSource(
-        Routing.Permanent.Child1,
-    ),
     private val backStack1: BackStack<Routing> = BackStack(
         initialElement = Routing.Configuration.Child(UUID.randomUUID().toString()),
         savedStateMap = buildContext.savedStateMap,
@@ -46,7 +42,7 @@ class CombinedRoutingSourceNode(
     ),
 ) : ParentNode<CombinedRoutingSourceNode.Routing>(
     buildContext = buildContext,
-    routingSource = permanent + backStack1 + backStack2,
+    routingSource = backStack1 + backStack2,
 ) {
 
     sealed class Routing : Parcelable {
@@ -98,11 +94,7 @@ class CombinedRoutingSourceNode(
                 .fillMaxWidth()
                 .height(200.dp)
         ) {
-            Subtree(routingSource = permanent) {
-                visibleChildren<Routing> {
-                    it()
-                }
-            }
+            permanentChild(Routing.Permanent.Child1)
         }
     }
 
