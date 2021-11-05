@@ -135,19 +135,19 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 uuid = 4,
-                fromState = ON_SCREEN,
+                fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN
             ),
             backStackElement(
                 element = Routing3,
                 uuid = 3,
-                fromState = DESTROYED,
+                fromState = ON_SCREEN,
                 targetState = DESTROYED
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK
             )
         )
@@ -162,19 +162,19 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 uuid = 4,
-                fromState = ON_SCREEN,
+                fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN
             ),
             backStackElement(
                 element = Routing3,
                 uuid = 3,
-                fromState = DESTROYED,
+                fromState = ON_SCREEN,
                 targetState = DESTROYED
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK
             )
         )
@@ -189,19 +189,19 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 uuid = 4,
-                fromState = ON_SCREEN,
+                fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN
             ),
             backStackElement(
                 element = Routing3,
                 uuid = 3,
-                fromState = DESTROYED,
+                fromState = ON_SCREEN,
                 targetState = DESTROYED
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK
             )
         )
@@ -216,13 +216,13 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing3,
                 uuid = 3,
-                fromState = DESTROYED,
+                fromState = ON_SCREEN,
                 targetState = DESTROYED
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK
             )
         )
@@ -237,19 +237,19 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 uuid = 4,
-                fromState = ON_SCREEN,
+                fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN
             ),
             backStackElement(
                 element = Routing3,
                 uuid = 3,
-                fromState = DESTROYED,
+                fromState = ON_SCREEN,
                 targetState = DESTROYED
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK
             )
         )
@@ -264,7 +264,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 uuid = 4,
-                fromState = ON_SCREEN,
+                fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN
             )
         )
@@ -279,7 +279,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing2,
                 uuid = 2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK
             )
         )
@@ -301,7 +301,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing2,
                 uuid = 2,
-                fromState = ON_SCREEN,
+                fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN
             )
         )
