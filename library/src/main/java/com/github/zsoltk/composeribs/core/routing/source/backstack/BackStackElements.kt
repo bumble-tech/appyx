@@ -1,3 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
-typealias BackStackElements<T> = List<BackStackElement<T>>
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
+
+typealias BackStackElements<T> = RoutingElements<T, BackStack.TransitionState>

@@ -5,6 +5,7 @@ import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,11 +28,6 @@ class BackStack<T : Any>(
 
     enum class TransitionState {
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
-    }
-
-    interface Operation<T> : (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> {
-
-        fun isApplicable(elements: BackStackElements<T>): Boolean
     }
 
     // TODO Replace with UUID for restoration simplicity?
@@ -84,7 +80,7 @@ class BackStack<T : Any>(
         }
     }
 
-    fun perform(operation: Operation<T>) {
+    fun perform(operation: BackStackOperation<T>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it, tmpCounter) }
         }

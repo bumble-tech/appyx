@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core.routing.source.backstack
+package com.github.zsoltk.composeribs.core.routing
 
 import java.util.concurrent.atomic.AtomicInteger
 

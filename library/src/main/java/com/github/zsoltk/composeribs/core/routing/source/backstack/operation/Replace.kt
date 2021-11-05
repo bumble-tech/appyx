@@ -1,9 +1,10 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
@@ -14,7 +15,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  */
 internal class Replace<T : Any>(
     private val element: T
-) : BackStack.Operation<T> {
+) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         element != elements.current?.key?.routing

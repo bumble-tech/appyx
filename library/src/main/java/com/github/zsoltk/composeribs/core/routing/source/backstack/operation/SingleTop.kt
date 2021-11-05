@@ -1,10 +1,10 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
@@ -16,7 +16,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  */
 internal class SingleTop<T : Any>(
     private val element: T
-) : Operation<T> {
+) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         getOperation(elements).isApplicable(elements)
@@ -26,7 +26,7 @@ internal class SingleTop<T : Any>(
         uuidGenerator: UuidGenerator
     ): BackStackElements<T> = getOperation(elements).invoke(elements, uuidGenerator)
 
-    private fun getOperation(elements: BackStackElements<T>): Operation<T> {
+    private fun getOperation(elements: BackStackElements<T>): BackStackOperation<T> {
         val targetClass = element.javaClass
         val lastIndexOfSameClass = elements.indexOfLast { targetClass.isInstance(it.key.routing) }
 
@@ -44,7 +44,7 @@ internal class SingleTop<T : Any>(
     private class SingleTopReactivateBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int
-    ) : Operation<T> {
+    ) : BackStackOperation<T> {
 
         override fun isApplicable(elements: BackStackElements<T>): Boolean =
             element != elements.current?.key?.routing
@@ -71,7 +71,7 @@ internal class SingleTop<T : Any>(
     private class SingleTopReplaceBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int
-    ) : Operation<T> {
+    ) : BackStackOperation<T> {
 
         override fun isApplicable(elements: BackStackElements<T>): Boolean = true
 
