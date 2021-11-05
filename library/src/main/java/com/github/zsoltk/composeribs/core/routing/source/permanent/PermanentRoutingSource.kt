@@ -1,7 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.permanent
 
 import android.os.Parcelable
-import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +24,7 @@ class PermanentRoutingSource<Key>(
 
     private val state = MutableStateFlow(
         configuration.map { key ->
-            RoutingElement(
+            PermanentElement(
                 key = RoutingKeyImpl(routing = key, id = idCounter++),
                 fromState = 0,
                 targetState = 0,
@@ -33,13 +32,13 @@ class PermanentRoutingSource<Key>(
         }
     )
 
-    override val all: StateFlow<List<RoutingElement<Key, Int>>>
+    override val all: StateFlow<PermanentElements<Key>>
         get() = state
 
-    override val onScreen: StateFlow<List<RoutingElement<Key, Int>>>
+    override val onScreen: StateFlow<PermanentElements<Key>>
         get() = state
 
-    override val offScreen: StateFlow<List<RoutingElement<Key, Int>>> =
+    override val offScreen: StateFlow<PermanentElements<Key>> =
         MutableStateFlow(emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
