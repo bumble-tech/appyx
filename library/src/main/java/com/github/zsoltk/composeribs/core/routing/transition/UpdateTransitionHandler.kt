@@ -65,8 +65,8 @@ abstract class UpdateTransitionHandler<T, S>(open val clipToBounds: Boolean = fa
     @Composable
     private fun TransitionDescriptor<T, S>.processParams(): TransitionDescriptor<T, S> =
         copy(
-            transitionParams = transitionParams.copy(
-                bounds = determineBounds(transitionBounds = transitionParams.bounds)
+            params = params.copy(
+                bounds = determineBounds(transitionBounds = params.bounds)
             )
         )
 

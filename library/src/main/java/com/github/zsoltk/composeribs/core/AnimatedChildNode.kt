@@ -40,7 +40,7 @@ fun <Routing, State> AnimatedChildNode(
             val transitionScope =
                 transitionHandler.handle(
                     descriptor = TransitionDescriptor(
-                        transitionParams = TransitionParams(
+                        params = TransitionParams(
                             bounds = TransitionBounds(
                                 width = maxWidth,
                                 height = maxHeight

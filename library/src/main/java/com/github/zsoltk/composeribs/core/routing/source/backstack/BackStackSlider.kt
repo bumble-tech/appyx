@@ -26,7 +26,7 @@ class BackStackSlider<T>(
         val offset = transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
-                val width = descriptor.transitionParams.bounds.width.value
+                val width = descriptor.params.bounds.width.value
                 when (it) {
                     BackStack.TransitionState.CREATED -> Offset(1.0f * width, 0f)
                     BackStack.TransitionState.ON_SCREEN -> Offset(0f, 0f)

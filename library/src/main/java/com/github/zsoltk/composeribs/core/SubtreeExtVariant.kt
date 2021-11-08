@@ -38,7 +38,7 @@ inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Paren
                 val transitionScope =
                     transitionHandler.handle(
                         descriptor = TransitionDescriptor(
-                            transitionParams = TransitionParams(
+                            params = TransitionParams(
                                 bounds = TransitionBounds(
                                     width = maxWidth,
                                     height = maxHeight

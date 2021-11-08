@@ -141,7 +141,7 @@ class SubtreeTransitionScope<T : Any, S>(
                     val transitionScope =
                         transitionHandler.handle(
                             descriptor = TransitionDescriptor(
-                                transitionParams = transitionParams,
+                                params = transitionParams,
                                 operation = pair.first,
                                 element = routingElement.key.routing,
                                 fromState = routingElement.fromState,
