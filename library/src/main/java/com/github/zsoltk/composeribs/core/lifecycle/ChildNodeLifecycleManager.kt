@@ -54,12 +54,12 @@ class ChildNodeLifecycleManager<Routing>(
                 routingSource.all,
                 children,
                 ::Triple
-            ).collect { (state, elements, children) ->
-                elements.forEach { element ->
+            ).collect { (lifecycleState, routingState, children) ->
+                routingState.elements.forEach { element ->
                     val maxLifecycle =
                         if (routingSource.isOnScreen(element.key)) Lifecycle.State.RESUMED
                         else Lifecycle.State.CREATED
-                    val current = minOf(state, maxLifecycle)
+                    val current = minOf(lifecycleState, maxLifecycle)
                     children[element.key]?.nodeOrNull?.updateLifecycleState(current)
                 }
             }

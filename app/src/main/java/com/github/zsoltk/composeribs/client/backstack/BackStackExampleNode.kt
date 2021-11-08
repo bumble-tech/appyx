@@ -284,7 +284,7 @@ class BackStackExampleNode(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "BackStack:", fontWeight = Bold)
-                    Text(text = "${backStackState.value.toStateString()}")
+                    Text(text = "${backStackState.value.elements.toStateString()}")
                 }
             }
         }

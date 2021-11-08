@@ -2,8 +2,11 @@ package com.github.zsoltk.composeribs.core
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
@@ -22,6 +25,7 @@ inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Paren
             .onScreen
             .map {
                 it
+                    .elements
                     .filter { it.key.routing is V }
                     .map { it to childOrCreate(it.key) }
             }

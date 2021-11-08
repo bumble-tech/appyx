@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
@@ -57,9 +58,9 @@ fun <Routing, State> AnimatedChildNode(
 }
 
 @Composable
-fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, S>>> =
+fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, S>> =
     if (this != null) {
-        all.collectAsState()
+        all.map { it.elements }.collectAsState(all.value.elements)
     } else {
         remember { mutableStateOf(emptyList()) }
     }
@@ -68,6 +69,7 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, 
 fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S>?> =
     if (this != null) {
         all
+            .map { it.elements }
             .map { it.findLast { isOnScreen(it.key) } }
             .collectAsState(initial = null)
     } else {
@@ -78,6 +80,7 @@ fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S
 fun <R, S> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, S>?> =
     if (this != null) {
         all
+            .map { it.elements }
             .map { it.findLast { routingClazz.isInstance(it.key.routing) && isOnScreen(it.key) } }
             .collectAsState(initial = null)
     } else {
