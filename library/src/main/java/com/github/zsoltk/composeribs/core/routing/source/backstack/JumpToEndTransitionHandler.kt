@@ -7,7 +7,9 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-class JumpToEndTransitionHandler<S> : UpdateTransitionHandler<S>() {
+class JumpToEndTransitionHandler<T, S> : UpdateTransitionHandler<T, S>() {
+
     @Composable
-    override fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier = Modifier
+    override fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier =
+        Modifier
 }

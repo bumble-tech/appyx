@@ -14,12 +14,15 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-class TilesTransitionHandler(
+class TilesTransitionHandler<T>(
     private val transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { tween(500) }
-) : UpdateTransitionHandler<Tiles.TransitionState>() {
+) : UpdateTransitionHandler<T, Tiles.TransitionState>() {
 
     @Composable
-    override fun map(transition: Transition<Tiles.TransitionState>, transitionBounds: TransitionBounds): Modifier {
+    override fun map(
+        transition: Transition<Tiles.TransitionState>,
+        transitionBounds: TransitionBounds
+    ): Modifier {
         val scale = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {

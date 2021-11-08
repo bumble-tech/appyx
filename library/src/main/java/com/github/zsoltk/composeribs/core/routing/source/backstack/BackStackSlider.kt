@@ -13,10 +13,10 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-class BackStackSlider(
+class BackStackSlider<T>(
     private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { tween(1500) },
     override val clipToBounds: Boolean = false
-) : UpdateTransitionHandler<BackStack.TransitionState>() {
+) : UpdateTransitionHandler<T, BackStack.TransitionState>() {
 
     @Composable
     override fun map(

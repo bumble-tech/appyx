@@ -4,9 +4,9 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-class CombinedHandler<S>(
-    private val handlers: List<UpdateTransitionHandler<S>>
-) : UpdateTransitionHandler<S>() {
+class CombinedHandler<T, S>(
+    private val handlers: List<UpdateTransitionHandler<T, S>>
+) : UpdateTransitionHandler<T, S>() {
 
     @Composable
     override fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier =

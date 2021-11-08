@@ -10,11 +10,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.children.ChildEntry
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
@@ -24,8 +26,9 @@ import kotlin.reflect.KClass
 fun <Routing, State> AnimatedChildNode(
     routingSource: RoutingSource<Routing, State>,
     routingElement: RoutingElement<Routing, State>,
+    operation: Operation<Routing, State>,
     childEntry: ChildEntry.Eager<Routing>,
-    transitionHandler: TransitionHandler<State> = JumpToEndTransitionHandler(),
+    transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
         Box(modifier = modifier) {
             child()
@@ -36,17 +39,21 @@ fun <Routing, State> AnimatedChildNode(
         BoxWithConstraints {
             val transitionScope =
                 transitionHandler.handle(
-                    fromState = routingElement.fromState,
-                    toState = routingElement.targetState,
+                    descriptor = TransitionDescriptor(
+                        transitionParams = TransitionParams(
+                            bounds = TransitionBounds(
+                                width = maxWidth,
+                                height = maxHeight
+                            )
+                        ),
+                        operation = operation,
+                        element = routingElement.key.routing,
+                        fromState = routingElement.fromState,
+                        toState = routingElement.targetState
+                    ),
                     onTransitionFinished = {
                         routingSource.onTransitionFinished(childEntry.key)
-                    },
-                    transitionParams = TransitionParams(
-                        bounds = TransitionBounds(
-                            width = maxWidth,
-                            height = maxHeight
-                        )
-                    )
+                    }
                 )
             transitionScope.decorator(
                 transitionModifier = transitionScope.transitionModifier,

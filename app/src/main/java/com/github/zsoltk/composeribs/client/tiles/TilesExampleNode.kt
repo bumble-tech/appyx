@@ -71,7 +71,7 @@ class TilesExampleNode(
 
     @Composable
     override fun View() {
-        val handler = TilesTransitionHandler()
+        val handler = TilesTransitionHandler<Routing>()
         Column(modifier = Modifier.fillMaxSize()) {
 
             /*val children by tiles.childrenAsState()

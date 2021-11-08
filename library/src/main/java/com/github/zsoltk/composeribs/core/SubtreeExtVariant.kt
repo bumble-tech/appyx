@@ -7,8 +7,10 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
@@ -17,35 +19,39 @@ import kotlinx.coroutines.flow.map
 @Composable
 inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> ParentNode<T>.SubtreeVariant(
     routingSource: RoutingSource<T, S>,
-    transitionHandler: TransitionHandler<S>,
+    transitionHandler: TransitionHandler<T, S>,
     crossinline block: @Composable (child: @Composable () -> Unit) -> Unit,
 ) {
     BoxWithConstraints {
-        val onScreen by routingSource
+        val pair by routingSource
             .onScreen
-            .map {
-                it
+            .map { state ->
+                state.operation to state
                     .elements
                     .filter { it.key.routing is V }
                     .map { it to childOrCreate(it.key) }
             }
-            .collectAsState(initial = emptyList())
+            .collectAsState(initial = Operation.Noop<T, S>() to emptyList())
 
-        onScreen.forEach { (routingElement, childEntry) ->
+        pair.second.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
                 val transitionScope =
                     transitionHandler.handle(
-                        fromState = routingElement.fromState,
-                        toState = routingElement.targetState,
+                        descriptor = TransitionDescriptor(
+                            transitionParams = TransitionParams(
+                                bounds = TransitionBounds(
+                                    width = maxWidth,
+                                    height = maxHeight
+                                )
+                            ),
+                            operation = pair.first,
+                            element = routingElement.key.routing,
+                            fromState = routingElement.fromState,
+                            toState = routingElement.targetState
+                        ),
                         onTransitionFinished = {
                             routingSource.onTransitionFinished(childEntry.key)
-                        },
-                        transitionParams = TransitionParams(
-                            bounds = TransitionBounds(
-                                width = maxWidth,
-                                height = maxHeight
-                            )
-                        )
+                        }
                     )
 
                 block(

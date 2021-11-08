@@ -54,7 +54,7 @@ class ContainerNode(
         initialElement = Picker,
         savedStateMap = buildContext.savedStateMap,
     ),
-    private val transitionHandler: UpdateTransitionHandler<TransitionState> = CombinedHandler(
+    private val transitionHandler: UpdateTransitionHandler<Routing, TransitionState> = CombinedHandler(
         listOf(
             BackStackSlider(transitionSpec = { tween(1000) }),
             BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),

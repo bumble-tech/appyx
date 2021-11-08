@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
@@ -26,7 +28,7 @@ fun <T, S> Subtree(
 fun <T : Any, S> Subtree(
     modifier: Modifier,
     routingSource: RoutingSource<T, S>,
-    transitionHandler: TransitionHandler<S>,
+    transitionHandler: TransitionHandler<T, S>,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit,
 ) {
     BoxWithConstraints(modifier) {
@@ -103,7 +105,7 @@ class SubtreeScope<T, S>(
 
 class SubtreeTransitionScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>,
-    val transitionHandler: TransitionHandler<S>,
+    val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
 ) {
 
@@ -123,24 +125,28 @@ class SubtreeTransitionScope<T : Any, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by this@SubtreeTransitionScope.routingSource.onScreen
+        val pair by this@SubtreeTransitionScope.routingSource.onScreen
             .map { state ->
-                state
+                state.operation to state
                     .elements
                     .filter { clazz.isInstance(it.key.routing) }
                     .map { it to childOrCreate(it.key) }
             }
-            .collectAsState(initial = emptyList())
+            .collectAsState(initial = Operation.Noop<T, S>() to emptyList())
 
         val saveableStateHolder = rememberSaveableStateHolder()
-        children.forEach { (routingElement, childEntry) ->
+        pair.second.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
                 saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
                     val transitionScope =
                         transitionHandler.handle(
-                            transitionParams = transitionParams,
-                            fromState = routingElement.fromState,
-                            toState = routingElement.targetState,
+                            descriptor = TransitionDescriptor(
+                                transitionParams = transitionParams,
+                                operation = pair.first,
+                                element = routingElement.key.routing,
+                                fromState = routingElement.fromState,
+                                toState = routingElement.targetState
+                            ),
                             onTransitionFinished = {
                                 this@SubtreeTransitionScope.routingSource.onTransitionFinished(
                                     childEntry.key

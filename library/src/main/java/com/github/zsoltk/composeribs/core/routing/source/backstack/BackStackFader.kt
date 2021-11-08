@@ -11,9 +11,9 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-class BackStackFader(
+class BackStackFader<T>(
     private val transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { tween(1500) }
-) : UpdateTransitionHandler<BackStack.TransitionState>() {
+) : UpdateTransitionHandler<T, BackStack.TransitionState>() {
 
     @Composable
     override fun map(
