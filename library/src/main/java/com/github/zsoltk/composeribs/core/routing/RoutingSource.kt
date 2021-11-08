@@ -26,7 +26,8 @@ interface RoutingSource<Key, State> : UpNavigationHandler {
     /**
      * @return [key] should be rendered on the screen based on its [State].
      */
-    fun isOnScreen(key: RoutingKey<Key>): Boolean = true
+    fun isOnScreen(key: RoutingKey<Key>): Boolean =
+        onScreen.value.any { it.key == key }
 
     override fun handleUpNavigation(): Boolean =
         canHandleBackPress.value.also { if (it) onBackPressed() }
