@@ -48,7 +48,6 @@ import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.newRoot
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
@@ -131,7 +130,7 @@ class BackStackExampleNode(
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
                     routingSource = backStack,
-                    transitionHandler = BackStackSlider(clipToBounds = true)
+                    transitionHandler = BackStackExampleTransitionHandler()
                 ) {
                     children<Routing> { child ->
                         child()
