@@ -6,7 +6,7 @@ import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
 
-internal class DeselectAll<T : Any> : TilesOperation<T> {
+class DeselectAll<T : Any> : TilesOperation<T> {
 
     override fun isApplicable(elements: TilesElements<T>): Boolean = true
 

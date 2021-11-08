@@ -12,7 +12,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  *
  * [A, B, C] + Push(D) = [A, B, C, D]
  */
-internal class Push<T : Any>(
+class Push<T : Any>(
     private val element: T
 ) : BackStackOperation<T> {
 

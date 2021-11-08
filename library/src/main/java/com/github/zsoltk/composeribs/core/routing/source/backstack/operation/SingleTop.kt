@@ -14,7 +14,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  * [A, B, C, D] + SingleTop(B') = [A, B']        // of same type but not equals, acts as n * Pop + Replace
  * [A, B, C, D] + SingleTop(E) = [A, B, C, D, E] // not found, acts as Push
  */
-internal class SingleTop<T : Any>(
+class SingleTop<T : Any>(
     private val element: T
 ) : BackStackOperation<T> {
 

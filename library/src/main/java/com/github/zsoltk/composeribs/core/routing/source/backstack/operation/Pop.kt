@@ -11,7 +11,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  *
  * [A, B, C] + Pop = [A, B]
  */
-internal class Pop<T : Any> : BackStackOperation<T> {
+class Pop<T : Any> : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         elements.any { it.targetState == BackStack.TransitionState.ON_SCREEN } &&

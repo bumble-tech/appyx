@@ -7,7 +7,7 @@ import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
 
-internal class Select<T : Any>(
+class Select<T : Any>(
     private val key: RoutingKey<T>
 ) : TilesOperation<T> {
 

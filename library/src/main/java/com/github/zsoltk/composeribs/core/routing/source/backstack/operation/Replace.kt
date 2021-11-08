@@ -13,7 +13,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  *
  * [A, B, C] + Replace(D) = [A, B, D]
  */
-internal class Replace<T : Any>(
+class Replace<T : Any>(
     private val element: T
 ) : BackStackOperation<T> {
 
