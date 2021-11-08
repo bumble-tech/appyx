@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
-import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
 
@@ -21,12 +21,12 @@ class BackStackSlider<T>(
     @Composable
     override fun map(
         transition: Transition<BackStack.TransitionState>,
-        transitionBounds: TransitionBounds
+        descriptor: TransitionDescriptor<T, BackStack.TransitionState>
     ): Modifier {
         val offset = transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
-                val width = transitionBounds.width.value
+                val width = descriptor.transitionParams.bounds.width.value
                 when (it) {
                     BackStack.TransitionState.CREATED -> Offset(1.0f * width, 0f)
                     BackStack.TransitionState.ON_SCREEN -> Offset(0f, 0f)

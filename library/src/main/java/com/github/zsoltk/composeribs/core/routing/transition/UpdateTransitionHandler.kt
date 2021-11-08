@@ -24,9 +24,9 @@ abstract class UpdateTransitionHandler<T, S>(open val clipToBounds: Boolean = fa
     }
 
     @Composable
-    private fun convertParamsToBounds(transitionParams: TransitionParams): TransitionBounds {
+    private fun determineBounds(transitionBounds: TransitionBounds): TransitionBounds {
         return if (clipToBounds) {
-            transitionParams.bounds
+            transitionBounds
         } else {
             with(LocalDensity.current) {
                 val configuration = LocalConfiguration.current
@@ -56,12 +56,23 @@ abstract class UpdateTransitionHandler<T, S>(open val clipToBounds: Boolean = fa
                 .then(
                     map(
                         transition = transition,
-                        transitionBounds = convertParamsToBounds(descriptor.transitionParams)
+                        descriptor = descriptor.processParams()
                     )
                 )
         )
     }
 
     @Composable
-    abstract fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier
+    private fun TransitionDescriptor<T, S>.processParams(): TransitionDescriptor<T, S> =
+        copy(
+            transitionParams = transitionParams.copy(
+                bounds = determineBounds(transitionBounds = transitionParams.bounds)
+            )
+        )
+
+    @Composable
+    abstract fun map(
+        transition: Transition<S>,
+        descriptor: TransitionDescriptor<T, S>
+    ): Modifier
 }
