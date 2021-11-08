@@ -40,7 +40,7 @@ class Tiles<T : Any>(
                     targetState = TransitionState.STANDARD,
                 )
             },
-            operation = Operation.Init()
+            operation = Operation.Noop()
         )
     )
 
@@ -51,7 +51,7 @@ class Tiles<T : Any>(
         MutableStateFlow(
             value = RoutingState(
                 elements = emptyList(),
-                operation = Operation.Init()
+                operation = Operation.Noop()
             )
         )
 

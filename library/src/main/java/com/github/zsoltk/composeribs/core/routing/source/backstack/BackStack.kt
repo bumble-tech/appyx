@@ -50,7 +50,7 @@ class BackStack<T : Any>(
                     targetState = TransitionState.ON_SCREEN,
                 )
             ),
-            operation = Operation.Init()
+            operation = Operation.Noop()
         )
     )
 

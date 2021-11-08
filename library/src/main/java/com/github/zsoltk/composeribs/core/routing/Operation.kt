@@ -4,9 +4,9 @@ interface Operation<T, S> : (RoutingElements<T, S>, UuidGenerator) -> RoutingEle
 
     fun isApplicable(elements: RoutingElements<T, S>): Boolean
 
-    class Init<T, S> : Operation<T, S> {
+    class Noop<T, S> : Operation<T, S> {
 
-        override fun isApplicable(elements: RoutingElements<T, S>) = true
+        override fun isApplicable(elements: RoutingElements<T, S>) = false
 
         override fun invoke(
             elements: RoutingElements<T, S>,

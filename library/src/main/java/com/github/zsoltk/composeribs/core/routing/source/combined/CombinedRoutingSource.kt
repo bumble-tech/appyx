@@ -26,25 +26,25 @@ class CombinedRoutingSource<Key>(
         combine(sources.map { it.all }) { arr ->
             RoutingState(
                 elements = arr.map { it.elements }.reduce { acc, list -> acc + list },
-                operation = Operation.Init()
+                operation = Operation.Noop()
             )
-        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Init()))
+        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Noop()))
 
     override val onScreen: StateFlow<RoutingState<Key, Any?>> =
         combine(sources.map { it.onScreen }) { arr ->
             RoutingState(
                 elements = arr.map { it.elements }.reduce { acc, list -> acc + list },
-                operation = Operation.Init()
+                operation = Operation.Noop()
             )
-        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Init()))
+        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Noop()))
 
     override val offScreen: StateFlow<RoutingState<Key, Any?>> =
         combine(sources.map { it.offScreen }) { arr ->
             RoutingState(
                 elements = arr.map { it.elements }.reduce { acc, list -> acc + list },
-                operation = Operation.Init()
+                operation = Operation.Noop()
             )
-        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Init()))
+        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Noop()))
 
     override val canHandleBackPress: StateFlow<Boolean> =
         combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }

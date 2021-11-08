@@ -33,7 +33,7 @@ class PermanentRoutingSource<Key>(
                     targetState = 0,
                 )
             },
-            operation = Operation.Init()
+            operation = Operation.Noop()
         )
     )
 
@@ -47,7 +47,7 @@ class PermanentRoutingSource<Key>(
         MutableStateFlow(
             value = RoutingState(
                 elements = emptyList(),
-                operation = Operation.Init()
+                operation = Operation.Noop()
             )
         )
 
