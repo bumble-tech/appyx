@@ -23,7 +23,7 @@ internal class Replace<T : Any>(
         elements: BackStackElements<T>,
         uuidGenerator: UuidGenerator
     ): BackStackElements<T> {
-        require(elements.isNotEmpty()) { "No element to be replaced, state=$elements" }
+        require(elements.any { it.targetState == BackStack.TransitionState.ON_SCREEN }) { "No element to be replaced, state=$elements" }
 
         return elements.mapIndexed { index, element ->
             if (index == elements.currentIndex) {

@@ -39,7 +39,6 @@ class BackStack<T : Any>(
         savedStateMap
             ?.restoreHistory()
             ?.maxOf { (it.key as LocalRoutingKey<*>).uuid }
-            ?.inc()
             ?: 0
     )
 
@@ -57,7 +56,7 @@ class BackStack<T : Any>(
         state
 
     override val offScreen: StateFlow<BackStackElements<T>> =
-        state.unsuspendedMap { list -> list.filter { it.isOnScreen() } }
+        state.unsuspendedMap { list -> list.filter { !it.isOnScreen() } }
 
     override val onScreen: StateFlow<BackStackElements<T>> =
         state.unsuspendedMap { list -> list.filter { it.isOnScreen() } }
