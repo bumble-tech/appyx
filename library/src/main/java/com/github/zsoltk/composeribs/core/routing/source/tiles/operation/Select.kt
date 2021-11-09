@@ -19,7 +19,10 @@ data class Select<T : Any>(
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.key == key && it.targetState == Tiles.TransitionState.STANDARD) {
-                it.copy(targetState = Tiles.TransitionState.SELECTED)
+                it.copy(
+                    targetState = Tiles.TransitionState.SELECTED,
+                    operation = this
+                )
             } else {
                 it
             }

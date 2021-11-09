@@ -28,7 +28,10 @@ data class Replace<T : Any>(
 
         return elements.mapIndexed { index, element ->
             if (index == elements.currentIndex) {
-                element.copy(targetState = BackStack.TransitionState.DESTROYED)
+                element.copy(
+                    targetState = BackStack.TransitionState.DESTROYED,
+                    operation = this
+                )
             } else {
                 element
             }

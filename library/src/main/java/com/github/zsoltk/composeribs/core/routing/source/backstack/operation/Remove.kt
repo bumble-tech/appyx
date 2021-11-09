@@ -45,8 +45,14 @@ data class Remove<T : Any>(
 
             elements.mapIndexed { index, element ->
                 when (index) {
-                    toRemoveIndex -> element.copy(targetState = BackStack.TransitionState.DESTROYED)
-                    unStashIndex -> element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+                    toRemoveIndex -> element.copy(
+                        targetState = BackStack.TransitionState.DESTROYED,
+                        operation = this
+                    )
+                    unStashIndex -> element.copy(
+                        targetState = BackStack.TransitionState.ON_SCREEN,
+                        operation = this
+                    )
                     else -> element
                 }
             }

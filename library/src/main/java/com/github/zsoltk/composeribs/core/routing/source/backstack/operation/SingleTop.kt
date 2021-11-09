@@ -35,11 +35,17 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
             return newElements.mapIndexed { index, element ->
                 if (index == newElements.lastIndex) {
-                    element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+                    element.copy(
+                        targetState = BackStack.TransitionState.ON_SCREEN,
+                        operation = this
+                    )
                 } else {
                     element
                 }
-            } + current.copy(targetState = BackStack.TransitionState.DESTROYED)
+            } + current.copy(
+                targetState = BackStack.TransitionState.DESTROYED,
+                operation = this
+            )
         }
 
         override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
@@ -63,7 +69,10 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
             val newElements = elements.dropLast(elements.size - position)
 
-            return newElements + current.copy(targetState = BackStack.TransitionState.DESTROYED) + BackStackElement(
+            return newElements + current.copy(
+                targetState = BackStack.TransitionState.DESTROYED,
+                operation = this
+            ) + BackStackElement(
                 key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,

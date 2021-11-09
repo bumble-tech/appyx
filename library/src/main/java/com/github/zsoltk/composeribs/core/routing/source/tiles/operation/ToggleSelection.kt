@@ -20,8 +20,14 @@ data class ToggleSelection<T : Any>(
         elements.map {
             if (it.key == key) {
                 when (it.targetState) {
-                    Tiles.TransitionState.SELECTED -> it.copy(targetState = Tiles.TransitionState.STANDARD)
-                    Tiles.TransitionState.STANDARD -> it.copy(targetState = Tiles.TransitionState.SELECTED)
+                    Tiles.TransitionState.SELECTED -> it.copy(
+                        targetState = Tiles.TransitionState.STANDARD,
+                        operation = this
+                    )
+                    Tiles.TransitionState.STANDARD -> it.copy(
+                        targetState = Tiles.TransitionState.SELECTED,
+                        operation = this
+                    )
                     else -> it
                 }
             } else {

@@ -19,7 +19,10 @@ data class Destroy<T : Any>(
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.key == key) {
-                it.copy(targetState = Tiles.TransitionState.DESTROYED)
+                it.copy(
+                    targetState = Tiles.TransitionState.DESTROYED,
+                    operation = this
+                )
             } else {
                 it
             }

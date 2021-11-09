@@ -19,7 +19,10 @@ data class Deselect<T : Any>(
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.key == key && it.targetState == Tiles.TransitionState.SELECTED) {
-                it.copy(targetState = Tiles.TransitionState.STANDARD)
+                it.copy(
+                    targetState = Tiles.TransitionState.STANDARD,
+                    operation = this
+                )
             } else {
                 it
             }

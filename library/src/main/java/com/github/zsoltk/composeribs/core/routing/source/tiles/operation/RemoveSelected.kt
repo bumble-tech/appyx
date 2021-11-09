@@ -16,7 +16,10 @@ class RemoveSelected<T : Any> : TilesOperation<T> {
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.targetState == Tiles.TransitionState.SELECTED) {
-                it.copy(targetState = Tiles.TransitionState.DESTROYED)
+                it.copy(
+                    targetState = Tiles.TransitionState.DESTROYED,
+                    operation = this
+                )
             } else {
                 it
             }

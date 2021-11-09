@@ -25,7 +25,10 @@ data class Push<T : Any>(
     ): BackStackElements<T> {
         return elements.map {
             if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
-                it.copy(targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK)
+                it.copy(
+                    targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK,
+                    operation = this
+                )
             } else {
                 it
             }

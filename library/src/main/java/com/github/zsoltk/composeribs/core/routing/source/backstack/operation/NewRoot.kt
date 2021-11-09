@@ -30,7 +30,10 @@ data class NewRoot<T : Any>(
             listOf(current)
         } else {
             listOf(
-                current.copy(targetState = BackStack.TransitionState.DESTROYED),
+                current.copy(
+                    targetState = BackStack.TransitionState.DESTROYED,
+                    operation = this
+                ),
                 BackStackElement(
                     key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
                     fromState = BackStack.TransitionState.CREATED,

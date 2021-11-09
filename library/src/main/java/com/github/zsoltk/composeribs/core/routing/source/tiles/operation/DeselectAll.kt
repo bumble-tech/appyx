@@ -16,7 +16,10 @@ class DeselectAll<T : Any> : TilesOperation<T> {
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.targetState == Tiles.TransitionState.SELECTED) {
-                it.copy(targetState = Tiles.TransitionState.STANDARD)
+                it.copy(
+                    targetState = Tiles.TransitionState.STANDARD,
+                    operation = this
+                )
             } else {
                 it
             }
