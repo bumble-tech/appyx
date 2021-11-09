@@ -38,6 +38,7 @@ class Tiles<T : Any>(
                     key = LocalRoutingKey(it, tmpCounter.incrementAndGet()),
                     fromState = TransitionState.CREATED,
                     targetState = TransitionState.STANDARD,
+                    operation = Operation.Noop()
                 )
             },
             operation = Operation.Noop()

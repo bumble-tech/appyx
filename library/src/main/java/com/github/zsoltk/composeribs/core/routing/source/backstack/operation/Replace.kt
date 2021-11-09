@@ -36,6 +36,7 @@ data class Replace<T : Any>(
             key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
+            operation = this
         )
     }
 }

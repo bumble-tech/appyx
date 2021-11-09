@@ -31,6 +31,7 @@ class PermanentRoutingSource<Key>(
                     key = RoutingKeyImpl(routing = key, id = idCounter++),
                     fromState = 0,
                     targetState = 0,
+                    operation = Operation.Noop()
                 )
             },
             operation = Operation.Noop()

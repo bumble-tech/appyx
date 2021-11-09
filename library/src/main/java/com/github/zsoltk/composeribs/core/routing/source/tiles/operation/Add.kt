@@ -21,6 +21,7 @@ data class Add<T : Any>(
             key = Tiles.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
             fromState = Tiles.TransitionState.CREATED,
             targetState = Tiles.TransitionState.STANDARD,
+            operation = this
         )
 }
 

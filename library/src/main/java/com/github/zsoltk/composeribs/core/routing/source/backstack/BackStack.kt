@@ -48,6 +48,7 @@ class BackStack<T : Any>(
                     key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
                     fromState = TransitionState.ON_SCREEN,
                     targetState = TransitionState.ON_SCREEN,
+                    operation = Operation.Noop()
                 )
             ),
             operation = Operation.Noop()
