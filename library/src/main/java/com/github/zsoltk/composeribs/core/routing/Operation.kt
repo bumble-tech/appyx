@@ -12,5 +12,9 @@ interface Operation<T, S> : (RoutingElements<T, S>, UuidGenerator) -> RoutingEle
             elements: RoutingElements<T, S>,
             uuidGenerator: UuidGenerator
         ): RoutingElements<T, S> = elements
+
+        override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
+
+        override fun hashCode(): Int = this.javaClass.hashCode()
     }
 }

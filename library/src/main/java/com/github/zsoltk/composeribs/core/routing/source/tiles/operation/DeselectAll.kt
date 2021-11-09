@@ -21,6 +21,10 @@ class DeselectAll<T : Any> : TilesOperation<T> {
                 it
             }
         }
+
+    override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
+
+    override fun hashCode(): Int = this.javaClass.hashCode()
 }
 
 fun <T : Any> Tiles<T>.deselectAll() {

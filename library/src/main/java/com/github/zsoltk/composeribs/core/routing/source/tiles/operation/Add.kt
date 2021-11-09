@@ -7,7 +7,7 @@ import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElement
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
 
-class Add<T : Any>(
+data class Add<T : Any>(
     private val element: T
 ) : TilesOperation<T> {
 

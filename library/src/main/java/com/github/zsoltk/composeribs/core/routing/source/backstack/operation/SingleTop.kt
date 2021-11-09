@@ -66,6 +66,10 @@ class SingleTop<T : Any>(
                 }
             } + current.copy(targetState = BackStack.TransitionState.DESTROYED)
         }
+
+        override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
+
+        override fun hashCode(): Int = this.javaClass.hashCode()
     }
 
     private class SingleTopReplaceBackStackOperation<T : Any>(
@@ -90,6 +94,10 @@ class SingleTop<T : Any>(
                 targetState = BackStack.TransitionState.ON_SCREEN,
             )
         }
+
+        override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
+
+        override fun hashCode(): Int = this.javaClass.hashCode()
     }
 }
 

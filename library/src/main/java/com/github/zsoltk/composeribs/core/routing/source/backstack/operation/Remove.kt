@@ -12,7 +12,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  *
  * [A, B, C] + Remove(id of B) = [A, C]
  */
-class Remove<T : Any>(
+data class Remove<T : Any>(
     private val key: RoutingKey<T>
 ) : BackStackOperation<T> {
 

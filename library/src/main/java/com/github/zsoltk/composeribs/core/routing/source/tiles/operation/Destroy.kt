@@ -7,7 +7,7 @@ import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
 
-class Destroy<T : Any>(
+data class Destroy<T : Any>(
     private val key: RoutingKey<T>
 ) : TilesOperation<T> {
 

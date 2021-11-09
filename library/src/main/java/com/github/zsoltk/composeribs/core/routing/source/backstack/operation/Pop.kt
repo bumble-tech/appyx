@@ -35,6 +35,10 @@ class Pop<T : Any> : BackStackOperation<T> {
             }
         }
     }
+
+    override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
+
+    override fun hashCode(): Int = this.javaClass.hashCode()
 }
 
 fun <T : Any> BackStack<T>.pop() {
