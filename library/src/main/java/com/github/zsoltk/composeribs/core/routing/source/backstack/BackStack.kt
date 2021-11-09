@@ -6,7 +6,6 @@ import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingState
 import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.unsuspendedMap
@@ -36,68 +35,56 @@ class BackStack<T : Any>(
     private val tmpCounter = UuidGenerator(
         savedStateMap
             ?.restoreHistory()
-            ?.elements
             ?.maxOf { (it.key as LocalRoutingKey<*>).uuid }
             ?: 0
     )
 
     private val state = MutableStateFlow(
-        value = savedStateMap?.restoreHistory() ?: RoutingState(
-            elements = listOf(
-                BackStackElement(
-                    key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
-                    fromState = TransitionState.ON_SCREEN,
-                    targetState = TransitionState.ON_SCREEN,
-                    operation = Operation.Noop()
-                )
-            ),
-            operation = Operation.Noop()
+        value = savedStateMap?.restoreHistory() ?: listOf(
+            BackStackElement(
+                key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
+                fromState = TransitionState.ON_SCREEN,
+                targetState = TransitionState.ON_SCREEN,
+                operation = Operation.Noop()
+            )
         )
     )
 
-    override val all: StateFlow<RoutingState<T, TransitionState>> =
+    override val all: StateFlow<BackStackElements<T>> =
         state
 
-    override val offScreen: StateFlow<RoutingState<T, TransitionState>> =
-        state.unsuspendedMap { state -> state.copy(elements = state.elements.filter { !it.isOnScreen() }) }
+    override val offScreen: StateFlow<BackStackElements<T>> =
+        state.unsuspendedMap { list -> list.filter { !it.isOnScreen() } }
 
-    override val onScreen: StateFlow<RoutingState<T, TransitionState>> =
-        state.unsuspendedMap { state -> state.copy(elements = state.elements.filter { it.isOnScreen() }) }
+    override val onScreen: StateFlow<BackStackElements<T>> =
+        state.unsuspendedMap { list -> list.filter { it.isOnScreen() } }
 
     override val canHandleBackPress: StateFlow<Boolean> =
-        state.unsuspendedMap { state -> state.elements.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
+        state.unsuspendedMap { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
-        state.update { state ->
-            state.copy(
-                elements = state.elements.mapNotNull {
-                    if (it.key == key) {
-                        when (it.targetState) {
-                            TransitionState.DESTROYED ->
-                                null
-                            TransitionState.STASHED_IN_BACK_STACK ->
-                                it.copy(fromState = it.targetState)
-                            TransitionState.CREATED,
-                            TransitionState.ON_SCREEN ->
-                                it.copy(fromState = it.targetState)
-                        }
-                    } else {
-                        it
+        state.update { list ->
+            list.mapNotNull {
+                if (it.key == key) {
+                    when (it.targetState) {
+                        TransitionState.DESTROYED ->
+                            null
+                        TransitionState.STASHED_IN_BACK_STACK ->
+                            it.copy(fromState = it.targetState)
+                        TransitionState.CREATED,
+                        TransitionState.ON_SCREEN ->
+                            it.copy(fromState = it.targetState)
                     }
+                } else {
+                    it
                 }
-            )
+            }
         }
     }
 
     fun perform(operation: BackStackOperation<T>) {
-        val elements = state.value.elements
-        if (operation.isApplicable(elements)) {
-            state.update {
-                RoutingState(
-                    elements = operation(elements, tmpCounter),
-                    operation = operation
-                )
-            }
+        if (operation.isApplicable(state.value)) {
+            state.update { operation(it, tmpCounter) }
         }
     }
 
@@ -107,20 +94,18 @@ class BackStack<T : Any>(
 
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
         savedStateMap[key] =
-            state.value.copy(
-                elements = state.value.elements.mapNotNull {
-                    // Sanitize outputs, removing all transitions
-                    if (it.targetState != TransitionState.DESTROYED) {
-                        it.copy(fromState = it.targetState)
-                    } else {
-                        null
-                    }
+            state.value.mapNotNull {
+                // Sanitize outputs, removing all transitions
+                if (it.targetState != TransitionState.DESTROYED) {
+                    it.copy(fromState = it.targetState)
+                } else {
+                    null
                 }
-            )
+            }
     }
 
     private fun SavedStateMap.restoreHistory() =
-        this[key] as? RoutingState<T, TransitionState>
+        this[key] as? BackStackElements<T>
 
     private fun BackStackElement<T>.isOnScreen(): Boolean =
         when (targetState) {
@@ -134,5 +119,5 @@ class BackStack<T : Any>(
         }
 
     override fun isOnScreen(key: RoutingKey<T>): Boolean =
-        state.value.elements.find { it.key == key }?.isOnScreen() ?: false
+        state.value.find { it.key == key }?.isOnScreen() ?: false
 }

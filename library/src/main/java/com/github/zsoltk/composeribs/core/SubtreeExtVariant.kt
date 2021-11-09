@@ -7,7 +7,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
@@ -23,17 +22,16 @@ inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Paren
     crossinline block: @Composable (child: @Composable () -> Unit) -> Unit,
 ) {
     BoxWithConstraints {
-        val pair by routingSource
+        val onScreen by routingSource
             .onScreen
-            .map { state ->
-                state.operation to state
-                    .elements
+            .map {
+                it
                     .filter { it.key.routing is V }
                     .map { it to childOrCreate(it.key) }
             }
-            .collectAsState(initial = Operation.Noop<T, S>() to emptyList())
+            .collectAsState(emptyList())
 
-        pair.second.forEach { (routingElement, childEntry) ->
+        onScreen.forEach { (routingElement, childEntry) ->
             key(childEntry.key) {
                 val transitionScope =
                     transitionHandler.handle(
@@ -44,7 +42,7 @@ inline fun <reified V : T, reified T : Parcelable, reified S : Parcelable> Paren
                                     height = maxHeight
                                 )
                             ),
-                            operation = pair.first,
+                            operation = routingElement.operation,
                             element = routingElement.key.routing,
                             fromState = routingElement.fromState,
                             toState = routingElement.targetState

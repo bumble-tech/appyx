@@ -4,7 +4,6 @@ import android.os.Parcelable
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingState
 import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.deselectAll
 import com.github.zsoltk.composeribs.core.unsuspendedMap
@@ -32,63 +31,47 @@ class Tiles<T : Any>(
     private val tmpCounter = UuidGenerator(1)
 
     private val state = MutableStateFlow(
-        value = RoutingState(
-            elements = initialElements.map {
-                TilesElement(
-                    key = LocalRoutingKey(it, tmpCounter.incrementAndGet()),
-                    fromState = TransitionState.CREATED,
-                    targetState = TransitionState.STANDARD,
-                    operation = Operation.Noop()
-                )
-            },
-            operation = Operation.Noop()
-        )
-    )
-
-    override val all: StateFlow<RoutingState<T, TransitionState>> =
-        state.asStateFlow()
-
-    override val offScreen: StateFlow<RoutingState<T, TransitionState>> =
-        MutableStateFlow(
-            value = RoutingState(
-                elements = emptyList(),
+        initialElements.map {
+            TilesElement(
+                key = LocalRoutingKey(it, tmpCounter.incrementAndGet()),
+                fromState = TransitionState.CREATED,
+                targetState = TransitionState.STANDARD,
                 operation = Operation.Noop()
             )
-        )
+        }
+    )
 
-    override val onScreen: StateFlow<RoutingState<T, TransitionState>>
+    override val all: StateFlow<TilesElements<T>> =
+        state.asStateFlow()
+
+    override val offScreen: StateFlow<TilesElements<T>> =
+        MutableStateFlow(emptyList())
+
+    override val onScreen: StateFlow<TilesElements<T>>
         get() = all
 
     override val canHandleBackPress: StateFlow<Boolean> =
-        state.unsuspendedMap { state -> state.elements.any { it.targetState == TransitionState.SELECTED } }
+        state.unsuspendedMap { list -> list.any { it.targetState == TransitionState.SELECTED } }
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
-        state.update { state ->
-            state.copy(
-                elements = state.elements.mapNotNull {
-                    if (it.key == key) {
-                        if (it.targetState == TransitionState.DESTROYED) {
-                            null
-                        } else {
-                            it.copy(fromState = it.targetState)
-                        }
+        state.update { list ->
+            list.mapNotNull {
+                if (it.key == key) {
+                    if (it.targetState == TransitionState.DESTROYED) {
+                        null
                     } else {
-                        it
+                        it.copy(fromState = it.targetState)
                     }
+                } else {
+                    it
                 }
-            )
+            }
         }
     }
 
     fun perform(operation: TilesOperation<T>) {
-        val elements = state.value.elements
-        if (operation.isApplicable(elements)) {
-            state.update {
-                RoutingState(
-                    elements = operation(elements, tmpCounter),
-                    operation = operation
-                )
-            }
+        if (operation.isApplicable(state.value)) {
+            state.update { operation(it, tmpCounter) }
         }
     }
 

@@ -64,10 +64,10 @@ abstract class ParentNode<Routing>(
     }
 
     private suspend fun RoutingSource<Routing, *>.syncChildrenWithRoutingSource() {
-        all.collect { state ->
+        all.collect { elements ->
             _children.update { map ->
                 val routingSourceKeys =
-                    state.elements.mapTo(HashSet(state.elements.size)) { element -> element.key }
+                    elements.mapTo(HashSet(elements.size)) { element -> element.key }
                 val localKeys = map.keys
                 val newKeys = routingSourceKeys - localKeys
                 val removedKeys = localKeys - routingSourceKeys
@@ -137,8 +137,8 @@ abstract class ParentNode<Routing>(
     private fun manageTransitionsInBackground() {
         if (transitionsInBackgroundJob != null) return
         transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
-            routingSource.all.collect { state ->
-                state.elements
+            routingSource.all.collect { elements ->
+                elements
                     .filter { it.fromState != it.targetState }
                     .forEach { routingSource.onTransitionFinished(it.key) }
             }

@@ -1,9 +1,8 @@
 package com.github.zsoltk.composeribs.core.routing.source.combined
 
-import com.github.zsoltk.composeribs.core.routing.Operation
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,29 +21,17 @@ class CombinedRoutingSource<Key>(
     // Eagerly subscription to avoid recomposition with default value
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val all: StateFlow<RoutingState<Key, Any?>> =
-        combine(sources.map { it.all }) { arr ->
-            RoutingState(
-                elements = arr.map { it.elements }.reduce { acc, list -> acc + list },
-                operation = Operation.Noop()
-            )
-        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Noop()))
+    override val all: StateFlow<RoutingElements<Key, Any?>> =
+        combine(sources.map { it.all }) { arr -> arr.reduce { acc, list -> acc + list } }
+            .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<RoutingState<Key, Any?>> =
-        combine(sources.map { it.onScreen }) { arr ->
-            RoutingState(
-                elements = arr.map { it.elements }.reduce { acc, list -> acc + list },
-                operation = Operation.Noop()
-            )
-        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Noop()))
+    override val onScreen: StateFlow<RoutingElements<Key, Any?>> =
+        combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
+            .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val offScreen: StateFlow<RoutingState<Key, Any?>> =
-        combine(sources.map { it.offScreen }) { arr ->
-            RoutingState(
-                elements = arr.map { it.elements }.reduce { acc, list -> acc + list },
-                operation = Operation.Noop()
-            )
-        }.stateIn(scope, SharingStarted.Eagerly, RoutingState(emptyList(), Operation.Noop()))
+    override val offScreen: StateFlow<RoutingElements<Key, Any?>> =
+        combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
+            .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
         combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }

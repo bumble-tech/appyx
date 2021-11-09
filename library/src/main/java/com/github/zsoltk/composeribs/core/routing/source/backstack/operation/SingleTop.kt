@@ -100,6 +100,5 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 }
 
 fun <T : Any> BackStack<T>.singleTop(element: T) {
-    val elements = all.value.elements
-    perform(SingleTop.init(element, elements))
+    perform(SingleTop.init(element, all.value))
 }

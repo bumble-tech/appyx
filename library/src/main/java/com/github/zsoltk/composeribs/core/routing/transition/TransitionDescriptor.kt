@@ -2,9 +2,9 @@ package com.github.zsoltk.composeribs.core.routing.transition
 
 import com.github.zsoltk.composeribs.core.routing.Operation
 
-data class TransitionDescriptor<T, S>(
+data class TransitionDescriptor<T, out S>(
     val params: TransitionParams,
-    val operation: Operation<T, S>,
+    val operation: Operation<T, out S>,
     val element: T,
     val fromState: S,
     val toState: S
