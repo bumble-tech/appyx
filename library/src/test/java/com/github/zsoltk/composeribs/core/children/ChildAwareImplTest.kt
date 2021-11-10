@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.children
 
 import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -19,7 +20,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
         }
         val configuration = Configuration.Child1()
         add(configuration)
-        val node = root.childOrCreate(TestRoutingSource.RoutingKeyImpl(configuration)).node
+        val node = root.childOrCreate(RoutingKey(configuration)).node
         assertEquals(node, capturedNode)
     }
 
@@ -39,9 +40,9 @@ class ChildAwareImplTest : ChildAwareTestBase() {
         val configuration2 = Configuration.Child1(id = 1)
         val configuration3 = Configuration.Child2(id = 0)
         add(configuration1, configuration2, configuration3)
-        val node1 = root.childOrCreate(TestRoutingSource.RoutingKeyImpl(configuration1)).node
-        val node2 = root.childOrCreate(TestRoutingSource.RoutingKeyImpl(configuration2)).node
-        val node3 = root.childOrCreate(TestRoutingSource.RoutingKeyImpl(configuration3)).node
+        val node1 = root.childOrCreate(RoutingKey(configuration1)).node
+        val node2 = root.childOrCreate(RoutingKey(configuration2)).node
+        val node3 = root.childOrCreate(RoutingKey(configuration3)).node
         assertEquals(
             setOf(
                 node1 to node3,

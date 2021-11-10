@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
-import android.os.Parcelable
 import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
@@ -10,8 +9,6 @@ import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 class BackStack<T : Any>(
     initialElement: T,
@@ -19,33 +16,19 @@ class BackStack<T : Any>(
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
 ) : RoutingSource<T, BackStack.TransitionState> {
 
-    @Parcelize
-    data class LocalRoutingKey<T>(
-        override val routing: @RawValue T,
-        val uuid: Int,
-    ) : RoutingKey<T>, Parcelable
-
     enum class TransitionState {
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
-    interface Operation<T> : (BackStackElements<T>, UuidGenerator) -> BackStackElements<T> {
+    interface Operation<T> : (BackStackElements<T>) -> BackStackElements<T> {
 
         fun isApplicable(elements: BackStackElements<T>): Boolean
     }
 
-    // TODO Replace with UUID for restoration simplicity?
-    private val tmpCounter = UuidGenerator(
-        savedStateMap
-            ?.restoreHistory()
-            ?.maxOf { (it.key as LocalRoutingKey<*>).uuid }
-            ?: 0
-    )
-
     private val state = MutableStateFlow(
         savedStateMap?.restoreHistory() ?: listOf(
             BackStackElement(
-                key = LocalRoutingKey(initialElement, tmpCounter.incrementAndGet()),
+                key = RoutingKey(initialElement),
                 fromState = TransitionState.ON_SCREEN,
                 targetState = TransitionState.ON_SCREEN,
             )
@@ -86,7 +69,7 @@ class BackStack<T : Any>(
 
     fun perform(operation: Operation<T>) {
         if (operation.isApplicable(state.value)) {
-            state.update { operation(it, tmpCounter) }
+            state.update { operation(it) }
         }
     }
 

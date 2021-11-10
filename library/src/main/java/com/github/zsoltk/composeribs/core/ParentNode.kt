@@ -122,7 +122,7 @@ abstract class ParentNode<Routing>(
     @Composable
     protected fun permanentChild(routing: Routing) {
         permanentRoutingSource.add(routing)
-        childOrCreate(PermanentRoutingSource.RoutingKeyImpl(routing)).node.Compose()
+        childOrCreate(RoutingKey(routing)).node.Compose()
     }
 
     /**

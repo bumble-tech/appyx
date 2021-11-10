@@ -132,7 +132,7 @@ class SubtreeTransitionScope<T : Any, S>(
 
         val saveableStateHolder = rememberSaveableStateHolder()
         children.forEach { (routingElement, childEntry) ->
-            key(childEntry.key) {
+            key(childEntry.key.id) {
                 saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
                     val transitionScope =
                         transitionHandler.handle(

@@ -80,10 +80,6 @@ abstract class ChildAwareTestBase {
 
     class TestRoutingSource<Key> : RoutingSource<Key, Int> {
 
-        data class RoutingKeyImpl<Key>(
-            override val routing: Key,
-        ) : RoutingKey<Key>
-
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
         override val all: StateFlow<List<RoutingElement<Key, Int>>>
             get() = state
@@ -99,7 +95,7 @@ abstract class ChildAwareTestBase {
                 require(list.none { it.key.routing in key })
                 list + key.map {
                     RoutingElement(
-                        RoutingKeyImpl(it),
+                        RoutingKey(it),
                         fromState = 0,
                         targetState = 0
                     )
