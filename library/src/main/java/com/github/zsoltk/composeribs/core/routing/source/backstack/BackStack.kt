@@ -93,14 +93,10 @@ class BackStack<T : Any>(
         this[key] as? BackStackElements<T>
 
     private fun BackStackElement<T>.isOnScreen(): Boolean =
-        when (targetState) {
-            TransitionState.CREATED ->
-                error("Impossible target state")
-            TransitionState.ON_SCREEN ->
-                true
-            TransitionState.STASHED_IN_BACK_STACK,
-            TransitionState.DESTROYED ->
-                fromState == TransitionState.ON_SCREEN
+        if (targetState != fromState) {
+            true
+        } else {
+            fromState == TransitionState.ON_SCREEN || fromState == TransitionState.CREATED
         }
 
     override fun isOnScreen(key: RoutingKey<T>): Boolean =
