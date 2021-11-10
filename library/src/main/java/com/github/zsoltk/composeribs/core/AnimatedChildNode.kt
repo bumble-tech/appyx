@@ -10,7 +10,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.children.ChildEntry
-import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -26,7 +25,6 @@ import kotlin.reflect.KClass
 fun <Routing, State> AnimatedChildNode(
     routingSource: RoutingSource<Routing, State>,
     routingElement: RoutingElement<Routing, State>,
-    operation: Operation<Routing, State>,
     childEntry: ChildEntry.Eager<Routing>,
     transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
@@ -46,7 +44,7 @@ fun <Routing, State> AnimatedChildNode(
                                 height = maxHeight
                             )
                         ),
-                        operation = operation,
+                        operation = routingElement.operation,
                         element = routingElement.key.routing,
                         fromState = routingElement.fromState,
                         toState = routingElement.targetState
