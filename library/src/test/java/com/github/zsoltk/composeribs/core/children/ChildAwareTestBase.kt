@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.ParentNode
+import com.github.zsoltk.composeribs.core.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
@@ -27,7 +28,7 @@ abstract class ChildAwareTestBase {
 
     @Before
     open fun before() {
-        root = Root()
+        root = Root().build()
     }
 
     fun add(vararg key: Configuration): List<Node> {

@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.children
 
 import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.build
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -12,7 +13,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
 
     @Test
     fun `whenChildAttached is invoked for promoted to eager node`() {
-        root = Root(childMode = ChildEntry.ChildMode.LAZY)
+        root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
         var capturedNode: Node? = null
         root.whenChildAttached<Child1> { _, child ->
             capturedNode = child
@@ -30,7 +31,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
 
     @Test
     fun `whenChildrenAttached is invoked for promoted to eager nodes`() {
-        root = Root(childMode = ChildEntry.ChildMode.LAZY)
+        root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
         val capturedNodes = HashSet<Pair<Node, Node>>()
         root.whenChildrenAttached<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1 to c2

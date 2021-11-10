@@ -47,8 +47,10 @@ abstract class ParentNode<Routing>(
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(buildContext.savedStateMap)
     val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
 
+    // It is impossible to restore _children directly because information for resolver is not ready yet
+    private var delayedChildRestoration: SavedStateMap? = buildContext.savedStateMap
     private val _children =
-        MutableStateFlow(buildContext.savedStateMap?.restoreChildren() ?: emptyMap())
+        MutableStateFlow<Map<RoutingKey<Routing>, ChildEntry<Routing>>>(emptyMap())
     val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
@@ -63,7 +65,13 @@ abstract class ParentNode<Routing>(
 
     private var transitionsInBackgroundJob: Job? = null
 
-    init {
+    @CallSuper
+    override fun onBuilt() {
+        super.onBuilt()
+        delayedChildRestoration.restoreChildren()?.also { restoredMap ->
+            _children.update { restoredMap }
+            delayedChildRestoration = null
+        }
         lifecycle.coroutineScope.launch { this@ParentNode.routingSource.syncChildrenWithRoutingSource() }
         manageTransitions()
     }
@@ -89,8 +97,8 @@ abstract class ParentNode<Routing>(
         }
     }
 
-    private fun SavedStateMap.restoreChildren(): ChildEntryMap<Routing>? =
-        (get(KEY_CHILDREN_STATE) as? Map<RoutingKey<Routing>, SavedStateMap>)?.mapValues {
+    private fun SavedStateMap?.restoreChildren(): ChildEntryMap<Routing>? =
+        (this?.get(KEY_CHILDREN_STATE) as? Map<RoutingKey<Routing>, SavedStateMap>)?.mapValues {
             ChildEntry.create(it.key, this@ParentNode, it.value.toBuildContext(), childMode)
         }
 

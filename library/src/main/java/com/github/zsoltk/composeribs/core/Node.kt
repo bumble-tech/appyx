@@ -8,7 +8,9 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycle
@@ -43,8 +45,22 @@ abstract class Node(
     private val upNavigationDispatcher: UpNavigationDispatcher =
         UpNavigationDispatcher(::performUpNavigation)
 
+    private var wasBuilt = false
+
     init {
         lifecycle.addObserver(LifecycleLogger)
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onCreate(owner: LifecycleOwner) {
+                if (!wasBuilt) error("onBuilt was not invoked for $this")
+            }
+        });
+    }
+
+    @CallSuper
+    open fun onBuilt() {
+        require(!wasBuilt) { "onBuilt was already invoked" }
+        wasBuilt = true
+        updateLifecycleState(Lifecycle.State.CREATED)
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 
