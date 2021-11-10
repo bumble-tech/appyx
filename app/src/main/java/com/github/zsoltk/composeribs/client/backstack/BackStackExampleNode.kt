@@ -48,13 +48,13 @@ import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.newRoot
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.remove
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.replace
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.singleTop
+import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackSlider
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
@@ -131,7 +131,7 @@ class BackStackExampleNode(
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
                     routingSource = backStack,
-                    transitionHandler = BackStackSlider(clipToBounds = true)
+                    transitionHandler = rememberBackstackSlider(clipToBounds = true)
                 ) {
                     children<Routing> { child ->
                         child()

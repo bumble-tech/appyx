@@ -4,7 +4,6 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -54,11 +53,6 @@ abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false
             onTransitionFinished(currentState.targetState)
         }
 
-        DisposableEffect(key1 = transition) {
-            onDispose {
-                onTransitionFinished(currentState.targetState)
-            }
-        }
         return ChildTransitionScopeImpl(
             transition = transition,
             transitionModifier = clipToBoundsModifier
