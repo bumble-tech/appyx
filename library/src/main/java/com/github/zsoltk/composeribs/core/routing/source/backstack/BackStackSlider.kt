@@ -1,31 +1,29 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.Transition
-import androidx.compose.animation.core.animateOffset
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
-import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-internal class BackStackSlider(
-    private val transitionSpec: TransitionSpec<TransitionState, Offset>,
-    override val clipToBounds: Boolean,
-) : UpdateTransitionHandler<TransitionState>() {
+class BackStackSlider(
+    private val transitionSpec: TransitionSpec<TransitionState, Offset> = { tween(1500) },
+    override val clipToBounds: Boolean = false
+) : ModifierTransitionHandler<TransitionState>() {
 
-    @Composable
-    override fun map(
+    override fun createModifier(
+        modifier: Modifier,
         transition: Transition<TransitionState>,
         transitionBounds: TransitionBounds
-    ): Modifier {
+    ): Modifier = modifier.composed {
         val offset = transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
@@ -38,9 +36,7 @@ internal class BackStackSlider(
                 }
             })
 
-
-        return Modifier.offset(Dp(offset.value.x), Dp(offset.value.y))
-
+        offset(Dp(offset.value.x), Dp(offset.value.y))
     }
 }
 
@@ -48,6 +44,6 @@ internal class BackStackSlider(
 fun rememberBackstackSlider(
     transitionSpec: TransitionSpec<TransitionState, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
     clipToBounds: Boolean = false
-): UpdateTransitionHandler<TransitionState> = remember {
+): ModifierTransitionHandler<TransitionState> = remember {
     BackStackSlider(transitionSpec = transitionSpec, clipToBounds = clipToBounds)
 }

@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import com.github.zsoltk.composeribs.core.ChildTransitionScope
 import com.github.zsoltk.composeribs.core.ChildTransitionScopeImpl
 
-abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false) :
+abstract class ModifierTransitionHandler<S>(open val clipToBounds: Boolean = false) :
     TransitionHandler<S> {
 
     private val clipToBoundsModifier: Modifier by lazy(LazyThreadSafetyMode.NONE) {
@@ -20,21 +20,6 @@ abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false
             Modifier.clipToBounds()
         } else {
             Modifier
-        }
-    }
-
-    @Composable
-    private fun convertParamsToBounds(transitionParams: TransitionParams): TransitionBounds {
-        return if (clipToBounds) {
-            transitionParams.bounds
-        } else {
-            with(LocalDensity.current) {
-                val configuration = LocalConfiguration.current
-                TransitionBounds(
-                    width = configuration.screenWidthDp.toDp(),
-                    height = configuration.screenHeightDp.toDp()
-                )
-            }
         }
     }
 
@@ -52,19 +37,46 @@ abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false
         if (transition.currentState == currentState.targetState) {
             onTransitionFinished(currentState.targetState)
         }
+        val transitionBounds = convertParamsToBounds(transitionParams)
+        return rememberTransitionScope(transition, transitionBounds)
+    }
 
-        return ChildTransitionScopeImpl(
+    abstract fun createModifier(
+        modifier: Modifier,
+        transition: Transition<S>,
+        transitionBounds: TransitionBounds
+    ): Modifier
+
+    @Composable
+    private fun convertParamsToBounds(transitionParams: TransitionParams): TransitionBounds {
+        return if (clipToBounds) {
+            transitionParams.bounds
+        } else {
+            with(LocalDensity.current) {
+                val configuration = LocalConfiguration.current
+                TransitionBounds(
+                    width = configuration.screenWidthDp.toDp(),
+                    height = configuration.screenHeightDp.toDp()
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun rememberTransitionScope(
+        transition: Transition<S>,
+        transitionBounds: TransitionBounds
+    ) = remember(transition, transitionBounds) {
+        ChildTransitionScopeImpl(
             transition = transition,
             transitionModifier = clipToBoundsModifier
                 .then(
-                    map(
+                    createModifier(
+                        clipToBoundsModifier,
                         transition = transition,
-                        transitionBounds = convertParamsToBounds(transitionParams)
+                        transitionBounds = transitionBounds
                     )
                 )
         )
     }
-
-    @Composable
-    abstract fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier
 }

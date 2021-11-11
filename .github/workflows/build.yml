@@ -13,6 +13,7 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
-          cache: 'gradle'
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew build
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
