@@ -8,14 +8,14 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
-import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackFader(
     private val transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { tween(1500) }
-) : UpdateTransitionHandler<BackStack.TransitionState>() {
+) : ModifierTransitionHandler<BackStack.TransitionState>() {
 
-    override fun map(
+    override fun createModifier(
         modifier: Modifier,
         transition: Transition<BackStack.TransitionState>,
         transitionBounds: TransitionBounds

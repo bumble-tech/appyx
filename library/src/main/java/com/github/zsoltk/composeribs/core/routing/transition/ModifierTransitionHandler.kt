@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import com.github.zsoltk.composeribs.core.ChildTransitionScope
 import com.github.zsoltk.composeribs.core.ChildTransitionScopeImpl
 
-abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false) :
+abstract class ModifierTransitionHandler<S>(open val clipToBounds: Boolean = false) :
     TransitionHandler<S> {
 
     private val clipToBoundsModifier: Modifier by lazy(LazyThreadSafetyMode.NONE) {
@@ -41,7 +41,7 @@ abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false
         return rememberTransitionScope(transition, transitionBounds)
     }
 
-    abstract fun map(
+    abstract fun createModifier(
         modifier: Modifier,
         transition: Transition<S>,
         transitionBounds: TransitionBounds
@@ -71,7 +71,7 @@ abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false
             transition = transition,
             transitionModifier = clipToBoundsModifier
                 .then(
-                    map(
+                    createModifier(
                         clipToBoundsModifier,
                         transition = transition,
                         transitionBounds = transitionBounds

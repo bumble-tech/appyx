@@ -4,15 +4,15 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.ui.Modifier
 
 class CombinedHandler<S>(
-    private val handlers: List<UpdateTransitionHandler<S>>
-) : UpdateTransitionHandler<S>() {
+    private val handlers: List<ModifierTransitionHandler<S>>
+) : ModifierTransitionHandler<S>() {
 
-    override fun map(
+    override fun createModifier(
         modifier: Modifier,
         transition: Transition<S>, transitionBounds: TransitionBounds
     ): Modifier =
         handlers
-            .map { it.map(Modifier, transition, transitionBounds = transitionBounds) }
+            .map { it.createModifier(Modifier, transition, transitionBounds = transitionBounds) }
             .fold(modifier) { acc: Modifier, modifier: Modifier ->
                 acc.then(modifier)
             }

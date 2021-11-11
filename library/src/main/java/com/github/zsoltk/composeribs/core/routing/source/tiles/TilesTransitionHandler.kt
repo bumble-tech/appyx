@@ -11,14 +11,14 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.Dp
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
-import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
 class TilesTransitionHandler(
     private val transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { tween(500) }
-) : UpdateTransitionHandler<Tiles.TransitionState>() {
+) : ModifierTransitionHandler<Tiles.TransitionState>() {
 
-    override fun map(
+    override fun createModifier(
         modifier: Modifier,
         transition: Transition<Tiles.TransitionState>, transitionBounds: TransitionBounds
     ): Modifier = modifier.composed {

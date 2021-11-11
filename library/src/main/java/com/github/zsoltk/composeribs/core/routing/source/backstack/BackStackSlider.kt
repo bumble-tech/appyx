@@ -10,15 +10,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
-import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider(
     private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { tween(1500) },
     override val clipToBounds: Boolean = false
-) : UpdateTransitionHandler<BackStack.TransitionState>() {
+) : ModifierTransitionHandler<BackStack.TransitionState>() {
 
-    override fun map(
+    override fun createModifier(
         modifier: Modifier,
         transition: Transition<BackStack.TransitionState>,
         transitionBounds: TransitionBounds

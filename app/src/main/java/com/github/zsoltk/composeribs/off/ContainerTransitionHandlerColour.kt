@@ -9,11 +9,11 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
-import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
-object ContainerTransitionHandlerColour : UpdateTransitionHandler<BackStack.TransitionState>() {
-    override fun map(
+object ContainerTransitionHandlerColour : ModifierTransitionHandler<BackStack.TransitionState>() {
+    override fun createModifier(
         modifier: Modifier,
         transition: Transition<BackStack.TransitionState>,
         transitionBounds: TransitionBounds
