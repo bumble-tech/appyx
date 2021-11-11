@@ -92,6 +92,7 @@ abstract class ChildAwareTestBase {
 
         fun add(vararg key: RoutingKey<Key>) {
             state.update { list ->
+                require(list.none { it.key.routing in key.map { it.routing } })
                 list + key.map {
                     RoutingElement(
                         key = it,
