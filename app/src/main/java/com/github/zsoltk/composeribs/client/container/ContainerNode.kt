@@ -42,7 +42,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlid
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
-import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -54,7 +54,7 @@ class ContainerNode(
         initialElement = Picker,
         savedStateMap = buildContext.savedStateMap,
     ),
-    private val transitionHandler: UpdateTransitionHandler<TransitionState> = CombinedHandler(
+    private val transitionHandler: ModifierTransitionHandler<TransitionState> = CombinedHandler(
         listOf(
             BackStackSlider(transitionSpec = { tween(1000) }),
             BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),
