@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core.children
 
+import android.util.Log
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing
@@ -149,6 +150,29 @@ interface ChildAwareCommonTestSpec {
         }
         assertEquals(setOf(children[0], children[1]), capturedNodes1)
         assertEquals(setOf(children[0], children[1]), capturedNodes2)
+    }
+
+    @Test
+    fun `whenChildrenAttached is invoked multiple times for each instance`() {
+        val capturedNodes = mutableSetOf<Set<Node>>()
+
+        val children = withRegistration(register = {
+            whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
+                capturedNodes.add(setOf(c1, c2))
+            }
+        }) {
+            add(
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 0)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 1)),
+            )
+        }
+
+        assertTrue(capturedNodes.contains(setOf(children[0], children[2])))
+        assertTrue(capturedNodes.contains(setOf(children[0], children[3])))
+        assertTrue(capturedNodes.contains(setOf(children[1], children[2])))
+        assertTrue(capturedNodes.contains(setOf(children[1], children[3])))
     }
 
     @Test

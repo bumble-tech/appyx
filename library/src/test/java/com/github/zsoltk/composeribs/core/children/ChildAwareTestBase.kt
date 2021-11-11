@@ -32,12 +32,13 @@ abstract class ChildAwareTestBase {
 
     fun add(vararg key: RoutingKey<Configuration>): List<Node> {
         root.routing.add(*key)
-        return root
+        val result = root
             .children
             .value
             .values
             .filter { it.key.routing in key.map { it.routing } }
             .mapNotNull { (it as? ChildEntry.Eager)?.node }
+        return result
     }
 
     sealed class Configuration {
