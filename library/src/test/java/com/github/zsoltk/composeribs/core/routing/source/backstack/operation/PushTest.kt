@@ -4,7 +4,6 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Tra
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
@@ -19,7 +18,6 @@ internal class PushTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN
             )
@@ -37,7 +35,6 @@ internal class PushTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN
             )
@@ -55,7 +52,6 @@ internal class PushTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK
             )
@@ -73,41 +69,36 @@ internal class PushTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN
             )
         )
         val operation = Push<Routing>(element = Routing3)
 
-        val newElements = operation.invoke(elements = elements, uuidGenerator = UuidGenerator(2))
+        val newElements = operation.invoke(elements = elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = CREATED,
                 targetState = ON_SCREEN
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 }

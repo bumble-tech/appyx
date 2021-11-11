@@ -46,15 +46,16 @@ import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.newRoot
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.remove
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.replace
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.singleTop
+import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackSlider
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
@@ -131,7 +132,7 @@ class BackStackExampleNode(
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
                     routingSource = backStack,
-                    transitionHandler = BackStackSlider(clipToBounds = true)
+                    transitionHandler = rememberBackstackSlider(clipToBounds = true)
                 ) {
                     children<Routing> { child ->
                         child()
@@ -258,10 +259,7 @@ class BackStackExampleNode(
                             }
                             REMOVE -> {
                                 backStack.remove(
-                                    BackStack.LocalRoutingKey(
-                                        selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random),
-                                        typedId.value.toInt()
-                                    )
+                                    RoutingKey(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
                                 )
                             }
                             NEW_ROOT -> {
@@ -291,12 +289,11 @@ class BackStackExampleNode(
     }
 
     private fun BackStackElements<Routing>.toStateString() = map { element ->
-        (element.key as BackStack.LocalRoutingKey).let { key ->
-            val name = key.routing.name
-            val value = key.routing.value
-            val uuid = key.uuid
-            "$name(Value: $value. Id: $uuid)"
-        }
+        val key = element.key
+        val name = key.routing.name
+        val value = key.routing.value
+        val id = key.id
+        "$name(Value: $value. Id: $id)"
     }
 
     private fun String.toChild(random: Boolean): Routing {

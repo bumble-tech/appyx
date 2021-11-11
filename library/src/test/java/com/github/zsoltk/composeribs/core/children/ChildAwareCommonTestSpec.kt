@@ -1,6 +1,9 @@
 package com.github.zsoltk.composeribs.core.children
 
+import android.util.Log
 import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -12,7 +15,7 @@ interface ChildAwareCommonTestSpec {
 
     val registerBefore: Boolean
 
-    fun add(vararg key: ChildAwareTestBase.Configuration): List<Node>
+    fun add(vararg key: RoutingKey<ChildAwareTestBase.Configuration>): List<Node>
 
     fun <T : Node> whenChildAttached(klass: KClass<T>, callback: ChildCallback<T>)
 
@@ -51,7 +54,7 @@ interface ChildAwareCommonTestSpec {
                 capturedNode = child
             }
         }) {
-            add(ChildAwareTestBase.Configuration.Child1())
+            add(RoutingKey(ChildAwareTestBase.Configuration.Child1()))
         }
         assertEquals(children[0], capturedNode)
     }
@@ -69,7 +72,7 @@ interface ChildAwareCommonTestSpec {
                 capturedNode2 = child
             }
         }) {
-            add(ChildAwareTestBase.Configuration.Child1())
+            add(RoutingKey(ChildAwareTestBase.Configuration.Child1()))
         }
 
         assertEquals(children[0], capturedNode1)
@@ -85,8 +88,8 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                ChildAwareTestBase.Configuration.Child1(id = 0),
-                ChildAwareTestBase.Configuration.Child1(id = 1),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
             )
         }
         assertEquals(setOf(children[0], children[1]), capturedNodes)
@@ -100,7 +103,7 @@ interface ChildAwareCommonTestSpec {
                 capturedNode = child
             }
         }) {
-            add(ChildAwareTestBase.Configuration.Child2())
+            add(RoutingKey(ChildAwareTestBase.Configuration.Child2()))
         }
         assertNull(capturedNode)
     }
@@ -111,7 +114,7 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildrenAttached is invoked`() {
-        val capturedNodes = ArrayList<Node>()
+        val capturedNodes = HashSet<Node>()
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
                 capturedNodes += c1
@@ -119,60 +122,57 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                ChildAwareTestBase.Configuration.Child1(),
-                ChildAwareTestBase.Configuration.Child2(),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1()),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2()),
             )
         }
-        assertEquals(listOf(children[0], children[1]), capturedNodes)
+        assertEquals(setOf(children[0], children[1]), capturedNodes)
     }
 
     @Test
     fun `every whenChildrenAttached is invoked`() {
-        val capturedNodes1 = ArrayList<Node>()
-        val capturedNodes2 = ArrayList<Node>()
+        val capturedNodes1 = mutableSetOf<Node>()
+        val capturedNodes2 = mutableSetOf<Node>()
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
-                capturedNodes1 += c1
-                capturedNodes1 += c2
+                capturedNodes1.add(c1)
+                capturedNodes1.add(c2)
             }
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
-                capturedNodes2 += c1
-                capturedNodes2 += c2
+                capturedNodes2.add(c1)
+                capturedNodes2.add(c2)
             }
         }) {
             add(
-                ChildAwareTestBase.Configuration.Child1(),
-                ChildAwareTestBase.Configuration.Child2(),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1()),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2()),
             )
         }
-        assertEquals(listOf(children[0], children[1]), capturedNodes1)
-        assertEquals(listOf(children[0], children[1]), capturedNodes2)
+        assertEquals(setOf(children[0], children[1]), capturedNodes1)
+        assertEquals(setOf(children[0], children[1]), capturedNodes2)
     }
 
     @Test
     fun `whenChildrenAttached is invoked multiple times for each instance`() {
-        val capturedNodes = HashSet<Pair<Node, Node>>()
+        val capturedNodes = mutableSetOf<Set<Node>>()
+
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
-                capturedNodes += c1 to c2
+                capturedNodes.add(setOf(c1, c2))
             }
         }) {
             add(
-                ChildAwareTestBase.Configuration.Child1(id = 0),
-                ChildAwareTestBase.Configuration.Child1(id = 1),
-                ChildAwareTestBase.Configuration.Child2(id = 0),
-                ChildAwareTestBase.Configuration.Child2(id = 1),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 0)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 1)),
             )
         }
-        assertEquals(
-            setOf(
-                children[0] to children[1],
-                children[0] to children[3],
-                children[2] to children[1],
-                children[2] to children[3],
-            ),
-            capturedNodes
-        )
+
+        assertTrue(capturedNodes.contains(setOf(children[0], children[2])))
+        assertTrue(capturedNodes.contains(setOf(children[0], children[3])))
+        assertTrue(capturedNodes.contains(setOf(children[1], children[2])))
+        assertTrue(capturedNodes.contains(setOf(children[1], children[3])))
     }
 
     @Test
@@ -185,8 +185,8 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                ChildAwareTestBase.Configuration.Child1(),
-                ChildAwareTestBase.Configuration.Child3(),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1()),
+                RoutingKey(ChildAwareTestBase.Configuration.Child3()),
             )
         }
         assertTrue(capturedNodes.isEmpty())
@@ -201,9 +201,9 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                ChildAwareTestBase.Configuration.Child1(id = 0),
-                ChildAwareTestBase.Configuration.Child1(id = 1),
-                ChildAwareTestBase.Configuration.Child1(id = 2),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 2)),
             )
         }
         assertEquals(
