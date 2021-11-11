@@ -24,6 +24,30 @@ abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false
     }
 
     @Composable
+    override fun handle(
+        transitionParams: TransitionParams,
+        fromState: S,
+        toState: S,
+        onTransitionFinished: (S) -> Unit
+    ): ChildTransitionScope<S> {
+        val currentState = remember { MutableTransitionState(fromState) }
+        currentState.targetState = toState
+        val transition: Transition<S> = updateTransition(currentState)
+
+        if (transition.currentState == currentState.targetState) {
+            onTransitionFinished(currentState.targetState)
+        }
+        val transitionBounds = convertParamsToBounds(transitionParams)
+        return rememberTransitionScope(transition, transitionBounds)
+    }
+
+    abstract fun map(
+        modifier: Modifier,
+        transition: Transition<S>,
+        transitionBounds: TransitionBounds
+    ): Modifier
+
+    @Composable
     private fun convertParamsToBounds(transitionParams: TransitionParams): TransitionBounds {
         return if (clipToBounds) {
             transitionParams.bounds
@@ -39,31 +63,20 @@ abstract class UpdateTransitionHandler<S>(open val clipToBounds: Boolean = false
     }
 
     @Composable
-    override fun handle(
-        transitionParams: TransitionParams,
-        fromState: S,
-        toState: S,
-        onTransitionFinished: (S) -> Unit
-    ): ChildTransitionScope<S> {
-        val currentState = remember { MutableTransitionState(fromState) }
-        currentState.targetState = toState
-        val transition: Transition<S> = updateTransition(currentState)
-
-        if (transition.currentState == currentState.targetState) {
-            onTransitionFinished(currentState.targetState)
-        }
-        return ChildTransitionScopeImpl(
+    private fun rememberTransitionScope(
+        transition: Transition<S>,
+        transitionBounds: TransitionBounds
+    ) = remember(transition, transitionBounds) {
+        ChildTransitionScopeImpl(
             transition = transition,
             transitionModifier = clipToBoundsModifier
                 .then(
                     map(
+                        clipToBoundsModifier,
                         transition = transition,
-                        transitionBounds = convertParamsToBounds(transitionParams)
+                        transitionBounds = transitionBounds
                     )
                 )
         )
     }
-
-    @Composable
-    abstract fun map(transition: Transition<S>, transitionBounds: TransitionBounds): Modifier
 }

@@ -4,8 +4,8 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.Dp
@@ -18,8 +18,10 @@ class TilesTransitionHandler(
     private val transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { tween(500) }
 ) : UpdateTransitionHandler<Tiles.TransitionState>() {
 
-    @Composable
-    override fun map(transition: Transition<Tiles.TransitionState>, transitionBounds: TransitionBounds): Modifier {
+    override fun map(
+        modifier: Modifier,
+        transition: Transition<Tiles.TransitionState>, transitionBounds: TransitionBounds
+    ): Modifier = modifier.composed {
         val scale = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
@@ -40,8 +42,7 @@ class TilesTransitionHandler(
                 }
             })
 
-        return Modifier
-            .offset(x = Dp(1000f * destroyProgress.value), y = Dp(-200 * destroyProgress.value))
+        offset(x = Dp(1000f * destroyProgress.value), y = Dp(-200 * destroyProgress.value))
             .rotate(720 * destroyProgress.value)
             .scale(scale.value)
     }
