@@ -30,13 +30,13 @@ abstract class ChildAwareTestBase {
         root = Root()
     }
 
-    fun add(vararg key: Configuration): List<Node> {
+    fun add(vararg key: RoutingKey<Configuration>): List<Node> {
         root.routing.add(*key)
         return root
             .children
             .value
             .values
-            .filter { it.key.routing in key }
+            .filter { it.key.routing in key.map { it.routing } }
             .mapNotNull { (it as? ChildEntry.Eager)?.node }
     }
 
@@ -90,12 +90,11 @@ abstract class ChildAwareTestBase {
         override val canHandleBackPress: StateFlow<Boolean>
             get() = MutableStateFlow(false)
 
-        fun add(vararg key: Key) {
+        fun add(vararg key: RoutingKey<Key>) {
             state.update { list ->
-                require(list.none { it.key.routing in key })
                 list + key.map {
                     RoutingElement(
-                        RoutingKey(it),
+                        key = it,
                         fromState = 0,
                         targetState = 0
                     )

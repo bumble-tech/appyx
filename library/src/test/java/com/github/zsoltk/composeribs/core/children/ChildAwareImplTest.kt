@@ -18,9 +18,9 @@ class ChildAwareImplTest : ChildAwareTestBase() {
         root.whenChildAttached<Child1> { _, child ->
             capturedNode = child
         }
-        val configuration = Configuration.Child1()
-        add(configuration)
-        val node = root.childOrCreate(RoutingKey(configuration)).node
+        val routingKey = RoutingKey<Configuration>(Configuration.Child1())
+        add(routingKey)
+        val node = root.childOrCreate(routingKey).node
         assertEquals(node, capturedNode)
     }
 
@@ -36,13 +36,13 @@ class ChildAwareImplTest : ChildAwareTestBase() {
         root.whenChildrenAttached<Child1, Child2> { _, c1, c2 ->
             capturedNodes += c1 to c2
         }
-        val configuration1 = Configuration.Child1(id = 0)
-        val configuration2 = Configuration.Child1(id = 1)
-        val configuration3 = Configuration.Child2(id = 0)
-        add(configuration1, configuration2, configuration3)
-        val node1 = root.childOrCreate(RoutingKey(configuration1)).node
-        val node2 = root.childOrCreate(RoutingKey(configuration2)).node
-        val node3 = root.childOrCreate(RoutingKey(configuration3)).node
+        val routingKey1 = RoutingKey<Configuration>(Configuration.Child1(id = 0))
+        val routingKey2 = RoutingKey<Configuration>(Configuration.Child1(id = 1))
+        val routingKey3 = RoutingKey<Configuration>(Configuration.Child2(id = 0))
+        add(routingKey1, routingKey2, routingKey3)
+        val node1 = root.childOrCreate(routingKey1).node
+        val node2 = root.childOrCreate(routingKey2).node
+        val node3 = root.childOrCreate(routingKey3).node
         assertEquals(
             setOf(
                 node1 to node3,
@@ -59,7 +59,8 @@ class ChildAwareImplTest : ChildAwareTestBase() {
 
     @Test
     fun `ignores registration when parent lifecycle is destroyed`() {
-        add(Configuration.Child1())
+        val routingKey1 = RoutingKey<Configuration>(Configuration.Child1())
+        add(routingKey1)
         var capturedNode: Node? = null
         root.updateLifecycleState(Lifecycle.State.DESTROYED)
         root.whenChildAttached<Child1> { _, child ->
