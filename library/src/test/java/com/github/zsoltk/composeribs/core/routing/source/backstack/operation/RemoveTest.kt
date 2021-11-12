@@ -1,10 +1,11 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.Operation
+import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import org.junit.Assert.assertEquals
@@ -25,7 +26,8 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
@@ -47,7 +49,8 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = ON_SCREEN,
-                targetState = DESTROYED
+                targetState = DESTROYED,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
@@ -69,7 +72,8 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
@@ -91,13 +95,15 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
@@ -109,13 +115,15 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         assertEquals(newElements, expectedElements)
@@ -133,13 +141,15 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = DESTROYED
+                targetState = DESTROYED,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
@@ -151,13 +161,15 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = DESTROYED
+                targetState = DESTROYED,
+                operation = Operation.Noop()
             )
         )
         assertEquals(newElements, expectedElements)
@@ -175,7 +187,8 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
@@ -197,31 +210,35 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
 
         val newElements = operation.invoke(elements, UuidGenerator(0))
 
-        val expectedElements = listOf<BackStackElement<Routing>>(
+        val expectedElements = listOf(
             backStackElement(
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = operation
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = DESTROYED
+                targetState = DESTROYED,
+                operation = operation
             )
         )
         assertEquals(newElements, expectedElements)
@@ -239,13 +256,15 @@ internal class RemoveTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Remove(key = key)
@@ -257,7 +276,8 @@ internal class RemoveTest {
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         assertEquals(newElements, expectedElements)

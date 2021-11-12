@@ -7,11 +7,13 @@ import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Rule
 
@@ -84,38 +86,27 @@ abstract class ChildAwareTestBase {
             override val routing: Key,
         ) : RoutingKey<Key>
 
-        private val state = MutableStateFlow(
-            value = RoutingState(
-                elements = emptyList(),
-                operation = Operation.Noop<Key, Int>()
-            )
-        )
-        override val all: StateFlow<RoutingState<Key, Int>>
+        private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
+        override val all: StateFlow<RoutingElements<Key, Int>>
             get() = state
-        override val onScreen: StateFlow<RoutingState<Key, Int>>
+        override val onScreen: StateFlow<RoutingElements<Key, Int>>
             get() = all
-        override val offScreen: StateFlow<RoutingState<Key, Int>>
-            get() = MutableStateFlow(
-                value = RoutingState(
-                    elements = emptyList(),
-                    operation = Operation.Noop()
-                )
-            )
+        override val offScreen: StateFlow<RoutingElements<Key, Int>>
+            get() = MutableStateFlow(emptyList())
         override val canHandleBackPress: StateFlow<Boolean>
             get() = MutableStateFlow(false)
 
         fun add(vararg key: Key) {
-            state.update { state ->
-                require(state.elements.none { it.key.routing in key })
-                state.copy(
-                    elements = state.elements + key.map {
-                        RoutingElement(
-                            RoutingKeyImpl(it),
-                            fromState = 0,
-                            targetState = 0
-                        )
-                    }
-                )
+            state.update { elements ->
+                require(elements.none { it.key.routing in key })
+                elements + key.map {
+                    RoutingElement(
+                        RoutingKeyImpl(it),
+                        fromState = 0,
+                        targetState = 0,
+                        operation = Operation.Noop()
+                    )
+                }
             }
         }
 

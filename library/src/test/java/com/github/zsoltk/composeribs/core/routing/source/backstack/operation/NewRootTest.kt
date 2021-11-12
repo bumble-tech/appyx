@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
@@ -45,13 +46,15 @@ internal class NewRootTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
 
@@ -64,7 +67,8 @@ internal class NewRootTest {
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         assertEquals(newElements, expectedElements)
@@ -78,13 +82,15 @@ internal class NewRootTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
 
@@ -97,13 +103,15 @@ internal class NewRootTest {
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = DESTROYED
+                targetState = DESTROYED,
+                operation = operation
             ),
             backStackElement(
                 element = Routing3,
                 uuid = 3,
                 fromState = CREATED,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = operation
             )
         )
         assertEquals(newElements, expectedElements)

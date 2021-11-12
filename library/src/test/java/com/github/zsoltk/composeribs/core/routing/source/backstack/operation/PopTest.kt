@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
@@ -20,7 +21,8 @@ internal class PopTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Pop<Routing>()
@@ -38,7 +40,8 @@ internal class PopTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             )
         )
         val operation = Pop<Routing>()
@@ -56,13 +59,15 @@ internal class PopTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             ),
         )
         val operation = Pop<Routing>()
@@ -80,31 +85,35 @@ internal class PopTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Pop<Routing>()
 
         val newElements = operation.invoke(elements = elements, uuidGenerator = UuidGenerator(0))
 
-        val expectedElements = listOf<BackStackElement<Routing>>(
+        val expectedElements = listOf(
             backStackElement(
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = operation
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = DESTROYED
+                targetState = DESTROYED,
+                operation = operation
             )
         )
         assertEquals(newElements, expectedElements)

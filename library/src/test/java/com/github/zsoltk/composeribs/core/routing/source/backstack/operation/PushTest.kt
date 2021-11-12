@@ -1,10 +1,11 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.Operation
+import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
@@ -21,7 +22,8 @@ internal class PushTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Push<Routing>(element = Routing1)
@@ -39,7 +41,8 @@ internal class PushTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Push<Routing>(element = Routing2)
@@ -57,7 +60,8 @@ internal class PushTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             )
         )
         val operation = Push<Routing>(element = Routing2)
@@ -75,13 +79,15 @@ internal class PushTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
         val operation = Push<Routing>(element = Routing3)
@@ -93,19 +99,22 @@ internal class PushTest {
                 element = Routing1,
                 uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
                 uuid = 2,
                 fromState = ON_SCREEN,
-                targetState = STASHED_IN_BACK_STACK
+                targetState = STASHED_IN_BACK_STACK,
+                operation = operation
             ),
             backStackElement(
                 element = Routing3,
                 uuid = 3,
                 fromState = CREATED,
-                targetState = ON_SCREEN
+                targetState = ON_SCREEN,
+                operation = operation
             )
         )
         assertEquals(newElements, expectedElements)
