@@ -7,8 +7,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing.Child
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.ParentNode
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import kotlinx.parcelize.Parcelize

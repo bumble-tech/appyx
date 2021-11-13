@@ -3,7 +3,8 @@ package com.github.zsoltk.composeribs.core
 import android.os.Parcelable
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.*
-import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.composable.LocalTransitionModifier
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler

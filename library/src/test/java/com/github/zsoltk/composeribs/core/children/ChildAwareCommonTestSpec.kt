@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.children
 
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue

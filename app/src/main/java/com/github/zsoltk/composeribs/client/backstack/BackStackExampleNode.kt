@@ -42,9 +42,9 @@ import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routi
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.ChildC
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.ChildD
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.ParentNode
-import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements

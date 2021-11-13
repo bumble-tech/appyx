@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.plugin
 
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
 
 
 class NodeAwareImpl : NodeAware {

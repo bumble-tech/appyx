@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.node
 
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
@@ -10,6 +10,7 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
+import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import com.github.zsoltk.composeribs.core.children.ChildAware
 import com.github.zsoltk.composeribs.core.children.ChildAwareImpl
 import com.github.zsoltk.composeribs.core.children.ChildCallback

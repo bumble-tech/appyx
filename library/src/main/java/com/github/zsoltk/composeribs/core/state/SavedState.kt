@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.state
 
 /**
  * Bundle for future state restoration.
