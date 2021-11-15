@@ -27,8 +27,8 @@ internal class Pop<T : Any> : Operation<T> {
         require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }
         return elements.mapIndexed { index, element ->
             when (index) {
-                destroyIndex -> element.copy(targetState = BackStack.TransitionState.DESTROYED)
-                unStashIndex -> element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+                destroyIndex -> element.transitionTo(targetState = BackStack.TransitionState.DESTROYED)
+                unStashIndex -> element.transitionTo(targetState = BackStack.TransitionState.ON_SCREEN)
                 else -> element
             }
         }

@@ -76,7 +76,7 @@ class SubtreeScope<T, S>(
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.children(
-        block: @Composable (child: @Composable () -> Unit, routingElement: RoutingElement<T, S>) -> Unit,
+        block: @Composable (child: @Composable () -> Unit, routingElement: RoutingElement<T, out S>) -> Unit,
     ) {
         // TODO consider instead of Node receiver
 //        val node = LocalNode.current?.let { it as Node<T> }

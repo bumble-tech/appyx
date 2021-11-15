@@ -5,6 +5,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
@@ -40,7 +41,7 @@ internal class SingleTop<T : Any>(
         }
     }
 
-    private class SingleTopReactivateBackStackOperation<T : Any>(
+    class SingleTopReactivateBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int
     ) : Operation<T> {
@@ -58,15 +59,15 @@ internal class SingleTop<T : Any>(
 
             return newElements.mapIndexed { index, element ->
                 if (index == newElements.lastIndex) {
-                    element.copy(targetState = BackStack.TransitionState.ON_SCREEN)
+                    element.transitionTo(targetState = BackStack.TransitionState.ON_SCREEN)
                 } else {
                     element
                 }
-            } + current.copy(targetState = BackStack.TransitionState.DESTROYED)
+            } + current.transitionTo(targetState = BackStack.TransitionState.DESTROYED)
         }
     }
 
-    private class SingleTopReplaceBackStackOperation<T : Any>(
+    class SingleTopReplaceBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int
     ) : Operation<T> {
@@ -81,11 +82,14 @@ internal class SingleTop<T : Any>(
 
             val newElements = elements.dropLast(elements.size - position)
 
-            return newElements + current.copy(targetState = BackStack.TransitionState.DESTROYED) + BackStackElement(
-                key = RoutingKey(element),
-                fromState = BackStack.TransitionState.CREATED,
-                targetState = BackStack.TransitionState.ON_SCREEN,
-            )
+            return newElements + current.transitionTo(targetState = BackStack.TransitionState.DESTROYED) +
+                    BackStackElement(
+                        onScreenResolver = BackStackOnScreenResolver,
+                        key = RoutingKey(element),
+                        fromState = BackStack.TransitionState.CREATED,
+                        targetState = BackStack.TransitionState.ON_SCREEN,
+                        onScreen = true
+                    )
         }
     }
 }

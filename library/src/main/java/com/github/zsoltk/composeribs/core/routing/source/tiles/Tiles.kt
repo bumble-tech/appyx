@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles
 
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.unsuspendedMap
@@ -7,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.parcelize.Parcelize
 
 class Tiles<T>(
     initialElements: List<T>,
@@ -16,12 +18,25 @@ class Tiles<T>(
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 
+    @Parcelize
+    private object TilesOnScreenResolver : OnScreenResolver<TransitionState> {
+        override fun resolve(state: TransitionState): Boolean =
+            when (state) {
+                TransitionState.CREATED,
+                TransitionState.STANDARD,
+                TransitionState.SELECTED -> true
+                TransitionState.DESTROYED -> false
+            }
+    }
+
     private val state = MutableStateFlow(
         initialElements.map {
             TilesElement(
+                onScreenResolver = TilesOnScreenResolver,
                 key = RoutingKey(it),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
+                onScreen = true
             )
         }
     )
@@ -41,9 +56,11 @@ class Tiles<T>(
     fun add(element: T) {
         state.update { list ->
             list + TilesElement(
+                onScreenResolver = TilesOnScreenResolver,
                 key = RoutingKey(element),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
+                onScreen = true
             )
         }
     }
@@ -52,7 +69,7 @@ class Tiles<T>(
         state.update { list ->
             list.map {
                 if (it.key == key && it.targetState == TransitionState.STANDARD) {
-                    it.copy(targetState = TransitionState.SELECTED)
+                    it.transitionTo(targetState = TransitionState.SELECTED)
                 } else {
                     it
                 }
@@ -64,7 +81,7 @@ class Tiles<T>(
         state.update { list ->
             list.map {
                 if (it.key == key && it.targetState == TransitionState.SELECTED) {
-                    it.copy(targetState = TransitionState.STANDARD)
+                    it.transitionTo(targetState = TransitionState.STANDARD)
                 } else {
                     it
                 }
@@ -76,7 +93,7 @@ class Tiles<T>(
         state.update { list ->
             list.map {
                 if (it.targetState == TransitionState.SELECTED) {
-                    it.copy(targetState = TransitionState.STANDARD)
+                    it.transitionTo(targetState = TransitionState.STANDARD)
                 } else {
                     it
                 }
@@ -89,8 +106,8 @@ class Tiles<T>(
             list.map {
                 if (it.key == key) {
                     when (it.targetState) {
-                        TransitionState.SELECTED -> it.copy(targetState = TransitionState.STANDARD)
-                        TransitionState.STANDARD -> it.copy(targetState = TransitionState.SELECTED)
+                        TransitionState.SELECTED -> it.transitionTo(targetState = TransitionState.STANDARD)
+                        TransitionState.STANDARD -> it.transitionTo(targetState = TransitionState.SELECTED)
                         else -> it
                     }
                 } else {
@@ -104,7 +121,7 @@ class Tiles<T>(
         state.update { list ->
             list.map {
                 if (it.targetState == TransitionState.SELECTED) {
-                    it.copy(targetState = TransitionState.DESTROYED)
+                    it.transitionTo(targetState = TransitionState.DESTROYED)
                 } else {
                     it
                 }
@@ -116,7 +133,7 @@ class Tiles<T>(
         state.update { list ->
             list.map {
                 if (it.key == key) {
-                    it.copy(targetState = TransitionState.DESTROYED)
+                    it.transitionTo(targetState = TransitionState.DESTROYED)
                 } else {
                     it
                 }
@@ -131,7 +148,7 @@ class Tiles<T>(
                     if (it.targetState == TransitionState.DESTROYED) {
                         null
                     } else {
-                        it.copy(fromState = it.targetState)
+                        it.transitionFinished(targetState = it.targetState)
                     }
                 } else {
                     it

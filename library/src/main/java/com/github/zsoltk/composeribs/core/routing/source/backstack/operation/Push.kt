@@ -5,6 +5,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
@@ -22,14 +23,16 @@ internal class Push<T : Any>(
     override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
         return elements.map {
             if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
-                it.copy(targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK)
+                it.transitionTo(targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK)
             } else {
                 it
             }
         } + BackStackElement(
+            onScreenResolver = BackStackOnScreenResolver,
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
+            onScreen = true
         )
     }
 }

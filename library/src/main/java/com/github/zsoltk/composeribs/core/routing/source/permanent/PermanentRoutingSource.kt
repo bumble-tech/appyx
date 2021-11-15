@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.DummyOnScreenResolver
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -25,9 +26,11 @@ class PermanentRoutingSource<Key>(
     private val state = MutableStateFlow(
         savedStateMap.restore() ?: configuration.map { key ->
             RoutingElement(
+                onScreenResolver = DummyOnScreenResolver,
                 key = RoutingKey(routing = key),
                 fromState = 0,
                 targetState = 0,
+                onScreen = true
             )
         }
     )
@@ -59,9 +62,11 @@ class PermanentRoutingSource<Key>(
                 list
             } else {
                 list + RoutingElement(
+                    onScreenResolver = DummyOnScreenResolver,
                     key = key,
                     fromState = 0,
                     targetState = 0,
+                    onScreen = true
                 )
             }
         }

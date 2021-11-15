@@ -21,15 +21,15 @@ class CombinedRoutingSource<Key>(
     // Eagerly subscription to avoid recomposition with default value
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val all: StateFlow<List<RoutingElement<Key, Any?>>> =
+    override val all: StateFlow<List<RoutingElement<Key, *>>> =
         combine(sources.map { it.all }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<List<RoutingElement<Key, Any?>>> =
+    override val onScreen: StateFlow<List<RoutingElement<Key, *>>> =
         combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val offScreen: StateFlow<List<RoutingElement<Key, Any?>>> =
+    override val offScreen: StateFlow<List<RoutingElement<Key, *>>> =
         combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 

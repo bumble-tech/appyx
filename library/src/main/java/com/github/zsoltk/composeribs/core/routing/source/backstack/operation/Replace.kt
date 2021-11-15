@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
@@ -26,14 +27,16 @@ internal class Replace<T : Any>(
 
         return elements.mapIndexed { index, element ->
             if (index == elements.currentIndex) {
-                element.copy(targetState = BackStack.TransitionState.DESTROYED)
+                element.transitionTo(targetState = BackStack.TransitionState.DESTROYED)
             } else {
                 element
             }
         } + BackStackElement(
+            onScreenResolver = BackStackOnScreenResolver,
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
+            onScreen = true
         )
     }
 }

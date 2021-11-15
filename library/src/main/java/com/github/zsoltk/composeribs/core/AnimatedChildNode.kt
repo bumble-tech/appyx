@@ -57,7 +57,7 @@ fun <Routing, State> AnimatedChildNode(
 }
 
 @Composable
-fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, S>>> =
+fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, out S>>> =
     if (this != null) {
         all.collectAsState()
     } else {
@@ -65,7 +65,7 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<List<RoutingElement<R, 
     }
 
 @Composable
-fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S>?> =
+fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, out S>?> =
     if (this != null) {
         all
             .map { it.findLast { isOnScreen(it.key) } }
@@ -75,7 +75,7 @@ fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, S
     }
 
 @Composable
-fun <R, S> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, S>?> =
+fun <R, S> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, out S>?> =
     if (this != null) {
         all
             .map { it.findLast { routingClazz.isInstance(it.key.routing) && isOnScreen(it.key) } }
