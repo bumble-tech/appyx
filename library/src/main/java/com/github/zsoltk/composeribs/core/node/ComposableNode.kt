@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.node
 
 import androidx.compose.runtime.Composable
 import com.github.zsoltk.composeribs.core.modality.BuildContext

@@ -1,7 +1,7 @@
 package com.github.zsoltk.composeribs.core.children
 
 import androidx.lifecycle.Lifecycle
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.lifecycle.MinimumCombinedLifecycle
 import com.github.zsoltk.composeribs.core.lifecycle.isDestroyed
 import kotlin.reflect.KClass
