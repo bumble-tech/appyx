@@ -52,14 +52,14 @@ class PermanentRoutingSource<Key>(
         // no-op
     }
 
-    fun add(key: Key) {
+    fun add(key: RoutingKey<Key>) {
         if (state.value.any { it.key == key }) return
         state.update { list ->
             if (list.any { it.key == key }) {
                 list
             } else {
                 list + RoutingElement(
-                    key = RoutingKey(routing = key),
+                    key = key,
                     fromState = 0,
                     targetState = 0,
                 )
