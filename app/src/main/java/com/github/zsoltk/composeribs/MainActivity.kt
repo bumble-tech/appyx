@@ -11,7 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.container.ContainerNode
 import com.github.zsoltk.composeribs.core.integration.NodeHost
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.ui.Rf1Theme
 
 class MainActivity : AppCompatActivity() {
