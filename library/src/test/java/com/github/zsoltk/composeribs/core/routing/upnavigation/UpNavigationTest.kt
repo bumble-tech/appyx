@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core.routing
+package com.github.zsoltk.composeribs.core.routing.upnavigation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
