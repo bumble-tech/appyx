@@ -6,6 +6,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -120,8 +121,12 @@ abstract class ParentNode<Routing>(
 
     @Composable
     protected fun permanentChild(routing: Routing) {
-        permanentRoutingSource.add(routing)
-        childOrCreate(RoutingKey(routing)).node.Compose()
+        val child = remember(routing) {
+            val routingKey = RoutingKey(routing)
+            permanentRoutingSource.add(routingKey)
+            childOrCreate(routingKey)
+        }
+        child.node.Compose()
     }
 
     /**
