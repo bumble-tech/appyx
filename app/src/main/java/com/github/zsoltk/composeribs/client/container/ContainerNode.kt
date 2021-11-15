@@ -36,13 +36,11 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackSlider
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
-import com.github.zsoltk.composeribs.core.routing.transition.CombinedHandler
-import com.github.zsoltk.composeribs.core.routing.transition.UpdateTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
+import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackSlider
+import com.github.zsoltk.composeribs.core.routing.transition.rememberCombinedHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -53,12 +51,6 @@ class ContainerNode(
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Picker,
         savedStateMap = buildContext.savedStateMap,
-    ),
-    private val transitionHandler: UpdateTransitionHandler<Routing, TransitionState> = CombinedHandler(
-        listOf(
-            BackStackSlider(transitionSpec = { tween(1000) }),
-            BackStackFader(transitionSpec = { tween(500, easing = LinearEasing) }),
-        )
     )
 ) : ParentNode<Routing>(
     routingSource = backStack,
@@ -118,7 +110,9 @@ class ContainerNode(
         Subtree(
             modifier = Modifier.fillMaxSize(),
             routingSource = backStack,
-            transitionHandler = transitionHandler
+            transitionHandler = rememberCombinedHandler(
+                handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
+            )
         ) {
             children<Routing> { child ->
                 child()

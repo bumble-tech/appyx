@@ -7,7 +7,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Compose RIBs Experiment"
+enableFeaturePreview 'VERSION_CATALOGS'
 
 include ':library',
         ':app'

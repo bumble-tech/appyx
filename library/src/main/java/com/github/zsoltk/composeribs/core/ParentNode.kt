@@ -6,6 +6,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -23,6 +24,8 @@ import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.combined.plus
+import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +37,7 @@ import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 abstract class ParentNode<Routing>(
-    val routingSource: RoutingSource<Routing, *>,
+    routingSource: RoutingSource<Routing, *>,
     buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     plugins: List<Plugin> = emptyList(),
@@ -42,13 +45,16 @@ abstract class ParentNode<Routing>(
     Resolver<Routing>,
     ChildAware {
 
+    private val permanentRoutingSource = PermanentRoutingSource<Routing>(buildContext.savedStateMap)
+    val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
+
     private val _children =
         MutableStateFlow(buildContext.savedStateMap?.restoreChildren() ?: emptyMap())
     val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
         lifecycle = lifecycle,
-        routingSource = routingSource,
+        routingSource = this.routingSource,
         children = children,
     )
     private val childAware = ChildAwareImpl(
@@ -59,16 +65,15 @@ abstract class ParentNode<Routing>(
     private var transitionsInBackgroundJob: Job? = null
 
     init {
-        lifecycle.coroutineScope.launch { routingSource.syncChildrenWithRoutingSource() }
+        lifecycle.coroutineScope.launch { this@ParentNode.routingSource.syncChildrenWithRoutingSource() }
         manageTransitions()
     }
 
     private suspend fun RoutingSource<Routing, *>.syncChildrenWithRoutingSource() {
         all.collect { elements ->
             _children.update { map ->
-                val routingSourceKeys =
-                    elements.mapTo(HashSet(elements.size)) { element -> element.key }
-                val localKeys = map.keys
+                val routingSourceKeys = elements.map { element -> element.key }
+                val localKeys = map.keys.toList()
                 val newKeys = routingSourceKeys - localKeys
                 val removedKeys = localKeys - routingSourceKeys
                 val mutableMap = map.toMutableMap()
@@ -112,6 +117,16 @@ abstract class ParentNode<Routing>(
                     }
                 }[routingKey] as ChildEntry.Eager
         }
+    }
+
+    @Composable
+    protected fun permanentChild(routing: Routing) {
+        val child = remember(routing) {
+            val routingKey = RoutingKey(routing)
+            permanentRoutingSource.add(routingKey)
+            childOrCreate(routingKey)
+        }
+        child.node.Compose()
     }
 
     /**

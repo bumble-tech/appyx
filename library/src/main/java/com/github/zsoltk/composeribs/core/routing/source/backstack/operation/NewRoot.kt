@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
@@ -20,7 +21,6 @@ data class NewRoot<T : Any>(
 
     override fun invoke(
         elements: BackStackElements<T>,
-        uuidGenerator: UuidGenerator
     ): BackStackElements<T> {
 
         val current = elements.current
@@ -35,7 +35,7 @@ data class NewRoot<T : Any>(
                     operation = this
                 ),
                 BackStackElement(
-                    key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
+                    key = RoutingKey(element),
                     fromState = BackStack.TransitionState.CREATED,
                     targetState = BackStack.TransitionState.ON_SCREEN,
                     operation = this

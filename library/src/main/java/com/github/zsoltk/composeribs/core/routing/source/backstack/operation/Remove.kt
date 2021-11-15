@@ -20,8 +20,7 @@ data class Remove<T : Any>(
         elements.hasContentWithKey()
 
     override fun invoke(
-        elements: BackStackElements<T>,
-        uuidGenerator: UuidGenerator
+        elements: BackStackElements<T>
     ): BackStackElements<T> =
         when {
             elements.hasContentWithKey() -> updateContent(elements)

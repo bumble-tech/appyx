@@ -23,7 +23,6 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -42,28 +41,24 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content"),
-                uuid = 4,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -82,28 +77,24 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content"),
-                uuid = 4,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -122,28 +113,24 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content 1"),
-                uuid = 4,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -162,14 +149,12 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -177,32 +162,29 @@ internal class SingleTopTest {
         )
         val operation = SingleTop.init(element = Routing3, elements = elements)
 
-        val newElements = operation.invoke(elements, UuidGenerator(2))
+        val newElements = operation.invoke(elements = elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = operation
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = CREATED,
                 targetState = ON_SCREEN,
                 operation = operation
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
@@ -211,28 +193,24 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content 1"),
-                uuid = 4,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
@@ -241,7 +219,7 @@ internal class SingleTopTest {
         val operation = SingleTop.init(Routing4("Content 1"), elements = elements)
 
         assertThrows(IllegalArgumentException::class.java) {
-            operation.invoke(elements, UuidGenerator(2))
+            operation.invoke(elements = elements)
         }
     }
 
@@ -251,28 +229,24 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content 1"),
-                uuid = 4,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -280,32 +254,29 @@ internal class SingleTopTest {
         )
         val operation = SingleTop.init(element = Routing4("Content 1"), elements = elements)
 
-        val newElements = operation.invoke(elements, UuidGenerator(4))
+        val newElements = operation.invoke(elements = elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content 1"),
-                uuid = 4,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN,
                 operation = operation
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = operation
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
@@ -314,28 +285,24 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content 1"),
-                uuid = 4,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
@@ -344,7 +311,7 @@ internal class SingleTopTest {
         val operation = SingleTop.init(element = Routing4("Content 2"), elements = elements)
 
         assertThrows(IllegalArgumentException::class.java) {
-            operation.invoke(elements, UuidGenerator(2))
+            operation.invoke(elements = elements)
         }
     }
 
@@ -354,28 +321,24 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing4("Content 1"),
-                uuid = 4,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -383,31 +346,28 @@ internal class SingleTopTest {
         )
         val operation = SingleTop.init(element = Routing4("Content 2"), elements)
 
-        val newElements = operation.invoke(elements, UuidGenerator(4))
+        val newElements = operation.invoke(elements = elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = operation
             ),
             backStackElement(
                 element = Routing4("Content 2"),
-                uuid = 5,
                 fromState = CREATED,
                 targetState = ON_SCREEN,
                 operation = operation
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 }

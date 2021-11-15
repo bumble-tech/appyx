@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
@@ -19,10 +20,7 @@ data class Push<T : Any>(
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         element != elements.current?.key?.routing
 
-    override fun invoke(
-        elements: BackStackElements<T>,
-        uuidGenerator: UuidGenerator
-    ): BackStackElements<T> {
+    override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
         return elements.map {
             if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
                 it.copy(
@@ -33,7 +31,7 @@ data class Push<T : Any>(
                 it
             }
         } + BackStackElement(
-            key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
+            key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
             operation = this

@@ -22,7 +22,6 @@ internal class ReplaceTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -41,7 +40,6 @@ internal class ReplaceTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -60,7 +58,6 @@ internal class ReplaceTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
@@ -80,7 +77,7 @@ internal class ReplaceTest {
         val operation = Replace<Routing>(element = Routing1)
 
         assertThrows(IllegalArgumentException::class.java) {
-            operation.invoke(elements, UuidGenerator(0))
+            operation.invoke(elements)
         }
     }
 
@@ -90,14 +87,12 @@ internal class ReplaceTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -106,31 +101,28 @@ internal class ReplaceTest {
 
         val operation = Replace<Routing>(element = Routing3)
 
-        val newElements = operation.invoke(elements, UuidGenerator(2))
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = operation
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = CREATED,
                 targetState = ON_SCREEN,
                 operation = operation
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 }

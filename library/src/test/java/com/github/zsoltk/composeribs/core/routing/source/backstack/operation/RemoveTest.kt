@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
@@ -17,14 +18,10 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key not found`() {
 
-        val key = backStackKey<Routing>(
-            element = Routing1,
-            uuid = 2
-        )
+        val key = RoutingKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -40,14 +37,10 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key found but element to be destroyed`() {
 
-        val key = backStackKey<Routing>(
-            element = Routing1,
-            uuid = 1
-        )
+        val key = RoutingKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = Operation.Noop()
@@ -63,14 +56,11 @@ internal class RemoveTest {
     @Test
     fun `applicable when key found and element not to be destroyed`() {
 
-        val key = backStackKey<Routing>(
-            element = Routing1,
-            uuid = 1
-        )
+        val key = RoutingKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
+                key = key,
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -85,22 +75,17 @@ internal class RemoveTest {
 
     @Test
     fun `does nothing when key not found`() {
+        val key = RoutingKey<Routing>(routing = Routing2)
 
-        val key = backStackKey<Routing>(
-            element = Routing2,
-            uuid = 3
-        )
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -108,45 +93,40 @@ internal class RemoveTest {
         )
         val operation = Remove(key = key)
 
-        val newElements = operation.invoke(elements, UuidGenerator(0))
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
+                key = key,
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
     fun `does nothing when key found but element to be destroyed`() {
 
-        val key = backStackKey<Routing>(
-            element = Routing2,
-            uuid = 2
-        )
+        val key = RoutingKey<Routing>(routing = Routing2)
+
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = Operation.Noop()
@@ -154,38 +134,36 @@ internal class RemoveTest {
         )
         val operation = Remove(key = key)
 
-        val newElements = operation.invoke(elements, UuidGenerator(0))
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
+                key = key,
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = Operation.Noop()
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
     fun `crashes when item to remove on screen but no element stashed`() {
 
-        val key = backStackKey<Routing>(
-            element = Routing1,
-            uuid = 1
+        val key = RoutingKey<Routing>(
+            routing = Routing1
         )
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
+                key = key,
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -194,28 +172,26 @@ internal class RemoveTest {
         val operation = Remove(key = key)
 
         assertThrows(IllegalArgumentException::class.java) {
-            operation.invoke(elements, UuidGenerator(0))
+            operation.invoke(elements)
         }
     }
 
     @Test
     fun `destroys current element on screen and add on screen last stashed element`() {
 
-        val key = backStackKey<Routing>(
-            element = Routing2,
-            uuid = 2
+        val key = RoutingKey<Routing>(
+            routing = Routing2
         )
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
+                key = key,
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -223,45 +199,39 @@ internal class RemoveTest {
         )
         val operation = Remove(key = key)
 
-        val newElements = operation.invoke(elements, UuidGenerator(0))
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN,
                 operation = operation
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = operation
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
     fun `silently removes item when not on screen`() {
 
-        val key = backStackKey<Routing>(
-            element = Routing1,
-            uuid = 1
-        )
+        val key = RoutingKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
+                key = key,
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -269,17 +239,16 @@ internal class RemoveTest {
         )
         val operation = Remove(key = key)
 
-        val newElements = operation.invoke(elements, UuidGenerator(0))
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 }

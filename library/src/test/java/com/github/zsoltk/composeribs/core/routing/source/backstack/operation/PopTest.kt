@@ -19,7 +19,6 @@ internal class PopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -38,7 +37,6 @@ internal class PopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
@@ -57,14 +55,12 @@ internal class PopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -83,14 +79,12 @@ internal class PopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Operation.Noop()
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop()
@@ -98,24 +92,22 @@ internal class PopTest {
         )
         val operation = Pop<Routing>()
 
-        val newElements = operation.invoke(elements = elements, uuidGenerator = UuidGenerator(0))
+        val newElements = operation.invoke(elements = elements)
 
         val expectedElements = listOf(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = ON_SCREEN,
                 operation = operation
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED,
                 operation = operation
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 }

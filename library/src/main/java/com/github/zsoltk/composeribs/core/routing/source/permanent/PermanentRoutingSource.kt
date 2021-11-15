@@ -2,31 +2,32 @@ package com.github.zsoltk.composeribs.core.routing.source.permanent
 
 import android.os.Parcelable
 import com.github.zsoltk.composeribs.core.routing.Operation
+import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
+import kotlinx.coroutines.flow.update
 
 class PermanentRoutingSource<Key>(
-    configuration: List<Key>,
+    configuration: Set<Key> = emptySet(),
+    savedStateMap: SavedStateMap?,
+    private val key: String = PermanentRoutingSource::class.simpleName!!,
 ) : RoutingSource<Key, Int> {
 
-    @Parcelize
-    data class RoutingKeyImpl<Key>(
-        override val routing: @RawValue Key,
-        private val id: Int,
-    ) : RoutingKey<Key>, Parcelable
-
-    constructor(vararg configuration: Key) : this(configuration.toList())
-
-    private var idCounter: Int = 0
+    constructor(
+        savedStateMap: SavedStateMap?,
+        vararg configuration: Key,
+    ) : this(
+        configuration = configuration.toSet(),
+        savedStateMap = savedStateMap,
+    )
 
     private val state = MutableStateFlow(
-        configuration.map { key ->
+        savedStateMap.restore() ?: configuration.map { key ->
             PermanentElement(
-                key = RoutingKeyImpl(routing = key, id = idCounter++),
+                key = RoutingKey(routing = key),
                 fromState = 0,
                 targetState = 0,
                 operation = Operation.Noop()
@@ -53,5 +54,27 @@ class PermanentRoutingSource<Key>(
     override fun onTransitionFinished(key: RoutingKey<Key>) {
         // no-op
     }
+
+    fun add(key: RoutingKey<Key>) {
+        if (state.value.any { it.key == key }) return
+        state.update { list ->
+            if (list.any { it.key == key }) {
+                list
+            } else {
+                list + RoutingElement(
+                    key = key,
+                    fromState = 0,
+                    targetState = 0,
+                )
+            }
+        }
+    }
+
+    override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
+        savedStateMap[key] = state.value
+    }
+
+    private fun SavedStateMap?.restore(): List<RoutingElement<Key, Int>>? =
+        (this?.get(key) as? List<RoutingElement<Key, Int>>)
 
 }

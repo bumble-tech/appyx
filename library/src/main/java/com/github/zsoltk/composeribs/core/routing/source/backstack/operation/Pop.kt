@@ -18,8 +18,7 @@ class Pop<T : Any> : BackStackOperation<T> {
                 elements.any { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
 
     override fun invoke(
-        elements: BackStackElements<T>,
-        uuidGenerator: UuidGenerator
+        elements: BackStackElements<T>
     ): BackStackElements<T> {
 
         val destroyIndex = elements.currentIndex

@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
@@ -21,8 +22,7 @@ data class Replace<T : Any>(
         element != elements.current?.key?.routing
 
     override fun invoke(
-        elements: BackStackElements<T>,
-        uuidGenerator: UuidGenerator
+        elements: BackStackElements<T>
     ): BackStackElements<T> {
         require(elements.any { it.targetState == BackStack.TransitionState.ON_SCREEN }) { "No element to be replaced, state=$elements" }
 
@@ -36,7 +36,7 @@ data class Replace<T : Any>(
                 element
             }
         } + BackStackElement(
-            key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
+            key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
             operation = this

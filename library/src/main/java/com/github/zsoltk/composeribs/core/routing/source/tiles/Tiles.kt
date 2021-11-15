@@ -18,22 +18,14 @@ class Tiles<T : Any>(
     initialElements: List<T>,
 ) : RoutingSource<T, Tiles.TransitionState> {
 
-    @Parcelize
-    data class LocalRoutingKey<T>(
-        override val routing: @RawValue T,
-        val uuid: Int,
-    ) : RoutingKey<T>, Parcelable
-
     enum class TransitionState {
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 
-    private val tmpCounter = UuidGenerator(1)
-
     private val state = MutableStateFlow(
         initialElements.map {
             TilesElement(
-                key = LocalRoutingKey(it, tmpCounter.incrementAndGet()),
+                key = RoutingKey(it),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
                 operation = Operation.Noop()
