@@ -3,7 +3,6 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
 /**
@@ -19,8 +18,7 @@ internal class Remove<T : Any>(
         elements.hasContentWithKey()
 
     override fun invoke(
-        elements: BackStackElements<T>,
-        uuidGenerator: UuidGenerator
+        elements: BackStackElements<T>
     ): BackStackElements<T> =
         when {
             elements.hasContentWithKey() -> updateContent(elements)

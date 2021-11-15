@@ -5,7 +5,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Tra
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
@@ -33,7 +33,7 @@ internal class NewRootTest {
         val operation = NewRoot<Routing>(element = Routing1)
 
         assertThrows(IllegalArgumentException::class.java) {
-            operation.invoke(elements, UuidGenerator(0))
+            operation.invoke(elements)
         }
     }
 
@@ -43,13 +43,11 @@ internal class NewRootTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN
             )
@@ -57,17 +55,16 @@ internal class NewRootTest {
 
         val operation = NewRoot<Routing>(element = Routing2)
 
-        val newElements = operation.invoke(elements = elements, uuidGenerator = UuidGenerator(2))
+        val newElements = operation.invoke(elements = elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
@@ -76,13 +73,11 @@ internal class NewRootTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                uuid = 1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN
             )
@@ -90,22 +85,20 @@ internal class NewRootTest {
 
         val operation = NewRoot<Routing>(element = Routing3)
 
-        val newElements = operation.invoke(elements = elements, uuidGenerator = UuidGenerator(2))
+        val newElements = operation.invoke(elements = elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing2,
-                uuid = 2,
                 fromState = ON_SCREEN,
                 targetState = DESTROYED
             ),
             backStackElement(
                 element = Routing3,
-                uuid = 3,
                 fromState = CREATED,
                 targetState = ON_SCREEN
             )
         )
-        assertEquals(newElements, expectedElements)
+        newElements.assertBackstackElementsEqual(expectedElements)
     }
 }

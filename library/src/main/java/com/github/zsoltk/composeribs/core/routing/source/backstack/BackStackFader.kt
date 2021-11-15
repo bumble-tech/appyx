@@ -3,6 +3,8 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
@@ -31,4 +33,11 @@ class BackStackFader(
 
         alpha(alpha.value)
     }
+}
+
+@Composable
+fun rememberBackstackFader(
+    transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { tween(1500) }
+): ModifierTransitionHandler<BackStack.TransitionState> = remember {
+    BackStackFader(transitionSpec = transitionSpec)
 }

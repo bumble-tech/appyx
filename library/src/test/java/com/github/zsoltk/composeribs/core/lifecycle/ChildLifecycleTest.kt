@@ -110,8 +110,6 @@ class ChildLifecycleTest {
 
     private class RoutingImpl : RoutingSource<String, Boolean> {
 
-        data class RoutingKeyImpl(override val routing: String) : RoutingKey<String>
-
         private val state = MutableStateFlow<List<RoutingElement<String, Boolean>>>(emptyList())
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
@@ -140,7 +138,7 @@ class ChildLifecycleTest {
         }
 
         fun add(key: String, onScreen: Boolean) {
-            state.update { list -> list + RoutingElement(RoutingKeyImpl(key), onScreen, onScreen) }
+            state.update { list -> list + RoutingElement(RoutingKey(key), onScreen, onScreen) }
         }
 
         fun remove(key: String) {

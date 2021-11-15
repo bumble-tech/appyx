@@ -6,6 +6,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -72,9 +73,8 @@ abstract class ParentNode<Routing>(
     private suspend fun RoutingSource<Routing, *>.syncChildrenWithRoutingSource() {
         all.collect { elements ->
             _children.update { map ->
-                val routingSourceKeys =
-                    elements.mapTo(HashSet(elements.size)) { element -> element.key }
-                val localKeys = map.keys
+                val routingSourceKeys = elements.map { element -> element.key }
+                val localKeys = map.keys.toList()
                 val newKeys = routingSourceKeys - localKeys
                 val removedKeys = localKeys - routingSourceKeys
                 val mutableMap = map.toMutableMap()
@@ -122,8 +122,12 @@ abstract class ParentNode<Routing>(
 
     @Composable
     protected fun permanentChild(routing: Routing) {
-        permanentRoutingSource.add(routing)
-        childOrCreate(PermanentRoutingSource.RoutingKeyImpl(routing)).node.Compose()
+        val child = remember(routing) {
+            val routingKey = RoutingKey(routing)
+            permanentRoutingSource.add(routingKey)
+            childOrCreate(routingKey)
+        }
+        child.node.Compose()
     }
 
     /**

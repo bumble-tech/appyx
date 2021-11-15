@@ -22,8 +22,8 @@ import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
+import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
@@ -109,7 +109,7 @@ class CombinedRoutingSourceNode(
                 .fillMaxWidth()
                 .height(200.dp),
             routingSource = backStack,
-            transitionHandler = BackStackFader(transitionSpec = { tween(300) }),
+            transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
         ) {
             children<Routing> { child ->
                 child()
