@@ -7,20 +7,20 @@ import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentOper
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 
 data class Add<T : Any>(
-    private val routingKey: RoutingKey<T>
+    private val key: RoutingKey<T>
 ) : PermanentOperation<T> {
 
     override fun isApplicable(elements: RoutingElements<T, Int>): Boolean =
-        !elements.any { it.key == routingKey }
+        !elements.any { it.key == key }
 
     override fun invoke(
         elements: RoutingElements<T, Int>
     ): RoutingElements<T, Int> =
-        if (elements.any { it.key == routingKey }) {
+        if (elements.any { it.key == key }) {
             elements
         } else {
             elements + RoutingElement(
-                key = routingKey,
+                key = key,
                 fromState = 0,
                 targetState = 0,
                 operation = this
