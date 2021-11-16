@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
@@ -72,7 +71,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 targetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             ) + BackStackElement(
-                key = BackStack.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
+                key = RoutingKey(element),
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,
                 operation = this

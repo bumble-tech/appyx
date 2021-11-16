@@ -4,8 +4,8 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import org.junit.Assert.assertEquals
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
+import org.junit.Assert.assertEquals
 
 internal sealed class Routing {
     object Routing1 : Routing()
@@ -16,7 +16,7 @@ internal sealed class Routing {
 
 internal fun <T : Routing> backStackElement(
     element: T,
-    key: RoutingKey<T> = RoutingKey(routing = element)
+    key: RoutingKey<T> = RoutingKey(routing = element),
     fromState: BackStack.TransitionState,
     targetState: BackStack.TransitionState,
     operation: BackStackOperation<T>
@@ -32,9 +32,9 @@ internal fun BackStackElements<Routing>.assertBackstackElementsEqual(elements: B
 
     forEachIndexed { index, element ->
         val elementToCompare = elements[index]
-        assertEquals(element.targetState, elementToCompare.targetState)
-        assertEquals(element.fromState, elementToCompare.fromState)
         assertEquals(element.key.routing, elementToCompare.key.routing)
+        assertEquals(element.fromState, elementToCompare.fromState)
+        assertEquals(element.targetState, elementToCompare.targetState)
+        assertEquals(element.operation, elementToCompare.operation)
     }
 }
-

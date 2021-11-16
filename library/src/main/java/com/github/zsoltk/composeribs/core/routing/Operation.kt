@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing
 
-interface Operation<T, S> : (RoutingElements<T, S>, UuidGenerator) -> RoutingElements<T, S> {
+interface Operation<T, S> : (RoutingElements<T, S>) -> RoutingElements<T, S> {
 
     fun isApplicable(elements: RoutingElements<T, S>): Boolean
 
@@ -9,8 +9,7 @@ interface Operation<T, S> : (RoutingElements<T, S>, UuidGenerator) -> RoutingEle
         override fun isApplicable(elements: RoutingElements<T, S>) = false
 
         override fun invoke(
-            elements: RoutingElements<T, S>,
-            uuidGenerator: UuidGenerator
+            elements: RoutingElements<T, S>
         ): RoutingElements<T, S> = elements
 
         override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass

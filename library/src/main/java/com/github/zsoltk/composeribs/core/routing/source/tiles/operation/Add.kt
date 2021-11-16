@@ -1,7 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles.operation
 
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
+import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElement
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
@@ -15,10 +15,9 @@ data class Add<T : Any>(
 
     override fun invoke(
         elements: TilesElements<T>,
-        uuidGenerator: UuidGenerator
     ): RoutingElements<T, Tiles.TransitionState> =
         elements + TilesElement(
-            key = Tiles.LocalRoutingKey(element, uuidGenerator.incrementAndGet()),
+            key = RoutingKey(element),
             fromState = Tiles.TransitionState.CREATED,
             targetState = Tiles.TransitionState.STANDARD,
             operation = this

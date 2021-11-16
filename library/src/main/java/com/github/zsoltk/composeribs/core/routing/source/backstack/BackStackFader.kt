@@ -8,19 +8,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
+import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
-import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackFader<T>(
     private val transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { tween(1500) }
-) : ModifierTransitionHandler<BackStack.TransitionState>() {
+) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
 
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<BackStack.TransitionState>,
-        transitionBounds: TransitionBounds
+        descriptor: TransitionDescriptor<T, BackStack.TransitionState>
     ): Modifier = modifier.composed {
         val alpha = transition.animateFloat(
             transitionSpec = transitionSpec,
@@ -36,8 +36,8 @@ class BackStackFader<T>(
 }
 
 @Composable
-fun rememberBackstackFader(
+fun <T> rememberBackstackFader(
     transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { tween(1500) }
-): ModifierTransitionHandler<BackStack.TransitionState> = remember {
+): ModifierTransitionHandler<T, BackStack.TransitionState> = remember {
     BackStackFader(transitionSpec = transitionSpec)
 }

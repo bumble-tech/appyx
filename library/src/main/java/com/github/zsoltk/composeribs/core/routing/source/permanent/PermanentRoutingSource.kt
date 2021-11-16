@@ -1,8 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.permanent
 
-import android.os.Parcelable
-import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -10,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class PermanentRoutingSource<Key>(
+class PermanentRoutingSource<Key : Any>(
     configuration: Set<Key> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String = PermanentRoutingSource::class.simpleName!!,
@@ -55,18 +54,9 @@ class PermanentRoutingSource<Key>(
         // no-op
     }
 
-    fun add(key: RoutingKey<Key>) {
-        if (state.value.any { it.key == key }) return
-        state.update { list ->
-            if (list.any { it.key == key }) {
-                list
-            } else {
-                list + RoutingElement(
-                    key = key,
-                    fromState = 0,
-                    targetState = 0,
-                )
-            }
+    fun perform(operation: PermanentOperation<Key>) {
+        if (operation.isApplicable(state.value)) {
+            state.update { operation(it) }
         }
     }
 
@@ -75,6 +65,6 @@ class PermanentRoutingSource<Key>(
     }
 
     private fun SavedStateMap?.restore(): List<RoutingElement<Key, Int>>? =
-        (this?.get(key) as? List<RoutingElement<Key, Int>>)
+        (this?.get(key) as? PermanentElements<Key>)
 
 }

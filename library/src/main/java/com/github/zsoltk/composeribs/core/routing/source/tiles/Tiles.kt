@@ -1,18 +1,14 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles
 
-import android.os.Parcelable
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.deselectAll
 import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 class Tiles<T : Any>(
     initialElements: List<T>,
@@ -63,12 +59,11 @@ class Tiles<T : Any>(
 
     fun perform(operation: TilesOperation<T>) {
         if (operation.isApplicable(state.value)) {
-            state.update { operation(it, tmpCounter) }
+            state.update { operation(it) }
         }
     }
 
     override fun onBackPressed() {
         deselectAll()
     }
-
 }

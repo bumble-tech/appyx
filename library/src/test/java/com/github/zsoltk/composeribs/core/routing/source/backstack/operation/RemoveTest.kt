@@ -1,7 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.Operation
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN

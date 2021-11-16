@@ -16,7 +16,7 @@ import kotlin.reflect.KClass
 
 
 @Composable
-fun <T, S> Subtree(
+fun <T : Any, S> Subtree(
     routingSource: RoutingSource<T, S>,
     block: @Composable SubtreeScope<T, S>.() -> Unit
 ) {
@@ -46,7 +46,7 @@ fun <T : Any, S> Subtree(
     }
 }
 
-class SubtreeScope<T, S>(
+class SubtreeScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>
 ) {
 

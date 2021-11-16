@@ -26,6 +26,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.permanent.operation.add
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,7 +37,7 @@ import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-abstract class ParentNode<Routing>(
+abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
     buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,

@@ -1,7 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.Operation
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
@@ -162,7 +161,7 @@ internal class SingleTopTest {
         )
         val operation = SingleTop.init(element = Routing3, elements = elements)
 
-        val newElements = operation.invoke(elements = elements)
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -219,7 +218,7 @@ internal class SingleTopTest {
         val operation = SingleTop.init(Routing4("Content 1"), elements = elements)
 
         assertThrows(IllegalArgumentException::class.java) {
-            operation.invoke(elements = elements)
+            operation.invoke(elements)
         }
     }
 
@@ -254,7 +253,7 @@ internal class SingleTopTest {
         )
         val operation = SingleTop.init(element = Routing4("Content 1"), elements = elements)
 
-        val newElements = operation.invoke(elements = elements)
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -311,7 +310,7 @@ internal class SingleTopTest {
         val operation = SingleTop.init(element = Routing4("Content 2"), elements = elements)
 
         assertThrows(IllegalArgumentException::class.java) {
-            operation.invoke(elements = elements)
+            operation.invoke(elements)
         }
     }
 
@@ -346,7 +345,7 @@ internal class SingleTopTest {
         )
         val operation = SingleTop.init(element = Routing4("Content 2"), elements)
 
-        val newElements = operation.invoke(elements = elements)
+        val newElements = operation.invoke(elements)
 
         val expectedElements = listOf<BackStackElement<Routing>>(
             backStackElement(

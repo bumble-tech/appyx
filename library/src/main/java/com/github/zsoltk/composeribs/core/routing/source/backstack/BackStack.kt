@@ -5,7 +5,6 @@ import com.github.zsoltk.composeribs.core.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.UuidGenerator
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
