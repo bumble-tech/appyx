@@ -11,11 +11,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
-import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.LocalFallbackUpNavigationHandler
 
 fun interface NodeFactory<N : Node> {
     fun create(buildContext: BuildContext): N

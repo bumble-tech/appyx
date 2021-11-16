@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles
 
-import android.os.Parcelable
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.unsuspendedMap
@@ -8,30 +7,19 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
-import java.util.concurrent.atomic.AtomicInteger
 
 class Tiles<T>(
     initialElements: List<T>,
 ) : RoutingSource<T, Tiles.TransitionState> {
 
-    @Parcelize
-    data class LocalRoutingKey<T>(
-        override val routing: @RawValue T,
-        val uuid: Int,
-    ) : RoutingKey<T>, Parcelable
-
     enum class TransitionState {
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 
-    private val tmpCounter = AtomicInteger(1)
-
     private val state = MutableStateFlow(
         initialElements.map {
             TilesElement(
-                key = LocalRoutingKey(it, tmpCounter.incrementAndGet()),
+                key = RoutingKey(it),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
             )
@@ -53,7 +41,7 @@ class Tiles<T>(
     fun add(element: T) {
         state.update { list ->
             list + TilesElement(
-                key = LocalRoutingKey(element, tmpCounter.incrementAndGet()),
+                key = RoutingKey(element),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
             )

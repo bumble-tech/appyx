@@ -1,10 +1,11 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.composable
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
@@ -132,7 +133,7 @@ class SubtreeTransitionScope<T : Any, S>(
 
         val saveableStateHolder = rememberSaveableStateHolder()
         children.forEach { (routingElement, childEntry) ->
-            key(childEntry.key) {
+            key(childEntry.key.id) {
                 saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
                     val transitionScope =
                         transitionHandler.handle(

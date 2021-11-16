@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.children
 
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
 
 val <T> ChildEntry<T>.nodeOrNull: Node?
     get() =

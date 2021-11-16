@@ -3,8 +3,8 @@ package com.github.zsoltk.composeribs.core.lifecycle
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.ParentNode
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.build
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
@@ -111,8 +111,6 @@ class ChildLifecycleTest {
 
     private class RoutingImpl : RoutingSource<String, Boolean> {
 
-        data class RoutingKeyImpl(override val routing: String) : RoutingKey<String>
-
         private val state = MutableStateFlow<List<RoutingElement<String, Boolean>>>(emptyList())
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
@@ -141,7 +139,7 @@ class ChildLifecycleTest {
         }
 
         fun add(key: String, onScreen: Boolean) {
-            state.update { list -> list + RoutingElement(RoutingKeyImpl(key), onScreen, onScreen) }
+            state.update { list -> list + RoutingElement(RoutingKey(key), onScreen, onScreen) }
         }
 
         fun remove(key: String) {
