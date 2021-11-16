@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.build
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.upnavigation.LocalFallbackUpNavigationHandler
