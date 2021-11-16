@@ -11,7 +11,6 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import com.github.zsoltk.composeribs.core.children.ChildAware
 import com.github.zsoltk.composeribs.core.children.ChildAwareImpl
 import com.github.zsoltk.composeribs.core.children.ChildCallback
@@ -27,6 +26,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
+import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -75,6 +75,7 @@ abstract class ParentNode<Routing>(
             delayedChildRestoration = null
         }
         lifecycle.coroutineScope.launch { this@ParentNode.routingSource.syncChildrenWithRoutingSource() }
+        childNodeLifecycleManager.launch()
         manageTransitions()
     }
 
