@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints

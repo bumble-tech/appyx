@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.modality
 
-import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.state.SavedStateMap
 
 data class BuildContext(
     val ancestryInfo: AncestryInfo,

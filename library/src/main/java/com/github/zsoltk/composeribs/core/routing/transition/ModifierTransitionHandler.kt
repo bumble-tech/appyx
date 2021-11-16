@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import com.github.zsoltk.composeribs.core.ChildTransitionScope
-import com.github.zsoltk.composeribs.core.ChildTransitionScopeImpl
+import com.github.zsoltk.composeribs.core.composable.ChildTransitionScope
+import com.github.zsoltk.composeribs.core.composable.ChildTransitionScopeImpl
 
 abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = false) :
     TransitionHandler<T, S> {

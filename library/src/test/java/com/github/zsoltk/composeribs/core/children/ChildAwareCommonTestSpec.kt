@@ -1,12 +1,8 @@
 package com.github.zsoltk.composeribs.core.children
 
-import android.util.Log
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
-import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Test
 import kotlin.reflect.KClass
 

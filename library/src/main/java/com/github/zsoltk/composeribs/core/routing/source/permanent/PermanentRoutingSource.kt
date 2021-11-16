@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.permanent
 
-import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey

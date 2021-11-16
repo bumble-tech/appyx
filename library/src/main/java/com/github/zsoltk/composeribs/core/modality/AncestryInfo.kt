@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.modality
 
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
 
 sealed class AncestryInfo {
 
