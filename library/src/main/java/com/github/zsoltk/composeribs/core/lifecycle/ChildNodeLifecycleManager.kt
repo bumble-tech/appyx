@@ -26,7 +26,7 @@ class ChildNodeLifecycleManager<Routing>(
     private val coroutineScope: CoroutineScope = lifecycle.coroutineScope,
 ) {
 
-    init {
+    fun launch() {
         updateChildrenWhenDestroyed()
         manageChildrenLifecycle()
         updateRemovedChildren()
