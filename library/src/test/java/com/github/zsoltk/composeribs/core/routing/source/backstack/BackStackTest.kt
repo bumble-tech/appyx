@@ -45,9 +45,11 @@ internal class BackStackTest {
         val initialState = backStack.all.value
         val expectedState = listOf<BackStackElement<Routing>>(
             BackStackElement(
+                BackStackOnScreenResolver,
                 key = RoutingKey(initialElement),
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
+                onScreen = true
             )
         )
 
@@ -224,7 +226,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN
+                targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
                 element = Routing3,
@@ -323,7 +325,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN
+                targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
                 element = Routing3,
@@ -342,6 +344,7 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
+
         var state: BackStackElements<Routing>? = null
         testScope.launch {
             backStack
@@ -349,7 +352,7 @@ internal class BackStackTest {
                 .collect { state = it }
         }
 
-        backStack.push(Routing2)
+        backStack.push(Routing3)
 
         val expectedState = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -363,7 +366,7 @@ internal class BackStackTest {
                 targetState = STASHED_IN_BACK_STACK
             ),
             backStackElement(
-                element = Routing2,
+                element = Routing3,
                 fromState = CREATED,
                 targetState = ON_SCREEN
             )
@@ -590,9 +593,11 @@ internal class BackStackTest {
         val state = backStack.all.value
         val expectedState = listOf<BackStackElement<Routing>>(
             BackStackElement(
+                BackStackOnScreenResolver,
                 key = RoutingKey(initialElement),
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
+                onScreen = true
             )
         )
         state.assertBackstackElementsEqual(expectedState)

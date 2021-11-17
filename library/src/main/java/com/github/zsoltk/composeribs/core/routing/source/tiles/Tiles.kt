@@ -20,7 +20,7 @@ class Tiles<T>(
 
     @Parcelize
     private object TilesOnScreenResolver : OnScreenResolver<TransitionState> {
-        override fun resolve(state: TransitionState): Boolean =
+        override fun isOnScreen(state: TransitionState): Boolean =
             when (state) {
                 TransitionState.CREATED,
                 TransitionState.STANDARD,

@@ -10,7 +10,7 @@ class RoutingElement<Key, State>(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val onScreen: Boolean
+    val onScreen: @RawValue Boolean
 ) : Parcelable {
 
     fun transitionTo(targetState: @RawValue State): RoutingElement<Key, State> =
@@ -19,7 +19,7 @@ class RoutingElement<Key, State>(
             key = key,
             fromState = fromState,
             targetState = targetState,
-            onScreen = this.onScreen || onScreenResolver.resolve(targetState)
+            onScreen = this.onScreen || onScreenResolver.isOnScreen(targetState)
         )
 
     fun transitionFinished(targetState: @RawValue State): RoutingElement<Key, State> =
@@ -28,7 +28,7 @@ class RoutingElement<Key, State>(
             key = key,
             fromState = this.targetState,
             targetState = this.targetState,
-            onScreen = onScreenResolver.resolve(targetState)
+            onScreen = onScreenResolver.isOnScreen(targetState)
         )
 
 }

@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import com.github.zsoltk.composeribs.core.Node
 import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreen
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -32,13 +33,12 @@ abstract class ChildAwareTestBase {
 
     fun add(vararg key: RoutingKey<Configuration>): List<Node> {
         root.routing.add(*key)
-        val result = root
+        return root
             .children
             .value
             .values
             .filter { it.key.routing in key.map { it.routing } }
             .mapNotNull { (it as? ChildEntry.Eager)?.node }
-        return result
     }
 
     sealed class Configuration {
@@ -96,9 +96,11 @@ abstract class ChildAwareTestBase {
                 require(list.none { it.key.routing in key.map { it.routing } })
                 list + key.map {
                     RoutingElement(
+                        AlwaysOnScreen(),
                         key = it,
                         fromState = 0,
-                        targetState = 0
+                        targetState = 0,
+                        onScreen = true
                     )
                 }
             }

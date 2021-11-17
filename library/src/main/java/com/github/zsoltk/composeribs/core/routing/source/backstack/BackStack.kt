@@ -85,7 +85,7 @@ class BackStack<T : Any>(
             state.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState != TransitionState.DESTROYED) {
-                    it.transitionTo(targetState = it.targetState)
+                    it.transitionFinished(targetState = it.targetState)
                 } else {
                     null
                 }

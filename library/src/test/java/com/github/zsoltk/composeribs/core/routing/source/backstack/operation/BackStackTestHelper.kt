@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import org.junit.Assert.assertEquals
 
 internal sealed class Routing {
@@ -17,11 +18,13 @@ internal fun <T : Routing> backStackElement(
     element: T,
     fromState: BackStack.TransitionState,
     targetState: BackStack.TransitionState,
-    key: RoutingKey<T> = RoutingKey(routing = element)
+    key: RoutingKey<T> = RoutingKey(routing = element),
 ) = BackStackElement(
+    BackStackOnScreenResolver,
     key = key,
     fromState = fromState,
-    targetState = targetState
+    targetState = targetState,
+    onScreen = BackStackOnScreenResolver.isOnScreen(fromState) || BackStackOnScreenResolver.isOnScreen(targetState)
 )
 
 internal fun BackStackElements<Routing>.assertBackstackElementsEqual(elements: BackStackElements<Routing>) {

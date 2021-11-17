@@ -4,5 +4,5 @@ import android.os.Parcelable
 
 interface OnScreenResolver<State> : Parcelable {
 
-    fun resolve(state: State): Boolean
+    fun isOnScreen(state: State): Boolean
 }

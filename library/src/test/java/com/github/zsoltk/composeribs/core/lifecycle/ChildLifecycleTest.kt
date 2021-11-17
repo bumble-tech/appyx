@@ -8,6 +8,7 @@ import com.github.zsoltk.composeribs.core.ParentNode
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreen
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -138,7 +139,7 @@ class ChildLifecycleTest {
         }
 
         fun add(key: String, onScreen: Boolean) {
-            state.update { list -> list + RoutingElement(RoutingKey(key), onScreen, onScreen) }
+            state.update { list -> list + RoutingElement(AlwaysOnScreen(), RoutingKey(key), onScreen, onScreen, onScreen = true) }
         }
 
         fun remove(key: String) {
@@ -149,7 +150,7 @@ class ChildLifecycleTest {
             state.update { list ->
                 list.map {
                     if (it.key.routing == key) {
-                        it.copy(fromState = onScreen, targetState = onScreen)
+                        it.transitionTo(targetState = onScreen)
                     } else {
                         it
                     }
