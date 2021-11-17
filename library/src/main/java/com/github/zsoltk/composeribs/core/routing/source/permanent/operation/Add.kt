@@ -26,7 +26,7 @@ data class Add<T : Any>(
                 fromState = 0,
                 targetState = 0,
                 operation = this,
-                onScreen = true
+                isOnScreen = true
             )
         }
 }

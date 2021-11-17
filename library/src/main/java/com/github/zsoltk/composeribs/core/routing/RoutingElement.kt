@@ -10,7 +10,7 @@ class RoutingElement<Key, State>(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val onScreen: @RawValue Boolean,
+    val isOnScreen: @RawValue Boolean,
     val operation: @RawValue Operation<Key, out State>
 ) : Parcelable {
 
@@ -23,7 +23,7 @@ class RoutingElement<Key, State>(
             key = key,
             fromState = fromState,
             targetState = targetState,
-            onScreen = this.onScreen || onScreenResolver.isOnScreen(targetState),
+            isOnScreen = this.isOnScreen || onScreenResolver.isOnScreen(targetState),
             operation = operation
         )
 
@@ -35,7 +35,7 @@ class RoutingElement<Key, State>(
             key = key,
             fromState = this.targetState,
             targetState = this.targetState,
-            onScreen = onScreenResolver.isOnScreen(targetState),
+            isOnScreen = onScreenResolver.isOnScreen(targetState),
             operation = operation
         )
 

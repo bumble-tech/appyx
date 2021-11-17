@@ -36,7 +36,7 @@ data class Push<T : Any>(
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
-            onScreen = true,
+            isOnScreen = true,
             operation = this
         )
     }

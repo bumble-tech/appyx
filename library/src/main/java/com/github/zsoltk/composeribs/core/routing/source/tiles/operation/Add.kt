@@ -24,7 +24,7 @@ data class Add<T : Any>(
             fromState = Tiles.TransitionState.CREATED,
             targetState = Tiles.TransitionState.STANDARD,
             operation = this,
-            onScreen = true
+            isOnScreen = true
         )
 }
 

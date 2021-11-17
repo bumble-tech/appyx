@@ -106,7 +106,7 @@ abstract class ChildAwareTestBase {
                         fromState = 0,
                         targetState = 0,
                         operation = Operation.Noop(),
-                        onScreen = true
+                        isOnScreen = true
                     )
                 }
             }

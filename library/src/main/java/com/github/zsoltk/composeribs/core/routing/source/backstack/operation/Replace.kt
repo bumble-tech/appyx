@@ -42,7 +42,7 @@ data class Replace<T : Any>(
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
             operation = this,
-            onScreen = true
+            isOnScreen = true
         )
     }
 }

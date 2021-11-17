@@ -31,7 +31,7 @@ class BackStack<T : Any>(
                 key = RoutingKey(initialElement),
                 fromState = TransitionState.ON_SCREEN,
                 targetState = TransitionState.ON_SCREEN,
-                onScreen = true,
+                isOnScreen = true,
                 operation = Operation.Noop()
             )
         )
@@ -41,10 +41,10 @@ class BackStack<T : Any>(
         state
 
     override val offScreen: StateFlow<BackStackElements<T>> =
-        state.unsuspendedMap { list -> list.filter { !it.onScreen } }
+        state.unsuspendedMap { list -> list.filter { !it.isOnScreen } }
 
     override val onScreen: StateFlow<BackStackElements<T>> =
-        state.unsuspendedMap { list -> list.filter { it.onScreen } }
+        state.unsuspendedMap { list -> list.filter { it.isOnScreen } }
 
     override val canHandleBackPress: StateFlow<Boolean> =
         state.unsuspendedMap { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
@@ -95,5 +95,5 @@ class BackStack<T : Any>(
 
 
     override fun isOnScreen(key: RoutingKey<T>): Boolean =
-        state.value.find { it.key == key }?.onScreen ?: false
+        state.value.find { it.key == key }?.isOnScreen ?: false
 }

@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.parcelize.Parcelize
 
 class Tiles<T : Any>(
     initialElements: List<T>,
@@ -27,7 +26,7 @@ class Tiles<T : Any>(
                 key = RoutingKey(it),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
-                onScreen = true,
+                isOnScreen = true,
                 operation = Operation.Noop()
             )
         }

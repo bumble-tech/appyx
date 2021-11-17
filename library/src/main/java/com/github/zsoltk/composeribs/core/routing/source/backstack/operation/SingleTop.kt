@@ -78,7 +78,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,
                 operation = this,
-                onScreen = true
+                isOnScreen = true
             )
         }
 

@@ -151,7 +151,7 @@ class ChildLifecycleTest {
                     targetState = onScreen,
                     fromState = onScreen,
                     operation = Operation.Noop(),
-                    onScreen = true
+                    isOnScreen = true
                 )
             }
         }

@@ -28,7 +28,7 @@ internal fun <T : Routing> backStackElement(
     key = key,
     fromState = fromState,
     targetState = targetState,
-    onScreen = onScreenResolver.isOnScreen(fromState) || onScreenResolver.isOnScreen(targetState),
+    isOnScreen = onScreenResolver.isOnScreen(fromState) || onScreenResolver.isOnScreen(targetState),
     operation = operation
 )
 

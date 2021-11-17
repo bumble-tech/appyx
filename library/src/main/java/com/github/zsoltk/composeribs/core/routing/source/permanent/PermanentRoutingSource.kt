@@ -34,7 +34,7 @@ class PermanentRoutingSource<Key : Any>(
                 key = RoutingKey(routing = key),
                 fromState = 0,
                 targetState = 0,
-                onScreen = true,
+                isOnScreen = true,
                 operation = Operation.Noop()
             )
         }

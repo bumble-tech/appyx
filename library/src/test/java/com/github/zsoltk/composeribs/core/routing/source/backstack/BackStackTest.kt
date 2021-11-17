@@ -52,7 +52,7 @@ internal class BackStackTest {
                 key = RoutingKey(initialElement),
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
-                onScreen = true,
+                isOnScreen = true,
                 operation = Operation.Noop()
             )
         )
@@ -658,7 +658,7 @@ internal class BackStackTest {
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
                 operation = Operation.Noop(),
-                onScreen = true
+                isOnScreen = true
             )
         )
         state.assertBackstackElementsEqual(expectedElements)
