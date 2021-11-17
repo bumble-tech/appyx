@@ -11,6 +11,7 @@ import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreen
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -115,6 +116,8 @@ class ChildLifecycleTest {
 
         private val state = MutableStateFlow<List<RoutingElement<String, Boolean>>>(emptyList())
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
+
+        override var onScreenResolver: OnScreenResolver<Boolean> = AlwaysOnScreen()
 
         override val all: StateFlow<List<RoutingElement<String, Boolean>>> =
             state

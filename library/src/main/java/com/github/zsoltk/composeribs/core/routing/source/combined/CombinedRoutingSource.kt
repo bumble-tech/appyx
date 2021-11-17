@@ -1,5 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.combined
 
+import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreen
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -20,6 +22,8 @@ class CombinedRoutingSource<Key>(
     // Lifecycles of this source and dependent ones are aligned, gc should be able to collect them
     // Eagerly subscription to avoid recomposition with default value
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
+
+    override var onScreenResolver: OnScreenResolver<Any?> = AlwaysOnScreen()
 
     override val all: StateFlow<RoutingElements<Key, *>> =
         combine(sources.map { it.all }) { arr -> arr.reduce { acc, list -> acc + list } }

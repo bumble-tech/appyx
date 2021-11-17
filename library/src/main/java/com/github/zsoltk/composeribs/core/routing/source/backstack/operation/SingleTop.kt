@@ -1,11 +1,11 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
@@ -55,7 +55,8 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
     class SingleTopReplaceBackStackOperation<T : Any>(
         private val element: T,
-        private val position: Int
+        private val position: Int,
+        private val onScreenResolver: OnScreenResolver<BackStack.TransitionState>
     ) : SingleTop<T>() {
 
         override fun isApplicable(elements: BackStackElements<T>): Boolean = true
@@ -72,7 +73,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 targetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             ) + BackStackElement(
-                BackStackOnScreenResolver,
+                onScreenResolver,
                 key = RoutingKey(element),
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,
@@ -89,6 +90,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
     companion object {
 
         fun <T : Any> init(
+            onScreenResolver: OnScreenResolver<BackStack.TransitionState>,
             element: T,
             elements: BackStackElements<T>
         ): BackStackOperation<T> {
@@ -97,12 +99,19 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 elements.indexOfLast { targetClass.isInstance(it.key.routing) }
 
             return if (lastIndexOfSameClass == -1) {
-                Push(element)
+                Push(onScreenResolver, element)
             } else {
                 if (elements[lastIndexOfSameClass].key.routing == element) {
-                    SingleTopReactivateBackStackOperation(element, lastIndexOfSameClass)
+                    SingleTopReactivateBackStackOperation(
+                        element,
+                        lastIndexOfSameClass
+                    )
                 } else {
-                    SingleTopReplaceBackStackOperation(element, lastIndexOfSameClass)
+                    SingleTopReplaceBackStackOperation(
+                        element,
+                        lastIndexOfSameClass,
+                        onScreenResolver
+                    )
                 }
             }
         }
@@ -110,5 +119,5 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 }
 
 fun <T : Any> BackStack<T>.singleTop(element: T) {
-    perform(SingleTop.init(element, all.value))
+    perform(SingleTop.init(onScreenResolver, element, all.value))
 }

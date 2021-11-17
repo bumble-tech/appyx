@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
@@ -20,13 +21,14 @@ internal fun <T : Routing> backStackElement(
     key: RoutingKey<T> = RoutingKey(routing = element),
     fromState: BackStack.TransitionState,
     targetState: BackStack.TransitionState,
-    operation: BackStackOperation<T>
+    operation: BackStackOperation<T>,
+    onScreenResolver: OnScreenResolver<BackStack.TransitionState> = BackStackOnScreenResolver
 ) = BackStackElement(
-    BackStackOnScreenResolver,
+    onScreenResolver,
     key = key,
     fromState = fromState,
     targetState = targetState,
-    onScreen = BackStackOnScreenResolver.isOnScreen(fromState) || BackStackOnScreenResolver.isOnScreen(targetState),
+    onScreen = onScreenResolver.isOnScreen(fromState) || onScreenResolver.isOnScreen(targetState),
     operation = operation
 )
 

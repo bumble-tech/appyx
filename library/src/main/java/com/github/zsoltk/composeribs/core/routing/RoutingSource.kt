@@ -3,7 +3,9 @@ package com.github.zsoltk.composeribs.core.routing
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import kotlinx.coroutines.flow.StateFlow
 
-interface RoutingSource<Key, out State> : UpNavigationHandler {
+interface RoutingSource<Key, State> : UpNavigationHandler {
+
+    var onScreenResolver: OnScreenResolver<State>
 
     val all: StateFlow<RoutingElements<Key, out State>>
 

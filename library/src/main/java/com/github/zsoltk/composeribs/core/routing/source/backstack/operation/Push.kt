@@ -1,11 +1,11 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
@@ -14,6 +14,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  * [A, B, C] + Push(D) = [A, B, C, D]
  */
 data class Push<T : Any>(
+    private val onScreenResolver: OnScreenResolver<BackStack.TransitionState>,
     private val element: T
 ) : BackStackOperation<T> {
 
@@ -31,7 +32,7 @@ data class Push<T : Any>(
                 it
             }
         } + BackStackElement(
-            onScreenResolver = BackStackOnScreenResolver,
+            onScreenResolver = onScreenResolver,
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
@@ -42,5 +43,5 @@ data class Push<T : Any>(
 }
 
 fun <T : Any> BackStack<T>.push(element: T) {
-    perform(Push(element))
+    perform(Push(onScreenResolver, element))
 }

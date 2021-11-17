@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
 import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -21,10 +22,12 @@ class BackStack<T : Any>(
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
+    override var onScreenResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
+
     private val state = MutableStateFlow(
         value = savedStateMap?.restoreHistory() ?: listOf(
             BackStackElement(
-                onScreenResolver = BackStackOnScreenResolver,
+                onScreenResolver = onScreenResolver,
                 key = RoutingKey(initialElement),
                 fromState = TransitionState.ON_SCREEN,
                 targetState = TransitionState.ON_SCREEN,

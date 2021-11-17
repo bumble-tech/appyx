@@ -20,21 +20,10 @@ class Tiles<T : Any>(
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 
-    @Parcelize
-    internal object TilesOnScreenResolver : OnScreenResolver<TransitionState> {
-        override fun isOnScreen(state: TransitionState): Boolean =
-            when (state) {
-                TransitionState.CREATED,
-                TransitionState.STANDARD,
-                TransitionState.SELECTED -> true
-                TransitionState.DESTROYED -> false
-            }
-    }
-
     private val state = MutableStateFlow(
         initialElements.map {
             TilesElement(
-                onScreenResolver = TilesOnScreenResolver,
+                onScreenResolver = onScreenResolver,
                 key = RoutingKey(it),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
@@ -43,6 +32,8 @@ class Tiles<T : Any>(
             )
         }
     )
+
+    override var onScreenResolver: OnScreenResolver<TransitionState> = TilesOnScreenResolver
 
     override val all: StateFlow<TilesElements<T>> =
         state.asStateFlow()
