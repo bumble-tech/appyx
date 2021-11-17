@@ -8,6 +8,7 @@ import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreen
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
@@ -82,7 +83,8 @@ abstract class ChildAwareTestBase {
         }
     }
 
-    class TestRoutingSource<Key> : RoutingSource<Key, Int> {
+    class TestRoutingSource<Key>(override var onScreenResolver: OnScreenResolver<Int> = AlwaysOnScreen()) :
+        RoutingSource<Key, Int> {
 
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
         override val all: StateFlow<RoutingElements<Key, Int>>

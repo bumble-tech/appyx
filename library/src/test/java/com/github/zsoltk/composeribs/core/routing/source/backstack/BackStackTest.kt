@@ -180,13 +180,13 @@ internal class BackStackTest {
                 element = Routing1,
                 fromState = ON_SCREEN,
                 targetState = STASHED_IN_BACK_STACK,
-                operation = Push(Routing2)
+                operation = push(Routing2)
             ),
             backStackElement(
                 element = Routing2,
                 fromState = CREATED,
                 targetState = ON_SCREEN,
-                operation = Push(Routing2)
+                operation = push(Routing2)
             )
         )
         state!!.assertBackstackElementsEqual(expectedElements)
@@ -408,7 +408,7 @@ internal class BackStackTest {
                 element = Routing3,
                 fromState = CREATED,
                 targetState = ON_SCREEN,
-                operation = Push(Routing3)
+                operation = push(Routing3)
             )
         )
         state!!.assertBackstackElementsEqual(expectedElements)
@@ -823,6 +823,11 @@ internal class BackStackTest {
 
         assertEquals(isOnScreen, false)
     }
+
+    private fun <T : Any> push(element: T) = Push(
+        onScreenResolver = BackStackOnScreenResolver,
+        element = element
+    )
 
     private class DummyClearOperation(
         private val isApplicable: Boolean
