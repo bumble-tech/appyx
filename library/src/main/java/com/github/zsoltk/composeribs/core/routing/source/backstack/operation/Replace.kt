@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
@@ -13,9 +14,9 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  *
  * [A, B, C] + Replace(D) = [A, B, D]
  */
-internal class Replace<T : Any>(
+data class Replace<T : Any>(
     private val element: T
-) : BackStack.Operation<T> {
+) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         element != elements.current?.key?.routing
@@ -27,7 +28,10 @@ internal class Replace<T : Any>(
 
         return elements.mapIndexed { index, element ->
             if (index == elements.currentIndex) {
-                element.transitionTo(targetState = BackStack.TransitionState.DESTROYED)
+                element.transitionTo(
+                    targetState = BackStack.TransitionState.DESTROYED,
+                    operation = this
+                )
             } else {
                 element
             }
@@ -36,6 +40,7 @@ internal class Replace<T : Any>(
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
+            operation = this,
             onScreen = true
         )
     }

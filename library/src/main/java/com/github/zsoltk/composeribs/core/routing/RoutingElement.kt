@@ -10,25 +10,33 @@ class RoutingElement<Key, State>(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val onScreen: @RawValue Boolean
+    val onScreen: @RawValue Boolean,
+    val operation: @RawValue Operation<Key, out State>
 ) : Parcelable {
 
-    fun transitionTo(targetState: @RawValue State): RoutingElement<Key, State> =
+    fun transitionTo(
+        targetState: @RawValue State,
+        operation: @RawValue Operation<Key, out State>
+    ): RoutingElement<Key, State> =
         RoutingElement(
             onScreenResolver = onScreenResolver,
             key = key,
             fromState = fromState,
             targetState = targetState,
-            onScreen = this.onScreen || onScreenResolver.isOnScreen(targetState)
+            onScreen = this.onScreen || onScreenResolver.isOnScreen(targetState),
+            operation = operation
         )
 
-    fun transitionFinished(targetState: @RawValue State): RoutingElement<Key, State> =
+    fun transitionFinished(
+        targetState: @RawValue State
+    ): RoutingElement<Key, State> =
         RoutingElement(
             onScreenResolver = onScreenResolver,
             key = key,
             fromState = this.targetState,
             targetState = this.targetState,
-            onScreen = onScreenResolver.isOnScreen(targetState)
+            onScreen = onScreenResolver.isOnScreen(targetState),
+            operation = operation
         )
 
 }

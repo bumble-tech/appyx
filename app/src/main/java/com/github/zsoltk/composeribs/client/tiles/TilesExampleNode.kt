@@ -21,14 +21,15 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child2
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
+import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
+import com.github.zsoltk.composeribs.core.composable.Subtree
+import com.github.zsoltk.composeribs.core.composable.visibleChildAsState
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.composable.Subtree
-import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
-import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
-import com.github.zsoltk.composeribs.core.composable.visibleChildAsState
+import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.removeSelected
 
 class TilesExampleNode(
     buildContext: BuildContext,
@@ -70,7 +71,7 @@ class TilesExampleNode(
 
     @Composable
     override fun View() {
-        val handler = TilesTransitionHandler()
+        val handler = TilesTransitionHandler<Routing>()
         Column(modifier = Modifier.fillMaxSize()) {
 
             /*val children by tiles.childrenAsState()

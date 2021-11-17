@@ -2,9 +2,9 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
@@ -13,9 +13,9 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  *
  * [A, B, C] + Push(D) = [A, B, C, D]
  */
-internal class Push<T : Any>(
+data class Push<T : Any>(
     private val element: T
-) : Operation<T> {
+) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         element != elements.current?.key?.routing
@@ -23,7 +23,10 @@ internal class Push<T : Any>(
     override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
         return elements.map {
             if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
-                it.transitionTo(targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK)
+                it.transitionTo(
+                    targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK,
+                    operation = this
+                )
             } else {
                 it
             }
@@ -32,7 +35,8 @@ internal class Push<T : Any>(
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
-            onScreen = true
+            onScreen = true,
+            operation = this
         )
     }
 }

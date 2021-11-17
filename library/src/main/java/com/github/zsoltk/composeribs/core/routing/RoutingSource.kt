@@ -5,11 +5,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface RoutingSource<Key, out State> : UpNavigationHandler {
 
-    val all: StateFlow<List<RoutingElement<Key, out State>>>
+    val all: StateFlow<RoutingElements<Key, out State>>
 
-    val onScreen: StateFlow<List<RoutingElement<Key, out State>>>
+    val onScreen: StateFlow<RoutingElements<Key, out State>>
 
-    val offScreen: StateFlow<List<RoutingElement<Key, out State>>>
+    val offScreen: StateFlow<RoutingElements<Key, out State>>
 
     val canHandleBackPress: StateFlow<Boolean>
 

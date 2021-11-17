@@ -1,8 +1,10 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles
 
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.deselectAll
 import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -10,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.parcelize.Parcelize
 
-class Tiles<T>(
+class Tiles<T : Any>(
     initialElements: List<T>,
 ) : RoutingSource<T, Tiles.TransitionState> {
 
@@ -19,7 +21,7 @@ class Tiles<T>(
     }
 
     @Parcelize
-    private object TilesOnScreenResolver : OnScreenResolver<TransitionState> {
+    internal object TilesOnScreenResolver : OnScreenResolver<TransitionState> {
         override fun isOnScreen(state: TransitionState): Boolean =
             when (state) {
                 TransitionState.CREATED,
@@ -36,110 +38,23 @@ class Tiles<T>(
                 key = RoutingKey(it),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
-                onScreen = true
+                onScreen = true,
+                operation = Operation.Noop()
             )
         }
     )
 
-    override val all: StateFlow<List<TilesElement<T>>> =
+    override val all: StateFlow<TilesElements<T>> =
         state.asStateFlow()
 
-    override val offScreen: StateFlow<List<TilesElement<T>>> =
+    override val offScreen: StateFlow<TilesElements<T>> =
         MutableStateFlow(emptyList())
 
-    override val onScreen: StateFlow<List<TilesElement<T>>>
+    override val onScreen: StateFlow<TilesElements<T>>
         get() = all
 
     override val canHandleBackPress: StateFlow<Boolean> =
         state.unsuspendedMap { list -> list.any { it.targetState == TransitionState.SELECTED } }
-
-    fun add(element: T) {
-        state.update { list ->
-            list + TilesElement(
-                onScreenResolver = TilesOnScreenResolver,
-                key = RoutingKey(element),
-                fromState = TransitionState.CREATED,
-                targetState = TransitionState.STANDARD,
-                onScreen = true
-            )
-        }
-    }
-
-    fun select(key: RoutingKey<T>) {
-        state.update { list ->
-            list.map {
-                if (it.key == key && it.targetState == TransitionState.STANDARD) {
-                    it.transitionTo(targetState = TransitionState.SELECTED)
-                } else {
-                    it
-                }
-            }
-        }
-    }
-
-    fun deselect(key: RoutingKey<T>) {
-        state.update { list ->
-            list.map {
-                if (it.key == key && it.targetState == TransitionState.SELECTED) {
-                    it.transitionTo(targetState = TransitionState.STANDARD)
-                } else {
-                    it
-                }
-            }
-        }
-    }
-
-    fun deselectAll() {
-        state.update { list ->
-            list.map {
-                if (it.targetState == TransitionState.SELECTED) {
-                    it.transitionTo(targetState = TransitionState.STANDARD)
-                } else {
-                    it
-                }
-            }
-        }
-    }
-
-    fun toggleSelection(key: RoutingKey<T>) {
-        state.update { list ->
-            list.map {
-                if (it.key == key) {
-                    when (it.targetState) {
-                        TransitionState.SELECTED -> it.transitionTo(targetState = TransitionState.STANDARD)
-                        TransitionState.STANDARD -> it.transitionTo(targetState = TransitionState.SELECTED)
-                        else -> it
-                    }
-                } else {
-                    it
-                }
-            }
-        }
-    }
-
-    fun removeSelected() {
-        state.update { list ->
-            list.map {
-                if (it.targetState == TransitionState.SELECTED) {
-                    it.transitionTo(targetState = TransitionState.DESTROYED)
-                } else {
-                    it
-                }
-            }
-        }
-    }
-
-    fun destroy(key: RoutingKey<T>) {
-        state.update { list ->
-            list.map {
-                if (it.key == key) {
-                    it.transitionTo(targetState = TransitionState.DESTROYED)
-                } else {
-                    it
-                }
-            }
-        }
-    }
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { list ->
@@ -157,8 +72,13 @@ class Tiles<T>(
         }
     }
 
+    fun perform(operation: TilesOperation<T>) {
+        if (operation.isApplicable(state.value)) {
+            state.update { operation(it) }
+        }
+    }
+
     override fun onBackPressed() {
         deselectAll()
     }
-
 }

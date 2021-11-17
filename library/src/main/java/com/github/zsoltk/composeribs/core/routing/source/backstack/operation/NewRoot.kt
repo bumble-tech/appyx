@@ -2,10 +2,10 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Operation
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 
 /**
@@ -13,9 +13,9 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  *
  * [A, B, C] + NewRoot(D) = [ D ]
  */
-internal class NewRoot<T : Any>(
+data class NewRoot<T : Any>(
     private val element: T
-) : Operation<T> {
+) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean = true
 
@@ -30,13 +30,17 @@ internal class NewRoot<T : Any>(
             listOf(current)
         } else {
             listOf(
-                current.transitionTo(targetState = BackStack.TransitionState.DESTROYED),
+                current.transitionTo(
+                    targetState = BackStack.TransitionState.DESTROYED,
+                    operation = this
+                ),
                 BackStackElement(
                     onScreenResolver = BackStackOnScreenResolver,
                     key = RoutingKey(element),
                     fromState = BackStack.TransitionState.CREATED,
                     targetState = BackStack.TransitionState.ON_SCREEN,
-                    onScreen = true
+                    onScreen = true,
+                    operation = this
                 )
             )
         }

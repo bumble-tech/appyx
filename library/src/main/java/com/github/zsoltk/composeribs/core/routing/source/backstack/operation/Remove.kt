@@ -3,6 +3,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
 /**
@@ -10,9 +11,9 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  *
  * [A, B, C] + Remove(id of B) = [A, C]
  */
-internal class Remove<T : Any>(
+data class Remove<T : Any>(
     private val key: RoutingKey<T>
-) : BackStack.Operation<T> {
+) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>) =
         elements.hasContentWithKey()
@@ -42,8 +43,14 @@ internal class Remove<T : Any>(
 
             elements.mapIndexed { index, element ->
                 when (index) {
-                    toRemoveIndex -> element.transitionTo(targetState = BackStack.TransitionState.DESTROYED)
-                    unStashIndex -> element.transitionTo(targetState = BackStack.TransitionState.ON_SCREEN)
+                    toRemoveIndex -> element.transitionTo(
+                        targetState = BackStack.TransitionState.DESTROYED,
+                        operation = this
+                    )
+                    unStashIndex -> element.transitionTo(
+                        targetState = BackStack.TransitionState.ON_SCREEN,
+                        operation = this
+                    )
                     else -> element
                 }
             }
