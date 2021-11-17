@@ -111,7 +111,7 @@ class CombinedRoutingSourceNode(
             routingSource = backStack,
             transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
         ) {
-            children<Routing.Configuration> { child ->
+            children<Routing> { child ->
                 child()
             }
         }
