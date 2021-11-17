@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -38,7 +39,7 @@ class ChildLifecycleTest {
 
     @Test
     fun `on screen child follows parent state`() {
-        val parent = Parent(BuildContext.root(null))
+        val parent = Parent(BuildContext.root(null)).build()
         parent.routing.add(key = "0", onScreen = true)
 
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
@@ -51,7 +52,7 @@ class ChildLifecycleTest {
 
     @Test
     fun `off screen child is limited to created`() {
-        val parent = Parent(BuildContext.root(null))
+        val parent = Parent(BuildContext.root(null)).build()
         parent.routing.add(key = "0", onScreen = false)
 
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
@@ -64,7 +65,7 @@ class ChildLifecycleTest {
 
     @Test
     fun `child is destroyed when is not represented in routing source anymore`() {
-        val parent = Parent(BuildContext.root(null))
+        val parent = Parent(BuildContext.root(null)).build()
         parent.routing.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
         val child = parent.children.value.values.first().nodeOrNull
@@ -79,7 +80,7 @@ class ChildLifecycleTest {
 
     @Test
     fun `child is correctly moved from off screen to on screen`() {
-        val parent = Parent(BuildContext.root(null))
+        val parent = Parent(BuildContext.root(null)).build()
         parent.routing.add(key = "0", onScreen = false)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
@@ -93,7 +94,7 @@ class ChildLifecycleTest {
 
     @Test
     fun `child is correctly moved from on screen to off screen`() {
-        val parent = Parent(BuildContext.root(null))
+        val parent = Parent(BuildContext.root(null)).build()
         parent.routing.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
