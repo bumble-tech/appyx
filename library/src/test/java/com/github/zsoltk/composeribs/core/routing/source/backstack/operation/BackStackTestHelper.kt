@@ -1,10 +1,10 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import org.junit.Assert.assertEquals
 
 internal sealed class Routing {
@@ -19,7 +19,7 @@ internal fun <T : Routing> backStackElement(
     key: RoutingKey<T> = RoutingKey(routing = element),
     fromState: BackStack.TransitionState,
     targetState: BackStack.TransitionState,
-    operation: BackStackOperation<T>
+    operation: Operation<T, BackStack.TransitionState>
 ) = BackStackElement(
     key = key,
     fromState = fromState,

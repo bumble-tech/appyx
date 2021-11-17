@@ -626,13 +626,26 @@ internal class BackStackTest {
             savedStateMap = null
         )
 
-        val operation = DummyClearOperation(isApplicable = true)
+        val operation = Push<Routing>(Routing2)
         backStack.perform(operation)
 
         val state = backStack.all.value
 
-        val expectedState = emptyList<BackStackElements<Routing>>()
-        assertEquals(state, expectedState)
+        val expectedElements: BackStackElements<Routing> = listOf(
+            BackStackElement(
+                key = RoutingKey(initialElement),
+                fromState = ON_SCREEN,
+                targetState = STASHED_IN_BACK_STACK,
+                operation = operation
+            ),
+            BackStackElement(
+                key = RoutingKey(Routing2),
+                fromState = CREATED,
+                targetState = ON_SCREEN,
+                operation = operation
+            )
+        )
+        state.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
@@ -644,7 +657,7 @@ internal class BackStackTest {
             savedStateMap = null
         )
 
-        val operation = DummyClearOperation(isApplicable = false)
+        val operation = Push<Routing>(Routing1)
         backStack.perform(operation)
 
         val state = backStack.all.value
@@ -818,15 +831,5 @@ internal class BackStackTest {
         val isOnScreen = backStack.isOnScreen(key = key)
 
         assertEquals(isOnScreen, false)
-    }
-
-    private class DummyClearOperation(
-        private val isApplicable: Boolean
-    ) : Operation<Routing, BackStack.TransitionState> {
-
-        override fun isApplicable(elements: BackStackElements<Routing>): Boolean = isApplicable
-
-        override fun invoke(elements: BackStackElements<Routing>): BackStackElements<Routing> =
-            emptyList()
     }
 }

@@ -2,7 +2,6 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
 
 /**

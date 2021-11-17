@@ -3,7 +3,6 @@ package com.github.zsoltk.composeribs.core.routing.source.tiles.operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
-import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
 
 class DeselectAll<T : Any> : TilesOperation<T> {
 

@@ -3,7 +3,6 @@ package com.github.zsoltk.composeribs.core.routing.source.permanent.operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
-import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentOperation
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 
 data class Add<T : Any>(

@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import com.github.zsoltk.composeribs.core.unsuspendedMap
