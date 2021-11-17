@@ -1,15 +1,12 @@
 package com.github.zsoltk.composeribs.client.container
 
 import android.os.Parcelable
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
@@ -24,15 +21,17 @@ import com.github.zsoltk.composeribs.client.combined.CombinedRoutingSourceNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.BackStackExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.CombinedRoutingSource
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyList
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
+import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
-import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.node.node
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
@@ -74,6 +73,9 @@ class ContainerNode(
 
         @Parcelize
         object CombinedRoutingSource : Routing()
+
+        @Parcelize
+        object LazyList : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -83,6 +85,7 @@ class ContainerNode(
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
+            is LazyList -> LazyListContainerNode(buildContext)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)
@@ -136,35 +139,23 @@ class ContainerNode(
             contentAlignment = Alignment.Center
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Button(onClick = { backStack.push(Routing.BackStackExample) }) {
-                    Text(text = "Back stack example")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
-                Button(onClick = { backStack.push(Routing.TilesExample) }) {
-                    Text(text = "Tiles example")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
-                Button(onClick = { backStack.push(Routing.ModalExample) }) {
-                    Text(text = "Modal example")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
-                Button(onClick = { backStack.push(Routing.CombinedRoutingSource) }) {
-                    Text(text = "Combined routing source")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
+                TextButton("Back stack example") { backStack.push(BackStackExample) }
+                TextButton("Tiles example") { backStack.push(TilesExample) }
+                TextButton("Modal example") { backStack.push(ModalExample) }
+                TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
+
                 val scope = rememberCoroutineScope()
-                Button(onClick = {
+                TextButton("Trigger double navigation in 3 seconds") {
                     scope.launch {
                         delay(3_000)
-                        backStack.push(Routing.BackStackExample)
-                        backStack.push(Routing.TilesExample)
+                        backStack.push(BackStackExample)
+                        backStack.push(TilesExample)
                     }
-                }) {
-                    Text(text = "Trigger double navigation in 3 seconds")
                 }
-                Spacer(modifier = Modifier.size(24.dp))
+                TextButton("LazyList") { backStack.push(LazyList) }
                 Row {
                     Checkbox(
                         checked = upNavigationOverridesChild.collectAsState().value,
@@ -173,6 +164,13 @@ class ContainerNode(
                     Text(text = "Up navigation overrides child")
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun TextButton(text: String, onClick: () -> Unit) {
+        Button(onClick = onClick) {
+            Text(text = text)
         }
     }
 
