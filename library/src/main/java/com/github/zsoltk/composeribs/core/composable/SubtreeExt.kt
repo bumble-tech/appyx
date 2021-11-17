@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.children.ChildEntry
+import com.github.zsoltk.composeribs.core.node.LocalNode
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -49,6 +51,18 @@ fun <T : Any, S> Subtree(
 class SubtreeScope<T, S>(
     val routingSource: RoutingSource<T, S>
 ) {
+
+    @Composable
+    inline fun <reified V : T> visibleChildren(): State<List<ChildEntry.Eager<T>>> {
+        val node = LocalNode.current?.let { it as? ParentNode<T> }
+            ?: error("Subtree can't be invoked outside of a ParentNode's Composable context. LocalNode.current is ${LocalNode.current}")
+        return routingSource.onScreen
+            .map { list ->
+                list
+                    .filter { it.key.routing is V }
+                    .map { node.childOrCreate(it.key) }
+            }.collectAsState(initial = emptyList())
+    }
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.visibleChildren(
