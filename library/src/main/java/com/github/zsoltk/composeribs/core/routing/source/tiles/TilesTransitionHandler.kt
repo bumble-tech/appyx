@@ -9,18 +9,19 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.Dp
-import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
-import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 
 @Suppress("TransitionPropertiesLabel")
-class TilesTransitionHandler(
+class TilesTransitionHandler<T>(
     private val transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { tween(500) }
-) : ModifierTransitionHandler<Tiles.TransitionState>() {
+) : ModifierTransitionHandler<T, Tiles.TransitionState>() {
 
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<Tiles.TransitionState>, transitionBounds: TransitionBounds
+        transition: Transition<Tiles.TransitionState>,
+        descriptor: TransitionDescriptor<T, Tiles.TransitionState>
     ): Modifier = modifier.composed {
         val scale = transition.animateFloat(
             transitionSpec = transitionSpec,
