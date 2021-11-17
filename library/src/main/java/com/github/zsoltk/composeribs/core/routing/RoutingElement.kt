@@ -9,4 +9,5 @@ data class RoutingElement<Key, out State>(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
+    val operation: @RawValue Operation<Key, out State>
 ) : Parcelable

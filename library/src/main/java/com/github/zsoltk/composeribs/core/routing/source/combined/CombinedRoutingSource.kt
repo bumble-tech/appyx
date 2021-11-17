@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.combined
 
-import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import kotlinx.coroutines.CoroutineScope
@@ -21,15 +21,15 @@ class CombinedRoutingSource<Key>(
     // Eagerly subscription to avoid recomposition with default value
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val all: StateFlow<List<RoutingElement<Key, Any?>>> =
+    override val all: StateFlow<RoutingElements<Key, Any?>> =
         combine(sources.map { it.all }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<List<RoutingElement<Key, Any?>>> =
+    override val onScreen: StateFlow<RoutingElements<Key, Any?>> =
         combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val offScreen: StateFlow<List<RoutingElement<Key, Any?>>> =
+    override val offScreen: StateFlow<RoutingElements<Key, Any?>> =
         combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 

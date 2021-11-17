@@ -9,6 +9,7 @@ import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
+import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
@@ -16,7 +17,7 @@ import kotlin.reflect.KClass
 
 
 @Composable
-fun <T, S> Subtree(
+fun <T : Any, S> Subtree(
     routingSource: RoutingSource<T, S>,
     block: @Composable SubtreeScope<T, S>.() -> Unit
 ) {
@@ -27,7 +28,7 @@ fun <T, S> Subtree(
 fun <T : Any, S> Subtree(
     modifier: Modifier,
     routingSource: RoutingSource<T, S>,
-    transitionHandler: TransitionHandler<S>,
+    transitionHandler: TransitionHandler<T, S>,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit,
 ) {
     BoxWithConstraints(modifier) {
@@ -46,7 +47,7 @@ fun <T : Any, S> Subtree(
     }
 }
 
-class SubtreeScope<T, S>(
+class SubtreeScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>
 ) {
 
@@ -103,7 +104,7 @@ class SubtreeScope<T, S>(
 
 class SubtreeTransitionScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>,
-    val transitionHandler: TransitionHandler<S>,
+    val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
 ) {
 
@@ -129,7 +130,7 @@ class SubtreeTransitionScope<T : Any, S>(
                     .filter { clazz.isInstance(it.key.routing) }
                     .map { it to childOrCreate(it.key) }
             }
-            .collectAsState(initial = emptyList())
+            .collectAsState(emptyList())
 
         val saveableStateHolder = rememberSaveableStateHolder()
         children.forEach { (routingElement, childEntry) ->
@@ -137,9 +138,13 @@ class SubtreeTransitionScope<T : Any, S>(
                 saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
                     val transitionScope =
                         transitionHandler.handle(
-                            transitionParams = transitionParams,
-                            fromState = routingElement.fromState,
-                            toState = routingElement.targetState,
+                            descriptor = TransitionDescriptor(
+                                params = transitionParams,
+                                operation = routingElement.operation,
+                                element = routingElement.key.routing,
+                                fromState = routingElement.fromState,
+                                toState = routingElement.targetState
+                            ),
                             onTransitionFinished = {
                                 this@SubtreeTransitionScope.routingSource.onTransitionFinished(
                                     childEntry.key

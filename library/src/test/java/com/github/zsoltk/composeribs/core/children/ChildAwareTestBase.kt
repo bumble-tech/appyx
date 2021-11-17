@@ -6,7 +6,9 @@ import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
@@ -83,11 +85,11 @@ abstract class ChildAwareTestBase {
     class TestRoutingSource<Key> : RoutingSource<Key, Int> {
 
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
-        override val all: StateFlow<List<RoutingElement<Key, Int>>>
+        override val all: StateFlow<RoutingElements<Key, Int>>
             get() = state
-        override val onScreen: StateFlow<List<RoutingElement<Key, Int>>>
+        override val onScreen: StateFlow<RoutingElements<Key, Int>>
             get() = all
-        override val offScreen: StateFlow<List<RoutingElement<Key, Int>>>
+        override val offScreen: StateFlow<RoutingElements<Key, Int>>
             get() = MutableStateFlow(emptyList())
         override val canHandleBackPress: StateFlow<Boolean>
             get() = MutableStateFlow(false)
@@ -99,7 +101,8 @@ abstract class ChildAwareTestBase {
                     RoutingElement(
                         key = it,
                         fromState = 0,
-                        targetState = 0
+                        targetState = 0,
+                        operation = Operation.Noop()
                     )
                 }
             }

@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
 import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
@@ -20,17 +21,13 @@ class BackStack<T : Any>(
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
-    interface Operation<T> : (BackStackElements<T>) -> BackStackElements<T> {
-
-        fun isApplicable(elements: BackStackElements<T>): Boolean
-    }
-
     private val state = MutableStateFlow(
-        savedStateMap?.restoreHistory() ?: listOf(
+        value = savedStateMap?.restoreHistory() ?: listOf(
             BackStackElement(
                 key = RoutingKey(initialElement),
                 fromState = TransitionState.ON_SCREEN,
                 targetState = TransitionState.ON_SCREEN,
+                operation = Operation.Noop()
             )
         )
     )
@@ -67,7 +64,7 @@ class BackStack<T : Any>(
         }
     }
 
-    fun perform(operation: Operation<T>) {
+    fun perform(operation: BackStackOperation<T>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }

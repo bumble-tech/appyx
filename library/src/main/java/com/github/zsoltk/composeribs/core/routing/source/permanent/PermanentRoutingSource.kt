@@ -1,14 +1,15 @@
 package com.github.zsoltk.composeribs.core.routing.source.permanent
 
-import com.github.zsoltk.composeribs.core.state.SavedStateMap
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class PermanentRoutingSource<Key>(
+class PermanentRoutingSource<Key : Any>(
     configuration: Set<Key> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String = PermanentRoutingSource::class.simpleName!!,
@@ -24,21 +25,22 @@ class PermanentRoutingSource<Key>(
 
     private val state = MutableStateFlow(
         savedStateMap.restore() ?: configuration.map { key ->
-            RoutingElement(
+            PermanentElement(
                 key = RoutingKey(routing = key),
                 fromState = 0,
                 targetState = 0,
+                operation = Operation.Noop()
             )
         }
     )
 
-    override val all: StateFlow<List<RoutingElement<Key, Int>>>
+    override val all: StateFlow<PermanentElements<Key>>
         get() = state
 
-    override val onScreen: StateFlow<List<RoutingElement<Key, Int>>>
+    override val onScreen: StateFlow<PermanentElements<Key>>
         get() = state
 
-    override val offScreen: StateFlow<List<RoutingElement<Key, Int>>> =
+    override val offScreen: StateFlow<PermanentElements<Key>> =
         MutableStateFlow(emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
@@ -52,18 +54,9 @@ class PermanentRoutingSource<Key>(
         // no-op
     }
 
-    fun add(key: RoutingKey<Key>) {
-        if (state.value.any { it.key == key }) return
-        state.update { list ->
-            if (list.any { it.key == key }) {
-                list
-            } else {
-                list + RoutingElement(
-                    key = key,
-                    fromState = 0,
-                    targetState = 0,
-                )
-            }
+    fun perform(operation: PermanentOperation<Key>) {
+        if (operation.isApplicable(state.value)) {
+            state.update { operation(it) }
         }
     }
 
@@ -72,6 +65,6 @@ class PermanentRoutingSource<Key>(
     }
 
     private fun SavedStateMap?.restore(): List<RoutingElement<Key, Int>>? =
-        (this?.get(key) as? List<RoutingElement<Key, Int>>)
+        (this?.get(key) as? PermanentElements<Key>)
 
 }
