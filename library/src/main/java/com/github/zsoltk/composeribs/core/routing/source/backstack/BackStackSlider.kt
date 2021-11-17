@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
+import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.NewRoot
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Push
@@ -43,7 +44,7 @@ class BackStackSlider<T>(
                     BackStack.TransitionState.ON_SCREEN -> toCenter()
                     BackStack.TransitionState.STASHED_IN_BACK_STACK -> toOutsideLeft(width)
                     BackStack.TransitionState.DESTROYED -> {
-                        when (val operation = descriptor.operation) {
+                        when (val operation = descriptor.operation as? BackStackOperation) {
                             is Push,
                             is Pop,
                             is Remove,
@@ -51,7 +52,7 @@ class BackStackSlider<T>(
                             is Replace,
                             is NewRoot,
                             is SingleTopReplaceBackStackOperation -> toOutsideLeft(width)
-                            else -> throw IllegalArgumentException("Unexpected operation: $operation")
+                            null -> error("Unexpected operation: $operation")
                         }
                     }
                 }
