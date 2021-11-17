@@ -42,31 +42,19 @@ import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 import kotlinx.parcelize.Parcelize
 
-class LazyListContainerNode(
+class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
     buildContext: BuildContext,
     routingSource: PermanentRoutingSource<Routing> = PermanentRoutingSource(
-        setOf(
-            Routing("Hello"),
-            Routing("motorola"),
-            Routing("village"),
-            Routing("love"),
-            Routing("approach"),
-            Routing("Hello"),
-            Routing("motorola"),
-            Routing("village"),
-            Routing("love"),
-            Routing("approach"),
-            Routing("Hello"),
-            Routing("motorola"),
-            Routing("village"),
-            Routing("love"),
-            Routing("approach"),
-        ),
+        buildSet<Routing> {
+            repeat(100) {
+                add(Routing(it.toString()))
+            }
+        },
         buildContext.savedStateMap
     )
 ) : ParentNode<Routing>(routingSource, buildContext) {
     @Parcelize
-    class Routing(val name: String) : Parcelable
+    data class Routing(val name: String) : Parcelable
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
