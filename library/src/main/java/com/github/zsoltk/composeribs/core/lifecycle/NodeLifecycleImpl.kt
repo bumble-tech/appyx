@@ -8,10 +8,6 @@ class NodeLifecycleImpl(owner: LifecycleOwner) : NodeLifecycle {
 
     private val lifecycleRegistry = LifecycleRegistry(owner)
 
-    init {
-        updateLifecycleState(Lifecycle.State.CREATED)
-    }
-
     override fun getLifecycle(): Lifecycle =
         lifecycleRegistry
 

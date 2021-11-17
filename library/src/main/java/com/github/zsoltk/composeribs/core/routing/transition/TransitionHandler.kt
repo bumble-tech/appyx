@@ -1,7 +1,7 @@
 package com.github.zsoltk.composeribs.core.routing.transition
 
 import androidx.compose.runtime.Composable
-import com.github.zsoltk.composeribs.core.ChildTransitionScope
+import com.github.zsoltk.composeribs.core.composable.ChildTransitionScope
 
 interface TransitionHandler<S> {
 

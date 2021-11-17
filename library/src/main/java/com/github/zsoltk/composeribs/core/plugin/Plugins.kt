@@ -1,8 +1,8 @@
 package com.github.zsoltk.composeribs.core.plugin
 
 import androidx.compose.runtime.saveable.SaverScope
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.SavedStateMap
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.state.SavedStateMap
 
 interface Plugin
 

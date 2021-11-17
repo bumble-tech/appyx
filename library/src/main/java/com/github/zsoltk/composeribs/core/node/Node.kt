@@ -1,4 +1,4 @@
-package com.github.zsoltk.composeribs.core
+package com.github.zsoltk.composeribs.core.node
 
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
@@ -8,8 +8,11 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.github.zsoltk.composeribs.core.composable.LocalTransitionModifier
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycle
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleImpl
@@ -19,10 +22,11 @@ import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
-import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
-import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
-import com.github.zsoltk.composeribs.core.routing.UpHandler
-import com.github.zsoltk.composeribs.core.routing.UpNavigationDispatcher
+import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.LocalFallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.UpHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.UpNavigationDispatcher
+import com.github.zsoltk.composeribs.core.state.SavedStateMap
 
 abstract class Node(
     buildContext: BuildContext,
@@ -43,8 +47,22 @@ abstract class Node(
     private val upNavigationDispatcher: UpNavigationDispatcher =
         UpNavigationDispatcher(::performUpNavigation)
 
+    private var wasBuilt = false
+
     init {
         lifecycle.addObserver(LifecycleLogger)
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onCreate(owner: LifecycleOwner) {
+                if (!wasBuilt) error("onBuilt was not invoked for $this")
+            }
+        });
+    }
+
+    @CallSuper
+    open fun onBuilt() {
+        require(!wasBuilt) { "onBuilt was already invoked" }
+        wasBuilt = true
+        updateLifecycleState(Lifecycle.State.CREATED)
         plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
     }
 

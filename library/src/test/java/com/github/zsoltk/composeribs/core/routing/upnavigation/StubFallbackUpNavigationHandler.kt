@@ -1,5 +1,6 @@
-package com.github.zsoltk.composeribs.core.routing
+package com.github.zsoltk.composeribs.core.routing.upnavigation
 
+import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 

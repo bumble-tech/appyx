@@ -29,11 +29,11 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Pick
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.ParentNode
-import com.github.zsoltk.composeribs.core.Subtree
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.node
+import com.github.zsoltk.composeribs.core.node.node
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop

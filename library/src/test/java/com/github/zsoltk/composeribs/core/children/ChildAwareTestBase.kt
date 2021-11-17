@@ -2,8 +2,9 @@ package com.github.zsoltk.composeribs.core.children
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.ParentNode
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreen
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
@@ -28,7 +29,7 @@ abstract class ChildAwareTestBase {
 
     @Before
     open fun before() {
-        root = Root()
+        root = Root().build()
     }
 
     fun add(vararg key: RoutingKey<Configuration>): List<Node> {

@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.children
 
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
@@ -31,7 +32,7 @@ sealed class ChildEntry<T> {
         val buildContext: BuildContext,
     ) : ChildEntry<T>() {
         internal fun initialize(): Eager<T> =
-            Eager(key, resolver.resolve(key.routing, buildContext))
+            Eager(key, resolver.resolve(key.routing, buildContext).build())
     }
 
     /** When to create child nodes? */
@@ -54,7 +55,7 @@ sealed class ChildEntry<T> {
         ): ChildEntry<T> =
             when (childMode) {
                 ChildMode.EAGER ->
-                    Eager(key, resolver.resolve(key.routing, buildContext))
+                    Eager(key, resolver.resolve(key.routing, buildContext).build())
                 ChildMode.LAZY ->
                     Lazy(key, resolver, buildContext)
             }

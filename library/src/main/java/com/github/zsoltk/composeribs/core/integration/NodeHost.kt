@@ -11,10 +11,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.github.zsoltk.composeribs.core.Node
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.FallbackUpNavigationHandler
-import com.github.zsoltk.composeribs.core.routing.LocalFallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
+import com.github.zsoltk.composeribs.core.routing.upnavigation.LocalFallbackUpNavigationHandler
 
 fun interface NodeFactory<N : Node> {
     fun create(buildContext: BuildContext): N
@@ -56,8 +57,8 @@ fun <N : Node> rememberNode(factory: NodeFactory<N>): State<N> =
         inputs = arrayOf(),
         stateSaver = mapSaver(
             save = { node -> node.onSaveInstanceState(this) },
-            restore = { state -> factory.create(buildContext = BuildContext.root(state)) },
+            restore = { state -> factory.create(buildContext = BuildContext.root(state)).build() },
         ),
     ) {
-        mutableStateOf(factory.create(buildContext = BuildContext.root(null)))
+        mutableStateOf(factory.create(buildContext = BuildContext.root(null)).build())
     }

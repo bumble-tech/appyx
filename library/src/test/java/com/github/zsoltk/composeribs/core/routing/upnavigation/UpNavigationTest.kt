@@ -1,9 +1,10 @@
-package com.github.zsoltk.composeribs.core.routing
+package com.github.zsoltk.composeribs.core.routing.upnavigation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
-import com.github.zsoltk.composeribs.core.Node
-import com.github.zsoltk.composeribs.core.ParentNode
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -28,7 +29,7 @@ class UpNavigationTest {
 
     @Test
     fun `fallback up navigation is invoked when no plugin provided`() {
-        val child = Child(id = "")
+        val child = Child(id = "").build()
         val fallbackStub = StubFallbackUpNavigationHandler()
         child.injectFallbackUpNavigationHandler(fallbackStub)
 
@@ -40,7 +41,7 @@ class UpNavigationTest {
     @Test
     fun `up navigation is intercepted when plugin intercepts it`() {
         val stub = StubUpNavigationHandler()
-        val child = Child(id = "", upNavigationHandler = stub)
+        val child = Child(id = "", upNavigationHandler = stub).build()
         val fallbackStub = StubFallbackUpNavigationHandler()
         child.injectFallbackUpNavigationHandler(fallbackStub)
 
@@ -53,7 +54,7 @@ class UpNavigationTest {
     @Test
     fun `up navigation is not intercepted when plugin does not intercept it`() {
         val stub = StubUpNavigationHandler(stub = false)
-        val child = Child(id = "", upNavigationHandler = stub)
+        val child = Child(id = "", upNavigationHandler = stub).build()
         val fallbackStub = StubFallbackUpNavigationHandler()
         child.injectFallbackUpNavigationHandler(fallbackStub)
 
@@ -69,7 +70,7 @@ class UpNavigationTest {
 
     @Test
     fun `fallback up navigation is invoked when routing can't go up`() {
-        val parent = Parent()
+        val parent = Parent().build()
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
 
@@ -80,7 +81,7 @@ class UpNavigationTest {
 
     @Test
     fun `up navigation is intercepted by routing source`() {
-        val parent = Parent()
+        val parent = Parent().build()
         parent.backStack.push(Parent.Configuration(id = "1"))
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
@@ -94,7 +95,7 @@ class UpNavigationTest {
     @Test
     fun `up navigation is intercepted when plugin intercepts it before routing source`() {
         val stub = StubUpNavigationHandler()
-        val parent = Parent(upNavigationHandler = stub)
+        val parent = Parent(upNavigationHandler = stub).build()
         parent.backStack.push(Parent.Configuration(id = "1"))
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
@@ -109,7 +110,7 @@ class UpNavigationTest {
     @Test
     fun `up navigation is intercepted when plugin does not intercept it before routing source`() {
         val stub = StubUpNavigationHandler(stub = false)
-        val parent = Parent(upNavigationHandler = stub)
+        val parent = Parent(upNavigationHandler = stub).build()
         parent.backStack.push(Parent.Configuration(id = "1"))
         val fallbackStub = StubFallbackUpNavigationHandler()
         parent.injectFallbackUpNavigationHandler(fallbackStub)
@@ -124,7 +125,7 @@ class UpNavigationTest {
     @Test
     fun `child invokes parent up navigation logic`() {
         val stub = StubUpNavigationHandler()
-        val parent = Parent(upNavigationHandler = stub)
+        val parent = Parent(upNavigationHandler = stub).build()
         parent.backStack.push(Parent.Configuration(id = "1"))
 
         val child1 = parent.children.value.values.find { (it.nodeOrNull as Child).id == "1" }
@@ -137,11 +138,13 @@ class UpNavigationTest {
     fun `up navigation is intercepted by child plugin before parents one`() {
         val parentStub = StubUpNavigationHandler()
         val childStub = StubUpNavigationHandler()
-        val parent = Parent(upNavigationHandler = parentStub, childUpNavigationHandler = childStub)
-        parent.backStack.push(Parent.Configuration(id = "1"))
+        val parent = Parent(
+            upNavigationHandler = parentStub,
+            childUpNavigationHandler = childStub,
+        ).build()
 
-        val child1 = parent.children.value.values.find { (it.nodeOrNull as Child).id == "1" }
-        requireNotNull(child1?.nodeOrNull).navigateUp()
+        val child = parent.children.value.values.first()
+        requireNotNull(child.nodeOrNull).navigateUp()
 
         childStub.assertInvoked()
         parentStub.assertNotInvoked()
