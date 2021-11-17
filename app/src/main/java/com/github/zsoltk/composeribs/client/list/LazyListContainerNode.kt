@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.client.list
 
+import android.os.Parcelable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -38,12 +39,12 @@ import com.github.zsoltk.composeribs.core.composable.childrenItemsIndexed
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
+import kotlinx.parcelize.Parcelize
 
 class LazyListContainerNode(
     buildContext: BuildContext,
-    routingSource: RoutingSource<Routing, Int> = PermanentRoutingSource(
+    routingSource: PermanentRoutingSource<Routing> = PermanentRoutingSource(
         setOf(
             Routing("Hello"),
             Routing("motorola"),
@@ -64,7 +65,8 @@ class LazyListContainerNode(
         buildContext.savedStateMap
     )
 ) : ParentNode<Routing>(routingSource, buildContext) {
-    class Routing(val name: String)
+    @Parcelize
+    class Routing(val name: String) : Parcelable
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
