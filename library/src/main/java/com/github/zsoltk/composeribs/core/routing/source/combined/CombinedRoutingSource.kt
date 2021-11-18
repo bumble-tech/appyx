@@ -54,6 +54,7 @@ class CombinedRoutingSource<Key>(
 
     override fun destroy() {
         scope.cancel()
+        sources.filterIsInstance<Destroyable>().forEach { it.destroy() }
     }
 
 }
