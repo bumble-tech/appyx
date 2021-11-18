@@ -1,6 +1,8 @@
 package com.github.zsoltk.composeribs.client.backstack
 
 import android.os.Parcelable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,25 +11,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.LightGray
-import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.text.input.KeyboardType.Companion.Number
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.NEW_ROOT
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.POP
@@ -42,10 +41,10 @@ import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routi
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.ChildC
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.ChildD
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
@@ -111,7 +110,7 @@ class BackStackExampleNode(
         val selectedChildRadioButton = rememberSaveable { mutableStateOf("") }
         val defaultOrRandomRadioButton = rememberSaveable { mutableStateOf(DEFAULT_LABEL) }
         val isRadioButtonNeeded = rememberSaveable { mutableStateOf(false) }
-        val typedId = rememberSaveable { mutableStateOf("") }
+        val selectedId = rememberSaveable { mutableStateOf("") }
         val isIdNeeded = rememberSaveable { mutableStateOf(false) }
         val selectedOperation = rememberSaveable { mutableStateOf<Operation?>(null) }
         val areThereMissingParams = rememberSaveable { mutableStateOf(true) }
@@ -176,19 +175,33 @@ class BackStackExampleNode(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Id: ", fontWeight = Bold)
-                    TextField(
-                        value = typedId.value,
-                        enabled = isIdNeeded.value,
-                        colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = if (isIdNeeded.value) {
-                                White
-                            } else {
-                                LightGray
-                            },
-                        ),
-                        onValueChange = { typedId.value = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = Number)
+                    val expanded = rememberSaveable { mutableStateOf(false) }
+                    Text(
+                        text = if (selectedId.value.isNotEmpty()) selectedId.value else "Select an id",
+                        modifier = if (isIdNeeded.value) {
+                            Modifier
+                                .fillMaxWidth()
+                                .background(Color.White)
+                                .clickable { expanded.value = true }
+                        } else {
+                            Modifier
+                                .fillMaxWidth()
+                                .background(Color.LightGray)
+                        }
                     )
+                    DropdownMenu(
+                        expanded = expanded.value,
+                        onDismissRequest = { expanded.value = false }
+                    ) {
+                        backStackState.value.forEach { element ->
+                            DropdownMenuItem(onClick = {
+                                selectedId.value = element.key.id
+                                expanded.value = false
+                            }) {
+                                Text(text = element.key.id)
+                            }
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.size(8.dp))
                 Column(
@@ -203,7 +216,7 @@ class BackStackExampleNode(
                                     selectedOperation.value = operation
                                     selectedChildRadioButton.value = ""
                                     defaultOrRandomRadioButton.value = DEFAULT_LABEL
-                                    typedId.value = ""
+                                    selectedId.value = ""
                                     isRadioButtonNeeded.value = operation.radioButtonNeeded
                                     isIdNeeded.value = operation.idNeeded
                                     areThereMissingParams.value = true
@@ -233,7 +246,7 @@ class BackStackExampleNode(
                         textBuilder.add("Child")
                         areThereMissingParams.value = true
                     }
-                    if (selectedOperation.value?.idNeeded == true && typedId.value.isEmpty()) {
+                    if (selectedOperation.value?.idNeeded == true && selectedId.value.isEmpty()) {
                         textBuilder.add("Id")
                         areThereMissingParams.value = true
                     }
@@ -258,8 +271,12 @@ class BackStackExampleNode(
                             }
                             REMOVE -> {
                                 backStack.remove(
-                                    RoutingKey(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
+                                    RoutingKey(
+                                        routing = backStackState.value.first { it.key.id == selectedId.value }.key.routing,
+                                        id = selectedId.value
+                                    )
                                 )
+                                selectedId.value = ""
                             }
                             NEW_ROOT -> {
                                 backStack.newRoot(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
@@ -317,7 +334,7 @@ class BackStackExampleNode(
         PUSH("Push", true, false),
         POP("Pop", false, false),
         REPLACE("Replace", true, false),
-        REMOVE("Remove", true, true),
+        REMOVE("Remove", false, true),
         NEW_ROOT("New Root", true, false),
         SINGLE_TOP("Single Top", true, false)
     }
