@@ -45,7 +45,6 @@ import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.newRoot
@@ -270,12 +269,7 @@ class BackStackExampleNode(
                                 backStack.replace(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
                             }
                             REMOVE -> {
-                                backStack.remove(
-                                    RoutingKey(
-                                        routing = backStackState.value.first { it.key.id == selectedId.value }.key.routing,
-                                        id = selectedId.value
-                                    )
-                                )
+                                backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
                                 selectedId.value = ""
                             }
                             NEW_ROOT -> {

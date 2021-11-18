@@ -6,7 +6,7 @@ import kotlinx.parcelize.RawValue
 import java.util.UUID
 
 @Parcelize
-class RoutingKey<Key>(
+class RoutingKey<Key> private constructor(
     val routing: @RawValue Key,
     val id: String
 ) : Parcelable {
