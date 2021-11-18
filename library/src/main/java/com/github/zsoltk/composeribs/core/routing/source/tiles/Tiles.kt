@@ -22,26 +22,16 @@ class Tiles<T : Any>(
     private val state = MutableStateFlow(
         initialElements.map {
             TilesElement(
-                onScreenResolver = onScreenResolver,
                 key = RoutingKey(it),
                 fromState = TransitionState.CREATED,
                 targetState = TransitionState.STANDARD,
-                isOnScreen = true,
                 operation = Operation.Noop()
             )
         }
     )
 
-    override var onScreenResolver: OnScreenResolver<TransitionState> = TilesOnScreenResolver
-
-    override val all: StateFlow<TilesElements<T>> =
+    override val elements: StateFlow<TilesElements<T>> =
         state.asStateFlow()
-
-    override val offScreen: StateFlow<TilesElements<T>> =
-        MutableStateFlow(emptyList())
-
-    override val onScreen: StateFlow<TilesElements<T>>
-        get() = all
 
     override val canHandleBackPress: StateFlow<Boolean> =
         state.unsuspendedMap { list -> list.any { it.targetState == TransitionState.SELECTED } }

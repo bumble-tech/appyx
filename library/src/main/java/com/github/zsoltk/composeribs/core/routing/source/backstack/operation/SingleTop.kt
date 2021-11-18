@@ -56,7 +56,6 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
     class SingleTopReplaceBackStackOperation<T : Any>(
         private val element: T,
         private val position: Int,
-        private val onScreenResolver: OnScreenResolver<BackStack.TransitionState>
     ) : SingleTop<T>() {
 
         override fun isApplicable(elements: BackStackElements<T>): Boolean = true
@@ -73,12 +72,10 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 targetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             ) + BackStackElement(
-                onScreenResolver,
                 key = RoutingKey(element),
                 fromState = BackStack.TransitionState.CREATED,
                 targetState = BackStack.TransitionState.ON_SCREEN,
                 operation = this,
-                isOnScreen = true
             )
         }
 
@@ -90,7 +87,6 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
     companion object {
 
         fun <T : Any> init(
-            onScreenResolver: OnScreenResolver<BackStack.TransitionState>,
             element: T,
             elements: BackStackElements<T>
         ): BackStackOperation<T> {
@@ -99,7 +95,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 elements.indexOfLast { targetClass.isInstance(it.key.routing) }
 
             return if (lastIndexOfSameClass == -1) {
-                Push(onScreenResolver, element)
+                Push(element)
             } else {
                 if (elements[lastIndexOfSameClass].key.routing == element) {
                     SingleTopReactivateBackStackOperation(
@@ -109,8 +105,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 } else {
                     SingleTopReplaceBackStackOperation(
                         element,
-                        lastIndexOfSameClass,
-                        onScreenResolver
+                        lastIndexOfSameClass
                     )
                 }
             }
@@ -119,5 +114,5 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 }
 
 fun <T : Any> BackStack<T>.singleTop(element: T) {
-    perform(SingleTop.init(onScreenResolver, element, all.value))
+    perform(SingleTop.init(element, elements.value))
 }

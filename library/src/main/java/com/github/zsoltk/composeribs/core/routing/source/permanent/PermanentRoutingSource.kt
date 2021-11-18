@@ -25,29 +25,19 @@ class PermanentRoutingSource<Key : Any>(
         savedStateMap = savedStateMap,
     )
 
-    override var onScreenResolver: OnScreenResolver<Int> = AlwaysOnScreen()
-
     private val state = MutableStateFlow(
         savedStateMap.restore() ?: configuration.map { key ->
             PermanentElement(
-                onScreenResolver = onScreenResolver,
                 key = RoutingKey(routing = key),
                 fromState = 0,
                 targetState = 0,
-                isOnScreen = true,
                 operation = Operation.Noop()
             )
         }
     )
 
-    override val all: StateFlow<PermanentElements<Key>>
+    override val elements: StateFlow<PermanentElements<Key>>
         get() = state
-
-    override val onScreen: StateFlow<PermanentElements<Key>>
-        get() = state
-
-    override val offScreen: StateFlow<PermanentElements<Key>> =
-        MutableStateFlow(emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
         MutableStateFlow(false)

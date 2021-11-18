@@ -14,7 +14,6 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  * [A, B, C] + NewRoot(D) = [ D ]
  */
 data class NewRoot<T : Any>(
-    private val onScreenResolver: OnScreenResolver<BackStack.TransitionState>,
     private val element: T
 ) : BackStackOperation<T> {
 
@@ -36,11 +35,9 @@ data class NewRoot<T : Any>(
                     operation = this
                 ),
                 BackStackElement(
-                    onScreenResolver = onScreenResolver,
                     key = RoutingKey(element),
                     fromState = BackStack.TransitionState.CREATED,
                     targetState = BackStack.TransitionState.ON_SCREEN,
-                    isOnScreen = true,
                     operation = this
                 )
             )
@@ -49,5 +46,5 @@ data class NewRoot<T : Any>(
 }
 
 fun <T : Any> BackStack<T>.newRoot(element: T) {
-    perform(NewRoot(onScreenResolver, element))
+    perform(NewRoot(element))
 }

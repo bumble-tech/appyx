@@ -15,7 +15,6 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
  * [A, B, C] + Replace(D) = [A, B, D]
  */
 data class Replace<T : Any>(
-    private val onScreenResolver: OnScreenResolver<BackStack.TransitionState>,
     private val element: T
 ) : BackStackOperation<T> {
 
@@ -37,16 +36,14 @@ data class Replace<T : Any>(
                 element
             }
         } + BackStackElement(
-            onScreenResolver = onScreenResolver,
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
             targetState = BackStack.TransitionState.ON_SCREEN,
             operation = this,
-            isOnScreen = true
         )
     }
 }
 
 fun <T : Any> BackStack<T>.replace(element: T) {
-    perform(Replace(onScreenResolver, element))
+    perform(Replace(element))
 }

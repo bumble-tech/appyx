@@ -18,8 +18,6 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
-import kotlinx.coroutines.flow.map
-import kotlin.reflect.KClass
 
 @Composable
 fun <Routing, State> AnimatedChildNode(
@@ -65,27 +63,8 @@ fun <Routing, State> AnimatedChildNode(
 @Composable
 fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out S>> =
     if (this != null) {
-        all.collectAsState()
+        elements.collectAsState()
     } else {
         remember { mutableStateOf(emptyList()) }
     }
 
-@Composable
-fun <R, S> RoutingSource<R, S>?.visibleChildAsState(): State<RoutingElement<R, out S>?> =
-    if (this != null) {
-        all
-            .map { it.findLast { isOnScreen(it.key) } }
-            .collectAsState(initial = null)
-    } else {
-        remember { mutableStateOf(null) }
-    }
-
-@Composable
-fun <R, S> RoutingSource<R, S>?.visibleChildAsState(routingClazz: KClass<*>): State<RoutingElement<R, out S>?> =
-    if (this != null) {
-        all
-            .map { it.findLast { routingClazz.isInstance(it.key.routing) && isOnScreen(it.key) } }
-            .collectAsState(initial = null)
-    } else {
-        remember { mutableStateOf(null) }
-    }

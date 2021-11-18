@@ -23,19 +23,10 @@ class CombinedRoutingSource<Key>(
     // Eagerly subscription to avoid recomposition with default value
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override var onScreenResolver: OnScreenResolver<Any?> = AlwaysOnScreen()
-
-    override val all: StateFlow<RoutingElements<Key, *>> =
-        combine(sources.map { it.all }) { arr -> arr.reduce { acc, list -> acc + list } }
+    override val elements: StateFlow<RoutingElements<Key, *>> =
+        combine(sources.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<RoutingElements<Key, *>> =
-        combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
-
-    override val offScreen: StateFlow<RoutingElements<Key, *>> =
-        combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
         combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }
@@ -52,8 +43,5 @@ class CombinedRoutingSource<Key>(
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
         sources.forEach { it.saveInstanceState(savedStateMap) }
     }
-
-    override fun isOnScreen(key: RoutingKey<Key>): Boolean =
-        sources.any { it.isOnScreen(key) }
 
 }

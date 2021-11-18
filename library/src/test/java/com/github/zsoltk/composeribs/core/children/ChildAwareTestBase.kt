@@ -87,10 +87,10 @@ abstract class ChildAwareTestBase {
         RoutingSource<Key, Int> {
 
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
-        override val all: StateFlow<RoutingElements<Key, Int>>
+        override val elements: StateFlow<RoutingElements<Key, Int>>
             get() = state
         override val onScreen: StateFlow<RoutingElements<Key, Int>>
-            get() = all
+            get() = elements
         override val offScreen: StateFlow<RoutingElements<Key, Int>>
             get() = MutableStateFlow(emptyList())
         override val canHandleBackPress: StateFlow<Boolean>

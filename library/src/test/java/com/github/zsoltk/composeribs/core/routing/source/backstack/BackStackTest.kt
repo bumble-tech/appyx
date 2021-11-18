@@ -44,15 +44,13 @@ internal class BackStackTest {
             savedStateMap = null
         )
 
-        val initialState = backStack.all.value
+        val initialState = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
-                BackStackOnScreenResolver,
                 key = RoutingKey(initialElement),
                 fromState = ON_SCREEN,
                 targetState = ON_SCREEN,
-                isOnScreen = true,
                 operation = Operation.Noop()
             )
         )
@@ -83,7 +81,7 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
@@ -132,7 +130,7 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
@@ -169,7 +167,7 @@ internal class BackStackTest {
         var state: BackStackElements<Routing>? = null
         testScope.launch {
             backStack
-                .all
+                .elements
                 .collect { state = it }
         }
 
@@ -512,7 +510,7 @@ internal class BackStackTest {
 
         backStack.onTransitionFinished(transitionedItemKey)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
@@ -552,7 +550,7 @@ internal class BackStackTest {
 
         backStack.onTransitionFinished(transitionedItemKey)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
@@ -600,7 +598,7 @@ internal class BackStackTest {
         )
         backStack.onTransitionFinished(transitionedItemKey)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
@@ -631,7 +629,7 @@ internal class BackStackTest {
         val operation = DummyClearOperation(isApplicable = true)
         backStack.perform(operation)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedState = emptyList<BackStackElements<Routing>>()
         assertEquals(state, expectedState)
@@ -649,7 +647,7 @@ internal class BackStackTest {
         val operation = DummyClearOperation(isApplicable = false)
         backStack.perform(operation)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
@@ -690,7 +688,7 @@ internal class BackStackTest {
 
         backStack.onBackPressed()
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(

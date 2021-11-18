@@ -21,12 +21,10 @@ data class Add<T : Any>(
             elements
         } else {
             elements + RoutingElement(
-                AlwaysOnScreen(),
                 key = key,
                 fromState = 0,
                 targetState = 0,
                 operation = this,
-                isOnScreen = true
             )
         }
 }

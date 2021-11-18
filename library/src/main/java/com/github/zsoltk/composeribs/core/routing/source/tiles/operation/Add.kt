@@ -9,7 +9,6 @@ import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
 
 data class Add<T : Any>(
-    private val onScreenResolver: OnScreenResolver<Tiles.TransitionState>,
     private val element: T
 ) : TilesOperation<T> {
 
@@ -19,15 +18,13 @@ data class Add<T : Any>(
         elements: TilesElements<T>,
     ): RoutingElements<T, Tiles.TransitionState> =
         elements + TilesElement(
-            onScreenResolver = onScreenResolver,
             key = RoutingKey(element),
             fromState = Tiles.TransitionState.CREATED,
             targetState = Tiles.TransitionState.STANDARD,
             operation = this,
-            isOnScreen = true
         )
 }
 
 fun <T : Any> Tiles<T>.add(element: T) {
-    perform(Add(onScreenResolver, element))
+    perform(Add(element))
 }

@@ -119,7 +119,7 @@ class ChildLifecycleTest {
 
         override var onScreenResolver: OnScreenResolver<Boolean> = AlwaysOnScreen()
 
-        override val all: StateFlow<List<RoutingElement<String, Boolean>>> =
+        override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
             state
 
         override val onScreen: StateFlow<List<RoutingElement<String, Boolean>>> =

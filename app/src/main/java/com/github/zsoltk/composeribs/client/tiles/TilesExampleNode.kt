@@ -22,8 +22,6 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
-import com.github.zsoltk.composeribs.core.composable.Subtree
-import com.github.zsoltk.composeribs.core.composable.visibleChildAsState
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
@@ -104,17 +102,17 @@ class TilesExampleNode(
 
             }*/
 
-            Subtree(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp),
-                routingSource = tiles,
-                transitionHandler = handler
-            ) {
-                children<Routing> { child ->
-                    child()
-                }
-            }
+//            Subtree(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(150.dp),
+//                routingSource = tiles,
+//                transitionHandler = handler
+//            ) {
+//                children<Routing> { child ->
+//                    child()
+//                }
+//            }
 
             Button(
                 onClick = { tiles.removeSelected() },
@@ -125,8 +123,8 @@ class TilesExampleNode(
 
             Text(text = "Child1 separately", modifier = Modifier.align(CenterHorizontally))
 
-            val child1 by tiles.visibleChildAsState(Child1::class)
-            val c = child1
+//            val child1 by tiles.visibleChildAsState(Child1::class)
+//            val c = child1
 
             /*if (c != null) {
                 AnimatedChildNode(

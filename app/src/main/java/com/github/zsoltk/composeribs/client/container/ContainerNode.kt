@@ -34,10 +34,12 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.node
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
 import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackSlider
+import com.github.zsoltk.composeribs.core.routing.source.backstack.toAdapter
 import com.github.zsoltk.composeribs.core.routing.transition.rememberCombinedHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -107,7 +109,7 @@ class ContainerNode(
         // TODO variant 1
         Subtree(
             modifier = Modifier.fillMaxSize(),
-            routingSource = backStack,
+            routingSourceAdapter = backStack.toAdapter(),
             transitionHandler = rememberCombinedHandler(
                 handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
             )

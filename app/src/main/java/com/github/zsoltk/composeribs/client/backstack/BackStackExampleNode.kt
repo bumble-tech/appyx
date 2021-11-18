@@ -55,6 +55,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pus
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.remove
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.replace
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.singleTop
+import com.github.zsoltk.composeribs.core.routing.source.backstack.toAdapter
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
@@ -107,7 +108,7 @@ class BackStackExampleNode(
 
     @Composable
     override fun View() {
-        val backStackState = backStack.all.collectAsState()
+        val backStackState = backStack.elements.collectAsState()
         val selectedChildRadioButton = rememberSaveable { mutableStateOf("") }
         val defaultOrRandomRadioButton = rememberSaveable { mutableStateOf(DEFAULT_LABEL) }
         val isRadioButtonNeeded = rememberSaveable { mutableStateOf(false) }
@@ -130,8 +131,8 @@ class BackStackExampleNode(
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
-                    routingSource = backStack,
-                    transitionHandler = rememberBackStackExampleTransitionHandler()
+                    transitionHandler = rememberBackStackExampleTransitionHandler(),
+                    routingSourceAdapter = backStack.toAdapter()
                 ) {
                     children<Routing> { child ->
                         child()

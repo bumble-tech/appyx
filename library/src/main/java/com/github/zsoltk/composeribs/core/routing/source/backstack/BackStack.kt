@@ -5,6 +5,9 @@ import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapterImpl
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import com.github.zsoltk.composeribs.core.unsuspendedMap
@@ -16,35 +19,25 @@ class BackStack<T : Any>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-) : RoutingSource<T, BackStack.TransitionState> {
+) : RoutingSource<T, TransitionState> {
 
     enum class TransitionState {
         CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
-    override var onScreenResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
-
     private val state = MutableStateFlow(
         value = savedStateMap?.restoreHistory() ?: listOf(
             BackStackElement(
-                onScreenResolver = onScreenResolver,
                 key = RoutingKey(initialElement),
                 fromState = TransitionState.ON_SCREEN,
                 targetState = TransitionState.ON_SCREEN,
-                isOnScreen = true,
                 operation = Operation.Noop()
             )
         )
     )
 
-    override val all: StateFlow<BackStackElements<T>> =
+    override val elements: StateFlow<BackStackElements<T>> =
         state
-
-    override val offScreen: StateFlow<BackStackElements<T>> =
-        state.unsuspendedMap { list -> list.filter { !it.isOnScreen } }
-
-    override val onScreen: StateFlow<BackStackElements<T>> =
-        state.unsuspendedMap { list -> list.filter { it.isOnScreen } }
 
     override val canHandleBackPress: StateFlow<Boolean> =
         state.unsuspendedMap { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
@@ -94,6 +87,12 @@ class BackStack<T : Any>(
         this[key] as? BackStackElements<T>
 
 
-    override fun isOnScreen(key: RoutingKey<T>): Boolean =
-        state.value.find { it.key == key }?.isOnScreen ?: false
 }
+
+fun <T : Any> BackStack<T>.toAdapter(
+    routingSourceResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
+) =
+    RoutingSourceAdapterImpl(
+        routingSource = this,
+        routingSourceResolver
+    )

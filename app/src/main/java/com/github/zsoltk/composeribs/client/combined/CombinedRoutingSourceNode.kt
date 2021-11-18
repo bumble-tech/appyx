@@ -104,17 +104,17 @@ class CombinedRoutingSourceNode(
         backStack: BackStack<Routing>,
     ) {
         Text(text = name)
-        Subtree(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            routingSource = backStack,
-            transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
-        ) {
-            children<Routing> { child ->
-                child()
-            }
-        }
+//        Subtree(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(200.dp),
+//            routingSource = backStack,
+//            transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
+//        ) {
+//            children<Routing> { child ->
+//                child()
+//            }
+//        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
