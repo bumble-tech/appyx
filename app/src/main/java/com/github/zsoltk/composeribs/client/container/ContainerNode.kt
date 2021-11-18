@@ -21,7 +21,7 @@ import com.github.zsoltk.composeribs.client.combined.CombinedRoutingSourceNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.BackStackExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.CombinedRoutingSource
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyList
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
@@ -75,7 +75,7 @@ class ContainerNode(
         object CombinedRoutingSource : Routing()
 
         @Parcelize
-        object LazyList : Routing()
+        object LazyExamples : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -85,7 +85,7 @@ class ContainerNode(
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
-            is LazyList -> LazyListContainerNode(buildContext)
+            is LazyExamples -> LazyListContainerNode(buildContext)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)
@@ -155,7 +155,7 @@ class ContainerNode(
                         backStack.push(TilesExample)
                     }
                 }
-                TextButton("LazyList") { backStack.push(LazyList) }
+                TextButton("LazyList") { backStack.push(LazyExamples) }
                 Row {
                     Checkbox(
                         checked = upNavigationOverridesChild.collectAsState().value,

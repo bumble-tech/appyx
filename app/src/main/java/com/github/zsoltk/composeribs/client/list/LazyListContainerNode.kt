@@ -33,6 +33,7 @@ import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.Row
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.values
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.Routing
+import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.composable.childrenItems
 import com.github.zsoltk.composeribs.core.composable.childrenItemsIndexed
@@ -56,7 +57,14 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
     @Parcelize
     data class Routing(val name: String) : Parcelable
 
-    @OptIn(ExperimentalFoundationApi::class)
+    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
+        ChildNode(routing.name, buildContext)
+
+    enum class ListMode {
+        Column, Row, Grid
+    }
+
+
     @Composable
     override fun View() {
         var selectedMode by remember { mutableStateOf(Column) }
@@ -71,49 +79,56 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
             Subtree(routingSource = routingSource) {
                 val children by visibleChildren<Routing>()
                 when (selectedMode) {
-                    Column -> LazyColumn(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(horizontal = 16.dp),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
-
-                    ) {
-                        childrenItemsIndexed(children) { index, child ->
-                            if (index % 2 == 0) {
-                                Box(modifier = Modifier.border(width = 4.dp, color = Color.Red)) {
-                                    child.node.Compose()
-                                }
-                            } else {
-                                child.node.Compose()
-                            }
-
-                        }
-                    }
-                    Row -> LazyRow(
-                        modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(vertical = 16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        childrenItems(children)
-                    }
-                    Grid -> {
-                        LazyVerticalGrid(
-                            cells = GridCells.Fixed(2),
-                            modifier = Modifier.fillMaxSize(),
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                        ) {
-                            childrenItems(children)
-                        }
-                    }
+                    Column -> ColumnExample(children)
+                    Row -> RowExample(children)
+                    Grid -> GridExample(children)
                 }
             }
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        ChildNode(routing.name, buildContext)
+    @Composable
+    private fun ColumnExample(children: List<ChildEntry.Eager<Routing>>) {
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
 
-    enum class ListMode {
-        Column, Row, Grid
+        ) {
+            childrenItemsIndexed(children) { index, child ->
+                if (index % 2 == 0) {
+                    Box(modifier = Modifier.border(width = 4.dp, color = Color.Red)) {
+                        child.node.Compose()
+                    }
+                } else {
+                    child.node.Compose()
+                }
+
+            }
+        }
+    }
+
+    @Composable
+    private fun RowExample(children: List<ChildEntry.Eager<Routing>>) {
+        LazyRow(
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(vertical = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            childrenItems(children)
+        }
+    }
+
+    @OptIn(ExperimentalFoundationApi::class)
+    @Composable
+    private fun GridExample(children: List<ChildEntry.Eager<Routing>>) {
+        LazyVerticalGrid(
+            cells = GridCells.Fixed(2),
+            modifier = Modifier.fillMaxSize(),
+            contentPadding = PaddingValues(horizontal = 16.dp),
+        ) {
+            childrenItems(children)
+        }
     }
 
 
