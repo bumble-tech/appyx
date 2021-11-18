@@ -1,7 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing
 
 import android.os.Parcelable
-import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -32,7 +31,7 @@ class RoutingElement<Key, State>(
             fromState = fromState,
             targetState = targetState,
             operation = operation,
-            transitionHistory = transitionHistory.apply { add(fromState to targetState) }
+            transitionHistory = transitionHistory
         )
     }
 

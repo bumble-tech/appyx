@@ -29,7 +29,7 @@ class RoutingSourceAdapterImpl<Key, State>(
 
     private fun RoutingElement<Key, out State>.isOnScreen(): Boolean =
         if (transitionHistory.isEmpty()) {
-            onScreenResolver.isOnScreen(targetState)
+            onScreenResolver.isOnScreen(targetState) || onScreenResolver.isOnScreen(fromState)
         } else {
             transitionHistory.find { pair ->
                 onScreenResolver.isOnScreen(pair.first)
