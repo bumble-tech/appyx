@@ -57,6 +57,7 @@ dependencies {
     implementation libs.androidx.lifecycle.java8
     implementation libs.androidx.lifecycle.runtime
     implementation libs.compose.foundation.layout
+    implementation libs.compose.foundation
 
     testImplementation libs.androidx.arch.core.testing
     testImplementation libs.junit
