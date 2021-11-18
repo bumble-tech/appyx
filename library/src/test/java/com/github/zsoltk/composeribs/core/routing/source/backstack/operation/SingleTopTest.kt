@@ -6,7 +6,6 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Tra
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
@@ -29,7 +28,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing2,
             elements = elements
         )
@@ -69,7 +67,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing4("Content"),
             elements = elements
         )
@@ -109,7 +106,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing4("Content"),
             elements = elements
         )
@@ -149,7 +145,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing4("Content 2"),
             elements = elements
         )
@@ -177,7 +172,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing3,
             elements = elements
         )
@@ -237,7 +231,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing4("Content 1"),
             elements = elements
         )
@@ -277,7 +270,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing4("Content 1"),
             elements = elements
         )
@@ -337,7 +329,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing4("Content 2"),
             elements = elements
         )
@@ -377,7 +368,6 @@ internal class SingleTopTest {
             )
         )
         val operation = SingleTop.init(
-            onScreenResolver = BackStackOnScreenResolver,
             element = Routing4("Content 2"),
             elements = elements
         )

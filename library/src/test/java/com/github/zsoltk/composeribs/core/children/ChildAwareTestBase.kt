@@ -7,8 +7,6 @@ import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Operation
-import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreen
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
@@ -83,16 +81,11 @@ abstract class ChildAwareTestBase {
         }
     }
 
-    class TestRoutingSource<Key>(override var onScreenResolver: OnScreenResolver<Int> = AlwaysOnScreen()) :
-        RoutingSource<Key, Int> {
+    class TestRoutingSource<Key> : RoutingSource<Key, Int> {
 
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
         override val elements: StateFlow<RoutingElements<Key, Int>>
             get() = state
-        override val onScreen: StateFlow<RoutingElements<Key, Int>>
-            get() = elements
-        override val offScreen: StateFlow<RoutingElements<Key, Int>>
-            get() = MutableStateFlow(emptyList())
         override val canHandleBackPress: StateFlow<Boolean>
             get() = MutableStateFlow(false)
 
@@ -101,12 +94,10 @@ abstract class ChildAwareTestBase {
                 require(list.none { it.key.routing in key.map { it.routing } })
                 list + key.map {
                     RoutingElement(
-                        AlwaysOnScreen(),
                         key = it,
                         fromState = 0,
                         targetState = 0,
                         operation = Operation.Noop(),
-                        isOnScreen = true
                     )
                 }
             }

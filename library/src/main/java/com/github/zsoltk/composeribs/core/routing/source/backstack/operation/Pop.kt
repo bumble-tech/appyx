@@ -4,12 +4,14 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
+import kotlinx.parcelize.Parcelize
 
 /**
  * Operation:
  *
  * [A, B, C] + Pop = [A, B]
  */
+@Parcelize
 class Pop<T : Any> : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =

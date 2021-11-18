@@ -22,11 +22,13 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
+import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
+import com.github.zsoltk.composeribs.core.routing.source.tiles.adapter
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.removeSelected
 
 class TilesExampleNode(
@@ -102,17 +104,17 @@ class TilesExampleNode(
 
             }*/
 
-//            Subtree(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .height(150.dp),
-//                routingSource = tiles,
-//                transitionHandler = handler
-//            ) {
-//                children<Routing> { child ->
-//                    child()
-//                }
-//            }
+            Subtree(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp),
+                adapter = tiles.adapter(),
+                transitionHandler = handler
+            ) {
+                children<Routing> { child ->
+                    child()
+                }
+            }
 
             Button(
                 onClick = { tiles.removeSelected() },
@@ -123,8 +125,6 @@ class TilesExampleNode(
 
             Text(text = "Child1 separately", modifier = Modifier.align(CenterHorizontally))
 
-//            val child1 by tiles.visibleChildAsState(Child1::class)
-//            val c = child1
 
             /*if (c != null) {
                 AnimatedChildNode(

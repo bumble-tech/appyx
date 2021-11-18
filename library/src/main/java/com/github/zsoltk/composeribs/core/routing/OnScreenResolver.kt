@@ -1,8 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing
 
-import android.os.Parcelable
-
-interface OnScreenResolver<State> : Parcelable {
+interface OnScreenResolver<State> {
 
     fun isOnScreen(state: State): Boolean
 }

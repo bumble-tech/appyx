@@ -6,9 +6,6 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
-import com.github.zsoltk.composeribs.core.routing.RoutingElement
-import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
@@ -17,13 +14,11 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
-
-
 @Composable
 fun <T : Any, S> Subtree(
     modifier: Modifier,
     transitionHandler: TransitionHandler<T, S>,
-    routingSourceAdapter: RoutingSourceAdapter<T, S>,
+    adapter: RoutingSourceAdapter<T, S>,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
 ) {
     BoxWithConstraints(modifier) {
@@ -36,16 +31,16 @@ fun <T : Any, S> Subtree(
                         height = maxHeight
                     )
                 ),
-                routingSourceAdapter
+                adapter
             )
         )
     }
 }
 
 class SubtreeTransitionScope<T : Any, S>(
-    val transitionHandler: TransitionHandler<T, S>,
+    private val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
-    val routingSourceAdapter: RoutingSourceAdapter<T, S>
+    private val adapter: RoutingSourceAdapter<T, S>
 ) {
 
     @Composable
@@ -64,7 +59,7 @@ class SubtreeTransitionScope<T : Any, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by routingSourceAdapter.onScreen
+        val children by adapter.onScreen
             .map { list ->
                 list
                     .filter { clazz.isInstance(it.key.routing) }
@@ -86,7 +81,7 @@ class SubtreeTransitionScope<T : Any, S>(
                                 toState = routingElement.targetState
                             ),
                             onTransitionFinished = {
-                                routingSourceAdapter.onTransitionFinished(
+                                adapter.onTransitionFinished(
                                     childEntry.key
                                 )
                             })

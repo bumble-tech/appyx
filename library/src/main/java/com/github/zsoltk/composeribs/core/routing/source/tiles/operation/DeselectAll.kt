@@ -4,7 +4,9 @@ import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 class DeselectAll<T : Any> : TilesOperation<T> {
 
     override fun isApplicable(elements: TilesElements<T>): Boolean = true

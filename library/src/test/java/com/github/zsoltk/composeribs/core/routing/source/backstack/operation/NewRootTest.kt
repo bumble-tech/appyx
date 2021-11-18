@@ -6,7 +6,6 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Tra
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
@@ -20,7 +19,7 @@ internal class NewRootTest {
     fun `is always applicable`() {
 
         val elements = emptyList<BackStackElement<Routing>>()
-        val operation = newRoot<Routing>(element = Routing1)
+        val operation = NewRoot<Routing>(element = Routing1)
 
         val applicable = operation.isApplicable(elements)
 
@@ -31,7 +30,7 @@ internal class NewRootTest {
     fun `crashes when no element on screen`() {
 
         val elements = emptyList<BackStackElement<Routing>>()
-        val operation = newRoot<Routing>(element = Routing1)
+        val operation = NewRoot<Routing>(element = Routing1)
 
         assertThrows(IllegalArgumentException::class.java) {
             operation.invoke(elements)
@@ -56,7 +55,7 @@ internal class NewRootTest {
             )
         )
 
-        val operation = newRoot<Routing>(element = Routing2)
+        val operation = NewRoot<Routing>(element = Routing2)
 
         val newElements = operation.invoke(elements = elements)
 
@@ -89,7 +88,7 @@ internal class NewRootTest {
             )
         )
 
-        val operation = newRoot<Routing>(element = Routing3)
+        val operation = NewRoot<Routing>(element = Routing3)
 
         val newElements = operation.invoke(elements = elements)
 
@@ -109,9 +108,4 @@ internal class NewRootTest {
         )
         newElements.assertBackstackElementsEqual(expectedElements)
     }
-
-    private fun <T : Any> newRoot(element: T) = NewRoot(
-        onScreenResolver = BackStackOnScreenResolver,
-        element = element
-    )
 }

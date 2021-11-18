@@ -10,11 +10,9 @@ class RoutingElement<Key, State>(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val operation: @RawValue Operation<Key, out State>
+    val operation: @RawValue Operation<Key, out State> = Operation.Noop(),
+    val transitionHistory: MutableList<Pair<State, State>> = mutableListOf()
 ) : Parcelable {
-
-    @IgnoredOnParcel
-    val transitionHistory = mutableListOf<Pair<State, State>>()
 
     init {
         if (fromState != targetState) {
@@ -33,12 +31,12 @@ class RoutingElement<Key, State>(
             key = key,
             fromState = fromState,
             targetState = targetState,
-            operation = operation
+            operation = operation,
+            transitionHistory = transitionHistory.apply { add(fromState to targetState) }
         )
     }
 
-    fun transitionFinished(targetState: @RawValue State): RoutingElement<Key, State> {
-        transitionHistory.clear()
+    fun onTransitionFinished(targetState: @RawValue State): RoutingElement<Key, State> {
         return RoutingElement(
             key = key,
             fromState = targetState,

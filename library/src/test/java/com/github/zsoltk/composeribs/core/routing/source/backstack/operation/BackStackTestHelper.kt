@@ -1,12 +1,10 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import org.junit.Assert.assertEquals
 
 internal sealed class Routing {
@@ -22,13 +20,10 @@ internal fun <T : Routing> backStackElement(
     fromState: BackStack.TransitionState,
     targetState: BackStack.TransitionState,
     operation: BackStackOperation<T>,
-    onScreenResolver: OnScreenResolver<BackStack.TransitionState> = BackStackOnScreenResolver
 ) = BackStackElement(
-    onScreenResolver,
     key = key,
     fromState = fromState,
     targetState = targetState,
-    isOnScreen = onScreenResolver.isOnScreen(fromState) || onScreenResolver.isOnScreen(targetState),
     operation = operation
 )
 

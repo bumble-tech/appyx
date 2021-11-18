@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
@@ -8,14 +7,17 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElem
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * Operation:
  *
  * [A, B, C] + Replace(D) = [A, B, D]
  */
+@Parcelize
 data class Replace<T : Any>(
-    private val element: T
+    private val element: @RawValue T
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =

@@ -55,7 +55,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pus
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.remove
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.replace
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.singleTop
-import com.github.zsoltk.composeribs.core.routing.source.backstack.toAdapter
+import com.github.zsoltk.composeribs.core.routing.source.backstack.adapter
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
@@ -132,7 +132,7 @@ class BackStackExampleNode(
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
                     transitionHandler = rememberBackStackExampleTransitionHandler(),
-                    routingSourceAdapter = backStack.toAdapter()
+                    adapter = backStack.adapter()
                 ) {
                     children<Routing> { child ->
                         child()

@@ -5,7 +5,9 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Select<T : Any>(
     private val key: RoutingKey<T>
 ) : TilesOperation<T> {

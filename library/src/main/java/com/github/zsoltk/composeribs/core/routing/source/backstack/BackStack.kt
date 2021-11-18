@@ -5,7 +5,6 @@ import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
 import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapterImpl
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
@@ -52,7 +51,7 @@ class BackStack<T : Any>(
                         TransitionState.STASHED_IN_BACK_STACK,
                         TransitionState.CREATED,
                         TransitionState.ON_SCREEN ->
-                            it.transitionFinished(targetState = it.targetState)
+                            it.onTransitionFinished(targetState = it.targetState)
                     }
                 } else {
                     it
@@ -76,7 +75,7 @@ class BackStack<T : Any>(
             state.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState != TransitionState.DESTROYED) {
-                    it.transitionFinished(targetState = it.targetState)
+                    it.onTransitionFinished(targetState = it.targetState)
                 } else {
                     null
                 }
@@ -89,7 +88,7 @@ class BackStack<T : Any>(
 
 }
 
-fun <T : Any> BackStack<T>.toAdapter(
+fun <T : Any> BackStack<T>.adapter(
     routingSourceResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
 ) =
     RoutingSourceAdapterImpl(

@@ -25,7 +25,7 @@ internal class PushTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = push<Routing>(element = Routing1)
+        val operation = Push<Routing>(element = Routing1)
 
         val applicable = operation.isApplicable(elements)
 
@@ -43,7 +43,7 @@ internal class PushTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = push<Routing>(element = Routing2)
+        val operation = Push<Routing>(element = Routing2)
 
         val applicable = operation.isApplicable(elements)
 
@@ -61,7 +61,7 @@ internal class PushTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = push<Routing>(element = Routing2)
+        val operation = Push<Routing>(element = Routing2)
 
         val applicable = operation.isApplicable(elements)
 
@@ -85,7 +85,7 @@ internal class PushTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = push<Routing>(element = Routing3)
+        val operation = Push<Routing>(element = Routing3)
 
         val newElements = operation.invoke(elements = elements)
 
@@ -111,10 +111,5 @@ internal class PushTest {
         )
         newElements.assertBackstackElementsEqual(expectedElements)
     }
-
-    private fun <T : Any> push(element: T) = Push(
-        onScreenResolver = BackStackOnScreenResolver,
-        element = element
-    )
 
 }

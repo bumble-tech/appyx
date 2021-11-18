@@ -1,9 +1,12 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles
 
-import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
+import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapterImpl
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.deselectAll
 import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,7 +46,7 @@ class Tiles<T : Any>(
                     if (it.targetState == TransitionState.DESTROYED) {
                         null
                     } else {
-                        it.transitionFinished(targetState = it.targetState)
+                        it.onTransitionFinished(targetState = it.targetState)
                     }
                 } else {
                     it
@@ -62,3 +65,11 @@ class Tiles<T : Any>(
         deselectAll()
     }
 }
+
+fun <T : Any> Tiles<T>.adapter(
+    onScreenResolver: OnScreenResolver<Tiles.TransitionState> = TilesOnScreenResolver
+) =
+    RoutingSourceAdapterImpl(
+        routingSource = this,
+        onScreenResolver
+    )

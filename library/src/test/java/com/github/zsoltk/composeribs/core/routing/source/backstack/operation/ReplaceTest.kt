@@ -6,7 +6,6 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.Tra
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
@@ -27,7 +26,7 @@ internal class ReplaceTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = replace<Routing>(element = Routing1)
+        val operation = Replace<Routing>(element = Routing1)
 
         val applicable = operation.isApplicable(elements)
 
@@ -45,7 +44,7 @@ internal class ReplaceTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = replace<Routing>(element = Routing2)
+        val operation = Replace<Routing>(element = Routing2)
 
         val applicable = operation.isApplicable(elements)
 
@@ -63,7 +62,7 @@ internal class ReplaceTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = replace<Routing>(element = Routing2)
+        val operation = Replace<Routing>(element = Routing2)
 
         val applicable = operation.isApplicable(elements)
 
@@ -74,7 +73,7 @@ internal class ReplaceTest {
     fun `crashes when no element on screen`() {
 
         val elements = emptyList<BackStackElement<Routing>>()
-        val operation = replace<Routing>(element = Routing1)
+        val operation = Replace<Routing>(element = Routing1)
 
         assertThrows(IllegalArgumentException::class.java) {
             operation.invoke(elements)
@@ -99,7 +98,7 @@ internal class ReplaceTest {
             )
         )
 
-        val operation = replace<Routing>(element = Routing3)
+        val operation = Replace<Routing>(element = Routing3)
 
         val newElements = operation.invoke(elements)
 
@@ -125,9 +124,4 @@ internal class ReplaceTest {
         )
         newElements.assertBackstackElementsEqual(expectedElements)
     }
-
-    private fun <T : Any> replace(element: T) = Replace(
-        onScreenResolver = BackStackOnScreenResolver,
-        element = element
-    )
 }

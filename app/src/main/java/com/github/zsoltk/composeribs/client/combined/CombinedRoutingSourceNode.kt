@@ -22,6 +22,7 @@ import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
+import com.github.zsoltk.composeribs.core.routing.source.backstack.adapter
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
@@ -104,17 +105,17 @@ class CombinedRoutingSourceNode(
         backStack: BackStack<Routing>,
     ) {
         Text(text = name)
-//        Subtree(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(200.dp),
-//            routingSource = backStack,
-//            transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
-//        ) {
-//            children<Routing> { child ->
-//                child()
-//            }
-//        }
+        Subtree(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp),
+            adapter = backStack.adapter(),
+            transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
+        ) {
+            children<Routing> { child ->
+                child()
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 

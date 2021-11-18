@@ -1,12 +1,13 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * Operation:
@@ -17,8 +18,9 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  */
 sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
+    @Parcelize
     class SingleTopReactivateBackStackOperation<T : Any>(
-        private val element: T,
+        private val element: @RawValue T,
         private val position: Int
     ) : SingleTop<T>() {
 
@@ -53,8 +55,9 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
         override fun hashCode(): Int = this.javaClass.hashCode()
     }
 
+    @Parcelize
     class SingleTopReplaceBackStackOperation<T : Any>(
-        private val element: T,
+        private val element: @RawValue T,
         private val position: Int,
     ) : SingleTop<T>() {
 
