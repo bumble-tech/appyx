@@ -50,7 +50,7 @@ data class Remove<T : Any>(
                         operation = this
                     )
                     unStashIndex -> element.transitionTo(
-                        targetState = BackStack.TransitionState.ON_SCREEN,
+                        targetState = BackStack.TransitionState.ACTIVE,
                         operation = this
                     )
                     else -> element

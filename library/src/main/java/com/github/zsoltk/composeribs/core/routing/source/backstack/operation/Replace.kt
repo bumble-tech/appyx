@@ -26,7 +26,7 @@ data class Replace<T : Any>(
     override fun invoke(
         elements: BackStackElements<T>
     ): BackStackElements<T> {
-        require(elements.any { it.targetState == BackStack.TransitionState.ON_SCREEN }) { "No element to be replaced, state=$elements" }
+        require(elements.any { it.targetState == BackStack.TransitionState.ACTIVE }) { "No element to be replaced, state=$elements" }
 
         return elements.mapIndexed { index, element ->
             if (index == elements.currentIndex) {
@@ -40,7 +40,7 @@ data class Replace<T : Any>(
         } + BackStackElement(
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
-            targetState = BackStack.TransitionState.ON_SCREEN,
+            targetState = BackStack.TransitionState.ACTIVE,
             operation = this,
         )
     }

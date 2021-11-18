@@ -5,7 +5,7 @@ import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Push
@@ -50,8 +50,8 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
                 key = RoutingKey(initialElement),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -109,18 +109,18 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -137,18 +137,18 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -177,14 +177,14 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing1,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = push(Routing2)
             ),
             backStackElement(
                 element = Routing2,
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = push(Routing2)
             )
         )
@@ -198,7 +198,7 @@ internal class BackStackTest {
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -243,7 +243,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing2,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             )
         )
@@ -269,13 +269,13 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 key = transitionedItemKey,
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             )
@@ -295,7 +295,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             )
         )
@@ -310,13 +310,13 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 key = transitionedItemKey,
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -335,7 +335,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
@@ -360,12 +360,12 @@ internal class BackStackTest {
                 key = transitionedItemKey,
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -382,13 +382,13 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -431,8 +431,8 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
                 key = RoutingKey(initialElement),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop(),
             )
         )
@@ -446,8 +446,8 @@ internal class BackStackTest {
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
@@ -470,14 +470,14 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             )
         )
@@ -492,18 +492,18 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -520,8 +520,8 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(

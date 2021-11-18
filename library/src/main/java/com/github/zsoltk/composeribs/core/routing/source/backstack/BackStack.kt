@@ -21,15 +21,15 @@ class BackStack<T : Any>(
 ) : RoutingSource<T, TransitionState> {
 
     enum class TransitionState {
-        CREATED, ON_SCREEN, STASHED_IN_BACK_STACK, DESTROYED,
+        CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
     private val state = MutableStateFlow(
         value = savedStateMap?.restoreHistory() ?: listOf(
             BackStackElement(
                 key = RoutingKey(initialElement),
-                fromState = TransitionState.ON_SCREEN,
-                targetState = TransitionState.ON_SCREEN,
+                fromState = TransitionState.ACTIVE,
+                targetState = TransitionState.ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -50,7 +50,7 @@ class BackStack<T : Any>(
                             null
                         TransitionState.STASHED_IN_BACK_STACK,
                         TransitionState.CREATED,
-                        TransitionState.ON_SCREEN ->
+                        TransitionState.ACTIVE ->
                             it.onTransitionFinished(targetState = it.targetState)
                     }
                 } else {

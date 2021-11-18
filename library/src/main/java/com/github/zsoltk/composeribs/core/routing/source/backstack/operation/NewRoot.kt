@@ -39,7 +39,7 @@ data class NewRoot<T : Any>(
                 BackStackElement(
                     key = RoutingKey(element),
                     fromState = BackStack.TransitionState.CREATED,
-                    targetState = BackStack.TransitionState.ON_SCREEN,
+                    targetState = BackStack.TransitionState.ACTIVE,
                     operation = this
                 )
             )

@@ -38,7 +38,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
             return newElements.mapIndexed { index, element ->
                 if (index == newElements.lastIndex) {
                     element.transitionTo(
-                        targetState = BackStack.TransitionState.ON_SCREEN,
+                        targetState = BackStack.TransitionState.ACTIVE,
                         operation = this
                     )
                 } else {
@@ -77,7 +77,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
             ) + BackStackElement(
                 key = RoutingKey(element),
                 fromState = BackStack.TransitionState.CREATED,
-                targetState = BackStack.TransitionState.ON_SCREEN,
+                targetState = BackStack.TransitionState.ACTIVE,
                 operation = this,
             )
         }

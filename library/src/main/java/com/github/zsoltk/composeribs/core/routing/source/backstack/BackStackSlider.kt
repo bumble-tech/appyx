@@ -42,7 +42,7 @@ class BackStackSlider<T>(
                 val width = descriptor.params.bounds.width.value
                 when (it) {
                     BackStack.TransitionState.CREATED -> toOutsideRight(width)
-                    BackStack.TransitionState.ON_SCREEN -> toCenter()
+                    BackStack.TransitionState.ACTIVE -> toCenter()
                     BackStack.TransitionState.STASHED_IN_BACK_STACK -> toOutsideLeft(width)
                     BackStack.TransitionState.DESTROYED -> {
                         when (val operation = descriptor.operation) {

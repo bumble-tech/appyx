@@ -2,10 +2,9 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing2
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing3
@@ -20,8 +19,8 @@ internal class PushTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -38,8 +37,8 @@ internal class PushTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -80,8 +79,8 @@ internal class PushTest {
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -98,14 +97,14 @@ internal class PushTest {
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = operation
             ),
             backStackElement(
                 element = Routing3,
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = operation
             )
         )

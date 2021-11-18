@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
 class Pop<T : Any> : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
-        elements.any { it.targetState == BackStack.TransitionState.ON_SCREEN } &&
+        elements.any { it.targetState == BackStack.TransitionState.ACTIVE } &&
                 elements.any { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
 
     override fun invoke(
@@ -34,7 +34,7 @@ class Pop<T : Any> : BackStackOperation<T> {
                     operation = this
                 )
                 unStashIndex -> element.transitionTo(
-                    targetState = BackStack.TransitionState.ON_SCREEN,
+                    targetState = BackStack.TransitionState.ACTIVE,
                     operation = this
                 )
                 else -> element

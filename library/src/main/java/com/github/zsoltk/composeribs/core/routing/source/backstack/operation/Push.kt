@@ -24,7 +24,7 @@ data class Push<T : Any>(
 
     override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
         return elements.map {
-            if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
+            if (it.targetState == BackStack.TransitionState.ACTIVE) {
                 it.transitionTo(
                     targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK,
                     operation = this
@@ -35,7 +35,7 @@ data class Push<T : Any>(
         } + BackStackElement(
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
-            targetState = BackStack.TransitionState.ON_SCREEN,
+            targetState = BackStack.TransitionState.ACTIVE,
             operation = this
         )
     }

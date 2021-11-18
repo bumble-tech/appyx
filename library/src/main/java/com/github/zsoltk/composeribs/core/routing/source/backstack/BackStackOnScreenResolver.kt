@@ -7,7 +7,7 @@ object BackStackOnScreenResolver : OnScreenResolver<TransitionState> {
     override fun isOnScreen(state: TransitionState): Boolean =
         when (state) {
             TransitionState.CREATED,
-            TransitionState.ON_SCREEN -> true
+            TransitionState.ACTIVE -> true
             TransitionState.STASHED_IN_BACK_STACK,
             TransitionState.DESTROYED -> false
         }
