@@ -18,6 +18,7 @@ import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycle
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleImpl
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.plugin.Destroyable
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
@@ -101,6 +102,9 @@ abstract class Node(
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         nodeLifecycle.updateLifecycleState(state)
+        if (state == Lifecycle.State.DESTROYED) {
+            plugins.filterIsInstance<Destroyable>().forEach { it.destroy() }
+        }
     }
 
     @CallSuper

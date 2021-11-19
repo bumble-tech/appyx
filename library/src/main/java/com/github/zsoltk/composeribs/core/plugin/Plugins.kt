@@ -23,3 +23,7 @@ interface Saveable : Plugin {
 interface UpNavigationHandler : Plugin {
     fun handleUpNavigation(): Boolean
 }
+
+fun interface Destroyable : Plugin {
+    fun destroy()
+}
