@@ -45,8 +45,6 @@ import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.newRoot
@@ -116,7 +114,6 @@ class BackStackExampleNode(
         val selectedOperation = rememberSaveable { mutableStateOf<Operation?>(null) }
         val areThereMissingParams = rememberSaveable { mutableStateOf(true) }
         val skipChildRenderingByRouting = rememberSaveable { mutableStateOf(NONE_VALUE) }
-
 
         Column(
             modifier = Modifier
