@@ -150,7 +150,7 @@ class SubtreeTransitionScope<T : Any, S>(
     @Composable
     private fun ParentNode<T>._children(
         clazz: KClass<out T>,
-        blockInvocation: @Composable (transitionScope: ChildTransitionScope<S>, child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
+        block: @Composable (transitionScope: ChildTransitionScope<S>, child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
     ) {
 
         // TODO consider:
@@ -179,7 +179,7 @@ class SubtreeTransitionScope<T : Any, S>(
                                 )
                             })
 
-                    blockInvocation(
+                    block(
                         transitionDescriptor = descriptor,
                         transitionScope = transitionScope,
                         child = {
