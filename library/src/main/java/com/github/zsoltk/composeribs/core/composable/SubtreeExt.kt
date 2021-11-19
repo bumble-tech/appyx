@@ -118,9 +118,16 @@ class SubtreeScope<T : Any, S>(
 
 class SubtreeTransitionScope<T : Any, S>(
     val routingSource: RoutingSource<T, S>,
-    val transitionHandler: TransitionHandler<T, S>,
+    private val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
 ) {
+
+    @Composable
+    inline fun <reified V : T> ParentNode<T>.children(
+        noinline block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
+    ) {
+        children(V::class, block)
+    }
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.children(
@@ -134,9 +141,35 @@ class SubtreeTransitionScope<T : Any, S>(
         clazz: KClass<out T>,
         block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit) -> Unit,
     ) {
-//        // TODO consider
-//        val node = LocalNode.current?.let { it as Node<T> }
-//            ?: error("Subtree can't be invoked outside of a Node's Composable context")
+        _children(clazz) { scope, child, _ ->
+            scope.block(
+                child = child
+            )
+        }
+    }
+
+    @Composable
+    fun ParentNode<T>.children(
+        clazz: KClass<out T>,
+        block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
+    ) {
+        _children(clazz) { scope, child, descriptor ->
+            scope.block(
+                transitionDescriptor = descriptor,
+                child = child,
+            )
+        }
+    }
+
+    @Composable
+    private fun ParentNode<T>._children(
+        clazz: KClass<out T>,
+        block: @Composable (transitionScope: ChildTransitionScope<S>, child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
+    ) {
+
+        // TODO consider:
+        //        val node = LocalNode.current?.let { it as Node<T> }
+        //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
         val children by this@SubtreeTransitionScope.routingSource.onScreen
             .map { list ->
@@ -150,32 +183,39 @@ class SubtreeTransitionScope<T : Any, S>(
         children.forEach { (routingElement, childEntry) ->
             key(childEntry.key.id) {
                 saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
+                    val descriptor = routingElement.createDescriptor(transitionParams)
                     val transitionScope =
                         transitionHandler.handle(
-                            descriptor = TransitionDescriptor(
-                                params = transitionParams,
-                                operation = routingElement.operation,
-                                element = routingElement.key.routing,
-                                fromState = routingElement.fromState,
-                                toState = routingElement.targetState
-                            ),
+                            descriptor = descriptor,
                             onTransitionFinished = {
                                 this@SubtreeTransitionScope.routingSource.onTransitionFinished(
                                     childEntry.key
                                 )
                             })
 
-                    transitionScope.block(
+                    block(
+                        transitionDescriptor = descriptor,
+                        transitionScope = transitionScope,
                         child = {
                             CompositionLocalProvider(LocalTransitionModifier provides transitionScope.transitionModifier) {
                                 childEntry.node.Compose()
                             }
-                        }
+                        },
                     )
                 }
             }
         }
     }
+
+
+    private fun RoutingElement<T, S>.createDescriptor(transitionParams: TransitionParams) =
+        TransitionDescriptor(
+            params = transitionParams,
+            operation = operation,
+            element = key.routing,
+            fromState = fromState,
+            toState = targetState
+        )
 }
 
 val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }

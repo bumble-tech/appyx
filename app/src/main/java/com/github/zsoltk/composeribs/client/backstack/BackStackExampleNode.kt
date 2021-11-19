@@ -113,6 +113,7 @@ class BackStackExampleNode(
         val isIdNeeded = rememberSaveable { mutableStateOf(false) }
         val selectedOperation = rememberSaveable { mutableStateOf<Operation?>(null) }
         val areThereMissingParams = rememberSaveable { mutableStateOf(true) }
+        val skipChildRenderingByRouting = rememberSaveable { mutableStateOf(NONE_VALUE) }
 
         Column(
             modifier = Modifier
@@ -131,8 +132,10 @@ class BackStackExampleNode(
                     routingSource = backStack,
                     transitionHandler = rememberBackStackExampleTransitionHandler()
                 ) {
-                    children<Routing> { child ->
-                        child()
+                    children<Routing> { child, descriptor ->
+                        if (!descriptor.element.isFiltered(skipChildRenderingByRouting.value)) {
+                            child()
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.size(8.dp))
@@ -294,6 +297,25 @@ class BackStackExampleNode(
                     Text(text = "BackStack:", fontWeight = Bold)
                     Text(text = "${backStackState.value.toStateString()}")
                 }
+                Spacer(modifier = Modifier.size(16.dp))
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Skip rendering of:", fontWeight = Bold)
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Row {
+                        listOf(NONE_VALUE, "A", "B", "C", "D").forEach {
+                            Row {
+                                RadioButton(
+                                    selected = it == skipChildRenderingByRouting.value,
+                                    onClick = { skipChildRenderingByRouting.value = it }
+                                )
+                                Text(text = it)
+                                Spacer(modifier = Modifier.size(36.dp))
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -317,6 +339,14 @@ class BackStackExampleNode(
         }
     }
 
+    private fun Routing.isFiltered(filter: String) = when (filter) {
+        "A" -> this is ChildA
+        "B" -> this is ChildB
+        "C" -> this is ChildC
+        "D" -> this is ChildD
+        else -> false
+    }
+
     private val String.random
         get() = this == RANDOM_LABEL
 
@@ -334,9 +364,9 @@ class BackStackExampleNode(
     }
 
     companion object {
-
         private const val DEFAULT_LABEL = "Default"
         private const val RANDOM_LABEL = "Random"
         private const val DEFAULT_VALUE = "DEFAULT"
+        private const val NONE_VALUE = "NONE"
     }
 }
