@@ -9,10 +9,13 @@ import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +37,6 @@ class ChildLifecycleTest {
 
     // region Tests
 
-    // TODO fix this test once Lifecycle issue is resolved
     @Test
     fun `on screen child follows parent state`() {
         val parent = Parent(BuildContext.root(null)).build()
@@ -43,7 +45,7 @@ class ChildLifecycleTest {
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
         assertEquals(
-            Lifecycle.State.CREATED,
+            Lifecycle.State.RESUMED,
             parent.children.value.values.first().nodeOrNull?.lifecycle?.currentState,
         )
     }
@@ -76,7 +78,6 @@ class ChildLifecycleTest {
         )
     }
 
-    // TODO fix this test once Lifecycle issue is resolved
     @Test
     fun `child is correctly moved from off screen to on screen`() {
         val parent = Parent(BuildContext.root(null)).build()
@@ -86,7 +87,7 @@ class ChildLifecycleTest {
         parent.routing.changeState(key = "0", onScreen = true)
 
         assertEquals(
-            Lifecycle.State.CREATED,
+            Lifecycle.State.RESUMED,
             parent.children.value.values.first().nodeOrNull?.lifecycle?.currentState,
         )
     }
@@ -113,6 +114,13 @@ class ChildLifecycleTest {
 
         private val state = MutableStateFlow<List<RoutingElement<String, Boolean>>>(emptyList())
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
+        private val onScreenResolver = object : OnScreenResolver<Boolean> {
+            override fun isOnScreen(state: Boolean): Boolean = state
+        }
+
+        override val adapter: RoutingSourceAdapter<String, Boolean> by lazy {
+            adapter(onScreenResolver)
+        }
 
         override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
             state
@@ -125,7 +133,15 @@ class ChildLifecycleTest {
         }
 
         override fun onTransitionFinished(key: RoutingKey<String>) {
-            // no-op
+            state.update { list ->
+                list.map {
+                    if (it.key == key) {
+                        it.onTransitionFinished()
+                    } else {
+                        it
+                    }
+                }
+            }
         }
 
         fun add(key: String, onScreen: Boolean) {
@@ -145,13 +161,16 @@ class ChildLifecycleTest {
 
         fun changeState(key: String, onScreen: Boolean) {
             state.update { list ->
-                list.map {
-                    if (it.key.routing == key) {
-                        it.transitionTo(targetState = onScreen, operation = Operation.Noop())
-                    } else {
-                        it
+                list
+                    .map {
+                        if (it.key.routing == key) {
+                            it
+                                .transitionTo(targetState = onScreen, operation = Operation.Noop())
+                                .onTransitionFinished()
+                        } else {
+                            it
+                        }
                     }
-                }
             }
         }
 

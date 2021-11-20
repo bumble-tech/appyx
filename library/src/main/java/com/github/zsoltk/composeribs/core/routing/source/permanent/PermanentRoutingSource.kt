@@ -1,9 +1,12 @@
 package com.github.zsoltk.composeribs.core.routing.source.permanent
 
+import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +36,8 @@ class PermanentRoutingSource<Key : Any>(
             )
         }
     )
+
+    override val adapter: RoutingSourceAdapter<Key, Int> = adapter(AlwaysOnScreenResolver())
 
     override val elements: StateFlow<PermanentElements<Key>>
         get() = state

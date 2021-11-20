@@ -35,12 +35,13 @@ class RoutingElement<Key, State>(
         )
     }
 
-    fun onTransitionFinished(targetState: @RawValue State): RoutingElement<Key, State> {
+    fun onTransitionFinished(): RoutingElement<Key, State> {
         return RoutingElement(
             key = key,
             fromState = targetState,
             targetState = targetState,
-            operation = operation
+            operation = operation,
+            transitionHistory = mutableListOf()
         )
     }
 

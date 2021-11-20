@@ -5,7 +5,8 @@ import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapterImpl
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
@@ -18,6 +19,7 @@ class BackStack<T : Any>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
+    private val routingSourceResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
 ) : RoutingSource<T, TransitionState> {
 
     enum class TransitionState {
@@ -35,6 +37,10 @@ class BackStack<T : Any>(
         )
     )
 
+    override val adapter: RoutingSourceAdapter<T, TransitionState> by lazy(LazyThreadSafetyMode.NONE) {
+        adapter(routingSourceResolver)
+    }
+
     override val elements: StateFlow<BackStackElements<T>> =
         state
 
@@ -51,7 +57,7 @@ class BackStack<T : Any>(
                         TransitionState.STASHED_IN_BACK_STACK,
                         TransitionState.CREATED,
                         TransitionState.ACTIVE ->
-                            it.onTransitionFinished(targetState = it.targetState)
+                            it.onTransitionFinished()
                     }
                 } else {
                     it
@@ -75,7 +81,7 @@ class BackStack<T : Any>(
             state.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState != TransitionState.DESTROYED) {
-                    it.onTransitionFinished(targetState = it.targetState)
+                    it.onTransitionFinished()
                 } else {
                     null
                 }
@@ -87,11 +93,3 @@ class BackStack<T : Any>(
 
 
 }
-
-fun <T : Any> BackStack<T>.adapter(
-    routingSourceResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
-) =
-    RoutingSourceAdapterImpl(
-        routingSource = this,
-        routingSourceResolver
-    )

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -28,7 +27,6 @@ import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
-import com.github.zsoltk.composeribs.core.routing.source.tiles.adapter
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.removeSelected
 
 class TilesExampleNode(
@@ -108,7 +106,7 @@ class TilesExampleNode(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp),
-                adapter = tiles.adapter(),
+                adapter = tiles.adapter,
                 transitionHandler = handler
             ) {
                 children<Routing> { child ->

@@ -4,9 +4,8 @@ import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapterImpl
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOnScreenResolver
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.deselectAll
 import com.github.zsoltk.composeribs.core.unsuspendedMap
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,6 +15,7 @@ import kotlinx.coroutines.flow.update
 
 class Tiles<T : Any>(
     initialElements: List<T>,
+    onScreenResolver: OnScreenResolver<TransitionState> = TilesOnScreenResolver
 ) : RoutingSource<T, Tiles.TransitionState> {
 
     enum class TransitionState {
@@ -33,6 +33,10 @@ class Tiles<T : Any>(
         }
     )
 
+    override val adapter: RoutingSourceAdapter<T, TransitionState> by lazy(LazyThreadSafetyMode.NONE) {
+        adapter(onScreenResolver)
+    }
+
     override val elements: StateFlow<TilesElements<T>> =
         state.asStateFlow()
 
@@ -46,7 +50,7 @@ class Tiles<T : Any>(
                     if (it.targetState == TransitionState.DESTROYED) {
                         null
                     } else {
-                        it.onTransitionFinished(targetState = it.targetState)
+                        it.onTransitionFinished()
                     }
                 } else {
                     it
@@ -65,11 +69,3 @@ class Tiles<T : Any>(
         deselectAll()
     }
 }
-
-fun <T : Any> Tiles<T>.adapter(
-    onScreenResolver: OnScreenResolver<Tiles.TransitionState> = TilesOnScreenResolver
-) =
-    RoutingSourceAdapterImpl(
-        routingSource = this,
-        onScreenResolver
-    )

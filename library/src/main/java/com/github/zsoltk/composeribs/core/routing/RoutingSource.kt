@@ -5,6 +5,8 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface RoutingSource<Key, State> : UpNavigationHandler {
 
+    val adapter: RoutingSourceAdapter<Key, State>
+
     val elements: StateFlow<RoutingElements<Key, out State>>
 
     val canHandleBackPress: StateFlow<Boolean>
@@ -23,3 +25,10 @@ interface RoutingSource<Key, State> : UpNavigationHandler {
         canHandleBackPress.value.also { if (it) onBackPressed() }
 
 }
+
+fun <Key, State> RoutingSource<Key, State>.adapter(
+    onScreenResolver: OnScreenResolver<State>
+) = SingleRoutingSourceAdapter(
+    routingSource = this,
+    onScreenResolver = onScreenResolver
+)
