@@ -15,6 +15,10 @@ class CombinedRoutingSourceAdapter<Key, State>(
     private val sources: List<RoutingSource<Key, out State>>
 ) : RoutingSourceAdapter<Key, State> {
 
+    override val elements: StateFlow<RoutingElements<Key, out State>> =
+        combine(sources.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
+            .stateIn(scope, SharingStarted.Eagerly, emptyList())
+
     override val onScreen: StateFlow<RoutingElements<Key, out State>> =
         combine(sources.map { it.adapter.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())

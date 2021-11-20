@@ -1,11 +1,13 @@
 package com.github.zsoltk.composeribs.core.routing.source.combined
 
+import com.github.zsoltk.composeribs.core.plugin.Destroyable
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -14,12 +16,10 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 class CombinedRoutingSource<Key>(
     val sources: List<RoutingSource<Key, *>>,
-) : RoutingSource<Key, Any?> {
+) : RoutingSource<Key, Any?>, Destroyable {
 
     constructor(vararg sources: RoutingSource<Key, *>) : this(sources.toList())
 
-    // Lifecycles of this source and dependent ones are aligned, gc should be able to collect them
-    // Eagerly subscription to avoid recomposition with default value
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
     override val elements: StateFlow<RoutingElements<Key, *>> =
@@ -43,6 +43,11 @@ class CombinedRoutingSource<Key>(
 
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
         sources.forEach { it.saveInstanceState(savedStateMap) }
+    }
+
+    override fun destroy() {
+        scope.cancel()
+        sources.filterIsInstance<Destroyable>().forEach { it.destroy() }
     }
 
 }

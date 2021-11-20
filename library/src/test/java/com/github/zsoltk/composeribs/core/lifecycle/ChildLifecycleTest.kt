@@ -119,7 +119,7 @@ class ChildLifecycleTest {
         }
 
         override val adapter: RoutingSourceAdapter<String, Boolean> by lazy {
-            adapter(onScreenResolver)
+            adapter(scope, onScreenResolver)
         }
 
         override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =

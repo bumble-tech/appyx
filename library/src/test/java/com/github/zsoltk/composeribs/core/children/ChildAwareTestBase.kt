@@ -15,11 +15,14 @@ import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
 import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Rule
+import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class ChildAwareTestBase {
 
@@ -86,13 +89,14 @@ abstract class ChildAwareTestBase {
 
     class TestRoutingSource<Key> : RoutingSource<Key, Int> {
 
+        private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
         override val elements: StateFlow<RoutingElements<Key, Int>>
             get() = state
         override val canHandleBackPress: StateFlow<Boolean>
             get() = MutableStateFlow(false)
 
-        override val adapter: RoutingSourceAdapter<Key, Int> = adapter(AlwaysOnScreenResolver())
+        override val adapter: RoutingSourceAdapter<Key, Int> = adapter(scope, AlwaysOnScreenResolver())
 
         fun add(vararg key: RoutingKey<Key>) {
             state.update { list ->

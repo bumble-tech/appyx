@@ -8,15 +8,21 @@ import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
 import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
 class PermanentRoutingSource<Key : Any>(
     configuration: Set<Key> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String = PermanentRoutingSource::class.simpleName!!,
 ) : RoutingSource<Key, Int> {
+
+    private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
     constructor(
         savedStateMap: SavedStateMap?,
@@ -37,7 +43,8 @@ class PermanentRoutingSource<Key : Any>(
         }
     )
 
-    override val adapter: RoutingSourceAdapter<Key, Int> = adapter(AlwaysOnScreenResolver())
+    override val adapter: RoutingSourceAdapter<Key, Int> =
+        adapter(scope, AlwaysOnScreenResolver())
 
     override val elements: StateFlow<PermanentElements<Key>>
         get() = state

@@ -1,23 +1,38 @@
 package com.github.zsoltk.composeribs.core.routing
 
-import com.github.zsoltk.composeribs.core.unsuspendedMap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 class SingleRoutingSourceAdapter<Key, State>(
+    scope: CoroutineScope,
     private val routingSource: RoutingSource<Key, State>,
     private val onScreenResolver: OnScreenResolver<State>
 ) : RoutingSourceAdapter<Key, State> {
 
-    override val onScreen = routingSource.elements.unsuspendedMap { elements ->
-        elements.filter { element ->
-            element.isOnScreen()
-        }
-    }
+    override val elements: StateFlow<RoutingElements<Key, out State>> = routingSource.elements
 
-    override val offScreen = routingSource.elements.unsuspendedMap { elements ->
-        elements.filterNot { element ->
-            element.isOnScreen()
-        }
-    }
+    override val onScreen: StateFlow<RoutingElements<Key, out State>> =
+        routingSource
+            .elements
+            .map { elements ->
+                elements.filter { element ->
+                    element.isOnScreen()
+                }
+            }
+            .stateIn(scope, SharingStarted.Eagerly, emptyList())
+
+    override val offScreen: StateFlow<RoutingElements<Key, out State>> =
+        routingSource
+            .elements
+            .map { elements ->
+                elements.filterNot { element ->
+                    element.isOnScreen()
+                }
+            }
+            .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
     override fun onTransitionFinished(key: RoutingKey<Key>) {
         routingSource.onTransitionFinished(key)
