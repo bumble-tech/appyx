@@ -5,12 +5,14 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
+import kotlinx.parcelize.Parcelize
 
 /**
  * Operation:
  *
  * [A, B, C] + Remove(id of B) = [A, C]
  */
+@Parcelize
 data class Remove<T : Any>(
     private val key: RoutingKey<T>
 ) : BackStackOperation<T> {
@@ -43,12 +45,12 @@ data class Remove<T : Any>(
 
             elements.mapIndexed { index, element ->
                 when (index) {
-                    toRemoveIndex -> element.copy(
+                    toRemoveIndex -> element.transitionTo(
                         targetState = BackStack.TransitionState.DESTROYED,
                         operation = this
                     )
-                    unStashIndex -> element.copy(
-                        targetState = BackStack.TransitionState.ON_SCREEN,
+                    unStashIndex -> element.transitionTo(
+                        targetState = BackStack.TransitionState.ACTIVE,
                         operation = this
                     )
                     else -> element

@@ -112,7 +112,7 @@ class ContainerNode(
         // TODO variant 1
         Subtree(
             modifier = Modifier.fillMaxSize(),
-            routingSource = backStack,
+            adapter = backStack.adapter,
             transitionHandler = rememberCombinedHandler(
                 handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
             )

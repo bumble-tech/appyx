@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -23,7 +22,6 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
 import com.github.zsoltk.composeribs.core.composable.Subtree
-import com.github.zsoltk.composeribs.core.composable.visibleChildAsState
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
@@ -108,7 +106,7 @@ class TilesExampleNode(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp),
-                routingSource = tiles,
+                adapter = tiles.adapter,
                 transitionHandler = handler
             ) {
                 children<Routing> { child ->
@@ -125,8 +123,6 @@ class TilesExampleNode(
 
             Text(text = "Child1 separately", modifier = Modifier.align(CenterHorizontally))
 
-            val child1 by tiles.visibleChildAsState(Child1::class)
-            val c = child1
 
             /*if (c != null) {
                 AnimatedChildNode(

@@ -6,14 +6,17 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElem
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * Operation:
  *
  * [A, B, C] + NewRoot(D) = [ D ]
  */
+@Parcelize
 data class NewRoot<T : Any>(
-    private val element: T
+    private val element: @RawValue T
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean = true
@@ -29,14 +32,14 @@ data class NewRoot<T : Any>(
             listOf(current)
         } else {
             listOf(
-                current.copy(
+                current.transitionTo(
                     targetState = BackStack.TransitionState.DESTROYED,
                     operation = this
                 ),
                 BackStackElement(
                     key = RoutingKey(element),
                     fromState = BackStack.TransitionState.CREATED,
-                    targetState = BackStack.TransitionState.ON_SCREEN,
+                    targetState = BackStack.TransitionState.ACTIVE,
                     operation = this
                 )
             )

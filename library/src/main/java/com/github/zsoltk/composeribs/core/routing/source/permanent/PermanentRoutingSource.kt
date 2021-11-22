@@ -1,19 +1,28 @@
 package com.github.zsoltk.composeribs.core.routing.source.permanent
 
+import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
 class PermanentRoutingSource<Key : Any>(
     configuration: Set<Key> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String = PermanentRoutingSource::class.simpleName!!,
 ) : RoutingSource<Key, Int> {
+
+    private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
     constructor(
         savedStateMap: SavedStateMap?,
@@ -34,14 +43,11 @@ class PermanentRoutingSource<Key : Any>(
         }
     )
 
-    override val all: StateFlow<PermanentElements<Key>>
-        get() = state
+    override val adapter: RoutingSourceAdapter<Key, Int> =
+        adapter(scope, AlwaysOnScreenResolver())
 
-    override val onScreen: StateFlow<PermanentElements<Key>>
+    override val elements: StateFlow<PermanentElements<Key>>
         get() = state
-
-    override val offScreen: StateFlow<PermanentElements<Key>> =
-        MutableStateFlow(emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
         MutableStateFlow(false)

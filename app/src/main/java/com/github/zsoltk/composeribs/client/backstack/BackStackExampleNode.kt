@@ -105,7 +105,7 @@ class BackStackExampleNode(
 
     @Composable
     override fun View() {
-        val backStackState = backStack.all.collectAsState()
+        val backStackState = backStack.elements.collectAsState()
         val selectedChildRadioButton = rememberSaveable { mutableStateOf("") }
         val defaultOrRandomRadioButton = rememberSaveable { mutableStateOf(DEFAULT_LABEL) }
         val isRadioButtonNeeded = rememberSaveable { mutableStateOf(false) }
@@ -129,8 +129,8 @@ class BackStackExampleNode(
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
-                    routingSource = backStack,
-                    transitionHandler = rememberBackStackExampleTransitionHandler()
+                    transitionHandler = rememberBackStackExampleTransitionHandler(),
+                    adapter = backStack.adapter
                 ) {
                     children<Routing> { child, descriptor ->
                         if (!descriptor.element.isFiltered(skipChildRenderingByRouting.value)) {

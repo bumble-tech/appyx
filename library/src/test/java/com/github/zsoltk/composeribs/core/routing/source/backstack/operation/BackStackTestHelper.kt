@@ -19,7 +19,7 @@ internal fun <T : Routing> backStackElement(
     key: RoutingKey<T> = RoutingKey(routing = element),
     fromState: BackStack.TransitionState,
     targetState: BackStack.TransitionState,
-    operation: BackStackOperation<T>
+    operation: BackStackOperation<T>,
 ) = BackStackElement(
     key = key,
     fromState = fromState,

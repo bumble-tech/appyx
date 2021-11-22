@@ -76,7 +76,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
                 }
             }
 
-            Subtree(routingSource = routingSource) {
+            Subtree(adapter = routingSource.adapter) {
                 val children by visibleChildren<Routing>()
                 when (selectedMode) {
                     Column -> ColumnExample(children)

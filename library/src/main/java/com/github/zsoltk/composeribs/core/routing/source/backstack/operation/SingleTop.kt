@@ -6,6 +6,8 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElem
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * Operation:
@@ -16,8 +18,9 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.current
  */
 sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
+    @Parcelize
     class SingleTopReactivateBackStackOperation<T : Any>(
-        private val element: T,
+        private val element: @RawValue T,
         private val position: Int
     ) : SingleTop<T>() {
 
@@ -34,14 +37,14 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
             return newElements.mapIndexed { index, element ->
                 if (index == newElements.lastIndex) {
-                    element.copy(
-                        targetState = BackStack.TransitionState.ON_SCREEN,
+                    element.transitionTo(
+                        targetState = BackStack.TransitionState.ACTIVE,
                         operation = this
                     )
                 } else {
                     element
                 }
-            } + current.copy(
+            } + current.transitionTo(
                 targetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             )
@@ -52,9 +55,10 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
         override fun hashCode(): Int = this.javaClass.hashCode()
     }
 
+    @Parcelize
     class SingleTopReplaceBackStackOperation<T : Any>(
-        private val element: T,
-        private val position: Int
+        private val element: @RawValue T,
+        private val position: Int,
     ) : SingleTop<T>() {
 
         override fun isApplicable(elements: BackStackElements<T>): Boolean = true
@@ -67,14 +71,14 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
             val newElements = elements.dropLast(elements.size - position)
 
-            return newElements + current.copy(
+            return newElements + current.transitionTo(
                 targetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             ) + BackStackElement(
                 key = RoutingKey(element),
                 fromState = BackStack.TransitionState.CREATED,
-                targetState = BackStack.TransitionState.ON_SCREEN,
-                operation = this
+                targetState = BackStack.TransitionState.ACTIVE,
+                operation = this,
             )
         }
 
@@ -97,9 +101,15 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 Push(element)
             } else {
                 if (elements[lastIndexOfSameClass].key.routing == element) {
-                    SingleTopReactivateBackStackOperation(element, lastIndexOfSameClass)
+                    SingleTopReactivateBackStackOperation(
+                        element,
+                        lastIndexOfSameClass
+                    )
                 } else {
-                    SingleTopReplaceBackStackOperation(element, lastIndexOfSameClass)
+                    SingleTopReplaceBackStackOperation(
+                        element,
+                        lastIndexOfSameClass
+                    )
                 }
             }
         }
@@ -107,5 +117,5 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 }
 
 fun <T : Any> BackStack<T>.singleTop(element: T) {
-    perform(SingleTop.init(element, all.value))
+    perform(SingleTop.init(element, elements.value))
 }

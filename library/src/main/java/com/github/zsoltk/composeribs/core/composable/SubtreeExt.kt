@@ -9,7 +9,7 @@ import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.node.LocalNode
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
-import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
@@ -17,47 +17,23 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
-
 @Composable
 fun <T : Any, S> Subtree(
-    routingSource: RoutingSource<T, S>,
+    adapter: RoutingSourceAdapter<T, S>,
     block: @Composable SubtreeScope<T, S>.() -> Unit
 ) {
-    block(SubtreeScope(routingSource))
-}
-
-@Composable
-fun <T : Any, S> Subtree(
-    modifier: Modifier,
-    routingSource: RoutingSource<T, S>,
-    transitionHandler: TransitionHandler<T, S>,
-    block: @Composable SubtreeTransitionScope<T, S>.() -> Unit,
-) {
-    BoxWithConstraints(modifier) {
-        block(
-            SubtreeTransitionScope(
-                routingSource,
-                transitionHandler,
-                TransitionParams(
-                    bounds = TransitionBounds(
-                        width = maxWidth,
-                        height = maxHeight
-                    )
-                )
-            )
-        )
-    }
+    block(SubtreeScope(adapter))
 }
 
 class SubtreeScope<T : Any, S>(
-    val routingSource: RoutingSource<T, S>
+    val adapter: RoutingSourceAdapter<T, S>,
 ) {
 
     @Composable
     inline fun <reified V : T> visibleChildren(): State<List<ChildEntry.Eager<T>>> {
         val node = LocalNode.current?.let { it as? ParentNode<T> }
             ?: error("Subtree can't be invoked outside of a ParentNode's Composable context. LocalNode.current is ${LocalNode.current}")
-        return routingSource.onScreen
+        return adapter.onScreen
             .map { list ->
                 list
                     .filter { it.key.routing is V }
@@ -73,7 +49,7 @@ class SubtreeScope<T : Any, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by this@SubtreeScope.routingSource.onScreen
+        val children by adapter.onScreen
             .map { list ->
                 list
                     .filter { it.key.routing is V }
@@ -92,13 +68,13 @@ class SubtreeScope<T : Any, S>(
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.children(
-        block: @Composable (child: @Composable () -> Unit, routingElement: RoutingElement<T, S>) -> Unit,
+        block: @Composable (child: @Composable () -> Unit, routingElement: RoutingElement<T, out S>) -> Unit,
     ) {
         // TODO consider instead of Node receiver
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by this@SubtreeScope.routingSource.all
+        val children by adapter.elements
             .map {
                 it.filter { it.key.routing is V }
                     .map { it to childOrCreate(it.key) }
@@ -116,10 +92,33 @@ class SubtreeScope<T : Any, S>(
     }
 }
 
+@Composable
+fun <T : Any, S> Subtree(
+    modifier: Modifier,
+    transitionHandler: TransitionHandler<T, S>,
+    adapter: RoutingSourceAdapter<T, S>,
+    block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
+) {
+    BoxWithConstraints(modifier) {
+        block(
+            SubtreeTransitionScope(
+                transitionHandler,
+                TransitionParams(
+                    bounds = TransitionBounds(
+                        width = maxWidth,
+                        height = maxHeight
+                    )
+                ),
+                adapter
+            )
+        )
+    }
+}
+
 class SubtreeTransitionScope<T : Any, S>(
-    val routingSource: RoutingSource<T, S>,
     private val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
+    private val adapter: RoutingSourceAdapter<T, S>
 ) {
 
     @Composable
@@ -171,7 +170,7 @@ class SubtreeTransitionScope<T : Any, S>(
         //        val node = LocalNode.current?.let { it as Node<T> }
         //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by this@SubtreeTransitionScope.routingSource.onScreen
+        val children by adapter.onScreen
             .map { list ->
                 list
                     .filter { clazz.isInstance(it.key.routing) }
@@ -188,7 +187,7 @@ class SubtreeTransitionScope<T : Any, S>(
                         transitionHandler.handle(
                             descriptor = descriptor,
                             onTransitionFinished = {
-                                this@SubtreeTransitionScope.routingSource.onTransitionFinished(
+                                adapter.onTransitionFinished(
                                     childEntry.key
                                 )
                             })
@@ -208,7 +207,7 @@ class SubtreeTransitionScope<T : Any, S>(
     }
 
 
-    private fun RoutingElement<T, S>.createDescriptor(transitionParams: TransitionParams) =
+    private fun RoutingElement<T, out S>.createDescriptor(transitionParams: TransitionParams) =
         TransitionDescriptor(
             params = transitionParams,
             operation = operation,

@@ -1,14 +1,18 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles.operation
 
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElement
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
+@Parcelize
 data class Add<T : Any>(
-    private val element: T
+    private val element: @RawValue T
 ) : TilesOperation<T> {
 
     override fun isApplicable(elements: TilesElements<T>): Boolean = true
@@ -20,7 +24,7 @@ data class Add<T : Any>(
             key = RoutingKey(element),
             fromState = Tiles.TransitionState.CREATED,
             targetState = Tiles.TransitionState.STANDARD,
-            operation = this
+            operation = this,
         )
 }
 

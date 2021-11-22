@@ -9,18 +9,18 @@ import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -114,19 +114,16 @@ class ChildLifecycleTest {
 
         private val state = MutableStateFlow<List<RoutingElement<String, Boolean>>>(emptyList())
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
+        private val onScreenResolver = object : OnScreenResolver<Boolean> {
+            override fun isOnScreen(state: Boolean): Boolean = state
+        }
 
-        override val all: StateFlow<List<RoutingElement<String, Boolean>>> =
-            state
+        override val adapter: RoutingSourceAdapter<String, Boolean> by lazy {
+            adapter(scope, onScreenResolver)
+        }
 
-        override val onScreen: StateFlow<List<RoutingElement<String, Boolean>>> =
+        override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
             state
-                .map { it.filter { it.targetState } }
-                .stateIn(scope, SharingStarted.Eagerly, emptyList())
-
-        override val offScreen: StateFlow<List<RoutingElement<String, Boolean>>> =
-            state
-                .map { it.filter { !it.targetState } }
-                .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)
@@ -136,16 +133,24 @@ class ChildLifecycleTest {
         }
 
         override fun onTransitionFinished(key: RoutingKey<String>) {
-            // no-op
+            state.update { list ->
+                list.map {
+                    if (it.key == key) {
+                        it.onTransitionFinished()
+                    } else {
+                        it
+                    }
+                }
+            }
         }
 
         fun add(key: String, onScreen: Boolean) {
             state.update { list ->
                 list + RoutingElement(
-                    RoutingKey(key),
-                    onScreen,
-                    onScreen,
-                    Operation.Noop()
+                    key = RoutingKey(key),
+                    targetState = onScreen,
+                    fromState = onScreen,
+                    operation = Operation.Noop(),
                 )
             }
         }
@@ -156,13 +161,16 @@ class ChildLifecycleTest {
 
         fun changeState(key: String, onScreen: Boolean) {
             state.update { list ->
-                list.map {
-                    if (it.key.routing == key) {
-                        it.copy(fromState = onScreen, targetState = onScreen)
-                    } else {
-                        it
+                list
+                    .map {
+                        if (it.key.routing == key) {
+                            it
+                                .transitionTo(targetState = onScreen, operation = Operation.Noop())
+                                .onTransitionFinished()
+                        } else {
+                            it
+                        }
                     }
-                }
             }
         }
 

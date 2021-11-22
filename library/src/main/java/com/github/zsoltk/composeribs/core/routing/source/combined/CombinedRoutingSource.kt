@@ -4,6 +4,7 @@ import com.github.zsoltk.composeribs.core.plugin.Destroyable
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
+import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -21,17 +22,12 @@ class CombinedRoutingSource<Key>(
 
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val all: StateFlow<RoutingElements<Key, Any?>> =
-        combine(sources.map { it.all }) { arr -> arr.reduce { acc, list -> acc + list } }
+    override val elements: StateFlow<RoutingElements<Key, *>> =
+        combine(sources.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<RoutingElements<Key, Any?>> =
-        combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
-
-    override val offScreen: StateFlow<RoutingElements<Key, Any?>> =
-        combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
+    override val adapter: RoutingSourceAdapter<Key, *> =
+        CombinedRoutingSourceAdapter(scope, sources)
 
     override val canHandleBackPress: StateFlow<Boolean> =
         combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }
@@ -48,9 +44,6 @@ class CombinedRoutingSource<Key>(
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
         sources.forEach { it.saveInstanceState(savedStateMap) }
     }
-
-    override fun isOnScreen(key: RoutingKey<Key>): Boolean =
-        sources.any { it.isOnScreen(key) }
 
     override fun destroy() {
         scope.cancel()

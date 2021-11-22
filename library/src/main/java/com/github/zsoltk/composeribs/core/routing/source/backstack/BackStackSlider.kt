@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -25,7 +24,10 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider<T>(
-    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { tween(1500) },
+    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> =
+        {
+            spring(stiffness = Spring.StiffnessVeryLow)
+        },
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
 
@@ -40,7 +42,7 @@ class BackStackSlider<T>(
                 val width = descriptor.params.bounds.width.value
                 when (it) {
                     BackStack.TransitionState.CREATED -> toOutsideRight(width)
-                    BackStack.TransitionState.ON_SCREEN -> toCenter()
+                    BackStack.TransitionState.ACTIVE -> toCenter()
                     BackStack.TransitionState.STASHED_IN_BACK_STACK -> toOutsideLeft(width)
                     BackStack.TransitionState.DESTROYED -> {
                         when (val operation = descriptor.operation) {

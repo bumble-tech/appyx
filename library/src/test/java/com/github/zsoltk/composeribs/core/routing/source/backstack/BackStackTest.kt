@@ -5,7 +5,7 @@ import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Push
@@ -21,6 +21,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScope
+import kotlinx.parcelize.Parcelize
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -44,13 +45,13 @@ internal class BackStackTest {
             savedStateMap = null
         )
 
-        val initialState = backStack.all.value
+        val initialState = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
                 key = RoutingKey(initialElement),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -81,7 +82,7 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
@@ -108,18 +109,18 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -130,24 +131,24 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -167,7 +168,7 @@ internal class BackStackTest {
         var state: BackStackElements<Routing>? = null
         testScope.launch {
             backStack
-                .all
+                .elements
                 .collect { state = it }
         }
 
@@ -176,237 +177,15 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing1,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
-                operation = Push(Routing2)
+                operation = push(Routing2)
             ),
             backStackElement(
                 element = Routing2,
                 fromState = CREATED,
-                targetState = ON_SCREEN,
-                operation = Push(Routing2)
-            )
-        )
-        state!!.assertBackstackElementsEqual(expectedElements)
-    }
-
-    @Test
-    fun `offScreen returns only the offScreen elements`() {
-
-        val initialElement = Routing1
-        val storedElements = listOf<BackStackElement<Routing>>(
-            backStackElement(
-                element = Routing4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = DESTROYED,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
-                operation = Pop()
-            )
-        )
-        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
-        val backStack = BackStack<Routing>(
-            initialElement = initialElement,
-            savedStateMap = savedStateMap
-        )
-
-        val state = backStack.offScreen.value
-
-        val expectedElements: BackStackElements<Routing> = listOf(
-            backStackElement(
-                element = Routing4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            )
-        )
-        state.assertBackstackElementsEqual(expectedElements)
-    }
-
-    @Test
-    fun `offScreen gets notified when change in backstack state regarding offscreen elements`() {
-
-        val initialElement = Routing1
-        val storedElements = listOf<BackStackElement<Routing>>(
-            backStackElement(
-                element = Routing4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = DESTROYED,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            )
-        )
-        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
-        val backStack = BackStack<Routing>(
-            initialElement = initialElement,
-            savedStateMap = savedStateMap
-        )
-
-        var state: BackStackElements<Routing>? = null
-        testScope.launch {
-            backStack
-                .offScreen
-                .collect { state = it }
-        }
-
-        backStack.push(Routing1)
-
-        val expectedElements: BackStackElements<Routing> = listOf(
-            backStackElement(
-                element = Routing4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Push(Routing1)
-            )
-        )
-        state!!.assertBackstackElementsEqual(expectedElements)
-    }
-
-    @Test
-    fun `onScreen returns only the onScreen elements`() {
-
-        val initialElement = Routing1
-        val storedElements = listOf<BackStackElement<Routing>>(
-            backStackElement(
-                element = Routing4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = DESTROYED,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
-                operation = Pop()
-            )
-        )
-        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
-        val backStack = BackStack<Routing>(
-            initialElement = initialElement,
-            savedStateMap = savedStateMap
-        )
-
-        val state = backStack.onScreen.value
-
-        val expectedElements: BackStackElements<Routing> = listOf(
-            backStackElement(
-                element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = DESTROYED,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
-                operation = Pop()
-            )
-        )
-        state.assertBackstackElementsEqual(expectedElements)
-    }
-
-    @Test
-    fun `onScreen gets notified when change in backstack state regarding onScreen elements`() {
-
-        val initialElement = Routing1
-        val storedElements = listOf<BackStackElement<Routing>>(
-            backStackElement(
-                element = Routing4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = DESTROYED,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            )
-        )
-        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
-        val backStack = BackStack<Routing>(
-            initialElement = initialElement,
-            savedStateMap = savedStateMap
-        )
-
-        var state: BackStackElements<Routing>? = null
-        testScope.launch {
-            backStack
-                .onScreen
-                .collect { state = it }
-        }
-
-        backStack.push(Routing2)
-
-        val expectedElements: BackStackElements<Routing> = listOf(
-            backStackElement(
-                element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = DESTROYED,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = CREATED,
-                targetState = ON_SCREEN,
-                operation = Push(Routing2)
+                targetState = ACTIVE,
+                operation = push(Routing2)
             )
         )
         state!!.assertBackstackElementsEqual(expectedElements)
@@ -419,7 +198,7 @@ internal class BackStackTest {
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -464,7 +243,7 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing2,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             )
         )
@@ -490,13 +269,13 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 key = transitionedItemKey,
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             )
@@ -510,13 +289,13 @@ internal class BackStackTest {
 
         backStack.onTransitionFinished(transitionedItemKey)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             )
         )
@@ -531,13 +310,13 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 key = transitionedItemKey,
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -550,13 +329,13 @@ internal class BackStackTest {
 
         backStack.onTransitionFinished(transitionedItemKey)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
@@ -581,12 +360,12 @@ internal class BackStackTest {
                 key = transitionedItemKey,
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -598,18 +377,18 @@ internal class BackStackTest {
         )
         backStack.onTransitionFinished(transitionedItemKey)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -629,7 +408,7 @@ internal class BackStackTest {
         val operation = DummyClearOperation(isApplicable = true)
         backStack.perform(operation)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedState = emptyList<BackStackElements<Routing>>()
         assertEquals(state, expectedState)
@@ -647,14 +426,14 @@ internal class BackStackTest {
         val operation = DummyClearOperation(isApplicable = false)
         backStack.perform(operation)
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
                 key = RoutingKey(initialElement),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
-                operation = Operation.Noop()
+                fromState = ACTIVE,
+                targetState = ACTIVE,
+                operation = Operation.Noop(),
             )
         )
         state.assertBackstackElementsEqual(expectedElements)
@@ -667,8 +446,8 @@ internal class BackStackTest {
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
@@ -686,19 +465,19 @@ internal class BackStackTest {
 
         backStack.onBackPressed()
 
-        val state = backStack.all.value
+        val state = backStack.elements.value
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             )
         )
@@ -713,18 +492,18 @@ internal class BackStackTest {
             backStackElement(
                 element = Routing4("Content"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Pop()
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Pop()
             )
@@ -741,8 +520,8 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Pop()
             ),
             backStackElement(
@@ -756,70 +535,11 @@ internal class BackStackTest {
         actual.assertBackstackElementsEqual(expectedElements)
     }
 
-    @Test
-    fun `returns true when element on screen`() {
-        val initialElement = Routing1
-        val key: RoutingKey<Routing> = RoutingKey(
-            routing = Routing4("Content")
-        )
-        val storedElements = listOf<BackStackElement<Routing>>(
-            backStackElement(
-                key = key,
-                element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            )
-        )
-        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
-        val backStack = BackStack<Routing>(
-            initialElement = initialElement,
-            savedStateMap = savedStateMap
-        )
+    private fun <T : Any> push(element: T) = Push(
+        element = element
+    )
 
-        val isOnScreen = backStack.isOnScreen(key = key)
-
-        assertEquals(isOnScreen, true)
-    }
-
-    @Test
-    fun `returns false when element not on screen`() {
-
-        val initialElement = Routing1
-        val storedElements = listOf<BackStackElement<Routing>>(
-            backStackElement(
-                element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
-                operation = Pop()
-            ),
-            backStackElement(
-                element = Routing2,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
-                operation = Pop()
-            )
-        )
-        val savedStateMap = mutableMapOf<String, Any>(KEY_ROUTING_SOURCE to storedElements)
-        val backStack = BackStack<Routing>(
-            initialElement = initialElement,
-            savedStateMap = savedStateMap
-        )
-        val key: RoutingKey<Routing> = RoutingKey(
-            routing = Routing2
-        )
-
-        val isOnScreen = backStack.isOnScreen(key = key)
-
-        assertEquals(isOnScreen, false)
-    }
-
+    @Parcelize
     private class DummyClearOperation(
         private val isApplicable: Boolean
     ) : Operation<Routing, BackStack.TransitionState> {

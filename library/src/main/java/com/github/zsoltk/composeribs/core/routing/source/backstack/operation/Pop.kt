@@ -4,16 +4,18 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.currentIndex
+import kotlinx.parcelize.Parcelize
 
 /**
  * Operation:
  *
  * [A, B, C] + Pop = [A, B]
  */
+@Parcelize
 class Pop<T : Any> : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
-        elements.any { it.targetState == BackStack.TransitionState.ON_SCREEN } &&
+        elements.any { it.targetState == BackStack.TransitionState.ACTIVE } &&
                 elements.any { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
 
     override fun invoke(
@@ -27,12 +29,12 @@ class Pop<T : Any> : BackStackOperation<T> {
         require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }
         return elements.mapIndexed { index, element ->
             when (index) {
-                destroyIndex -> element.copy(
+                destroyIndex -> element.transitionTo(
                     targetState = BackStack.TransitionState.DESTROYED,
                     operation = this
                 )
-                unStashIndex -> element.copy(
-                    targetState = BackStack.TransitionState.ON_SCREEN,
+                unStashIndex -> element.transitionTo(
+                    targetState = BackStack.TransitionState.ACTIVE,
                     operation = this
                 )
                 else -> element
