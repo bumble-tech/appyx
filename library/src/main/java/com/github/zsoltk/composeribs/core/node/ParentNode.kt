@@ -58,7 +58,7 @@ abstract class ParentNode<Routing : Any>(
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
         lifecycle = lifecycle,
-        routingSource = this.routingSource,
+        adapter = this.routingSource.adapter,
         children = children,
     )
     private val childAware = ChildAwareImpl(
