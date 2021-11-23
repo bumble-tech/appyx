@@ -30,5 +30,5 @@ data class Select<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.select(key: RoutingKey<T>) {
-    perform(Select(key))
+    accept(Select(key))
 }

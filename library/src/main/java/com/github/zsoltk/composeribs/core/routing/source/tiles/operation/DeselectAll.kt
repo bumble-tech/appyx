@@ -31,5 +31,5 @@ class DeselectAll<T : Any> : TilesOperation<T> {
 }
 
 fun <T : Any> Tiles<T>.deselectAll() {
-    perform(DeselectAll())
+    accept(DeselectAll())
 }

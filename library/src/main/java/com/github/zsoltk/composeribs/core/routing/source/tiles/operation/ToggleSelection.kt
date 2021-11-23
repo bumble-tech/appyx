@@ -37,5 +37,5 @@ data class ToggleSelection<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.toggleSelection(key: RoutingKey<T>) {
-    perform(ToggleSelection(key))
+    accept(ToggleSelection(key))
 }

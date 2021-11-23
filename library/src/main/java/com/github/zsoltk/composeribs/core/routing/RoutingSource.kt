@@ -16,6 +16,8 @@ interface RoutingSource<Key, State> : UpNavigationHandler {
 
     fun onTransitionFinished(key: RoutingKey<Key>)
 
+    fun accept(operation: Operation<Key, State>) = Unit
+
     /**
      * Bundle for future state restoration.
      * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].

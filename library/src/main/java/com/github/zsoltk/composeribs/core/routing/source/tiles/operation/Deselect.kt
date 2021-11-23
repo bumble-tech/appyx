@@ -30,5 +30,5 @@ data class Deselect<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.deselect(key: RoutingKey<T>) {
-    perform(Deselect(key))
+    accept(Deselect(key))
 }

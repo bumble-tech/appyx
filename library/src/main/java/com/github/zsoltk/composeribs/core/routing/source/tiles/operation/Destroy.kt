@@ -30,5 +30,5 @@ data class Destroy<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.destroy(key: RoutingKey<T>) {
-    perform(Destroy(key))
+    accept(Destroy(key))
 }

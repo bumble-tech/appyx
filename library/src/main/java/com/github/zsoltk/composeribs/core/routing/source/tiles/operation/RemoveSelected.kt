@@ -31,5 +31,5 @@ class RemoveSelected<T : Any> : TilesOperation<T> {
 }
 
 fun <T : Any> Tiles<T>.removeSelected() {
-    perform(RemoveSelected())
+    accept(RemoveSelected())
 }

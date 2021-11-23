@@ -26,8 +26,8 @@ class BackStack<T : Any>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    private val routingSourceResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
-) : RoutingSource<T, TransitionState> , Destroyable {
+    private val onScreenResolver: OnScreenResolver<TransitionState> = BackStackOnScreenResolver
+) : RoutingSource<T, TransitionState>, Destroyable {
 
     enum class TransitionState {
         CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
@@ -47,7 +47,7 @@ class BackStack<T : Any>(
     )
 
     override val adapter: RoutingSourceAdapter<T, TransitionState> by lazy(LazyThreadSafetyMode.NONE) {
-        adapter(scope, routingSourceResolver)
+        adapter(scope, onScreenResolver)
     }
 
     override val elements: StateFlow<BackStackElements<T>> =
@@ -76,7 +76,7 @@ class BackStack<T : Any>(
         }
     }
 
-    fun perform(operation: BackStackOperation<T>) {
+    override fun accept(operation: BackStackOperation<T>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }
@@ -102,7 +102,7 @@ class BackStack<T : Any>(
         this[key] as? BackStackElements<T>
 
 
-        override fun destroy() {
-            scope.cancel()
-        }
+    override fun destroy() {
+        scope.cancel()
+    }
 }
