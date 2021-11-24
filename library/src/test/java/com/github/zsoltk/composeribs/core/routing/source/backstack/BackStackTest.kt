@@ -406,7 +406,7 @@ internal class BackStackTest {
         )
 
         val operation = DummyClearOperation(isApplicable = true)
-        backStack.perform(operation)
+        backStack.accept(operation)
 
         val state = backStack.elements.value
 
@@ -424,7 +424,7 @@ internal class BackStackTest {
         )
 
         val operation = DummyClearOperation(isApplicable = false)
-        backStack.perform(operation)
+        backStack.accept(operation)
 
         val state = backStack.elements.value
 

@@ -42,5 +42,5 @@ data class Push<T : Any>(
 }
 
 fun <T : Any> BackStack<T>.push(element: T) {
-    perform(Push(element))
+    accept(Push(element))
 }

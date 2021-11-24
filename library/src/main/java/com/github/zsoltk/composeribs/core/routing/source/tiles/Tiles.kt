@@ -68,7 +68,7 @@ class Tiles<T : Any>(
         }
     }
 
-    fun perform(operation: TilesOperation<T>) {
+    override fun accept(operation: TilesOperation<T>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }

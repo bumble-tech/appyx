@@ -1,6 +1,5 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles.operation
 
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
@@ -29,5 +28,5 @@ data class Add<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.add(element: T) {
-    perform(Add(element))
+    accept(Add(element))
 }

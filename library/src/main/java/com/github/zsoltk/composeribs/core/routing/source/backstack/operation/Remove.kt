@@ -63,5 +63,5 @@ data class Remove<T : Any>(
 }
 
 fun <T : Any> BackStack<T>.remove(key: RoutingKey<T>) {
-    perform(Remove(key))
+    accept(Remove(key))
 }

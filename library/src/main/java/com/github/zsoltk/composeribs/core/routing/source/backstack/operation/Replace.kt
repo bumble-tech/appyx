@@ -47,5 +47,5 @@ data class Replace<T : Any>(
 }
 
 fun <T : Any> BackStack<T>.replace(element: T) {
-    perform(Replace(element))
+    accept(Replace(element))
 }
