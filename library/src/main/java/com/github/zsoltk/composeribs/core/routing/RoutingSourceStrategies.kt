@@ -74,8 +74,8 @@ class RejectIfHasUnfinishedTransitionsRoutingSource<Key, State>(
 }
 
 @CheckResult
-fun <Key, State> RoutingSource<Key, State>.wrapWithQueueBehaviour(coroutineScope: CoroutineScope) =
-    QueueTransitionsRoutingSource(coroutineScope, this)
+fun <Key, State> RoutingSource<Key, State>.wrapWithQueueBehaviour(coroutineScope: CoroutineScope)
+        : RoutingSource<Key, State> = QueueTransitionsRoutingSource(coroutineScope, this)
 
 @CheckResult
 fun <Key, State> RoutingSource<Key, State>.wrapWithFinishBehaviour(): RoutingSource<Key, State> =
