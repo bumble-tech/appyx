@@ -43,8 +43,7 @@ abstract class ParentNode<Routing : Any>(
     buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     plugins: List<Plugin> = emptyList(),
-) : Node(buildContext = buildContext, plugins = plugins + routingSource),
-    Resolver<Routing>,
+) : Node(buildContext = buildContext, plugins = plugins + routingSource), Resolver<Routing>,
     ChildAware {
 
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(buildContext.savedStateMap)
@@ -58,7 +57,7 @@ abstract class ParentNode<Routing : Any>(
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
         lifecycle = lifecycle,
-        adapter = this.routingSource.adapter,
+        routingSource = this.routingSource,
         children = children,
     )
     private val childAware = ChildAwareImpl(

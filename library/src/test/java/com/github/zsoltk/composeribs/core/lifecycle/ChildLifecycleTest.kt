@@ -9,13 +9,13 @@ import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
+import com.github.zsoltk.composeribs.core.routing.OnScreenMapper
+import com.github.zsoltk.composeribs.core.routing.OnScreenStateResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
-import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -114,16 +114,19 @@ class ChildLifecycleTest {
 
         private val state = MutableStateFlow<List<RoutingElement<String, Boolean>>>(emptyList())
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-        private val onScreenResolver = object : OnScreenResolver<Boolean> {
+        private val onScreenResolver = object : OnScreenStateResolver<Boolean> {
             override fun isOnScreen(state: Boolean): Boolean = state
         }
-
-        override val adapter: RoutingSourceAdapter<String, Boolean> by lazy {
-            adapter(scope, onScreenResolver)
-        }
+        private val onScreenMapper = OnScreenMapper<String, Boolean>(scope, onScreenResolver)
 
         override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
             state
+
+        override val onScreen: StateFlow<RoutingElements<String, out Boolean>> =
+            onScreenMapper.resolveOnScreenElements(state)
+
+        override val offScreen: StateFlow<RoutingElements<String, out Boolean>> =
+            onScreenMapper.resolveOffScreenElements(state)
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)

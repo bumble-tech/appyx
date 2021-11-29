@@ -1,12 +1,10 @@
 package com.github.zsoltk.composeribs.core.routing.source.tiles
 
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.plugin.Destroyable
+import com.github.zsoltk.composeribs.core.routing.OnScreenMapper
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
-import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.deselectAll
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +19,6 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 class Tiles<T : Any>(
     initialElements: List<T>,
-    onScreenResolver: OnScreenResolver<TransitionState> = TilesOnScreenResolver
 ) : RoutingSource<T, Tiles.TransitionState>, Destroyable {
 
     enum class TransitionState {
@@ -41,12 +38,16 @@ class Tiles<T : Any>(
         }
     )
 
-    override val adapter: RoutingSourceAdapter<T, TransitionState> by lazy(LazyThreadSafetyMode.NONE) {
-        adapter(scope, onScreenResolver)
-    }
+    private val onScreenMapper = OnScreenMapper<T, TransitionState>(scope, TilesOnScreenResolver)
 
     override val elements: StateFlow<TilesElements<T>>
         get() = state
+
+    override val onScreen: StateFlow<TilesElements<T>> =
+        onScreenMapper.resolveOnScreenElements(state)
+
+    override val offScreen: StateFlow<TilesElements<T>> =
+        onScreenMapper.resolveOffScreenElements(state)
 
     override val canHandleBackPress: StateFlow<Boolean> =
         state.map { list -> list.any { it.targetState == TransitionState.SELECTED } }

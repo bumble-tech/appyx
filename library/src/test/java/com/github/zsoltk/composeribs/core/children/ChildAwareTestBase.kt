@@ -6,14 +6,11 @@ import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.AlwaysOnScreenResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
-import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -93,10 +90,27 @@ abstract class ChildAwareTestBase {
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
         override val elements: StateFlow<RoutingElements<Key, Int>>
             get() = state
+        override val onScreen: StateFlow<RoutingElements<Key, out Int>>
+            get() = state
+        override val offScreen: StateFlow<RoutingElements<Key, out Int>>
+            get() = MutableStateFlow(emptyList())
+
+        override fun onBackPressed()  = Unit
+
+        override fun onTransitionFinished(key: RoutingKey<Key>) {
+            state.update { list ->
+                list.mapNotNull {
+                    if (it.key == key) {
+                        it.onTransitionFinished()
+                    } else {
+                        it
+                    }
+                }
+            }
+        }
+
         override val canHandleBackPress: StateFlow<Boolean>
             get() = MutableStateFlow(false)
-
-        override val adapter: RoutingSourceAdapter<Key, Int> = adapter(scope, AlwaysOnScreenResolver())
 
         fun add(vararg key: RoutingKey<Key>) {
             state.update { list ->
@@ -110,12 +124,6 @@ abstract class ChildAwareTestBase {
                     )
                 }
             }
-        }
-
-        override fun onBackPressed() {
-        }
-
-        override fun onTransitionFinished(key: RoutingKey<Key>) {
         }
 
     }

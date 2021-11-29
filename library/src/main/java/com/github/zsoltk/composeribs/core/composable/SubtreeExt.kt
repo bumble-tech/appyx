@@ -9,7 +9,7 @@ import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.node.LocalNode
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionHandler
@@ -19,21 +19,21 @@ import kotlin.reflect.KClass
 
 @Composable
 fun <T : Any, S> Subtree(
-    adapter: RoutingSourceAdapter<T, S>,
+    routingSource: RoutingSource<T, S>,
     block: @Composable SubtreeScope<T, S>.() -> Unit
 ) {
-    block(SubtreeScope(adapter))
+    block(SubtreeScope(routingSource))
 }
 
 class SubtreeScope<T : Any, S>(
-    val adapter: RoutingSourceAdapter<T, S>,
+    val routingSource: RoutingSource<T, S>,
 ) {
 
     @Composable
     inline fun <reified V : T> visibleChildren(): State<List<ChildEntry.Eager<T>>> {
         val node = LocalNode.current?.let { it as? ParentNode<T> }
             ?: error("Subtree can't be invoked outside of a ParentNode's Composable context. LocalNode.current is ${LocalNode.current}")
-        return adapter.onScreen
+        return this@SubtreeScope.routingSource.onScreen
             .map { list ->
                 list
                     .filter { it.key.routing is V }
@@ -49,7 +49,7 @@ class SubtreeScope<T : Any, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by adapter.onScreen
+        val children by this@SubtreeScope.routingSource.onScreen
             .map { list ->
                 list
                     .filter { it.key.routing is V }
@@ -74,7 +74,7 @@ class SubtreeScope<T : Any, S>(
 //        val node = LocalNode.current?.let { it as Node<T> }
 //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by adapter.elements
+        val children by this@SubtreeScope.routingSource.elements
             .map {
                 it.filter { it.key.routing is V }
                     .map { it to childOrCreate(it.key) }
@@ -96,7 +96,7 @@ class SubtreeScope<T : Any, S>(
 fun <T : Any, S> Subtree(
     modifier: Modifier,
     transitionHandler: TransitionHandler<T, S>,
-    adapter: RoutingSourceAdapter<T, S>,
+    routingSource: RoutingSource<T, S>,
     block: @Composable SubtreeTransitionScope<T, S>.() -> Unit
 ) {
     BoxWithConstraints(modifier) {
@@ -109,7 +109,7 @@ fun <T : Any, S> Subtree(
                         height = maxHeight
                     )
                 ),
-                adapter
+                routingSource
             )
         )
     }
@@ -118,7 +118,7 @@ fun <T : Any, S> Subtree(
 class SubtreeTransitionScope<T : Any, S>(
     private val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
-    private val adapter: RoutingSourceAdapter<T, S>
+    private val routingSource: RoutingSource<T, S>
 ) {
 
     @Composable
@@ -170,7 +170,7 @@ class SubtreeTransitionScope<T : Any, S>(
         //        val node = LocalNode.current?.let { it as Node<T> }
         //            ?: error("Subtree can't be invoked outside of a Node's Composable context")
 
-        val children by adapter.onScreen
+        val children by this@SubtreeTransitionScope.routingSource.onScreen
             .map { list ->
                 list
                     .filter { clazz.isInstance(it.key.routing) }
@@ -187,7 +187,7 @@ class SubtreeTransitionScope<T : Any, S>(
                         transitionHandler.handle(
                             descriptor = descriptor,
                             onTransitionFinished = {
-                                adapter.onTransitionFinished(
+                                routingSource.onTransitionFinished(
                                     childEntry.key
                                 )
                             })

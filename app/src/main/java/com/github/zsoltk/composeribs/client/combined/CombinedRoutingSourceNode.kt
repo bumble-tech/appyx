@@ -108,7 +108,7 @@ class CombinedRoutingSourceNode(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(200.dp),
-            adapter = backStack.adapter,
+            routingSource = backStack,
             transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
         ) {
             children<Routing> { child ->
