@@ -209,6 +209,7 @@ class SubtreeTransitionScope<T : Any, S>(
 
     private fun RoutingElement<T, out S>.createDescriptor(transitionParams: TransitionParams) =
         TransitionDescriptor(
+            uid = key.id,
             params = transitionParams,
             operation = operation,
             element = key.routing,
