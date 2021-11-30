@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
 import com.github.zsoltk.composeribs.core.children.ChildEntryMap
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
+import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
@@ -22,7 +22,7 @@ import java.io.Serializable
  */
 class ChildNodeLifecycleManager<Routing>(
     private val lifecycle: Lifecycle,
-    private val adapter: RoutingSourceAdapter<Routing, *>,
+    private val routingSource: RoutingSource<Routing, *>,
     private val children: StateFlow<ChildEntryMap<Routing>>,
     private val coroutineScope: CoroutineScope = lifecycle.coroutineScope,
 ) {
@@ -52,8 +52,8 @@ class ChildNodeLifecycleManager<Routing>(
             // observe both routingSource and children
             combine(
                 lifecycleState,
-                adapter.onScreen,
-                adapter.offScreen,
+                routingSource.onScreen,
+                routingSource.offScreen,
                 children,
                 ::Quadruple
             ).collect { (state, onScreen, offScreen, children) ->

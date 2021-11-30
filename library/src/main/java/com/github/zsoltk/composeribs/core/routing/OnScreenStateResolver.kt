@@ -1,6 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing
 
-interface OnScreenResolver<State> {
+interface OnScreenStateResolver<State> {
 
     fun isOnScreen(state: State): Boolean
 }

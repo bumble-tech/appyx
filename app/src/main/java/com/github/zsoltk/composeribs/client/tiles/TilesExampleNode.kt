@@ -106,7 +106,7 @@ class TilesExampleNode(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(150.dp),
-                adapter = tiles.adapter,
+                routingSource = tiles,
                 transitionHandler = handler
             ) {
                 children<Routing> { child ->
