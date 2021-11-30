@@ -1,5 +1,6 @@
 package com.github.zsoltk.composeribs.core.routing.source.backstack
 
+import android.util.Log
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
 import com.github.zsoltk.composeribs.core.plugin.Destroyable
@@ -17,9 +18,11 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
 class BackStack<T : Any>(
@@ -53,6 +56,14 @@ class BackStack<T : Any>(
     override val elements: StateFlow<BackStackElements<T>> =
         state
 
+    init {
+        scope.launch {
+            elements.collect {
+                Log.d("BACKSTACK", it.joinToString("\n"))
+            }
+        }
+    }
+
     override val canHandleBackPress: StateFlow<Boolean> =
         state.map { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
             .stateIn(scope, SharingStarted.Eagerly, false)
@@ -77,6 +88,7 @@ class BackStack<T : Any>(
     }
 
     override fun accept(operation: BackStackOperation<T>) {
+        Log.d("BACKSTACK", "ACCEPT: $operation")
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }
