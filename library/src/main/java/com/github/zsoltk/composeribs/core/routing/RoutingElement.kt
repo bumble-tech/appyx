@@ -1,37 +1,42 @@
 package com.github.zsoltk.composeribs.core.routing
 
 import android.os.Parcelable
+import kotlinx.parcelize.IgnoredOnParcel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-class RoutingElement<Key, State>(
+data class RoutingElement<Key, State> internal constructor(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val operation: @RawValue Operation<Key, out State> = Operation.Noop(),
-    val transitionHistory: MutableList<Pair<State, State>> = mutableListOf()
+    val operation: @RawValue Operation<Key, out State>,
+    private val _transitionHistory: MutableList<Pair<State, State>>
 ) : Parcelable {
 
-    init {
-        if (fromState != targetState) {
-            transitionHistory.add(fromState to targetState)
-        }
-    }
+    @IgnoredOnParcel
+    val transitionHistory: List<Pair<State, State>> = _transitionHistory
+
+    constructor(
+        key: @RawValue RoutingKey<Key>,
+        fromState: @RawValue State,
+        targetState: @RawValue State,
+        operation: @RawValue Operation<Key, out State>,
+    ) : this(key, fromState, targetState, operation, mutableListOf(fromState to targetState))
 
     fun transitionTo(
         targetState: @RawValue State,
         operation: @RawValue Operation<Key, out State>
     ): RoutingElement<Key, State> {
         if (this.fromState != targetState) {
-            transitionHistory.add(this.fromState to targetState)
+            _transitionHistory.add(this.fromState to targetState)
         }
         return RoutingElement(
             key = key,
             fromState = fromState,
             targetState = targetState,
             operation = operation,
-            transitionHistory = transitionHistory
+            _transitionHistory = _transitionHistory
         )
     }
 
@@ -41,8 +46,7 @@ class RoutingElement<Key, State>(
             fromState = targetState,
             targetState = targetState,
             operation = operation,
-            transitionHistory = mutableListOf()
+            _transitionHistory = mutableListOf()
         )
     }
-
 }

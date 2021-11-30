@@ -4,6 +4,7 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -28,12 +29,16 @@ abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = 
         descriptor: TransitionDescriptor<T, S>,
         onTransitionFinished: (S) -> Unit
     ): ChildTransitionScope<S> {
-        val currentState = remember { MutableTransitionState(descriptor.fromState) }
-        currentState.targetState = descriptor.toState
-        val transition: Transition<S> = updateTransition(currentState)
+        val transitionState = remember { MutableTransitionState(descriptor.fromState) }
+        transitionState.targetState = descriptor.toState
+        val transition: Transition<S> = updateTransition(transitionState)
 
-        if (transition.currentState == currentState.targetState) {
-            onTransitionFinished(currentState.targetState)
+        with(transition) {
+            LaunchedEffect(currentState, targetState) {
+                if (currentState == targetState) {
+                    onTransitionFinished(targetState)
+                }
+            }
         }
         return rememberTransitionScope(transition, descriptor.processParams())
     }
