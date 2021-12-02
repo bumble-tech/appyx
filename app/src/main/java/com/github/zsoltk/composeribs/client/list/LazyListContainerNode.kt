@@ -34,7 +34,7 @@ import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.values
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.Routing
 import com.github.zsoltk.composeribs.core.children.ChildEntry
-import com.github.zsoltk.composeribs.core.composable.Subtree
+import com.github.zsoltk.composeribs.core.composable.BasicSubtree
 import com.github.zsoltk.composeribs.core.composable.childrenItems
 import com.github.zsoltk.composeribs.core.composable.childrenItemsIndexed
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -76,7 +76,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
                 }
             }
 
-            Subtree(routingSource = routingSource) {
+            BasicSubtree(routingSource = routingSource) {
                 val children by visibleChildren<Routing>()
                 when (selectedMode) {
                     Column -> ColumnExample(children)
