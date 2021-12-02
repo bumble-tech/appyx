@@ -24,8 +24,8 @@ import kotlin.reflect.KClass
 @Composable
 fun <Routing : Any, State> Subtree(
     modifier: Modifier,
-    transitionHandler: TransitionHandler<Routing, State>,
     routingSource: RoutingSource<Routing, State>,
+    transitionHandler: TransitionHandler<Routing, State>,
     block: @Composable SubtreeTransitionScope<Routing, State>.() -> Unit
 ) {
     BoxWithConstraints(modifier) {
