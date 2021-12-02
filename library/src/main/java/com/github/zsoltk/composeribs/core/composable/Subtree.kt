@@ -116,15 +116,3 @@ class SubtreeTransitionScope<T : Any, S>(
         }
     }
 }
-
-val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }
-
-interface ChildTransitionScope<S> {
-    val transition: Transition<S>
-    val transitionModifier: Modifier
-}
-
-internal class ChildTransitionScopeImpl<S>(
-    override val transition: Transition<S>,
-    override val transitionModifier: Modifier
-) : ChildTransitionScope<S>

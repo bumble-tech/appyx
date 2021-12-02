@@ -1,12 +1,15 @@
 package com.github.zsoltk.composeribs.core.composable
 
+import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
+import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
@@ -47,7 +50,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
     }
 }
 
-fun <Routing : Any, State> RoutingElement<Routing, State>.createDescriptor(
+private fun <Routing : Any, State> RoutingElement<Routing, State>.createDescriptor(
     transitionParams: TransitionParams
 ) =
     TransitionDescriptor(
@@ -66,3 +69,15 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out 
         remember { mutableStateOf(emptyList()) }
     }
 
+
+val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }
+
+interface ChildTransitionScope<S> {
+    val transition: Transition<S>
+    val transitionModifier: Modifier
+}
+
+internal class ChildTransitionScopeImpl<S>(
+    override val transition: Transition<S>,
+    override val transitionModifier: Modifier
+) : ChildTransitionScope<S>
