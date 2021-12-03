@@ -1,13 +1,16 @@
 package com.github.zsoltk.composeribs.core.composable
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.key
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.SaveableStateHolder
+import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
@@ -21,44 +24,75 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionParams
 
 @Composable
 fun <Routing : Any, State> ParentNode<Routing>.Child(
-    routingElement: RoutingElement<Routing, State>,
-    transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
-    decorator: @Composable ChildTransitionScope<State>.(transitionModifier: Modifier, child: @Composable () -> Unit) -> Unit = { modifier, child ->
-        Box(modifier = modifier) {
-            child()
-        }
-    }
+    routingElement: RoutingElement<Routing, out State>,
+    saveableStateHolder: SaveableStateHolder,
+    transitionParams: TransitionParams,
+    transitionHandler: TransitionHandler<Routing, State>,
+    decorator: @Composable ChildTransitionScope<State>.(
+        child: @Composable () -> Unit,
+        transitionDescriptor: TransitionDescriptor<Routing, State>
+    ) -> Unit
 ) {
-    val childEntry = remember { childOrCreate(routingElement.key) }
+    val childEntry = childOrCreate(routingElement.key)
+    saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
+        val descriptor = routingElement.createDescriptor(transitionParams)
+        val transitionScope =
+            transitionHandler.handle(
+                descriptor = descriptor,
+                onTransitionFinished = {
+                    routingSource.onTransitionFinished(
+                        childEntry.key
+                    )
+                })
 
-    key(routingElement.key) {
-        BoxWithConstraints {
-            val transitionScope =
-                transitionHandler.handle(
-                    descriptor = TransitionDescriptor(
-                        params = TransitionParams(
-                            bounds = TransitionBounds(
-                                width = maxWidth,
-                                height = maxHeight
-                            )
-                        ),
-                        operation = routingElement.operation,
-                        element = routingElement.key.routing,
-                        fromState = routingElement.fromState,
-                        toState = routingElement.targetState
-                    ),
-                    onTransitionFinished = {
-                        routingSource.onTransitionFinished(routingElement.key)
-                    }
-                )
-            transitionScope.decorator(
-                transitionModifier = transitionScope.transitionModifier,
-                child = { childEntry.node.Compose() },
-            )
-        }
-
+        transitionScope.decorator(
+            transitionDescriptor = descriptor,
+            child = {
+                CompositionLocalProvider(LocalTransitionModifier provides transitionScope.transitionModifier) {
+                    childEntry.node.Compose()
+                }
+            },
+        )
     }
 }
+
+@Composable
+fun <Routing : Any, State> ParentNode<Routing>.Child(
+    routingElement: RoutingElement<Routing, out State>,
+    transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
+    decorator: @Composable ChildTransitionScope<State>.(
+        child: @Composable () -> Unit,
+        transitionDescriptor: TransitionDescriptor<Routing, State>
+    ) -> Unit = { child, _ -> child() }
+) {
+    BoxWithConstraints {
+        Child(
+            routingElement = routingElement,
+            saveableStateHolder = rememberSaveableStateHolder(),
+            transitionParams = remember(maxWidth, maxHeight) {
+                TransitionParams(
+                    bounds = TransitionBounds(
+                        width = maxWidth,
+                        height = maxHeight
+                    )
+                )
+            },
+            transitionHandler = transitionHandler,
+            decorator = decorator
+        )
+    }
+}
+
+private fun <Routing : Any, State> RoutingElement<Routing, State>.createDescriptor(
+    transitionParams: TransitionParams
+) =
+    TransitionDescriptor(
+        params = transitionParams,
+        operation = operation,
+        element = key.routing,
+        fromState = fromState,
+        toState = targetState
+    )
 
 @Composable
 fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out S>> =
@@ -68,3 +102,15 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out 
         remember { mutableStateOf(emptyList()) }
     }
 
+
+val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }
+
+interface ChildTransitionScope<S> {
+    val transition: Transition<S>
+    val transitionModifier: Modifier
+}
+
+internal class ChildTransitionScopeImpl<S>(
+    override val transition: Transition<S>,
+    override val transitionModifier: Modifier
+) : ChildTransitionScope<S>
