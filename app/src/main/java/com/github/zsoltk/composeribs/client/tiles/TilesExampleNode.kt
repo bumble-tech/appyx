@@ -96,7 +96,7 @@ class TilesExampleNode(
                 Child(routingElement, transitionHandler = handler) { child, _ ->
                     Box(modifier = Modifier
                         .fillMaxWidth()
-                        .height(100.dp)
+                        .height(150.dp)
                         .clickable {
                             tiles.toggleSelection(routingElement.key)
                         }
