@@ -129,8 +129,8 @@ class BackStackExampleNode(
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
-                    transitionHandler = rememberBackStackExampleTransitionHandler(),
-                    routingSource = backStack
+                    routingSource = backStack,
+                    transitionHandler = rememberBackStackExampleTransitionHandler()
                 ) {
                     children<Routing> { child, descriptor ->
                         if (!descriptor.element.isFiltered(skipChildRenderingByRouting.value)) {
