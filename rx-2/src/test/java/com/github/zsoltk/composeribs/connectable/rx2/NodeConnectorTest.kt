@@ -6,10 +6,10 @@ import com.github.zsoltk.composeribs.connectable.Rx2NodeConnectorTest.Output.Out
 import com.github.zsoltk.composeribs.connectable.Rx2NodeConnectorTest.Output.Output3
 import com.github.zsoltk.composeribs.connectable.rx2.NodeConnector
 import io.reactivex.observers.TestObserver
-import org.junit.Test
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.RepeatedTest
+import org.junit.jupiter.api.Test
 import java.util.concurrent.CyclicBarrier
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
