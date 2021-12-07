@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.plugin
 
 import androidx.compose.runtime.saveable.SaverScope
+import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
 
@@ -14,6 +15,10 @@ interface NodeAware : Plugin {
     val node: Node
 
     fun init(node: Node) {}
+}
+
+interface NodeLifecycleAware : Plugin {
+    fun onLifecycleUpdated(state: Lifecycle.State)
 }
 
 interface Saveable : Plugin {
