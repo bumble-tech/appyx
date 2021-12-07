@@ -5,6 +5,8 @@ androidx-lifecycle = "2.3.1"
 compose = "1.0.5"
 coroutines = "1.5.2"
 kotlin = "1.5.31"
+rxjava2 = "2.2.21"
+junit5 = "5.8.2"
 
 [libraries]
 android-plugin = "com.android.tools.build:gradle:7.0.3"
@@ -31,3 +33,10 @@ junit = "junit:junit:4.13.2"
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-text = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava2" }
+rxrelay = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
+
+junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
+junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
+junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
