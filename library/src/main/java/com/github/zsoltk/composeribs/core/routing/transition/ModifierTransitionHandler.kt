@@ -8,8 +8,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import com.github.zsoltk.composeribs.core.composable.ChildTransitionScope
 import com.github.zsoltk.composeribs.core.composable.ChildTransitionScopeImpl
 
@@ -40,7 +38,7 @@ abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = 
                 }
             }
         }
-        return rememberTransitionScope(transition, descriptor.processParams())
+        return rememberTransitionScope(transition, descriptor)
     }
 
     abstract fun createModifier(
@@ -48,29 +46,6 @@ abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = 
         transition: Transition<S>,
         descriptor: TransitionDescriptor<T, S>
     ): Modifier
-
-    @Composable
-    private fun determineBounds(transitionBounds: TransitionBounds): TransitionBounds {
-        return if (clipToBounds) {
-            transitionBounds
-        } else {
-            with(LocalDensity.current) {
-                val configuration = LocalConfiguration.current
-                TransitionBounds(
-                    width = configuration.screenWidthDp.toDp(),
-                    height = configuration.screenHeightDp.toDp()
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun TransitionDescriptor<T, S>.processParams(): TransitionDescriptor<T, S> =
-        copy(
-            params = params.copy(
-                bounds = determineBounds(transitionBounds = params.bounds)
-            )
-        )
 
     @Composable
     private fun rememberTransitionScope(

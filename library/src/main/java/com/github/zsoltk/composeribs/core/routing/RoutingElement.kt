@@ -9,14 +9,14 @@ class RoutingElement<Key, State> private constructor(
     val key: @RawValue RoutingKey<Key>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val operation: @RawValue Operation<Key, out State>,
+    val operation: @RawValue Operation<Key, State>,
     val transitionHistory: List<Pair<State, State>>
 ) : Parcelable {
     constructor(
         key: @RawValue RoutingKey<Key>,
         fromState: @RawValue State,
         targetState: @RawValue State,
-        operation: @RawValue Operation<Key, out State>,
+        operation: @RawValue Operation<Key, State>,
     ) : this(
         key,
         fromState,
@@ -27,7 +27,7 @@ class RoutingElement<Key, State> private constructor(
 
     fun transitionTo(
         targetState: @RawValue State,
-        operation: @RawValue Operation<Key, out State>
+        operation: @RawValue Operation<Key, State>
     ): RoutingElement<Key, State> =
         RoutingElement(
             key = key,
