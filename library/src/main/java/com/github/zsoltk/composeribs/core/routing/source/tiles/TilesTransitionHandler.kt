@@ -9,9 +9,11 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
+import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class TilesTransitionHandler<T>(
@@ -43,7 +45,12 @@ class TilesTransitionHandler<T>(
                 }
             })
 
-        offset(x = Dp(1000f * destroyProgress.value), y = Dp(-200 * destroyProgress.value))
+        offset {
+            IntOffset(
+                x = (1000f * destroyProgress.value * this.density).roundToInt(),
+                y = (-200 * destroyProgress.value * this.density).roundToInt()
+            )
+        }
             .rotate(720 * destroyProgress.value)
             .scale(scale.value)
     }

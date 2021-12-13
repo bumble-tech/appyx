@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.NewRoot
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Push
@@ -21,6 +22,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Sin
 import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
+import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider<T>(
@@ -59,7 +61,12 @@ class BackStackSlider<T>(
                 }
             })
 
-        offset(Dp(offset.value.x), Dp(offset.value.y))
+        offset {
+            IntOffset(
+                x = (offset.value.x * this.density).roundToInt(),
+                y = (offset.value.y * this.density).roundToInt()
+            )
+        }
     }
 
     private fun toOutsideRight(width: Float) = Offset(1.0f * width, 0f)
