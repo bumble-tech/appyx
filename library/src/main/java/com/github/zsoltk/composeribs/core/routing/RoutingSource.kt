@@ -5,8 +5,10 @@ import com.github.zsoltk.composeribs.core.plugin.SavesInstanceState
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import kotlinx.coroutines.flow.StateFlow
 
-interface RoutingSource<Routing, State> : UpNavigationHandler, SavesInstanceState,
-    BackPressHandler, RoutingSourceAdapter<Routing, State> {
+interface RoutingSource<Routing, State> : RoutingSourceAdapter<Routing, State>,
+    UpNavigationHandler,
+    SavesInstanceState,
+    BackPressHandler {
 
     val elements: StateFlow<RoutingElements<Routing, out State>>
 
