@@ -32,3 +32,15 @@ interface UpNavigationHandler : Plugin {
 fun interface Destroyable : Plugin {
     fun destroy()
 }
+
+interface BackPressHandler : Plugin {
+    fun onBackPressed()
+}
+
+/**
+ * Bundle for future state restoration.
+ * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
+ */
+interface SavesInstanceState : Plugin {
+    fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {}
+}
