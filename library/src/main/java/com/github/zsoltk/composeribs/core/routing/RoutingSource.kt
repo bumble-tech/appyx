@@ -3,17 +3,17 @@ package com.github.zsoltk.composeribs.core.routing
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import kotlinx.coroutines.flow.StateFlow
 
-interface RoutingSource<Key, State> : UpNavigationHandler, RoutingSourceAdapter<Key, State> {
+interface RoutingSource<Routing, State> : UpNavigationHandler, RoutingSourceAdapter<Routing, State> {
 
-    val elements: StateFlow<RoutingElements<Key, out State>>
+    val elements: StateFlow<RoutingElements<Routing, out State>>
 
     val canHandleBackPress: StateFlow<Boolean>
 
     fun onBackPressed()
 
-    fun onTransitionFinished(key: RoutingKey<Key>)
+    fun onTransitionFinished(key: RoutingKey<Routing>)
 
-    fun accept(operation: Operation<Key, State>) = Unit
+    fun accept(operation: Operation<Routing, State>) = Unit
 
     /**
      * Bundle for future state restoration.

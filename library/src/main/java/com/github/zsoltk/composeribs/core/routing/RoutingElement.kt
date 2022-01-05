@@ -5,18 +5,18 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-class RoutingElement<Key, State> private constructor(
-    val key: @RawValue RoutingKey<Key>,
+class RoutingElement<Routing, State> private constructor(
+    val key: @RawValue RoutingKey<Routing>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val operation: @RawValue Operation<Key, State>,
+    val operation: @RawValue Operation<Routing, State>,
     val transitionHistory: List<Pair<State, State>>
 ) : Parcelable {
     constructor(
-        key: @RawValue RoutingKey<Key>,
+        key: @RawValue RoutingKey<Routing>,
         fromState: @RawValue State,
         targetState: @RawValue State,
-        operation: @RawValue Operation<Key, State>,
+        operation: @RawValue Operation<Routing, State>,
     ) : this(
         key,
         fromState,
@@ -27,8 +27,8 @@ class RoutingElement<Key, State> private constructor(
 
     fun transitionTo(
         targetState: @RawValue State,
-        operation: @RawValue Operation<Key, State>
-    ): RoutingElement<Key, State> =
+        operation: @RawValue Operation<Routing, State>
+    ): RoutingElement<Routing, State> =
         RoutingElement(
             key = key,
             fromState = fromState,
@@ -40,7 +40,7 @@ class RoutingElement<Key, State> private constructor(
             } else transitionHistory
         )
 
-    fun onTransitionFinished(): RoutingElement<Key, State> =
+    fun onTransitionFinished(): RoutingElement<Routing, State> =
         RoutingElement(
             key = key,
             fromState = targetState,

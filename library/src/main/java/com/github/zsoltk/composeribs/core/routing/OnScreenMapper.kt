@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
-class OnScreenMapper<Key, State>(
+class OnScreenMapper<Routing, State>(
     private val scope: CoroutineScope,
     private val onScreenStateResolver: OnScreenStateResolver<State>
 ) {
 
-    fun resolveOnScreenElements(state: StateFlow<RoutingElements<Key, State>>): StateFlow<RoutingElements<Key, State>> =
+    fun resolveOnScreenElements(state: StateFlow<RoutingElements<Routing, State>>): StateFlow<RoutingElements<Routing, State>> =
         state
             .map { elements ->
                 elements.filter { element ->
@@ -20,7 +20,7 @@ class OnScreenMapper<Key, State>(
             }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    fun resolveOffScreenElements(state: StateFlow<RoutingElements<Key, State>>): StateFlow<RoutingElements<Key, State>> =
+    fun resolveOffScreenElements(state: StateFlow<RoutingElements<Routing, State>>): StateFlow<RoutingElements<Routing, State>> =
         state
             .map { elements ->
                 elements.filterNot { element ->
@@ -29,12 +29,16 @@ class OnScreenMapper<Key, State>(
             }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    private fun RoutingElement<Key, State>.isOnScreen(): Boolean =
+    private fun RoutingElement<Routing, State>.isOnScreen(): Boolean =
         if (transitionHistory.isEmpty()) {
-            onScreenStateResolver.isOnScreen(targetState) || onScreenStateResolver.isOnScreen(fromState)
+            onScreenStateResolver.isOnScreen(targetState) || onScreenStateResolver.isOnScreen(
+                fromState
+            )
         } else {
             transitionHistory.find { (fromState, toState) ->
-                onScreenStateResolver.isOnScreen(fromState) || onScreenStateResolver.isOnScreen(toState)
+                onScreenStateResolver.isOnScreen(fromState) || onScreenStateResolver.isOnScreen(
+                    toState
+                )
             } != null
         }
 }
