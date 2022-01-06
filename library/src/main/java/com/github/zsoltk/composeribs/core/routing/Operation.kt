@@ -3,18 +3,19 @@ package com.github.zsoltk.composeribs.core.routing
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-interface Operation<T, S> : (RoutingElements<T, S>) -> RoutingElements<T, S>, Parcelable {
+interface Operation<Routing, State> :
+        (RoutingElements<Routing, State>) -> RoutingElements<Routing, State>, Parcelable {
 
-    fun isApplicable(elements: RoutingElements<T, S>): Boolean
+    fun isApplicable(elements: RoutingElements<Routing, State>): Boolean
 
     @Parcelize
-    class Noop<T, S> : Operation<T, S> {
+    class Noop<Routing, State> : Operation<Routing, State> {
 
-        override fun isApplicable(elements: RoutingElements<T, S>) = false
+        override fun isApplicable(elements: RoutingElements<Routing, State>) = false
 
         override fun invoke(
-            elements: RoutingElements<T, S>
-        ): RoutingElements<T, S> = elements
+            elements: RoutingElements<Routing, State>
+        ): RoutingElements<Routing, State> = elements
 
         override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
 

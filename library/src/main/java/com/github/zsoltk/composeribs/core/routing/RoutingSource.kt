@@ -1,25 +1,22 @@
 package com.github.zsoltk.composeribs.core.routing
 
+import com.github.zsoltk.composeribs.core.plugin.BackPressHandler
+import com.github.zsoltk.composeribs.core.plugin.SavesInstanceState
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import kotlinx.coroutines.flow.StateFlow
 
-interface RoutingSource<Key, State> : UpNavigationHandler, RoutingSourceAdapter<Key, State> {
+interface RoutingSource<Routing, State> : RoutingSourceAdapter<Routing, State>,
+    UpNavigationHandler,
+    SavesInstanceState,
+    BackPressHandler {
 
-    val elements: StateFlow<RoutingElements<Key, out State>>
+    val elements: StateFlow<RoutingElements<Routing, out State>>
 
     val canHandleBackPress: StateFlow<Boolean>
 
-    fun onBackPressed()
+    fun onTransitionFinished(key: RoutingKey<Routing>)
 
-    fun onTransitionFinished(key: RoutingKey<Key>)
-
-    fun accept(operation: Operation<Key, State>) = Unit
-
-    /**
-     * Bundle for future state restoration.
-     * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
-     */
-    fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {}
+    fun accept(operation: Operation<Routing, State>) = Unit
 
     override fun handleUpNavigation(): Boolean =
         canHandleBackPress.value.also { if (it) onBackPressed() }
