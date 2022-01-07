@@ -13,6 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.github.zsoltk.composeribs.core.composable.LocalTransitionModifier
+import com.github.zsoltk.composeribs.core.integrationpoint.FloatingIntegrationPoint
+import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPoint
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycle
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleImpl
@@ -40,10 +42,25 @@ abstract class Node(
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
 
+    val ancestryInfo: AncestryInfo =
+        buildContext.ancestryInfo
+
+    val isRoot: Boolean =
+        ancestryInfo == AncestryInfo.Root
+
     private val parent: Node? =
-        when (val ancestryInfo = buildContext.ancestryInfo) {
+        when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
+        }
+
+    var integrationPoint: IntegrationPoint = FloatingIntegrationPoint()
+        internal set
+        get() {
+            return if (isRoot) field
+            else parent?.integrationPoint ?: error(
+                "Non-root Node should have a parent"
+            )
         }
 
     private val lifecycleRegistry = LifecycleRegistry(this)

@@ -11,6 +11,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPoint
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -29,12 +30,14 @@ fun interface NodeFactory<N : Node> {
 @Composable
 fun <N : Node> NodeHost(
     upNavigationHandler: FallbackUpNavigationHandler,
+    integrationPoint: IntegrationPoint? = null,
     factory: NodeFactory<N>
 ) {
     CompositionLocalProvider(
         LocalFallbackUpNavigationHandler provides upNavigationHandler
     ) {
         val node by rememberNode(factory)
+        integrationPoint?.attach(node)
         node.Compose()
         DisposableEffect(node) {
             onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
@@ -52,7 +55,9 @@ fun <N : Node> NodeHost(
 }
 
 @Composable
-fun <N : Node> rememberNode(factory: NodeFactory<N>): State<N> =
+fun <N : Node> rememberNode(
+    factory: NodeFactory<N>
+): State<N> =
     rememberSaveable(
         inputs = arrayOf(),
         stateSaver = mapSaver(

@@ -2,7 +2,6 @@ package com.github.zsoltk.composeribs
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -10,11 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.container.ContainerNode
 import com.github.zsoltk.composeribs.core.integration.NodeHost
+import com.github.zsoltk.composeribs.core.integrationpoint.RibActivity
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.ui.Rf1Theme
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : RibActivity() {
 
     private val upNavigationHandler = FallbackUpNavigationHandler { onBackPressed() }
 
@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         NodeHost(
+                            integrationPoint = integrationPoint,
                             upNavigationHandler = upNavigationHandler
                         ) {
                             ContainerNode(buildContext = it)
