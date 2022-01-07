@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.core.integrationpoint.permissionrequester.PermissionRequester
 import com.github.zsoltk.composeribs.core.integrationpoint.requestcode.RequestCodeClient
 import com.github.zsoltk.composeribs.core.minimal.reactive.Cancellable
@@ -34,7 +33,7 @@ class RequestPermissionsNode(buildContext: BuildContext) : Node(buildContext = b
 
     private val permissionRequester = integrationPoint.permissionRequester
     private var cancellable: Cancellable? = null
-    private var permissionsState by mutableStateOf("")
+    private var permissionsState by mutableStateOf("Press request permissions to check permissions state")
 
     @Composable
     override fun View() {
@@ -105,6 +104,6 @@ class RequestPermissionsNode(buildContext: BuildContext) : Node(buildContext = b
 
 @Preview
 @Composable
-fun ChildPreview() {
-    ChildNode("1", BuildContext.root(null)).Compose()
+fun RequestPermissionsNodePreview() {
+    RequestPermissionsNode(BuildContext.root(null)).Compose()
 }

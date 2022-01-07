@@ -24,9 +24,11 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Comb
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
+import com.github.zsoltk.composeribs.client.requestpermissions.RequestPermissionsNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -76,6 +78,9 @@ class ContainerNode(
 
         @Parcelize
         object LazyExamples : Routing()
+
+        @Parcelize
+        object RequestPermissionsExamples : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -86,6 +91,7 @@ class ContainerNode(
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
+            is RequestPermissionsExamples -> RequestPermissionsNode(buildContext)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)
@@ -146,6 +152,7 @@ class ContainerNode(
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
                 TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
+                TextButton("Request permissions example") { backStack.push(RequestPermissionsExamples) }
 
                 val scope = rememberCoroutineScope()
                 TextButton("Trigger double navigation in 3 seconds") {
