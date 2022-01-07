@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
 import com.github.zsoltk.composeribs.client.combined.CombinedRoutingSourceNode
@@ -26,9 +27,9 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Moda
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
+import com.github.zsoltk.composeribs.client.integrationpoint.IntegrationPointExampleNode
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
-import com.github.zsoltk.composeribs.client.requestpermissions.RequestPermissionsNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -91,7 +92,7 @@ class ContainerNode(
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
-            is RequestPermissionsExamples -> RequestPermissionsNode(buildContext)
+            is RequestPermissionsExamples -> IntegrationPointExampleNode(buildContext)
         }
 
 //    @OptIn(ExperimentalAnimationApi::class)
@@ -152,7 +153,11 @@ class ContainerNode(
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
                 TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
-                TextButton("Request permissions example") { backStack.push(RequestPermissionsExamples) }
+                TextButton("Request permissions / start activities example") {
+                    backStack.push(
+                        RequestPermissionsExamples
+                    )
+                }
 
                 val scope = rememberCoroutineScope()
                 TextButton("Trigger double navigation in 3 seconds") {
@@ -177,7 +182,7 @@ class ContainerNode(
     @Composable
     private fun TextButton(text: String, onClick: () -> Unit) {
         Button(onClick = onClick) {
-            Text(text = text)
+            Text(textAlign = TextAlign.Center, text = text)
         }
     }
 

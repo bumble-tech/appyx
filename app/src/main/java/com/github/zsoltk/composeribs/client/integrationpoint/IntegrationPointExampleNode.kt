@@ -1,6 +1,8 @@
-package com.github.zsoltk.composeribs.client.requestpermissions
+package com.github.zsoltk.composeribs.client.integrationpoint
 
 import android.Manifest
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.zsoltk.composeribs.client.integrationpoint.StartActivityExample.Companion.StringExtraKey
 import com.github.zsoltk.composeribs.core.integrationpoint.permissionrequester.PermissionRequester
 import com.github.zsoltk.composeribs.core.integrationpoint.requestcode.RequestCodeClient
 import com.github.zsoltk.composeribs.core.minimal.reactive.Cancellable
@@ -28,20 +31,25 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import java.util.*
 
-class RequestPermissionsNode(buildContext: BuildContext) : Node(buildContext = buildContext),
+class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContext = buildContext),
     RequestCodeClient {
 
     private val permissionRequester = integrationPoint.permissionRequester
-    private var cancellable: Cancellable? = null
-    private var permissionsState by mutableStateOf("Press request permissions to check permissions state")
+    private val activityStarter = integrationPoint.activityStarter
+    private var permissionsResultCancellable: Cancellable? = null
+    private var activityResultsCancellable: Cancellable? = null
+    private var permissionsResultState by mutableStateOf("Press request permissions to check permissions state")
+    private var activityResultState by mutableStateOf("Launch activity for result to check result state ")
 
     @Composable
     override fun View() {
 
         DisposableEffect(key1 = Any()) {
             observeCameraPermissions()
+            observeActivityResult()
             onDispose {
-                cancellable?.cancel()
+                permissionsResultCancellable?.cancel()
+                activityResultsCancellable?.cancel()
             }
         }
 
@@ -59,35 +67,60 @@ class RequestPermissionsNode(buildContext: BuildContext) : Node(buildContext = b
             ) {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = permissionsState
+                    text = permissionsResultState
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(onClick = { requestCameraPermissions() }) {
                     Text("Request permissions")
                 }
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = { launchActivity() }) {
+                    Text("Launch activity")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(onClick = { launchActivityForResult() }) {
+                    Text("Launch activity for result")
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = activityResultState
+                )
             }
+        }
+    }
+
+    private fun launchActivity() {
+        integrationPoint.activityStarter.startActivity {
+            Intent(this, StartActivityExample::class.java)
+        }
+    }
+
+    private fun launchActivityForResult() {
+        integrationPoint.activityStarter.startActivityForResult(this, StartActivityForResultCode) {
+            Intent(this, StartActivityExample::class.java)
         }
     }
 
     private fun requestCameraPermissions() {
         permissionRequester.requestPermissions(
             client = this,
-            requestCode = REQUEST_CODE_CAMERA,
+            requestCode = RequestCameraCode,
             permissions = arrayOf(Manifest.permission.CAMERA)
         )
     }
 
     private fun observeCameraPermissions() {
-        cancellable = permissionRequester
+        permissionsResultCancellable = permissionRequester
             .events(this)
             .observe { event ->
-                if (event.requestCode == REQUEST_CODE_CAMERA) {
+                if (event.requestCode == RequestCameraCode) {
                     when (event) {
                         is PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult -> {
-                            permissionsState = "Permission event: $event"
+                            permissionsResultState = "Permission event: $event"
                         }
                         is PermissionRequester.RequestPermissionsEvent.Cancelled -> {
-                            permissionsState = "Permission request cancelled"
+                            permissionsResultState = "Permission request cancelled"
                         }
                         else -> Unit
                     }
@@ -95,8 +128,20 @@ class RequestPermissionsNode(buildContext: BuildContext) : Node(buildContext = b
             }
     }
 
+    private fun observeActivityResult() {
+        activityResultsCancellable = activityStarter
+            .events(this)
+            .observe { event ->
+                if (event.requestCode == StartActivityForResultCode && event.resultCode == Activity.RESULT_OK && event.data != null) {
+                    val result = event.data?.getStringExtra(StringExtraKey) ?: ""
+                    activityResultState = "Activity result: $result"
+                }
+            }
+    }
+
     companion object {
-        private const val REQUEST_CODE_CAMERA = 1
+        private const val RequestCameraCode = 1
+        private const val StartActivityForResultCode = 2
     }
 
     override val requestCodeClientId: String = UUID.randomUUID().toString()
@@ -104,6 +149,6 @@ class RequestPermissionsNode(buildContext: BuildContext) : Node(buildContext = b
 
 @Preview
 @Composable
-fun RequestPermissionsNodePreview() {
-    RequestPermissionsNode(BuildContext.root(null)).Compose()
+fun IntegrationPointExampleNodePreview() {
+    IntegrationPointExampleNode(BuildContext.root(null)).Compose()
 }
