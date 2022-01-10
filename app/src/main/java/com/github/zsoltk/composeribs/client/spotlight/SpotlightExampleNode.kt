@@ -1,7 +1,6 @@
 package com.github.zsoltk.composeribs.client.spotlight
 
 import android.os.Parcelable
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,10 +11,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode.Routing.Child1
 import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode.Routing.Child2
 import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode.Routing.Child3
@@ -23,18 +23,15 @@ import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.node.node
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.Spotlight
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.SpotlightItem
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.SpotlightItems
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.hasNext
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.hasPrevious
+import com.github.zsoltk.composeribs.core.routing.source.spotlight.operations.activate
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.operations.next
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.operations.previous
-import com.github.zsoltk.composeribs.core.routing.source.spotlight.transitionhandlers.SpotlightFader
-import com.github.zsoltk.composeribs.core.routing.source.spotlight.transitionhandlers.SpotlightSlider
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.transitionhandlers.rememberSpotlightSlider
-import com.github.zsoltk.composeribs.core.routing.transition.rememberCombinedHandler
 import kotlinx.parcelize.Parcelize
 
 class SpotlightExampleNode(
@@ -67,18 +64,20 @@ class SpotlightExampleNode(
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            Child1 -> node(buildContext) { Placeholder(name = "Child1", color = Color.LightGray) }
-            Child2 -> node(buildContext) { Placeholder(name = "Child2", color = Color.Magenta) }
-            Child3 -> node(buildContext) { Placeholder(name = "Child3", color = Color.Cyan) }
+            Child1 -> ChildNode(name = "Child1", buildContext = buildContext)
+            Child2 -> ChildNode(name = "Child2", buildContext = buildContext)
+            Child3 -> ChildNode(name = "Child3", buildContext = buildContext)
         }
 
 
     @Composable
     override fun View() {
+        val hasPrevious = spotlight.hasPrevious().collectAsState(initial = false)
+        val hasNext = spotlight.hasNext().collectAsState(initial = false)
+
         Box(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Column(
@@ -86,65 +85,71 @@ class SpotlightExampleNode(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TextButton(
                         text = "Previous",
-                        enabled = spotlight.hasPrevious()
+                        enabled = hasPrevious.value
                     ) {
                         spotlight.previous()
                     }
                     TextButton(
                         text = "Next",
-                        enabled = spotlight.hasNext()
+                        enabled = hasNext.value
                     ) {
                         spotlight.next()
                     }
                 }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    TextButton(
+                        text = "C1",
+                        enabled = true
+                    ) {
+                        spotlight.activate(ChildKeys.C1)
+                    }
+                    TextButton(
+                        text = "C2",
+                        enabled = true
+                    ) {
+                        spotlight.activate(ChildKeys.C2)
+                    }
+                    TextButton(
+                        text = "C3",
+                        enabled = true
+                    ) {
+                        spotlight.activate(ChildKeys.C3)
+                    }
+                }
+
                 Subtree(
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
-                   transitionHandler = rememberSpotlightSlider(clipToBounds = true),
-//                    transitionHandler =rememberCombinedHandler(
-//                        handlers = listOf(
-//                            SpotlightFader(),
-//                            SpotlightSlider(clipToBounds = true),
-//                        )
-//                    ),
-                    adapter = spotlight.adapter
+                    transitionHandler = rememberSpotlightSlider(clipToBounds = true),
+                    routingSource = spotlight
                 ) {
                     children<Routing> { child ->
                         child()
                     }
                 }
-            }
-        }
-    }
 
-    @Composable
-    fun Placeholder(name: String, color: Color) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .background(color),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(text = "This screen is a placeholder for $name")
             }
         }
     }
 
     @Composable
     private fun TextButton(text: String, enabled: Boolean = true, onClick: () -> Unit) {
-        Button(onClick = onClick, enabled = enabled) {
+        Button(onClick = onClick, enabled = enabled, modifier = Modifier.padding(4.dp)) {
             Text(text = text)
         }
     }

@@ -198,31 +198,12 @@ class ContainerNode(
     }
 
     @Composable
-    fun PlaceHolder() {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(text = "This screen is a placeholder")
-            }
-        }
-    }
-
-    @Composable
     private fun TextButton(text: String, onClick: () -> Unit) {
         Button(onClick = onClick) {
             Text(text = text)
         }
     }
 
-
-    //TODO: move navigation to ParentNode(?)
     override fun handleUpNavigation(): Boolean =
         if (upNavigationOverridesChild.value && backStack.canHandleBackPress.value) {
             backStack.pop()

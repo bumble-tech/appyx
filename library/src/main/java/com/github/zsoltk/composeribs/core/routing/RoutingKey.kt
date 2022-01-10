@@ -3,10 +3,10 @@ package com.github.zsoltk.composeribs.core.routing
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import java.util.UUID
+import java.util.*
 
 @Parcelize
-class RoutingKey<Routing> private constructor(
+class RoutingKey<Routing> constructor(
     val routing: @RawValue Routing,
     val id: String
 ) : Parcelable {

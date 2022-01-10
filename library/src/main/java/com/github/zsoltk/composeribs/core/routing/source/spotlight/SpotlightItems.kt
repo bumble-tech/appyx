@@ -4,13 +4,13 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class SpotlightItems<T : Parcelable, E : Parcelable>(
+class SpotlightItems<T : Parcelable, E : Enum<E>>(
     val items: List<SpotlightItem<T, E>>,
     val initialElementKey: E? = null,
 ) : Parcelable
 
 @Parcelize
-class SpotlightItem<T : Parcelable, E : Parcelable>(
+class SpotlightItem<T : Parcelable, E : Enum<E>>(
     val element: T,
     val key: E,
 ) : Parcelable

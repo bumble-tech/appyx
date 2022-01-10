@@ -1,15 +1,12 @@
 package com.github.zsoltk.composeribs.core.routing.source.spotlight
 
 import android.os.Parcelable
-import android.util.Log
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.plugin.Destroyable
-import com.github.zsoltk.composeribs.core.routing.OnScreenResolver
+import com.github.zsoltk.composeribs.core.routing.OnScreenMapper
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.RoutingSourceAdapter
-import com.github.zsoltk.composeribs.core.routing.adapter
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.Spotlight.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_AFTER
@@ -20,27 +17,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
-class Spotlight<T : Parcelable, E : Parcelable>(
+class Spotlight<T : Parcelable, E : Enum<E>>(
     items: SpotlightItems<T, E>,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    private val onScreenResolver: OnScreenResolver<TransitionState> = SpotlightOnScreenResolver()
 ) : RoutingSource<T, TransitionState>, Destroyable {
 
     enum class TransitionState {
-        INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER
+        INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
-
-    private val initialKey = items.initialElementKey
 
     private val state = MutableStateFlow(
         value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements()
@@ -48,32 +39,44 @@ class Spotlight<T : Parcelable, E : Parcelable>(
 
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val adapter: RoutingSourceAdapter<T, TransitionState> by lazy(LazyThreadSafetyMode.NONE) {
-        adapter(scope, onScreenResolver)
-    }
+    private val onScreenMapper =
+        OnScreenMapper<T, TransitionState>(scope, SpotlightOnScreenResolver)
+
+    override val onScreen: StateFlow<SpotlightElements<T>> =
+        onScreenMapper.resolveOnScreenElements(state)
+
+    override val offScreen: StateFlow<SpotlightElements<T>> =
+        onScreenMapper.resolveOffScreenElements(state)
 
     override val elements: StateFlow<SpotlightElements<T>> =
         state
 
-    override val canHandleBackPress: StateFlow<Boolean> = //TODO: should handle it?
-        state.map { it.firstOrNull()?.key == initialKey }
-            .stateIn(scope, SharingStarted.Eagerly, false)
+    override val canHandleBackPress: StateFlow<Boolean> = MutableStateFlow(false)
+
+    override fun onBackPressed() {
+        //Not required
+        //TODO: should we decouple backpress from RoutingSource base interface?
+    }
 
     init {
         scope.launch {
-            elements.collect {
-                Log.d("SPOTLIGHT", it.joinToString("\n"))
+            offScreen.collect { offElements ->
+                val inactiveChanges = offElements.filter { it.fromState != it.targetState }
+                state.update { elements ->
+                    elements.map {
+                        if (it in inactiveChanges) {
+                            it.onTransitionFinished()
+                        } else {
+                            it
+                        }
+                    }
+                }
             }
         }
     }
 
-    override fun onBackPressed() {
-        //TODO("Not yet implemented")
-    }
-
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { elements ->
-            Log.d("SPOTLIGHT", "OnTransitionFinishedUpdate: $key")
             elements.map {
                 if (key == it.key) {
                     it.onTransitionFinished()
@@ -85,7 +88,6 @@ class Spotlight<T : Parcelable, E : Parcelable>(
     }
 
     override fun accept(operation: SpotlightOperation<T>) {
-        Log.d("SPOTLIGHT", "ACCEPT: $operation")
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }
@@ -103,21 +105,18 @@ class Spotlight<T : Parcelable, E : Parcelable>(
         val activeIndex =
             items.indexOfFirst { it.key == initialElementKey }.let { if (it < 0) 0 else it }
 
-        val elements = items.mapIndexed { index, item ->
+        return items.mapIndexed { index, item ->
             val state = when {
                 index < activeIndex -> INACTIVE_BEFORE
                 index == activeIndex -> ACTIVE
                 else -> INACTIVE_AFTER
             }
             SpotlightElement(
-                key = RoutingKey(item.element),
+                key = RoutingKey(item.element, item.key.toString()),
                 fromState = state,
                 targetState = state,
                 operation = Operation.Noop()
             )
         }
-        Log.d("SPOTLIGHT", elements.joinToString("\n"))
-
-        return elements
     }
 }
