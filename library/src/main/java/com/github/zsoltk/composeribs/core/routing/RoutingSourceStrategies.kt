@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 
-class QueueTransitionsRoutingSource<Key, State>(
+class QueueTransitionsRoutingSource<Routing, State>(
     coroutineScope: CoroutineScope,
-    private val routingSource: RoutingSource<Key, State>
-) : RoutingSource<Key, State> by routingSource {
+    private val routingSource: RoutingSource<Routing, State>
+) : RoutingSource<Routing, State> by routingSource {
 
-    private val operationQueue = LinkedList<Operation<Key, State>>()
+    private val operationQueue = LinkedList<Operation<Routing, State>>()
 
     init {
         coroutineScope.launch {
@@ -30,7 +30,7 @@ class QueueTransitionsRoutingSource<Key, State>(
         return routingSource.elements.value.any { it.targetState != it.fromState }
     }
 
-    override fun accept(operation: Operation<Key, State>) {
+    override fun accept(operation: Operation<Routing, State>) {
         if (checkUnfinishedOperation()) {
             operationQueue.addFirst(operation)
         } else {
@@ -39,11 +39,11 @@ class QueueTransitionsRoutingSource<Key, State>(
     }
 }
 
-class FinishTransitionsOnNewOneRoutingSource<Key, State>(
-    private val routingSource: RoutingSource<Key, State>
-) : RoutingSource<Key, State> by routingSource {
+class FinishTransitionsOnNewOneRoutingSource<Routing, State>(
+    private val routingSource: RoutingSource<Routing, State>
+) : RoutingSource<Routing, State> by routingSource {
 
-    override fun accept(operation: Operation<Key, State>) {
+    override fun accept(operation: Operation<Routing, State>) {
         finishUnfinishedTransitions()
         routingSource.accept(operation)
     }
@@ -57,11 +57,11 @@ class FinishTransitionsOnNewOneRoutingSource<Key, State>(
     }
 }
 
-class RejectIfHasUnfinishedTransitionsRoutingSource<Key, State>(
-    private val routingSource: RoutingSource<Key, State>
-) : RoutingSource<Key, State> by routingSource {
+class RejectIfHasUnfinishedTransitionsRoutingSource<Routing, State>(
+    private val routingSource: RoutingSource<Routing, State>
+) : RoutingSource<Routing, State> by routingSource {
 
-    override fun accept(operation: Operation<Key, State>) {
+    override fun accept(operation: Operation<Routing, State>) {
         if (hasNotUnfinishedTransactions()) {
             routingSource.accept(operation)
         }
@@ -74,14 +74,14 @@ class RejectIfHasUnfinishedTransitionsRoutingSource<Key, State>(
 }
 
 @CheckResult
-fun <Key, State> RoutingSource<Key, State>.wrapWithQueueBehaviour(coroutineScope: CoroutineScope)
-        : RoutingSource<Key, State> = QueueTransitionsRoutingSource(coroutineScope, this)
+fun <Routing, State> RoutingSource<Routing, State>.wrapWithQueueBehaviour(coroutineScope: CoroutineScope)
+        : RoutingSource<Routing, State> = QueueTransitionsRoutingSource(coroutineScope, this)
 
 @CheckResult
-fun <Key, State> RoutingSource<Key, State>.wrapWithFinishBehaviour(): RoutingSource<Key, State> =
+fun <Routing, State> RoutingSource<Routing, State>.wrapWithFinishBehaviour(): RoutingSource<Routing, State> =
     FinishTransitionsOnNewOneRoutingSource(this)
 
 @CheckResult
-fun <Key, State> RoutingSource<Key, State>.wrapWithRejectBehaviour(): RoutingSource<Key, State> =
+fun <Routing, State> RoutingSource<Routing, State>.wrapWithRejectBehaviour(): RoutingSource<Routing, State> =
     RejectIfHasUnfinishedTransitionsRoutingSource(this)
 

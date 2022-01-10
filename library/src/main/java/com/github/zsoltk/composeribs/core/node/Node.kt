@@ -20,9 +20,11 @@ import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.Destroyable
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
+import com.github.zsoltk.composeribs.core.plugin.NodeLifecycleAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
+import com.github.zsoltk.composeribs.core.plugin.plugins
 import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.upnavigation.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.upnavigation.UpHandler
@@ -64,7 +66,7 @@ abstract class Node(
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
         updateLifecycleState(Lifecycle.State.CREATED)
-        plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
+        plugins<NodeAware>().forEach { it.init(this) }
     }
 
     @Composable
@@ -103,8 +105,9 @@ abstract class Node(
     override fun updateLifecycleState(state: Lifecycle.State) {
         nodeLifecycle.updateLifecycleState(state)
         if (state == Lifecycle.State.DESTROYED) {
-            plugins.filterIsInstance<Destroyable>().forEach { it.destroy() }
+            plugins<Destroyable>().forEach { it.destroy() }
         }
+        plugins<NodeLifecycleAware>().forEach { it.onLifecycleUpdated(state) }
     }
 
     @CallSuper
@@ -133,7 +136,7 @@ abstract class Node(
     }
 
     private fun handleUpNavigationByPlugins(): Boolean =
-        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
+        plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     protected open fun performUpNavigation(): Boolean =
         handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
