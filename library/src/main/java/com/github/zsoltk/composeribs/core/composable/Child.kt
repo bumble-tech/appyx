@@ -102,6 +102,14 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out 
         remember { mutableStateOf(emptyList()) }
     }
 
+@Composable
+fun <R, S> RoutingSource<R, S>?.visibleChildrenAsState(): State<RoutingElements<R, out S>> =
+    if (this != null) {
+        onScreen.collectAsState()
+    } else {
+        remember { mutableStateOf(emptyList()) }
+    }
+
 
 val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }
 

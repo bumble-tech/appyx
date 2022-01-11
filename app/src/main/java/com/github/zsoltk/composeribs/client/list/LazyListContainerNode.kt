@@ -31,8 +31,8 @@ import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.Row
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.values
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.Routing
-import com.github.zsoltk.composeribs.core.composable.BasicSubtree
 import com.github.zsoltk.composeribs.core.composable.Child
+import com.github.zsoltk.composeribs.core.composable.visibleChildrenAsState
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
@@ -73,13 +73,11 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
                 }
             }
 
-            BasicSubtree(routingSource = routingSource) {
-                val children by visibleChildren<Routing>()
-                when (selectedMode) {
-                    Column -> ColumnExample(children)
-                    Row -> RowExample(children)
-                    Grid -> GridExample(children)
-                }
+            val children by routingSource.visibleChildrenAsState()
+            when (selectedMode) {
+                Column -> ColumnExample(children)
+                Row -> RowExample(children)
+                Grid -> GridExample(children)
             }
         }
     }
@@ -93,7 +91,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
             verticalArrangement = Arrangement.spacedBy(8.dp)
 
         ) {
-            items(elements) { element ->
+            items(elements, key = { element -> element.key.id }) { element ->
                 Child(routingElement = element)
             }
         }
@@ -106,7 +104,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
             contentPadding = PaddingValues(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(elements) { element ->
+            items(elements, key = { element -> element.key.id }) { element ->
                 Child(routingElement = element)
             }
         }
@@ -129,7 +127,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
 
     @Composable
     private fun RadioItem(
-        mode: ListMode,
+        mode: LazyListContainerNode.ListMode,
         isSelected: Boolean,
         onClick: () -> Unit,
     ) {

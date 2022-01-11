@@ -16,7 +16,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -30,15 +29,15 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
-import com.github.zsoltk.composeribs.core.composable.BasicSubtree
 import com.github.zsoltk.composeribs.core.composable.Child
+import com.github.zsoltk.composeribs.core.composable.visibleChildrenAsState
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
-import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.removeSelected
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.toggleSelection
+import com.github.zsoltk.composeribs.core.routing.source.tiles.rememberTilesTransitionHandler
 
 class TilesExampleNode(
     buildContext: BuildContext,
@@ -92,28 +91,27 @@ class TilesExampleNode(
                 Text(text = "Remove selected")
             }
 
-            val handler = remember { TilesTransitionHandler<Routing>() }
-            BasicSubtree(routingSource = tiles) {
-                val elements by visibleChildren<Routing>()
-                LazyVerticalGrid(
-                    cells = GridCells.Fixed(2),
-                    modifier = Modifier
-                        .padding(top = 60.dp)
-                        .fillMaxSize(),
-                    contentPadding = PaddingValues(horizontal = 16.dp),
-                ) {
-                    items(elements) { element ->
-                        Child(routingElement = element, transitionHandler = handler) { child, _ ->
-                            Box(modifier = Modifier
-                                .animateItemPlacement()
-                                .fillMaxWidth()
-                                .height(150.dp)
-                                .clickable {
-                                    tiles.toggleSelection(element.key)
-                                }
-                            ) {
-                                child()
+            val elements by tiles.visibleChildrenAsState()
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2),
+                modifier = Modifier
+                    .padding(top = 60.dp)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+            ) {
+                items(elements) { element ->
+                    Child(
+                        routingElement = element,
+                        transitionHandler = rememberTilesTransitionHandler()
+                    ) { child, _ ->
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp)
+                            .clickable {
+                                tiles.toggleSelection(element.key)
                             }
+                        ) {
+                            child()
                         }
                     }
                 }
