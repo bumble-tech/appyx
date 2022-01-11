@@ -21,8 +21,6 @@ class Activate<T : Any, K>(
     override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
 
         val toActivateIndex = elements.indexOfFirst { it.key.id == keyId }
-
-
         return elements.mapIndexed { index, element ->
             when {
                 index < toActivateIndex -> {
