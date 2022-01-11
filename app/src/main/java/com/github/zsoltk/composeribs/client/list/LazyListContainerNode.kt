@@ -87,6 +87,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
         }
     }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun ColumnExample(children: List<ChildEntry.Eager<Routing>>) {
         LazyColumn(
