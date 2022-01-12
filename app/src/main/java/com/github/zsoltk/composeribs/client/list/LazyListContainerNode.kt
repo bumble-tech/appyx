@@ -2,9 +2,7 @@ package com.github.zsoltk.composeribs.client.list
 
 import android.os.Parcelable
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,6 +13,7 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
@@ -25,7 +24,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.Column
@@ -33,13 +31,12 @@ import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.Row
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.ListMode.values
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode.Routing
-import com.github.zsoltk.composeribs.core.children.ChildEntry
-import com.github.zsoltk.composeribs.core.composable.BasicSubtree
-import com.github.zsoltk.composeribs.core.composable.childrenItems
-import com.github.zsoltk.composeribs.core.composable.childrenItemsIndexed
+import com.github.zsoltk.composeribs.core.composable.Child
+import com.github.zsoltk.composeribs.core.composable.visibleChildrenAsState
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 import kotlinx.parcelize.Parcelize
 
@@ -76,66 +73,61 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
                 }
             }
 
-            BasicSubtree(routingSource = routingSource) {
-                val children by visibleChildren<Routing>()
-                when (selectedMode) {
-                    Column -> ColumnExample(children)
-                    Row -> RowExample(children)
-                    Grid -> GridExample(children)
-                }
+            val children by routingSource.visibleChildrenAsState()
+            when (selectedMode) {
+                Column -> ColumnExample(children)
+                Row -> RowExample(children)
+                Grid -> GridExample(children)
             }
         }
     }
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    private fun ColumnExample(children: List<ChildEntry.Eager<Routing>>) {
+    private fun ColumnExample(elements: List<RoutingElement<Routing, out Any?>>) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
 
         ) {
-            childrenItemsIndexed(children) { index, child ->
-                if (index % 2 == 0) {
-                    Box(modifier = Modifier.border(width = 4.dp, color = Color.Red)) {
-                        child.node.Compose()
-                    }
-                } else {
-                    child.node.Compose()
-                }
-
+            items(elements, key = { element -> element.key.id }) { element ->
+                Child(routingElement = element)
             }
         }
     }
 
     @Composable
-    private fun RowExample(children: List<ChildEntry.Eager<Routing>>) {
+    private fun RowExample(elements: List<RoutingElement<Routing, out Any?>>) {
         LazyRow(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            childrenItems(children)
+            items(elements, key = { element -> element.key.id }) { element ->
+                Child(routingElement = element)
+            }
         }
     }
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    private fun GridExample(children: List<ChildEntry.Eager<Routing>>) {
+    private fun GridExample(elements: List<RoutingElement<Routing, out Any?>>) {
         LazyVerticalGrid(
             cells = GridCells.Fixed(2),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
-            childrenItems(children)
+            items(elements) { element ->
+                Child(routingElement = element)
+            }
         }
     }
 
 
     @Composable
     private fun RadioItem(
-        mode: ListMode,
+        mode: LazyListContainerNode.ListMode,
         isSelected: Boolean,
         onClick: () -> Unit,
     ) {
