@@ -23,7 +23,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
 import kotlin.coroutines.EmptyCoroutineContext
@@ -40,31 +39,15 @@ class ParentNodeTest {
     fun `parent node finishes transitions for off screen elements when lifecycle is not stopped`() {
         val parent = Parent(BuildContext.root(null)).build()
         val routingSource = parent.routing
+        val routing = "0"
         parent.updateLifecycleState(Lifecycle.State.STARTED)
-        routingSource.add(key = "0", defaultState = State.StateOne)
+        routingSource.add(routing = routing, defaultState = State.StateOne)
 
-        routingSource.changeState(key = "0", State.StateTwo)
+        routingSource.changeState(routing = routing, State.StateTwo)
 
-        val element = parent.routing.elements.value[0]
+        val element = routingSource.get(routing = routing)
 
         assertEquals(
-            element.fromState,
-            element.targetState
-        )
-    }
-
-    @Test
-    fun `parent node does not finish transitions for off screen elements when lifecycle is stopped`() {
-        val parent = Parent(BuildContext.root(null)).build()
-        val routingSource = parent.routing
-        parent.updateLifecycleState(Lifecycle.State.DESTROYED)
-        routingSource.add(key = "0", defaultState = State.StateOne)
-
-        routingSource.changeState(key = "0", State.StateTwo)
-
-        val element = parent.routing.elements.value[0]
-
-        assertNotEquals(
             element.fromState,
             element.targetState
         )
@@ -83,7 +66,7 @@ class ParentNodeTest {
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
         private val onScreenResolver = object : OnScreenStateResolver<State> {
             override fun isOnScreen(state: State): Boolean =
-                when(state) {
+                when (state) {
                     State.StateOne,
                     State.StateTwo,
                     State.StateThree -> false
@@ -120,10 +103,10 @@ class ParentNodeTest {
             }
         }
 
-        fun add(key: String, defaultState: State) {
+        fun add(routing: String, defaultState: State) {
             state.update { list ->
                 list + RoutingElement(
-                    key = RoutingKey(key),
+                    key = RoutingKey(routing),
                     targetState = defaultState,
                     fromState = defaultState,
                     operation = Operation.Noop(),
@@ -131,16 +114,26 @@ class ParentNodeTest {
             }
         }
 
-        fun remove(key: String) {
-            state.update { list -> list.filter { it.key.routing != key } }
+        fun get(routing: String): RoutingElement<String, State> {
+            return requireNotNull(
+                state.value.find { it.key.routing == routing },
+                { "element with routing $routing is not found" }
+            )
         }
 
-        fun changeState(key: String, defaultState: State) {
+        fun remove(routing: String) {
+            state.update { list -> list.filter { it.key.routing != routing } }
+        }
+
+        fun changeState(routing: String, defaultState: State) {
             state.update { list ->
                 list
                     .map {
-                        if (it.key.routing == key) {
-                            it.transitionTo(targetState = defaultState, operation = Operation.Noop())
+                        if (it.key.routing == routing) {
+                            it.transitionTo(
+                                targetState = defaultState,
+                                operation = Operation.Noop()
+                            )
                         } else {
                             it
                         }
