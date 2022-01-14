@@ -66,6 +66,7 @@ abstract class ParentNode<Routing : Any>(
     )
 
     private var transitionsInBackgroundJob: Job? = null
+    private var finishTransitionsForOffscreenElementsJob: Job? = null
 
     @CallSuper
     override fun onBuilt() {
@@ -149,10 +150,12 @@ abstract class ParentNode<Routing : Any>(
         lifecycle.addObserver(
             object : DefaultLifecycleObserver {
                 override fun onStart(owner: LifecycleOwner) {
+                    manageOffScreenTransitions()
                     manageTransitionsInForeground()
                 }
 
                 override fun onStop(owner: LifecycleOwner) {
+                    cancelOffScreenTransitions()
                     manageTransitionsInBackground()
                 }
             }
@@ -174,6 +177,23 @@ abstract class ParentNode<Routing : Any>(
         transitionsInBackgroundJob?.run {
             cancel()
             transitionsInBackgroundJob = null
+        }
+    }
+
+    private fun manageOffScreenTransitions() {
+        finishTransitionsForOffscreenElementsJob = lifecycle.coroutineScope.launch {
+            routingSource.offScreen.collect { elements ->
+                elements
+                    .filter { it.fromState != it.targetState }
+                    .forEach { routingSource.onTransitionFinished(it.key) }
+            }
+        }
+    }
+
+    private fun cancelOffScreenTransitions() {
+        finishTransitionsForOffscreenElementsJob?.run {
+            cancel()
+            finishTransitionsForOffscreenElementsJob = null
         }
     }
 
