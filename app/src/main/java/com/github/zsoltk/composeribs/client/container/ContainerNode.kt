@@ -25,10 +25,13 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Inte
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RoutingSourcesExamples
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.SpotlightExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
 import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
+import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -80,17 +83,25 @@ class ContainerNode(
         object LazyExamples : Routing()
 
         @Parcelize
+        object RoutingSourcesExamples : Routing()
+
+        @Parcelize
+        object SpotlightExample : Routing()
+
+        @Parcelize
         object InteractorExample : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Picker -> node(buildContext) { ExamplesList() }
+            is RoutingSourcesExamples -> node(buildContext) { RoutingSources() }
             is BackStackExample -> BackStackExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
+            is SpotlightExample -> SpotlightExampleNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
         }
 
@@ -121,11 +132,7 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TextButton("Back stack example") { backStack.push(BackStackExample) }
-                TextButton("Tiles example") { backStack.push(TilesExample) }
-                TextButton("Modal example") { backStack.push(ModalExample) }
-                TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
-                TextButton("Node with interactor") { backStack.push(InteractorExample) }
+                TextButton("Routing Sources Examples") { backStack.push(RoutingSourcesExamples) }
 
                 val scope = rememberCoroutineScope()
                 TextButton("Trigger double navigation in 3 seconds") {
@@ -143,6 +150,28 @@ class ContainerNode(
                     )
                     Text(text = "Up navigation overrides child")
                 }
+            }
+        }
+    }
+
+    @Composable
+    fun RoutingSources() {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                TextButton("Backstack example") { backStack.push(BackStackExample) }
+                TextButton("Tiles example") { backStack.push(TilesExample) }
+                TextButton("Modal example") { backStack.push(ModalExample) }
+                TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
+                TextButton("Node with interactor") { backStack.push(Routing.InteractorExample) }
+                TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
             }
         }
     }
