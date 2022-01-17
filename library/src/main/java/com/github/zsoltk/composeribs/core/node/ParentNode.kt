@@ -66,6 +66,7 @@ abstract class ParentNode<Routing : Any>(
     )
 
     private var transitionsInBackgroundJob: Job? = null
+    private var finishTransitionsForOffscreenElementsJob: Job? = null
 
     @CallSuper
     override fun onBuilt() {
@@ -160,12 +161,17 @@ abstract class ParentNode<Routing : Any>(
     }
 
     private fun manageTransitionsInBackground() {
-        if (transitionsInBackgroundJob != null) return
-        transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
-            routingSource.elements.collect { elements ->
-                elements
-                    .filter { it.fromState != it.targetState }
-                    .forEach { routingSource.onTransitionFinished(it.key) }
+        finishTransitionsForOffscreenElementsJob?.run {
+            cancel()
+            finishTransitionsForOffscreenElementsJob = null
+        }
+        if (transitionsInBackgroundJob == null) {
+            transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
+                routingSource.elements.collect { elements ->
+                    elements
+                        .filter { it.fromState != it.targetState }
+                        .forEach { routingSource.onTransitionFinished(it.key) }
+                }
             }
         }
     }
@@ -174,6 +180,15 @@ abstract class ParentNode<Routing : Any>(
         transitionsInBackgroundJob?.run {
             cancel()
             transitionsInBackgroundJob = null
+        }
+        if (finishTransitionsForOffscreenElementsJob == null) {
+            finishTransitionsForOffscreenElementsJob = lifecycle.coroutineScope.launch {
+                routingSource.offScreen.collect { elements ->
+                    elements
+                        .filter { it.fromState != it.targetState }
+                        .forEach { routingSource.onTransitionFinished(it.key) }
+                }
+            }
         }
     }
 
