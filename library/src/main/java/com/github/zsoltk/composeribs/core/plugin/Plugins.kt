@@ -11,10 +11,10 @@ interface Plugin
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
     this.plugins.filterIsInstance(P::class.java)
 
-interface NodeAware : Plugin {
-    val node: Node
+interface NodeAware<N: Node> : Plugin {
+    val node: N
 
-    fun init(node: Node) {}
+    fun init(node: N) {}
 }
 
 interface NodeLifecycleAware : Plugin {

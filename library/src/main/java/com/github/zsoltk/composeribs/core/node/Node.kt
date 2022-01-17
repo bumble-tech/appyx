@@ -66,7 +66,7 @@ abstract class Node(
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
         updateLifecycleState(Lifecycle.State.CREATED)
-        plugins<NodeAware>().forEach { it.init(this) }
+        plugins<NodeAware<Node>>().forEach { it.init(this) }
     }
 
     @Composable

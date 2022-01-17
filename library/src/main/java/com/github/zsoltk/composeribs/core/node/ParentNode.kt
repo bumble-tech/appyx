@@ -43,10 +43,10 @@ abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
     buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
-    private val childAware: ChildAware = ChildAwareImpl(),
+    private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(childAware),
 ) : Node(buildContext = buildContext, plugins = plugins + routingSource), Resolver<Routing>,
-    ChildAware {
+    ChildAware<ParentNode<Routing>> {
 
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(buildContext.savedStateMap)
     val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
@@ -63,11 +63,11 @@ abstract class ParentNode<Routing : Any>(
         children = children,
     )
 
-    override val node: Node
+    override val node: ParentNode<Routing>
         get() = this
 
     init {
-        this.plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
+        this.plugins.filterIsInstance<NodeAware<ParentNode<Routing>>>().forEach { it.init(this) }
     }
 
     private var transitionsInBackgroundJob: Job? = null

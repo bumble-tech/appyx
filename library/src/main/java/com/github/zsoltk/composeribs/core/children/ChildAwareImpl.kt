@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-class ChildAwareImpl : ChildAware {
+class ChildAwareImpl<N: Node> : ChildAware<N> {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
@@ -24,10 +24,10 @@ class ChildAwareImpl : ChildAware {
     private lateinit var lifecycle: Lifecycle
     private lateinit var coroutineScope: CoroutineScope
 
-    override lateinit var node: Node
+    override lateinit var node: N
         private set
 
-    override fun init(node: Node) {
+    override fun init(node: N) {
         this.node = node
         lifecycle = node.lifecycle
         coroutineScope = lifecycle.coroutineScope

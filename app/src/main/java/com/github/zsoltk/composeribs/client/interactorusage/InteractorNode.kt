@@ -35,7 +35,7 @@ import com.github.zsoltk.composeribs.core.routing.transition.rememberCombinedHan
 import kotlinx.parcelize.Parcelize
 
 class InteractorNode(
-    interactor: Interactor,
+    interactor: Interactor<InteractorNode>,
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Routing.Child1,
@@ -48,7 +48,7 @@ class InteractorNode(
 ), UpNavigationHandler {
 
     var child2InfoState by mutableStateOf("Here will appear child2 info")
-    var child3InfoState by mutableStateOf("Here will appear child3 info")
+    var child2And3InfoState by mutableStateOf("Here will appear child2 and child3 combined info")
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -114,9 +114,8 @@ class InteractorNode(
             Text(text = child2InfoState)
 
             Spacer(modifier = Modifier.requiredHeight(8.dp))
-            Text(text = "Child3 info :")
-
-            Text(text = child3InfoState)
+            Text(text = "Child2 and Child3 combined info :")
+            Text(text = child2And3InfoState)
         }
     }
 
