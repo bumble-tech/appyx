@@ -1,9 +1,10 @@
 package com.github.zsoltk.composeribs.core.children
 
 import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import kotlin.reflect.KClass
 
-interface ChildAware {
+interface ChildAware : NodeAware {
 
     fun <T : Node> whenChildAttached(
         child: KClass<T>,

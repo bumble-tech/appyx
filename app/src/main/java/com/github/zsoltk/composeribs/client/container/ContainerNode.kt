@@ -21,10 +21,12 @@ import com.github.zsoltk.composeribs.client.combined.CombinedRoutingSourceNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.BackStackExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.CombinedRoutingSource
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.InteractorExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
+import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
@@ -76,6 +78,9 @@ class ContainerNode(
 
         @Parcelize
         object LazyExamples : Routing()
+
+        @Parcelize
+        object InteractorExample : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -86,30 +91,11 @@ class ContainerNode(
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
+            is InteractorExample -> InteractorNodeBuilder().build(buildContext)
         }
-
-//    @OptIn(ExperimentalAnimationApi::class)
-//    @Composable
-//    override fun View(foo: StateObject) {
-//        Box(modifier = Modifier.fillMaxSize()) {
-//            Subtree(backStack) {
-//                children<Routing> { child, routingElement ->
-//                    // TODO you can also use routingElement.fromState / targetState for e.g. updateTransition
-//                    AnimatedVisibility(
-//                        visible = routingElement.onScreen,
-//                        enter = fadeIn(animationSpec = tween(1000)),
-//                        exit = fadeOut(animationSpec = tween(1000)),
-//                    ) {
-//                        child()
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     @Composable
     override fun View() {
-        // TODO variant 1
         Subtree(
             modifier = Modifier.fillMaxSize(),
             routingSource = backStack,
@@ -121,13 +107,6 @@ class ContainerNode(
                 child()
             }
         }
-
-        // TODO variant 2, decide which one is better
-//            SubtreeVariant(backStack, transitionHandler) { transitionModifier, child ->
-//                Box(modifier = transitionModifier) {
-//                    child()
-//                }
-//            }
     }
 
     @Composable
@@ -146,6 +125,7 @@ class ContainerNode(
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
                 TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
+                TextButton("Node with interactor") { backStack.push(InteractorExample) }
 
                 val scope = rememberCoroutineScope()
                 TextButton("Trigger double navigation in 3 seconds") {

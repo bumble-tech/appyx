@@ -18,7 +18,7 @@ interface NodeAware : Plugin {
 }
 
 interface NodeLifecycleAware : Plugin {
-    fun onLifecycleUpdated(state: Lifecycle.State)
+    fun onLifecycleUpdated(state: Lifecycle.State) {}
 }
 
 interface Saveable : Plugin {
@@ -26,7 +26,7 @@ interface Saveable : Plugin {
 }
 
 interface UpNavigationHandler : Plugin {
-    fun handleUpNavigation(): Boolean
+    fun handleUpNavigation() = false
 }
 
 fun interface Destroyable : Plugin {
