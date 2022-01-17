@@ -18,10 +18,9 @@ import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
 
 @Suppress("TransitionPropertiesLabel")
 class SpotlightSlider<T>(
-    private val transitionSpec: TransitionSpec<Spotlight.TransitionState, Offset> =
-        {
-            spring(stiffness = Spring.StiffnessVeryLow)
-        },
+    private val transitionSpec: TransitionSpec<Spotlight.TransitionState, Offset> = {
+        spring(stiffness = Spring.StiffnessVeryLow)
+    },
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, Spotlight.TransitionState>() {
 

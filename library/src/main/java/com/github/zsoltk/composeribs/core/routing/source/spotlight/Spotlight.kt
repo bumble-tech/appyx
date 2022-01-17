@@ -18,16 +18,36 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
-class Spotlight<T : Parcelable, E : Enum<E>>(
-    items: SpotlightItems<T, E>,
+class Spotlight<T : Parcelable, K : Parcelable>(
+    items: SpotlightItems<T, K>,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
 ) : RoutingSource<T, TransitionState>, Destroyable {
+
+    constructor(
+        items: List<T>,
+        initialElement: T? = null,
+        savedStateMap: SavedStateMap?,
+        key: String = ParentNode.KEY_ROUTING_SOURCE,
+    ) : this(
+        items = items.toSpotLightItems(initialElement) as SpotlightItems<T, K>,
+        savedStateMap = savedStateMap,
+        key = key,
+    )
+
+    constructor(
+        items: Map<K, T>,
+        initialElementKey: K? = null,
+        savedStateMap: SavedStateMap?,
+        key: String = ParentNode.KEY_ROUTING_SOURCE,
+    ) : this(
+        items = items.toSpotLightItems(initialElementKey),
+        savedStateMap = savedStateMap,
+        key = key,
+    )
 
     enum class TransitionState {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
@@ -54,25 +74,7 @@ class Spotlight<T : Parcelable, E : Enum<E>>(
     override val canHandleBackPress: StateFlow<Boolean> = MutableStateFlow(false)
 
     override fun onBackPressed() {
-        //Not required
-        //TODO: should we decouple backpress from RoutingSource base interface?
-    }
-
-    init {
-        scope.launch {
-            offScreen.collect { offElements ->
-                val inactiveChanges = offElements.filter { it.fromState != it.targetState }
-                state.update { elements ->
-                    elements.map {
-                        if (it in inactiveChanges) {
-                            it.onTransitionFinished()
-                        } else {
-                            it
-                        }
-                    }
-                }
-            }
-        }
+        //No-op
     }
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
@@ -100,7 +102,7 @@ class Spotlight<T : Parcelable, E : Enum<E>>(
     private fun SavedStateMap.restoreHistory() =
         this[key] as? SpotlightElements<T>
 
-    private fun SpotlightItems<T, E>.toSpotlightElements(): SpotlightElements<T> {
+    private fun SpotlightItems<T, K>.toSpotlightElements(): SpotlightElements<T> {
 
         val activeIndex =
             items.indexOfFirst { it.key == initialElementKey }.let { if (it < 0) 0 else it }
@@ -116,6 +118,39 @@ class Spotlight<T : Parcelable, E : Enum<E>>(
                 fromState = state,
                 targetState = state,
                 operation = Operation.Noop()
+            )
+        }
+    }
+
+    companion object {
+
+        private fun <T : Parcelable> List<T>.toSpotLightItems(initialElement: T?): SpotlightItems<T, T> {
+
+            val items = map { element ->
+                SpotlightItem(
+                    element = element,
+                    key = element
+                )
+            }
+
+            return SpotlightItems(
+                items = items,
+                initialElementKey = initialElement
+            )
+        }
+
+        private fun <K : Parcelable, T : Parcelable> Map<K, T>.toSpotLightItems(initialElementKey: K?): SpotlightItems<T, K> {
+
+            val items = map { entry ->
+                SpotlightItem(
+                    element = entry.value,
+                    key = entry.key
+                )
+            }
+
+            return SpotlightItems(
+                items = items,
+                initialElementKey = initialElementKey
             )
         }
     }

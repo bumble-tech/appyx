@@ -24,8 +24,6 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.Spotlight
-import com.github.zsoltk.composeribs.core.routing.source.spotlight.SpotlightItem
-import com.github.zsoltk.composeribs.core.routing.source.spotlight.SpotlightItems
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.hasNext
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.hasPrevious
 import com.github.zsoltk.composeribs.core.routing.source.spotlight.operations.activate
@@ -68,7 +66,6 @@ class SpotlightExampleNode(
             Child2 -> ChildNode(name = "Child2", buildContext = buildContext)
             Child3 -> ChildNode(name = "Child3", buildContext = buildContext)
         }
-
 
     @Composable
     override fun View() {
@@ -155,21 +152,10 @@ class SpotlightExampleNode(
     }
 
     companion object {
-        private fun getItems() = SpotlightItems(
-            items = listOf(
-                SpotlightItem(
-                    Child1,
-                    ChildKeys.C1,
-                ),
-                SpotlightItem(
-                    Child2,
-                    ChildKeys.C2,
-                ),
-                SpotlightItem(
-                    Child3,
-                    ChildKeys.C3,
-                ),
-            )
+        private fun getItems() = mapOf(
+            ChildKeys.C1 to Child1,
+            ChildKeys.C2 to Child2,
+            ChildKeys.C3 to Child3,
         )
     }
 }

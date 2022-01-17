@@ -3,7 +3,7 @@ package com.github.zsoltk.composeribs.core.routing
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import java.util.*
+import java.util.UUID
 
 @Parcelize
 class RoutingKey<Routing> constructor(

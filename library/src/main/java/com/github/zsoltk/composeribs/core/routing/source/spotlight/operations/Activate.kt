@@ -46,6 +46,6 @@ class Activate<T : Any, K>(
     }
 }
 
-fun <T : Parcelable, K : Enum<K>> Spotlight<T, K>.activate(key: K) {
+fun <T : Parcelable, K : Parcelable> Spotlight<T, K>.activate(key: K) {
     accept(Activate(key))
 }

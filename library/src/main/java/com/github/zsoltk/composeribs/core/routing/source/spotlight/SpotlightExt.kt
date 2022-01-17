@@ -8,3 +8,9 @@ fun <T : Parcelable> Spotlight<T, *>.hasNext() =
 
 fun <T : Parcelable> Spotlight<T, *>.hasPrevious() =
     elements.map { value -> value.currentIndex != 0 }
+
+fun <T : Parcelable> Spotlight<T, *>.activeIndex() =
+    elements.map { value -> value.currentIndex }
+
+fun <T : Parcelable> Spotlight<T, *>.elementsCount() =
+    elements.value.size
