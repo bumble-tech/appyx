@@ -91,8 +91,7 @@ class InteractorNode(
                     child()
                 }
             }
-            Spacer(modifier = Modifier.requiredHeight(8.dp))
-
+            Spacer(modifier = Modifier.requiredHeight(4.dp))
             Button(
                 onClick = { backStack.push(Routing.Child2) },
                 modifier = Modifier.padding(4.dp),
@@ -100,13 +99,21 @@ class InteractorNode(
                 Text(text = "Push Child2")
             }
 
-            Spacer(modifier = Modifier.requiredHeight(8.dp))
-
+            Spacer(modifier = Modifier.requiredHeight(4.dp))
             Button(
                 onClick = { backStack.push(Routing.Child3) },
                 modifier = Modifier.padding(4.dp),
             ) {
                 Text(text = "Push Child3")
+            }
+
+            Spacer(modifier = Modifier.requiredHeight(4.dp))
+
+            Button(
+                onClick = { backStack.pop() },
+                modifier = Modifier.padding(4.dp),
+            ) {
+                Text(text = "Pop")
             }
 
             Spacer(modifier = Modifier.requiredHeight(8.dp))
@@ -117,10 +124,5 @@ class InteractorNode(
             Text(text = "Child2 and Child3 combined info :")
             Text(text = child2And3InfoState)
         }
-    }
-
-    override fun handleUpNavigation(): Boolean {
-        backStack.pop()
-        return true
     }
 }
