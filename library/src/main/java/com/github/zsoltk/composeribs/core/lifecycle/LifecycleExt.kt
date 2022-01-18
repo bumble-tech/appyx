@@ -1,7 +1,9 @@
 package com.github.zsoltk.composeribs.core.lifecycle
 
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -20,3 +22,40 @@ fun Lifecycle.changesAsFlow(): Flow<Lifecycle.State> =
 
 internal val Lifecycle.isDestroyed: Boolean
     get() = currentState == Lifecycle.State.DESTROYED
+
+fun Lifecycle.subscribe(
+    onCreate: () -> Unit = {},
+    onStart: () -> Unit = {},
+    onResume: () -> Unit = {},
+    onPause: () -> Unit = {},
+    onStop: () -> Unit = {},
+    onDestroy: () -> Unit = {}
+) {
+    addObserver(
+        object : DefaultLifecycleObserver {
+            override fun onCreate(owner: LifecycleOwner) {
+                onCreate()
+            }
+
+            override fun onStart(owner: LifecycleOwner) {
+                onStart()
+            }
+
+            override fun onResume(owner: LifecycleOwner) {
+                onResume()
+            }
+
+            override fun onPause(owner: LifecycleOwner) {
+                onPause()
+            }
+
+            override fun onStop(owner: LifecycleOwner) {
+                onStop()
+            }
+
+            override fun onDestroy(owner: LifecycleOwner) {
+                onDestroy()
+            }
+        }
+    )
+}

@@ -11,14 +11,14 @@ interface Plugin
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
     this.plugins.filterIsInstance(P::class.java)
 
-interface NodeAware<N: Node> : Plugin {
+interface NodeAware<N : Node> : Plugin {
     val node: N
 
     fun init(node: N) {}
 }
 
 interface NodeLifecycleAware : Plugin {
-    fun onLifecycleUpdated(state: Lifecycle.State) {}
+    fun onCreate(lifecycle: Lifecycle) {}
 }
 
 interface Saveable : Plugin {
