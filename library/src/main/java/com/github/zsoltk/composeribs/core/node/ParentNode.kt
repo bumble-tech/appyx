@@ -22,6 +22,7 @@ import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
+import com.github.zsoltk.composeribs.core.plugin.plugins
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -67,7 +68,7 @@ abstract class ParentNode<Routing : Any>(
         get() = this
 
     init {
-        this.plugins.filterIsInstance<NodeAware<ParentNode<Routing>>>().forEach { it.init(this) }
+        plugins<NodeAware<ParentNode<Routing>>>().forEach { it.init(this) }
     }
 
     private var transitionsInBackgroundJob: Job? = null

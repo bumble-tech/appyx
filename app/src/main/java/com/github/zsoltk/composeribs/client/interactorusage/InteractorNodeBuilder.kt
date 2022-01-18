@@ -7,6 +7,6 @@ import com.github.zsoltk.composeribs.core.node.Node
 class InteractorNodeBuilder : SimpleBuilder() {
     override fun build(buildContext: BuildContext): Node {
         val interactor = InteractorExample()
-        return InteractorNode(buildContext = buildContext, interactor = interactor)
+        return InteractorExampleNode(buildContext = buildContext, interactor = interactor)
     }
 }

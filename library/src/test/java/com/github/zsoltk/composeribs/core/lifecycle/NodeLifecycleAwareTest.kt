@@ -1,10 +1,12 @@
-package com.github.zsoltk.composeribs.core.node
+package com.github.zsoltk.composeribs.core.lifecycle
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.plugin.NodeLifecycleAware
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
 import org.junit.Assert.assertEquals
@@ -12,7 +14,7 @@ import org.junit.Assert.assertNotEquals
 import org.junit.Rule
 import org.junit.Test
 
-class NodeTest {
+class NodeLifecycleAwareTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -30,7 +32,7 @@ class NodeTest {
 
     private val nodeLifecycleAwarePlugin = object : NodeLifecycleAware {
         override fun onCreate(lifecycle: Lifecycle) {
-            this@NodeTest.lifecycle = lifecycle
+            this@NodeLifecycleAwareTest.lifecycle = lifecycle
         }
     }
 

@@ -18,7 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.github.zsoltk.composeribs.client.interactorusage.InteractorNode.Routing
+import com.github.zsoltk.composeribs.client.interactorusage.InteractorExampleNode.Routing
 import com.github.zsoltk.composeribs.core.clienthelper.interactor.Interactor
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -34,8 +34,8 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBacks
 import com.github.zsoltk.composeribs.core.routing.transition.rememberCombinedHandler
 import kotlinx.parcelize.Parcelize
 
-class InteractorNode(
-    interactor: Interactor<InteractorNode>,
+class InteractorExampleNode(
+    interactor: Interactor<InteractorExampleNode>,
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Routing.Child1,
