@@ -9,7 +9,7 @@ import com.github.zsoltk.composeribs.core.integrationpoint.permissionrequester.P
 import com.github.zsoltk.composeribs.core.integrationpoint.permissionrequester.PermissionRequester
 
 open class ActivityIntegrationPoint(
-    activity: AppCompatActivity,
+    private val activity: AppCompatActivity,
     savedInstanceState: Bundle?,
 ) : IntegrationPoint(savedInstanceState = savedInstanceState) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
@@ -31,5 +31,11 @@ open class ActivityIntegrationPoint(
         grantResults: IntArray
     ) {
         permissionRequestBoundary.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun handleUpNavigation() {
+        if (!activity.onNavigateUp()) {
+            activity.onBackPressed()
+        }
     }
 }

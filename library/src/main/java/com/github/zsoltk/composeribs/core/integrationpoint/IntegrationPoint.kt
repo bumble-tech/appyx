@@ -5,8 +5,11 @@ import com.github.zsoltk.composeribs.core.integrationpoint.activitystarter.Activ
 import com.github.zsoltk.composeribs.core.integrationpoint.permissionrequester.PermissionRequester
 import com.github.zsoltk.composeribs.core.integrationpoint.requestcode.RequestCodeRegistry
 import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 
-abstract class IntegrationPoint(protected val savedInstanceState: Bundle?) {
+abstract class IntegrationPoint(
+    protected val savedInstanceState: Bundle?
+) : FallbackUpNavigationHandler {
 
     protected val requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 

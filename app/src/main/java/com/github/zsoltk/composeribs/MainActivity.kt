@@ -11,12 +11,9 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode
 import com.github.zsoltk.composeribs.core.integration.NodeHost
 import com.github.zsoltk.composeribs.core.integrationpoint.RibActivity
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.ui.Rf1Theme
 
 class MainActivity : RibActivity() {
-
-    private val upNavigationHandler = FallbackUpNavigationHandler { onBackPressed() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,10 +22,7 @@ class MainActivity : RibActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
-                        NodeHost(
-                            integrationPoint = integrationPoint,
-                            upNavigationHandler = upNavigationHandler
-                        ) {
+                        NodeHost(integrationPoint = integrationPoint) {
                             ContainerNode(buildContext = it)
                         }
                     }

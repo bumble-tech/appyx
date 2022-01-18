@@ -16,4 +16,8 @@ class FloatingIntegrationPoint : IntegrationPoint(savedInstanceState = null) {
 
     override val permissionRequester: PermissionRequester
         get() = error(ERROR)
+
+    override fun handleUpNavigation() {
+        error(ERROR)
+    }
 }

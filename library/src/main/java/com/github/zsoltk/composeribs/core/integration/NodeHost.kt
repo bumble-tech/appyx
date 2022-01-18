@@ -12,10 +12,9 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPoint
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.build
-import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.upnavigation.LocalFallbackUpNavigationHandler
 
 fun interface NodeFactory<N : Node> {
@@ -29,15 +28,14 @@ fun interface NodeFactory<N : Node> {
  */
 @Composable
 fun <N : Node> NodeHost(
-    upNavigationHandler: FallbackUpNavigationHandler,
-    integrationPoint: IntegrationPoint? = null,
+    integrationPoint: IntegrationPoint,
     factory: NodeFactory<N>
 ) {
     CompositionLocalProvider(
-        LocalFallbackUpNavigationHandler provides upNavigationHandler
+        LocalFallbackUpNavigationHandler provides integrationPoint
     ) {
         val node by rememberNode(factory)
-        integrationPoint?.attach(node)
+        integrationPoint.attach(node)
         node.Compose()
         DisposableEffect(node) {
             onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
