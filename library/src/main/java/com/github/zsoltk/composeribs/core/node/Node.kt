@@ -13,7 +13,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.github.zsoltk.composeribs.core.composable.LocalTransitionModifier
-import com.github.zsoltk.composeribs.core.integrationpoint.FloatingIntegrationPoint
+import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPointStub
 import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPoint
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycle
@@ -54,7 +54,7 @@ abstract class Node(
             is AncestryInfo.Root -> null
         }
 
-    var integrationPoint: IntegrationPoint = FloatingIntegrationPoint()
+    var integrationPoint: IntegrationPoint = IntegrationPointStub()
         internal set
         get() {
             return if (isRoot) field

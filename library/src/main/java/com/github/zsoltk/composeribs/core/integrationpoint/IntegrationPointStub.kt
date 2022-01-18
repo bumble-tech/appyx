@@ -3,9 +3,9 @@ package com.github.zsoltk.composeribs.core.integrationpoint
 import com.github.zsoltk.composeribs.core.integrationpoint.activitystarter.ActivityStarter
 import com.github.zsoltk.composeribs.core.integrationpoint.permissionrequester.PermissionRequester
 
-class FloatingIntegrationPoint : IntegrationPoint(savedInstanceState = null) {
+class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
     companion object {
-        private const val ERROR = "You're accessing a FloatingIntegrationPoint. " +
+        private const val ERROR = "You're accessing a IntegrationPointStub. " +
             "This means you're using a RIB without ever integrating it to a proper IntegrationPoint. " +
             "This is fine during tests with limited scope, but it looks like the code that leads here " +
             "requires interfacing with a valid implementation."
