@@ -55,7 +55,7 @@ class PermanentRoutingSource<Key : Any>(
         // no-op
     }
 
-    fun perform(operation: PermanentOperation<Key>) {
+    override fun accept(operation: Operation<Key, Int>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }

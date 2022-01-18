@@ -69,7 +69,7 @@ class Tiles<T : Any>(
         }
     }
 
-    override fun accept(operation: TilesOperation<T>) {
+    override fun accept(operation: Operation<T, TransitionState>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }

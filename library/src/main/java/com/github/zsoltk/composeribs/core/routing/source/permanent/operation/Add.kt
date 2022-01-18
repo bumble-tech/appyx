@@ -3,7 +3,6 @@ package com.github.zsoltk.composeribs.core.routing.source.permanent.operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
-import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentOperation
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
 import kotlinx.parcelize.Parcelize
 
@@ -31,5 +30,5 @@ data class Add<T : Any>(
 }
 
 fun <T : Any> PermanentRoutingSource<T>.add(routingKey: RoutingKey<T>) {
-    perform(Add(routingKey))
+    accept(Add(routingKey))
 }

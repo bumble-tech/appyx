@@ -5,7 +5,6 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElement
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
-import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesOperation
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -23,7 +22,7 @@ data class Add<T : Any>(
             key = RoutingKey(element),
             fromState = Tiles.TransitionState.CREATED,
             targetState = Tiles.TransitionState.STANDARD,
-            operation = this,
+            operation = this
         )
 }
 

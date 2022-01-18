@@ -2,10 +2,10 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack
 
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.plugin.Destroyable
+import com.github.zsoltk.composeribs.core.routing.OnScreenMapper
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.OnScreenMapper
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pop
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
@@ -78,7 +78,7 @@ class BackStack<T : Any>(
         }
     }
 
-    override fun accept(operation: BackStackOperation<T>) {
+    override fun accept(operation: Operation<T, TransitionState>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }

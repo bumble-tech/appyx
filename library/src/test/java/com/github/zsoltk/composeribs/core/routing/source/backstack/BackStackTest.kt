@@ -3,9 +3,9 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack
 import com.github.zsoltk.composeribs.core.node.ParentNode.Companion.KEY_ROUTING_SOURCE
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Pop
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Push
@@ -21,7 +21,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestCoroutineScope
-import kotlinx.parcelize.Parcelize
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -405,13 +404,26 @@ internal class BackStackTest {
             savedStateMap = null
         )
 
-        val operation = DummyClearOperation(isApplicable = true)
+        val operation = Push<Routing>(Routing2)
         backStack.accept(operation)
 
         val state = backStack.elements.value
 
-        val expectedState = emptyList<BackStackElements<Routing>>()
-        assertEquals(state, expectedState)
+        val expectedElements: BackStackElements<Routing> = listOf(
+            BackStackElement(
+                key = RoutingKey(initialElement),
+                fromState = ACTIVE,
+                targetState = STASHED_IN_BACK_STACK,
+                operation = operation
+            ),
+            BackStackElement(
+                key = RoutingKey(Routing2),
+                fromState = CREATED,
+                targetState = ACTIVE,
+                operation = operation
+            )
+        )
+        state.assertBackstackElementsEqual(expectedElements)
     }
 
     @Test
@@ -423,7 +435,7 @@ internal class BackStackTest {
             savedStateMap = null
         )
 
-        val operation = DummyClearOperation(isApplicable = false)
+        val operation = Push<Routing>(Routing1)
         backStack.accept(operation)
 
         val state = backStack.elements.value
@@ -539,14 +551,4 @@ internal class BackStackTest {
         element = element
     )
 
-    @Parcelize
-    private class DummyClearOperation(
-        private val isApplicable: Boolean
-    ) : Operation<Routing, BackStack.TransitionState> {
-
-        override fun isApplicable(elements: BackStackElements<Routing>): Boolean = isApplicable
-
-        override fun invoke(elements: BackStackElements<Routing>): BackStackElements<Routing> =
-            emptyList()
-    }
 }
