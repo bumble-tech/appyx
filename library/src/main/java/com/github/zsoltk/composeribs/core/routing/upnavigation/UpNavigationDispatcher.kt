@@ -22,9 +22,6 @@ internal class UpNavigationDispatcher(
     }
 
     fun setFallbackUpNavigationCallback(callback: FallbackUpNavigationHandler) {
-        if (fallbackUpNavigationCallback != null) {
-            throw IllegalStateException("Trying to overwrite up navigation callback")
-        }
         this.fallbackUpNavigationCallback = callback
     }
 

@@ -1,6 +1,8 @@
 package com.github.zsoltk.composeribs.connectable
 
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.CREATED
+import androidx.lifecycle.LifecycleObserver
 import com.github.zsoltk.composeribs.connectable.Rx2NodeConnectorTest.Output.Output1
 import com.github.zsoltk.composeribs.connectable.Rx2NodeConnectorTest.Output.Output2
 import com.github.zsoltk.composeribs.connectable.Rx2NodeConnectorTest.Output.Output3
@@ -19,6 +21,13 @@ class Rx2NodeConnectorTest() {
 
     private val firstTestObserver = TestObserver<Output>()
     private val secondTestObserver = TestObserver<Output>()
+    private var lifecycleState = CREATED
+    private val lifecycle = object : Lifecycle() {
+        override fun addObserver(observer: LifecycleObserver) {}
+        override fun removeObserver(observer: LifecycleObserver) {}
+        override fun getCurrentState() = lifecycleState
+    }
+
 
     sealed class Output {
         object Output1 : Output()
@@ -48,7 +57,7 @@ class Rx2NodeConnectorTest() {
         nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.output.accept(Output1)
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
 
         firstTestObserver.assertValues(Output1)
     }
@@ -58,7 +67,7 @@ class Rx2NodeConnectorTest() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
 
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
         nodeConnector.output.accept(Output1)
 
         firstTestObserver.assertValues(Output1)
@@ -70,7 +79,7 @@ class Rx2NodeConnectorTest() {
         nodeConnector.output.subscribe(firstTestObserver)
 
         nodeConnector.output.accept(Output1)
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
         nodeConnector.output.accept(Output2)
         nodeConnector.output.accept(Output3)
 
@@ -81,9 +90,9 @@ class Rx2NodeConnectorTest() {
     fun `WHEN nodeConnector onAttached is called twice THEN error is raised`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
 
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
         assertThrows(IllegalStateException::class.java) {
-            nodeConnector.onLifecycleUpdated(CREATED)
+            nodeConnector.onCreate(lifecycle)
         }
     }
 
@@ -94,7 +103,7 @@ class Rx2NodeConnectorTest() {
         nodeConnector.output.subscribe(secondTestObserver)
 
         nodeConnector.output.accept(Output1)
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
 
         firstTestObserver.assertValues(Output1)
         secondTestObserver.assertValues(Output1)
@@ -106,7 +115,7 @@ class Rx2NodeConnectorTest() {
         nodeConnector.output.subscribe(firstTestObserver)
         nodeConnector.output.subscribe(secondTestObserver)
 
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
         nodeConnector.output.accept(Output1)
 
         firstTestObserver.assertValues(Output1)
@@ -121,7 +130,7 @@ class Rx2NodeConnectorTest() {
 
         //Output accepted BEFORE onAttached
         nodeConnector.output.accept(Output1)
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
 
         //Second subscriber subscribe AFTER onAttached
         nodeConnector.output.subscribe(secondTestObserver)
@@ -162,7 +171,7 @@ class Rx2NodeConnectorTest() {
         executor.awaitWithTimeOut()
 
         nodeConnector.output.subscribe(firstTestObserver)
-        nodeConnector.onLifecycleUpdated(CREATED)
+        nodeConnector.onCreate(lifecycle)
 
         firstTestObserver.assertValueCount(threadNumber * iterations * 3)
     }
@@ -200,14 +209,14 @@ class Rx2NodeConnectorTest() {
             //Attacher thread
             submit {
                 barrier1.awaitWithTimeOut()
-                nodeConnector1.onLifecycleUpdated(CREATED)
+                nodeConnector1.onCreate(lifecycle)
             }
         }
         val executor2 = Executors.newFixedThreadPool(threadNumber).apply {
             //Attacher thread
             submit {
                 barrier2.awaitWithTimeOut()
-                nodeConnector2.onLifecycleUpdated(CREATED)
+                nodeConnector2.onCreate(lifecycle)
             }
             //Emitter thread
             submit {
