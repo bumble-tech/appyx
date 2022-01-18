@@ -5,9 +5,12 @@ import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElement
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
+@Parcelize
 data class Add<T : Any>(
-    private val element: T
+    private val element: @RawValue T
 ) : TilesOperation<T> {
 
     override fun isApplicable(elements: TilesElements<T>): Boolean = true
@@ -24,5 +27,5 @@ data class Add<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.add(element: T) {
-    perform(Add(element))
+    accept(Add(element))
 }

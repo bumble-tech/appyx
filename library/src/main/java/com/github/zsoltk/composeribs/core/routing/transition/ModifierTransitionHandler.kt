@@ -4,11 +4,10 @@ import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import com.github.zsoltk.composeribs.core.composable.ChildTransitionScope
 import com.github.zsoltk.composeribs.core.composable.ChildTransitionScopeImpl
 
@@ -28,14 +27,18 @@ abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = 
         descriptor: TransitionDescriptor<T, S>,
         onTransitionFinished: (S) -> Unit
     ): ChildTransitionScope<S> {
-        val currentState = remember { MutableTransitionState(descriptor.fromState) }
-        currentState.targetState = descriptor.toState
-        val transition: Transition<S> = updateTransition(currentState)
+        val transitionState = remember { MutableTransitionState(descriptor.fromState) }
+        transitionState.targetState = descriptor.toState
+        val transition: Transition<S> = updateTransition(transitionState)
 
-        if (transition.currentState == currentState.targetState) {
-            onTransitionFinished(currentState.targetState)
+        with(transition) {
+            LaunchedEffect(currentState, targetState) {
+                if (currentState == targetState) {
+                    onTransitionFinished(targetState)
+                }
+            }
         }
-        return rememberTransitionScope(transition, descriptor.processParams())
+        return rememberTransitionScope(transition, descriptor)
     }
 
     abstract fun createModifier(
@@ -45,33 +48,10 @@ abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = 
     ): Modifier
 
     @Composable
-    private fun determineBounds(transitionBounds: TransitionBounds): TransitionBounds {
-        return if (clipToBounds) {
-            transitionBounds
-        } else {
-            with(LocalDensity.current) {
-                val configuration = LocalConfiguration.current
-                TransitionBounds(
-                    width = configuration.screenWidthDp.toDp(),
-                    height = configuration.screenHeightDp.toDp()
-                )
-            }
-        }
-    }
-
-    @Composable
-    private fun TransitionDescriptor<T, S>.processParams(): TransitionDescriptor<T, S> =
-        copy(
-            params = params.copy(
-                bounds = determineBounds(transitionBounds = params.bounds)
-            )
-        )
-
-    @Composable
     private fun rememberTransitionScope(
         transition: Transition<S>,
         descriptor: TransitionDescriptor<T, S>
-    ) = remember(transition, descriptor.params.bounds) {
+    ) = remember(transition, descriptor) {
         ChildTransitionScopeImpl(
             transition = transition,
             transitionModifier = clipToBoundsModifier

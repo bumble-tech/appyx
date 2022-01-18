@@ -20,6 +20,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".client.integrationpoint.StartActivityExample"
+            android:exported="false"
+            android:theme="@style/Theme.ComposeRIBsExperiment.NoActionBar" />
     </application>
+
+    <uses-permission android:name="android.permission.CAMERA" />
 
 </manifest>

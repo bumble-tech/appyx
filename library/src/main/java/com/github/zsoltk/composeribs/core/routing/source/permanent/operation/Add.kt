@@ -4,7 +4,9 @@ import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.permanent.PermanentRoutingSource
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Add<T : Any>(
     private val key: RoutingKey<T>
 ) : PermanentOperation<T> {
@@ -22,11 +24,11 @@ data class Add<T : Any>(
                 key = key,
                 fromState = 0,
                 targetState = 0,
-                operation = this
+                operation = this,
             )
         }
 }
 
 fun <T : Any> PermanentRoutingSource<T>.add(routingKey: RoutingKey<T>) {
-    perform(Add(routingKey))
+    accept(Add(routingKey))
 }

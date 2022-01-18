@@ -2,9 +2,9 @@ package com.github.zsoltk.composeribs.core.routing.source.permanent
 
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
+import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
-import com.github.zsoltk.composeribs.core.routing.source.permanent.operation.PermanentOperation
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,14 +35,14 @@ class PermanentRoutingSource<Key : Any>(
         }
     )
 
-    override val all: StateFlow<PermanentElements<Key>>
+    override val elements: StateFlow<PermanentElements<Key>>
         get() = state
 
-    override val onScreen: StateFlow<PermanentElements<Key>>
+    override val onScreen: StateFlow<RoutingElements<Key, Int>>
         get() = state
 
-    override val offScreen: StateFlow<PermanentElements<Key>> =
-        MutableStateFlow(emptyList())
+    override val offScreen: StateFlow<RoutingElements<Key, Int>>
+        get() = MutableStateFlow(emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
         MutableStateFlow(false)
@@ -55,7 +55,7 @@ class PermanentRoutingSource<Key : Any>(
         // no-op
     }
 
-    fun perform(operation: PermanentOperation<Key>) {
+    override fun accept(operation: Operation<Key, Int>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }

@@ -1,13 +1,12 @@
 package com.github.zsoltk.composeribs.core.routing.upnavigation
 
-import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 
 class StubFallbackUpNavigationHandler : FallbackUpNavigationHandler {
     var invoked: Boolean = false
 
-    override fun handle() {
+    override fun handleUpNavigation() {
         invoked = true
     }
 

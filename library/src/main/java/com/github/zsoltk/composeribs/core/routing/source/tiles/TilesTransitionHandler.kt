@@ -4,14 +4,17 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
+import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class TilesTransitionHandler<T>(
@@ -43,8 +46,20 @@ class TilesTransitionHandler<T>(
                 }
             })
 
-        offset(x = Dp(1000f * destroyProgress.value), y = Dp(-200 * destroyProgress.value))
+        offset {
+            IntOffset(
+                x = (1000f * destroyProgress.value * this.density).roundToInt(),
+                y = (-200 * destroyProgress.value * this.density).roundToInt()
+            )
+        }
             .rotate(720 * destroyProgress.value)
             .scale(scale.value)
     }
+}
+
+@Composable
+fun <T> rememberTilesTransitionHandler(
+    transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { tween(500) }
+): ModifierTransitionHandler<T, Tiles.TransitionState> = remember {
+    TilesTransitionHandler(transitionSpec)
 }

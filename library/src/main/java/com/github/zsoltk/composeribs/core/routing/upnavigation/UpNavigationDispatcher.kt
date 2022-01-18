@@ -17,14 +17,11 @@ internal class UpNavigationDispatcher(
 
     fun upNavigation() {
         if (nodeNavigationCallback.handleUpNavigation()) return
-        fallbackUpNavigationCallback?.handle()
+        fallbackUpNavigationCallback?.handleUpNavigation()
             ?: throw IllegalStateException("Up navigation callback not set")
     }
 
     fun setFallbackUpNavigationCallback(callback: FallbackUpNavigationHandler) {
-        if (fallbackUpNavigationCallback != null) {
-            throw IllegalStateException("Trying to overwrite up navigation callback")
-        }
         this.fallbackUpNavigationCallback = callback
     }
 

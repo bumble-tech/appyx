@@ -5,14 +5,17 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.current
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 /**
  * Operation:
  *
  * [A, B, C] + Push(D) = [A, B, C, D]
  */
+@Parcelize
 data class Push<T : Any>(
-    private val element: T
+    private val element: @RawValue T
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
@@ -20,8 +23,8 @@ data class Push<T : Any>(
 
     override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
         return elements.map {
-            if (it.targetState == BackStack.TransitionState.ON_SCREEN) {
-                it.copy(
+            if (it.targetState == BackStack.TransitionState.ACTIVE) {
+                it.transitionTo(
                     targetState = BackStack.TransitionState.STASHED_IN_BACK_STACK,
                     operation = this
                 )
@@ -31,12 +34,12 @@ data class Push<T : Any>(
         } + BackStackElement(
             key = RoutingKey(element),
             fromState = BackStack.TransitionState.CREATED,
-            targetState = BackStack.TransitionState.ON_SCREEN,
+            targetState = BackStack.TransitionState.ACTIVE,
             operation = this
         )
     }
 }
 
 fun <T : Any> BackStack<T>.push(element: T) {
-    perform(Push(element))
+    accept(Push(element))
 }

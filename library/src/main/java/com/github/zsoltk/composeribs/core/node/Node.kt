@@ -13,15 +13,20 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.github.zsoltk.composeribs.core.composable.LocalTransitionModifier
+import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPointStub
+import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPoint
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycle
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleImpl
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.plugin.Destroyable
 import com.github.zsoltk.composeribs.core.plugin.NodeAware
+import com.github.zsoltk.composeribs.core.plugin.NodeLifecycleAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
 import com.github.zsoltk.composeribs.core.plugin.Saveable
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
+import com.github.zsoltk.composeribs.core.plugin.plugins
 import com.github.zsoltk.composeribs.core.routing.upnavigation.FallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.upnavigation.LocalFallbackUpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.upnavigation.UpHandler
@@ -37,10 +42,25 @@ abstract class Node(
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
 
+    val ancestryInfo: AncestryInfo =
+        buildContext.ancestryInfo
+
+    val isRoot: Boolean =
+        ancestryInfo == AncestryInfo.Root
+
     private val parent: Node? =
-        when (val ancestryInfo = buildContext.ancestryInfo) {
+        when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
+        }
+
+    var integrationPoint: IntegrationPoint = IntegrationPointStub()
+        internal set
+        get() {
+            return if (isRoot) field
+            else parent?.integrationPoint ?: error(
+                "Non-root Node should have a parent"
+            )
         }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
@@ -63,7 +83,8 @@ abstract class Node(
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
         updateLifecycleState(Lifecycle.State.CREATED)
-        plugins.filterIsInstance<NodeAware>().forEach { it.init(this) }
+        plugins<NodeAware<Node>>().forEach { it.init(this) }
+        plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
     }
 
     @Composable
@@ -101,6 +122,9 @@ abstract class Node(
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         nodeLifecycle.updateLifecycleState(state)
+        if (state == Lifecycle.State.DESTROYED) {
+            plugins<Destroyable>().forEach { it.destroy() }
+        }
     }
 
     @CallSuper
@@ -129,7 +153,7 @@ abstract class Node(
     }
 
     private fun handleUpNavigationByPlugins(): Boolean =
-        plugins.filterIsInstance<UpNavigationHandler>().any { it.handleUpNavigation() }
+        plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     protected open fun performUpNavigation(): Boolean =
         handleUpNavigationByPlugins() || parent?.performUpNavigation() == true

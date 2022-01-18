@@ -4,7 +4,9 @@ import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Deselect<T : Any>(
     private val key: RoutingKey<T>
 ) : TilesOperation<T> {
@@ -16,7 +18,7 @@ data class Deselect<T : Any>(
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.key == key && it.targetState == Tiles.TransitionState.SELECTED) {
-                it.copy(
+                it.transitionTo(
                     targetState = Tiles.TransitionState.STANDARD,
                     operation = this
                 )
@@ -27,5 +29,5 @@ data class Deselect<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.deselect(key: RoutingKey<T>) {
-    perform(Deselect(key))
+    accept(Deselect(key))
 }

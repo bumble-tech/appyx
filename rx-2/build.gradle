@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 21
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            consumerProguardFiles 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+        useIR = true
+    }
+    lintOptions {
+        abortOnError false
+    }
+    testOptions {
+        unitTests.all {
+            // interface method default implementation
+            exclude '**/*$DefaultImpls.class'
+        }
+    }
+}
+
+dependencies {
+    implementation project(':library')
+
+    implementation libs.androidx.lifecycle.java8
+    implementation libs.androidx.lifecycle.runtime
+    implementation libs.rxjava2
+    implementation libs.rxrelay
+
+    testImplementation libs.junit.api
+    testImplementation libs.junit.params
+    testRuntimeOnly libs.junit.engine
+}

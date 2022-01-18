@@ -12,11 +12,14 @@ import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.testutils.MainDispatcherRule
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Rule
+import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class ChildAwareTestBase {
 
@@ -35,13 +38,12 @@ abstract class ChildAwareTestBase {
 
     fun add(vararg key: RoutingKey<Configuration>): List<Node> {
         root.routing.add(*key)
-        val result = root
+        return root
             .children
             .value
             .values
             .filter { it.key.routing in key.map { it.routing } }
             .mapNotNull { (it as? ChildEntry.Eager)?.node }
-        return result
     }
 
     sealed class Configuration {
@@ -84,13 +86,29 @@ abstract class ChildAwareTestBase {
 
     class TestRoutingSource<Key> : RoutingSource<Key, Int> {
 
+        private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
-        override val all: StateFlow<RoutingElements<Key, Int>>
+        override val elements: StateFlow<RoutingElements<Key, Int>>
             get() = state
-        override val onScreen: StateFlow<RoutingElements<Key, Int>>
-            get() = all
-        override val offScreen: StateFlow<RoutingElements<Key, Int>>
+        override val onScreen: StateFlow<RoutingElements<Key, out Int>>
+            get() = state
+        override val offScreen: StateFlow<RoutingElements<Key, out Int>>
             get() = MutableStateFlow(emptyList())
+
+        override fun onBackPressed()  = Unit
+
+        override fun onTransitionFinished(key: RoutingKey<Key>) {
+            state.update { list ->
+                list.mapNotNull {
+                    if (it.key == key) {
+                        it.onTransitionFinished()
+                    } else {
+                        it
+                    }
+                }
+            }
+        }
+
         override val canHandleBackPress: StateFlow<Boolean>
             get() = MutableStateFlow(false)
 
@@ -102,16 +120,10 @@ abstract class ChildAwareTestBase {
                         key = it,
                         fromState = 0,
                         targetState = 0,
-                        operation = Operation.Noop()
+                        operation = Operation.Noop(),
                     )
                 }
             }
-        }
-
-        override fun onBackPressed() {
-        }
-
-        override fun onTransitionFinished(key: RoutingKey<Key>) {
         }
 
     }

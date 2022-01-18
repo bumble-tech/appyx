@@ -4,7 +4,9 @@ import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class ToggleSelection<T : Any>(
     private val key: RoutingKey<T>
 ) : TilesOperation<T> {
@@ -17,11 +19,11 @@ data class ToggleSelection<T : Any>(
         elements.map {
             if (it.key == key) {
                 when (it.targetState) {
-                    Tiles.TransitionState.SELECTED -> it.copy(
+                    Tiles.TransitionState.SELECTED -> it.transitionTo(
                         targetState = Tiles.TransitionState.STANDARD,
                         operation = this
                     )
-                    Tiles.TransitionState.STANDARD -> it.copy(
+                    Tiles.TransitionState.STANDARD -> it.transitionTo(
                         targetState = Tiles.TransitionState.SELECTED,
                         operation = this
                     )
@@ -34,5 +36,5 @@ data class ToggleSelection<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.toggleSelection(key: RoutingKey<T>) {
-    perform(ToggleSelection(key))
+    accept(ToggleSelection(key))
 }

@@ -3,7 +3,9 @@ package com.github.zsoltk.composeribs.core.routing.source.tiles.operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 class RemoveSelected<T : Any> : TilesOperation<T> {
 
     override fun isApplicable(elements: TilesElements<T>): Boolean = true
@@ -13,7 +15,7 @@ class RemoveSelected<T : Any> : TilesOperation<T> {
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.targetState == Tiles.TransitionState.SELECTED) {
-                it.copy(
+                it.transitionTo(
                     targetState = Tiles.TransitionState.DESTROYED,
                     operation = this
                 )
@@ -28,5 +30,5 @@ class RemoveSelected<T : Any> : TilesOperation<T> {
 }
 
 fun <T : Any> Tiles<T>.removeSelected() {
-    perform(RemoveSelected())
+    accept(RemoveSelected())
 }

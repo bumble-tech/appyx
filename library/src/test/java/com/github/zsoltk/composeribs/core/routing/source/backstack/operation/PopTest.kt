@@ -2,7 +2,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
@@ -18,8 +18,8 @@ internal class PopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -60,8 +60,8 @@ internal class PopTest {
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             ),
         )
@@ -84,8 +84,8 @@ internal class PopTest {
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
@@ -97,12 +97,12 @@ internal class PopTest {
             backStackElement(
                 element = Routing1,
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = operation
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = operation
             )

@@ -4,14 +4,13 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.BackStackOperation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.NewRoot
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Pop
@@ -23,10 +22,14 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Sin
 import com.github.zsoltk.composeribs.core.routing.transition.ModifierTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionSpec
+import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider<T>(
-    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { tween(1500) },
+    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> =
+        {
+            spring(stiffness = Spring.StiffnessVeryLow)
+        },
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
 
@@ -41,7 +44,7 @@ class BackStackSlider<T>(
                 val width = descriptor.params.bounds.width.value
                 when (it) {
                     BackStack.TransitionState.CREATED -> toOutsideRight(width)
-                    BackStack.TransitionState.ON_SCREEN -> toCenter()
+                    BackStack.TransitionState.ACTIVE -> toCenter()
                     BackStack.TransitionState.STASHED_IN_BACK_STACK -> toOutsideLeft(width)
                     BackStack.TransitionState.DESTROYED -> {
                         when (val operation = descriptor.operation as? BackStackOperation) {
@@ -58,7 +61,12 @@ class BackStackSlider<T>(
                 }
             })
 
-        offset(Dp(offset.value.x), Dp(offset.value.y))
+        offset {
+            IntOffset(
+                x = (offset.value.x * this.density).roundToInt(),
+                y = (offset.value.y * this.density).roundToInt()
+            )
+        }
     }
 
     private fun toOutsideRight(width: Float) = Offset(1.0f * width, 0f)

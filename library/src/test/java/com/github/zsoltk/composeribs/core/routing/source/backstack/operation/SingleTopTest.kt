@@ -3,7 +3,7 @@ package com.github.zsoltk.composeribs.core.routing.source.backstack.operation
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
-import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ON_SCREEN
+import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElement
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.Routing.Routing1
@@ -22,12 +22,15 @@ internal class SingleTopTest {
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing2, elements = elements)
+        val operation = SingleTop.init(
+            element = Routing2,
+            elements = elements
+        )
 
         val applicable = operation.isApplicable(elements)
 
@@ -58,12 +61,15 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing4("Content"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing4("Content"), elements = elements)
+        val operation = SingleTop.init(
+            element = Routing4("Content"),
+            elements = elements
+        )
 
         val applicable = operation.isApplicable(elements)
 
@@ -94,12 +100,15 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing4("Content"), elements = elements)
+        val operation = SingleTop.init(
+            element = Routing4("Content"),
+            elements = elements
+        )
 
         val applicable = operation.isApplicable(elements)
 
@@ -130,12 +139,15 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing4("Content 1"),
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing4("Content 2"), elements = elements)
+        val operation = SingleTop.init(
+            element = Routing4("Content 2"),
+            elements = elements
+        )
 
         val applicable = operation.isApplicable(elements)
 
@@ -154,12 +166,15 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing3, elements = elements)
+        val operation = SingleTop.init(
+            element = Routing3,
+            elements = elements
+        )
 
         val newElements = operation.invoke(elements)
 
@@ -172,14 +187,14 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing2,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = operation
             ),
             backStackElement(
                 element = Routing3,
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = operation
             )
         )
@@ -215,7 +230,10 @@ internal class SingleTopTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(Routing4("Content 1"), elements = elements)
+        val operation = SingleTop.init(
+            element = Routing4("Content 1"),
+            elements = elements
+        )
 
         assertThrows(IllegalArgumentException::class.java) {
             operation.invoke(elements)
@@ -246,12 +264,15 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing4("Content 1"), elements = elements)
+        val operation = SingleTop.init(
+            element = Routing4("Content 1"),
+            elements = elements
+        )
 
         val newElements = operation.invoke(elements)
 
@@ -265,12 +286,12 @@ internal class SingleTopTest {
             backStackElement(
                 element = Routing4("Content 1"),
                 fromState = STASHED_IN_BACK_STACK,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = operation
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = operation
             )
@@ -307,7 +328,10 @@ internal class SingleTopTest {
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing4("Content 2"), elements = elements)
+        val operation = SingleTop.init(
+            element = Routing4("Content 2"),
+            elements = elements
+        )
 
         assertThrows(IllegalArgumentException::class.java) {
             operation.invoke(elements)
@@ -338,12 +362,15 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
-                targetState = ON_SCREEN,
+                fromState = ACTIVE,
+                targetState = ACTIVE,
                 operation = Operation.Noop()
             )
         )
-        val operation = SingleTop.init(element = Routing4("Content 2"), elements)
+        val operation = SingleTop.init(
+            element = Routing4("Content 2"),
+            elements = elements
+        )
 
         val newElements = operation.invoke(elements)
 
@@ -356,14 +383,14 @@ internal class SingleTopTest {
             ),
             backStackElement(
                 element = Routing3,
-                fromState = ON_SCREEN,
+                fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = operation
             ),
             backStackElement(
                 element = Routing4("Content 2"),
                 fromState = CREATED,
-                targetState = ON_SCREEN,
+                targetState = ACTIVE,
                 operation = operation
             )
         )

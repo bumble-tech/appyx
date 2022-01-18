@@ -1,6 +1,8 @@
 package com.github.zsoltk.composeribs.client.backstack
 
 import android.os.Parcelable
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,25 +11,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.DropdownMenu
+import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color.Companion.LightGray
-import androidx.compose.ui.graphics.Color.Companion.White
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
-import androidx.compose.ui.text.input.KeyboardType.Companion.Number
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.NEW_ROOT
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Operation.POP
@@ -42,11 +41,10 @@ import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routi
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.ChildC
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode.Routing.ChildD
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
-import com.github.zsoltk.composeribs.core.routing.RoutingKey
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStackElements
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.newRoot
@@ -107,14 +105,15 @@ class BackStackExampleNode(
 
     @Composable
     override fun View() {
-        val backStackState = backStack.all.collectAsState()
+        val backStackState = backStack.elements.collectAsState()
         val selectedChildRadioButton = rememberSaveable { mutableStateOf("") }
         val defaultOrRandomRadioButton = rememberSaveable { mutableStateOf(DEFAULT_LABEL) }
         val isRadioButtonNeeded = rememberSaveable { mutableStateOf(false) }
-        val typedId = rememberSaveable { mutableStateOf("") }
+        val selectedId = rememberSaveable { mutableStateOf("") }
         val isIdNeeded = rememberSaveable { mutableStateOf(false) }
         val selectedOperation = rememberSaveable { mutableStateOf<Operation?>(null) }
         val areThereMissingParams = rememberSaveable { mutableStateOf(true) }
+        val skipChildRenderingByRouting = rememberSaveable { mutableStateOf(NONE_VALUE) }
 
         Column(
             modifier = Modifier
@@ -133,8 +132,10 @@ class BackStackExampleNode(
                     routingSource = backStack,
                     transitionHandler = rememberBackStackExampleTransitionHandler()
                 ) {
-                    children<Routing> { child ->
-                        child()
+                    children<Routing> { child, descriptor ->
+                        if (!descriptor.element.isFiltered(skipChildRenderingByRouting.value)) {
+                            child()
+                        }
                     }
                 }
                 Spacer(modifier = Modifier.size(8.dp))
@@ -176,19 +177,33 @@ class BackStackExampleNode(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = "Id: ", fontWeight = Bold)
-                    TextField(
-                        value = typedId.value,
-                        enabled = isIdNeeded.value,
-                        colors = TextFieldDefaults.textFieldColors(
-                            backgroundColor = if (isIdNeeded.value) {
-                                White
-                            } else {
-                                LightGray
-                            },
-                        ),
-                        onValueChange = { typedId.value = it },
-                        keyboardOptions = KeyboardOptions(keyboardType = Number)
+                    val expanded = rememberSaveable { mutableStateOf(false) }
+                    Text(
+                        text = if (selectedId.value.isNotEmpty()) selectedId.value else "Select an id",
+                        modifier = if (isIdNeeded.value) {
+                            Modifier
+                                .fillMaxWidth()
+                                .background(Color.White)
+                                .clickable { expanded.value = true }
+                        } else {
+                            Modifier
+                                .fillMaxWidth()
+                                .background(Color.LightGray)
+                        }
                     )
+                    DropdownMenu(
+                        expanded = expanded.value,
+                        onDismissRequest = { expanded.value = false }
+                    ) {
+                        backStackState.value.forEach { element ->
+                            DropdownMenuItem(onClick = {
+                                selectedId.value = element.key.id
+                                expanded.value = false
+                            }) {
+                                Text(text = element.key.id)
+                            }
+                        }
+                    }
                 }
                 Spacer(modifier = Modifier.size(8.dp))
                 Column(
@@ -203,7 +218,7 @@ class BackStackExampleNode(
                                     selectedOperation.value = operation
                                     selectedChildRadioButton.value = ""
                                     defaultOrRandomRadioButton.value = DEFAULT_LABEL
-                                    typedId.value = ""
+                                    selectedId.value = ""
                                     isRadioButtonNeeded.value = operation.radioButtonNeeded
                                     isIdNeeded.value = operation.idNeeded
                                     areThereMissingParams.value = true
@@ -233,7 +248,7 @@ class BackStackExampleNode(
                         textBuilder.add("Child")
                         areThereMissingParams.value = true
                     }
-                    if (selectedOperation.value?.idNeeded == true && typedId.value.isEmpty()) {
+                    if (selectedOperation.value?.idNeeded == true && selectedId.value.isEmpty()) {
                         textBuilder.add("Id")
                         areThereMissingParams.value = true
                     }
@@ -257,9 +272,8 @@ class BackStackExampleNode(
                                 backStack.replace(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
                             }
                             REMOVE -> {
-                                backStack.remove(
-                                    RoutingKey(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
-                                )
+                                backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
+                                selectedId.value = ""
                             }
                             NEW_ROOT -> {
                                 backStack.newRoot(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
@@ -282,6 +296,25 @@ class BackStackExampleNode(
                 ) {
                     Text(text = "BackStack:", fontWeight = Bold)
                     Text(text = "${backStackState.value.toStateString()}")
+                }
+                Spacer(modifier = Modifier.size(16.dp))
+                Column(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Skip rendering of:", fontWeight = Bold)
+                    Spacer(modifier = Modifier.size(8.dp))
+                    Row {
+                        listOf(NONE_VALUE, "A", "B", "C", "D").forEach {
+                            Row {
+                                RadioButton(
+                                    selected = it == skipChildRenderingByRouting.value,
+                                    onClick = { skipChildRenderingByRouting.value = it }
+                                )
+                                Text(text = it)
+                                Spacer(modifier = Modifier.size(36.dp))
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -306,6 +339,14 @@ class BackStackExampleNode(
         }
     }
 
+    private fun Routing.isFiltered(filter: String) = when (filter) {
+        "A" -> this is ChildA
+        "B" -> this is ChildB
+        "C" -> this is ChildC
+        "D" -> this is ChildD
+        else -> false
+    }
+
     private val String.random
         get() = this == RANDOM_LABEL
 
@@ -317,15 +358,15 @@ class BackStackExampleNode(
         PUSH("Push", true, false),
         POP("Pop", false, false),
         REPLACE("Replace", true, false),
-        REMOVE("Remove", true, true),
+        REMOVE("Remove", false, true),
         NEW_ROOT("New Root", true, false),
         SINGLE_TOP("Single Top", true, false)
     }
 
     companion object {
-
         private const val DEFAULT_LABEL = "Default"
         private const val RANDOM_LABEL = "Random"
         private const val DEFAULT_VALUE = "DEFAULT"
+        private const val NONE_VALUE = "NONE"
     }
 }

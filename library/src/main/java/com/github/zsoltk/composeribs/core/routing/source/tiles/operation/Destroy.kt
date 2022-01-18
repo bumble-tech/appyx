@@ -4,7 +4,9 @@ import com.github.zsoltk.composeribs.core.routing.RoutingElements
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
 import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesElements
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class Destroy<T : Any>(
     private val key: RoutingKey<T>
 ) : TilesOperation<T> {
@@ -16,7 +18,7 @@ data class Destroy<T : Any>(
     ): RoutingElements<T, Tiles.TransitionState> =
         elements.map {
             if (it.key == key) {
-                it.copy(
+                it.transitionTo(
                     targetState = Tiles.TransitionState.DESTROYED,
                     operation = this
                 )
@@ -27,5 +29,5 @@ data class Destroy<T : Any>(
 }
 
 fun <T : Any> Tiles<T>.destroy(key: RoutingKey<T>) {
-    perform(Destroy(key))
+    accept(Destroy(key))
 }

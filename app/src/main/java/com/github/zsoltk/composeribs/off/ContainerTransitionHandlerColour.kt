@@ -25,7 +25,7 @@ object ContainerTransitionHandlerColour :
             targetValueByState = {
                 when (it) {
                     BackStack.TransitionState.CREATED -> Color.Blue
-                    BackStack.TransitionState.ON_SCREEN -> Color.Green
+                    BackStack.TransitionState.ACTIVE -> Color.Green
                     BackStack.TransitionState.STASHED_IN_BACK_STACK -> Color.LightGray
                     BackStack.TransitionState.DESTROYED -> Color.Red
                 }

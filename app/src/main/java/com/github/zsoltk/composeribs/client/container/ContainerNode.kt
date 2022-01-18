@@ -1,13 +1,12 @@
 package com.github.zsoltk.composeribs.client.container
 
 import android.os.Parcelable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
@@ -16,21 +15,31 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
 import com.github.zsoltk.composeribs.client.combined.CombinedRoutingSourceNode
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.BackStackExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.CombinedRoutingSource
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.InteractorExample
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RoutingSourcesExamples
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.SpotlightExample
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
+import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
+import com.github.zsoltk.composeribs.client.integrationpoint.IntegrationPointExampleNode
+import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
+import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode
-import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.node.node
 import com.github.zsoltk.composeribs.core.plugin.UpNavigationHandler
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
@@ -72,39 +81,39 @@ class ContainerNode(
 
         @Parcelize
         object CombinedRoutingSource : Routing()
+
+        @Parcelize
+        object LazyExamples : Routing()
+
+        @Parcelize
+        object RequestPermissionsExamples : Routing()
+
+        @Parcelize
+        object RoutingSourcesExamples : Routing()
+
+        @Parcelize
+        object SpotlightExample : Routing()
+
+        @Parcelize
+        object InteractorExample : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Picker -> node(buildContext) { ExamplesList() }
+            is RoutingSourcesExamples -> node(buildContext) { RoutingSources() }
             is BackStackExample -> BackStackExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
+            is LazyExamples -> LazyListContainerNode(buildContext)
+            is SpotlightExample -> SpotlightExampleNode(buildContext)
+            is InteractorExample -> InteractorNodeBuilder().build(buildContext)
+            is RequestPermissionsExamples -> IntegrationPointExampleNode(buildContext)
         }
-
-//    @OptIn(ExperimentalAnimationApi::class)
-//    @Composable
-//    override fun View(foo: StateObject) {
-//        Box(modifier = Modifier.fillMaxSize()) {
-//            Subtree(backStack) {
-//                children<Routing> { child, routingElement ->
-//                    // TODO you can also use routingElement.fromState / targetState for e.g. updateTransition
-//                    AnimatedVisibility(
-//                        visible = routingElement.onScreen,
-//                        enter = fadeIn(animationSpec = tween(1000)),
-//                        exit = fadeOut(animationSpec = tween(1000)),
-//                    ) {
-//                        child()
-//                    }
-//                }
-//            }
-//        }
-//    }
 
     @Composable
     override fun View() {
-        // TODO variant 1
         Subtree(
             modifier = Modifier.fillMaxSize(),
             routingSource = backStack,
@@ -116,13 +125,6 @@ class ContainerNode(
                 child()
             }
         }
-
-        // TODO variant 2, decide which one is better
-//            SubtreeVariant(backStack, transitionHandler) { transitionModifier, child ->
-//                Box(modifier = transitionModifier) {
-//                    child()
-//                }
-//            }
     }
 
     @Composable
@@ -134,35 +136,20 @@ class ContainerNode(
             contentAlignment = Alignment.Center
         ) {
             Column(
-                horizontalAlignment = Alignment.CenterHorizontally
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Button(onClick = { backStack.push(Routing.BackStackExample) }) {
-                    Text(text = "Back stack example")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
-                Button(onClick = { backStack.push(Routing.TilesExample) }) {
-                    Text(text = "Tiles example")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
-                Button(onClick = { backStack.push(Routing.ModalExample) }) {
-                    Text(text = "Modal example")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
-                Button(onClick = { backStack.push(Routing.CombinedRoutingSource) }) {
-                    Text(text = "Combined routing source")
-                }
-                Spacer(modifier = Modifier.size(24.dp))
+                TextButton("Routing Sources Examples") { backStack.push(RoutingSourcesExamples) }
+
                 val scope = rememberCoroutineScope()
-                Button(onClick = {
+                TextButton("Trigger double navigation in 3 seconds") {
                     scope.launch {
                         delay(3_000)
-                        backStack.push(Routing.BackStackExample)
-                        backStack.push(Routing.TilesExample)
+                        backStack.push(BackStackExample)
+                        backStack.push(TilesExample)
                     }
-                }) {
-                    Text(text = "Trigger double navigation in 3 seconds")
                 }
-                Spacer(modifier = Modifier.size(24.dp))
+                TextButton("LazyList") { backStack.push(LazyExamples) }
                 Row {
                     Checkbox(
                         checked = upNavigationOverridesChild.collectAsState().value,
@@ -171,6 +158,38 @@ class ContainerNode(
                     Text(text = "Up navigation overrides child")
                 }
             }
+        }
+    }
+
+    @Composable
+    fun RoutingSources() {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                TextButton("Backstack example") { backStack.push(BackStackExample) }
+                TextButton("Tiles example") { backStack.push(TilesExample) }
+                TextButton("Modal example") { backStack.push(ModalExample) }
+                TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
+                TextButton("Node with interactor") { backStack.push(Routing.InteractorExample) }
+                TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
+                TextButton("Request permissions / start activities example") {
+                    backStack.push(RequestPermissionsExamples)
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun TextButton(text: String, onClick: () -> Unit) {
+        Button(onClick = onClick) {
+            Text(textAlign = TextAlign.Center, text = text)
         }
     }
 

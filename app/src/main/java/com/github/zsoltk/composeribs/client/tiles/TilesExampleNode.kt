@@ -1,15 +1,22 @@
 package com.github.zsoltk.composeribs.client.tiles
 
 import android.util.Log
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -22,14 +29,15 @@ import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child3
 import com.github.zsoltk.composeribs.client.tiles.TilesExampleNode.Routing.Child4
 import com.github.zsoltk.composeribs.core.children.whenChildrenAttached
-import com.github.zsoltk.composeribs.core.composable.Subtree
-import com.github.zsoltk.composeribs.core.composable.visibleChildAsState
+import com.github.zsoltk.composeribs.core.composable.Child
+import com.github.zsoltk.composeribs.core.composable.visibleChildrenAsState
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.tiles.Tiles
-import com.github.zsoltk.composeribs.core.routing.source.tiles.TilesTransitionHandler
 import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.removeSelected
+import com.github.zsoltk.composeribs.core.routing.source.tiles.operation.toggleSelection
+import com.github.zsoltk.composeribs.core.routing.source.tiles.rememberTilesTransitionHandler
 
 class TilesExampleNode(
     buildContext: BuildContext,
@@ -69,71 +77,45 @@ class TilesExampleNode(
             Child4 -> ChildNode("4", buildContext)
         }
 
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun View() {
-        val handler = TilesTransitionHandler<Routing>()
-        Column(modifier = Modifier.fillMaxSize()) {
-
-            /*val children by tiles.childrenAsState()
-
-            children.forEachIndexed { index, routingElement ->
-
-                if (index % 2 == 1) {
-                    Text(
-                        text = "AD BANNER GOES HERE",
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                    )
-                }
-
-                AnimatedChildNode(
-                    routingElement = routingElement,
-                    transitionHandler = handler,
-                ) { modifier, child ->
-                    Box(modifier = modifier
-                        .fillMaxWidth()
-                        .height(100.dp)
-                        .clickable {
-                            tiles.toggleSelection(routingElement.key)
-                        }
-                    ) {
-                        child()
-                    }
-                }
-
-            }*/
-
-            Subtree(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(150.dp),
-                routingSource = tiles,
-                transitionHandler = handler
-            ) {
-                children<Routing> { child ->
-                    child()
-                }
-            }
-
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
             Button(
                 onClick = { tiles.removeSelected() },
-                modifier = Modifier.align(CenterHorizontally)
+                modifier = Modifier.align(Alignment.TopCenter)
             ) {
-                Text(text = "Remove")
+                Text(text = "Remove selected")
             }
 
-            Text(text = "Child1 separately", modifier = Modifier.align(CenterHorizontally))
-
-            val child1 by tiles.visibleChildAsState(Child1::class)
-            val c = child1
-
-            /*if (c != null) {
-                AnimatedChildNode(
-                    routingElement = c,
-                    transitionHandler = handler,
-                )
-            }*/
+            val elements by tiles.visibleChildrenAsState()
+            LazyVerticalGrid(
+                cells = GridCells.Fixed(2),
+                modifier = Modifier
+                    .padding(top = 60.dp)
+                    .fillMaxSize(),
+                contentPadding = PaddingValues(horizontal = 16.dp),
+            ) {
+                items(elements) { element ->
+                    Child(
+                        routingElement = element,
+                        transitionHandler = rememberTilesTransitionHandler()
+                    ) { child, _ ->
+                        Box(modifier = Modifier
+                            .fillMaxWidth()
+                            .height(150.dp)
+                            .clickable {
+                                tiles.toggleSelection(element.key)
+                            }
+                        ) {
+                            child()
+                        }
+                    }
+                }
+            }
 
         }
     }

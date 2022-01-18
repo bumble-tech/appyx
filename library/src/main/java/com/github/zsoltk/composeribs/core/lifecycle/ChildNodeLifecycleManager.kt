@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 /**
  * Hosts [LifecycleRegistry] to manage the current node lifecycle
@@ -51,15 +52,17 @@ class ChildNodeLifecycleManager<Routing>(
             // observe both routingSource and children
             combine(
                 lifecycleState,
-                routingSource.all,
+                routingSource.onScreen,
+                routingSource.offScreen,
                 children,
-                ::Triple
-            ).collect { (state, elements, children) ->
-                elements.forEach { element ->
-                    val maxLifecycle =
-                        if (routingSource.isOnScreen(element.key)) Lifecycle.State.RESUMED
-                        else Lifecycle.State.CREATED
-                    val current = minOf(state, maxLifecycle)
+                ::Quadruple
+            ).collect { (state, onScreen, offScreen, children) ->
+                onScreen.forEach { element ->
+                    val current = minOf(state, Lifecycle.State.RESUMED)
+                    children[element.key]?.nodeOrNull?.updateLifecycleState(current)
+                }
+                offScreen.forEach { element ->
+                    val current = minOf(state, Lifecycle.State.CREATED)
                     children[element.key]?.nodeOrNull?.updateLifecycleState(current)
                 }
             }
@@ -82,4 +85,13 @@ class ChildNodeLifecycleManager<Routing>(
         }
     }
 
+}
+
+data class Quadruple<out A, out B, out C, out D>(
+    val first: A,
+    val second: B,
+    val third: C,
+    val fourth: D,
+) : Serializable {
+    override fun toString(): String = "($first, $second, $third, $fourth)"
 }
