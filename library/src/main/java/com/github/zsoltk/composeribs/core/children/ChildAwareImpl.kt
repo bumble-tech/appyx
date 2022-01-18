@@ -4,25 +4,42 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.lifecycle.isDestroyed
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-class ChildAwareImpl(
-    private val children: StateFlow<Map<out RoutingKey<*>, ChildEntry<*>>>,
-    private val lifecycle: Lifecycle,
-    coroutineScope: CoroutineScope = lifecycle.coroutineScope,
-) : ChildAware {
+class ChildAwareImpl<N: Node> : ChildAware<N> {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
-    init {
+    private lateinit var children: StateFlow<Map<out RoutingKey<*>, ChildEntry<*>>>
+    private lateinit var lifecycle: Lifecycle
+    private lateinit var coroutineScope: CoroutineScope
+
+    override lateinit var node: N
+        private set
+
+    override fun init(node: N) {
+        this.node = node
+        lifecycle = node.lifecycle
+        coroutineScope = lifecycle.coroutineScope
+        if (node is ParentNode<*>) {
+            children = node.children
+            initialize()
+        } else {
+            children = MutableStateFlow(emptyMap())
+        }
+    }
+
+    private fun initialize() {
         coroutineScope.apply {
             launch { findNewKeys() }
             launch { findPromotedChildren() }

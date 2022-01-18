@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.connectable.rx2
 
 import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.connectable.Connectable
+import com.github.zsoltk.composeribs.core.lifecycle.subscribe
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observer
@@ -30,10 +31,8 @@ class NodeConnector<Input, Output>(
 
     }
 
-    override fun onLifecycleUpdated(state: Lifecycle.State) {
-        if (state == Lifecycle.State.CREATED) {
-            flushOutputCache()
-        }
+    override fun onCreate(lifecycle: Lifecycle) {
+        lifecycle.subscribe(onCreate = { flushOutputCache() })
     }
 
     private val cacheSubscription = intake.subscribe {

@@ -66,7 +66,8 @@ abstract class Node(
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
         updateLifecycleState(Lifecycle.State.CREATED)
-        plugins<NodeAware>().forEach { it.init(this) }
+        plugins<NodeAware<Node>>().forEach { it.init(this) }
+        plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
     }
 
     @Composable
@@ -107,7 +108,6 @@ abstract class Node(
         if (state == Lifecycle.State.DESTROYED) {
             plugins<Destroyable>().forEach { it.destroy() }
         }
-        plugins<NodeLifecycleAware>().forEach { it.onLifecycleUpdated(state) }
     }
 
     @CallSuper

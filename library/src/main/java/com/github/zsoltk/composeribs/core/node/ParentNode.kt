@@ -20,7 +20,9 @@ import com.github.zsoltk.composeribs.core.children.ChildrenCallback
 import com.github.zsoltk.composeribs.core.lifecycle.ChildNodeLifecycleManager
 import com.github.zsoltk.composeribs.core.modality.AncestryInfo
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.plugin.NodeAware
 import com.github.zsoltk.composeribs.core.plugin.Plugin
+import com.github.zsoltk.composeribs.core.plugin.plugins
 import com.github.zsoltk.composeribs.core.routing.Resolver
 import com.github.zsoltk.composeribs.core.routing.RoutingKey
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
@@ -42,9 +44,10 @@ abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
     buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
-    plugins: List<Plugin> = emptyList(),
+    private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
+    plugins: List<Plugin> = listOf(childAware),
 ) : Node(buildContext = buildContext, plugins = plugins + routingSource), Resolver<Routing>,
-    ChildAware {
+    ChildAware<ParentNode<Routing>> {
 
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(buildContext.savedStateMap)
     val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
@@ -60,10 +63,13 @@ abstract class ParentNode<Routing : Any>(
         routingSource = this.routingSource,
         children = children,
     )
-    private val childAware = ChildAwareImpl(
-        children = children,
-        lifecycle = lifecycle,
-    )
+
+    override val node: ParentNode<Routing>
+        get() = this
+
+    init {
+        plugins<NodeAware<ParentNode<Routing>>>().forEach { it.init(this) }
+    }
 
     private var transitionsInBackgroundJob: Job? = null
     private var finishTransitionsForOffscreenElementsJob: Job? = null
