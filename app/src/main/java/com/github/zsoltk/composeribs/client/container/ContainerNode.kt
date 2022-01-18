@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
 import com.github.zsoltk.composeribs.client.combined.CombinedRoutingSourceNode
@@ -27,8 +28,10 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Moda
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RoutingSourcesExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.SpotlightExample
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
 import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
+import com.github.zsoltk.composeribs.client.integrationpoint.IntegrationPointExampleNode
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode
@@ -83,6 +86,9 @@ class ContainerNode(
         object LazyExamples : Routing()
 
         @Parcelize
+        object RequestPermissionsExamples : Routing()
+
+        @Parcelize
         object RoutingSourcesExamples : Routing()
 
         @Parcelize
@@ -103,6 +109,7 @@ class ContainerNode(
             is LazyExamples -> LazyListContainerNode(buildContext)
             is SpotlightExample -> SpotlightExampleNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
+            is RequestPermissionsExamples -> IntegrationPointExampleNode(buildContext)
         }
 
     @Composable
@@ -172,6 +179,9 @@ class ContainerNode(
                 TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
                 TextButton("Node with interactor") { backStack.push(Routing.InteractorExample) }
                 TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
+                TextButton("Request permissions / start activities example") {
+                    backStack.push(RequestPermissionsExamples)
+                }
             }
         }
     }
@@ -179,7 +189,7 @@ class ContainerNode(
     @Composable
     private fun TextButton(text: String, onClick: () -> Unit) {
         Button(onClick = onClick) {
-            Text(text = text)
+            Text(textAlign = TextAlign.Center, text = text)
         }
     }
 

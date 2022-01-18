@@ -7,5 +7,5 @@ val LocalFallbackUpNavigationHandler: ProvidableCompositionLocal<FallbackUpNavig
     compositionLocalOf { throw IllegalStateException("FallbackUpNavigationHandler is not initialised") }
 
 fun interface FallbackUpNavigationHandler {
-    fun handle()
+    fun handleUpNavigation()
 }

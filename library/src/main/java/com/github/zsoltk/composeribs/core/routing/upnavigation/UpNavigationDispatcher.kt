@@ -17,7 +17,7 @@ internal class UpNavigationDispatcher(
 
     fun upNavigation() {
         if (nodeNavigationCallback.handleUpNavigation()) return
-        fallbackUpNavigationCallback?.handle()
+        fallbackUpNavigationCallback?.handleUpNavigation()
             ?: throw IllegalStateException("Up navigation callback not set")
     }
 
