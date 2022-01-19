@@ -31,7 +31,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pus
 import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
 import kotlinx.parcelize.Parcelize
-import java.util.*
+import java.util.UUID
 
 class CombinedRoutingSourceNode(
     buildContext: BuildContext,
