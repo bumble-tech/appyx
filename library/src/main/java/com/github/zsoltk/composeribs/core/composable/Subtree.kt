@@ -1,18 +1,21 @@
 package com.github.zsoltk.composeribs.core.composable
 
-import androidx.compose.animation.core.Transition
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.saveable.SaveableStateHolder
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingSource
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionBounds
 import com.github.zsoltk.composeribs.core.routing.transition.TransitionDescriptor
@@ -28,17 +31,26 @@ fun <Routing : Any, State> Subtree(
     transitionHandler: TransitionHandler<Routing, State>,
     block: @Composable SubtreeTransitionScope<Routing, State>.() -> Unit
 ) {
-    BoxWithConstraints(modifier) {
+    val density = LocalDensity.current.density
+    var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }
+    val transitionParams by derivedStateOf {
+        TransitionParams(
+            bounds = TransitionBounds(
+                width = Dp(transitionBounds.width / density),
+                height = Dp(transitionBounds.height / density)
+            )
+        )
+    }
+    Box(modifier = modifier
+        .onSizeChanged {
+            transitionBounds = it
+        }
+    ) {
         block(
             SubtreeTransitionScope(
-                transitionHandler,
-                TransitionParams(
-                    bounds = TransitionBounds(
-                        width = maxWidth,
-                        height = maxHeight
-                    )
-                ),
-                routingSource
+                transitionHandler = transitionHandler,
+                transitionParams = transitionParams,
+                routingSource = routingSource
             )
         )
     }

@@ -1,17 +1,24 @@
 package com.github.zsoltk.composeribs.core.composable
 
 import androidx.compose.animation.core.Transition
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
@@ -65,18 +72,25 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
         transitionDescriptor: TransitionDescriptor<Routing, State>
     ) -> Unit = { child, _ -> child() }
 ) {
-    BoxWithConstraints {
+    val density = LocalDensity.current.density
+    var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }
+    val transitionParams by derivedStateOf {
+        TransitionParams(
+            bounds = TransitionBounds(
+                width = Dp(transitionBounds.width / density),
+                height = Dp(transitionBounds.height / density)
+            )
+        )
+    }
+    Box(modifier = Modifier
+        .onSizeChanged {
+            transitionBounds = it
+        }
+    ) {
         Child(
             routingElement = routingElement,
             saveableStateHolder = rememberSaveableStateHolder(),
-            transitionParams = remember(maxWidth, maxHeight) {
-                TransitionParams(
-                    bounds = TransitionBounds(
-                        width = maxWidth,
-                        height = maxHeight
-                    )
-                )
-            },
+            transitionParams = transitionParams,
             transitionHandler = transitionHandler,
             decorator = decorator
         )
