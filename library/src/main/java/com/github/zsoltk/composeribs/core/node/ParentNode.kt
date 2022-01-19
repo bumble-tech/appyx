@@ -137,9 +137,9 @@ abstract class ParentNode<Routing : Any>(
     }
 
     @Composable
-    protected fun permanentChild(
+    protected fun PermanentChild(
         routing: Routing,
-        decorator: @Composable (child: @Composable () -> Unit) -> Unit = { child -> child() }
+        decorator: @Composable (child: @Composable () -> Unit) -> Unit
     ) {
         val child = remember(routing) {
             val routingKey = RoutingKey(routing)

@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.client.combined
 
 import android.os.Parcelable
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
@@ -26,7 +31,7 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.pus
 import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
 import kotlinx.parcelize.Parcelize
-import java.util.UUID
+import java.util.*
 
 class CombinedRoutingSourceNode(
     buildContext: BuildContext,
@@ -88,14 +93,20 @@ class CombinedRoutingSourceNode(
 
     @Composable
     private fun Permanent() {
+        var visibility by remember { mutableStateOf(true) }
         Text(text = "Permanent")
-        permanentChild(Routing.Permanent.Child1) { child ->
+        Button(onClick = { visibility = !visibility }) {
+            Text(text = "Trigger visibility")
+        }
+        PermanentChild(Routing.Permanent.Child1) { child ->
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
             ) {
-                child()
+                AnimatedVisibility(visible = visibility) {
+                    child()
+                }
             }
         }
     }
