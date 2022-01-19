@@ -17,10 +17,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.child.ChildNode
-import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.composable.Subtree
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
@@ -89,12 +89,14 @@ class CombinedRoutingSourceNode(
     @Composable
     private fun Permanent() {
         Text(text = "Permanent")
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-        ) {
-            permanentChild(Routing.Permanent.Child1)
+        permanentChild(Routing.Permanent.Child1) { child ->
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            ) {
+                child()
+            }
         }
     }
 
