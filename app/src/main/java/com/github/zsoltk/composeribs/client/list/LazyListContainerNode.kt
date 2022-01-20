@@ -66,7 +66,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
     override fun View(modifier: Modifier) {
         var selectedMode by remember { mutableStateOf(Column) }
 
-        Column {
+        Column(modifier = Modifier) {
             Column {
                 values().forEach { mode ->
                     RadioItem(mode, mode == selectedMode) { selectedMode = mode }

@@ -115,7 +115,7 @@ class ContainerNode(
     @Composable
     override fun View(modifier: Modifier) {
         Subtree(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             routingSource = backStack,
             transitionHandler = rememberCombinedHandler(
                 handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())

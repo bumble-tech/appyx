@@ -14,7 +14,7 @@ class Child2Node(buildContext: BuildContext) : Node(buildContext) {
     @Composable
     override fun View(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(color = Color.LightGray)
         )
@@ -26,7 +26,7 @@ class Child3Node(buildContext: BuildContext) : Node(buildContext) {
     @Composable
     override fun View(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(color = Color.DarkGray)
         )

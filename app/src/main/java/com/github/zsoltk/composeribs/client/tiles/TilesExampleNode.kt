@@ -81,7 +81,7 @@ class TilesExampleNode(
     @Composable
     override fun View(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
         ) {
             Button(

@@ -76,7 +76,7 @@ class InteractorExampleNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = modifier.fillMaxSize()) {
             Subtree(
                 modifier = Modifier
                     .padding(16.dp)

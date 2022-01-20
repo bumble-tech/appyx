@@ -116,7 +116,7 @@ class BackStackExampleNode(
         val skipChildRenderingByRouting = rememberSaveable { mutableStateOf(NONE_VALUE) }
 
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {

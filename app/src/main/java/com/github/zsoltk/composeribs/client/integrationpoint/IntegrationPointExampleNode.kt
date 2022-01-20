@@ -54,7 +54,7 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
         }
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(color = Color.Gray)
         ) {

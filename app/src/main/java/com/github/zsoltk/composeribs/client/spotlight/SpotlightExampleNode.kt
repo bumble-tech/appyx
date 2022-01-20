@@ -73,7 +73,7 @@ class SpotlightExampleNode(
         val hasNext = spotlight.hasNext().collectAsState(initial = false)
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {

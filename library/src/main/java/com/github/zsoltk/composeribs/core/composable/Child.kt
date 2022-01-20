@@ -54,13 +54,17 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
                 })
 
         transitionScope.decorator(
-            child = ChildRendererImpl(node = childEntry.node, transitionModifier = transitionScope.transitionModifier),
+            child = ChildRendererImpl(
+                node = childEntry.node,
+                transitionModifier = transitionScope.transitionModifier
+            ),
             transitionDescriptor = descriptor,
         )
     }
 }
 
 interface ChildRenderer {
+
     @Composable
     operator fun invoke(modifier: Modifier)
 
@@ -72,10 +76,11 @@ private class ChildRendererImpl(
     private val node: Node,
     private val transitionModifier: Modifier
 ) : ChildRenderer {
+
     @Composable
     override operator fun invoke(modifier: Modifier) {
         CompositionLocalProvider(LocalTransitionModifier provides transitionModifier) {
-            node.Compose()
+            node.Compose(modifier = modifier)
         }
     }
 

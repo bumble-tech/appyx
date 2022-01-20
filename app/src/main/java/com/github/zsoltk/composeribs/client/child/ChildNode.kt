@@ -76,7 +76,7 @@ class ChildNode(
     @Composable
     override fun View(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(
                     color = color,
