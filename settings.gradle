@@ -10,5 +10,5 @@ dependencyResolutionManagement {
 enableFeaturePreview 'VERSION_CATALOGS'
 
 include ':library',
-        ':app',
+        ':sandbox',
         ':rx-2'
