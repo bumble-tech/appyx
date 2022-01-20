@@ -92,7 +92,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
     decorator: @Composable ChildTransitionScope<State>.(
         child: ChildRenderer,
         transitionDescriptor: TransitionDescriptor<Routing, State>
-    ) -> Unit = { child, _ -> child.invoke() }
+    ) -> Unit = { child, _ -> child() }
 ) {
     val density = LocalDensity.current.density
     var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }
