@@ -109,13 +109,13 @@ abstract class Node(
         }
     }
 
-    @Composable
-    protected abstract fun View(modifier: Modifier)
-
     /** Derived classes can declare functional (non-ui) Composable blocks before [View()] is invoked. */
     @Composable
     protected open fun DerivedSetup() {
     }
+
+    @Composable
+    protected abstract fun View(modifier: Modifier)
 
     override fun getLifecycle(): Lifecycle =
         nodeLifecycle.lifecycle

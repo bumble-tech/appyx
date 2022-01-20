@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.ui
+package com.bumble.appyx.v2.app.ui
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

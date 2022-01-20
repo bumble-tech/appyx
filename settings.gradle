@@ -9,6 +9,7 @@ dependencyResolutionManagement {
 
 enableFeaturePreview 'VERSION_CATALOGS'
 
-include ':library',
+include ':app',
+        ':library',
         ':sandbox',
         ':rx-2'
