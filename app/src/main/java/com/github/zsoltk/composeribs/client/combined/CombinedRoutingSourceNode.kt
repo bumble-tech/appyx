@@ -69,7 +69,7 @@ class CombinedRoutingSourceNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         val scrollState = rememberScrollState()
         Column(
             modifier = Modifier

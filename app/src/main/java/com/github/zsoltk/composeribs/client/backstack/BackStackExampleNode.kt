@@ -104,7 +104,7 @@ class BackStackExampleNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         val backStackState = backStack.elements.collectAsState()
         val selectedChildRadioButton = rememberSaveable { mutableStateOf("") }
         val defaultOrRandomRadioButton = rememberSaveable { mutableStateOf(DEFAULT_LABEL) }

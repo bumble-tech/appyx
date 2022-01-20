@@ -75,7 +75,7 @@ class InteractorExampleNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Column(modifier = Modifier.fillMaxSize()) {
             Subtree(
                 modifier = Modifier

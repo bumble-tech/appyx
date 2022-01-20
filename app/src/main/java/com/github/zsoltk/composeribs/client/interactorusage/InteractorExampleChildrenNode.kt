@@ -12,7 +12,7 @@ import com.github.zsoltk.composeribs.core.node.Node
 class Child2Node(buildContext: BuildContext) : Node(buildContext) {
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -24,7 +24,7 @@ class Child2Node(buildContext: BuildContext) : Node(buildContext) {
 class Child3Node(buildContext: BuildContext) : Node(buildContext) {
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Box(
             modifier = Modifier
                 .fillMaxSize()

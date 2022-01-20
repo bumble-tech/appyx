@@ -3,13 +3,14 @@ package com.github.zsoltk.composeribs.client.modal
 import android.os.Parcelable
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.github.zsoltk.composeribs.client.child.ChildNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode.Routing.Child
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import kotlinx.parcelize.Parcelize
 
@@ -31,7 +32,7 @@ class ModalExampleNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Text("Modal placeholder")
 //        Box(Modifier.fillMaxSize()) {
 //            Row(

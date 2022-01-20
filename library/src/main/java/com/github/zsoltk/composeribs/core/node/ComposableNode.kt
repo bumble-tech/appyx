@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.core.node
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 
 open class ComposableNode(
@@ -11,7 +12,7 @@ open class ComposableNode(
 ) {
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         composable()
     }
 }

@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.lifecycle
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import com.github.zsoltk.composeribs.core.modality.BuildContext
@@ -56,7 +57,7 @@ class NodeLifecycleAwareTest {
         plugins = listOf(nodeLifecycleAwarePlugin)
     ) {
         @Composable
-        override fun View() {
+        override fun View(modifier: Modifier) {
         }
     }
 

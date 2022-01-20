@@ -26,12 +26,12 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Inte
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RoutingSourcesExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.SpotlightExample
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
-import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
 import com.github.zsoltk.composeribs.client.integrationpoint.IntegrationPointExampleNode
+import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode
@@ -113,7 +113,7 @@ class ContainerNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Subtree(
             modifier = Modifier.fillMaxSize(),
             routingSource = backStack,

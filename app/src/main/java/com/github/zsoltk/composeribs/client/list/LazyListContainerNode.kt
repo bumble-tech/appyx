@@ -63,7 +63,7 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
 
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         var selectedMode by remember { mutableStateOf(Column) }
 
         Column {

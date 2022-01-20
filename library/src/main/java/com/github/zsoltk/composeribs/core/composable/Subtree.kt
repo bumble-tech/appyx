@@ -64,14 +64,14 @@ class SubtreeTransitionScope<T : Any, S>(
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.children(
-        noinline block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
+        noinline block: @Composable ChildTransitionScope<S>.(child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
     ) {
         children(V::class, block)
     }
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.children(
-        noinline block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit) -> Unit,
+        noinline block: @Composable ChildTransitionScope<S>.(child: ChildRenderer) -> Unit,
     ) {
         children(V::class, block)
     }
@@ -79,7 +79,7 @@ class SubtreeTransitionScope<T : Any, S>(
     @Composable
     fun ParentNode<T>.children(
         clazz: KClass<out T>,
-        block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit) -> Unit,
+        block: @Composable ChildTransitionScope<S>.(child: ChildRenderer) -> Unit,
     ) {
         _children(clazz) { scope, child, _ ->
             scope.block(
@@ -91,7 +91,7 @@ class SubtreeTransitionScope<T : Any, S>(
     @Composable
     fun ParentNode<T>.children(
         clazz: KClass<out T>,
-        block: @Composable ChildTransitionScope<S>.(child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
+        block: @Composable ChildTransitionScope<S>.(child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
     ) {
         _children(clazz) { scope, child, descriptor ->
             scope.block(
@@ -104,7 +104,7 @@ class SubtreeTransitionScope<T : Any, S>(
     @Composable
     private fun ParentNode<T>._children(
         clazz: KClass<out T>,
-        block: @Composable (transitionScope: ChildTransitionScope<S>, child: @Composable () -> Unit, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
+        block: @Composable (transitionScope: ChildTransitionScope<S>, child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
     ) {
         val children by this@SubtreeTransitionScope.routingSource.onScreen
             .map { list ->
