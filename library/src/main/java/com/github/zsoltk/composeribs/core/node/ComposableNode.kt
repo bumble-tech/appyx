@@ -6,16 +6,16 @@ import com.github.zsoltk.composeribs.core.modality.BuildContext
 
 open class ComposableNode(
     buildContext: BuildContext,
-    private val composable: @Composable () -> Unit
+    private val composable: @Composable (Modifier) -> Unit
 ) : Node(
     buildContext = buildContext,
 ) {
 
     @Composable
     override fun View(modifier: Modifier) {
-        composable()
+        composable(modifier)
     }
 }
 
-fun node(buildContext: BuildContext, composable: @Composable () -> Unit): Node =
+fun node(buildContext: BuildContext, composable: @Composable (Modifier) -> Unit): Node =
     ComposableNode(buildContext, composable)

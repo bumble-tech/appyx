@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.plugin
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
@@ -26,7 +27,7 @@ class DestroyableTest {
 
         val node = object : Node(BuildContext.root(null), listOf(stub)) {
             @Composable
-            override fun View() {
+            override fun View(modifier: Modifier) {
             }
         }
         node.build()
