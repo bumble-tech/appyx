@@ -8,7 +8,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.github.zsoltk.composeribs"
+        applicationId "com.bumble.appyx.v2"
         minSdk 21
         targetSdk 31
         versionCode 1
