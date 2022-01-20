@@ -79,9 +79,9 @@ class TilesExampleNode(
 
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
         ) {
             Button(

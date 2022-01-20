@@ -42,7 +42,7 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
     private var activityResultState by mutableStateOf("Launch activity for result to check result state ")
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
 
         DisposableEffect(key1 = Any()) {
             observeCameraPermissions()
@@ -54,7 +54,7 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
         }
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(color = Color.Gray)
         ) {

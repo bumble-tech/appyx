@@ -63,9 +63,9 @@ class InteractorExampleNode(
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            is Routing.Child1 -> node(buildContext) {
+            is Routing.Child1 -> node(buildContext) { modifier ->
                 Box(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxSize()
                         .background(color = Color.LightGray)
                 )
@@ -75,8 +75,8 @@ class InteractorExampleNode(
         }
 
     @Composable
-    override fun View() {
-        Column(modifier = Modifier.fillMaxSize()) {
+    override fun View(modifier: Modifier) {
+        Column(modifier = modifier.fillMaxSize()) {
             Subtree(
                 modifier = Modifier
                     .padding(16.dp)

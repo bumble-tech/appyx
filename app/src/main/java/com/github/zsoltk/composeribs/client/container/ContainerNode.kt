@@ -1,6 +1,7 @@
 package com.github.zsoltk.composeribs.client.container
 
 import android.os.Parcelable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.github.zsoltk.composeribs.client.backstack.BackStackExampleNode
@@ -26,12 +28,12 @@ import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Inte
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.LazyExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.ModalExample
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.Picker
+import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RoutingSourcesExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.SpotlightExample
-import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.github.zsoltk.composeribs.client.container.ContainerNode.Routing.TilesExample
-import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
 import com.github.zsoltk.composeribs.client.integrationpoint.IntegrationPointExampleNode
+import com.github.zsoltk.composeribs.client.interactorusage.InteractorNodeBuilder
 import com.github.zsoltk.composeribs.client.list.LazyListContainerNode
 import com.github.zsoltk.composeribs.client.modal.ModalExampleNode
 import com.github.zsoltk.composeribs.client.spotlight.SpotlightExampleNode
@@ -100,8 +102,8 @@ class ContainerNode(
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            is Picker -> node(buildContext) { ExamplesList() }
-            is RoutingSourcesExamples -> node(buildContext) { RoutingSources() }
+            is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
+            is RoutingSourcesExamples -> node(buildContext) { modifier -> RoutingSources(modifier) }
             is BackStackExample -> BackStackExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
@@ -113,24 +115,28 @@ class ContainerNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Subtree(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             routingSource = backStack,
             transitionHandler = rememberCombinedHandler(
                 handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
             )
         ) {
-            children<Routing> { child ->
-                child()
+            children<Routing> { child, descriptor ->
+                val color = when (descriptor.element) {
+                    is BackStackExample -> Color.LightGray
+                    else -> Color.White
+                }
+                child(modifier = Modifier.background(color))
             }
         }
     }
 
     @Composable
-    fun ExamplesList() {
+    fun ExamplesList(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(24.dp),
             contentAlignment = Alignment.Center
@@ -162,9 +168,9 @@ class ContainerNode(
     }
 
     @Composable
-    fun RoutingSources() {
+    fun RoutingSources(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(24.dp),
             contentAlignment = Alignment.Center

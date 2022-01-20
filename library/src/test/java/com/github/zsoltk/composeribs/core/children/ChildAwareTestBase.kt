@@ -2,10 +2,11 @@ package com.github.zsoltk.composeribs.core.children
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.node.build
-import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.routing.Operation
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
@@ -68,7 +69,7 @@ abstract class ChildAwareTestBase {
             }
 
         @Composable
-        override fun View() {
+        override fun View(modifier: Modifier) {
         }
     }
 
@@ -80,7 +81,7 @@ abstract class ChildAwareTestBase {
         buildContext: BuildContext
     ) : Node(buildContext = buildContext) {
         @Composable
-        override fun View() {
+        override fun View(modifier: Modifier) {
         }
     }
 

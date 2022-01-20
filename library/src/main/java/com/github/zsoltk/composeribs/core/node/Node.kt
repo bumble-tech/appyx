@@ -13,8 +13,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import com.github.zsoltk.composeribs.core.composable.LocalTransitionModifier
-import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPointStub
 import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPoint
+import com.github.zsoltk.composeribs.core.integrationpoint.IntegrationPointStub
 import com.github.zsoltk.composeribs.core.lifecycle.LifecycleLogger
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycle
 import com.github.zsoltk.composeribs.core.lifecycle.NodeLifecycleImpl
@@ -88,7 +88,7 @@ abstract class Node(
     }
 
     @Composable
-    fun Compose() {
+    fun Compose(modifier: Modifier = Modifier) {
         CompositionLocalProvider(
             LocalNode provides this,
             LocalLifecycleOwner provides this,
@@ -103,14 +103,14 @@ abstract class Node(
                 // Avoid applying the same transition modifier for the children down in hierarchy
                 // in the cases when their parent doesn't provide one
                 CompositionLocalProvider(LocalTransitionModifier provides null) {
-                    View()
+                    View(modifier)
                 }
             }
         }
     }
 
     @Composable
-    protected abstract fun View()
+    protected abstract fun View(modifier: Modifier)
 
     /** Derived classes can declare functional (non-ui) Composable blocks before [View()] is invoked. */
     @Composable

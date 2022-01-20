@@ -68,12 +68,12 @@ class SpotlightExampleNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         val hasPrevious = spotlight.hasPrevious().collectAsState(initial = false)
         val hasNext = spotlight.hasNext().collectAsState(initial = false)
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {

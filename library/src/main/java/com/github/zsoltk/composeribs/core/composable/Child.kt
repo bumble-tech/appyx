@@ -19,6 +19,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
+import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.node.ParentNode
 import com.github.zsoltk.composeribs.core.routing.RoutingElement
 import com.github.zsoltk.composeribs.core.routing.RoutingElements
@@ -36,7 +37,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
     transitionParams: TransitionParams,
     transitionHandler: TransitionHandler<Routing, State>,
     decorator: @Composable ChildTransitionScope<State>.(
-        child: @Composable () -> Unit,
+        child: ChildRenderer,
         transitionDescriptor: TransitionDescriptor<Routing, State>
     ) -> Unit
 ) {
@@ -53,13 +54,39 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
                 })
 
         transitionScope.decorator(
+            child = ChildRendererImpl(
+                node = childEntry.node,
+                transitionModifier = transitionScope.transitionModifier
+            ),
             transitionDescriptor = descriptor,
-            child = {
-                CompositionLocalProvider(LocalTransitionModifier provides transitionScope.transitionModifier) {
-                    childEntry.node.Compose()
-                }
-            },
         )
+    }
+}
+
+interface ChildRenderer {
+
+    @Composable
+    operator fun invoke(modifier: Modifier)
+
+    @Composable
+    operator fun invoke()
+}
+
+private class ChildRendererImpl(
+    private val node: Node,
+    private val transitionModifier: Modifier
+) : ChildRenderer {
+
+    @Composable
+    override operator fun invoke(modifier: Modifier) {
+        CompositionLocalProvider(LocalTransitionModifier provides transitionModifier) {
+            node.Compose(modifier = modifier)
+        }
+    }
+
+    @Composable
+    override operator fun invoke() {
+        invoke(modifier = Modifier)
     }
 }
 
@@ -68,7 +95,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
     routingElement: RoutingElement<Routing, out State>,
     transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(
-        child: @Composable () -> Unit,
+        child: ChildRenderer,
         transitionDescriptor: TransitionDescriptor<Routing, State>
     ) -> Unit = { child, _ -> child() }
 ) {

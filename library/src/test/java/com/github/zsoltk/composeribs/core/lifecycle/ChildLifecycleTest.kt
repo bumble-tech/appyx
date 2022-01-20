@@ -2,13 +2,14 @@ package com.github.zsoltk.composeribs.core.lifecycle
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import com.github.zsoltk.composeribs.core.node.Node
-import com.github.zsoltk.composeribs.core.node.ParentNode
-import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.children.nodeOrNull
 import com.github.zsoltk.composeribs.core.modality.BuildContext
+import com.github.zsoltk.composeribs.core.node.Node
+import com.github.zsoltk.composeribs.core.node.ParentNode
+import com.github.zsoltk.composeribs.core.node.build
 import com.github.zsoltk.composeribs.core.routing.OnScreenMapper
 import com.github.zsoltk.composeribs.core.routing.OnScreenStateResolver
 import com.github.zsoltk.composeribs.core.routing.Operation
@@ -191,7 +192,7 @@ class ChildLifecycleTest {
             Child(routing, buildContext)
 
         @Composable
-        override fun View() {
+        override fun View(modifier: Modifier) {
         }
     }
 
@@ -200,7 +201,7 @@ class ChildLifecycleTest {
         buildContext: BuildContext
     ) : Node(buildContext) {
         @Composable
-        override fun View() {
+        override fun View(modifier: Modifier) {
         }
     }
 

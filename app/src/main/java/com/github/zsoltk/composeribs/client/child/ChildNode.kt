@@ -21,9 +21,9 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.core.node.Node
 import com.github.zsoltk.composeribs.core.state.SavedStateMap
-import com.github.zsoltk.composeribs.core.modality.BuildContext
 import com.github.zsoltk.composeribs.ui.atomic_tangerine
 import com.github.zsoltk.composeribs.ui.manatee
 import com.github.zsoltk.composeribs.ui.md_amber_500
@@ -74,9 +74,9 @@ class ChildNode(
         super.onSaveInstanceState(scope) + mapOf(KEY_COLOR_INDEX to colorIndex)
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(
                     color = color,

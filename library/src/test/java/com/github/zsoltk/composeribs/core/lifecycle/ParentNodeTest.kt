@@ -2,6 +2,7 @@ package com.github.zsoltk.composeribs.core.lifecycle
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import com.github.zsoltk.composeribs.core.children.ChildEntry
 import com.github.zsoltk.composeribs.core.lifecycle.ParentNodeTest.RoutingImpl.State
@@ -155,7 +156,7 @@ class ParentNodeTest {
             Child(routing, buildContext)
 
         @Composable
-        override fun View() {
+        override fun View(modifier: Modifier) {
         }
     }
 
@@ -164,7 +165,7 @@ class ParentNodeTest {
         buildContext: BuildContext
     ) : Node(buildContext) {
         @Composable
-        override fun View() {
+        override fun View(modifier: Modifier) {
         }
     }
 

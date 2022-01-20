@@ -30,8 +30,8 @@ import com.github.zsoltk.composeribs.core.routing.source.backstack.BackStack
 import com.github.zsoltk.composeribs.core.routing.source.backstack.operation.push
 import com.github.zsoltk.composeribs.core.routing.source.backstack.rememberBackstackFader
 import com.github.zsoltk.composeribs.core.routing.source.combined.plus
+import java.util.*
 import kotlinx.parcelize.Parcelize
-import java.util.UUID
 
 class CombinedRoutingSourceNode(
     buildContext: BuildContext,
@@ -69,10 +69,10 @@ class CombinedRoutingSourceNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         val scrollState = rememberScrollState()
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .padding(16.dp)

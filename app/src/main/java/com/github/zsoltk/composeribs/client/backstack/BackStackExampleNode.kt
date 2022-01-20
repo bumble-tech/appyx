@@ -104,7 +104,7 @@ class BackStackExampleNode(
         }
 
     @Composable
-    override fun View() {
+    override fun View(modifier: Modifier) {
         val backStackState = backStack.elements.collectAsState()
         val selectedChildRadioButton = rememberSaveable { mutableStateOf("") }
         val defaultOrRandomRadioButton = rememberSaveable { mutableStateOf(DEFAULT_LABEL) }
@@ -116,7 +116,7 @@ class BackStackExampleNode(
         val skipChildRenderingByRouting = rememberSaveable { mutableStateOf(NONE_VALUE) }
 
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
         ) {
