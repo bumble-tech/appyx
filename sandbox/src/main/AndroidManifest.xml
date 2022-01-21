@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Appyx">
         <activity
-            android:name=".MainActivity"
+            android:name=".sandbox.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.Appyx.NoActionBar">
@@ -22,7 +22,7 @@
         </activity>
 
         <activity
-            android:name=".client.integrationpoint.StartActivityExample"
+            android:name="com.bumble.appyx.v2.sandbox.client.integrationpoint.StartActivityExample"
             android:exported="false"
             android:theme="@style/Theme.Appyx.NoActionBar" />
     </application>
