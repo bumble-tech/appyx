@@ -54,8 +54,8 @@ import com.bumble.appyx.v2.core.routing.source.backstack.operation.remove
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.replace
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.singleTop
 import com.google.accompanist.flowlayout.FlowRow
-import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
+import kotlinx.parcelize.Parcelize
 
 class BackStackExampleNode(
     buildContext: BuildContext,
