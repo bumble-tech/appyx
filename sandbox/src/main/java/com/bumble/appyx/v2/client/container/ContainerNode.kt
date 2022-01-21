@@ -38,7 +38,7 @@ import com.bumble.appyx.v2.client.list.LazyListContainerNode
 import com.bumble.appyx.v2.client.modal.ModalExampleNode
 import com.bumble.appyx.v2.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.v2.client.tiles.TilesExampleNode
-import com.bumble.appyx.v2.core.composable.Subtree
+import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
@@ -116,7 +116,7 @@ class ContainerNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Subtree(
+        Children(
             modifier = modifier.fillMaxSize(),
             routingSource = backStack,
             transitionHandler = rememberCombinedHandler(

@@ -25,11 +25,11 @@ import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
-fun <Routing : Any, State> Subtree(
+fun <Routing : Any, State> Children(
     modifier: Modifier,
     routingSource: RoutingSource<Routing, State>,
     transitionHandler: TransitionHandler<Routing, State>,
-    block: @Composable SubtreeTransitionScope<Routing, State>.() -> Unit
+    block: @Composable ChildrenTransitionScope<Routing, State>.() -> Unit
 ) {
     val density = LocalDensity.current.density
     var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }
@@ -47,7 +47,7 @@ fun <Routing : Any, State> Subtree(
         }
     ) {
         block(
-            SubtreeTransitionScope(
+            ChildrenTransitionScope(
                 transitionHandler = transitionHandler,
                 transitionParams = transitionParams,
                 routingSource = routingSource
@@ -56,7 +56,7 @@ fun <Routing : Any, State> Subtree(
     }
 }
 
-class SubtreeTransitionScope<T : Any, S>(
+class ChildrenTransitionScope<T : Any, S>(
     private val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
     private val routingSource: RoutingSource<T, S>
@@ -106,7 +106,7 @@ class SubtreeTransitionScope<T : Any, S>(
         clazz: KClass<out T>,
         block: @Composable (transitionScope: ChildTransitionScope<S>, child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
     ) {
-        val children by this@SubtreeTransitionScope.routingSource.onScreen
+        val children by this@ChildrenTransitionScope.routingSource.onScreen
             .map { list ->
                 list
                     .filter { clazz.isInstance(it.key.routing) }

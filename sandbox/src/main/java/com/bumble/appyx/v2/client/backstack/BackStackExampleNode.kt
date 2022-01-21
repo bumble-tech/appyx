@@ -41,7 +41,7 @@ import com.bumble.appyx.v2.client.backstack.BackStackExampleNode.Routing.ChildB
 import com.bumble.appyx.v2.client.backstack.BackStackExampleNode.Routing.ChildC
 import com.bumble.appyx.v2.client.backstack.BackStackExampleNode.Routing.ChildD
 import com.bumble.appyx.v2.client.child.ChildNode
-import com.bumble.appyx.v2.core.composable.Subtree
+import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
@@ -125,7 +125,7 @@ class BackStackExampleNode(
                 Modifier.padding(24.dp),
                 horizontalAlignment = CenterHorizontally
             ) {
-                Subtree(
+                Children(
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
