@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.sandbox.ui
+package com.bumble.appyx.v2.app.ui
 
 import androidx.compose.ui.graphics.Color
 
@@ -16,3 +16,8 @@ val sizzling_red = Color(0xFFF05D5E)
 val imperial_red = Color(0xFFEF233C)
 val amaranth_red = Color(0xFFD90429)
 val atomic_tangerine = Color(0xFFF0965D)
+
+val appyx_yellow1 = Color(0xFFFFC629)
+val appyx_yellow2 = Color(0xFFFFE54A)
+val appyx_dark = Color(0xFF1E252C)
+val appyx_bright = Color(0xFFFFFFFF)

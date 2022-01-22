@@ -7,9 +7,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.bumble.appyx.v2.app.node.child.GenericChildNode
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode
-import com.bumble.appyx.v2.sandbox.ui.AppyxSampleAppTheme
+import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.RibActivity
 import com.bumble.appyx.v2.core.modality.BuildContext

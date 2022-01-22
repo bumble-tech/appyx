@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.sandbox.ui
+package com.bumble.appyx.v2.app.ui
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
