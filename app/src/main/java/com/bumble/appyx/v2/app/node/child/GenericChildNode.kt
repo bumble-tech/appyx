@@ -17,6 +17,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumble.appyx.v2.app.ui.atomic_tangerine
+import com.bumble.appyx.v2.app.ui.manatee
+import com.bumble.appyx.v2.app.ui.silver_sand
+import com.bumble.appyx.v2.app.ui.sizzling_red
 import com.bumble.appyx.v2.sandbox.ui.*
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
@@ -95,8 +99,7 @@ class GenericChildNode(
             ) {
                 Text(
                     text = "Child ($id)",
-                    fontSize = 12.sp,
-                    style = MaterialTheme.typography.subtitle1
+                    style = MaterialTheme.typography.caption
                 )
                 Text(
                     text = "$counter",
