@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.bumble.appyx.v2.app.node.child.GenericChildNode
+import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode
 import com.bumble.appyx.v2.sandbox.ui.AppyxSampleAppTheme
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.RibActivity
@@ -23,7 +24,7 @@ class MainActivity : RibActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         NodeHost(integrationPoint = integrationPoint) {
-                            GenericChildNode(
+                            OnboardingContainerNode(
                                 buildContext = it,
                             )
                         }
@@ -40,7 +41,7 @@ class MainActivity : RibActivity() {
 fun DefaultPreview() {
     AppyxSampleAppTheme {
         Column {
-            GenericChildNode(buildContext = BuildContext.root(null)).Compose()
+            OnboardingContainerNode(buildContext = BuildContext.root(null)).Compose()
         }
     }
 }

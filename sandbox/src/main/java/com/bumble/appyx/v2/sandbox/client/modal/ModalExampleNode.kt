@@ -22,7 +22,7 @@ import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode.Routing
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode.Routing.Child
 import com.bumble.appyx.v2.sandbox.client.modal.operation.fullScreen
 import com.bumble.appyx.v2.sandbox.client.modal.operation.show
-import com.bumble.appyx.v2.core.composable.Subtree
+import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
@@ -82,7 +82,7 @@ class ModalExampleNode(
                 }
             }
 
-            Subtree(
+            Children(
                 modifier = Modifier.fillMaxSize(),
                 routingSource = modal,
                 transitionHandler = ModalTransitionHandler()

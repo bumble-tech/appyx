@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorExampleNode.Routing
 import com.bumble.appyx.v2.core.clienthelper.interactor.Interactor
-import com.bumble.appyx.v2.core.composable.Subtree
+import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
@@ -77,7 +77,7 @@ class InteractorExampleNode(
     @Composable
     override fun View(modifier: Modifier) {
         Column(modifier = modifier.fillMaxSize()) {
-            Subtree(
+            Children(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxWidth()
