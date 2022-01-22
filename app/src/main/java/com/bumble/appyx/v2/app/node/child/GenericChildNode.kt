@@ -17,7 +17,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.v2.app.ui.*
+import com.bumble.appyx.v2.sandbox.ui.*
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
