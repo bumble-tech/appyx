@@ -49,6 +49,12 @@ class BackStack<T : Any>(
     override val elements: StateFlow<BackStackElements<T>> =
         state
 
+    // TODO consider pulling up
+    val routings: StateFlow<List<T>> =
+        state
+            .map { state -> state.map { routingElement -> routingElement.key.routing } }
+            .stateIn(scope, SharingStarted.Eagerly, listOf(initialElement))
+
     override val onScreen: StateFlow<BackStackElements<T>> =
         onScreenMapper.resolveOnScreenElements(state)
 
