@@ -13,13 +13,13 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionSta
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.SpotlightOperation
 import com.bumble.appyx.v2.core.state.SavedStateMap
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlin.coroutines.EmptyCoroutineContext
 
 class Spotlight<T : Parcelable, K : Parcelable>(
     items: SpotlightItems<T, K>,
@@ -97,6 +97,16 @@ class Spotlight<T : Parcelable, K : Parcelable>(
 
     override fun destroy() {
         scope.cancel()
+    }
+
+    override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
+        savedStateMap[key] =
+            state.value.map {
+                if (it.targetState != it.fromState) {
+                    it.onTransitionFinished()
+                }
+                it
+            }
     }
 
     private fun SavedStateMap.restoreHistory() =
