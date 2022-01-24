@@ -13,7 +13,9 @@ import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
+import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.*
+import com.bumble.appyx.v2.connectable.rx2.Connectable
+import com.bumble.appyx.v2.connectable.rx2.NodeConnector
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
@@ -33,11 +35,19 @@ class OnboardingContainerNode(
     private val spotlight: Spotlight<Routing, Routing> = Spotlight(
         items = getItems(),
         savedStateMap = buildContext.savedStateMap,
-    )
+    ),
+    connectable: Connectable<Input, Output> = NodeConnector()
 ) : ParentNode<Routing>(
     routingSource = spotlight,
     buildContext = buildContext
-) {
+), Connectable<Input, Output> by connectable {
+
+    sealed class Input
+
+    sealed class Output {
+        object FinishedOnboarding : Output()
+    }
+
     sealed class Routing : Parcelable {
         @Parcelize
         data class OnboardingScreen(
@@ -106,6 +116,15 @@ class OnboardingContainerNode(
                     ) {
                         Text(
                             text = "Next".toUpperCase(Locale.current),
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                } else {
+                    TextButton(
+                        onClick = { output.accept(Output.FinishedOnboarding) }
+                    ) {
+                        Text(
+                            text = "Done".toUpperCase(Locale.current),
                             fontWeight = FontWeight.Bold
                         )
                     }

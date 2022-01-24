@@ -58,6 +58,10 @@ dependencies {
     implementation libs.google.accompanist.flow
     implementation libs.google.material
 
+    implementation project(':rx2')
+    implementation libs.rxjava2
+    implementation libs.rxrelay
+
     testImplementation libs.junit
 
     androidTestImplementation libs.androidx.test.espresso.core

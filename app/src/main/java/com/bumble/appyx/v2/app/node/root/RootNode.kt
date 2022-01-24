@@ -6,10 +6,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode
 import com.bumble.appyx.v2.app.node.helper.screenNode
+import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode
+import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Output.FinishedOnboarding
 import com.bumble.appyx.v2.app.node.root.RootNode.Routing
 import com.bumble.appyx.v2.core.composable.Children
+import com.bumble.appyx.v2.core.lifecycle.subscribe
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
@@ -47,6 +49,20 @@ class RootNode(
             Routing.Onboarding -> OnboardingContainerNode(buildContext)
             Routing.Main -> screenNode(buildContext) { Text(text = "Main") }
         }
+
+    override fun onBuilt() {
+        super.onBuilt()
+        whenChildAttached(OnboardingContainerNode::class) { lifecycle, onboarding ->
+            val onboardingOutput = onboarding.output.subscribe {
+                when (it) {
+                    FinishedOnboarding -> backStack.newRoot(Routing.Main)
+                }
+            }
+            lifecycle.subscribe(
+                onDestroy = { onboardingOutput.dispose() }
+            )
+        }
+    }
 
     @Composable
     override fun View(modifier: Modifier) {
