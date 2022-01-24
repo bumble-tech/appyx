@@ -12,4 +12,4 @@ enableFeaturePreview 'VERSION_CATALOGS'
 include ':app',
         ':library',
         ':sandbox',
-        ':rx-2'
+        ':rx2'
