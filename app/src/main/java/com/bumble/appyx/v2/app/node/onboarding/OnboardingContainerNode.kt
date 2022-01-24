@@ -40,9 +40,6 @@ class OnboardingContainerNode(
 ) {
     sealed class Routing : Parcelable {
         @Parcelize
-        object Splash : Routing()
-
-        @Parcelize
         data class OnboardingScreen(
             val screenData: ScreenData
         ) : Routing()
@@ -50,7 +47,6 @@ class OnboardingContainerNode(
 
     companion object {
         private fun getItems() = listOf(
-            Routing.Splash,
             Routing.OnboardingScreen(onboardingScreenWelcome),
             Routing.OnboardingScreen(onboardingScreenNodes),
             Routing.OnboardingScreen(onboardingScreenLifecycle1),
@@ -60,7 +56,6 @@ class OnboardingContainerNode(
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            is Routing.Splash -> screenNode(buildContext) { Text(text = "Splash") }
             is Routing.OnboardingScreen -> OnboardingScreenNode(buildContext, routing.screenData)
         }
 
