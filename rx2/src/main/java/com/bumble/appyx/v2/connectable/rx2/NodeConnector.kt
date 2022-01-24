@@ -1,7 +1,6 @@
 package com.bumble.appyx.v2.connectable.rx2
 
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.v2.connectable.Connectable
 import com.bumble.appyx.v2.core.lifecycle.subscribe
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
