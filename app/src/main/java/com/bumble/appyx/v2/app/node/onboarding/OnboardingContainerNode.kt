@@ -12,6 +12,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.*
 import com.bumble.appyx.v2.connectable.rx2.Connectable
@@ -30,6 +31,7 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
 import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 
+@ExperimentalUnitApi
 class OnboardingContainerNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<Routing, Routing> = Spotlight(
@@ -66,7 +68,10 @@ class OnboardingContainerNode(
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            is Routing.OnboardingScreen -> OnboardingScreenNode(buildContext, routing.screenData)
+            is Routing.OnboardingScreen -> when (routing.screenData) {
+                is ScreenData.PlainWithImage -> OnboardingScreenNode(buildContext, routing.screenData)
+                is ScreenData.NodesExample -> OnboardingScreenParentNode(buildContext, routing.screenData)
+            }
         }
 
     @Composable
@@ -136,6 +141,7 @@ class OnboardingContainerNode(
 
 @Preview
 @Composable
+@ExperimentalUnitApi
 fun OnboardingContainerNodePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {

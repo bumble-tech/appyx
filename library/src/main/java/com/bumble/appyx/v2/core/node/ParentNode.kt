@@ -141,9 +141,9 @@ abstract class ParentNode<Routing : Any>(
         routing: Routing,
         decorator: @Composable (child: @Composable () -> Unit) -> Unit
     ) {
-        val child = remember(routing) {
-            val routingKey = RoutingKey(routing)
-            permanentRoutingSource.add(routingKey)
+        val child = remember(routing) {       // FIXME this is only remembered for the composition, but imagine view detach/reattach
+            val routingKey = RoutingKey(routing)  // FIXME then a new instance of RoutingKey will create a new random UUID
+            permanentRoutingSource.add(routingKey)                  // FIXME so the same permanent child will be added under a "new" key as it doesn't exist yet
             childOrCreate(routingKey)
         }
 

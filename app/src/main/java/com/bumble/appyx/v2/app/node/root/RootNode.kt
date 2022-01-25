@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.v2.app.node.helper.screenNode
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Output.FinishedOnboarding
@@ -21,6 +22,7 @@ import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackFader
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
+@ExperimentalUnitApi
 class RootNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
