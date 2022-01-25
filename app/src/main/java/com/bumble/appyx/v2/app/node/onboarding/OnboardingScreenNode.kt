@@ -8,6 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.ExperimentalUnitApi
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
@@ -15,6 +18,7 @@ import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 
+@ExperimentalUnitApi
 class OnboardingScreenNode(
     buildContext: BuildContext,
     private val screenData: ScreenData
@@ -45,11 +49,16 @@ class OnboardingScreenNode(
             ) {
                 Text(
                     text = screenData.title,
-                    style = MaterialTheme.typography.h4
+                    style = MaterialTheme.typography.h4,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 8.dp)
                 )
                 Text(
                     text = screenData.body,
-                    style = MaterialTheme.typography.body1
+                    style = MaterialTheme.typography.body1.copy(
+                        lineHeight = TextUnit(1.5f, TextUnitType.Em)
+                    )
                 )
             }
 
