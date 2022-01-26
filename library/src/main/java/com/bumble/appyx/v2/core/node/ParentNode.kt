@@ -4,10 +4,13 @@ import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
@@ -30,6 +33,7 @@ import com.bumble.appyx.v2.core.routing.source.combined.plus
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.v2.core.routing.source.permanent.operation.add
 import com.bumble.appyx.v2.core.state.SavedStateMap
+import kotlin.reflect.KClass
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +42,6 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import kotlin.reflect.KClass
 
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
@@ -141,13 +144,18 @@ abstract class ParentNode<Routing : Any>(
         routing: Routing,
         decorator: @Composable (child: @Composable () -> Unit) -> Unit
     ) {
-        val child = remember(routing) {       // FIXME this is only remembered for the composition, but imagine view detach/reattach
-            val routingKey = RoutingKey(routing)  // FIXME then a new instance of RoutingKey will create a new random UUID
-            permanentRoutingSource.add(routingKey)                  // FIXME so the same permanent child will be added under a "new" key as it doesn't exist yet
-            childOrCreate(routingKey)
+        var child by remember { mutableStateOf<ChildEntry.Eager<*>?>(null) }
+        LaunchedEffect(routing) {
+            permanentRoutingSource.elements.collect { elements ->
+                val routingKey = elements.find { it.key.routing == routing }?.key
+                    ?: RoutingKey(routing).also { permanentRoutingSource.add(it) }
+                child = childOrCreate(routingKey)
+            }
         }
 
-        decorator(child = { child.node.Compose() })
+        child?.let {
+            decorator(child = { it.node.Compose() })
+        }
     }
 
     /**
