@@ -35,14 +35,14 @@ internal val onboardingScreenWelcome = ScreenData.PlainWithImage(
     body = "Appyx is an Android application framework built with love on top of Jetpack Compose."
 )
 
-internal val onboardingScreenNodes = ScreenData.NodesExample(
+internal val onboardingScreenNodes = ScreenData.PlainWithImage(
+    imageRes = 0,
     title = "Nodes",
     body = "The app is organised into a tree hierarchy of Nodes." +
         "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, and can choose which of their children to delegate the control flow to."
 )
 
-internal val onboardingScreenLifecycle1 = ScreenData.PlainWithImage(
-    imageRes = 0,
+internal val onboardingScreenLifecycle1 = ScreenData.NodesExample(
     title = "Stateful",
     body = "Each Node on this screen has some state:" +
         "\n\n1. The counter represents data from a background process (e.g. server)." +
