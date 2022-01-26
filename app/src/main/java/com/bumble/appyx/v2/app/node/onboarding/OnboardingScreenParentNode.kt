@@ -30,12 +30,12 @@ class OnboardingScreenParentNode(
 ) {
     sealed class Routing : Parcelable {
         @Parcelize
-        object Child : Routing()
+        data class Child(val counterStartValue: Int) : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            Routing.Child -> GenericChildNode(buildContext)
+            is Routing.Child -> GenericChildNode(buildContext, routing.counterStartValue)
         }
 
     @Composable
@@ -45,14 +45,50 @@ class OnboardingScreenParentNode(
             title = screenData.title,
             body = screenData.body
         ) {
-            PermanentChild(Routing.Child) { child ->
-                Box(
+            Column(Modifier.fillMaxSize()) {
+                Row(
                     modifier = Modifier
-                        .size(200.dp)
+                        .weight(0.5f)
+                        .padding(bottom = 8.dp)
                 ) {
-                    AnimatedVisibility(visible = true) {
-                        child()
-                    }
+                    ChildInABox(
+                        routing = Routing.Child(100),
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .padding(end = 8.dp)
+                    )
+                    ChildInABox(
+                        routing = Routing.Child(200),
+                        modifier = Modifier
+                            .weight(0.5f)
+                    )
+                }
+                Row(
+                    modifier = Modifier
+                        .weight(0.5f)
+                ) {
+                    ChildInABox(
+                        routing = Routing.Child(300),
+                        modifier = Modifier
+                            .weight(0.5f)
+                            .padding(end = 8.dp)
+                    )
+                    ChildInABox(
+                        routing = Routing.Child(400),
+                        modifier = Modifier
+                            .weight(0.5f)
+                    )
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun ChildInABox(routing: Routing, modifier: Modifier) {
+        PermanentChild(routing) { child ->
+            Box(modifier) {
+                AnimatedVisibility(visible = true) {
+                    child()
                 }
             }
         }

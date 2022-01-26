@@ -47,7 +47,8 @@ import kotlin.random.Random
 import kotlinx.coroutines.delay
 
 class GenericChildNode(
-    buildContext: BuildContext
+    buildContext: BuildContext,
+    counterStartValue: Int
 ) : Node(
     buildContext = buildContext
 ) {
@@ -77,7 +78,7 @@ class GenericChildNode(
     )
 
     private val id = Random.nextInt(10000)
-    private var counter by mutableStateOf(100)
+    private var counter by mutableStateOf(counterStartValue)
     private var colorIndex by mutableStateOf(
         buildContext.savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?:
         Random.nextInt(colors.size)
@@ -140,7 +141,7 @@ class GenericChildNode(
 fun GenericChildNodePreview() {
     Box(Modifier.size(200.dp)) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
-            GenericChildNode(root(null))
+            GenericChildNode(root(null), 100)
         }
     }
 }
