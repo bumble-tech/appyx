@@ -53,7 +53,7 @@ abstract class ParentNode<Routing : Any>(
     ChildAware<ParentNode<Routing>> {
 
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(buildContext.savedStateMap)
-    val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
+    val routingSource: RoutingSource<Routing, *> = routingSource + permanentRoutingSource
 
     // It is impossible to restore _children directly because information for resolver is not ready yet
     private var delayedChildRestoration: SavedStateMap? = buildContext.savedStateMap
