@@ -25,12 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.sandbox.client.child.ChildNode
-import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.Column
-import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.Grid
-import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.Row
-import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.values
-import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.Routing
 import com.bumble.appyx.v2.core.composable.Child
 import com.bumble.appyx.v2.core.composable.visibleChildrenAsState
 import com.bumble.appyx.v2.core.modality.BuildContext
@@ -38,17 +32,24 @@ import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.RoutingElement
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
+import com.bumble.appyx.v2.sandbox.client.child.ChildNode
+import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.Column
+import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.Grid
+import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.Row
+import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.values
+import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.Routing
 import kotlinx.parcelize.Parcelize
 
 class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
     buildContext: BuildContext,
     routingSource: PermanentRoutingSource<Routing> = PermanentRoutingSource(
-        buildSet<Routing> {
+        configuration = buildSet<Routing> {
             repeat(100) {
                 add(Routing(it.toString()))
             }
         },
-        buildContext.savedStateMap
+        key = "permanent_key",
+        savedStateMap = buildContext.savedStateMap
     )
 ) : ParentNode<Routing>(routingSource, buildContext) {
     @Parcelize
