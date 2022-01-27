@@ -1,6 +1,7 @@
 package com.bumble.appyx.v2.app.node.root
 
 import android.os.Parcelable
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -23,6 +24,7 @@ import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
+@ExperimentalAnimationApi
 class RootNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(

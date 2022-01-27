@@ -1,6 +1,7 @@
 package com.bumble.appyx.v2.app.node.onboarding
 
 import android.os.Parcelable
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
@@ -32,6 +33,7 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers.reme
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
+@ExperimentalAnimationApi
 class OnboardingContainerNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<Routing, Routing> = Spotlight(
@@ -142,6 +144,7 @@ class OnboardingContainerNode(
 @Preview
 @Composable
 @ExperimentalUnitApi
+@ExperimentalAnimationApi
 fun OnboardingContainerNodePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {

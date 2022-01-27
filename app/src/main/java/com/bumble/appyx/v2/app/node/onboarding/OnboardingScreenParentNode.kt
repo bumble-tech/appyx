@@ -39,7 +39,9 @@ class OnboardingScreenParentNode(
     private val screenData: ScreenData.NodesExample
 ) : ParentNode<Routing>(
     buildContext = buildContext,
-    routingSource = PermanentRoutingSource(buildContext.savedStateMap)
+    routingSource = PermanentRoutingSource(
+        key = "permanent_key",
+        savedStateMap = buildContext.savedStateMap)
 ) {
     sealed class Routing : Parcelable {
         @Parcelize
