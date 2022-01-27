@@ -2,7 +2,11 @@ package com.bumble.appyx.v2.app.node.onboarding
 
 import android.os.Parcelable
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,7 +30,9 @@ class OnboardingScreenParentNode(
     private val screenData: ScreenData.NodesExample
 ) : ParentNode<Routing>(
     buildContext = buildContext,
-    routingSource = PermanentRoutingSource(buildContext.savedStateMap)
+    routingSource = PermanentRoutingSource(
+        key = "permanent_key",
+        savedStateMap = buildContext.savedStateMap)
 ) {
     sealed class Routing : Parcelable {
         @Parcelize
