@@ -63,15 +63,6 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
     }
 }
 
-interface ChildRenderer {
-
-    @Composable
-    operator fun invoke(modifier: Modifier)
-
-    @Composable
-    operator fun invoke()
-}
-
 private class ChildRendererImpl(
     private val node: Node,
     private val transitionModifier: Modifier
