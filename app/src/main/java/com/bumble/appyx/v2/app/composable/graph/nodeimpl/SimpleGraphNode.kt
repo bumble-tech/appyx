@@ -25,7 +25,7 @@ import com.bumble.appyx.v2.app.ui.silver_sand
 import com.bumble.appyx.v2.app.ui.sizzling_red
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
-import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.sandbox.ui.md_amber_500
 import com.bumble.appyx.v2.sandbox.ui.md_blue_500
 import com.bumble.appyx.v2.sandbox.ui.md_blue_grey_500
@@ -95,12 +95,10 @@ fun SimpleGraphNodePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
             TreeExample(
-                BuildContext.root(null),
+                buildContext = root(null),
                 screenData = ScreenData.TreeIllustration(
-                    texts = ScreenData.Texts(
-                        title = "Title",
-                        body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna ali- quam erat volutpat."
-                    )
+                    title = "Title",
+                    body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna ali- quam erat volutpat."
                 )
             )
         }

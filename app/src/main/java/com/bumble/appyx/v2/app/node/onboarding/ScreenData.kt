@@ -15,18 +15,16 @@ sealed class ScreenData : Parcelable {
     ) : ScreenData()
 
     @Parcelize
-    data class NodesExample(
+    data class TreeIllustration(
         override val title: String,
         override val body: String,
     ) : ScreenData()
-}
-
-sealed class OnboardingScreenIllustration : Parcelable {
-    @Parcelize
-    data class Image(val res: Int) : OnboardingScreenIllustration()
 
     @Parcelize
-    object Nodes : OnboardingScreenIllustration()
+    data class StatefulNodeIllustration(
+        override val title: String,
+        override val body: String,
+    ) : ScreenData()
 }
 
 internal val onboardingScreenWelcome = ScreenData.PlainWithImage(
@@ -35,17 +33,16 @@ internal val onboardingScreenWelcome = ScreenData.PlainWithImage(
     body = "Appyx is an Android application framework built with love on top of Jetpack Compose."
 )
 
-internal val onboardingScreenNodes = ScreenData.PlainWithImage(
-    imageRes = 0,
+internal val onboardingScreenNodes = ScreenData.TreeIllustration(
     title = "Nodes",
     body = "The app is organised into a tree hierarchy of Nodes." +
         "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, and can choose which of their children to delegate the control flow to."
 )
 
-internal val onboardingScreenLifecycle1 = ScreenData.NodesExample(
+internal val onboardingScreenLifecycle1 = ScreenData.StatefulNodeIllustration(
     title = "Stateful",
     body = "Each Node on this screen has some state:" +
-        "\n\n1. The counter represents data from a background process (e.g. server)." +
+        "\n\n1. The counter represents data from a background process (e.g. server  )." +
         "\n2. You can also long press them to change their colour. Try it!"
 )
 

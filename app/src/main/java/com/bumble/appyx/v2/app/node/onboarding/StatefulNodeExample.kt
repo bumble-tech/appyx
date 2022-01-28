@@ -15,13 +15,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.app.composable.Page
 import com.bumble.appyx.v2.app.node.child.GenericChildNode
-import com.bumble.appyx.v2.app.node.onboarding.OnboardingScreenParentNode.Routing
+import com.bumble.appyx.v2.app.node.onboarding.StatefulNodeExample.Routing
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
@@ -34,9 +35,10 @@ import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
-class OnboardingScreenParentNode(
+@ExperimentalComposeUiApi
+class StatefulNodeExample(
     buildContext: BuildContext,
-    private val screenData: ScreenData.NodesExample
+    private val screenData: ScreenData
 ) : ParentNode<Routing>(
     buildContext = buildContext,
     routingSource = PermanentRoutingSource(
@@ -132,13 +134,14 @@ class OnboardingScreenParentNode(
 @Composable
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
+@ExperimentalComposeUiApi
 fun OnboardingScreenNodePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
-            OnboardingScreenParentNode(
+            StatefulNodeExample(
                 root(null),
-                ScreenData.NodesExample(
-                    title = "Title",
+                ScreenData.StatefulNodeIllustration(
+                   title = "Title",
                     body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna ali- quam erat volutpat."
                 )
             )

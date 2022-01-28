@@ -6,6 +6,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.v2.app.node.helper.screenNode
@@ -25,6 +26,7 @@ import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
+@ExperimentalComposeUiApi
 class RootNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(

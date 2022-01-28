@@ -2,12 +2,21 @@ package com.bumble.appyx.v2.app.node.onboarding
 
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
@@ -15,7 +24,12 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.*
+import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Input
+import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Output
+import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
+import com.bumble.appyx.v2.app.node.onboarding.ScreenData.StatefulNodeIllustration
+import com.bumble.appyx.v2.app.node.onboarding.ScreenData.TreeIllustration
+import com.bumble.appyx.v2.app.node.onboarding.ScreenData.PlainWithImage
 import com.bumble.appyx.v2.connectable.rx2.Connectable
 import com.bumble.appyx.v2.connectable.rx2.NodeConnector
 import com.bumble.appyx.v2.core.composable.Children
@@ -34,6 +48,7 @@ import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
+@ExperimentalComposeUiApi
 class OnboardingContainerNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<Routing, Routing> = Spotlight(
@@ -71,8 +86,9 @@ class OnboardingContainerNode(
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Routing.OnboardingScreen -> when (routing.screenData) {
-                is ScreenData.PlainWithImage -> OnboardingScreenNode(buildContext, routing.screenData)
-                is ScreenData.NodesExample -> OnboardingScreenParentNode(buildContext, routing.screenData)
+                is PlainWithImage -> OnboardingScreenNode(buildContext, routing.screenData)
+                is StatefulNodeIllustration -> StatefulNodeExample(buildContext, routing.screenData)
+                is TreeIllustration -> TreeExample(buildContext, routing.screenData)
             }
         }
 
@@ -145,6 +161,7 @@ class OnboardingContainerNode(
 @Composable
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
+@ExperimentalComposeUiApi
 fun OnboardingContainerNodePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
