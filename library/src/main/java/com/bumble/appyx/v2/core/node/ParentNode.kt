@@ -11,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
@@ -20,6 +21,7 @@ import com.bumble.appyx.v2.core.children.ChildCallback
 import com.bumble.appyx.v2.core.children.ChildEntry
 import com.bumble.appyx.v2.core.children.ChildEntryMap
 import com.bumble.appyx.v2.core.children.ChildrenCallback
+import com.bumble.appyx.v2.core.composable.ChildRenderer
 import com.bumble.appyx.v2.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.v2.core.modality.AncestryInfo
 import com.bumble.appyx.v2.core.modality.BuildContext
@@ -145,7 +147,7 @@ abstract class ParentNode<Routing : Any>(
     @Composable
     protected fun PermanentChild(
         routing: Routing,
-        decorator: @Composable (child: @Composable () -> Unit) -> Unit
+        decorator: @Composable (child: ChildRenderer) -> Unit
     ) {
         var child by remember { mutableStateOf<ChildEntry.Eager<*>?>(null) }
         LaunchedEffect(routing) {
@@ -157,7 +159,7 @@ abstract class ParentNode<Routing : Any>(
         }
 
         child?.let {
-            decorator(child = { it.node.Compose() })
+            decorator(child = PermanentChildRender(it.node))
         }
     }
 
@@ -272,6 +274,19 @@ abstract class ParentNode<Routing : Any>(
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"
         const val KEY_CHILDREN_STATE = "ChildrenState"
+    }
+
+    private inner class PermanentChildRender(private val node: Node) : ChildRenderer {
+
+        @Composable
+        override fun invoke(modifier: Modifier) {
+            node.Compose(modifier)
+        }
+
+        @Composable
+        override fun invoke() {
+            invoke(modifier = Modifier)
+        }
     }
 
 }
