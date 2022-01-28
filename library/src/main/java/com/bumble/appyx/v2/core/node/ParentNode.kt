@@ -276,7 +276,7 @@ abstract class ParentNode<Routing : Any>(
         const val KEY_CHILDREN_STATE = "ChildrenState"
     }
 
-    private inner class PermanentChildRender(private val node: Node) : ChildRenderer {
+    private class PermanentChildRender(private val node: Node) : ChildRenderer {
 
         @Composable
         override fun invoke(modifier: Modifier) {
