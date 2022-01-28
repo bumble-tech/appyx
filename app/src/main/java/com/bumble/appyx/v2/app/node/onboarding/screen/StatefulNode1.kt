@@ -42,7 +42,8 @@ class StatefulNode1(
     buildContext = buildContext,
     routingSource = PermanentRoutingSource(
         key = "permanent_key",
-        savedStateMap = buildContext.savedStateMap)
+        savedStateMap = buildContext.savedStateMap
+    )
 ) {
     sealed class Routing : Parcelable {
         @Parcelize
