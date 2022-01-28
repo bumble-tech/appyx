@@ -2,6 +2,7 @@ package com.bumble.appyx.v2.app
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -15,6 +16,7 @@ import com.bumble.appyx.v2.core.integrationpoint.RibActivity
 import com.bumble.appyx.v2.core.modality.BuildContext
 
 @ExperimentalUnitApi
+@ExperimentalAnimationApi
 class MainActivity : RibActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +42,7 @@ class MainActivity : RibActivity() {
 @Preview(showBackground = true)
 @Composable
 @ExperimentalUnitApi
+@ExperimentalAnimationApi
 fun DefaultPreview() {
     AppyxSampleAppTheme {
         Column {

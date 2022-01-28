@@ -2,12 +2,19 @@ package com.bumble.appyx.v2.app.node.onboarding
 
 import android.os.Parcelable
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
@@ -22,9 +29,11 @@ import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
+import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
+@ExperimentalAnimationApi
 class OnboardingScreenParentNode(
     buildContext: BuildContext,
     private val screenData: ScreenData.NodesExample
@@ -58,13 +67,15 @@ class OnboardingScreenParentNode(
                         .padding(bottom = 8.dp)
                 ) {
                     ChildInABox(
-                        routing = Routing.Child(100),
+                        routing = Routing.Child(BASE_COUNTER),
+                        showWithDelay = BASE_DELAY,
                         modifier = Modifier
                             .weight(0.5f)
                             .padding(end = 8.dp)
                     )
                     ChildInABox(
-                        routing = Routing.Child(200),
+                        routing = Routing.Child(BASE_COUNTER * 2),
+                        showWithDelay = BASE_DELAY * 2,
                         modifier = Modifier
                             .weight(0.5f)
                     )
@@ -74,13 +85,15 @@ class OnboardingScreenParentNode(
                         .weight(0.5f)
                 ) {
                     ChildInABox(
-                        routing = Routing.Child(300),
+                        routing = Routing.Child(BASE_COUNTER * 3),
+                        showWithDelay = BASE_DELAY * 3,
                         modifier = Modifier
                             .weight(0.5f)
                             .padding(end = 8.dp)
                     )
                     ChildInABox(
-                        routing = Routing.Child(400),
+                        routing = Routing.Child(BASE_COUNTER * 4),
+                        showWithDelay = BASE_DELAY * 4,
                         modifier = Modifier
                             .weight(0.5f)
                     )
@@ -90,20 +103,35 @@ class OnboardingScreenParentNode(
     }
 
     @Composable
-    private fun ChildInABox(routing: Routing, modifier: Modifier) {
+    private fun ChildInABox(routing: Routing, showWithDelay: Long, modifier: Modifier) {
         PermanentChild(routing) { child ->
             Box(modifier) {
-                AnimatedVisibility(visible = true) {
+                var visible by remember { mutableStateOf(false) }
+                AnimatedVisibility(
+                    visible = visible,
+                    enter = scaleIn()
+                ) {
                     child()
+                }
+
+                LaunchedEffect(Unit) {
+                    delay(showWithDelay)
+                    visible = true
                 }
             }
         }
+    }
+
+    companion object {
+        private const val BASE_COUNTER = 100
+        private const val BASE_DELAY = 200L
     }
 }
 
 @Preview
 @Composable
 @ExperimentalUnitApi
+@ExperimentalAnimationApi
 fun OnboardingScreenNodePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
