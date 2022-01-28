@@ -17,8 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.app.composable.graph.GraphNode
-import com.bumble.appyx.v2.app.node.onboarding.ScreenData
-import com.bumble.appyx.v2.app.node.onboarding.TreeExample
+import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.v2.app.ui.atomic_tangerine
 import com.bumble.appyx.v2.app.ui.manatee
 import com.bumble.appyx.v2.app.ui.silver_sand
@@ -94,12 +93,8 @@ class SimpleGraphNode(
 fun SimpleGraphNodePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
-            TreeExample(
+            ApplicationTree(
                 buildContext = root(null),
-                screenData = ScreenData.TreeIllustration(
-                    title = "Title",
-                    body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna ali- quam erat volutpat."
-                )
             )
         }
     }

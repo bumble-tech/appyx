@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.app.node.onboarding
+package com.bumble.appyx.v2.app.node.onboarding.screen
 
 import android.os.Parcelable
 import androidx.compose.animation.AnimatedVisibility
@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.app.composable.Page
 import com.bumble.appyx.v2.app.node.child.GenericChildNode
-import com.bumble.appyx.v2.app.node.onboarding.StatefulNodeExample.Routing
+import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1.Routing
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
@@ -36,9 +36,8 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-class StatefulNodeExample(
-    buildContext: BuildContext,
-    private val screenData: ScreenData
+class StatefulNode1(
+    buildContext: BuildContext
 ) : ParentNode<Routing>(
     buildContext = buildContext,
     routingSource = PermanentRoutingSource(
@@ -59,8 +58,10 @@ class StatefulNodeExample(
     override fun View(modifier: Modifier) {
         Page(
             modifier = modifier,
-            title = screenData.title,
-            body = screenData.body
+            title = "Stateful",
+            body = "Each Node on this screen has some state:" +
+                "\n\n1. The counter represents data from a background process (e.g. server  )." +
+                "\n2. You can also long press them to change their colour. Try it!"
         ) {
             Column(Modifier.fillMaxSize()) {
                 Row(
@@ -135,15 +136,11 @@ class StatefulNodeExample(
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-fun OnboardingScreenNodePreview() {
+fun StatefulNode1Preview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
-            StatefulNodeExample(
-                root(null),
-                ScreenData.StatefulNodeIllustration(
-                   title = "Title",
-                    body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna ali- quam erat volutpat."
-                )
+            StatefulNode1(
+                root(null)
             )
         }
     }

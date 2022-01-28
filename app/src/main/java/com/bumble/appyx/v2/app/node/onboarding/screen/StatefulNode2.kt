@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.app.node.onboarding
+package com.bumble.appyx.v2.app.node.onboarding.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,9 +15,8 @@ import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 
 @ExperimentalUnitApi
-class OnboardingScreenNode(
+class StatefulNode2(
     buildContext: BuildContext,
-    private val screenData: ScreenData.PlainWithImage,
 ) : Node(
     buildContext = buildContext
 ) {
@@ -26,8 +25,10 @@ class OnboardingScreenNode(
     override fun View(modifier: Modifier) {
         Page(
             modifier = modifier,
-            title = screenData.title,
-            body = screenData.body
+            title = "Off the screen?",
+            body = "Nodes are alive even when they're not visible. " +
+                "\n\nTry returning to the previous screen!" +
+                "\n\nYou should see that the counters kept on working in the background, and changes you made to colours are persisted."
         ) {
             Box(
                 modifier = Modifier
@@ -43,16 +44,11 @@ class OnboardingScreenNode(
 @Preview
 @Composable
 @ExperimentalUnitApi
-fun OnboardingScreenParentNodePreview() {
+fun StatefulNode2Preview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
-            OnboardingScreenNode(
-                root(null),
-                ScreenData.PlainWithImage(
-                    imageRes = 0,
-                    title = "Title",
-                    body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna ali- quam erat volutpat."
-                )
+            StatefulNode2(
+                root(null)
             )
         }
     }

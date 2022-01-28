@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.app.node.onboarding
+package com.bumble.appyx.v2.app.node.onboarding.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,13 +16,13 @@ import com.bumble.appyx.v2.app.composable.graph.nodeimpl.SimpleGraphNode
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
-class TreeExample(
-    buildContext: BuildContext,
-    private val screenData: ScreenData
+class ApplicationTree(
+    buildContext: BuildContext
 ) : Node(
     buildContext = buildContext,
 ) {
@@ -30,8 +30,9 @@ class TreeExample(
     override fun View(modifier: Modifier) {
         Page(
             modifier = modifier,
-            title = screenData.title,
-            body = screenData.body
+            title = "Nodes",
+            body = "The app is organised into a tree hierarchy of Nodes." +
+                "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, and can choose which of their children to delegate the control flow to."
         ) {
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -76,15 +77,11 @@ class TreeExample(
 @Composable
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
-fun TreeExamplePreview() {
+fun ApplicationTreePreview() {
     Box(Modifier.fillMaxSize()) {
         NodeHost(integrationPoint = IntegrationPointStub()) {
-            TreeExample(
-                BuildContext.root(null),
-                screenData = ScreenData.TreeIllustration(
-                    title = "Title",
-                    body = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna ali- quam erat volutpat."
-                )
+            ApplicationTree(
+                root(null),
             )
         }
     }

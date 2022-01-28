@@ -27,9 +27,10 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Input
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Output
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
-import com.bumble.appyx.v2.app.node.onboarding.ScreenData.StatefulNodeIllustration
-import com.bumble.appyx.v2.app.node.onboarding.ScreenData.TreeIllustration
-import com.bumble.appyx.v2.app.node.onboarding.ScreenData.PlainWithImage
+import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
+import com.bumble.appyx.v2.app.node.onboarding.screen.IntroScreen
+import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1
+import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode2
 import com.bumble.appyx.v2.connectable.rx2.Connectable
 import com.bumble.appyx.v2.connectable.rx2.NodeConnector
 import com.bumble.appyx.v2.core.composable.Children
@@ -52,7 +53,12 @@ import kotlinx.parcelize.Parcelize
 class OnboardingContainerNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<Routing, Routing> = Spotlight(
-        items = getItems(),
+        items = listOf(
+            Routing.IntroScreen,
+            Routing.ApplicationTree,
+            Routing.StatefulNode1,
+            Routing.StatefulNode2,
+        ),
         savedStateMap = buildContext.savedStateMap,
     ),
     connectable: Connectable<Input, Output> = NodeConnector()
@@ -69,27 +75,25 @@ class OnboardingContainerNode(
 
     sealed class Routing : Parcelable {
         @Parcelize
-        data class OnboardingScreen(
-            val screenData: ScreenData
-        ) : Routing()
-    }
+        object IntroScreen : Routing()
 
-    companion object {
-        private fun getItems() = listOf(
-            Routing.OnboardingScreen(onboardingScreenWelcome),
-            Routing.OnboardingScreen(onboardingScreenNodes),
-            Routing.OnboardingScreen(onboardingScreenLifecycle1),
-            Routing.OnboardingScreen(onboardingScreenLifecycle2),
-        )
+        @Parcelize
+        object ApplicationTree : Routing()
+
+        @Parcelize
+        object StatefulNode1 : Routing()
+
+        @Parcelize
+        object StatefulNode2 : Routing()
+
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            is Routing.OnboardingScreen -> when (routing.screenData) {
-                is PlainWithImage -> OnboardingScreenNode(buildContext, routing.screenData)
-                is StatefulNodeIllustration -> StatefulNodeExample(buildContext, routing.screenData)
-                is TreeIllustration -> TreeExample(buildContext, routing.screenData)
-            }
+            Routing.IntroScreen -> IntroScreen(buildContext)
+            Routing.ApplicationTree -> ApplicationTree(buildContext)
+            Routing.StatefulNode1 -> StatefulNode1(buildContext)
+            Routing.StatefulNode2 -> StatefulNode2(buildContext)
         }
 
     @Composable
