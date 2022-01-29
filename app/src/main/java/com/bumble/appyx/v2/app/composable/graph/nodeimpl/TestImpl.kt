@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -18,23 +20,26 @@ import com.bumble.appyx.v2.app.ui.atomic_tangerine
 import com.bumble.appyx.v2.app.ui.manatee
 import com.bumble.appyx.v2.app.ui.silver_sand
 import com.bumble.appyx.v2.app.ui.sizzling_red
-import com.bumble.appyx.v2.sandbox.ui.md_amber_500
-import com.bumble.appyx.v2.sandbox.ui.md_blue_500
-import com.bumble.appyx.v2.sandbox.ui.md_blue_grey_500
-import com.bumble.appyx.v2.sandbox.ui.md_cyan_500
-import com.bumble.appyx.v2.sandbox.ui.md_grey_500
-import com.bumble.appyx.v2.sandbox.ui.md_indigo_500
-import com.bumble.appyx.v2.sandbox.ui.md_light_blue_500
-import com.bumble.appyx.v2.sandbox.ui.md_light_green_500
-import com.bumble.appyx.v2.sandbox.ui.md_lime_500
-import com.bumble.appyx.v2.sandbox.ui.md_pink_500
-import com.bumble.appyx.v2.sandbox.ui.md_teal_500
+import com.bumble.appyx.v2.app.ui.md_amber_500
+import com.bumble.appyx.v2.app.ui.md_blue_500
+import com.bumble.appyx.v2.app.ui.md_blue_grey_500
+import com.bumble.appyx.v2.app.ui.md_cyan_500
+import com.bumble.appyx.v2.app.ui.md_grey_500
+import com.bumble.appyx.v2.app.ui.md_indigo_500
+import com.bumble.appyx.v2.app.ui.md_light_blue_500
+import com.bumble.appyx.v2.app.ui.md_light_green_500
+import com.bumble.appyx.v2.app.ui.md_lime_500
+import com.bumble.appyx.v2.app.ui.md_pink_500
+import com.bumble.appyx.v2.app.ui.md_teal_500
 import kotlin.random.Random
 
 class TestImpl(
     private val id: Int,
     private val childLevels: Int,
 ) : GraphNode {
+
+    override val isActive: MutableState<Boolean> =
+        mutableStateOf(false)
 
     private val colors = listOf(
         manatee,

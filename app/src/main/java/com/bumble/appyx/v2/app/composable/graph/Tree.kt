@@ -1,6 +1,8 @@
 package com.bumble.appyx.v2.app.composable.graph
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -24,6 +26,7 @@ import androidx.compose.ui.layout.positionInParent
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.bumble.appyx.v2.app.composable.graph.nodeimpl.TestImpl
 
 
@@ -34,8 +37,9 @@ fun Tree(
     parentChildrenTopCenters: SnapshotStateMap<Int, Offset> = mutableStateMapOf(),
     idx: Int = 0,
     gapHeight: Dp = 40.dp,
-    lineColor: Color = MaterialTheme.colors.onSurface,
-    strokeWidth: Float = 6f,
+    lineColor: Color = if (isSystemInDarkTheme()) Color.Black else Color(0xFFDDDDDD),
+    activeLineColor: Color = MaterialTheme.colors.primary,
+    strokeWidth: Float = 7f,
 ) {
     val children = graphNode.children()
     val wrapperOffset = remember { mutableStateOf(Offset(0f, 0f)) }
@@ -52,6 +56,7 @@ fun Tree(
         graphNode.View(
             modifier = Modifier
                 .align(CenterHorizontally)
+                .zIndex(1f)
                 .onGloballyPositioned {
                     val localOffset = it.positionInParent()
                     val positionInParent = wrapperOffset.value + localOffset
@@ -70,19 +75,23 @@ fun Tree(
 
         if (children.isNotEmpty()) {
             Row {
+                val colors = children.map { child ->
+                    animateColorAsState(targetValue = if (child.isActive.value) activeLineColor else lineColor)
+                }
+
                 Canvas(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(gapHeight)
                 ) {
-                    thisChildrenTopCenters.values.forEach { childTopCenter ->
-                        drawLine(
-                            start = Offset(thisNodeBottomCenter.value.x, 0f),
-                            end = Offset(childTopCenter.x, size.height),
-                            color = lineColor,
-                            strokeWidth = strokeWidth,
-                            cap = StrokeCap.Round
-                        )
+                    thisChildrenTopCenters.values.forEachIndexed { idx, childTopCenter ->
+                            drawLine(
+                                start = Offset(thisNodeBottomCenter.value.x, -20f), // TODO this assumes child size
+                                end = Offset(childTopCenter.x, size.height + 20), // TODO this assumes child size
+                                color = colors[idx].value,
+                                strokeWidth = strokeWidth,
+                                cap = StrokeCap.Round
+                            )
                     }
                 }
             }
@@ -93,13 +102,10 @@ fun Tree(
                         graphNode = child,
                         parentChildrenTopCenters = thisChildrenTopCenters,
                         idx = idx,
-                        strokeWidth = 6F,
-                        gapHeight = 40.dp
                     )
                 }
             }
         }
-
     }
 }
 
