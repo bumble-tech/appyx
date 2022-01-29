@@ -5,12 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.v2.app.composable.Page
+import com.bumble.appyx.v2.app.composable.graph.GraphNode
 import com.bumble.appyx.v2.app.composable.graph.Tree
 import com.bumble.appyx.v2.app.composable.graph.nodeimpl.SimpleGraphNode
 import com.bumble.appyx.v2.core.integration.NodeHost
@@ -18,6 +20,7 @@ import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
+import kotlinx.coroutines.delay
 
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
@@ -26,6 +29,46 @@ class ApplicationTree(
 ) : Node(
     buildContext = buildContext,
 ) {
+    private val o1 = SimpleGraphNode(label = "O1")
+    private val o2 = SimpleGraphNode(label = "O2")
+    private val o3 = SimpleGraphNode(label = "O3")
+    private val onboarding = SimpleGraphNode(
+        label = "Onboarding",
+        children = listOf(
+            o1,
+            o2,
+            o3,
+        )
+    )
+
+    private val people = SimpleGraphNode(label = "People")
+    private val chat = SimpleGraphNode(label = "Chat")
+    private val messages = SimpleGraphNode(
+        label = "Messages",
+        children = listOf(
+            people,
+            chat,
+        )
+    )
+
+    private val settings = SimpleGraphNode(label = "Settings")
+    private val profile = SimpleGraphNode(label = "Profile")
+    private val main = SimpleGraphNode(
+        label = "Main",
+        children = listOf(
+            messages,
+            profile,
+            settings
+        )
+    )
+    private val root: GraphNode = SimpleGraphNode(
+        label = "Root",
+        children = listOf(
+            onboarding,
+            main,
+        )
+    )
+
     @Composable
     override fun View(modifier: Modifier) {
         Page(
@@ -39,35 +82,58 @@ class ApplicationTree(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Tree(
-                    graphNode = SimpleGraphNode(
-                        "Root",
-                        children = listOf(
-                            SimpleGraphNode(
-                                label = "Onboarding",
-                                children = listOf(
-                                    SimpleGraphNode(label = "O1"),
-                                    SimpleGraphNode(label = "O2"),
-                                    SimpleGraphNode(label = "O3"),
-                                )
-                            ),
-                            SimpleGraphNode(
-                                label = "Main",
-                                children = listOf(
-                                    SimpleGraphNode(
-                                        label = "Messages",
-                                        children = listOf(
-                                            SimpleGraphNode(label = "People"),
-                                            SimpleGraphNode(label = "Chat"),
-                                        )
-                                    ),
-                                    SimpleGraphNode(label = "Profile"),
-                                    SimpleGraphNode(label = "Menu")
-                                )
-                            )
-                        )
-                    ),
-                )
+                Tree(graphNode = root)
+            }
+        }
+
+        LaunchedEffect(Unit) {
+            val timeMillis: Long = 1500
+
+            while (true) {
+                root.isActive.value = false
+                onboarding.isActive.value = false
+                o1.isActive.value = false
+                o2.isActive.value = false
+                o3.isActive.value = false
+                main.isActive.value = false
+                settings.isActive.value = false
+                profile.isActive.value = false
+                messages.isActive.value = false
+                people.isActive.value = false
+                chat.isActive.value = false
+
+                delay(timeMillis)
+                root.isActive.value = true
+                onboarding.isActive.value = true
+                o1.isActive.value = true
+                delay(timeMillis)
+                o1.isActive.value = false
+                o2.isActive.value = true
+                delay(timeMillis)
+                o2.isActive.value = false
+                o3.isActive.value = true
+
+                delay(timeMillis)
+                o3.isActive.value = false
+                onboarding.isActive.value = false
+                main.isActive.value = true
+                profile.isActive.value = true
+
+                delay(timeMillis)
+                profile.isActive.value = false
+                messages.isActive.value = true
+                people.isActive.value = true
+
+                delay(timeMillis)
+                people.isActive.value = false
+                chat.isActive.value = true
+
+                delay(timeMillis)
+                messages.isActive.value = false
+                chat.isActive.value = false
+                settings.isActive.value = true
+
+                delay(timeMillis * 2)
             }
         }
     }
