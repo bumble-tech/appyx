@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -35,6 +36,7 @@ import com.bumble.appyx.v2.app.node.onboarding.screen.RoutingSourceTeaser
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode2
 import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
+import com.bumble.appyx.v2.app.ui.appyx_dark
 import com.bumble.appyx.v2.connectable.rx2.Connectable
 import com.bumble.appyx.v2.connectable.rx2.NodeConnector
 import com.bumble.appyx.v2.core.composable.Children
@@ -134,19 +136,19 @@ class OnboardingContainerNode(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (hasPrevious.value) {
-                    TextButton(
-                        onClick = { spotlight.previous() }
-                    ) {
-                        Text(
-                            text = "Previous".toUpperCase(Locale.current),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                } else {
-                    Spacer(Modifier)
-                }
                 if (hasNext.value) {
+                    if (hasPrevious.value) {
+                        TextButton(
+                            onClick = { spotlight.previous() }
+                        ) {
+                            Text(
+                                text = "Previous".toUpperCase(Locale.current),
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    } else {
+                        Spacer(Modifier)
+                    }
                     TextButton(
                         onClick = { spotlight.next() }
                     ) {
@@ -156,14 +158,17 @@ class OnboardingContainerNode(
                         )
                     }
                 } else {
-                    TextButton(
+                    Spacer(Modifier)
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
                         onClick = { output.accept(Output.FinishedOnboarding) }
                     ) {
                         Text(
-                            text = "Done".toUpperCase(Locale.current),
-                            fontWeight = FontWeight.Bold
+                            text = "Check it out!",
+                            color = appyx_dark,
                         )
                     }
+                    Spacer(Modifier)
                 }
             }
         }
