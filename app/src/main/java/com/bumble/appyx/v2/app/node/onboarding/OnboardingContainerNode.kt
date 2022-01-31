@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -31,12 +33,14 @@ import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.v2.app.node.onboarding.screen.IntroScreen
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode2
+import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.v2.connectable.rx2.Connectable
 import com.bumble.appyx.v2.connectable.rx2.NodeConnector
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
@@ -167,9 +171,33 @@ class OnboardingContainerNode(
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 fun OnboardingContainerNodePreview() {
-    Box(Modifier.fillMaxSize()) {
-        NodeHost(integrationPoint = IntegrationPointStub()) {
-            OnboardingContainerNode(BuildContext.root(null))
+    AppyxSampleAppTheme(darkTheme = false) {
+        PreviewContent()
+    }
+}
+
+@Preview
+@Composable
+@ExperimentalUnitApi
+@ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+fun OnboardingContainerNodePreviewDark() {
+    AppyxSampleAppTheme(darkTheme = true) {
+        PreviewContent()
+    }
+}
+
+@Composable
+@ExperimentalUnitApi
+@ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+private fun PreviewContent() {
+    Surface(color = MaterialTheme.colors.background) {
+        Box(Modifier.fillMaxSize()) {
+            NodeHost(integrationPoint = IntegrationPointStub()) {
+                OnboardingContainerNode(root(null))
+            }
         }
     }
 }
+

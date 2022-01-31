@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.app.composable.Page
 import com.bumble.appyx.v2.app.node.child.GenericChildNode
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1.Routing
+import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
@@ -138,11 +141,34 @@ class StatefulNode1(
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 fun StatefulNode1Preview() {
-    Box(Modifier.fillMaxSize()) {
-        NodeHost(integrationPoint = IntegrationPointStub()) {
-            StatefulNode1(
-                root(null)
-            )
+    AppyxSampleAppTheme(darkTheme = false) {
+        PreviewContent()
+    }
+}
+
+@Preview
+@Composable
+@ExperimentalUnitApi
+@ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+fun StatefulNode1PreviewDark() {
+    AppyxSampleAppTheme(darkTheme = true) {
+        PreviewContent()
+    }
+}
+
+@Composable
+@ExperimentalUnitApi
+@ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+private fun PreviewContent() {
+    Surface(color = MaterialTheme.colors.background) {
+        Box(Modifier.fillMaxSize()) {
+            NodeHost(integrationPoint = IntegrationPointStub()) {
+                StatefulNode1(
+                    root(null)
+                )
+            }
         }
     }
 }
