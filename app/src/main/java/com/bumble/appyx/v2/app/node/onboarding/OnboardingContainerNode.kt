@@ -31,6 +31,7 @@ import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Output
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
 import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.v2.app.node.onboarding.screen.IntroScreen
+import com.bumble.appyx.v2.app.node.onboarding.screen.RoutingSourceTeaser
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode2
 import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
@@ -62,6 +63,7 @@ class OnboardingContainerNode(
             Routing.ApplicationTree,
             Routing.StatefulNode1,
             Routing.StatefulNode2,
+            Routing.RoutingSource,
         ),
         savedStateMap = buildContext.savedStateMap,
     ),
@@ -90,6 +92,8 @@ class OnboardingContainerNode(
         @Parcelize
         object StatefulNode2 : Routing()
 
+        @Parcelize
+        object RoutingSource : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -98,6 +102,7 @@ class OnboardingContainerNode(
             Routing.ApplicationTree -> ApplicationTree(buildContext)
             Routing.StatefulNode1 -> StatefulNode1(buildContext)
             Routing.StatefulNode2 -> StatefulNode2(buildContext)
+            Routing.RoutingSource -> RoutingSourceTeaser(buildContext)
         }
 
     @Composable
