@@ -122,11 +122,7 @@ class OnboardingContainerNode(
                     .fillMaxWidth(),
                 transitionHandler = rememberSpotlightSlider(clipToBounds = true),
                 routingSource = spotlight
-            ) {
-                children<Routing> { child ->
-                    child()
-                }
-            }
+            )
 
             Row(
                 modifier = Modifier

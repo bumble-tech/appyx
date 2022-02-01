@@ -15,10 +15,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.sandbox.client.child.ChildNode
-import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child1
-import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child2
-import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child3
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
@@ -30,6 +26,10 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.operations.activate
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
 import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers.rememberSpotlightSlider
+import com.bumble.appyx.v2.sandbox.client.child.ChildNode
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child1
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child2
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child3
 import kotlinx.parcelize.Parcelize
 
 class SpotlightExampleNode(
@@ -134,11 +134,7 @@ class SpotlightExampleNode(
                         .fillMaxWidth(),
                     transitionHandler = rememberSpotlightSlider(clipToBounds = true),
                     routingSource = spotlight
-                ) {
-                    children<Routing> { child ->
-                        child()
-                    }
-                }
+                )
 
             }
         }

@@ -18,7 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorExampleNode.Routing
 import com.bumble.appyx.v2.core.clienthelper.interactor.Interactor
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
@@ -32,6 +31,7 @@ import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
 import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackFader
 import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackSlider
 import com.bumble.appyx.v2.core.routing.transition.rememberCombinedHandler
+import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorExampleNode.Routing
 import kotlinx.parcelize.Parcelize
 
 class InteractorExampleNode(
@@ -86,11 +86,7 @@ class InteractorExampleNode(
                 transitionHandler = rememberCombinedHandler(
                     handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
                 )
-            ) {
-                children<Routing> { child ->
-                    child()
-                }
-            }
+            )
             Spacer(modifier = Modifier.requiredHeight(4.dp))
             Button(
                 onClick = { backStack.push(Routing.Child2) },
