@@ -10,15 +10,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class PermanentRoutingSource<Key : Any>(
-    configuration: Set<Key> = emptySet(),
+class PermanentRoutingSource<Routing : Any>(
+    configuration: Set<Routing> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String,
-) : RoutingSource<Key, Int> {
+) : RoutingSource<Routing, Int> {
 
     constructor(
         savedStateMap: SavedStateMap?,
-        vararg configuration: Key,
+        vararg configuration: Routing,
         key: String,
     ) : this(
         configuration = configuration.toSet(),
@@ -37,13 +37,13 @@ class PermanentRoutingSource<Key : Any>(
         }
     )
 
-    override val elements: StateFlow<PermanentElements<Key>>
+    override val elements: StateFlow<PermanentElements<Routing>>
         get() = state
 
-    override val onScreen: StateFlow<RoutingElements<Key, Int>>
+    override val onScreen: StateFlow<RoutingElements<Routing, Int>>
         get() = state
 
-    override val offScreen: StateFlow<RoutingElements<Key, Int>>
+    override val offScreen: StateFlow<RoutingElements<Routing, Int>>
         get() = MutableStateFlow(emptyList())
 
     override val canHandleBackPress: StateFlow<Boolean> =
@@ -53,11 +53,11 @@ class PermanentRoutingSource<Key : Any>(
         // no-op
     }
 
-    override fun onTransitionFinished(key: RoutingKey<Key>) {
+    override fun onTransitionFinished(key: RoutingKey<Routing>) {
         // no-op
     }
 
-    override fun accept(operation: Operation<Key, Int>) {
+    override fun accept(operation: Operation<Routing, Int>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }
@@ -67,7 +67,7 @@ class PermanentRoutingSource<Key : Any>(
         savedStateMap[key] = state.value
     }
 
-    private fun SavedStateMap?.restore(): List<RoutingElement<Key, Int>>? =
-        (this?.get(key) as? PermanentElements<Key>)
+    private fun SavedStateMap?.restore(): List<RoutingElement<Routing, Int>>? =
+        (this?.get(key) as? PermanentElements<Routing>)
 
 }
