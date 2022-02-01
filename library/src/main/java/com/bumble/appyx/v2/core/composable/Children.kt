@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.RoutingSource
+import com.bumble.appyx.v2.core.routing.source.backstack.JumpToEndTransitionHandler
 import com.bumble.appyx.v2.core.routing.transition.TransitionBounds
 import com.bumble.appyx.v2.core.routing.transition.TransitionDescriptor
 import com.bumble.appyx.v2.core.routing.transition.TransitionHandler
@@ -25,11 +26,15 @@ import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
-fun <Routing : Any, State> Children(
-    modifier: Modifier,
+inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
     routingSource: RoutingSource<Routing, State>,
-    transitionHandler: TransitionHandler<Routing, State>,
-    block: @Composable ChildrenTransitionScope<Routing, State>.() -> Unit
+    modifier: Modifier = Modifier,
+    transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
+    noinline block: @Composable ChildrenTransitionScope<Routing, State>.() -> Unit = {
+        children<Routing> { child ->
+            child()
+        }
+    }
 ) {
     val density = LocalDensity.current.density
     var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }

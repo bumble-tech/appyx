@@ -17,15 +17,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.v2.core.composable.Children
+import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode.Routing
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode.Routing.Child
 import com.bumble.appyx.v2.sandbox.client.modal.operation.fullScreen
 import com.bumble.appyx.v2.sandbox.client.modal.operation.show
-import com.bumble.appyx.v2.core.composable.Children
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.node.ParentNode
 import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(
@@ -86,11 +86,7 @@ class ModalExampleNode(
                 modifier = Modifier.fillMaxSize(),
                 routingSource = modal,
                 transitionHandler = ModalTransitionHandler()
-            ) {
-                children<Routing> { child ->
-                    child()
-                }
-            }
+            )
         }
     }
 
