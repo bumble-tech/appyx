@@ -80,13 +80,8 @@ class RootNode(
         } 
 
         Children(
-            modifier = modifier,
             routingSource = backStack,
             transitionHandler = rememberBackstackFader { tween(750) }
-        ) {
-            children<Routing> { child ->
-                child()
-            }
-        }
+        )
     }
 }
