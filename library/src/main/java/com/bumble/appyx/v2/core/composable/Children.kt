@@ -27,8 +27,8 @@ import kotlin.reflect.KClass
 
 @Composable
 inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
-    modifier: Modifier = Modifier,
     routingSource: RoutingSource<Routing, State>,
+    modifier: Modifier = Modifier,
     transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
     noinline block: @Composable ChildrenTransitionScope<Routing, State>.() -> Unit = {
         children<Routing> { child ->
