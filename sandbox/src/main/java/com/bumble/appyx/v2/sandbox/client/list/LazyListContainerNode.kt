@@ -43,12 +43,11 @@ import kotlinx.parcelize.Parcelize
 class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
     buildContext: BuildContext,
     routingSource: PermanentRoutingSource<Routing> = PermanentRoutingSource(
-        configuration = buildSet<Routing> {
+        routings = buildSet<Routing> {
             repeat(100) {
                 add(Routing(it.toString()))
             }
         },
-        key = "permanent_key",
         savedStateMap = buildContext.savedStateMap
     )
 ) : ParentNode<Routing>(routingSource, buildContext) {
