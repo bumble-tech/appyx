@@ -11,23 +11,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
 class PermanentRoutingSource<Routing : Any>(
-    configuration: Set<Routing> = emptySet(),
+    routings: Set<Routing> = emptySet(),
     savedStateMap: SavedStateMap?,
-    private val key: String,
+    private val key: String = PermanentRoutingSource::class.simpleName!!,
 ) : RoutingSource<Routing, Int> {
 
     constructor(
+        vararg routings: Routing,
         savedStateMap: SavedStateMap?,
-        vararg configuration: Routing,
         key: String,
     ) : this(
-        configuration = configuration.toSet(),
+        routings = routings.toSet(),
         savedStateMap = savedStateMap,
         key = key
     )
 
     private val state = MutableStateFlow(
-        savedStateMap.restore() ?: configuration.map { key ->
+        savedStateMap.restore() ?: routings.map { key ->
             PermanentElement(
                 key = RoutingKey(routing = key),
                 fromState = 0,

@@ -21,7 +21,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
@@ -30,6 +29,7 @@ import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
 import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackFader
 import com.bumble.appyx.v2.core.routing.source.combined.plus
+import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import java.util.*
 import kotlinx.parcelize.Parcelize
 

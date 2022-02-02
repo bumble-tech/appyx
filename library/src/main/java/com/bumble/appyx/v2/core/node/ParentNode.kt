@@ -56,7 +56,7 @@ abstract class ParentNode<Routing : Any>(
 
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(
         savedStateMap = buildContext.savedStateMap,
-        key = PermanentRoutingSource::class.simpleName!!
+        key = KEY_PERMANENT_ROUTING_SOURCE
     )
     val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
 
@@ -274,6 +274,7 @@ abstract class ParentNode<Routing : Any>(
     companion object {
         const val KEY_ROUTING_SOURCE = "RoutingSource"
         const val KEY_CHILDREN_STATE = "ChildrenState"
+        private const val KEY_PERMANENT_ROUTING_SOURCE = "KeyPermanentRoutingSource"
     }
 
     private class PermanentChildRender(private val node: Node) : ChildRenderer {
