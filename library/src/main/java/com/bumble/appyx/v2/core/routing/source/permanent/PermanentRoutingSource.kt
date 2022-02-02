@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 class PermanentRoutingSource<Routing : Any>(
     routings: Set<Routing> = emptySet(),
     savedStateMap: SavedStateMap?,
-    private val key: String = PermanentRoutingSource::class.simpleName!!,
+    private val key: String = PermanentRoutingSource::class.toString(),
 ) : RoutingSource<Routing, Int> {
 
     constructor(
