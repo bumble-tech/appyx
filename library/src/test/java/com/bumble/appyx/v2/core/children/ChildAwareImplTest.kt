@@ -26,6 +26,19 @@ class ChildAwareImplTest : ChildAwareTestBase() {
     }
 
     @Test
+    fun `whenChildAttached is invoked only once`() {
+        root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
+        val capturedNodes = mutableListOf<Node>()
+        root.whenChildAttached<Child1> { _, child ->
+            capturedNodes.add(child)
+        }
+        val routingKey = RoutingKey<Configuration>(Configuration.Child1())
+        add(routingKey)
+        root.childOrCreate(routingKey).node
+        assertEquals(capturedNodes.size, 1)
+    }
+
+    @Test
     fun `whenChildAttached lifecycle is destroyed properly for promoted to lazy node`() {
         // TODO Later when implemented
     }
