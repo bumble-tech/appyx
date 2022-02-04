@@ -38,4 +38,8 @@ open class ActivityIntegrationPoint(
             activity.onBackPressed()
         }
     }
+
+    override fun finish() {
+        activity.finish()
+    }
 }
