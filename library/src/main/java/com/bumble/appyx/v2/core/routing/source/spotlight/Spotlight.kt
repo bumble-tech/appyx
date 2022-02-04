@@ -124,7 +124,7 @@ class Spotlight<T : Parcelable, K : Parcelable>(
                 else -> INACTIVE_AFTER
             }
             SpotlightElement(
-                key = RoutingKey(item.element, item.key.toString()),
+                key = RoutingKey(item.element),
                 fromState = state,
                 targetState = state,
                 operation = Operation.Noop()

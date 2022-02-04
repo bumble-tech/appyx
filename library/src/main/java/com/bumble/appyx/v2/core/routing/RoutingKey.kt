@@ -1,12 +1,12 @@
 package com.bumble.appyx.v2.core.routing
 
 import android.os.Parcelable
+import java.util.*
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
-import java.util.UUID
 
 @Parcelize
-class RoutingKey<Routing> constructor(
+class RoutingKey<Routing> private constructor(
     val routing: @RawValue Routing,
     val id: String
 ) : Parcelable {
