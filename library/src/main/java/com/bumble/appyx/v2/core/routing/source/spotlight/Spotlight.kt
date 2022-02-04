@@ -13,48 +13,27 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionSta
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.SpotlightOperation
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
-class Spotlight<T : Parcelable, K : Parcelable>(
-    items: SpotlightItems<T, K>,
+class Spotlight<T : Parcelable>(
+    items: List<T>,
+    initialActiveItem: Int = 0,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
 ) : RoutingSource<T, TransitionState>, Destroyable {
-
-    constructor(
-        items: List<T>,
-        initialElement: T? = null,
-        savedStateMap: SavedStateMap?,
-        key: String = ParentNode.KEY_ROUTING_SOURCE,
-    ) : this(
-        items = items.toSpotLightItems(initialElement) as SpotlightItems<T, K>,
-        savedStateMap = savedStateMap,
-        key = key,
-    )
-
-    constructor(
-        items: Map<K, T>,
-        initialElementKey: K? = null,
-        savedStateMap: SavedStateMap?,
-        key: String = ParentNode.KEY_ROUTING_SOURCE,
-    ) : this(
-        items = items.toSpotLightItems(initialElementKey),
-        savedStateMap = savedStateMap,
-        key = key,
-    )
 
     enum class TransitionState {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
 
     private val state = MutableStateFlow(
-        value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements()
+        value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveItem)
     )
 
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
@@ -112,56 +91,18 @@ class Spotlight<T : Parcelable, K : Parcelable>(
     private fun SavedStateMap.restoreHistory() =
         this[key] as? SpotlightElements<T>
 
-    private fun SpotlightItems<T, K>.toSpotlightElements(): SpotlightElements<T> {
-
-        val activeIndex =
-            items.indexOfFirst { it.key == initialElementKey }.let { if (it < 0) 0 else it }
-
-        return items.mapIndexed { index, item ->
+    private fun List<T>.toSpotlightElements(activeIndex: Int): SpotlightElements<T> =
+        mapIndexed { index, item ->
             val state = when {
                 index < activeIndex -> INACTIVE_BEFORE
                 index == activeIndex -> ACTIVE
                 else -> INACTIVE_AFTER
             }
             SpotlightElement(
-                key = RoutingKey(item.element),
+                key = RoutingKey(item),
                 fromState = state,
                 targetState = state,
                 operation = Operation.Noop()
             )
         }
-    }
-
-    companion object {
-
-        private fun <T : Parcelable> List<T>.toSpotLightItems(initialElement: T?): SpotlightItems<T, T> {
-
-            val items = map { element ->
-                SpotlightItem(
-                    element = element,
-                    key = element
-                )
-            }
-
-            return SpotlightItems(
-                items = items,
-                initialElementKey = initialElement
-            )
-        }
-
-        private fun <K : Parcelable, T : Parcelable> Map<K, T>.toSpotLightItems(initialElementKey: K?): SpotlightItems<T, K> {
-
-            val items = map { entry ->
-                SpotlightItem(
-                    element = entry.value,
-                    key = entry.key
-                )
-            }
-
-            return SpotlightItems(
-                items = items,
-                initialElementKey = initialElementKey
-            )
-        }
-    }
 }

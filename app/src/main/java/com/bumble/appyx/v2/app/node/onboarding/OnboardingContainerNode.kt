@@ -52,7 +52,7 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalComposeUiApi
 class OnboardingContainerNode(
     buildContext: BuildContext,
-    private val spotlight: Spotlight<Routing, Routing> = Spotlight(
+    private val spotlight: Spotlight<Routing> = Spotlight(
         items = listOf(
             Routing.IntroScreen,
             Routing.ApplicationTree,

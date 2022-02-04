@@ -41,7 +41,7 @@ class Previous<T : Any> : SpotlightOperation<T> {
     }
 }
 
-fun <T : Parcelable> Spotlight<T, *>.previous() {
+fun <T : Parcelable> Spotlight<T>.previous() {
     accept(Previous())
 }
 
