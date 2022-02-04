@@ -25,9 +25,7 @@ import com.bumble.appyx.v2.core.composable.ChildRenderer
 import com.bumble.appyx.v2.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.v2.core.modality.AncestryInfo
 import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.plugin.NodeAware
 import com.bumble.appyx.v2.core.plugin.Plugin
-import com.bumble.appyx.v2.core.plugin.plugins
 import com.bumble.appyx.v2.core.routing.Resolver
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.RoutingSource
@@ -74,10 +72,6 @@ abstract class ParentNode<Routing : Any>(
 
     override val node: ParentNode<Routing>
         get() = this
-
-    init {
-        plugins<NodeAware<ParentNode<Routing>>>().forEach { it.init(this) }
-    }
 
     private var transitionsInBackgroundJob: Job? = null
     private var finishTransitionsForOffscreenElementsJob: Job? = null
