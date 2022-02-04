@@ -41,7 +41,7 @@ class Next<T : Any> : SpotlightOperation<T> {
     }
 }
 
-fun <T : Parcelable> Spotlight<T, *>.next() {
+fun <T : Parcelable> Spotlight<T>.next() {
     accept(Next())
 }
 
