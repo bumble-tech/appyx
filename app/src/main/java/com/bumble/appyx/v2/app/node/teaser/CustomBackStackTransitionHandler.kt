@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
@@ -36,6 +37,15 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
                 }
             })
 
+        val scale = transition.animateFloat(
+            transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
+            targetValueByState = {
+                when (it) {
+                    BackStack.TransitionState.DESTROYED -> 10f
+                    else -> 1f
+                }
+            })
+
         val offset = transition.animateOffset(
             transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
             targetValueByState = {
@@ -48,6 +58,7 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
 
         return@composed this
             .alpha(alpha.value)
+            .scale(scale.value)
             .offset {
                 IntOffset(
                     x = (offset.value.x * this.density).roundToInt(),
