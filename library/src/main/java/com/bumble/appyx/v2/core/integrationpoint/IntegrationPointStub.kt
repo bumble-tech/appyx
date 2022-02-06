@@ -20,4 +20,8 @@ class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
     override fun handleUpNavigation() {
         error(ERROR)
     }
+
+    override fun finish() {
+        error(ERROR)
+    }
 }
