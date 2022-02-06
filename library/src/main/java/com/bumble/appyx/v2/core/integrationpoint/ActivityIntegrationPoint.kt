@@ -40,6 +40,8 @@ open class ActivityIntegrationPoint(
     }
 
     override fun onRootFinished() {
-        activity.finish()
+        if (!activity.onNavigateUp()) {
+            activity.finish()
+        }
     }
 }
