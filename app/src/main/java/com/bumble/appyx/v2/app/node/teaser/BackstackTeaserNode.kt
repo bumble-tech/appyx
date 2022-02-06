@@ -64,9 +64,7 @@ class BackstackTeaserNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(appyx_yellow2),
+            modifier = Modifier.fillMaxSize(),
             routingSource = backStack,
             transitionHandler = rememberCustomHandler()
         ) {
