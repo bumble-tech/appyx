@@ -149,7 +149,7 @@ abstract class Node(
     }
 
     fun finish() {
-        parent?.onChildFinished(this) ?: integrationPoint.finish()
+        parent?.onChildFinished(this) ?: integrationPoint.onRootFinished()
     }
 
     fun navigateUp() {

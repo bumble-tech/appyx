@@ -41,7 +41,7 @@ open class FragmentIntegrationPoint(
         }
     }
 
-    override fun finish() {
+    override fun onRootFinished() {
         val activity = fragment.requireActivity()
         activity.finish()
     }

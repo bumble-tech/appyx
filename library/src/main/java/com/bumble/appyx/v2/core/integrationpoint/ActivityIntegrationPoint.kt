@@ -39,7 +39,7 @@ open class ActivityIntegrationPoint(
         }
     }
 
-    override fun finish() {
+    override fun onRootFinished() {
         activity.finish()
     }
 }
