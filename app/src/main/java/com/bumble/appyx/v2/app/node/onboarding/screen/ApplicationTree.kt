@@ -77,7 +77,7 @@ class ApplicationTree(
         Page(
             modifier = modifier,
             title = "Nodes",
-            body = "The app is organised into a tree hierarchy of Nodes." +
+            body = "The app is organised into a tree of Nodes." +
                 "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, and can choose which of their children to delegate the control flow to."
         ) {
             Column(
