@@ -123,11 +123,7 @@ class CombinedRoutingSourceNode(
                 .height(200.dp),
             routingSource = backStack,
             transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
-        ) {
-            children<Routing> { child ->
-                child()
-            }
-        }
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 

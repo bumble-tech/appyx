@@ -66,11 +66,7 @@ class BackstackTeaserNode(
             modifier = Modifier.fillMaxSize(),
             routingSource = backStack,
             transitionHandler = rememberCustomHandler()
-        ) {
-            children<Routing> { child ->
-                child()
-            }
-        }
+        )
     }
 }
 
