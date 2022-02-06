@@ -38,4 +38,10 @@ open class ActivityIntegrationPoint(
             activity.onBackPressed()
         }
     }
+
+    override fun onRootFinished() {
+        if (!activity.onNavigateUp()) {
+            activity.finish()
+        }
+    }
 }

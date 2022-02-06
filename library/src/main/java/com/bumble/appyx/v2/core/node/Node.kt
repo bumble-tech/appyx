@@ -48,7 +48,7 @@ abstract class Node(
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
-    private val parent: Node? =
+    private val parent: ParentNode<*>? =
         when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
@@ -146,6 +146,10 @@ abstract class Node(
                 pluginsState
             }
         if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
+    }
+
+    fun finish() {
+        parent?.onChildFinished(this) ?: integrationPoint.onRootFinished()
     }
 
     fun navigateUp() {

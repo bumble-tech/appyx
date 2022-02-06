@@ -24,15 +24,11 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Input
-import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Output
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
 import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.v2.app.node.onboarding.screen.IntroScreen
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode2
-import com.bumble.appyx.v2.connectable.rx2.Connectable
-import com.bumble.appyx.v2.connectable.rx2.NodeConnector
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
@@ -61,17 +57,10 @@ class OnboardingContainerNode(
         ),
         savedStateMap = buildContext.savedStateMap,
     ),
-    connectable: Connectable<Input, Output> = NodeConnector()
 ) : ParentNode<Routing>(
     routingSource = spotlight,
     buildContext = buildContext
-), Connectable<Input, Output> by connectable {
-
-    sealed class Input
-
-    sealed class Output {
-        object FinishedOnboarding : Output()
-    }
+) {
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -144,7 +133,7 @@ class OnboardingContainerNode(
                     }
                 } else {
                     TextButton(
-                        onClick = { output.accept(Output.FinishedOnboarding) }
+                        onClick = { finish() }
                     ) {
                         Text(
                             text = "Done".toUpperCase(Locale.current),

@@ -217,6 +217,10 @@ abstract class ParentNode<Routing : Any>(
         }
     }
 
+    open fun onChildFinished(child: Node) {
+        // TODO warn unhandled child
+    }
+
     @CallSuper
     override fun onSaveInstanceState(scope: SaverScope): SavedStateMap =
         super.onSaveInstanceState(scope) + HashMap<String, Any>().apply {

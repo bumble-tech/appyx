@@ -5,8 +5,8 @@ import com.bumble.appyx.v2.core.integrationpoint.permissionrequester.PermissionR
 
 class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
     companion object {
-        private const val ERROR = "You're accessing a IntegrationPointStub. " +
-            "This means you're using a RIB without ever integrating it to a proper IntegrationPoint. " +
+        private const val ERROR = "You're accessing an IntegrationPointStub. " +
+            "This means you're using a Node without ever integrating it to a proper IntegrationPoint. " +
             "This is fine during tests with limited scope, but it looks like the code that leads here " +
             "requires interfacing with a valid implementation."
     }
@@ -18,6 +18,10 @@ class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
         get() = error(ERROR)
 
     override fun handleUpNavigation() {
+        error(ERROR)
+    }
+
+    override fun onRootFinished() {
         error(ERROR)
     }
 }
