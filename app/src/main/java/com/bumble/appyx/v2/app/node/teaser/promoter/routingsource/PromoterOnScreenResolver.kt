@@ -1,6 +1,6 @@
-package com.bumble.appyx.v2.app.node.teaser.routingsource
+package com.bumble.appyx.v2.app.node.teaser.promoter.routingsource
 
-import com.bumble.appyx.v2.app.node.teaser.routingsource.Promoter.TransitionState
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.Promoter.TransitionState
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 
 internal object PromoterOnScreenResolver : OnScreenStateResolver<TransitionState> {

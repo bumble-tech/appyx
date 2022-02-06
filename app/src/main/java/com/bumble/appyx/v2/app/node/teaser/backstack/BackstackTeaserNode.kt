@@ -1,15 +1,14 @@
-package com.bumble.appyx.v2.app.node.teaser
+package com.bumble.appyx.v2.app.node.teaser.backstack
 
 import android.os.Parcelable
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.v2.app.node.child.GenericChildNode
-import com.bumble.appyx.v2.app.node.teaser.BackstackTeaserNode.Routing
-import com.bumble.appyx.v2.app.ui.appyx_yellow2
+import com.bumble.appyx.v2.app.node.teaser.backstack.BackstackTeaserNode.Routing
+import com.bumble.appyx.v2.app.node.teaser.backstack.transitionhandler.rememberCustomHandler
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node

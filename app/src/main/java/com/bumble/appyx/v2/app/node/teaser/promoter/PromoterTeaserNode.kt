@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.app.node.teaser
+package com.bumble.appyx.v2.app.node.teaser.promoter
 
 import android.os.Parcelable
 import androidx.compose.animation.core.Spring
@@ -11,11 +11,11 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.v2.app.node.child.GenericChildNode
-import com.bumble.appyx.v2.app.node.teaser.RandomOtherTeaserNode.Routing
-import com.bumble.appyx.v2.app.node.teaser.routingsource.Promoter
-import com.bumble.appyx.v2.app.node.teaser.routingsource.operation.addFirst
-import com.bumble.appyx.v2.app.node.teaser.routingsource.operation.promoteAll
-import com.bumble.appyx.v2.app.node.teaser.routingsource.transitionhandler.rememberPromoterTransitionHandler
+import com.bumble.appyx.v2.app.node.teaser.promoter.PromoterTeaserNode.Routing
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.Promoter
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.operation.addFirst
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.operation.promoteAll
+import com.bumble.appyx.v2.app.node.teaser.promoter.transitionhandler.rememberPromoterTransitionHandler
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
@@ -26,7 +26,7 @@ import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
 @ExperimentalUnitApi
-class RandomOtherTeaserNode(
+class PromoterTeaserNode(
     buildContext: BuildContext,
     private val promoter: Promoter<Routing> = Promoter(),
 ) : ParentNode<Routing>(

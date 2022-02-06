@@ -14,8 +14,8 @@ import com.bumble.appyx.v2.app.composable.Page
 import com.bumble.appyx.v2.app.node.onboarding.screen.RoutingSourceTeaser.Routing
 import com.bumble.appyx.v2.app.node.onboarding.screen.RoutingSourceTeaser.Routing.BackStackTeaser
 import com.bumble.appyx.v2.app.node.onboarding.screen.RoutingSourceTeaser.Routing.RandomOtherTeaser
-import com.bumble.appyx.v2.app.node.teaser.BackstackTeaserNode
-import com.bumble.appyx.v2.app.node.teaser.RandomOtherTeaserNode
+import com.bumble.appyx.v2.app.node.teaser.backstack.BackstackTeaserNode
+import com.bumble.appyx.v2.app.node.teaser.promoter.PromoterTeaserNode
 import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.integration.NodeHost
@@ -52,7 +52,7 @@ class RoutingSourceTeaser(
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is BackStackTeaser -> BackstackTeaserNode(buildContext)
-            is RandomOtherTeaser -> RandomOtherTeaserNode(buildContext)
+            is RandomOtherTeaser -> PromoterTeaserNode(buildContext)
         }
 
     override fun onChildFinished(child: Node) {

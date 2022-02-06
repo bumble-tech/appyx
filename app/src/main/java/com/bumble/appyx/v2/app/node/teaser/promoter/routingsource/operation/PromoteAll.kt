@@ -1,7 +1,7 @@
-package com.bumble.appyx.v2.app.node.teaser.routingsource.operation
+package com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.operation
 
-import com.bumble.appyx.v2.app.node.teaser.routingsource.Promoter
-import com.bumble.appyx.v2.app.node.teaser.routingsource.PromoterElements
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.Promoter
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.PromoterElements
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import kotlinx.parcelize.Parcelize
 

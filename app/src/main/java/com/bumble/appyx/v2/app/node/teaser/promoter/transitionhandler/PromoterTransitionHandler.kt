@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.app.node.teaser.routingsource.transitionhandler
+package com.bumble.appyx.v2.app.node.teaser.promoter.transitionhandler
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -12,7 +12,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.IntOffset
-import com.bumble.appyx.v2.app.node.teaser.routingsource.Promoter
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.Promoter
 import com.bumble.appyx.v2.core.routing.transition.ModifierTransitionHandler
 import com.bumble.appyx.v2.core.routing.transition.TransitionDescriptor
 import com.bumble.appyx.v2.core.routing.transition.TransitionSpec

@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.app.node.teaser
+package com.bumble.appyx.v2.app.node.teaser.backstack.transitionhandler
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
