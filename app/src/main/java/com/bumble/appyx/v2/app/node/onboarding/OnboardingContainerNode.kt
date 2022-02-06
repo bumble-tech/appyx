@@ -57,11 +57,12 @@ class OnboardingContainerNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<Routing> = Spotlight(
         items = listOf(
+            Routing.RoutingSource,
             Routing.IntroScreen,
             Routing.ApplicationTree,
             Routing.StatefulNode1,
             Routing.StatefulNode2,
-            Routing.RoutingSource,
+//            Routing.RoutingSource,
         ),
         savedStateMap = buildContext.savedStateMap,
     ),
