@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.v2.core.children.ChildEntry
-import com.bumble.appyx.v2.core.lifecycle.ParentNodeTest.RoutingImpl.State
+import com.bumble.appyx.v2.core.lifecycle.ParentLifecycleTest.RoutingImpl.State
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
@@ -18,6 +18,7 @@ import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.RoutingSource
 import com.bumble.appyx.v2.core.testutils.MainDispatcherRule
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,9 +27,8 @@ import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import kotlin.coroutines.EmptyCoroutineContext
 
-class ParentNodeTest {
+class ParentLifecycleTest {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()

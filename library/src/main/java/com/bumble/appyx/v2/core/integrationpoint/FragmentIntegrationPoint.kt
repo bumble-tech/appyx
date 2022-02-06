@@ -40,4 +40,11 @@ open class FragmentIntegrationPoint(
             activity.onBackPressed()
         }
     }
+
+    override fun onRootFinished() {
+        val activity = fragment.requireActivity()
+        if (!activity.onNavigateUp()) {
+            activity.finish()
+        }
+    }
 }

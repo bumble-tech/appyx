@@ -11,10 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.v2.app.node.helper.screenNode
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode
-import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Output.FinishedOnboarding
 import com.bumble.appyx.v2.app.node.root.RootNode.Routing
 import com.bumble.appyx.v2.core.composable.Children
-import com.bumble.appyx.v2.core.lifecycle.subscribe
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
@@ -56,17 +54,10 @@ class RootNode(
             Routing.Main -> screenNode(buildContext) { Text(text = "Main") }
         }
 
-    override fun onBuilt() {
-        super.onBuilt()
-        whenChildAttached(OnboardingContainerNode::class) { lifecycle, onboarding ->
-            val onboardingOutput = onboarding.output.subscribe {
-                when (it) {
-                    FinishedOnboarding -> backStack.newRoot(Routing.Main)
-                }
-            }
-            lifecycle.subscribe(
-                onDestroy = { onboardingOutput.dispose() }
-            )
+    override fun onChildFinished(child: Node) {
+        when (child) {
+            is OnboardingContainerNode -> backStack.newRoot(Routing.Main)
+            else -> super.onChildFinished(child)
         }
     }
 

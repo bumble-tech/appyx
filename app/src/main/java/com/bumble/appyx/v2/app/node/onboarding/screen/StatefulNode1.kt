@@ -44,7 +44,6 @@ class StatefulNode1(
 ) : ParentNode<Routing>(
     buildContext = buildContext,
     routingSource = PermanentRoutingSource(
-        key = "permanent_key",
         savedStateMap = buildContext.savedStateMap
     )
 ) {

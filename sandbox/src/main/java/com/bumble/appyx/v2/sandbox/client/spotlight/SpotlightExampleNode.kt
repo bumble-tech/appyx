@@ -27,6 +27,9 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
 import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers.rememberSpotlightSlider
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C1
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C2
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C3
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child1
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child2
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child3
@@ -34,8 +37,8 @@ import kotlinx.parcelize.Parcelize
 
 class SpotlightExampleNode(
     buildContext: BuildContext,
-    private val spotlight: Spotlight<Routing, ChildKeys> = Spotlight(
-        items = getItems(),
+    private val spotlight: Spotlight<Routing> = Spotlight(
+        items = Item.getItemList(),
         savedStateMap = buildContext.savedStateMap,
     )
 ) : ParentNode<SpotlightExampleNode.Routing>(
@@ -56,8 +59,14 @@ class SpotlightExampleNode(
     }
 
     @Parcelize
-    enum class ChildKeys : Parcelable {
-        C1, C2, C3
+    private enum class Item(val routing: Routing) : Parcelable {
+        C1(Child1),
+        C2(Child2),
+        C3(Child3);
+
+        companion object {
+            fun getItemList() = values().map { it.routing }
+        }
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -112,19 +121,19 @@ class SpotlightExampleNode(
                         text = "C1",
                         enabled = true
                     ) {
-                        spotlight.activate(ChildKeys.C1)
+                        spotlight.activate(C1)
                     }
                     TextButton(
                         text = "C2",
                         enabled = true
                     ) {
-                        spotlight.activate(ChildKeys.C2)
+                        spotlight.activate(C2)
                     }
                     TextButton(
                         text = "C3",
                         enabled = true
                     ) {
-                        spotlight.activate(ChildKeys.C3)
+                        spotlight.activate(C3)
                     }
                 }
 
@@ -147,11 +156,7 @@ class SpotlightExampleNode(
         }
     }
 
-    companion object {
-        private fun getItems() = mapOf(
-            ChildKeys.C1 to Child1,
-            ChildKeys.C2 to Child2,
-            ChildKeys.C3 to Child3,
-        )
+    private fun Spotlight<*>.activate(item: Item) {
+        activate(item.ordinal)
     }
 }
