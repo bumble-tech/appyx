@@ -27,7 +27,7 @@ import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
-import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackFader
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.v2.core.routing.source.combined.plus
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import java.util.*

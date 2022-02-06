@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
-import com.bumble.appyx.v2.core.routing.source.backstack.BackStackFader
-import com.bumble.appyx.v2.core.routing.source.backstack.BackStackSlider
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.Replace
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.BackStackFader
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.BackStackSlider
 import com.bumble.appyx.v2.core.routing.transition.ModifierTransitionHandler
 import com.bumble.appyx.v2.core.routing.transition.TransitionDescriptor
 

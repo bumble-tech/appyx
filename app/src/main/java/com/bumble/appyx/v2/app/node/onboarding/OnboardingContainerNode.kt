@@ -47,7 +47,7 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.hasNext
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasPrevious
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
-import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers.rememberSpotlightSlider
+import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandler.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
