@@ -31,14 +31,14 @@ class OnScreenMapper<Routing, State>(
 
     private fun RoutingElement<Routing, State>.isOnScreen(): Boolean =
         if (transitionHistory.isEmpty()) {
-            onScreenStateResolver.isOnScreen(targetState) || onScreenStateResolver.isOnScreen(
-                fromState
+            onScreenStateResolver.isOnScreen(fromState) || onScreenStateResolver.isOnScreen(
+                targetState
             )
         } else {
-            transitionHistory.find { (fromState, toState) ->
+            transitionHistory.any { (fromState, targetState) ->
                 onScreenStateResolver.isOnScreen(fromState) || onScreenStateResolver.isOnScreen(
-                    toState
+                    targetState
                 )
-            } != null
+            }
         }
 }
