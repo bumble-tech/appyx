@@ -13,6 +13,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -27,6 +28,7 @@ import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
 class PromoterTransitionHandler<T>(
+    private val childSize: Dp,
     private val transitionSpec: TransitionSpec<Promoter.TransitionState, Float> = { tween(500) }
 ) : ModifierTransitionHandler<T, Promoter.TransitionState>() {
 
@@ -86,8 +88,8 @@ class PromoterTransitionHandler<T>(
         descriptor: TransitionDescriptor<T, Promoter.TransitionState>
     ): Modifier = modifier.composed {
 
-        val halfWidthDp = descriptor.params.bounds.width.value / 3 // FIXME something's off
-        val halfHeightDp = descriptor.params.bounds.height.value / 3 // FIXME something's off
+        val halfWidthDp = (descriptor.params.bounds.width.value - childSize.value) / 2
+        val halfHeightDp = (descriptor.params.bounds.height.value - childSize.value) / 2
         val radiusDp = min(halfWidthDp, halfHeightDp) // * 0.75f
 
         val angleDegrees = transition.animateFloat(
@@ -156,7 +158,8 @@ class PromoterTransitionHandler<T>(
 
 @Composable
 fun <T> rememberPromoterTransitionHandler(
+    childSize: Dp,
     transitionSpec: TransitionSpec<Promoter.TransitionState, Float> = { tween(500) }
 ): ModifierTransitionHandler<T, Promoter.TransitionState> = remember {
-    PromoterTransitionHandler(transitionSpec)
+    PromoterTransitionHandler(childSize, transitionSpec)
 }

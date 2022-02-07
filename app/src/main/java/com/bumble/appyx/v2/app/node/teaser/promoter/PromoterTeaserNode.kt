@@ -6,6 +6,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
@@ -20,10 +21,10 @@ import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
+import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
-import kotlin.random.Random
 
 @ExperimentalUnitApi
 class PromoterTeaserNode(
@@ -62,13 +63,14 @@ class PromoterTeaserNode(
 
     @Composable
     override fun View(modifier: Modifier) {
+        val childSize = remember { 100.dp }
         Children(
             modifier = Modifier.fillMaxSize(),
             routingSource = promoter,
-            transitionHandler = rememberPromoterTransitionHandler { spring(stiffness = Spring.StiffnessVeryLow / 4) }
+            transitionHandler = rememberPromoterTransitionHandler(childSize) { spring(stiffness = Spring.StiffnessVeryLow / 4) }
         ) {
             children<Routing> { child ->
-                child(Modifier.size(100.dp))
+                child(Modifier.size(childSize))
             }
         }
     }
