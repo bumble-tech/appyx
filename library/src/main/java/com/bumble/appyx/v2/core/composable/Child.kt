@@ -24,7 +24,7 @@ import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.RoutingElement
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingSource
-import com.bumble.appyx.v2.core.routing.source.backstack.JumpToEndTransitionHandler
+import com.bumble.appyx.v2.core.routing.transition.JumpToEndTransitionHandler
 import com.bumble.appyx.v2.core.routing.transition.TransitionBounds
 import com.bumble.appyx.v2.core.routing.transition.TransitionDescriptor
 import com.bumble.appyx.v2.core.routing.transition.TransitionHandler

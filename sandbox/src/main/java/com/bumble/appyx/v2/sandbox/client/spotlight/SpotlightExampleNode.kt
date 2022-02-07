@@ -25,7 +25,7 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.hasPrevious
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.activate
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
-import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers.rememberSpotlightSlider
+import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandler.rememberSpotlightSlider
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C1
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C2

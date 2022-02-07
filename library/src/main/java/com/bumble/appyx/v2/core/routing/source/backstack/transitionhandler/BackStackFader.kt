@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.core.routing.source.backstack
+package com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
+import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.transition.ModifierTransitionHandler
 import com.bumble.appyx.v2.core.routing.transition.TransitionDescriptor
 import com.bumble.appyx.v2.core.routing.transition.TransitionSpec

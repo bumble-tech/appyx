@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.core.routing.source.backstack
+package com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
+import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.BackStackOperation
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.NewRoot
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.Pop
@@ -26,10 +27,9 @@ import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider<T>(
-    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> =
-        {
-            spring(stiffness = Spring.StiffnessVeryLow)
-        },
+    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = {
+        spring(stiffness = Spring.StiffnessVeryLow)
+    },
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
 

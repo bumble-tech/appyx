@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers
+package com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandler
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition

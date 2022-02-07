@@ -11,6 +11,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
@@ -27,12 +30,16 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
 import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.v2.app.node.onboarding.screen.IntroScreen
+import com.bumble.appyx.v2.app.node.onboarding.screen.RoutingSourceTeaser
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode1
 import com.bumble.appyx.v2.app.node.onboarding.screen.StatefulNode2
+import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
+import com.bumble.appyx.v2.app.ui.appyx_dark
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
@@ -40,7 +47,7 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.hasNext
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasPrevious
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
-import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandlers.rememberSpotlightSlider
+import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandler.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
@@ -54,6 +61,7 @@ class OnboardingContainerNode(
             Routing.ApplicationTree,
             Routing.StatefulNode1,
             Routing.StatefulNode2,
+            Routing.RoutingSource,
         ),
         savedStateMap = buildContext.savedStateMap,
     ),
@@ -75,6 +83,8 @@ class OnboardingContainerNode(
         @Parcelize
         object StatefulNode2 : Routing()
 
+        @Parcelize
+        object RoutingSource : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -83,6 +93,7 @@ class OnboardingContainerNode(
             Routing.ApplicationTree -> ApplicationTree(buildContext)
             Routing.StatefulNode1 -> StatefulNode1(buildContext)
             Routing.StatefulNode2 -> StatefulNode2(buildContext)
+            Routing.RoutingSource -> RoutingSourceTeaser(buildContext)
         }
 
     @Composable
@@ -106,23 +117,27 @@ class OnboardingContainerNode(
                 modifier = Modifier
                     .fillMaxWidth()
                     .wrapContentHeight()
-                    .padding(24.dp),
+                    .padding(
+                        start = 24.dp,
+                        end = 24.dp,
+                        bottom = 12.dp,
+                    ),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                if (hasPrevious.value) {
-                    TextButton(
-                        onClick = { spotlight.previous() }
-                    ) {
-                        Text(
-                            text = "Previous".toUpperCase(Locale.current),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                } else {
-                    Spacer(Modifier)
-                }
                 if (hasNext.value) {
+                    if (hasPrevious.value) {
+                        TextButton(
+                            onClick = { spotlight.previous() }
+                        ) {
+                            Text(
+                                text = "Previous".toUpperCase(Locale.current),
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    } else {
+                        Spacer(Modifier)
+                    }
                     TextButton(
                         onClick = { spotlight.next() }
                     ) {
@@ -132,14 +147,17 @@ class OnboardingContainerNode(
                         )
                     }
                 } else {
-                    TextButton(
+                    Spacer(Modifier)
+                    Button(
+                        modifier = Modifier.fillMaxWidth(),
                         onClick = { finish() }
                     ) {
                         Text(
-                            text = "Done".toUpperCase(Locale.current),
-                            fontWeight = FontWeight.Bold
+                            text = "Check it out!",
+                            color = appyx_dark,
                         )
                     }
+                    Spacer(Modifier)
                 }
             }
         }
@@ -152,9 +170,33 @@ class OnboardingContainerNode(
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 fun OnboardingContainerNodePreview() {
-    Box(Modifier.fillMaxSize()) {
-        NodeHost(integrationPoint = IntegrationPointStub()) {
-            OnboardingContainerNode(BuildContext.root(null))
+    AppyxSampleAppTheme(darkTheme = false) {
+        PreviewContent()
+    }
+}
+
+@Preview
+@Composable
+@ExperimentalUnitApi
+@ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+fun OnboardingContainerNodePreviewDark() {
+    AppyxSampleAppTheme(darkTheme = true) {
+        PreviewContent()
+    }
+}
+
+@Composable
+@ExperimentalUnitApi
+@ExperimentalAnimationApi
+@ExperimentalComposeUiApi
+private fun PreviewContent() {
+    Surface(color = MaterialTheme.colors.background) {
+        Box(Modifier.fillMaxSize()) {
+            NodeHost(integrationPoint = IntegrationPointStub()) {
+                OnboardingContainerNode(root(null))
+            }
         }
     }
 }
+

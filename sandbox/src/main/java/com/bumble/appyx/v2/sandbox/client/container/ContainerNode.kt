@@ -47,8 +47,8 @@ import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.pop
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
-import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackFader
-import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackSlider
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.v2.core.routing.transition.rememberCombinedHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow

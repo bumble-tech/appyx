@@ -18,7 +18,7 @@ import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.newRoot
-import com.bumble.appyx.v2.core.routing.source.backstack.rememberBackstackFader
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 

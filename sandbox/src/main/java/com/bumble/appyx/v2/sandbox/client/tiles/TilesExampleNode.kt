@@ -37,7 +37,7 @@ import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.tiles.Tiles
 import com.bumble.appyx.v2.core.routing.source.tiles.operation.removeSelected
 import com.bumble.appyx.v2.core.routing.source.tiles.operation.toggleSelection
-import com.bumble.appyx.v2.core.routing.source.tiles.rememberTilesTransitionHandler
+import com.bumble.appyx.v2.core.routing.source.tiles.transitionhandler.rememberTilesTransitionHandler
 
 class TilesExampleNode(
     buildContext: BuildContext,

@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -15,6 +17,7 @@ import com.bumble.appyx.v2.app.composable.Page
 import com.bumble.appyx.v2.app.composable.graph.GraphNode
 import com.bumble.appyx.v2.app.composable.graph.Tree
 import com.bumble.appyx.v2.app.composable.graph.nodeimpl.SimpleGraphNode
+import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
@@ -74,7 +77,7 @@ class ApplicationTree(
         Page(
             modifier = modifier,
             title = "Nodes",
-            body = "The app is organised into a tree hierarchy of Nodes." +
+            body = "The app is organised into a tree of Nodes." +
                 "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, and can choose which of their children to delegate the control flow to."
         ) {
             Column(
@@ -144,11 +147,32 @@ class ApplicationTree(
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
 fun ApplicationTreePreview() {
-    Box(Modifier.fillMaxSize()) {
-        NodeHost(integrationPoint = IntegrationPointStub()) {
-            ApplicationTree(
-                root(null),
-            )
+    AppyxSampleAppTheme(darkTheme = false) {
+        PreviewContent()
+    }
+}
+
+@Preview
+@Composable
+@ExperimentalUnitApi
+@ExperimentalComposeUiApi
+fun ApplicationTreePreviewDark() {
+    AppyxSampleAppTheme(darkTheme = true) {
+        PreviewContent()
+    }
+}
+
+@Composable
+@ExperimentalUnitApi
+@ExperimentalComposeUiApi
+private fun PreviewContent() {
+    Surface(color = MaterialTheme.colors.background) {
+        Box(Modifier.fillMaxSize()) {
+            NodeHost(integrationPoint = IntegrationPointStub()) {
+                ApplicationTree(
+                    root(null),
+                )
+            }
         }
     }
 }
