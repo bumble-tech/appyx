@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import java.io.Serializable
 
 /**
  * Hosts [LifecycleRegistry] to manage the current node lifecycle
@@ -85,13 +84,12 @@ class ChildNodeLifecycleManager<Routing>(
         }
     }
 
-}
-
-data class Quadruple<out A, out B, out C, out D>(
-    val first: A,
-    val second: B,
-    val third: C,
-    val fourth: D,
-) : Serializable {
-    override fun toString(): String = "($first, $second, $third, $fourth)"
+    private data class Quadruple<out A, out B, out C, out D>(
+        val first: A,
+        val second: B,
+        val third: C,
+        val fourth: D,
+    ) {
+        override fun toString(): String = "($first, $second, $third, $fourth)"
+    }
 }
