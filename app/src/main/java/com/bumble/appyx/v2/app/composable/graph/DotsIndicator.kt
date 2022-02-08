@@ -30,7 +30,6 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.activeIndex
 import com.bumble.appyx.v2.core.routing.source.spotlight.elementsCount
 import com.bumble.appyx.v2.core.routing.transition.TransitionSpec
-import kotlin.math.min
 
 @Composable
 fun DotsIndicator(
@@ -40,7 +39,6 @@ fun DotsIndicator(
     unSelectedColor: Color = Color.LightGray,
     selectedSize: Dp = 9.dp,
     unSelectedSize: Dp = 6.dp,
-    maxDots: Int = 3,
     dotTransitionSpecs: TransitionSpec<MutableState<Boolean>, Dp> = {
         spring(
             visibilityThreshold = Dp.VisibilityThreshold,
@@ -56,7 +54,7 @@ fun DotsIndicator(
         horizontalArrangement = Arrangement.spacedBy(unSelectedSize, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        items(min(maxDots, totalDots)) { index ->
+        items(totalDots) { index ->
             val isSelected = remember(index, selectedIndex) {
                 mutableStateOf(index == selectedIndex)
             }
