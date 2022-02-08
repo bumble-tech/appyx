@@ -208,7 +208,7 @@ private fun DotsIndicator(
     LazyRow(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxWidth(),
+            .wrapContentHeight(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
