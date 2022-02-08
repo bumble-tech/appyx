@@ -217,14 +217,14 @@ private fun DotsIndicator(
             val isSelected = remember(index, selectedIndex) {
                 mutableStateOf(index == selectedIndex)
             }
-            val transition = updateTransition(isSelected, label = "")
-            val color = transition.animateColor(label = "color") { isSelected ->
+            val transition = updateTransition(isSelected)
+            val color = transition.animateColor { isSelected ->
                 when (isSelected.value) {
                     true -> selectedColor
                     false -> unSelectedColor
                 }
             }
-            val size = transition.animateDp(label = "ts",
+            val size = transition.animateDp(
                 transitionSpec = {
                     spring(
                         visibilityThreshold = Dp.VisibilityThreshold,
