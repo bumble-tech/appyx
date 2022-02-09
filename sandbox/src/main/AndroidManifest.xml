@@ -25,6 +25,11 @@
             android:name="com.bumble.appyx.v2.sandbox.client.integrationpoint.StartActivityExample"
             android:exported="false"
             android:theme="@style/Theme.Appyx.NoActionBar" />
+
+        <activity
+            android:name="com.bumble.appyx.v2.sandbox.interop.InteropExampleActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Appyx.NoActionBar" />
     </application>
 
     <uses-permission android:name="android.permission.CAMERA" />

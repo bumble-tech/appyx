@@ -3,6 +3,7 @@
 [versions]
 androidx-lifecycle = "2.3.1"
 compose = "1.1.0-rc01"
+ribs = "0.32.0"
 coroutines = "1.5.2"
 kotlin = "1.6.0"
 rxjava2 = "2.2.21"
@@ -33,6 +34,9 @@ junit = "junit:junit:4.13.2"
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-text = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+ribs-base = { module = "com.github.badoo.RIBs:rib-base", version.ref = "ribs" }
+ribs-compose = { module = "com.github.badoo.RIBs:rib-compose", version.ref = "ribs" }
+ribs-rx = { module = "com.github.badoo.RIBs:rib-rx2", version.ref = "ribs" }
 
 rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava2" }
 rxrelay = "com.jakewharton.rxrelay2:rxrelay:2.1.1"

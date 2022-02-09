@@ -1,5 +1,6 @@
 package com.bumble.appyx.v2.sandbox.client.container
 
+import android.content.Intent
 import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.v2.core.composable.Children
+import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.v2.core.node.ParentNode
+import com.bumble.appyx.v2.core.node.node
+import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
+import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.pop
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.v2.core.routing.transition.rememberCombinedHandler
 import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode
 import com.bumble.appyx.v2.sandbox.client.combined.CombinedRoutingSourceNode
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing
@@ -38,18 +51,7 @@ import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode
-import com.bumble.appyx.v2.core.composable.Children
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.core.node.node
-import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
-import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.pop
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
-import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
-import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
-import com.bumble.appyx.v2.core.routing.transition.rememberCombinedHandler
+import com.bumble.appyx.v2.sandbox.interop.InteropExampleActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -145,6 +147,11 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                TextButton("Launch interop example") {
+                    integrationPoint.activityStarter.startActivity {
+                        Intent(this, InteropExampleActivity::class.java)
+                    }
+                }
                 TextButton("Routing Sources Examples") { backStack.push(RoutingSourcesExamples) }
 
                 val scope = rememberCoroutineScope()
