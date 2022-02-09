@@ -1,6 +1,8 @@
 package com.bumble.appyx.v2.app.composable
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -16,12 +18,16 @@ fun Page(
     modifier: Modifier,
     title: String,
     body: String,
-    illustration: @Composable () -> Unit
+    illustration: @Composable BoxScope.() -> Unit
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp)
+            .padding(
+                start = 24.dp,
+                end = 24.dp,
+                top = 24.dp
+            )
     ) {
         Box(
             modifier = Modifier
@@ -44,12 +50,18 @@ fun Page(
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
             )
-            Text(
-                text = body,
-                style = MaterialTheme.typography.body1.copy(
-                    lineHeight = TextUnit(1.5f, TextUnitType.Em)
+            Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Text(
+                    text = body,
+                    style = MaterialTheme.typography.body1.copy(
+                        lineHeight = TextUnit(1.5f, TextUnitType.Em)
+                    )
                 )
-            )
+            }
+
         }
 
     }
