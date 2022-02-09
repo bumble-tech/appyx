@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.app.composable.graph
+package com.bumble.appyx.v2.app.composable
 
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.Spring

@@ -29,7 +29,7 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.app.composable.graph.SpotlightDotsIndicator
+import com.bumble.appyx.v2.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
 import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.v2.app.node.onboarding.screen.IntroScreen
