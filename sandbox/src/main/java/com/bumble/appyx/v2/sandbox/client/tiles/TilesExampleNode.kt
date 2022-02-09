@@ -22,12 +22,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.bumble.appyx.v2.sandbox.client.child.ChildNode
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child1
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child2
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child3
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child4
 import com.bumble.appyx.v2.core.children.whenChildrenAttached
 import com.bumble.appyx.v2.core.composable.Child
 import com.bumble.appyx.v2.core.composable.visibleChildrenAsState
@@ -38,6 +32,12 @@ import com.bumble.appyx.v2.core.routing.source.tiles.Tiles
 import com.bumble.appyx.v2.core.routing.source.tiles.operation.removeSelected
 import com.bumble.appyx.v2.core.routing.source.tiles.operation.toggleSelection
 import com.bumble.appyx.v2.core.routing.source.tiles.transitionhandler.rememberTilesTransitionHandler
+import com.bumble.appyx.v2.sandbox.client.child.ChildNode
+import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing
+import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child1
+import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child2
+import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child3
+import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child4
 
 class TilesExampleNode(
     buildContext: BuildContext,
@@ -55,7 +55,9 @@ class TilesExampleNode(
         Child1, Child2, Child3, Child4,
     }
 
-    init {
+
+    override fun onBuilt() {
+        super.onBuilt()
         whenChildrenAttached { commonLifecycle: Lifecycle, child1: ChildNode, child2: ChildNode ->
             commonLifecycle.addObserver(object : DefaultLifecycleObserver {
                 override fun onCreate(owner: LifecycleOwner) {
