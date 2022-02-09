@@ -1,8 +1,6 @@
 package com.bumble.appyx.v2.app.composable
 
 import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.updateTransition
@@ -40,11 +38,7 @@ fun DotsIndicator(
     selectedSize: Dp = 9.dp,
     unSelectedSize: Dp = 6.dp,
     dotTransitionSpecs: TransitionSpec<MutableState<Boolean>, Dp> = {
-        spring(
-            visibilityThreshold = Dp.VisibilityThreshold,
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMediumLow
-        )
+        spring()
     }
 ) {
     LazyRow(
@@ -92,11 +86,7 @@ fun SpotlightDotsIndicator(
     selectedSize: Dp = 9.dp,
     unSelectedSize: Dp = 6.dp,
     dotTransitionSpecs: TransitionSpec<MutableState<Boolean>, Dp> = {
-        spring(
-            visibilityThreshold = Dp.VisibilityThreshold,
-            dampingRatio = Spring.DampingRatioMediumBouncy,
-            stiffness = Spring.StiffnessMediumLow
-        )
+        spring()
     }
 ) {
     val selectedItemState = spotlight.activeIndex().collectAsState(initial = 0)
