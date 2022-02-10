@@ -37,7 +37,7 @@ abstract class RibInteropActivity : RibActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        integrationPoint.onSaveInstanceState(outState)
+        integrationPointV2.onSaveInstanceState(outState)
     }
 
 }
