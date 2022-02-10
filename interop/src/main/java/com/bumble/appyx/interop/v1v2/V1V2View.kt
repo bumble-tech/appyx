@@ -1,6 +1,7 @@
 package com.bumble.appyx.interop.v1v2
 
 import android.content.Context
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.badoo.ribs.compose.ComposeRibView
@@ -34,10 +35,11 @@ class V1V2View<N : Node> private constructor(
     }
 
     private fun retrieveIntegrationPoint(): IntegrationPoint {
-        return if (context is IntegrationPointV2Provider) {
-            context.integrationPointV2
+        val activity = context.findActivity<AppCompatActivity>()
+        return if (activity is IntegrationPointV2Provider) {
+            activity.integrationPointV2
         } else {
-            throw IllegalStateException("Attempting to use V1V2Node outside RibInteropActivity")
+            throw IllegalStateException("Activity where V1V2 is used must implement IntegrationPointV2Provider")
         }
     }
 
