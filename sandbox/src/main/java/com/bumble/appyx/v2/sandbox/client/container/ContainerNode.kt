@@ -51,7 +51,7 @@ import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode
-import com.bumble.appyx.v2.sandbox.interop.InteropExampleActivity
+import com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

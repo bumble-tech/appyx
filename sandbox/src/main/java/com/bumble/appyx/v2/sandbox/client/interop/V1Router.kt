@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.sandbox.interop
+package com.bumble.appyx.v2.sandbox.client.interop
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -7,11 +7,12 @@ import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
+import com.bumble.appyx.interop.v1v2.V1V2Node
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode
-import com.bumble.appyx.v2.sandbox.interop.RouterV1.Configuration
+import com.bumble.appyx.v2.sandbox.client.interop.V1Router.Configuration
 import kotlinx.android.parcel.Parcelize
 
-internal class RouterV1(
+internal class V1Router(
     private val buildParams: BuildParams<*>,
 ) : Router<Configuration>(
     buildParams = buildParams,
@@ -26,10 +27,10 @@ internal class RouterV1(
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
-        when (val configuration = routing.configuration) {
+        when (routing.configuration) {
             is Configuration.Content.Main ->
                 child {
-                    InteropNode(
+                    V1V2Node(
                         buildParams = BuildParams(payload = buildParams.payload, buildContext = it),
                         nodeFactory = { buildContext -> ContainerNode(buildContext) }
                     )

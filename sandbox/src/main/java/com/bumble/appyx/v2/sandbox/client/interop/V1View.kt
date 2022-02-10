@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.sandbox.interop
+package com.bumble.appyx.v2.sandbox.client.interop
 
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
@@ -10,23 +10,21 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.v2.R
 
-interface ViewV1 : RibView {
+interface V1View : RibView {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, ViewV1>
+    interface Factory : ViewFactoryBuilder<Nothing?, V1View>
 }
 
-class ViewV1Impl private constructor(
+class V1ViewImpl private constructor(
     override val androidView: ViewGroup,
-) : AndroidRibView(), ViewV1 {
+) : AndroidRibView(), V1View {
 
     private val container = androidView.findViewById<ViewGroup>(R.id.child)
 
-    class Factory(
-        @LayoutRes private val layoutRes: Int = R.layout.rib_root
-    ) : ViewV1.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<ViewV1> =
+    class Factory(@LayoutRes private val layoutRes: Int = R.layout.rib_root) : V1View.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<V1View> =
             ViewFactory {
-                ViewV1Impl(
+                V1ViewImpl(
                     androidView = it.inflate(layoutRes),
                 )
             }

@@ -1,11 +1,10 @@
-package com.bumble.appyx.v2.sandbox.interop
+package com.bumble.appyx.interop.v1v2
 
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
-import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.v2.core.integration.NodeFactory
@@ -14,17 +13,7 @@ import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.node.Node
 
-class InteropNode<N : Node>(
-    buildParams: BuildParams<*>,
-    nodeFactory: NodeFactory<N>
-) : com.badoo.ribs.core.Node<InteropRibView<N>>(
-    buildParams = buildParams,
-    viewFactory = InteropRibView.Factory<N>().invoke(object : InteropRibView.Dependencies<N> {
-        override val nodeFactory: NodeFactory<N> = nodeFactory
-    })
-)
-
-class InteropRibView<N : Node> private constructor(
+class V1V2View<N : Node> private constructor(
     override val context: Context,
     private val nodeFactory: NodeFactory<N>,
 ) : ComposeRibView(context) {
@@ -35,10 +24,10 @@ class InteropRibView<N : Node> private constructor(
             NodeHost(integrationPoint, nodeFactory)
         }
 
-    class Factory<N : Node> : ViewFactoryBuilder<Dependencies<N>, InteropRibView<N>> {
-        override fun invoke(deps: Dependencies<N>): ViewFactory<InteropRibView<N>> =
+    class Factory<N : Node> : ViewFactoryBuilder<Dependencies<N>, V1V2View<N>> {
+        override fun invoke(deps: Dependencies<N>): ViewFactory<V1V2View<N>> =
             ViewFactory {
-                InteropRibView(
+                V1V2View(
                     context = it.parent.context,
                     nodeFactory = deps.nodeFactory
                 )
