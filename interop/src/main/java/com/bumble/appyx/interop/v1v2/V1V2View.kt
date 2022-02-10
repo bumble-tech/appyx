@@ -10,7 +10,6 @@ import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.v2.core.integration.NodeFactory
 import com.bumble.appyx.v2.core.integration.NodeHost
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
-import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.node.Node
 
 class V1V2View<N : Node> private constructor(
@@ -38,7 +37,7 @@ class V1V2View<N : Node> private constructor(
         return if (context is RibInteropActivity) {
             context.integrationPointV2
         } else {
-            IntegrationPointStub()
+            throw IllegalStateException("Attempting to use V1V2Node outside RibInteropActivity")
         }
     }
 
