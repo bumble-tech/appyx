@@ -12,7 +12,7 @@ import com.bumble.appyx.v2.sandbox.interop.RouterV1.Configuration
 import kotlinx.android.parcel.Parcelize
 
 internal class RouterV1(
-    buildParams: BuildParams<*>,
+    private val buildParams: BuildParams<*>,
 ) : Router<Configuration>(
     buildParams = buildParams,
     routingSource = RoutingSource.permanent(Configuration.Content.Main)
@@ -30,7 +30,7 @@ internal class RouterV1(
             is Configuration.Content.Main ->
                 child {
                     InteropNode(
-                        buildParams = BuildParams(payload = null, buildContext = it),
+                        buildParams = BuildParams(payload = buildParams.payload, buildContext = it),
                         nodeFactory = { buildContext -> ContainerNode(buildContext) }
                     )
                 }

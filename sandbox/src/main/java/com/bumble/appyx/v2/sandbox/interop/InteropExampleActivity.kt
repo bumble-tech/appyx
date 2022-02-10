@@ -3,12 +3,11 @@ package com.bumble.appyx.v2.sandbox.interop
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import com.badoo.ribs.android.RibActivity
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.bumble.appyx.v2.sandbox.interop.NodeV1Builder.RootParams
 
-class InteropExampleActivity : RibActivity() {
+class InteropExampleActivity : RibInteropActivity() {
 
     private lateinit var rootView: FrameLayout
     override val rootViewGroup: ViewGroup get() = rootView
