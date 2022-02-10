@@ -34,7 +34,7 @@ class V1V2View<N : Node> private constructor(
     }
 
     private fun retrieveIntegrationPoint(): IntegrationPoint {
-        return if (context is RibInteropActivity) {
+        return if (context is IntegrationPointV2Provider) {
             context.integrationPointV2
         } else {
             throw IllegalStateException("Attempting to use V1V2Node outside RibInteropActivity")
