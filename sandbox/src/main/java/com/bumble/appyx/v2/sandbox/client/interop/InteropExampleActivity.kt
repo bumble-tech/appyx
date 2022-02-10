@@ -1,11 +1,12 @@
-package com.bumble.appyx.v2.sandbox.interop
+package com.bumble.appyx.v2.sandbox.client.interop
 
 import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
-import com.bumble.appyx.v2.sandbox.interop.NodeV1Builder.RootParams
+import com.bumble.appyx.interop.v1v2.RibInteropActivity
+import com.bumble.appyx.v2.sandbox.client.interop.V1Builder.RootParams
 
 class InteropExampleActivity : RibInteropActivity() {
 
@@ -13,7 +14,7 @@ class InteropExampleActivity : RibInteropActivity() {
     override val rootViewGroup: ViewGroup get() = rootView
 
     override fun createRib(savedInstanceState: Bundle?): Rib {
-        return NodeV1Builder().build(buildContext = BuildContext.root(savedInstanceState), payload = RootParams())
+        return V1Builder().build(buildContext = BuildContext.root(savedInstanceState), payload = RootParams())
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

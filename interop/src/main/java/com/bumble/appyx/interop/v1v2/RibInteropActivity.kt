@@ -1,21 +1,10 @@
-package com.bumble.appyx.v2.sandbox.interop
+package com.bumble.appyx.interop.v1v2
 
 import android.content.Intent
 import android.os.Bundle
 import com.badoo.ribs.android.RibActivity
 import com.bumble.appyx.v2.core.integrationpoint.ActivityIntegrationPoint
 
-/**
- * Helper class for root [Rib] integration.
- *
- * Also offers base functionality to satisfy dependencies of Android-related functionality
- * down the tree via [integrationPoint]:
- * - [ActivityStarter]
- * - [PermissionRequester]
- *
- * Feel free to not extend this and use your own integration point - in this case,
- * don't forget to take a look here what methods needs to be forwarded to the root Node.
- */
 abstract class RibInteropActivity : RibActivity() {
 
     lateinit var integrationPointV2: ActivityIntegrationPoint

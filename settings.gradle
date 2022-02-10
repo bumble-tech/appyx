@@ -4,7 +4,6 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
-        jcenter() // Warning: this repository is going to shut down soon
     }
 }
 
@@ -13,4 +12,5 @@ enableFeaturePreview 'VERSION_CATALOGS'
 include ':app',
         ':library',
         ':sandbox',
-        ':rx2'
+        ':rx2',
+        ':interop'
