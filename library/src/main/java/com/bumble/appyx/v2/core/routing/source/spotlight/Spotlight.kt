@@ -12,12 +12,16 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionSta
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_AFTER
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.SpotlightOperation
+import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
 import com.bumble.appyx.v2.core.state.SavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -50,10 +54,13 @@ class Spotlight<T : Parcelable>(
     override val elements: StateFlow<SpotlightElements<T>> =
         state
 
-    override val canHandleBackPress: StateFlow<Boolean> = MutableStateFlow(false)
+    override val canHandleBackPress: StateFlow<Boolean> =
+        state.map { elements ->
+            elements.any { it.targetState == INACTIVE_BEFORE }
+        }.stateIn(scope, SharingStarted.Eagerly, false)
 
     override fun onBackPressed() {
-        //No-op
+        previous()
     }
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
