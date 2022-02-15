@@ -8,6 +8,8 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.RoutingSource
 import com.bumble.appyx.interop.v1v2.V1V2Node
+import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.node.build
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode
 import com.bumble.appyx.v2.sandbox.client.interop.V1Router.Configuration
 import kotlinx.android.parcel.Parcelize
@@ -32,7 +34,7 @@ internal class V1Router(
                 child {
                     V1V2Node(
                         buildParams = BuildParams(payload = buildParams.payload, buildContext = it),
-                        nodeFactory = { buildContext -> ContainerNode(buildContext) }
+                        v2Node = ContainerNode(buildContext = BuildContext.root(savedStateMap = null)).build()
                     )
                 }
         }
