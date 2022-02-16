@@ -55,7 +55,6 @@ abstract class Node(
         }
 
     var integrationPoint: IntegrationPoint = IntegrationPointStub()
-        internal set
         get() {
             return if (isRoot) field
             else parent?.integrationPoint ?: error(

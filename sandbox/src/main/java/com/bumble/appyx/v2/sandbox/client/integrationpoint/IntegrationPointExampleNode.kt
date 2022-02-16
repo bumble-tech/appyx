@@ -23,12 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.v2.sandbox.client.integrationpoint.StartActivityExample.Companion.StringExtraKey
 import com.bumble.appyx.v2.core.integrationpoint.permissionrequester.PermissionRequester
 import com.bumble.appyx.v2.core.integrationpoint.requestcode.RequestCodeClient
 import com.bumble.appyx.v2.core.minimal.reactive.Cancellable
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.v2.sandbox.client.integrationpoint.StartActivityExample.Companion.StringExtraKey
 import java.util.*
 
 class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContext = buildContext),

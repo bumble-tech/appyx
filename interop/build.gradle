@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
-    id 'kotlin-parcelize'
 }
 
 android {
@@ -15,56 +14,46 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
-        useIR = true
-    }
+
     buildFeatures {
         compose true
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.get()
     }
-    lintOptions {
-        abortOnError false
-    }
-    testOptions {
-        unitTests.all {
-            // interface method default implementation
-            exclude '**/*$DefaultImpls.class'
-        }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
 dependencies {
-    api libs.kotlin.coroutines.android
-    api libs.androidx.lifecycle.common
-    api libs.compose.animation.core
-    api libs.compose.runtime
+    implementation project(':library')
 
     implementation libs.androidx.activity.compose
-    implementation libs.androidx.core
     implementation libs.androidx.appcompat
+    implementation libs.androidx.core
     implementation libs.androidx.lifecycle.java8
     implementation libs.androidx.lifecycle.runtime
-    implementation libs.compose.foundation.layout
-    implementation libs.compose.foundation
+    implementation libs.compose.ui.tooling
+    implementation libs.ribs.base
+    implementation libs.ribs.compose
 
-    testImplementation libs.androidx.arch.core.testing
     testImplementation libs.junit
-    testImplementation libs.kotlin.coroutines.text
 
     androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit
     androidTestImplementation libs.compose.ui.test.junit4
+
 }

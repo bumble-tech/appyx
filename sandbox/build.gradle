@@ -46,6 +46,7 @@ android {
 
 dependencies {
     implementation project(':library')
+    implementation project(':interop')
 
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat
@@ -57,6 +58,9 @@ dependencies {
     implementation libs.compose.ui.ui
     implementation libs.google.accompanist.flow
     implementation libs.google.material
+    implementation libs.ribs.base
+    implementation libs.ribs.compose
+    implementation libs.ribs.rx
 
     testImplementation libs.junit
 
