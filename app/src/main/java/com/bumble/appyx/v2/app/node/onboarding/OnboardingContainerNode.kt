@@ -2,6 +2,7 @@ package com.bumble.appyx.v2.app.node.onboarding
 
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,12 +22,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.v2.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode.Routing
 import com.bumble.appyx.v2.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.v2.app.node.onboarding.screen.IntroScreen
@@ -100,7 +103,9 @@ class OnboardingContainerNode(
     override fun View(modifier: Modifier) {
         val hasPrevious = spotlight.hasPrevious().collectAsState(initial = false)
         val hasNext = spotlight.hasNext().collectAsState(initial = false)
-
+        val previousVisibility = animateFloatAsState(
+            targetValue = if (hasPrevious.value) 1f else 0f
+        )
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -112,22 +117,30 @@ class OnboardingContainerNode(
                 transitionHandler = rememberSpotlightSlider(clipToBounds = true),
                 routingSource = spotlight
             )
-
-            Row(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .wrapContentHeight()
-                    .padding(
-                        start = 24.dp,
-                        end = 24.dp,
-                        bottom = 12.dp,
-                    ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(bottom = 12.dp),
+                contentAlignment = Alignment.Center
             ) {
-                if (hasNext.value) {
-                    if (hasPrevious.value) {
+                SpotlightDotsIndicator(
+                    spotlight = spotlight
+                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(
+                            start = 24.dp,
+                            end = 24.dp,
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    if (hasNext.value) {
                         TextButton(
+                            modifier = Modifier.alpha(previousVisibility.value),
+                            enabled = hasPrevious.value,
                             onClick = { spotlight.previous() }
                         ) {
                             Text(
@@ -135,29 +148,27 @@ class OnboardingContainerNode(
                                 fontWeight = FontWeight.Bold
                             )
                         }
+                        TextButton(
+                            onClick = { spotlight.next() }
+                        ) {
+                            Text(
+                                text = "Next".toUpperCase(Locale.current),
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     } else {
                         Spacer(Modifier)
+                        Button(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = { finish() }
+                        ) {
+                            Text(
+                                text = "Check it out!",
+                                color = appyx_dark,
+                            )
+                        }
+                        Spacer(Modifier)
                     }
-                    TextButton(
-                        onClick = { spotlight.next() }
-                    ) {
-                        Text(
-                            text = "Next".toUpperCase(Locale.current),
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                } else {
-                    Spacer(Modifier)
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { finish() }
-                    ) {
-                        Text(
-                            text = "Check it out!",
-                            color = appyx_dark,
-                        )
-                    }
-                    Spacer(Modifier)
                 }
             }
         }
