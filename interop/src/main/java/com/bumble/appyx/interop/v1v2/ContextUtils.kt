@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 
 @Suppress("UNCHECKED_CAST")
-fun <T : Activity> Context.findActivity(): T? {
+internal fun <T : Activity> Context.findActivity(): T? {
     return if (this is Activity) {
         this as T?
     } else {
