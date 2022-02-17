@@ -3,20 +3,25 @@ package com.bumble.appyx.interop.v1v2
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleEventObserver
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.bumble.appyx.interop.v1v2.V1V2View.Dependencies
 import com.bumble.appyx.interop.v1v2.V1V2View.Factory
 import com.bumble.appyx.v2.core.node.Node
 
-class V1V2Node(
-    buildParams: BuildParams<*>,
+interface V1V2Node : Rib {
     val v2Node: Node
+}
+
+internal class V1V2NodeImpl(
+    buildParams: BuildParams<*>,
+    override val v2Node: Node
 ) : com.badoo.ribs.core.Node<V1V2View>(
     buildParams = buildParams,
     viewFactory = Factory().invoke(object : Dependencies {
         override val v2Node: Node = v2Node
     })
-) {
+), V1V2Node {
 
     private val observer = LifecycleEventObserver { source, _ ->
         v2Node.updateLifecycleState(source.lifecycle.currentState)

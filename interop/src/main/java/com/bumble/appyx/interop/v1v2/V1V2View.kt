@@ -12,7 +12,7 @@ import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.routing.upnavigation.LocalFallbackUpNavigationHandler
 
-class V1V2View private constructor(
+internal class V1V2View private constructor(
     override val context: Context,
     private val v2Node: Node,
 ) : ComposeRibView(context) {
