@@ -20,7 +20,7 @@ internal class V1ParentInteractor(
     override fun onViewCreated(view: V1ParentView, viewLifecycle: Lifecycle) {
         viewLifecycle.createDestroy {
             bind(view to Consumer<Event> {
-                val current = backStack.state.current!!.routing.configuration
+                val current = backStack.activeConfiguration
                 if (current is Configuration.InteropNode) {
                     backStack.push(Configuration.V1Node)
                 } else {
