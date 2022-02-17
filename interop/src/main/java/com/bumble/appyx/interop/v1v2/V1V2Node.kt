@@ -10,7 +10,7 @@ import com.bumble.appyx.v2.core.node.Node
 
 class V1V2Node(
     buildParams: BuildParams<*>,
-    private val v2Node: Node
+    val v2Node: Node
 ) : com.badoo.ribs.core.Node<V1V2View>(
     buildParams = buildParams,
     viewFactory = Factory().invoke(object : Dependencies {
