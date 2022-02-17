@@ -34,7 +34,7 @@ junit = "junit:junit:4.13.2"
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-text = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-mvi-core =  { module = "com.github.badoo.RIBs:rib-mvicore", version.ref = "ribs" }
+mvicore =  { module = "com.github.badoo.RIBs:rib-mvicore", version.ref = "ribs" }
 ribs-base = { module = "com.github.badoo.RIBs:rib-base", version.ref = "ribs" }
 ribs-compose = { module = "com.github.badoo.RIBs:rib-compose", version.ref = "ribs" }
 ribs-rx = { module = "com.github.badoo.RIBs:rib-rx2", version.ref = "ribs" }
