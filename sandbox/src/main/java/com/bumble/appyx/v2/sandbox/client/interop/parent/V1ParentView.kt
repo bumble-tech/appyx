@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.sandbox.client.interop
+package com.bumble.appyx.v2.sandbox.client.interop.parent
 
 import android.view.ViewGroup
 import android.widget.Button
@@ -10,39 +10,39 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.v2.R
-import com.bumble.appyx.v2.sandbox.client.interop.V1View.Event
-import com.bumble.appyx.v2.sandbox.client.interop.V1View.Event.Click
+import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentView.Event
+import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentView.Event.SwitchClicked
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 
-interface V1View : RibView, ObservableSource<Event> {
+interface V1ParentView : RibView, ObservableSource<Event> {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, V1View>
+    interface Factory : ViewFactoryBuilder<Nothing?, V1ParentView>
 
     sealed class Event {
-        object Click : Event()
+        object SwitchClicked : Event()
     }
 }
 
-class V1ViewImpl private constructor(
+class V1ParentViewImpl private constructor(
     private val events: PublishRelay<Event> = PublishRelay.create(),
     override val androidView: ViewGroup
-) : AndroidRibView(), V1View, ObservableSource<Event> by events {
+) : AndroidRibView(), V1ParentView, ObservableSource<Event> by events {
 
     private val container = androidView.findViewById<FrameLayout>(R.id.child)
-    private val switch = androidView.findViewById<Button>(R.id.swtich)
+    private val switch = androidView.findViewById<Button>(R.id.switchButton)
 
     init {
         switch.setOnClickListener {
-            events.accept(Click)
+            events.accept(SwitchClicked)
         }
     }
 
-    class Factory : V1View.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<V1View> =
+    class Factory : V1ParentView.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<V1ParentView> =
             ViewFactory {
                 val view = it.inflate<ViewGroup>(R.layout.rib_root)
-                V1ViewImpl(androidView = view)
+                V1ParentViewImpl(androidView = view)
             }
     }
 

@@ -19,10 +19,10 @@
 
 
     <Button
-        android:id="@+id/swtich"
+        android:id="@+id/switchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Push empty or interop node"
+        android:text="Push V1 or interop node"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +37,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/swtich" />
+        app:layout_constraintTop_toBottomOf="@id/switchButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

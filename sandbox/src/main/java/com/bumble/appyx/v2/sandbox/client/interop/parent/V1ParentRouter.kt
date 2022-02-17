@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.sandbox.client.interop
+package com.bumble.appyx.v2.sandbox.client.interop.parent
 
 import android.os.Parcelable
 import com.badoo.ribs.core.modality.BuildParams
@@ -9,10 +9,12 @@ import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.bumble.appyx.interop.v1v2.V1V2Builder
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode
-import com.bumble.appyx.v2.sandbox.client.interop.V1Router.Configuration
+import com.bumble.appyx.v2.sandbox.client.interop.child.V1ChildNode
+import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentRouter.Configuration
+import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentRouter.Configuration.V1Node
 import kotlinx.android.parcel.Parcelize
 
-internal class V1Router(
+internal class V1ParentRouter(
     backStack: BackStack<Configuration>,
     private val buildParams: BuildParams<*>,
 ) : Router<Configuration>(
@@ -21,25 +23,23 @@ internal class V1Router(
 ) {
 
     sealed class Configuration : Parcelable {
-        sealed class Content : Configuration() {
-            @Parcelize
-            object Main : Content()
+        @Parcelize
+        object InteropNode : Configuration()
 
-            @Parcelize
-            object Empty : Content()
-        }
+        @Parcelize
+        object V1Node : Configuration()
     }
 
     override fun resolve(routing: Routing<Configuration>): Resolution =
         when (routing.configuration) {
-            is Configuration.Content.Main ->
+            is Configuration.InteropNode ->
                 child {
                     V1V2Builder(nodeFactory = { buildContext -> ContainerNode(buildContext) })
                         .build(it)
                 }
-            is Configuration.Content.Empty -> {
+            is V1Node -> {
                 child {
-                    EmptyNode(
+                    V1ChildNode(
                         buildParams = BuildParams(
                             payload = buildParams.payload,
                             buildContext = it
