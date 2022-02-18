@@ -27,19 +27,19 @@ class UpNavigationTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val fallbackStub = StubFallbackUpNavigationHandler()
-    private val integrationPoint = TestIntegrationPoint(fallbackStub)
+    private val testUpNavigationHandler = TestUpNavigationHandler()
+    private val integrationPoint = TestIntegrationPoint(testUpNavigationHandler)
 
     // region Child
 
     @Test
-    fun `fallback up navigation is invoked when no plugin provided`() {
+    fun `integrationPoint up navigation is invoked when no plugin provided`() {
         val child = Child(id = "").build()
         child.integrationPoint = integrationPoint
 
         child.navigateUp()
 
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     @Test
@@ -51,7 +51,7 @@ class UpNavigationTest {
         child.navigateUp()
 
         stub.assertInvoked()
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -63,7 +63,7 @@ class UpNavigationTest {
         child.navigateUp()
 
         stub.assertInvoked()
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     // endregion
@@ -71,13 +71,13 @@ class UpNavigationTest {
     // region Parent
 
     @Test
-    fun `fallback up navigation is invoked when routing can't go up`() {
+    fun `integrationPoint up navigation is invoked when routing can't go up`() {
         val parent = Parent().build()
         parent.integrationPoint = integrationPoint
 
         parent.navigateUp()
 
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     @Test
@@ -89,7 +89,7 @@ class UpNavigationTest {
         parent.navigateUp()
 
         assertEquals(1, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -103,7 +103,7 @@ class UpNavigationTest {
 
         stub.assertInvoked()
         assertEquals(2, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -117,7 +117,7 @@ class UpNavigationTest {
 
         stub.assertInvoked()
         assertEquals(1, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
