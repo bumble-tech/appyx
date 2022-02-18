@@ -10,7 +10,7 @@ import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.v2.core.node.Node
 
-class V1V2View private constructor(
+internal class V1V2View private constructor(
     override val context: Context,
     private val v2Node: Node,
 ) : ComposeRibView(context) {
