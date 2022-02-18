@@ -27,8 +27,8 @@ class UpNavigationTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val fallbackStub = StubFallbackUpNavigationHandler()
-    private val integrationPoint = TestIntegrationPoint(fallbackStub)
+    private val testUpNavigationHandler = TestUpNavigationHandler()
+    private val integrationPoint = TestIntegrationPoint(testUpNavigationHandler)
 
     // region Child
 
@@ -39,7 +39,7 @@ class UpNavigationTest {
 
         child.navigateUp()
 
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     @Test
@@ -51,7 +51,7 @@ class UpNavigationTest {
         child.navigateUp()
 
         stub.assertInvoked()
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -63,7 +63,7 @@ class UpNavigationTest {
         child.navigateUp()
 
         stub.assertInvoked()
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     // endregion
@@ -77,7 +77,7 @@ class UpNavigationTest {
 
         parent.navigateUp()
 
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     @Test
@@ -89,7 +89,7 @@ class UpNavigationTest {
         parent.navigateUp()
 
         assertEquals(1, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -103,7 +103,7 @@ class UpNavigationTest {
 
         stub.assertInvoked()
         assertEquals(2, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -117,7 +117,7 @@ class UpNavigationTest {
 
         stub.assertInvoked()
         assertEquals(1, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
