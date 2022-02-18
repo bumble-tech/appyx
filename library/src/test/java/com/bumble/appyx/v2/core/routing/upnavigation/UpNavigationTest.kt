@@ -14,6 +14,7 @@ import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
 import com.bumble.appyx.v2.core.testutils.MainDispatcherRule
+import com.bumble.appyx.v2.core.testutils.TestIntegrationPoint
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -26,43 +27,43 @@ class UpNavigationTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
+    private val testUpNavigationHandler = TestUpNavigationHandler()
+    private val integrationPoint = TestIntegrationPoint(testUpNavigationHandler)
+
     // region Child
 
     @Test
-    fun `fallback up navigation is invoked when no plugin provided`() {
+    fun `integrationPoint up navigation is invoked when no plugin provided`() {
         val child = Child(id = "").build()
-        val fallbackStub = StubFallbackUpNavigationHandler()
-        child.injectFallbackUpNavigationHandler(fallbackStub)
+        child.integrationPoint = integrationPoint
 
         child.navigateUp()
 
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     @Test
     fun `up navigation is intercepted when plugin intercepts it`() {
         val stub = StubUpNavigationHandler()
         val child = Child(id = "", upNavigationHandler = stub).build()
-        val fallbackStub = StubFallbackUpNavigationHandler()
-        child.injectFallbackUpNavigationHandler(fallbackStub)
+        child.integrationPoint = integrationPoint
 
         child.navigateUp()
 
         stub.assertInvoked()
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
     fun `up navigation is not intercepted when plugin does not intercept it`() {
         val stub = StubUpNavigationHandler(stub = false)
         val child = Child(id = "", upNavigationHandler = stub).build()
-        val fallbackStub = StubFallbackUpNavigationHandler()
-        child.injectFallbackUpNavigationHandler(fallbackStub)
+        child.integrationPoint = integrationPoint
 
         child.navigateUp()
 
         stub.assertInvoked()
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     // endregion
@@ -70,27 +71,25 @@ class UpNavigationTest {
     // region Parent
 
     @Test
-    fun `fallback up navigation is invoked when routing can't go up`() {
+    fun `integrationPoint up navigation is invoked when routing can't go up`() {
         val parent = Parent().build()
-        val fallbackStub = StubFallbackUpNavigationHandler()
-        parent.injectFallbackUpNavigationHandler(fallbackStub)
+        parent.integrationPoint = integrationPoint
 
         parent.navigateUp()
 
-        fallbackStub.assertInvoked()
+        testUpNavigationHandler.assertInvoked()
     }
 
     @Test
     fun `up navigation is intercepted by routing source`() {
         val parent = Parent().build()
         parent.backStack.push(Parent.Configuration(id = "1"))
-        val fallbackStub = StubFallbackUpNavigationHandler()
-        parent.injectFallbackUpNavigationHandler(fallbackStub)
+        parent.integrationPoint = integrationPoint
 
         parent.navigateUp()
 
         assertEquals(1, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -98,14 +97,13 @@ class UpNavigationTest {
         val stub = StubUpNavigationHandler()
         val parent = Parent(upNavigationHandler = stub).build()
         parent.backStack.push(Parent.Configuration(id = "1"))
-        val fallbackStub = StubFallbackUpNavigationHandler()
-        parent.injectFallbackUpNavigationHandler(fallbackStub)
+        parent.integrationPoint = integrationPoint
 
         parent.navigateUp()
 
         stub.assertInvoked()
         assertEquals(2, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -113,14 +111,13 @@ class UpNavigationTest {
         val stub = StubUpNavigationHandler(stub = false)
         val parent = Parent(upNavigationHandler = stub).build()
         parent.backStack.push(Parent.Configuration(id = "1"))
-        val fallbackStub = StubFallbackUpNavigationHandler()
-        parent.injectFallbackUpNavigationHandler(fallbackStub)
+        parent.integrationPoint = integrationPoint
 
         parent.navigateUp()
 
         stub.assertInvoked()
         assertEquals(1, parent.children.value.size)
-        fallbackStub.assertNotInvoked()
+        testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
@@ -195,7 +192,6 @@ class UpNavigationTest {
         override fun View(modifier: Modifier) {
         }
     }
-
     // endregion
 
 }

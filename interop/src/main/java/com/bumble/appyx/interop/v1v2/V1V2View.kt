@@ -3,14 +3,12 @@ package com.bumble.appyx.interop.v1v2
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.routing.upnavigation.LocalFallbackUpNavigationHandler
 
 class V1V2View private constructor(
     override val context: Context,
@@ -25,9 +23,7 @@ class V1V2View private constructor(
 
     override val composable: ComposeView
         get() = @Composable {
-            CompositionLocalProvider(LocalFallbackUpNavigationHandler provides integrationPoint) {
-                v2Node.Compose()
-            }
+            v2Node.Compose()
         }
 
     class Factory : ViewFactoryBuilder<Dependencies, V1V2View> {

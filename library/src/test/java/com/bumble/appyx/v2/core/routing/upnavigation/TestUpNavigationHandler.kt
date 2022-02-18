@@ -3,7 +3,7 @@ package com.bumble.appyx.v2.core.routing.upnavigation
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 
-class StubFallbackUpNavigationHandler : FallbackUpNavigationHandler {
+class TestUpNavigationHandler : UpNavigationHandler {
     var invoked: Boolean = false
 
     override fun handleUpNavigation() {

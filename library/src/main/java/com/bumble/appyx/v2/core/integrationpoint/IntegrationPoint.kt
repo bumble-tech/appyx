@@ -5,11 +5,11 @@ import com.bumble.appyx.v2.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.v2.core.integrationpoint.permissionrequester.PermissionRequester
 import com.bumble.appyx.v2.core.integrationpoint.requestcode.RequestCodeRegistry
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.routing.upnavigation.FallbackUpNavigationHandler
+import com.bumble.appyx.v2.core.routing.upnavigation.UpNavigationHandler
 
 abstract class IntegrationPoint(
     protected val savedInstanceState: Bundle?
-) : FallbackUpNavigationHandler {
+) : UpNavigationHandler {
 
     protected val requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
