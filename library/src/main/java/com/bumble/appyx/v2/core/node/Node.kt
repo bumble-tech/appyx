@@ -1,7 +1,6 @@
 package com.bumble.appyx.v2.core.node
 
 import androidx.annotation.CallSuper
-import androidx.annotation.VisibleForTesting
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -27,10 +26,6 @@ import com.bumble.appyx.v2.core.plugin.Plugin
 import com.bumble.appyx.v2.core.plugin.Saveable
 import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
 import com.bumble.appyx.v2.core.plugin.plugins
-import com.bumble.appyx.v2.core.routing.upnavigation.FallbackUpNavigationHandler
-import com.bumble.appyx.v2.core.routing.upnavigation.LocalFallbackUpNavigationHandler
-import com.bumble.appyx.v2.core.routing.upnavigation.UpHandler
-import com.bumble.appyx.v2.core.routing.upnavigation.UpNavigationDispatcher
 import com.bumble.appyx.v2.core.state.SavedStateMap
 
 abstract class Node(
@@ -63,8 +58,6 @@ abstract class Node(
         }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
-    private val upNavigationDispatcher: UpNavigationDispatcher =
-        UpNavigationDispatcher(::performUpNavigation)
 
     private var wasBuilt = false
 
@@ -92,11 +85,6 @@ abstract class Node(
             LocalNode provides this,
             LocalLifecycleOwner provides this,
         ) {
-            val fallbackUpNavigationDispatcher = LocalFallbackUpNavigationHandler.current
-            UpHandler(
-                upDispatcher = upNavigationDispatcher,
-                fallbackUpNavigation = fallbackUpNavigationDispatcher,
-            )
             DerivedSetup()
             Box(modifier = LocalTransitionModifier.current ?: Modifier) {
                 // Avoid applying the same transition modifier for the children down in hierarchy
@@ -152,7 +140,8 @@ abstract class Node(
     }
 
     fun navigateUp() {
-        upNavigationDispatcher.upNavigation()
+        if (performUpNavigation()) return
+        integrationPoint.handleUpNavigation()
     }
 
     private fun handleUpNavigationByPlugins(): Boolean =
@@ -160,12 +149,6 @@ abstract class Node(
 
     protected open fun performUpNavigation(): Boolean =
         handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
-
-    // TODO Investigate how to remove it
-    @VisibleForTesting
-    internal fun injectFallbackUpNavigationHandler(handler: FallbackUpNavigationHandler) {
-        upNavigationDispatcher.setFallbackUpNavigationCallback(handler)
-    }
 
     companion object {
         const val KEY_PLUGINS_STATE = "PluginsState"
