@@ -30,8 +30,8 @@ internal class V1V2View private constructor(
             }
         }
 
-    class Factory<N: Node> : ViewFactoryBuilder<Dependencies<N>, V1V2View> {
-        override fun invoke(deps: Dependencies<N>): ViewFactory<V1V2View> =
+    class Factory<N: Node> : ViewFactoryBuilder<Dependency<N>, V1V2View> {
+        override fun invoke(deps: Dependency<N>): ViewFactory<V1V2View> =
             ViewFactory {
                 V1V2View(
                     context = it.parent.context,
@@ -49,7 +49,7 @@ internal class V1V2View private constructor(
         }
     }
 
-    interface Dependencies<N : Node> {
+    interface Dependency<N : Node> {
         val v2Node: N
     }
 }

@@ -5,7 +5,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleEventObserver
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
-import com.bumble.appyx.interop.v1v2.V1V2View.Dependencies
+import com.bumble.appyx.interop.v1v2.V1V2View.Dependency
 import com.bumble.appyx.interop.v1v2.V1V2View.Factory
 import com.bumble.appyx.v2.core.node.Node
 
@@ -18,7 +18,7 @@ internal class V1V2NodeImpl<N : Node>(
     override val v2Node: N
 ) : com.badoo.ribs.core.Node<V1V2View>(
     buildParams = buildParams,
-    viewFactory = Factory<N>().invoke(object : Dependencies<N> {
+    viewFactory = Factory<N>().invoke(object : Dependency<N> {
         override val v2Node: N = v2Node
     })
 ), V1V2Node<N> {
