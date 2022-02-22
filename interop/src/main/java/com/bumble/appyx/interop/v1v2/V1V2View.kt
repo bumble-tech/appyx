@@ -26,8 +26,8 @@ internal class V1V2View private constructor(
             v2Node.Compose()
         }
 
-    class Factory : ViewFactoryBuilder<Dependencies, V1V2View> {
-        override fun invoke(deps: Dependencies): ViewFactory<V1V2View> =
+    class Factory<N: Node> : ViewFactoryBuilder<Dependency<N>, V1V2View> {
+        override fun invoke(deps: Dependency<N>): ViewFactory<V1V2View> =
             ViewFactory {
                 V1V2View(
                     context = it.parent.context,
@@ -45,7 +45,7 @@ internal class V1V2View private constructor(
         }
     }
 
-    interface Dependencies {
-        val v2Node: Node
+    interface Dependency<N : Node> {
+        val v2Node: N
     }
 }
