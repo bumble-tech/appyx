@@ -8,9 +8,9 @@ import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.build
 
-class V1V2Builder<N : Node>(private val nodeFactory: NodeFactory<N>) : SimpleBuilder<V1V2Node>() {
+class V1V2Builder<N : Node>(private val nodeFactory: NodeFactory<N>) : SimpleBuilder<V1V2Node<N>>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): V1V2Node {
+    override fun build(buildParams: BuildParams<Nothing?>): V1V2Node<N> {
         val bundle = buildParams.savedInstanceState?.getBundle(V1V2NodeKey)
         val stateMap = bundle?.let {
             val keys = bundle.keySet()
