@@ -46,6 +46,7 @@ android {
 
 dependencies {
     implementation project(':library')
+    implementation project(':rx2')
     implementation project(':interop')
 
     implementation libs.androidx.activity.compose
@@ -62,6 +63,7 @@ dependencies {
     implementation libs.ribs.base
     implementation libs.ribs.compose
     implementation libs.ribs.rx
+    implementation libs.rxandroid
 
     testImplementation libs.junit
 
