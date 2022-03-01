@@ -19,37 +19,40 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.core.composable.Children
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.newRoot
+import com.bumble.appyx.v2.core.node.AbstractNodeVew
+import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
-import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child1
-import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child2
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreView.Event
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreView.Event.LoadDataClicked
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreView.Event.SwitchChildClicked
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.ViewModel
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.ViewModel.InitialState
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.ViewModel.Loaded
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.ViewModel.Loading
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MviCoreView(
+    private val backStack: BackStack<Routing>,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : ObservableSource<Event> by events, Consumer<ViewModel> {
+) : AbstractNodeVew<MviCoreExampleNode>(), ObservableSource<Event> by events, Consumer<ViewModel> {
 
     sealed class Event {
         object LoadDataClicked : Event()
+        object SwitchChildClicked : Event()
     }
 
     private var vm by mutableStateOf<ViewModel?>(null)
 
-    private var index: Int = 0
-
-    @Composable
-    fun MviCoreView(modifier: Modifier, node: MviCoreExampleNode) {
-        node.MviCoreView(modifier = modifier, viewModel = vm)
+    override fun accept(vm: ViewModel) {
+        this.vm = vm
     }
 
     @Composable
-    private fun MviCoreExampleNode.MviCoreView(modifier: Modifier, viewModel: ViewModel?) {
-        viewModel ?: return
+    override fun MviCoreExampleNode.NodeView(modifier: Modifier) {
+        val viewModel = vm ?: return
         Column(
             modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center
@@ -65,21 +68,15 @@ class MviCoreView(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(8.dp),
-                onClick = {
-                    if (backStack.routings.value == listOf(Child2)) {
-                        backStack.newRoot(Child1)
-                    } else {
-                        backStack.newRoot(Child2)
-                    }
-                }
+                onClick = { events.accept(SwitchChildClicked) }
             ) {
                 Text(text = "Switch between children")
             }
             when (viewModel) {
-                is ViewModel.Loading -> Box(modifier = modifier.fillMaxSize()) {
+                is Loading -> Box(modifier = modifier.fillMaxSize()) {
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-                is ViewModel.InitialState ->
+                is InitialState ->
                     Box(modifier = modifier.fillMaxSize()) {
                         Column(modifier = modifier.align(Alignment.Center)) {
                             Text(text = viewModel.stateName)
@@ -89,7 +86,7 @@ class MviCoreView(
                             }
                         }
                     }
-                is ViewModel.Loaded ->
+                is Loaded ->
                     Box(modifier = modifier.fillMaxSize()) {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
@@ -98,9 +95,5 @@ class MviCoreView(
                     }
             }
         }
-    }
-
-    override fun accept(vm: ViewModel) {
-        this.vm = vm
     }
 }

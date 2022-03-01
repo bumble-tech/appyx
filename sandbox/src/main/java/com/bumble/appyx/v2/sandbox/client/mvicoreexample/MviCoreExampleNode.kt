@@ -1,10 +1,9 @@
 package com.bumble.appyx.v2.sandbox.client.mvicoreexample
 
 import android.os.Parcelable
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.v2.core.node.NodeView
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.plugin.Plugin
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
@@ -14,13 +13,13 @@ import kotlinx.parcelize.Parcelize
 class MviCoreExampleNode(
     private val view: MviCoreView,
     buildContext: BuildContext,
-    plugins: List<Plugin> = listOf(),
-    internal val backStack: BackStack<Routing>,
+    plugins: List<Plugin>,
+    backStack: BackStack<Routing>,
 ) : ParentNode<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
     plugins = plugins
-) {
+), NodeView by view {
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -35,9 +34,4 @@ class MviCoreExampleNode(
             is Routing.Child1 -> MviCoreChildNode1(buildContext)
             is Routing.Child2 -> MviCoreChildNode2(buildContext)
         }
-
-    @Composable
-    override fun View(modifier: Modifier) {
-        view.MviCoreView(modifier = modifier, node = this)
-    }
 }

@@ -9,6 +9,7 @@ import com.bumble.appyx.v2.core.clienthelper.interactor.Interactor
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.EventsToRouting
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.EventsToWish
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.OutputChild1ToWish
@@ -25,6 +26,7 @@ class MviCoreExampleInteractor(
         lifecycle.startStop {
             bind(feature to view using StateToViewModel)
             bind(view to feature using EventsToWish)
+            bind(view to EventsToRouting(backStack))
         }
         whenChildAttached { _: Lifecycle, child: Node ->
             when (child) {
