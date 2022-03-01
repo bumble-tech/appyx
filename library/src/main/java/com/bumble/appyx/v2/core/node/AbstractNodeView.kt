@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.v2.core.plugin.NodeAware
 
-abstract class AbstractNodeVew<N : Node> : NodeView, NodeAware<N> {
+abstract class AbstractNodeView<N : Node> : NodeView, NodeAware<N> {
 
     private var initialised: Boolean by mutableStateOf(false)
 

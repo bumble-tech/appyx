@@ -28,7 +28,7 @@ class MviCoreExampleFeature(initialStateName: String) :
         data class InitialState(val stateName: String) : State()
         object Loading : State()
         data class Loaded(val stateName: String) : State()
-        object Finishing : State()
+        object Finished : State()
     }
 
     sealed class Wish {
@@ -68,7 +68,7 @@ class MviCoreExampleFeature(initialStateName: String) :
         override fun invoke(state: State, effect: Effect): State =
             when (effect) {
                 is Effect.ChangeState -> State.Loaded(effect.stateName)
-                is Effect.Finished -> State.Finishing
+                is Effect.Finished -> State.Finished
                 is Effect.ChildInput -> State.Loaded(effect.data)
                 is Effect.DataLoaded -> State.Loaded("Loaded")
                 is Effect.Loading -> State.Loading

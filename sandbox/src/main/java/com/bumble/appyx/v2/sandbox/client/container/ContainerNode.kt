@@ -119,7 +119,7 @@ class ContainerNode(
             is SpotlightExample -> SpotlightExampleNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
             is RequestPermissionsExamples -> IntegrationPointExampleNode(buildContext)
-            is MviCoreExample -> MviCoreExampleBuilder().build(buildContext, "MviCore initial state")
+            is MviCoreExample -> MviCoreExampleBuilder().build(buildContext, "MVICore initial state")
         }
 
     @Composable
@@ -153,7 +153,7 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TextButton("Mvi core Example") { backStack.push(MviCoreExample) }
+                TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, InteropExampleActivity::class.java)

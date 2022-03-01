@@ -1,6 +1,6 @@
 package com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature
 
-import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreView.Event
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleView.Event
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
 
 internal object EventsToWish : (Event) -> Wish? {

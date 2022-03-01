@@ -11,7 +11,7 @@ import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Rout
 import kotlinx.parcelize.Parcelize
 
 class MviCoreExampleNode(
-    private val view: MviCoreView,
+    private val view: MviCoreExampleView,
     buildContext: BuildContext,
     plugins: List<Plugin>,
     backStack: BackStack<Routing>,
