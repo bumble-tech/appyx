@@ -20,9 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.node.AbstractNodeView
-import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
-import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleView.Event
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleView.Event.LoadDataClicked
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleView.Event.SwitchChildClicked
@@ -34,10 +32,8 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-class MviCoreExampleView(
-    private val backStack: BackStack<Routing>,
-    private val events: PublishRelay<Event> = PublishRelay.create()
-) : AbstractNodeView<MviCoreExampleNode>(), ObservableSource<Event> by events, Consumer<ViewModel> {
+class MviCoreExampleView(private val events: PublishRelay<Event> = PublishRelay.create()) :
+    AbstractNodeView<MviCoreExampleNode>(), ObservableSource<Event> by events, Consumer<ViewModel> {
 
     sealed class Event {
         object LoadDataClicked : Event()

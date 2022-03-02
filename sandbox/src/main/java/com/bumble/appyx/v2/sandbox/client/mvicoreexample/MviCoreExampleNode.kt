@@ -14,7 +14,7 @@ class MviCoreExampleNode(
     private val view: MviCoreExampleView,
     buildContext: BuildContext,
     plugins: List<Plugin>,
-    backStack: BackStack<Routing>,
+    internal val backStack: BackStack<Routing>,
 ) : ParentNode<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
