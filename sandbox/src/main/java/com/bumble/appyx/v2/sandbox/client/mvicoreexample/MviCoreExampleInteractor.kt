@@ -26,34 +26,30 @@ class MviCoreExampleInteractor(
     private val backStack: BackStack<Routing>,
 ) : Interactor<MviCoreExampleNode>() {
 
+    private val backStackUpdater = Consumer<Event> { event ->
+        when (event) {
+            is Event.SwitchChildClicked -> {
+                if (backStack.routings.value == listOf(Child1)) {
+                    backStack.newRoot(Child2)
+                } else {
+                    backStack.newRoot(Child1)
+                }
+            }
+            else -> Unit
+        }
+    }
+
     override fun onCreate(lifecycle: Lifecycle) {
         lifecycle.startStop {
             bind(feature to view using StateToViewModel)
             bind(view to feature using EventsToWish)
-            bind(view to Consumer<Event> { event ->
-                when (event) {
-                    is Event.SwitchChildClicked -> {
-                        if (backStack.routings.value == listOf(Child1)) {
-                            backStack.newRoot(Child2)
-                        } else {
-                            backStack.newRoot(Child1)
-                        }
-                    }
-                    else -> Unit
-                }
-            })
+            bind(view to backStackUpdater)
         }
         whenChildAttached { _: Lifecycle, child: Node ->
-            when (child) {
-                is MviCoreChildNode1 -> {
-                    child.lifecycle.createDestroy {
-                        bind(child.output to feature using OutputChild1ToWish)
-                    }
-                }
-                is MviCoreChildNode2 -> {
-                    child.lifecycle.createDestroy {
-                        bind(child.output to feature using OutputChild2ToWish)
-                    }
+            child.lifecycle.createDestroy {
+                when (child) {
+                    is MviCoreChildNode1 -> bind(child.output to feature using OutputChild1ToWish)
+                    is MviCoreChildNode2 -> bind(child.output to feature using OutputChild2ToWish)
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.bumble.appyx.v2.core.node
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +24,8 @@ abstract class AbstractNodeView<N : Node> : NodeView, NodeAware<N> {
     override fun View(modifier: Modifier) {
         if (initialised) {
             node.NodeView(modifier = modifier)
+        } else {
+            Log.e("AbstractNodeView", "$this not initialised yet")
         }
     }
 
