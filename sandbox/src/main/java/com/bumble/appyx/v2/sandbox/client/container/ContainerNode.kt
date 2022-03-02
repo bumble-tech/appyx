@@ -40,6 +40,7 @@ import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.Combin
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.InteractorExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.LazyExamples
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.ModalExample
+import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.MviCoreExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.Picker
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.RoutingSourcesExamples
@@ -47,11 +48,12 @@ import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.Spotli
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.TilesExample
 import com.bumble.appyx.v2.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorNodeBuilder
+import com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode
+import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode
-import com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -100,6 +102,9 @@ class ContainerNode(
 
         @Parcelize
         object InteractorExample : Routing()
+
+        @Parcelize
+        object MviCoreExample : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -114,6 +119,7 @@ class ContainerNode(
             is SpotlightExample -> SpotlightExampleNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
             is RequestPermissionsExamples -> IntegrationPointExampleNode(buildContext)
+            is MviCoreExample -> MviCoreExampleBuilder().build(buildContext, "MVICore initial state")
         }
 
     @Composable
@@ -147,6 +153,7 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, InteropExampleActivity::class.java)

@@ -7,6 +7,7 @@ ribs = "0.32.0"
 coroutines = "1.5.2"
 kotlin = "1.6.10"
 rxjava2 = "2.2.21"
+rxandroid = "2.1.1"
 junit5 = "5.8.2"
 
 [libraries]
@@ -40,6 +41,7 @@ ribs-compose = { module = "com.github.badoo.RIBs:rib-compose", version.ref = "ri
 ribs-rx = { module = "com.github.badoo.RIBs:rib-rx2", version.ref = "ribs" }
 
 rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava2" }
+rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
 rxrelay = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
 
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }

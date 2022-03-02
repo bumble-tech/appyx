@@ -31,7 +31,7 @@ import com.bumble.appyx.v2.core.state.SavedStateMap
 abstract class Node(
     buildContext: BuildContext,
     plugins: List<Plugin> = emptyList()
-) : NodeLifecycle {
+) : NodeLifecycle, NodeView {
 
     private val nodeLifecycle = NodeLifecycleImpl(this)
 
@@ -100,9 +100,6 @@ abstract class Node(
     @Composable
     protected open fun DerivedSetup() {
     }
-
-    @Composable
-    protected abstract fun View(modifier: Modifier)
 
     override fun getLifecycle(): Lifecycle =
         nodeLifecycle.lifecycle
