@@ -24,6 +24,7 @@ class BackStack<T : Any>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
+    allowBackPressHandling: Boolean = true,
 ) : RoutingSource<T, TransitionState>, Destroyable {
 
     enum class TransitionState {
@@ -62,8 +63,9 @@ class BackStack<T : Any>(
         onScreenMapper.resolveOffScreenElements(state)
 
     override val canHandleBackPress: StateFlow<Boolean> =
-        state.map { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
+        if (allowBackPressHandling) state.map { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
             .stateIn(scope, SharingStarted.Eagerly, false)
+        else MutableStateFlow(false)
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { list ->

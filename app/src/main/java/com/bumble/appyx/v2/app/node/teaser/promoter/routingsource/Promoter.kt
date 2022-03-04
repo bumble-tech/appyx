@@ -9,10 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -60,8 +57,7 @@ class Promoter<T : Any>(
         onScreenMapper.resolveOffScreenElements(state)
 
     override val canHandleBackPress: StateFlow<Boolean> =
-        state.map { list -> list.any { it.targetState == TransitionState.STAGE2 } }
-            .stateIn(scope, SharingStarted.Eagerly, false)
+        MutableStateFlow(false)
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { list ->
