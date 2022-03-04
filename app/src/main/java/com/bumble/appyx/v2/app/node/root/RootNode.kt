@@ -3,12 +3,20 @@ package com.bumble.appyx.v2.app.node.root
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
+import com.bumble.appyx.v2.R
+import com.bumble.appyx.v2.app.composable.ScreenCenteredContent
 import com.bumble.appyx.v2.app.node.helper.screenNode
 import com.bumble.appyx.v2.app.node.onboarding.OnboardingContainerNode
 import com.bumble.appyx.v2.app.node.root.RootNode.Routing
@@ -49,7 +57,7 @@ class RootNode(
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
-            Routing.Splash -> screenNode(buildContext) { Text(text = "Splash") }
+            Routing.Splash -> screenNode(buildContext) { Splash() }
             Routing.Onboarding -> OnboardingContainerNode(buildContext)
             Routing.Main -> screenNode(buildContext) { Text(text = "Main") }
         }
@@ -65,14 +73,29 @@ class RootNode(
     override fun View(modifier: Modifier) {
         LaunchedEffect(backStack.routings) {
             if (backStack.routings.value == listOf(Routing.Splash)) {
-                delay(750)
+                delay(1000)
                 backStack.newRoot(Routing.Onboarding)
             }
-        } 
+        }
 
         Children(
             routingSource = backStack,
             transitionHandler = rememberBackstackFader { tween(750) }
+        )
+    }
+}
+
+@Preview
+@Composable
+fun Splash() {
+    ScreenCenteredContent {
+        val image: Painter = painterResource(
+            id = if (isSystemInDarkTheme()) R.drawable.appyx_text_white_s else R.drawable.appyx_text_black_s
+        )
+        Image(
+            painter = image,
+            contentDescription = "logo",
+            modifier = Modifier.fillMaxSize(0.65f)
         )
     }
 }
