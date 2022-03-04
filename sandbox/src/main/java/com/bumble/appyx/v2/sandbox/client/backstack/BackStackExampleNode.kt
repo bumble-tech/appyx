@@ -62,6 +62,7 @@ class BackStackExampleNode(
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = ChildA(value = DEFAULT_VALUE),
         savedStateMap = buildContext.savedStateMap,
+        allowBackPressHandling = false
     )
 ) : ParentNode<Routing>(
     routingSource = backStack,
