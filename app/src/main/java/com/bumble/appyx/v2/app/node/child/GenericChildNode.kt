@@ -1,7 +1,7 @@
 package com.bumble.appyx.v2.app.node.child
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -17,21 +17,12 @@ import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.v2.app.ui.atomic_tangerine
 import com.bumble.appyx.v2.app.ui.manatee
-import com.bumble.appyx.v2.app.ui.silver_sand
-import com.bumble.appyx.v2.app.ui.sizzling_red
-import com.bumble.appyx.v2.core.integration.NodeHost
-import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
-import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.state.SavedStateMap
 import com.bumble.appyx.v2.app.ui.md_amber_500
 import com.bumble.appyx.v2.app.ui.md_blue_500
 import com.bumble.appyx.v2.app.ui.md_blue_grey_500
@@ -43,8 +34,16 @@ import com.bumble.appyx.v2.app.ui.md_light_green_500
 import com.bumble.appyx.v2.app.ui.md_lime_500
 import com.bumble.appyx.v2.app.ui.md_pink_500
 import com.bumble.appyx.v2.app.ui.md_teal_500
-import kotlin.random.Random
+import com.bumble.appyx.v2.app.ui.silver_sand
+import com.bumble.appyx.v2.app.ui.sizzling_red
+import com.bumble.appyx.v2.core.integration.NodeHost
+import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
+import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
+import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.v2.core.state.SavedStateMap
 import kotlinx.coroutines.delay
+import kotlin.random.Random
 
 class GenericChildNode(
     buildContext: BuildContext,
@@ -111,10 +110,8 @@ class GenericChildNode(
                     color = color,
                     shape = RoundedCornerShape(6.dp)
                 )
-                .pointerInput(Unit) {
-                    detectTapGestures(
-                        onLongPress = { colorIndex = Random.nextInt(colors.size) },
-                    )
+                .clickable {
+                    colorIndex = Random.nextInt(colors.size)
                 }
         ) {
             Box(

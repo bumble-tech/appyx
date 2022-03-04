@@ -64,7 +64,7 @@ class StatefulNode1(
             title = "Stateful",
             body = "Each Node on this screen has some state:" +
                 "\n\n1. The counter represents data from a background process (e.g. server)." +
-                "\n2. You can also long press them to change their colour. Try it!"
+                "\n2. You can also tap them to change their colour. Try it!"
         ) {
             Column(Modifier.fillMaxSize()) {
                 Row(
