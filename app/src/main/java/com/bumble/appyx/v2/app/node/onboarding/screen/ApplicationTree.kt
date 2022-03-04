@@ -94,7 +94,8 @@ class ApplicationTree(
         }
 
         LaunchedEffect(Unit) {
-            val timeMillis: Long = 1500
+            val startDelay: Long = 500
+            val intervalDelay: Long = 1200
 
             while (true) {
                 root.isActive.value = false
@@ -109,38 +110,38 @@ class ApplicationTree(
                 people.isActive.value = false
                 chat.isActive.value = false
 
-                delay(timeMillis)
+                delay(startDelay)
                 root.isActive.value = true
                 onboarding.isActive.value = true
                 o1.isActive.value = true
-                delay(timeMillis)
+                delay(intervalDelay)
                 o1.isActive.value = false
                 o2.isActive.value = true
-                delay(timeMillis)
+                delay(intervalDelay)
                 o2.isActive.value = false
                 o3.isActive.value = true
 
-                delay(timeMillis)
+                delay(intervalDelay)
                 o3.isActive.value = false
                 onboarding.isActive.value = false
                 main.isActive.value = true
                 profile.isActive.value = true
 
-                delay(timeMillis)
+                delay(intervalDelay)
                 profile.isActive.value = false
                 messages.isActive.value = true
                 people.isActive.value = true
 
-                delay(timeMillis)
+                delay(intervalDelay)
                 people.isActive.value = false
                 chat.isActive.value = true
 
-                delay(timeMillis)
+                delay(intervalDelay)
                 messages.isActive.value = false
                 chat.isActive.value = false
                 settings.isActive.value = true
 
-                delay(timeMillis * 2)
+                delay(intervalDelay * 2)
             }
         }
     }
