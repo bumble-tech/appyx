@@ -63,9 +63,9 @@ class BackStack<T : Any>(
         onScreenMapper.resolveOffScreenElements(state)
 
     override val canHandleBackPress: StateFlow<Boolean> =
-        if (allowBackPressHandling) MutableStateFlow(false)
-        else state.map { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
+        if (allowBackPressHandling) state.map { list -> list.count { it.targetState == TransitionState.STASHED_IN_BACK_STACK } > 0 }
             .stateIn(scope, SharingStarted.Eagerly, false)
+        else MutableStateFlow(false)
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { list ->
