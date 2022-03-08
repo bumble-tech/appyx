@@ -1,0 +1,29 @@
+/**
+ * To publish:
+ * 1. Increment version here
+ * 2. ./gradle publish -PNEXUS_USERNAME=YOUR_NAME -PNEXUS_PASSWORD=YOUR_PASSWORD -PNEXUS_URL=http://PRIVATE_URL/repository/maven-private/
+ */
+
+apply plugin: 'maven-publish'
+
+afterEvaluate { Project project ->
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.bumble.appyx.v2'
+                version = '0.1.0'
+            }
+        }
+        repositories {
+            maven {
+                name = 'MavenPrivate'
+                url = project.findProperty('NEXUS_URL') ?: ''
+                credentials {
+                    username = project.findProperty('NEXUS_USERNAME') ?: ''
+                    password = project.findProperty('NEXUS_PASSWORD') ?: ''
+                }
+            }
+        }
+    }
+}
