@@ -19,6 +19,7 @@ afterEvaluate { Project project ->
             maven {
                 name = 'MavenPrivate'
                 url = project.findProperty('NEXUS_URL') ?: ''
+                allowInsecureProtocol true
                 credentials {
                     username = project.findProperty('NEXUS_USERNAME') ?: ''
                     password = project.findProperty('NEXUS_PASSWORD') ?: ''
