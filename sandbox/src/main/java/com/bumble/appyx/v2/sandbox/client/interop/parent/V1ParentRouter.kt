@@ -36,11 +36,11 @@ internal class V1ParentRouter(
                 child {
                     V1V2Builder(
                         nodeFactory = { buildContextV1, buildContextV2 ->
-                            val customisationName = buildContextV2
+                            val customisationName = buildContextV1
                                 .customisations
                                 .getRecursivelyOrDefault(V1ParentRib.Customisation())
                                 .name
-                            ContainerNode(customisationName, buildContextV1)
+                            ContainerNode(customisationName, buildContextV2)
                         }
                     ).build(it)
                 }

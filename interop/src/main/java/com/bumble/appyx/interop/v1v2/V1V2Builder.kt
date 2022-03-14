@@ -24,8 +24,8 @@ class V1V2Builder<N : Node>(
 
         val v2Node = nodeFactory
             .create(
-                BuildContext.root(stateMap),
-                buildParams.buildContext
+                buildContextV1 = buildParams.buildContext,
+                buildContextV2 = BuildContext.root(stateMap)
             )
             .build()
 
