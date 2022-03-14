@@ -1,67 +1,40 @@
 package com.bumble.appyx.v2.core.routing.source.spotlight
 
-import android.os.Parcelable
 import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.core.plugin.Destroyable
-import com.bumble.appyx.v2.core.routing.OnScreenMapper
+import com.bumble.appyx.v2.core.routing.BaseRoutingSource
+import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.RoutingSource
+import com.bumble.appyx.v2.core.routing.RoutingPlugin
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_AFTER
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.SpotlightOperation
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
+import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToPrevious
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlin.coroutines.EmptyCoroutineContext
 
-class Spotlight<T : Parcelable>(
+class Spotlight<T : Any>(
     items: List<T>,
     initialActiveItem: Int = 0,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-) : RoutingSource<T, TransitionState>, Destroyable {
+    plugins: List<RoutingPlugin<T, TransitionState>> = listOf(GoToPrevious()),
+    screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
+) : BaseRoutingSource<T, TransitionState>(plugins, screenResolver) {
 
     enum class TransitionState {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
 
-    private val state = MutableStateFlow(
+    override val state = MutableStateFlow(
         value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveItem)
     )
 
-    private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-
-    private val onScreenMapper =
-        OnScreenMapper<T, TransitionState>(scope, SpotlightOnScreenResolver)
-
-    override val onScreen: StateFlow<SpotlightElements<T>> =
-        onScreenMapper.resolveOnScreenElements(state)
-
-    override val offScreen: StateFlow<SpotlightElements<T>> =
-        onScreenMapper.resolveOffScreenElements(state)
-
     override val elements: StateFlow<SpotlightElements<T>> =
         state
-
-    override val canHandleBackPress: StateFlow<Boolean> =
-        state.map { elements ->
-            elements.any { it.targetState == INACTIVE_BEFORE }
-        }.stateIn(scope, SharingStarted.Eagerly, false)
-
-    override fun onBackPressed() {
-        previous()
-    }
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { elements ->
@@ -73,16 +46,6 @@ class Spotlight<T : Parcelable>(
                 }
             }
         }
-    }
-
-    override fun accept(operation: SpotlightOperation<T>) {
-        if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
-        }
-    }
-
-    override fun destroy() {
-        scope.cancel()
     }
 
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {

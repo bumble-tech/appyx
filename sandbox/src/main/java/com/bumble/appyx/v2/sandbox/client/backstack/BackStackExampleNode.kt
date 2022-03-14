@@ -28,6 +28,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.v2.core.composable.Children
+import com.bumble.appyx.v2.core.modality.BuildContext
+import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.v2.core.node.ParentNode
+import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
+import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElements
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.newRoot
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.pop
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.remove
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.replace
+import com.bumble.appyx.v2.core.routing.source.backstack.operation.singleTop
 import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode.Operation.NEW_ROOT
 import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode.Operation.POP
 import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode.Operation.PUSH
@@ -41,28 +53,16 @@ import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode.Routing
 import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode.Routing.ChildC
 import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode.Routing.ChildD
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
-import com.bumble.appyx.v2.core.composable.Children
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
-import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElements
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.newRoot
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.pop
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.remove
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.replace
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.singleTop
 import com.google.accompanist.flowlayout.FlowRow
-import kotlin.random.Random
 import kotlinx.parcelize.Parcelize
+import kotlin.random.Random
 
 class BackStackExampleNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = ChildA(value = DEFAULT_VALUE),
         savedStateMap = buildContext.savedStateMap,
-        allowBackPressHandling = false
+        plugins = emptyList()
     )
 ) : ParentNode<Routing>(
     routingSource = backStack,

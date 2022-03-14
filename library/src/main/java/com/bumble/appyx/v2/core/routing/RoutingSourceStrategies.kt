@@ -1,26 +1,38 @@
 package com.bumble.appyx.v2.core.routing
 
-import androidx.annotation.CheckResult
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.LinkedList
+import java.util.*
 
-class QueueTransitionsRoutingSource<Routing, State>(
-    coroutineScope: CoroutineScope,
-    private val routingSource: RoutingSource<Routing, State>
-) : RoutingSource<Routing, State> by routingSource {
+class QueueTransitionsRoutingSource<Routing, State> : OperationStrategy<Routing, State> {
 
     private val operationQueue = LinkedList<Operation<Routing, State>>()
+    private lateinit var scope: CoroutineScope
+    private lateinit var routingSource: BaseRoutingSource<Routing, State>
 
-    init {
-        coroutineScope.launch {
+    override fun init(routingSource: BaseRoutingSource<Routing, State>, scope: CoroutineScope) {
+        this.scope = scope
+        this.routingSource = routingSource
+        collectElements()
+    }
+
+    override fun accept(operation: Operation<Routing, State>) {
+        if (checkUnfinishedOperation()) {
+            operationQueue.addFirst(operation)
+        } else {
+            routingSource.execute(operation)
+        }
+    }
+
+    private fun collectElements() {
+        scope.launch {
             routingSource
                 .elements
                 .collect { transactionList ->
                     if (!transactionList.any { it.fromState != it.targetState } && operationQueue.isNotEmpty()) {
                         val command = operationQueue.removeLast()
-                        routingSource.accept(command)
+                        routingSource.execute(command)
                     }
                 }
         }
@@ -29,59 +41,48 @@ class QueueTransitionsRoutingSource<Routing, State>(
     private fun checkUnfinishedOperation(): Boolean {
         return routingSource.elements.value.any { it.targetState != it.fromState }
     }
-
-    override fun accept(operation: Operation<Routing, State>) {
-        if (checkUnfinishedOperation()) {
-            operationQueue.addFirst(operation)
-        } else {
-            routingSource.accept(operation)
-        }
-    }
 }
 
-class FinishTransitionsOnNewOneRoutingSource<Routing, State>(
-    private val routingSource: RoutingSource<Routing, State>
-) : RoutingSource<Routing, State> by routingSource {
+class FinishTransitionsOnNewOneRoutingSource<Routing, State>
+    : OperationStrategy<Routing, State> {
+
+    private lateinit var routingSource: BaseRoutingSource<Routing, State>
+
+    override fun init(routingSource: BaseRoutingSource<Routing, State>, scope: CoroutineScope) {
+        this.routingSource = routingSource
+    }
 
     override fun accept(operation: Operation<Routing, State>) {
         finishUnfinishedTransitions()
-        routingSource.accept(operation)
+        routingSource.execute(operation)
     }
 
     private fun finishUnfinishedTransitions() {
         routingSource.elements.value.forEach { routingElement ->
             if (routingElement.fromState != routingElement.targetState) {
-                onTransitionFinished(routingElement.key)
+                routingSource.onTransitionFinished(routingElement.key)
             }
         }
     }
 }
 
-class RejectIfHasUnfinishedTransitionsRoutingSource<Routing, State>(
-    private val routingSource: RoutingSource<Routing, State>
-) : RoutingSource<Routing, State> by routingSource {
+class RejectIfHasUnfinishedTransitionsRoutingSource<Routing, State>
+    : OperationStrategy<Routing, State> {
+
+    private lateinit var routingSource: BaseRoutingSource<Routing, State>
+
+    override fun init(routingSource: BaseRoutingSource<Routing, State>, scope: CoroutineScope) {
+        this.routingSource = routingSource
+    }
 
     override fun accept(operation: Operation<Routing, State>) {
         if (hasNotUnfinishedTransactions()) {
-            routingSource.accept(operation)
+            routingSource.execute(operation)
         }
     }
 
     private fun hasNotUnfinishedTransactions(): Boolean =
-        elements.value
+        routingSource.elements.value
             .any { it.fromState != it.targetState }
             .not()
 }
-
-@CheckResult
-fun <Routing, State> RoutingSource<Routing, State>.wrapWithQueueBehaviour(coroutineScope: CoroutineScope)
-        : RoutingSource<Routing, State> = QueueTransitionsRoutingSource(coroutineScope, this)
-
-@CheckResult
-fun <Routing, State> RoutingSource<Routing, State>.wrapWithFinishBehaviour(): RoutingSource<Routing, State> =
-    FinishTransitionsOnNewOneRoutingSource(this)
-
-@CheckResult
-fun <Routing, State> RoutingSource<Routing, State>.wrapWithRejectBehaviour(): RoutingSource<Routing, State> =
-    RejectIfHasUnfinishedTransitionsRoutingSource(this)
-

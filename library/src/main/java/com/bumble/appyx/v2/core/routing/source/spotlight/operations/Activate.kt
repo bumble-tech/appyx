@@ -44,6 +44,6 @@ class Activate<T : Any>(
 }
 
 
-fun <T : Parcelable> Spotlight<T>.activate(index: Int) {
+fun <T : Any> Spotlight<T>.activate(index: Int) {
     accept(Activate(index))
 }
