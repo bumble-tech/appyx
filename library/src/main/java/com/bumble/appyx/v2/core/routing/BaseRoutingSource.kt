@@ -1,6 +1,5 @@
 package com.bumble.appyx.v2.core.routing
 
-import android.util.Log
 import com.bumble.appyx.v2.core.plugin.Destroyable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,13 +14,17 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 
 abstract class BaseRoutingSource<Routing, State>(
-    val plugins: List<RoutingPlugin<Routing, State>>,
+    private val backPressHandler: BackPressHandler<Routing, State>? = null,
+    private val operationStrategy: OperationStrategy<Routing, State>? = null,
     screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
 ) : RoutingSource<Routing, State>, Destroyable {
 
     init {
-        plugins.forEach { it.init(this, scope) }
+        //Warning "Leaking 'this' in constructor of non-final class BaseRoutingSource"
+        //Not a problem when handler/strategy are lazily init
+        backPressHandler?.init(this, scope)
+        operationStrategy?.init(this, scope)
     }
 
     abstract val state: MutableStateFlow<RoutingElements<Routing, State>>
@@ -36,27 +39,6 @@ abstract class BaseRoutingSource<Routing, State>(
         onScreenMapper.resolveOffScreenElements(state)
     }
 
-    private val backPressHandler: BackPressHandler<Routing, State>? =
-        plugins<Routing, State, BackPressHandler<Routing, State>>().let {
-            if (it.size > 1) {
-                Log.w(
-                    this::class.simpleName,
-                    "Multiple backPressHandler plugins were passed. Only first one will be used "
-                )
-            }
-            it.firstOrNull()
-        }
-
-    private val operationStrategy: OperationStrategy<Routing, State>? =
-        plugins<Routing, State, OperationStrategy<Routing, State>>().let {
-            if (it.size > 1) {
-                Log.w(
-                    this::class.simpleName,
-                    "Multiple operationStrategy plugins were passed. Only first one will be used "
-                )
-            }
-            it.firstOrNull()
-        }
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy {
         backPressHandler?.canHandleBackPress

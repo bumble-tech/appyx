@@ -2,12 +2,13 @@ package com.bumble.appyx.v2.core.routing.source.backstack
 
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.plugin.Destroyable
+import com.bumble.appyx.v2.core.routing.BackPressHandler
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.routing.OperationStrategy
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.RoutingPlugin
-import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.*
+import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState
 import com.bumble.appyx.v2.core.routing.source.backstack.backpressHandler.PopBackPressHandler
 import com.bumble.appyx.v2.core.state.SavedStateMap
 import kotlinx.coroutines.cancel
@@ -22,9 +23,14 @@ class BackStack<T : Any>(
     initialElement: T,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    plugins: List<RoutingPlugin<T, TransitionState>> = listOf(PopBackPressHandler()),
+    backPressHandler: BackPressHandler<T, TransitionState> = PopBackPressHandler(),
+    operationStrategy: OperationStrategy<T, TransitionState>? = null,
     screenResolver: OnScreenStateResolver<TransitionState> = BackStackOnScreenResolver
-) : BaseRoutingSource<T, TransitionState>(plugins, screenResolver), Destroyable {
+) : BaseRoutingSource<T, TransitionState>(
+    backPressHandler = backPressHandler,
+    screenResolver = screenResolver,
+    operationStrategy = operationStrategy,
+), Destroyable {
 
     enum class TransitionState {
         CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
@@ -66,12 +72,6 @@ class BackStack<T : Any>(
                     it
                 }
             }
-        }
-    }
-
-    override fun accept(operation: Operation<T, TransitionState>) {
-        if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
         }
     }
 

@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 
 class GoToDefault<Routing : Any>(
-    private val initialActiveIndex: Int = 0
+    private val defaultElementIndex: Int = 0
 ) : BackPressHandler<Routing, Spotlight.TransitionState> {
 
     private lateinit var scope: CoroutineScope
@@ -28,11 +28,11 @@ class GoToDefault<Routing : Any>(
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy {
         routingSource.state.map { elements ->
-            elements.getOrNull(initialActiveIndex)?.targetState != ACTIVE
+            elements.getOrNull(defaultElementIndex)?.targetState != ACTIVE
         }.stateIn(scope, SharingStarted.Eagerly, false)
     }
 
     override fun onBackPressed() {
-        routingSource.activate(initialActiveIndex)
+        routingSource.activate(defaultElementIndex)
     }
 }

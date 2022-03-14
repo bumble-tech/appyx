@@ -1,15 +1,17 @@
 package com.bumble.appyx.v2.core.routing.source.spotlight
 
 import com.bumble.appyx.v2.core.node.ParentNode
+import com.bumble.appyx.v2.core.routing.BackPressHandler
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.routing.OperationStrategy
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.RoutingPlugin
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_AFTER
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
+import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToDefault
 import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToPrevious
 import com.bumble.appyx.v2.core.state.SavedStateMap
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,9 +23,14 @@ class Spotlight<T : Any>(
     initialActiveItem: Int = 0,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    plugins: List<RoutingPlugin<T, TransitionState>> = listOf(GoToPrevious()),
+    backPressHandler: BackPressHandler<T, TransitionState> = GoToDefault(initialActiveItem),
+    operationStrategy: OperationStrategy<T, TransitionState>? = null,
     screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
-) : BaseRoutingSource<T, TransitionState>(plugins, screenResolver) {
+) : BaseRoutingSource<T, TransitionState>(
+    backPressHandler = backPressHandler,
+    operationStrategy = operationStrategy,
+    screenResolver = screenResolver,
+) {
 
     enum class TransitionState {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
