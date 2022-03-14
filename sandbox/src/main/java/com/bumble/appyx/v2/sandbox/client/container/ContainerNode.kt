@@ -60,6 +60,7 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
+    private val label: String? = null,
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Picker,
@@ -119,7 +120,10 @@ class ContainerNode(
             is SpotlightExample -> SpotlightExampleNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
             is RequestPermissionsExamples -> IntegrationPointExampleNode(buildContext)
-            is MviCoreExample -> MviCoreExampleBuilder().build(buildContext, "MVICore initial state")
+            is MviCoreExample -> MviCoreExampleBuilder().build(
+                buildContext,
+                "MVICore initial state"
+            )
         }
 
     @Composable
@@ -153,6 +157,9 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                label?.let {
+                    Text(it, textAlign = TextAlign.Center)
+                }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
