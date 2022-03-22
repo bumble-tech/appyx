@@ -1,17 +1,16 @@
 package com.bumble.appyx.v2.core.routing.source.backstack
 
 import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.core.plugin.Destroyable
-import com.bumble.appyx.v2.core.routing.BackPressHandler
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
-import com.bumble.appyx.v2.core.routing.OperationStrategy
 import com.bumble.appyx.v2.core.routing.RoutingKey
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.v2.core.routing.operationstrategies.JustExecute
+import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState
-import com.bumble.appyx.v2.core.routing.source.backstack.backpressHandler.PopBackPressHandler
+import com.bumble.appyx.v2.core.routing.source.backstack.backpresshandler.PopBackPressHandler
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -19,18 +18,18 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
-class BackStack<T : Any>(
-    initialElement: T,
+class BackStack<Routing : Any>(
+    initialElement: Routing,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    backPressHandler: BackPressHandler<T, TransitionState> = PopBackPressHandler(),
-    operationStrategy: OperationStrategy<T, TransitionState>? = null,
+    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState, BackStack<Routing>> = PopBackPressHandler(),
+    operationStrategy: OperationStrategy<Routing, TransitionState> = JustExecute(),
     screenResolver: OnScreenStateResolver<TransitionState> = BackStackOnScreenResolver
-) : BaseRoutingSource<T, TransitionState>(
+) : BaseRoutingSource<Routing, TransitionState, BackStack<Routing>>(
     backPressHandler = backPressHandler,
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,
-), Destroyable {
+) {
 
     enum class TransitionState {
         CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
@@ -47,16 +46,13 @@ class BackStack<T : Any>(
         )
     )
 
-    override val elements: StateFlow<BackStackElements<T>> =
-        state
-
     // TODO consider pulling up
-    val routings: StateFlow<List<T>> =
+    val routings: StateFlow<List<Routing>> =
         state
             .map { state -> state.map { routingElement -> routingElement.key.routing } }
             .stateIn(scope, SharingStarted.Eagerly, listOf(initialElement))
 
-    override fun onTransitionFinished(key: RoutingKey<T>) {
+    override fun onTransitionFinished(key: RoutingKey<Routing>) {
         state.update { list ->
             list.mapNotNull {
                 if (it.key == key) {
@@ -88,10 +84,6 @@ class BackStack<T : Any>(
     }
 
     private fun SavedStateMap.restoreHistory() =
-        this[key] as? BackStackElements<T>
+        this[key] as? BackStackElements<Routing>
 
-
-    override fun destroy() {
-        scope.cancel()
-    }
 }

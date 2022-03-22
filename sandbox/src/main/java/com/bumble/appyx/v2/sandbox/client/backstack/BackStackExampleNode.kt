@@ -32,6 +32,7 @@ import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElements
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.newRoot
@@ -62,7 +63,7 @@ class BackStackExampleNode(
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = ChildA(value = DEFAULT_VALUE),
         savedStateMap = buildContext.savedStateMap,
-        plugins = emptyList()
+        backPressHandler = DontHandleBackPress(),
     )
 ) : ParentNode<Routing>(
     routingSource = backStack,

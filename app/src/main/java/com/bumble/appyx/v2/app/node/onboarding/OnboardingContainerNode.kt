@@ -67,7 +67,7 @@ class OnboardingContainerNode(
             Routing.StatefulNode2,
             Routing.RoutingSource,
         ),
-        plugins = listOf(GoToPrevious<Routing>()),
+        backPressHandler = GoToPrevious(),
         savedStateMap = buildContext.savedStateMap,
     ),
 ) : ParentNode<Routing>(

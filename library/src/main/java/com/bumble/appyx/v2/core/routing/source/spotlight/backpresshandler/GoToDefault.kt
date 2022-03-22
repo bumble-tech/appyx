@@ -1,38 +1,25 @@
 package com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler
 
-import com.bumble.appyx.v2.core.routing.BackPressHandler
-import com.bumble.appyx.v2.core.routing.BaseRoutingSource
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
+import com.bumble.appyx.v2.core.routing.source.spotlight.SpotlightElements
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.activate
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 
 class GoToDefault<Routing : Any>(
     private val defaultElementIndex: Int = 0
-) : BackPressHandler<Routing, Spotlight.TransitionState> {
+) : BaseBackPressHandlerStrategy<Routing, Spotlight.TransitionState, Spotlight<Routing>>() {
 
-    private lateinit var scope: CoroutineScope
-    private lateinit var routingSource: Spotlight<Routing>
-
-    override fun init(
-        routingSource: BaseRoutingSource<Routing, Spotlight.TransitionState>,
-        scope: CoroutineScope
-    ) {
-        this.scope = scope
-        this.routingSource = routingSource as Spotlight<Routing>
-    }
-
-    override val canHandleBackPress: StateFlow<Boolean> by lazy {
-        routingSource.state.map { elements ->
-            elements.getOrNull(defaultElementIndex)?.targetState != ACTIVE
-        }.stateIn(scope, SharingStarted.Eagerly, false)
+    override val canHandleBackPressFlow: Flow<Boolean>  by lazy{
+        routingSource.elements.map(::defaultElementIsNotActive)
     }
 
     override fun onBackPressed() {
         routingSource.activate(defaultElementIndex)
     }
+
+    private fun defaultElementIsNotActive(elements: SpotlightElements<Routing>) =
+        elements.getOrNull(defaultElementIndex)?.targetState != ACTIVE
 }

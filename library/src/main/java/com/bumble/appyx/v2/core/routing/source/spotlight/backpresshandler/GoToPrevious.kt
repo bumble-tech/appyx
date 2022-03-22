@@ -1,33 +1,21 @@
 package com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler
 
-import com.bumble.appyx.v2.core.routing.BackPressHandler
-import com.bumble.appyx.v2.core.routing.BaseRoutingSource
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
+import com.bumble.appyx.v2.core.routing.source.spotlight.SpotlightElements
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 
-class GoToPrevious<Routing : Any> : BackPressHandler<Routing, Spotlight.TransitionState> {
+class GoToPrevious<Routing : Any> :
+    BaseBackPressHandlerStrategy<Routing, Spotlight.TransitionState, Spotlight<Routing>>() {
 
-    private lateinit var scope: CoroutineScope
-    private lateinit var routingSource: Spotlight<Routing>
-
-    override fun init(
-        routingSource: BaseRoutingSource<Routing, Spotlight.TransitionState>,
-        scope: CoroutineScope
-    ) {
-        this.scope = scope
-        this.routingSource = routingSource as Spotlight<Routing>
+    override val canHandleBackPressFlow: Flow<Boolean> by lazy{
+        routingSource.elements.map(::areTherePreviousElements)
     }
 
-    override val canHandleBackPress: StateFlow<Boolean> by lazy {
-        routingSource.state.map { elements ->
-            elements.any { it.targetState == Spotlight.TransitionState.INACTIVE_BEFORE }
-        }.stateIn(scope, SharingStarted.Eagerly, false)
-    }
+    private fun areTherePreviousElements(elements: SpotlightElements<Routing>) =
+        elements.any { it.targetState == Spotlight.TransitionState.INACTIVE_BEFORE }
 
     override fun onBackPressed() {
         routingSource.previous()

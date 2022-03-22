@@ -1,33 +1,26 @@
 package com.bumble.appyx.v2.core.routing.source.tiles
 
-import com.bumble.appyx.v2.core.plugin.Destroyable
-import com.bumble.appyx.v2.core.routing.OnScreenMapper
+import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.RoutingSource
-import com.bumble.appyx.v2.core.routing.source.tiles.operation.deselectAll
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.v2.core.routing.source.tiles.backPressHandler.DeselectAllTiles
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlin.coroutines.EmptyCoroutineContext
 
 class Tiles<T : Any>(
     initialElements: List<T>,
-) : RoutingSource<T, Tiles.TransitionState>, Destroyable {
+    backPressHandler: BackPressHandlerStrategy<T, TransitionState, Tiles<T>> = DeselectAllTiles()
+) : BaseRoutingSource<T, Tiles.TransitionState, Tiles<T>>(
+    backPressHandler = backPressHandler,
+    screenResolver = TilesOnScreenResolver
+) {
 
     enum class TransitionState {
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 
-    private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-
-    private val state = MutableStateFlow(
+    override val state = MutableStateFlow(
         initialElements.map {
             TilesElement(
                 key = RoutingKey(it),
@@ -37,21 +30,6 @@ class Tiles<T : Any>(
             )
         }
     )
-
-    private val onScreenMapper = OnScreenMapper<T, TransitionState>(scope, TilesOnScreenResolver)
-
-    override val elements: StateFlow<TilesElements<T>>
-        get() = state
-
-    override val onScreen: StateFlow<TilesElements<T>> =
-        onScreenMapper.resolveOnScreenElements(state)
-
-    override val offScreen: StateFlow<TilesElements<T>> =
-        onScreenMapper.resolveOffScreenElements(state)
-
-    override val canHandleBackPress: StateFlow<Boolean> =
-        state.map { list -> list.any { it.targetState == TransitionState.SELECTED } }
-            .stateIn(scope, SharingStarted.Eagerly, false)
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { list ->
@@ -68,19 +46,4 @@ class Tiles<T : Any>(
             }
         }
     }
-
-    override fun accept(operation: Operation<T, TransitionState>) {
-        if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
-        }
-    }
-
-    override fun onBackPressed() {
-        deselectAll()
-    }
-
-    override fun destroy() {
-        scope.cancel()
-    }
-
 }

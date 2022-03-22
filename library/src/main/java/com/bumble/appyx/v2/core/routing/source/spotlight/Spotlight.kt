@@ -1,32 +1,33 @@
 package com.bumble.appyx.v2.core.routing.source.spotlight
 
 import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.core.routing.BackPressHandler
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
-import com.bumble.appyx.v2.core.routing.OperationStrategy
 import com.bumble.appyx.v2.core.routing.RoutingKey
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.v2.core.routing.operationstrategies.JustExecute
+import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_AFTER
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
 import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToDefault
-import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToPrevious
 import com.bumble.appyx.v2.core.state.SavedStateMap
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-class Spotlight<T : Any>(
-    items: List<T>,
+class Spotlight<Routing : Any>(
+    items: List<Routing>,
     initialActiveItem: Int = 0,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    backPressHandler: BackPressHandler<T, TransitionState> = GoToDefault(initialActiveItem),
-    operationStrategy: OperationStrategy<T, TransitionState>? = null,
+    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState, Spotlight<Routing>> = GoToDefault(
+        initialActiveItem
+    ),
+    operationStrategy: OperationStrategy<Routing, TransitionState> = JustExecute(),
     screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
-) : BaseRoutingSource<T, TransitionState>(
+) : BaseRoutingSource<Routing, TransitionState, Spotlight<Routing>>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
@@ -40,10 +41,7 @@ class Spotlight<T : Any>(
         value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveItem)
     )
 
-    override val elements: StateFlow<SpotlightElements<T>> =
-        state
-
-    override fun onTransitionFinished(key: RoutingKey<T>) {
+    override fun onTransitionFinished(key: RoutingKey<Routing>) {
         state.update { elements ->
             elements.map {
                 if (key == it.key) {
@@ -66,9 +64,9 @@ class Spotlight<T : Any>(
     }
 
     private fun SavedStateMap.restoreHistory() =
-        this[key] as? SpotlightElements<T>
+        this[key] as? SpotlightElements<Routing>
 
-    private fun List<T>.toSpotlightElements(activeIndex: Int): SpotlightElements<T> =
+    private fun List<Routing>.toSpotlightElements(activeIndex: Int): SpotlightElements<Routing> =
         mapIndexed { index, item ->
             val state = when {
                 index < activeIndex -> INACTIVE_BEFORE
