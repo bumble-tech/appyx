@@ -11,6 +11,6 @@ class DontHandleBackPress<Routing, TransitionState, Source : RoutingSource<Routi
         flowOf(false)
 
     override fun onBackPressed() {
-        //Noop
+        // Noop
     }
 }

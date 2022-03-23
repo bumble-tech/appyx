@@ -6,7 +6,7 @@ import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
-import com.bumble.appyx.v2.core.routing.operationstrategies.JustExecute
+import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteWithoutStrategy
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
@@ -25,7 +25,7 @@ class Spotlight<Routing : Any>(
     backPressHandler: BackPressHandlerStrategy<Routing, TransitionState, Spotlight<Routing>> = GoToDefault(
         initialActiveItem
     ),
-    operationStrategy: OperationStrategy<Routing, TransitionState> = JustExecute(),
+    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteWithoutStrategy(),
     screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
 ) : BaseRoutingSource<Routing, TransitionState, Spotlight<Routing>>(
     backPressHandler = backPressHandler,

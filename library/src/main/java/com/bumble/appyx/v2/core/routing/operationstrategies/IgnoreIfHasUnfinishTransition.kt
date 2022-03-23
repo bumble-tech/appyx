@@ -5,13 +5,12 @@ import com.bumble.appyx.v2.core.routing.Operation
 class IgnoreIfThereAreUnfinishedTransition<Routing, State> : BaseOperationStrategy<Routing, State>() {
 
     override fun accept(operation: Operation<Routing, State>) {
-        if (hasNotUnfinishedTransactions()) {
+        if (hasNoUnfinishedTransactions()) {
             executeOperation(operation)
         }
     }
 
-    private fun hasNotUnfinishedTransactions(): Boolean =
+    private fun hasNoUnfinishedTransactions(): Boolean =
         routingSource.elements.value
-            .any { it.fromState != it.targetState }
-            .not()
+            .none { it.fromState != it.targetState }
 }
