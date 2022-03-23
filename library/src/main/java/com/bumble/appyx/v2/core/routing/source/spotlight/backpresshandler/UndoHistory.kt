@@ -4,13 +4,13 @@ import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPress
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.spotlight.SpotlightElements
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.activate
+import com.bumble.appyx.v2.core.routing.source.spotlight.operations.Activate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class UndoHistory<Routing : Any>(
     private val historyLimit: Int = 10
-) : BaseBackPressHandlerStrategy<Routing, Spotlight.TransitionState, Spotlight<Routing>>() {
+) : BaseBackPressHandlerStrategy<Routing, Spotlight.TransitionState>() {
 
     private val history = ArrayDeque<Int>()
 
@@ -23,7 +23,7 @@ class UndoHistory<Routing : Any>(
 
     override fun onBackPressed() {
         history.removeLast()
-        routingSource.activate(history.last())
+        routingSource.accept(Activate(history.last()))
     }
 
     private fun historyHasElements() =

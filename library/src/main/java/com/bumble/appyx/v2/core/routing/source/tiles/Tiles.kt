@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.update
 
 class Tiles<T : Any>(
     initialElements: List<T>,
-    backPressHandler: BackPressHandlerStrategy<T, TransitionState, Tiles<T>> = DeselectAllTiles()
-) : BaseRoutingSource<T, Tiles.TransitionState, Tiles<T>>(
+    backPressHandler: BackPressHandlerStrategy<T, TransitionState> = DeselectAllTiles()
+) : BaseRoutingSource<T, Tiles.TransitionState>(
     backPressHandler = backPressHandler,
     screenResolver = TilesOnScreenResolver
 ) {

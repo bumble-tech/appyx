@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 
 class Promoter<T : Any>(
     initialElements: List<T> = listOf(),
-) : BaseRoutingSource<T, Promoter.TransitionState, Promoter<T>>(
+) : BaseRoutingSource<T, Promoter.TransitionState>(
     screenResolver = PromoterOnScreenResolver
 ) {
     enum class TransitionState {

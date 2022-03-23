@@ -1,5 +1,6 @@
 package com.bumble.appyx.v2.core.routing.backpresshandlerstrategies
 
+import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.RoutingSource
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -7,14 +8,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-abstract class BaseBackPressHandlerStrategy<Routing, TransitionState, Source : RoutingSource<Routing, TransitionState>>
-    : BackPressHandlerStrategy<Routing, TransitionState, Source> {
+abstract class BaseBackPressHandlerStrategy<Routing, TransitionState>
+    : BackPressHandlerStrategy<Routing, TransitionState> {
 
     protected lateinit var scope: CoroutineScope
-    protected lateinit var routingSource: Source
+    protected lateinit var routingSource: BaseRoutingSource<Routing, TransitionState>
 
     override fun init(
-        routingSource: Source,
+        routingSource: BaseRoutingSource<Routing, TransitionState>,
         scope: CoroutineScope
     ) {
         this.scope = scope

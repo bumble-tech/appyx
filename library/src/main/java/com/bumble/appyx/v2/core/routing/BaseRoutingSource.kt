@@ -4,7 +4,7 @@ import com.bumble.appyx.v2.core.plugin.BackPressHandler
 import com.bumble.appyx.v2.core.plugin.Destroyable
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.DontHandleBackPress
-import com.bumble.appyx.v2.core.routing.operationstrategies.JustExecute
+import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteWithoutStrategy
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -21,16 +21,16 @@ import kotlin.coroutines.EmptyCoroutineContext
  *
  * If more granular configuration is required, you should inherit RoutingSource interface instead.
  */
-abstract class BaseRoutingSource<Routing, State, R : RoutingSource<Routing, State>>(
-    private val backPressHandler: BackPressHandlerStrategy<Routing, State, R> = DontHandleBackPress(),
-    private val operationStrategy: OperationStrategy<Routing, State> = JustExecute(),
+abstract class BaseRoutingSource<Routing, State>(
+    private val backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
+    private val operationStrategy: OperationStrategy<Routing, State> = ExecuteWithoutStrategy(),
     screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
 ) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
 
     init {
-        backPressHandler.init(this as R, scope)
-        operationStrategy.init(this as R, scope, ::execute)
+        backPressHandler.init(this, scope)
+        operationStrategy.init(this, scope, ::execute)
     }
 
     protected abstract val state: MutableStateFlow<RoutingElements<Routing, State>>

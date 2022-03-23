@@ -6,7 +6,7 @@ import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
-import com.bumble.appyx.v2.core.routing.operationstrategies.JustExecute
+import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteWithoutStrategy
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState
 import com.bumble.appyx.v2.core.routing.source.backstack.backpresshandler.PopBackPressHandler
@@ -22,10 +22,10 @@ class BackStack<Routing : Any>(
     initialElement: Routing,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState, BackStack<Routing>> = PopBackPressHandler(),
-    operationStrategy: OperationStrategy<Routing, TransitionState> = JustExecute(),
+    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = PopBackPressHandler(),
+    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteWithoutStrategy(),
     screenResolver: OnScreenStateResolver<TransitionState> = BackStackOnScreenResolver
-) : BaseRoutingSource<Routing, TransitionState, BackStack<Routing>>(
+) : BaseRoutingSource<Routing, TransitionState>(
     backPressHandler = backPressHandler,
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,

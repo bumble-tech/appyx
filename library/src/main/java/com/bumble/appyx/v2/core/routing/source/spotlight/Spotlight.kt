@@ -22,12 +22,12 @@ class Spotlight<Routing : Any>(
     initialActiveItem: Int = 0,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
-    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState, Spotlight<Routing>> = GoToDefault(
+    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = GoToDefault(
         initialActiveItem
     ),
     operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteWithoutStrategy(),
     screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
-) : BaseRoutingSource<Routing, TransitionState, Spotlight<Routing>>(
+) : BaseRoutingSource<Routing, TransitionState>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
