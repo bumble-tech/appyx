@@ -52,7 +52,8 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
             descriptor = descriptor,
             onTransitionFinished = {
                 routingSource.onTransitionFinished(childEntry.key)
-            })
+            }
+        )
 
         transitionScope.decorator(
             child = ChildRendererImpl(
@@ -93,7 +94,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
 ) {
     val density = LocalDensity.current.density
     var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by remember {
+    val transitionParams by remember(transitionBounds) {
         derivedStateOf {
             TransitionParams(
                 bounds = TransitionBounds(
