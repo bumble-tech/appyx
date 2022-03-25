@@ -1,10 +1,12 @@
 package com.bumble.appyx.v2.core.routing
 
 import android.os.Parcelable
+import androidx.compose.runtime.Immutable
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
+@Immutable
 class RoutingElement<Routing, State> private constructor(
     val key: @RawValue RoutingKey<Routing>,
     val fromState: @RawValue State,
