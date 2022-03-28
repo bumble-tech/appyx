@@ -38,13 +38,15 @@ inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
 ) {
     val density = LocalDensity.current.density
     var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by derivedStateOf {
-        TransitionParams(
-            bounds = TransitionBounds(
-                width = Dp(transitionBounds.width / density),
-                height = Dp(transitionBounds.height / density)
+    val transitionParams by remember(transitionBounds) {
+        derivedStateOf {
+            TransitionParams(
+                bounds = TransitionBounds(
+                    width = Dp(transitionBounds.width / density),
+                    height = Dp(transitionBounds.height / density)
+                )
             )
-        )
+        }
     }
     Box(modifier = modifier
         .onSizeChanged {
