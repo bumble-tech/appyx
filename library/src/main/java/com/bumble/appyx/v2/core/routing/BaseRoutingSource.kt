@@ -4,7 +4,7 @@ import com.bumble.appyx.v2.core.plugin.BackPressHandler
 import com.bumble.appyx.v2.core.plugin.Destroyable
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.DontHandleBackPress
-import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteWithoutStrategy
+import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,7 +23,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  */
 abstract class BaseRoutingSource<Routing, State>(
     private val backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
-    private val operationStrategy: OperationStrategy<Routing, State> = ExecuteWithoutStrategy(),
+    private val operationStrategy: OperationStrategy<Routing, State> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
 ) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
