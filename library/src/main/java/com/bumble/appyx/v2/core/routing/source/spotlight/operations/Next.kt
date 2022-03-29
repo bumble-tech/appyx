@@ -1,6 +1,5 @@
 package com.bumble.appyx.v2.core.routing.source.spotlight.operations
 
-import android.os.Parcelable
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState
@@ -41,7 +40,7 @@ class Next<T : Any> : SpotlightOperation<T> {
     }
 }
 
-fun <T : Parcelable> Spotlight<T>.next() {
+fun <T : Any> Spotlight<T>.next() {
     accept(Next())
 }
 

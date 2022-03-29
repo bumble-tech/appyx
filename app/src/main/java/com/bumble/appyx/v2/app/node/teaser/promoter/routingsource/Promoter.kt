@@ -1,22 +1,16 @@
 package com.bumble.appyx.v2.app.node.teaser.promoter.routingsource
 
-import com.bumble.appyx.v2.core.plugin.Destroyable
-import com.bumble.appyx.v2.core.routing.OnScreenMapper
+import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.RoutingSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlin.coroutines.EmptyCoroutineContext
 
 class Promoter<T : Any>(
     initialElements: List<T> = listOf(),
-) : RoutingSource<T, Promoter.TransitionState>, Destroyable {
-
+) : BaseRoutingSource<T, Promoter.TransitionState>(
+    screenResolver = PromoterOnScreenResolver
+) {
     enum class TransitionState {
         CREATED, STAGE1, STAGE2, STAGE3, STAGE4, SELECTED, DESTROYED;
 
@@ -32,9 +26,7 @@ class Promoter<T : Any>(
             }
     }
 
-    private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-
-    private val state = MutableStateFlow(
+    override val state = MutableStateFlow(
         initialElements.map {
             PromoterElement(
                 key = RoutingKey(it),
@@ -44,20 +36,6 @@ class Promoter<T : Any>(
             )
         }
     )
-
-    private val onScreenMapper = OnScreenMapper<T, TransitionState>(scope, PromoterOnScreenResolver)
-
-    override val elements: StateFlow<PromoterElements<T>>
-        get() = state
-
-    override val onScreen: StateFlow<PromoterElements<T>> =
-        onScreenMapper.resolveOnScreenElements(state)
-
-    override val offScreen: StateFlow<PromoterElements<T>> =
-        onScreenMapper.resolveOffScreenElements(state)
-
-    override val canHandleBackPress: StateFlow<Boolean> =
-        MutableStateFlow(false)
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
         state.update { list ->
@@ -74,19 +52,4 @@ class Promoter<T : Any>(
             }
         }
     }
-
-    override fun accept(operation: Operation<T, TransitionState>) {
-        if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
-        }
-    }
-
-    override fun onBackPressed() {
-        // no-op
-    }
-
-    override fun destroy() {
-        scope.cancel()
-    }
-
 }

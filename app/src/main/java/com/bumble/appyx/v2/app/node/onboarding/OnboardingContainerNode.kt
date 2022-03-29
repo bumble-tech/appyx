@@ -46,6 +46,7 @@ import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
+import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToPrevious
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasNext
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasPrevious
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
@@ -66,6 +67,7 @@ class OnboardingContainerNode(
             Routing.StatefulNode2,
             Routing.RoutingSource,
         ),
+        backPressHandler = GoToPrevious(),
         savedStateMap = buildContext.savedStateMap,
     ),
 ) : ParentNode<Routing>(
