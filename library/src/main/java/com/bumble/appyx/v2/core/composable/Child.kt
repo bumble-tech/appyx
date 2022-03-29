@@ -3,11 +3,9 @@ package com.bumble.appyx.v2.core.composable
 import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -72,14 +70,16 @@ private class ChildRendererImpl(
 
     @Composable
     override operator fun invoke(modifier: Modifier) {
-        CompositionLocalProvider(LocalTransitionModifier provides transitionModifier) {
+        Box(modifier = transitionModifier) {
             node.Compose(modifier = modifier)
         }
     }
 
     @Composable
     override operator fun invoke() {
-        invoke(modifier = Modifier)
+        Box(modifier = transitionModifier) {
+            node.Compose(modifier = Modifier)
+        }
     }
 }
 
@@ -147,9 +147,6 @@ fun <R, S> RoutingSource<R, S>?.visibleChildrenAsState(): State<RoutingElements<
     } else {
         remember { mutableStateOf(emptyList()) }
     }
-
-
-val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }
 
 @Immutable
 interface ChildTransitionScope<S> {
