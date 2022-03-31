@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -37,6 +40,8 @@ import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C3
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child1
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child2
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child3
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.State.Loaded
+import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.State.Loading
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -53,12 +58,21 @@ class SpotlightExampleNode(
     routingSource = spotlight
 ) {
 
+    private val screenState = mutableStateOf<State?>(null)
+
+    sealed class State {
+        object Loading : State()
+        object Loaded : State()
+    }
+
     init {
         // simulate loading tabs
         if (spotlight.elementsCount() == 0) {
+            screenState.value = Loading
             lifecycle.coroutineScope.launch {
                 delay(2000)
                 spotlight.updateItems(items = Item.getItemList())
+                screenState.value = Loaded
             }
         }
     }
@@ -95,74 +109,84 @@ class SpotlightExampleNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val hasPrevious = spotlight.hasPrevious().collectAsState(initial = false)
-        val hasNext = spotlight.hasNext().collectAsState(initial = false)
+        val state by screenState
 
         Box(
             modifier = modifier
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    TextButton(
-                        text = "Previous",
-                        enabled = hasPrevious.value
-                    ) {
-                        spotlight.previous()
-                    }
-                    TextButton(
-                        text = "Next",
-                        enabled = hasNext.value
-                    ) {
-                        spotlight.next()
-                    }
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(24.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    TextButton(
-                        text = "C1",
-                        enabled = true
-                    ) {
-                        spotlight.activate(C1)
-                    }
-                    TextButton(
-                        text = "C2",
-                        enabled = true
-                    ) {
-                        spotlight.activate(C2)
-                    }
-                    TextButton(
-                        text = "C3",
-                        enabled = true
-                    ) {
-                        spotlight.activate(C3)
-                    }
-                }
-
-                Children(
-                    modifier = Modifier
-                        .padding(top = 12.dp, bottom = 12.dp)
-                        .fillMaxWidth(),
-                    transitionHandler = rememberSpotlightSlider(clipToBounds = true),
-                    routingSource = spotlight
-                )
-
+            when (state) {
+                is Loading -> CircularProgressIndicator()
+                is Loaded -> LoadedState(modifier = modifier)
+                else -> Unit
             }
+        }
+    }
+
+    @Composable
+    private fun LoadedState(modifier: Modifier) {
+        val hasPrevious = spotlight.hasPrevious().collectAsState(initial = false)
+        val hasNext = spotlight.hasNext().collectAsState(initial = false)
+        Column(
+            verticalArrangement = Arrangement.spacedBy(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextButton(
+                    text = "Previous",
+                    enabled = hasPrevious.value
+                ) {
+                    spotlight.previous()
+                }
+                TextButton(
+                    text = "Next",
+                    enabled = hasNext.value
+                ) {
+                    spotlight.next()
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TextButton(
+                    text = "C1",
+                    enabled = true
+                ) {
+                    spotlight.activate(C1)
+                }
+                TextButton(
+                    text = "C2",
+                    enabled = true
+                ) {
+                    spotlight.activate(C2)
+                }
+                TextButton(
+                    text = "C3",
+                    enabled = true
+                ) {
+                    spotlight.activate(C3)
+                }
+            }
+
+            Children(
+                modifier = Modifier
+                    .padding(top = 12.dp, bottom = 12.dp)
+                    .fillMaxWidth(),
+                transitionHandler = rememberSpotlightSlider(clipToBounds = true),
+                routingSource = spotlight
+            )
+
         }
     }
 
