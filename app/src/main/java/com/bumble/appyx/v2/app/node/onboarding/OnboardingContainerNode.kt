@@ -49,8 +49,8 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToPrevious
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasNext
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasPrevious
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.next
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.previous
 import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandler.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 

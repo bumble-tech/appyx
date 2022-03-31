@@ -2,6 +2,7 @@ package com.bumble.appyx.v2.core.routing.source.backstack.operation
 
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
+import com.bumble.appyx.v2.core.routing.source.assertRoutingElementsEqual
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
@@ -109,7 +110,7 @@ internal class RemoveTest {
                 operation = Operation.Noop()
             )
         )
-        newElements.assertBackstackElementsEqual(expectedElements)
+        newElements.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -150,7 +151,7 @@ internal class RemoveTest {
                 operation = Operation.Noop()
             )
         )
-        newElements.assertBackstackElementsEqual(expectedElements)
+        newElements.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -214,7 +215,7 @@ internal class RemoveTest {
                 operation = operation
             )
         )
-        newElements.assertBackstackElementsEqual(expectedElements)
+        newElements.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -248,6 +249,6 @@ internal class RemoveTest {
                 operation = Operation.Noop()
             )
         )
-        newElements.assertBackstackElementsEqual(expectedElements)
+        newElements.assertRoutingElementsEqual(expectedElements)
     }
 }

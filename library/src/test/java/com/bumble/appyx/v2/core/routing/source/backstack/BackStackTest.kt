@@ -3,6 +3,7 @@ package com.bumble.appyx.v2.core.routing.source.backstack
 import com.bumble.appyx.v2.core.node.ParentNode.Companion.KEY_ROUTING_SOURCE
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
+import com.bumble.appyx.v2.core.routing.source.assertRoutingElementsEqual
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
@@ -14,7 +15,6 @@ import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routi
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routing2
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routing3
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routing4
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.assertBackstackElementsEqual
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.backStackElement
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +54,7 @@ internal class BackStackTest {
                 operation = Operation.Noop()
             )
         )
-        initialState.assertBackstackElementsEqual(expectedElements)
+        initialState.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -97,7 +97,7 @@ internal class BackStackTest {
                 operation = Pop()
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -152,7 +152,7 @@ internal class BackStackTest {
                 operation = Pop()
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -187,7 +187,7 @@ internal class BackStackTest {
                 operation = push(Routing2)
             )
         )
-        state!!.assertBackstackElementsEqual(expectedElements)
+        state!!.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -298,7 +298,7 @@ internal class BackStackTest {
                 operation = Pop()
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -344,7 +344,7 @@ internal class BackStackTest {
                 operation = Pop()
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -392,7 +392,7 @@ internal class BackStackTest {
                 operation = Pop()
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -423,7 +423,7 @@ internal class BackStackTest {
                 operation = operation
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -448,7 +448,7 @@ internal class BackStackTest {
                 operation = Operation.Noop(),
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -493,7 +493,7 @@ internal class BackStackTest {
                 operation = Pop()
             )
         )
-        state.assertBackstackElementsEqual(expectedElements)
+        state.assertRoutingElementsEqual(expectedElements)
     }
 
     @Test
@@ -544,7 +544,7 @@ internal class BackStackTest {
             )
         )
 
-        actual.assertBackstackElementsEqual(expectedElements)
+        actual.assertRoutingElementsEqual(expectedElements)
     }
 
     private fun <T : Any> push(element: T) = Push(
