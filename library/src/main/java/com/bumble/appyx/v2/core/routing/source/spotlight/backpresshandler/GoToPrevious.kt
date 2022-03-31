@@ -3,7 +3,7 @@ package com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.SpotlightElements
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.Previous
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.Previous
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

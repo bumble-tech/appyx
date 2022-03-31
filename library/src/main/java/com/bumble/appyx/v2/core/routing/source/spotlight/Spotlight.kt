@@ -9,7 +9,7 @@ import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToDefault
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.toSpotlightElements
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.toSpotlightElements
 import com.bumble.appyx.v2.core.state.SavedStateMap
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

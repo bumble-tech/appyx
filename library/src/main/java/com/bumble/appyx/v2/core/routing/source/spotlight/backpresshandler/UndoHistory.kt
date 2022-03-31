@@ -4,7 +4,7 @@ import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPress
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.spotlight.SpotlightElements
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.Activate
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.Activate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

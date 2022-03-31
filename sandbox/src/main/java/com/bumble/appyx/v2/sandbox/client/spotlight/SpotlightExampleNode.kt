@@ -28,10 +28,10 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToPr
 import com.bumble.appyx.v2.core.routing.source.spotlight.elementsCount
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasNext
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasPrevious
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.activate
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
-import com.bumble.appyx.v2.core.routing.source.spotlight.operations.updateItems
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.activate
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.next
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.previous
+import com.bumble.appyx.v2.core.routing.source.spotlight.operation.updateElements
 import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandler.rememberSpotlightSlider
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C1
@@ -71,7 +71,7 @@ class SpotlightExampleNode(
             screenState.value = Loading
             lifecycle.coroutineScope.launch {
                 delay(2000)
-                spotlight.updateItems(items = Item.getItemList())
+                spotlight.updateElements(items = Item.getItemList())
                 screenState.value = Loaded
             }
         }
