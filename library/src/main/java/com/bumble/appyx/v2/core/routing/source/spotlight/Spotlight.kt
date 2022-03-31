@@ -16,11 +16,11 @@ import kotlinx.coroutines.flow.update
 
 class Spotlight<Routing : Any>(
     items: List<Routing>,
-    initialActiveItem: Int = 0,
+    initialActiveIndex: Int = 0,
     savedStateMap: SavedStateMap?,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
     backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = GoToDefault(
-        initialActiveItem
+        initialActiveIndex
     ),
     operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
@@ -35,7 +35,7 @@ class Spotlight<Routing : Any>(
     }
 
     override val state = MutableStateFlow(
-        value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveItem)
+        value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveIndex)
     )
 
     override fun onTransitionFinished(key: RoutingKey<Routing>) {

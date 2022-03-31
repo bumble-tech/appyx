@@ -16,22 +16,27 @@ import kotlinx.parcelize.RawValue
 @Parcelize
 class UpdateElements<T : Any>(
     private val items: @RawValue List<T>,
-    private val initialActiveItem: Int = 0,
+    private val initialActiveIndex: Int = 0,
 ) : SpotlightOperation<T> {
 
-    override fun isApplicable(elements: RoutingElements<T, TransitionState>) =
-        true
+    override fun isApplicable(elements: RoutingElements<T, TransitionState>) = true
 
     override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
-        return items.toSpotlightElements(initialActiveItem)
+        require(initialActiveIndex in items.indices) {
+            "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${items.indices}"
+        }
+        return items.toSpotlightElements(initialActiveIndex)
     }
 }
 
-fun <T : Any> Spotlight<T>.updateItems(items: List<T>) {
-    accept(UpdateElements(items))
+fun <T : Any> Spotlight<T>.updateItems(
+    items: List<T>,
+    initialActiveItem: Int = 0
+) {
+    accept(UpdateElements(items, initialActiveItem))
 }
 
-fun <T> List<T>.toSpotlightElements(activeIndex: Int): SpotlightElements<T> =
+internal fun <T> List<T>.toSpotlightElements(activeIndex: Int): SpotlightElements<T> =
     mapIndexed { index, item ->
         val state = when {
             index < activeIndex -> INACTIVE_BEFORE
