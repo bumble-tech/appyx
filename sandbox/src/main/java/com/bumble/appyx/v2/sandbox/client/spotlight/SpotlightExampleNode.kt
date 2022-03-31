@@ -15,17 +15,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight
 import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToPrevious
+import com.bumble.appyx.v2.core.routing.source.spotlight.elementsCount
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasNext
 import com.bumble.appyx.v2.core.routing.source.spotlight.hasPrevious
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.activate
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.next
 import com.bumble.appyx.v2.core.routing.source.spotlight.operations.previous
+import com.bumble.appyx.v2.core.routing.source.spotlight.operations.updateItems
 import com.bumble.appyx.v2.core.routing.source.spotlight.transitionhandler.rememberSpotlightSlider
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C1
@@ -34,12 +37,14 @@ import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Item.C3
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child1
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child2
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child3
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 class SpotlightExampleNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<Routing> = Spotlight(
-        items = Item.getItemList(),
+        items = emptyList(),
         savedStateMap = buildContext.savedStateMap,
         backPressHandler = GoToPrevious(),
     )
@@ -47,6 +52,16 @@ class SpotlightExampleNode(
     buildContext = buildContext,
     routingSource = spotlight
 ) {
+
+    init {
+        // simulate loading tabs
+        if (spotlight.elementsCount() == 0) {
+            lifecycle.coroutineScope.launch {
+                delay(2000)
+                spotlight.updateItems(items = Item.getItemList())
+            }
+        }
+    }
 
     sealed class Routing : Parcelable {
 
