@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.core.routing.source.spotlight.operations
+package com.bumble.appyx.v2.core.routing.source.spotlight.operation
 
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingElements
@@ -15,23 +15,39 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 class UpdateElements<T : Any>(
-    private val items: @RawValue List<T>,
-    private val initialActiveIndex: Int = 0,
+    private val elements: @RawValue List<T>,
+    private val initialActiveIndex: Int? = null,
 ) : SpotlightOperation<T> {
 
     override fun isApplicable(elements: RoutingElements<T, TransitionState>) = true
 
     override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
-        require(initialActiveIndex in items.indices) {
-            "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${items.indices}"
+        if (initialActiveIndex != null) {
+            require(initialActiveIndex in this.elements.indices) {
+                "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"
+            }
         }
-        return items.toSpotlightElements(initialActiveIndex)
+        return if (initialActiveIndex == null) {
+            val currentActiveElement = elements.find { it.targetState == ACTIVE }
+
+            // if current routing exists in the new list of items and initialActiveIndex is null
+            // then keep existing routing active
+            if (this.elements.contains(currentActiveElement?.key?.routing)) {
+                this.elements.toSpotlightElements(elements.indexOf(currentActiveElement))
+            } else {
+                // if current routing does not exist in the new list of items and initialActiveIndex is null
+                // then set 0 as active index
+                this.elements.toSpotlightElements(0)
+            }
+        } else {
+            this.elements.toSpotlightElements(initialActiveIndex)
+        }
     }
 }
 
-fun <T : Any> Spotlight<T>.updateItems(
+fun <T : Any> Spotlight<T>.updateElements(
     items: List<T>,
-    initialActiveItem: Int = 0
+    initialActiveItem: Int? = null
 ) {
     accept(UpdateElements(items, initialActiveItem))
 }
