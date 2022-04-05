@@ -7,11 +7,11 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext
-import com.bumble.appyx.interop.v1v2.RibInteropActivity
+import com.bumble.appyx.interop.v1v2.InteropActivity
 import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentBuilder
 import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentRib
 
-class InteropExampleActivity : RibInteropActivity() {
+class InteropExampleActivity : InteropActivity() {
 
     private lateinit var rootView: FrameLayout
     override val rootViewGroup: ViewGroup get() = rootView
