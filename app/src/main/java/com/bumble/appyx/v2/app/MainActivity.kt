@@ -13,13 +13,13 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.v2.app.node.root.RootNode
 import com.bumble.appyx.v2.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.v2.core.integration.NodeHost
-import com.bumble.appyx.v2.core.integrationpoint.RibActivity
+import com.bumble.appyx.v2.core.integrationpoint.NodeActivity
 import com.bumble.appyx.v2.core.modality.BuildContext
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-class MainActivity : RibActivity() {
+class MainActivity : NodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
