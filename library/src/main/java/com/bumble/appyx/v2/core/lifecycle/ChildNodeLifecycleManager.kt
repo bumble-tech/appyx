@@ -46,7 +46,7 @@ class ChildNodeLifecycleManager<Routing>(
 
     private fun manageChildrenLifecycle() {
         coroutineScope.launch {
-            val lifecycleState = lifecycle.changesAsFlow()
+            val lifecycleState = lifecycle.asFlow()
 
             // observe both routingSource and children
             combine(

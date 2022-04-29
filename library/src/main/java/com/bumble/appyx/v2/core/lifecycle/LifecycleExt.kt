@@ -9,11 +9,14 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
+fun LifecycleOwner.asFlow(): Flow<Lifecycle.State> =
+    lifecycle.asFlow()
+
 @OptIn(ExperimentalCoroutinesApi::class)
-fun Lifecycle.changesAsFlow(): Flow<Lifecycle.State> =
+fun Lifecycle.asFlow(): Flow<Lifecycle.State> =
     callbackFlow {
         val observer = LifecycleEventObserver { source, _ ->
-            trySend(currentState)
+            trySend(source.lifecycle.currentState)
         }
         trySend(currentState)
         addObserver(observer)
