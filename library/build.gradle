@@ -58,7 +58,7 @@ dependencies {
 
     testImplementation libs.androidx.arch.core.testing
     testImplementation libs.junit
-    testImplementation libs.kotlin.coroutines.text
+    testImplementation libs.kotlin.coroutines.test
 
     androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit
