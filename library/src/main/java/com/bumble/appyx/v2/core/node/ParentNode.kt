@@ -33,7 +33,6 @@ import com.bumble.appyx.v2.core.routing.source.combined.plus
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.v2.core.routing.source.permanent.operation.add
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlin.reflect.KClass
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,6 +41,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
