@@ -31,6 +31,7 @@ abstract class Node(
     plugins: List<Plugin> = emptyList()
 ) : NodeLifecycle, NodeView {
 
+    @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
