@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
  * Hosts [LifecycleRegistry] to manage the current node lifecycle
  * and updates lifecycle of children nodes when updated.
  */
-class ChildNodeLifecycleManager<Routing>(
+internal class ChildNodeLifecycleManager<Routing>(
     private val lifecycle: Lifecycle,
     private val routingSource: RoutingSource<Routing, *>,
     private val children: StateFlow<ChildEntryMap<Routing>>,
