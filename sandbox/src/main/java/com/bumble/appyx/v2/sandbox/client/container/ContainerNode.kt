@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
@@ -50,6 +51,7 @@ import com.bumble.appyx.v2.sandbox.client.integrationpoint.IntegrationPointExamp
 import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentRib
+import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentViewImpl.Factory
 import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleBuilder
@@ -71,7 +73,9 @@ class ContainerNode(
     buildContext = buildContext,
 ), UpNavigationHandler {
 
-    private val label: String = buildContext.getOrDefault(V1ParentRib.Customisation()).name
+    class Customisation(val name: String? = null) : NodeCustomisation
+
+    private val label: String? = buildContext.getOrDefault(Customisation()).name
 
     private val upNavigationOverridesChild: MutableStateFlow<Boolean> = MutableStateFlow(true)
 
@@ -159,7 +163,9 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Text(label, textAlign = TextAlign.Center)
+                label?.let {
+                    Text(it, textAlign = TextAlign.Center)
+                }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
