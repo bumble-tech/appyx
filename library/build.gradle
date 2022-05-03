@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    api libs.appTreeUtils
     api libs.kotlin.coroutines.android
     api libs.androidx.lifecycle.common
     api libs.compose.animation.core

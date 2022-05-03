@@ -3,6 +3,7 @@ package com.bumble.appyx.interop.v1v2
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.bumble.appyx.interop.v1v2.V1V2NodeImpl.Companion.V1V2NodeKey
+import com.bumble.appyx.v2.core.integration.NodeFactory
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.build
@@ -24,8 +25,10 @@ class V1V2Builder<N : Node>(
 
         val v2Node = nodeFactory
             .create(
-                buildContextV1 = buildParams.buildContext,
-                buildContextV2 = BuildContext.root(stateMap)
+                buildContext = BuildContext.root(
+                    savedStateMap = stateMap,
+                    customisations = buildParams.buildContext.customisations
+                )
             )
             .build()
 

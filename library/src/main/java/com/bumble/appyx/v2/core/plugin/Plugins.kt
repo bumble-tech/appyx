@@ -33,6 +33,7 @@ fun interface Destroyable : Plugin {
     fun destroy()
 }
 
+// TODO: It is not a plugin! Handled only in router!
 interface BackPressHandler : Plugin {
     fun onBackPressed()
 }
