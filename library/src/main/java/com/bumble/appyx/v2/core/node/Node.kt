@@ -128,16 +128,29 @@ abstract class Node(
         parent?.onChildFinished(this) ?: integrationPoint.onRootFinished()
     }
 
+    /**
+     * Triggers parents up navigation (back navigation by default).
+     *
+     * This method is useful for different cases like:
+     * - Close button on the screen which leads back to the previous screen.
+     * - Blocker screen that intercepts back button clicks but closes itself when condition is met.
+     *
+     * To properly handle blocker case this method skips the current node plugins (like router),
+     * and invokes the parent directly.
+     */
     fun navigateUp() {
-        if (performUpNavigation()) return
-        integrationPoint.handleUpNavigation()
+        require(parent != null || isRoot) {
+            "Can't navigate up, neither parent nor integration point is presented"
+        }
+        parent?.performUpNavigation() ?: integrationPoint.handleUpNavigation()
     }
+
+    @CallSuper
+    protected open fun performUpNavigation(): Boolean =
+        handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
 
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
-
-    protected open fun performUpNavigation(): Boolean =
-        handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
 
     companion object {
         const val KEY_PLUGINS_STATE = "PluginsState"

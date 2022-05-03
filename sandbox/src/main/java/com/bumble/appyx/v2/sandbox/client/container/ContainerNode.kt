@@ -6,14 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,17 +23,17 @@ import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.node.node
-import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
-import com.bumble.appyx.v2.core.routing.source.backstack.operation.pop
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
 import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.v2.core.routing.transition.rememberCombinedHandler
 import com.bumble.appyx.v2.sandbox.client.backstack.BackStackExampleNode
+import com.bumble.appyx.v2.sandbox.client.blocker.BlockerExampleNode
 import com.bumble.appyx.v2.sandbox.client.combined.CombinedRoutingSourceNode
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.BackStackExample
+import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.BlockerExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.CombinedRoutingSource
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.InteractorExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.LazyExamples
@@ -50,15 +47,12 @@ import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.TilesE
 import com.bumble.appyx.v2.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity
-import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentRib
-import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentViewImpl.Factory
 import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.v2.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -71,13 +65,11 @@ class ContainerNode(
 ) : ParentNode<Routing>(
     routingSource = backStack,
     buildContext = buildContext,
-), UpNavigationHandler {
+) {
 
     class Customisation(val name: String? = null) : NodeCustomisation
 
     private val label: String? = buildContext.getOrDefault(Customisation()).name
-
-    private val upNavigationOverridesChild: MutableStateFlow<Boolean> = MutableStateFlow(true)
 
     sealed class Routing : Parcelable {
         @Parcelize
@@ -112,6 +104,9 @@ class ContainerNode(
 
         @Parcelize
         object MviCoreExample : Routing()
+
+        @Parcelize
+        object BlockerExample : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -130,6 +125,7 @@ class ContainerNode(
                 buildContext,
                 "MVICore initial state"
             )
+            is BlockerExample -> BlockerExampleNode(buildContext)
         }
 
     @Composable
@@ -183,13 +179,7 @@ class ContainerNode(
                     }
                 }
                 TextButton("LazyList") { backStack.push(LazyExamples) }
-                Row {
-                    Checkbox(
-                        checked = upNavigationOverridesChild.collectAsState().value,
-                        onCheckedChange = { upNavigationOverridesChild.value = it }
-                    )
-                    Text(text = "Up navigation overrides child")
-                }
+                TextButton("Blocker") { backStack.push(BlockerExample) }
             }
         }
     }
@@ -226,11 +216,4 @@ class ContainerNode(
         }
     }
 
-    override fun handleUpNavigation(): Boolean =
-        if (upNavigationOverridesChild.value && backStack.canHandleBackPress.value) {
-            backStack.pop()
-            true
-        } else {
-            false
-        }
 }
