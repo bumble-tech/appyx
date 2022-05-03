@@ -143,7 +143,9 @@ abstract class Node(
         require(parent != null || isRoot) {
             "Can't navigate up, neither parent nor integration point is presented"
         }
-        parent?.performUpNavigation() ?: integrationPoint.handleUpNavigation()
+        if (parent?.performUpNavigation() != true) {
+            integrationPoint.handleUpNavigation()
+        }
     }
 
     @CallSuper
