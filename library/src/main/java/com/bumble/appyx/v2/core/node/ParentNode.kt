@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
-    buildContext: BuildContext,
+    private val buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
@@ -118,7 +118,10 @@ abstract class ParentNode<Routing : Any>(
     private fun SavedStateMap?.toBuildContext(): BuildContext =
         BuildContext(
             ancestryInfo = AncestryInfo.Child(this@ParentNode),
-            savedStateMap = this
+            savedStateMap = this,
+            customisations = buildContext.customisations.getSubDirectoryOrSelf(
+                this@ParentNode::class
+            )
         )
 
     fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Eager<Routing> {

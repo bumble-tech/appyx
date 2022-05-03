@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
@@ -49,6 +50,8 @@ import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.TilesE
 import com.bumble.appyx.v2.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity
+import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentRib
+import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentViewImpl.Factory
 import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleBuilder
@@ -60,7 +63,6 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
-    private val label: String? = null,
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Picker,
@@ -70,6 +72,10 @@ class ContainerNode(
     routingSource = backStack,
     buildContext = buildContext,
 ), UpNavigationHandler {
+
+    class Customisation(val name: String? = null) : NodeCustomisation
+
+    private val label: String? = buildContext.getOrDefault(Customisation()).name
 
     private val upNavigationOverridesChild: MutableStateFlow<Boolean> = MutableStateFlow(true)
 

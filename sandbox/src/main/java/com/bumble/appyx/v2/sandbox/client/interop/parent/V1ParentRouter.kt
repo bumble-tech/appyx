@@ -35,12 +35,8 @@ internal class V1ParentRouter(
             is Configuration.InteropNode ->
                 child {
                     V1V2Builder(
-                        nodeFactory = { buildContextV1, buildContextV2 ->
-                            val customisationName = buildContextV1
-                                .customisations
-                                .getRecursivelyOrDefault(V1ParentRib.Customisation())
-                                .name
-                            ContainerNode(customisationName, buildContextV2)
+                        nodeFactory = { buildContext ->
+                            ContainerNode(buildContext)
                         }
                     ).build(it)
                 }
