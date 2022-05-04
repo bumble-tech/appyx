@@ -12,6 +12,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
@@ -29,10 +31,11 @@ fun interface NodeFactory<N : Node> {
  */
 @Composable
 fun <N : Node> NodeHost(
+    customisations: NodeCustomisationDirectory = NodeCustomisationDirectoryImpl(),
     integrationPoint: IntegrationPoint,
     factory: NodeFactory<N>
 ) {
-    val node by rememberNode(factory)
+    val node by rememberNode(factory, customisations)
     LaunchedEffect(integrationPoint) {
         integrationPoint.attach(node)
     }
@@ -52,15 +55,30 @@ fun <N : Node> NodeHost(
 }
 
 @Composable
-fun <N : Node> rememberNode(
-    factory: NodeFactory<N>
+internal fun <N : Node> rememberNode(
+    factory: NodeFactory<N>,
+    customisations: NodeCustomisationDirectory
 ): State<N> =
     rememberSaveable(
         inputs = arrayOf(),
         stateSaver = mapSaver(
             save = { node -> node.onSaveInstanceState(this) },
-            restore = { state -> factory.create(buildContext = BuildContext.root(state)).build() },
+            restore = { state ->
+                factory.create(
+                    buildContext = BuildContext.root(
+                        savedStateMap = state,
+                        customisations = customisations
+                    ),
+                ).build()
+            },
         ),
     ) {
-        mutableStateOf(factory.create(buildContext = BuildContext.root(null)).build())
+        mutableStateOf(
+            factory.create(
+                buildContext = BuildContext.root(
+                    savedStateMap = null,
+                    customisations = customisations
+                )
+            ).build()
+        )
     }
