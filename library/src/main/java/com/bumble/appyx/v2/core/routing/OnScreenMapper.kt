@@ -15,7 +15,7 @@ class OnScreenMapper<Routing, State>(
         state
             .map { elements ->
                 elements.filter { element ->
-                    element.isOnScreen()
+                    onScreenStateResolver.isOnScreen(element)
                 }
             }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
@@ -24,21 +24,9 @@ class OnScreenMapper<Routing, State>(
         state
             .map { elements ->
                 elements.filterNot { element ->
-                    element.isOnScreen()
+                    onScreenStateResolver.isOnScreen(element)
                 }
             }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    private fun RoutingElement<Routing, State>.isOnScreen(): Boolean =
-        if (transitionHistory.isEmpty()) {
-            onScreenStateResolver.isOnScreen(fromState) || onScreenStateResolver.isOnScreen(
-                targetState
-            )
-        } else {
-            transitionHistory.any { (fromState, targetState) ->
-                onScreenStateResolver.isOnScreen(fromState) || onScreenStateResolver.isOnScreen(
-                    targetState
-                )
-            }
-        }
 }

@@ -24,7 +24,7 @@ import kotlin.coroutines.EmptyCoroutineContext
 abstract class BaseRoutingSource<Routing, State>(
     private val backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
     private val operationStrategy: OperationStrategy<Routing, State> = ExecuteImmediately(),
-    screenResolver: OnScreenStateResolver<State>,
+    private val screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
 ) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
 
@@ -58,9 +58,25 @@ abstract class BaseRoutingSource<Routing, State>(
 
     private fun execute(operation: Operation<Routing, State>) {
         if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
+            state.update {
+                val state = operation(it)
+                sanitizeOffScreenTransitions(state)
+            }
         }
     }
+
+    /**
+     * Off screen transitions can't finish without [onTransitionFinished] callback from UI.
+     * In case if we have any, lets finish them instantly.
+     */
+    protected fun sanitizeOffScreenTransitions(state: RoutingElements<Routing, State>): RoutingElements<Routing, State> =
+        state.map {
+            if (screenResolver.isOnScreen(it)) {
+                it
+            } else {
+                it.onTransitionFinished()
+            }
+        }
 
     override fun destroy() {
         scope.cancel()
