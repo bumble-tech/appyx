@@ -102,7 +102,7 @@ abstract class BaseRoutingSource<Routing, State>(
         }
     }
 
-    protected fun RoutingElement<Routing, State>.finishTransitionOrRemove(): RoutingElement<Routing, State>? =
+    protected open fun RoutingElement<Routing, State>.finishTransitionOrRemove(): RoutingElement<Routing, State>? =
         if (targetState.isFinalState) {
             null
         } else {
