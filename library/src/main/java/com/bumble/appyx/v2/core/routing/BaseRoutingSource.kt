@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
+
 /**
  * Base class for routingSource implementations.
  * Use this one if the base behaviour suffice your requirements, you want to use backPressHandler or operationStrategy,
@@ -26,6 +27,7 @@ abstract class BaseRoutingSource<Routing, State>(
     private val operationStrategy: OperationStrategy<Routing, State> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
+    private val finalStates: List<State>,
 ) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
 
     init {
@@ -33,7 +35,25 @@ abstract class BaseRoutingSource<Routing, State>(
         operationStrategy.init(this, scope, ::execute)
     }
 
-    protected abstract val state: MutableStateFlow<RoutingElements<Routing, State>>
+    constructor(
+        backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
+        operationStrategy: OperationStrategy<Routing, State> = ExecuteImmediately(),
+        screenResolver: OnScreenStateResolver<State>,
+        scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
+        finalState: State?,
+    ) : this(
+        backPressHandler,
+        operationStrategy,
+        screenResolver,
+        scope,
+        finalStates = finalState?.let { listOf(finalState) } ?: emptyList(),
+    )
+
+    abstract val initialElements: RoutingElements<Routing, State>
+
+    private val state: MutableStateFlow<RoutingElements<Routing, State>> by lazy {
+        MutableStateFlow(initialElements)
+    }
 
     override val elements: StateFlow<RoutingElements<Routing, State>>
         get() = state
@@ -61,6 +81,25 @@ abstract class BaseRoutingSource<Routing, State>(
             state.update { operation(it) }
         }
     }
+
+    override fun onTransitionFinished(key: RoutingKey<Routing>) {
+        state.update { list ->
+            list.mapNotNull {
+                if (it.key == key) {
+                    if (it.targetState.isFinalState) {
+                        null
+                    } else {
+                        it.onTransitionFinished()
+                    }
+                } else {
+                    it
+                }
+            }
+        }
+    }
+
+    private val State.isFinalState
+        get() = finalStates.contains(this)
 
     override fun destroy() {
         scope.cancel()

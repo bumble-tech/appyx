@@ -14,8 +14,6 @@ import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionSta
 import com.bumble.appyx.v2.core.routing.source.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
 import com.bumble.appyx.v2.core.routing.source.spotlight.backpresshandler.GoToDefault
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 
 class Spotlight<Routing : Any>(
     items: List<Routing>,
@@ -31,31 +29,19 @@ class Spotlight<Routing : Any>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
+    finalStates = emptyList()
 ) {
 
     enum class TransitionState {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
 
-    override val state = MutableStateFlow(
-        value = savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveItem)
-    )
-
-    override fun onTransitionFinished(key: RoutingKey<Routing>) {
-        state.update { elements ->
-            elements.map {
-                if (key == it.key) {
-                    it.onTransitionFinished()
-                } else {
-                    it
-                }
-            }
-        }
-    }
+    override val initialElements =
+        savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveItem)
 
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
         savedStateMap[key] =
-            state.value.map {
+            elements.value.map {
                 if (it.targetState != it.fromState) {
                     it.onTransitionFinished()
                 }
