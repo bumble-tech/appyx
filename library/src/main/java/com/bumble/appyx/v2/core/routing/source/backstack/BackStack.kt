@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.stateIn
 class BackStack<Routing : Any>(
     initialElement: Routing,
     savedStateMap: SavedStateMap?,
-    private val key: String = ParentNode.KEY_ROUTING_SOURCE,
+    key: String = ParentNode.KEY_ROUTING_SOURCE,
     backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = PopBackPressHandler(),
     operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<TransitionState> = BackStackOnScreenResolver
@@ -28,14 +28,16 @@ class BackStack<Routing : Any>(
     backPressHandler = backPressHandler,
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,
-    finalStates = listOf(DESTROYED)
+    finalState = DESTROYED,
+    savedStateMap = savedStateMap,
+    key = key,
 ) {
 
     enum class TransitionState {
         CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
-    override val initialElements = savedStateMap?.restoreHistory() ?: listOf(
+    override val initialElements = listOf(
         BackStackElement(
             key = RoutingKey(initialElement),
             fromState = TransitionState.ACTIVE,
@@ -49,20 +51,5 @@ class BackStack<Routing : Any>(
         elements
             .map { state -> state.map { routingElement -> routingElement.key.routing } }
             .stateIn(scope, SharingStarted.Eagerly, listOf(initialElement))
-
-    override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
-        savedStateMap[key] =
-            elements.value.mapNotNull {
-                // Sanitize outputs, removing all transitions
-                if (it.targetState != DESTROYED) {
-                    it.onTransitionFinished()
-                } else {
-                    null
-                }
-            }
-    }
-
-    private fun SavedStateMap.restoreHistory() =
-        this[key] as? BackStackElements<Routing>
 
 }

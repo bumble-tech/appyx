@@ -19,7 +19,7 @@ class Spotlight<Routing : Any>(
     items: List<Routing>,
     initialActiveItem: Int = 0,
     savedStateMap: SavedStateMap?,
-    private val key: String = ParentNode.KEY_ROUTING_SOURCE,
+    key: String = ParentNode.KEY_ROUTING_SOURCE,
     backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = GoToDefault(
         initialActiveItem
     ),
@@ -29,28 +29,16 @@ class Spotlight<Routing : Any>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
-    finalState = null
+    finalState = null,
+    savedStateMap = savedStateMap,
+    key = key
 ) {
 
     enum class TransitionState {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
 
-    override val initialElements =
-        savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveItem)
-
-    override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
-        savedStateMap[key] =
-            elements.value.map {
-                if (it.targetState != it.fromState) {
-                    it.onTransitionFinished()
-                }
-                it
-            }
-    }
-
-    private fun SavedStateMap.restoreHistory() =
-        this[key] as? SpotlightElements<Routing>
+    override val initialElements = items.toSpotlightElements(initialActiveItem)
 
     private fun List<Routing>.toSpotlightElements(activeIndex: Int): SpotlightElements<Routing> =
         mapIndexed { index, item ->

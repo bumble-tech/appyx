@@ -7,19 +7,20 @@ import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHand
 import com.bumble.appyx.v2.core.routing.source.tiles.backPressHandler.DeselectAllTiles
 
 class Tiles<T : Any>(
-    initialRoutings: List<T>,
+    initialItems: List<T>,
     backPressHandler: BackPressHandlerStrategy<T, TransitionState> = DeselectAllTiles()
 ) : BaseRoutingSource<T, Tiles.TransitionState>(
     backPressHandler = backPressHandler,
     screenResolver = TilesOnScreenResolver,
     finalState = null,
+    savedStateMap = null,
 ) {
 
     enum class TransitionState {
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 
-    override val initialElements = initialRoutings.map {
+    override val initialElements = initialItems.map {
         TilesElement(
             key = RoutingKey(it),
             fromState = TransitionState.CREATED,

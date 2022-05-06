@@ -6,10 +6,11 @@ import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
 
 class Promoter<T : Any>(
-    initialRoutings: List<T> = listOf(),
+    initialItems: List<T> = listOf(),
 ) : BaseRoutingSource<T, Promoter.TransitionState>(
     screenResolver = PromoterOnScreenResolver,
-    finalState = DESTROYED
+    finalState = DESTROYED,
+    savedStateMap = null
 ) {
 
     enum class TransitionState {
@@ -27,7 +28,7 @@ class Promoter<T : Any>(
             }
     }
 
-    override val initialElements = initialRoutings.map {
+    override val initialElements = initialItems.map {
         PromoterElement(
             key = RoutingKey(it),
             fromState = TransitionState.CREATED,
