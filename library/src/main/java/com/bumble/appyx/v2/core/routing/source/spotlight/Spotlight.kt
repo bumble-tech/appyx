@@ -29,7 +29,7 @@ class Spotlight<Routing : Any>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
-    finalStates = emptyList()
+    finalState = null
 ) {
 
     enum class TransitionState {
