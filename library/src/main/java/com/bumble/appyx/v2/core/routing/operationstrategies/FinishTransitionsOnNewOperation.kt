@@ -1,6 +1,7 @@
 package com.bumble.appyx.v2.core.routing.operationstrategies
 
 import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.routing.isTransitioning
 
 
 class FinishTransitionsOnNewOperation<Routing, State> : BaseOperationStrategy<Routing, State>() {
@@ -15,7 +16,7 @@ class FinishTransitionsOnNewOperation<Routing, State> : BaseOperationStrategy<Ro
             .elements
             .value
             .mapNotNull { routingElement ->
-                if (routingElement.fromState != routingElement.targetState) routingElement.key else null
+                if (routingElement.isTransitioning) routingElement.key else null
             }
             .also { if (it.isNotEmpty()) routingSource.onTransitionFinished(it) }
     }

@@ -37,7 +37,7 @@ class RoutingElement<Routing, State> private constructor(
             targetState = targetState,
             operation = operation,
             transitionHistory =
-            if (fromState != targetState) {
+            if (isTransitioning) {
                 transitionHistory + listOf(fromState to targetState)
             } else transitionHistory
         )
