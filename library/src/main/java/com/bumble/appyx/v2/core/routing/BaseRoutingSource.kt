@@ -54,7 +54,6 @@ abstract class BaseRoutingSource<Routing, State>(
         savedStateMap = savedStateMap
     )
 
-    // can't pass it in constructor, it makes harder to restore it from save instance state
     // TODO: think about how we can avoid keeping unnecessary object after state initialization
     protected abstract val initialElements: RoutingElements<Routing, State>
 
