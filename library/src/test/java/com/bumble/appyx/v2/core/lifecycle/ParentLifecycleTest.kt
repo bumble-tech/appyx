@@ -82,13 +82,11 @@ class ParentLifecycleTest {
 
         fun add(routing: String, defaultState: State) {
             updateState { list ->
-                sanitizeOffScreenTransitions(
-                    list + RoutingElement(
-                        key = RoutingKey(routing),
-                        targetState = defaultState,
-                        fromState = defaultState,
-                        operation = Operation.Noop(),
-                    )
+                list + RoutingElement(
+                    key = RoutingKey(routing),
+                    targetState = defaultState,
+                    fromState = defaultState,
+                    operation = Operation.Noop(),
                 )
             }
         }
@@ -106,19 +104,17 @@ class ParentLifecycleTest {
 
         fun changeState(routing: String, defaultState: State) {
             updateState { list ->
-                sanitizeOffScreenTransitions(
-                    list
-                        .map {
-                            if (it.key.routing == routing) {
-                                it.transitionTo(
-                                    targetState = defaultState,
-                                    operation = Operation.Noop()
-                                )
-                            } else {
-                                it
-                            }
+                list
+                    .map {
+                        if (it.key.routing == routing) {
+                            it.transitionTo(
+                                targetState = defaultState,
+                                operation = Operation.Noop()
+                            )
+                        } else {
+                            it
                         }
-                )
+                    }
             }
         }
 
