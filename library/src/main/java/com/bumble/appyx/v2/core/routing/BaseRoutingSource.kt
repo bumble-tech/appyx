@@ -141,9 +141,9 @@ abstract class BaseRoutingSource<Routing, State>(
             elements.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState.isFinalState) {
-                    it.onTransitionFinished()
-                } else {
                     null
+                } else {
+                    it.onTransitionFinished()
                 }
             }
     }
