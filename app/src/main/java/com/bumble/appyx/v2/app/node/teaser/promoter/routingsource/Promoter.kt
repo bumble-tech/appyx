@@ -1,15 +1,18 @@
 package com.bumble.appyx.v2.app.node.teaser.promoter.routingsource
 
+import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.Promoter.TransitionState.DESTROYED
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation
-import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 
 class Promoter<T : Any>(
-    initialElements: List<T> = listOf(),
+    initialItems: List<T> = listOf(),
 ) : BaseRoutingSource<T, Promoter.TransitionState>(
-    screenResolver = PromoterOnScreenResolver
+    screenResolver = PromoterOnScreenResolver,
+    finalState = DESTROYED,
+    savedStateMap = null
 ) {
+
     enum class TransitionState {
         CREATED, STAGE1, STAGE2, STAGE3, STAGE4, SELECTED, DESTROYED;
 
@@ -25,29 +28,12 @@ class Promoter<T : Any>(
             }
     }
 
-    override val initialState: RoutingElements<T, TransitionState> =
-        initialElements.map {
-            PromoterElement(
-                key = RoutingKey(it),
-                fromState = TransitionState.CREATED,
-                targetState = TransitionState.STAGE1,
-                operation = Operation.Noop()
-            )
-        }
-
-    override fun onTransitionFinished(key: RoutingKey<T>) {
-        updateState { list ->
-            list.mapNotNull {
-                if (it.key == key) {
-                    if (it.targetState == TransitionState.DESTROYED) {
-                        null
-                    } else {
-                        it.onTransitionFinished()
-                    }
-                } else {
-                    it
-                }
-            }
-        }
+    override val initialElements = initialItems.map {
+        PromoterElement(
+            key = RoutingKey(it),
+            fromState = TransitionState.CREATED,
+            targetState = TransitionState.STAGE1,
+            operation = Operation.Noop()
+        )
     }
 }
