@@ -10,24 +10,20 @@ import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.node.build
-import com.bumble.appyx.v2.core.routing.OnScreenMapper
-import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
+import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingElement
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.RoutingSource
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.v2.core.testutils.MainDispatcherRule
-import kotlin.coroutines.EmptyCoroutineContext
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
+// TODO: Make it BaseRoutingSource test
 class ParentLifecycleTest {
 
     @get:Rule
@@ -54,7 +50,19 @@ class ParentLifecycleTest {
         )
     }
 
-    private class RoutingImpl : RoutingSource<String, State> {
+    private class RoutingImpl : BaseRoutingSource<String, State>(
+        screenResolver = object : OnScreenStateResolver<State> {
+            override fun isOnScreen(state: State): Boolean =
+                when (state) {
+                    State.StateOne,
+                    State.StateTwo,
+                    State.StateThree -> false
+                    State.StateFour -> true
+                }
+        },
+        finalStates = emptySet(),
+        savedStateMap = null,
+    ) {
 
         enum class State {
             StateOne,
@@ -63,27 +71,7 @@ class ParentLifecycleTest {
             StateFour,
         }
 
-        private val state = MutableStateFlow<List<RoutingElement<String, State>>>(emptyList())
-        private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-        private val onScreenResolver = object : OnScreenStateResolver<State> {
-            override fun isOnScreen(state: State): Boolean =
-                when (state) {
-                    State.StateOne,
-                    State.StateTwo,
-                    State.StateThree -> false
-                    State.StateFour -> true
-                }
-        }
-        private val onScreenMapper = OnScreenMapper<String, State>(scope, onScreenResolver)
-
-        override val elements: StateFlow<List<RoutingElement<String, State>>> =
-            state
-
-        override val onScreen: StateFlow<RoutingElements<String, out State>> =
-            onScreenMapper.resolveOnScreenElements(state)
-
-        override val offScreen: StateFlow<RoutingElements<String, out State>> =
-            onScreenMapper.resolveOffScreenElements(state)
+        override val initialElements: RoutingElements<String, State> = emptyList()
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)
@@ -92,20 +80,8 @@ class ParentLifecycleTest {
             // no-op
         }
 
-        override fun onTransitionFinished(keys: Collection<RoutingKey<String>>) {
-            state.update { list ->
-                list.map {
-                    if (it.key in keys) {
-                        it.onTransitionFinished()
-                    } else {
-                        it
-                    }
-                }
-            }
-        }
-
         fun add(routing: String, defaultState: State) {
-            state.update { list ->
+            updateState { list ->
                 list + RoutingElement(
                     key = RoutingKey(routing),
                     targetState = defaultState,
@@ -117,17 +93,17 @@ class ParentLifecycleTest {
 
         fun get(routing: String): RoutingElement<String, State> {
             return requireNotNull(
-                state.value.find { it.key.routing == routing },
+                elements.value.find { it.key.routing == routing },
                 { "element with routing $routing is not found" }
             )
         }
 
         fun remove(routing: String) {
-            state.update { list -> list.filter { it.key.routing != routing } }
+            updateState { list -> list.filter { it.key.routing != routing } }
         }
 
         fun changeState(routing: String, defaultState: State) {
-            state.update { list ->
+            updateState { list ->
                 list
                     .map {
                         if (it.key.routing == routing) {

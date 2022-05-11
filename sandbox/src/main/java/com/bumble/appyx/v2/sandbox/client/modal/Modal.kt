@@ -1,6 +1,6 @@
 package com.bumble.appyx.v2.sandbox.client.modal
 
-import com.bumble.appyx.v2.core.routing.OnScreenMapper
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenMapper
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.Operation.Noop
 import com.bumble.appyx.v2.core.routing.RoutingElements

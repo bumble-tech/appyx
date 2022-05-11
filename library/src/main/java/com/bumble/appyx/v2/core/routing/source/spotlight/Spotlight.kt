@@ -2,7 +2,7 @@ package com.bumble.appyx.v2.core.routing.source.spotlight
 
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
-import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
@@ -27,7 +27,7 @@ class Spotlight<Routing : Any>(
     screenResolver = screenResolver,
     finalState = null,
     savedStateMap = savedStateMap,
-    key = key
+    key = key,
 ) {
 
     enum class TransitionState {

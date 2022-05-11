@@ -5,6 +5,9 @@ import com.bumble.appyx.v2.core.plugin.BackPressHandler
 import com.bumble.appyx.v2.core.plugin.Destroyable
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.DontHandleBackPress
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenMapper
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.v2.core.routing.onscreen.isOnScreen
 import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.state.SavedStateMap
@@ -16,7 +19,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
-
 /**
  * Base class for routingSource implementations.
  * Use this one if the base behaviour suffice your requirements, you want to use backPressHandler or operationStrategy,
@@ -27,17 +29,12 @@ import kotlin.coroutines.EmptyCoroutineContext
 abstract class BaseRoutingSource<Routing, State>(
     private val backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
     private val operationStrategy: OperationStrategy<Routing, State> = ExecuteImmediately(),
-    screenResolver: OnScreenStateResolver<State>,
+    private val screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val finalStates: Set<State>,
     private val key: String = ParentNode.KEY_ROUTING_SOURCE,
     savedStateMap: SavedStateMap?
 ) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
-
-    init {
-        backPressHandler.init(this, scope)
-        operationStrategy.init(this, scope, ::execute)
-    }
 
     constructor(
         backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
@@ -57,14 +54,14 @@ abstract class BaseRoutingSource<Routing, State>(
         savedStateMap = savedStateMap
     )
 
+    // TODO: think about how we can avoid keeping unnecessary object after state initialization
     protected abstract val initialElements: RoutingElements<Routing, State>
 
     private val state: MutableStateFlow<RoutingElements<Routing, State>> by lazy {
         MutableStateFlow(savedStateMap?.restoreHistory() ?: initialElements)
     }
 
-    override val elements: StateFlow<RoutingElements<Routing, State>>
-        get() = state
+    override val elements: StateFlow<RoutingElements<Routing, State>> get() = state
 
     private val onScreenMapper = OnScreenMapper<Routing, State>(scope, screenResolver)
 
@@ -80,15 +77,44 @@ abstract class BaseRoutingSource<Routing, State>(
         backPressHandler.canHandleBackPress
     }
 
+    init {
+        backPressHandler.init(this, scope)
+        operationStrategy.init(this, scope, ::execute)
+    }
+
     override fun accept(operation: Operation<Routing, State>) {
         operationStrategy.accept(operation)
     }
 
-    private fun execute(operation: Operation<Routing, State>) {
-        if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
+    protected fun updateState(block: (RoutingElements<Routing, State>) -> RoutingElements<Routing, State>) {
+        state.update { currentState ->
+            val newState = block(currentState)
+            sanitizeOffScreenTransitions(newState)
         }
     }
+
+    private fun execute(operation: Operation<Routing, State>) {
+        updateState {
+            if (operation.isApplicable(it)) {
+                operation(it)
+            } else {
+                it
+            }
+        }
+    }
+
+    /**
+     * Off screen transitions can't finish without [onTransitionFinished] callback from UI.
+     * In case if we have any, lets finish them instantly.
+     */
+    protected fun sanitizeOffScreenTransitions(state: RoutingElements<Routing, State>): RoutingElements<Routing, State> =
+        state.mapNotNull {
+            if (screenResolver.isOnScreen(it)) {
+                it
+            } else {
+                it.finishTransitionOrRemove()
+            }
+        }
 
     override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
         if (keys.isEmpty()) return
@@ -131,4 +157,5 @@ abstract class BaseRoutingSource<Routing, State>(
 
     private fun SavedStateMap.restoreHistory() =
         this[key] as? RoutingElements<Routing, State>
+
 }

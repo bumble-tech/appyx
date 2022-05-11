@@ -10,8 +10,8 @@ import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.node.build
-import com.bumble.appyx.v2.core.routing.OnScreenMapper
-import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenMapper
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingElement
 import com.bumble.appyx.v2.core.routing.RoutingElements
