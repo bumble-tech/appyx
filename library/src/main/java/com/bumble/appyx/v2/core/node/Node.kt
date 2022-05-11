@@ -1,7 +1,6 @@
 package com.bumble.appyx.v2.core.node
 
 import androidx.annotation.CallSuper
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.saveable.SaverScope
@@ -11,7 +10,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
-import com.bumble.appyx.v2.core.composable.LocalTransitionModifier
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.lifecycle.LifecycleLogger
@@ -33,6 +31,7 @@ abstract class Node(
     plugins: List<Plugin> = emptyList()
 ) : NodeLifecycle, NodeView {
 
+    @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
 
     val plugins: List<Plugin> = plugins + if (this is Plugin) listOf(this) else emptyList()
@@ -86,13 +85,7 @@ abstract class Node(
             LocalLifecycleOwner provides this,
         ) {
             DerivedSetup()
-            Box(modifier = LocalTransitionModifier.current ?: Modifier) {
-                // Avoid applying the same transition modifier for the children down in hierarchy
-                // in the cases when their parent doesn't provide one
-                CompositionLocalProvider(LocalTransitionModifier provides null) {
-                    View(modifier)
-                }
-            }
+            View(modifier)
         }
     }
 
@@ -136,16 +129,31 @@ abstract class Node(
         parent?.onChildFinished(this) ?: integrationPoint.onRootFinished()
     }
 
+    /**
+     * Triggers parents up navigation (back navigation by default).
+     *
+     * This method is useful for different cases like:
+     * - Close button on the screen which leads back to the previous screen.
+     * - Blocker screen that intercepts back button clicks but closes itself when condition is met.
+     *
+     * To properly handle blocker case this method skips the current node plugins (like router),
+     * and invokes the parent directly.
+     */
     fun navigateUp() {
-        if (performUpNavigation()) return
-        integrationPoint.handleUpNavigation()
+        require(parent != null || isRoot) {
+            "Can't navigate up, neither parent nor integration point is presented"
+        }
+        if (parent?.performUpNavigation() != true) {
+            integrationPoint.handleUpNavigation()
+        }
     }
+
+    @CallSuper
+    protected open fun performUpNavigation(): Boolean =
+        handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
 
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
-
-    protected open fun performUpNavigation(): Boolean =
-        handleUpNavigationByPlugins() || parent?.performUpNavigation() == true
 
     companion object {
         const val KEY_PLUGINS_STATE = "PluginsState"

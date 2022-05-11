@@ -1,6 +1,7 @@
 package com.bumble.appyx.v2.core.routing.source.backstack.operation
 
 import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.routing.source.assertRoutingElementsEqual
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.CREATED
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
@@ -108,7 +109,7 @@ internal class PushTest {
                 operation = operation
             )
         )
-        newElements.assertBackstackElementsEqual(expectedElements)
+        newElements.assertRoutingElementsEqual(expectedElements)
     }
 
 }

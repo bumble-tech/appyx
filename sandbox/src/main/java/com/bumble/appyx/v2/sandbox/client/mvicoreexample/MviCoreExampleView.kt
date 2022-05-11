@@ -17,6 +17,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.node.AbstractNodeView
@@ -75,7 +76,7 @@ class MviCoreExampleView(private val events: PublishRelay<Event> = PublishRelay.
                 is InitialState ->
                     Box(modifier = modifier.fillMaxSize()) {
                         Column(modifier = modifier.align(Alignment.Center)) {
-                            Text(text = viewModel.stateName)
+                            Text(color = Color.Black, text = viewModel.stateName)
                             Spacer(modifier = Modifier.requiredHeight(8.dp))
                             Button(onClick = { events.accept(LoadDataClicked) }) {
                                 Text(text = "Load data")
@@ -86,6 +87,7 @@ class MviCoreExampleView(private val events: PublishRelay<Event> = PublishRelay.
                     Box(modifier = modifier.fillMaxSize()) {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
+                            color = Color.Black,
                             text = viewModel.stateName
                         )
                     }

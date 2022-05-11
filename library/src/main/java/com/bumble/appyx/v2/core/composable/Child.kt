@@ -3,12 +3,12 @@ package com.bumble.appyx.v2.core.composable
 import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
@@ -41,17 +41,17 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
         transitionDescriptor: TransitionDescriptor<Routing, State>
     ) -> Unit
 ) {
-    val childEntry = childOrCreate(routingElement.key)
+    val childEntry = remember(routingElement.key.id) { childOrCreate(routingElement.key) }
     saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
-        val descriptor = routingElement.createDescriptor(transitionParams)
-        val transitionScope =
-            transitionHandler.handle(
-                descriptor = descriptor,
-                onTransitionFinished = {
-                    routingSource.onTransitionFinished(
-                        childEntry.key
-                    )
-                })
+        val descriptor = remember(routingElement) {
+            routingElement.createDescriptor(transitionParams)
+        }
+        val transitionScope = transitionHandler.handle(
+            descriptor = descriptor,
+            onTransitionFinished = {
+                routingSource.onTransitionFinished(childEntry.key)
+            }
+        )
 
         transitionScope.decorator(
             child = ChildRendererImpl(
@@ -70,14 +70,16 @@ private class ChildRendererImpl(
 
     @Composable
     override operator fun invoke(modifier: Modifier) {
-        CompositionLocalProvider(LocalTransitionModifier provides transitionModifier) {
+        Box(modifier = transitionModifier) {
             node.Compose(modifier = modifier)
         }
     }
 
     @Composable
     override operator fun invoke() {
-        invoke(modifier = Modifier)
+        Box(modifier = transitionModifier) {
+            node.Compose(modifier = Modifier)
+        }
     }
 }
 
@@ -92,26 +94,30 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
 ) {
     val density = LocalDensity.current.density
     var transitionBounds by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by derivedStateOf {
-        TransitionParams(
-            bounds = TransitionBounds(
-                width = Dp(transitionBounds.width / density),
-                height = Dp(transitionBounds.height / density)
+    val transitionParams by remember(transitionBounds) {
+        derivedStateOf {
+            TransitionParams(
+                bounds = TransitionBounds(
+                    width = Dp(transitionBounds.width / density),
+                    height = Dp(transitionBounds.height / density)
+                )
             )
-        )
+        }
     }
     Box(modifier = Modifier
         .onSizeChanged {
             transitionBounds = it
         }
     ) {
-        Child(
-            routingElement = routingElement,
-            saveableStateHolder = rememberSaveableStateHolder(),
-            transitionParams = transitionParams,
-            transitionHandler = transitionHandler,
-            decorator = decorator
-        )
+        key(routingElement.key.id) {
+            Child(
+                routingElement = routingElement,
+                saveableStateHolder = rememberSaveableStateHolder(),
+                transitionParams = transitionParams,
+                transitionHandler = transitionHandler,
+                decorator = decorator
+            )
+        }
     }
 }
 
@@ -142,14 +148,13 @@ fun <R, S> RoutingSource<R, S>?.visibleChildrenAsState(): State<RoutingElements<
         remember { mutableStateOf(emptyList()) }
     }
 
-
-val LocalTransitionModifier = compositionLocalOf<Modifier?> { null }
-
+@Immutable
 interface ChildTransitionScope<S> {
     val transition: Transition<S>
     val transitionModifier: Modifier
 }
 
+@Immutable
 internal class ChildTransitionScopeImpl<S>(
     override val transition: Transition<S>,
     override val transitionModifier: Modifier

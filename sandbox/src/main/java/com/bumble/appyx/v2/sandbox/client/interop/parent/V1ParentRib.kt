@@ -10,7 +10,10 @@ import com.bumble.appyx.v2.sandbox.client.interop.parent.V1ParentViewImpl.Factor
 
 interface V1ParentRib : Rib {
 
-    class Customisation(val viewFactory: Factory = Factory()) : RibCustomisation
+    class Customisation(
+        val viewFactory: Factory = Factory(),
+        val name: String = "defaultName"
+    ) : RibCustomisation
 }
 
 class V1ParentNode internal constructor(

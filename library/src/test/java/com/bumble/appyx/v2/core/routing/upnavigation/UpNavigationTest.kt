@@ -18,6 +18,7 @@ import com.bumble.appyx.v2.core.testutils.TestIntegrationPoint
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import java.util.UUID
 
 class UpNavigationTest {
 
@@ -33,8 +34,8 @@ class UpNavigationTest {
     // region Child
 
     @Test
-    fun `integrationPoint up navigation is invoked when no plugin provided`() {
-        val child = Child(id = "").build()
+    fun `integrationPoint up navigation is invoked without parent`() {
+        val child = Child().build()
         child.integrationPoint = integrationPoint
 
         child.navigateUp()
@@ -43,26 +44,14 @@ class UpNavigationTest {
     }
 
     @Test
-    fun `up navigation is intercepted when plugin intercepts it`() {
+    fun `up navigation is not intercepted by caller plugin`() {
         val stub = StubUpNavigationHandler()
-        val child = Child(id = "", upNavigationHandler = stub).build()
+        val child = Child(upNavigationHandler = stub).build()
         child.integrationPoint = integrationPoint
 
         child.navigateUp()
 
-        stub.assertInvoked()
-        testUpNavigationHandler.assertNotInvoked()
-    }
-
-    @Test
-    fun `up navigation is not intercepted when plugin does not intercept it`() {
-        val stub = StubUpNavigationHandler(stub = false)
-        val child = Child(id = "", upNavigationHandler = stub).build()
-        child.integrationPoint = integrationPoint
-
-        child.navigateUp()
-
-        stub.assertInvoked()
+        stub.assertNotInvoked()
         testUpNavigationHandler.assertInvoked()
     }
 
@@ -71,91 +60,73 @@ class UpNavigationTest {
     // region Parent
 
     @Test
-    fun `integrationPoint up navigation is invoked when routing can't go up`() {
+    fun `integrationPoint up navigation is invoked when parent can't handle child up navigation`() {
         val parent = Parent().build()
         parent.integrationPoint = integrationPoint
 
-        parent.navigateUp()
+        val child = parent.findChild<Child>(CHILD_ID)
+        child.navigateUp()
 
+        assertEquals(1, parent.children.value.size)
         testUpNavigationHandler.assertInvoked()
     }
 
     @Test
-    fun `up navigation is intercepted by routing source`() {
+    fun `parent plugin handles child up navigation`() {
+        val stub = StubUpNavigationHandler()
+        val parent = Parent(upNavigationHandler = stub).build()
+        parent.integrationPoint = integrationPoint
+
+        val child = parent.findChild<Child>(CHILD_ID)
+        child.navigateUp()
+
+        stub.assertInvoked()
+        testUpNavigationHandler.assertNotInvoked()
+    }
+
+    @Test
+    fun `parent router handles child up navigation without plugin`() {
         val parent = Parent().build()
-        parent.backStack.push(Parent.Configuration(id = "1"))
         parent.integrationPoint = integrationPoint
 
-        parent.navigateUp()
+        val newChildId = UUID.randomUUID()
+        parent.backStack.push(Parent.Configuration(newChildId))
+        val child = parent.findChild<Child>(newChildId)
+        child.navigateUp()
 
         assertEquals(1, parent.children.value.size)
         testUpNavigationHandler.assertNotInvoked()
     }
 
     @Test
-    fun `up navigation is intercepted when plugin intercepts it before routing source`() {
+    fun `parent plugin handles child up navigation instead of router`() {
         val stub = StubUpNavigationHandler()
         val parent = Parent(upNavigationHandler = stub).build()
-        parent.backStack.push(Parent.Configuration(id = "1"))
         parent.integrationPoint = integrationPoint
 
-        parent.navigateUp()
+        val newChildId = UUID.randomUUID()
+        parent.backStack.push(Parent.Configuration(newChildId))
+        val child = parent.findChild<Child>(newChildId)
+        child.navigateUp()
 
-        stub.assertInvoked()
         assertEquals(2, parent.children.value.size)
-        testUpNavigationHandler.assertNotInvoked()
-    }
-
-    @Test
-    fun `up navigation is intercepted when plugin does not intercept it before routing source`() {
-        val stub = StubUpNavigationHandler(stub = false)
-        val parent = Parent(upNavigationHandler = stub).build()
-        parent.backStack.push(Parent.Configuration(id = "1"))
-        parent.integrationPoint = integrationPoint
-
-        parent.navigateUp()
-
         stub.assertInvoked()
-        assertEquals(1, parent.children.value.size)
         testUpNavigationHandler.assertNotInvoked()
-    }
-
-    @Test
-    fun `child invokes parent up navigation logic`() {
-        val stub = StubUpNavigationHandler()
-        val parent = Parent(upNavigationHandler = stub).build()
-        parent.backStack.push(Parent.Configuration(id = "1"))
-
-        val child1 = parent.children.value.values.find { (it.nodeOrNull as Child).id == "1" }
-        requireNotNull(child1?.nodeOrNull).navigateUp()
-
-        stub.assertInvoked()
-    }
-
-    @Test
-    fun `up navigation is intercepted by child plugin before parents one`() {
-        val parentStub = StubUpNavigationHandler()
-        val childStub = StubUpNavigationHandler()
-        val parent = Parent(
-            upNavigationHandler = parentStub,
-            childUpNavigationHandler = childStub,
-        ).build()
-
-        val child = parent.children.value.values.first()
-        requireNotNull(child.nodeOrNull).navigateUp()
-
-        childStub.assertInvoked()
-        parentStub.assertNotInvoked()
     }
 
     // endregion
 
     // region Setup
 
+    interface NodeWithId {
+        val id: UUID
+    }
+
     class Parent(
+        override val id: UUID = PARENT_ID,
         buildContext: BuildContext = BuildContext.root(null),
         val backStack: BackStack<Configuration> = BackStack(
-            initialElement = Configuration("0"),
+            initialElement = Configuration(CHILD_ID),
             savedStateMap = buildContext.savedStateMap,
         ),
         upNavigationHandler: UpNavigationHandler? = null,
@@ -165,8 +136,8 @@ class UpNavigationTest {
         routingSource = backStack,
         childMode = ChildEntry.ChildMode.EAGER,
         plugins = upNavigationHandler?.let { listOf(it) } ?: emptyList(),
-    ) {
-        data class Configuration(val id: String)
+    ), NodeWithId {
+        data class Configuration(val id: UUID)
 
         init {
             manageTransitionsInTest()
@@ -178,20 +149,31 @@ class UpNavigationTest {
         @Composable
         override fun View(modifier: Modifier) {
         }
+
+        @Suppress("UNCHECKED_CAST")
+        fun <T : NodeWithId> findChild(id: UUID): T =
+            children.value.values.find { it.key.routing.id == id }?.nodeOrNull as T
+
     }
 
     class Child(
-        val id: String,
+        override val id: UUID = CHILD_ID,
         buildContext: BuildContext = BuildContext.root(null),
         upNavigationHandler: UpNavigationHandler? = null,
     ) : Node(
         buildContext = buildContext,
         plugins = upNavigationHandler?.let { listOf(it) } ?: emptyList(),
-    ) {
+    ), NodeWithId {
         @Composable
         override fun View(modifier: Modifier) {
         }
     }
+
+    companion object {
+        private val PARENT_ID = UUID.randomUUID()
+        private val CHILD_ID = UUID.randomUUID()
+    }
+
     // endregion
 
 }

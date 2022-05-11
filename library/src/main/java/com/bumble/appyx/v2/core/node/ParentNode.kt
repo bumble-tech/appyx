@@ -33,7 +33,6 @@ import com.bumble.appyx.v2.core.routing.source.combined.plus
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.v2.core.routing.source.permanent.operation.add
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlin.reflect.KClass
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -42,10 +41,11 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
-    buildContext: BuildContext,
+    private val buildContext: BuildContext,
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
@@ -118,7 +118,10 @@ abstract class ParentNode<Routing : Any>(
     private fun SavedStateMap?.toBuildContext(): BuildContext =
         BuildContext(
             ancestryInfo = AncestryInfo.Child(this@ParentNode),
-            savedStateMap = this
+            savedStateMap = this,
+            customisations = buildContext.customisations.getSubDirectoryOrSelf(
+                this@ParentNode::class
+            )
         )
 
     fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Eager<Routing> {

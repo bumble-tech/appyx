@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    api libs.appTreeUtils
     api libs.kotlin.coroutines.android
     api libs.androidx.lifecycle.common
     api libs.compose.animation.core
@@ -58,7 +59,7 @@ dependencies {
 
     testImplementation libs.androidx.arch.core.testing
     testImplementation libs.junit
-    testImplementation libs.kotlin.coroutines.text
+    testImplementation libs.kotlin.coroutines.test
 
     androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit
