@@ -2,11 +2,10 @@ package com.bumble.appyx.v2.core.routing.source.tiles
 
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.source.tiles.backPressHandler.DeselectAllTiles
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 
 class Tiles<T : Any>(
     initialElements: List<T>,
@@ -20,7 +19,7 @@ class Tiles<T : Any>(
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 
-    override val state = MutableStateFlow(
+    override val initialState: RoutingElements<T, TransitionState> =
         initialElements.map {
             TilesElement(
                 key = RoutingKey(it),
@@ -29,10 +28,9 @@ class Tiles<T : Any>(
                 operation = Operation.Noop()
             )
         }
-    )
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
-        state.update { list ->
+        updateState { list ->
             list.mapNotNull {
                 if (it.key == key) {
                     if (it.targetState == TransitionState.DESTROYED) {

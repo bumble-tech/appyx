@@ -28,39 +28,51 @@ abstract class BaseRoutingSource<Routing, State>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
 ) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
 
-    init {
-        backPressHandler.init(this, scope)
-        operationStrategy.init(this, scope, ::execute)
-    }
+    // can't pass it in constructor, it makes harder to restore it from save instance state
+    // TODO: think about how we can avoid keeping unnecessary object after state initialization
+    protected abstract val initialState: RoutingElements<Routing, State>
 
-    protected abstract val state: MutableStateFlow<RoutingElements<Routing, State>>
+    private val _state by lazy { MutableStateFlow(initialState) }
 
     override val elements: StateFlow<RoutingElements<Routing, State>>
-        get() = state
+        get() = _state
 
     private val onScreenMapper = OnScreenMapper<Routing, State>(scope, screenResolver)
 
     override val onScreen: StateFlow<RoutingElements<Routing, State>> by lazy(LazyThreadSafetyMode.NONE) {
-        onScreenMapper.resolveOnScreenElements(state)
+        onScreenMapper.resolveOnScreenElements(elements)
     }
 
     override val offScreen: StateFlow<RoutingElements<Routing, State>> by lazy(LazyThreadSafetyMode.NONE) {
-        onScreenMapper.resolveOffScreenElements(state)
+        onScreenMapper.resolveOffScreenElements(elements)
     }
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
         backPressHandler.canHandleBackPress
     }
 
+    init {
+        backPressHandler.init(this, scope)
+        operationStrategy.init(this, scope, ::execute)
+    }
+
     override fun accept(operation: Operation<Routing, State>) {
         operationStrategy.accept(operation)
     }
 
+    protected fun updateState(block: (RoutingElements<Routing, State>) -> RoutingElements<Routing, State>) {
+        _state.update { currentState ->
+            val newState = block(currentState)
+            sanitizeOffScreenTransitions(newState)
+        }
+    }
+
     private fun execute(operation: Operation<Routing, State>) {
-        if (operation.isApplicable(state.value)) {
-            state.update {
-                val state = operation(it)
-                sanitizeOffScreenTransitions(state)
+        updateState {
+            if (operation.isApplicable(it)) {
+                operation(it)
+            } else {
+                it
             }
         }
     }

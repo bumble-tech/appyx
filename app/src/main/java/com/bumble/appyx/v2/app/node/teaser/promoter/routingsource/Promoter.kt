@@ -2,9 +2,8 @@ package com.bumble.appyx.v2.app.node.teaser.promoter.routingsource
 
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.update
 
 class Promoter<T : Any>(
     initialElements: List<T> = listOf(),
@@ -26,7 +25,7 @@ class Promoter<T : Any>(
             }
     }
 
-    override val state = MutableStateFlow(
+    override val initialState: RoutingElements<T, TransitionState> =
         initialElements.map {
             PromoterElement(
                 key = RoutingKey(it),
@@ -35,10 +34,9 @@ class Promoter<T : Any>(
                 operation = Operation.Noop()
             )
         }
-    )
 
     override fun onTransitionFinished(key: RoutingKey<T>) {
-        state.update { list ->
+        updateState { list ->
             list.mapNotNull {
                 if (it.key == key) {
                     if (it.targetState == TransitionState.DESTROYED) {

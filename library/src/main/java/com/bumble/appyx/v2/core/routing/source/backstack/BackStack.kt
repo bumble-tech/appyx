@@ -4,6 +4,7 @@ import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
@@ -11,12 +12,10 @@ import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState
 import com.bumble.appyx.v2.core.routing.source.backstack.backpresshandler.PopBackPressHandler
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 
 class BackStack<Routing : Any>(
     initialElement: Routing,
@@ -35,8 +34,8 @@ class BackStack<Routing : Any>(
         CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
     }
 
-    override val state = MutableStateFlow(
-        value = savedStateMap?.restoreHistory() ?: listOf(
+    override val initialState: RoutingElements<Routing, TransitionState> =
+        savedStateMap?.restoreHistory() ?: listOf(
             BackStackElement(
                 key = RoutingKey(initialElement),
                 fromState = TransitionState.ACTIVE,
@@ -44,16 +43,15 @@ class BackStack<Routing : Any>(
                 operation = Operation.Noop()
             )
         )
-    )
 
     // TODO consider pulling up
     val routings: StateFlow<List<Routing>> =
-        state
+        elements
             .map { state -> state.map { routingElement -> routingElement.key.routing } }
             .stateIn(scope, SharingStarted.Eagerly, listOf(initialElement))
 
     override fun onTransitionFinished(key: RoutingKey<Routing>) {
-        state.update { list ->
+        updateState { list ->
             list.mapNotNull {
                 if (it.key == key) {
                     when (it.targetState) {
@@ -73,7 +71,7 @@ class BackStack<Routing : Any>(
 
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
         savedStateMap[key] =
-            state.value.mapNotNull {
+            elements.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState != TransitionState.DESTROYED) {
                     it.onTransitionFinished()

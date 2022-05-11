@@ -14,6 +14,7 @@ import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingElement
+import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -69,7 +70,8 @@ class ParentLifecycleTest {
             StateFour,
         }
 
-        override val state = MutableStateFlow<List<RoutingElement<String, State>>>(emptyList())
+        override val initialState: RoutingElements<String, State> =
+            emptyList()
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)
@@ -79,7 +81,7 @@ class ParentLifecycleTest {
         }
 
         override fun onTransitionFinished(key: RoutingKey<String>) {
-            state.update { list ->
+            updateState { list ->
                 list.map {
                     if (it.key == key) {
                         it.onTransitionFinished()
@@ -91,7 +93,7 @@ class ParentLifecycleTest {
         }
 
         fun add(routing: String, defaultState: State) {
-            state.update { list ->
+            updateState { list ->
                 sanitizeOffScreenTransitions(
                     list + RoutingElement(
                         key = RoutingKey(routing),
@@ -105,17 +107,17 @@ class ParentLifecycleTest {
 
         fun get(routing: String): RoutingElement<String, State> {
             return requireNotNull(
-                state.value.find { it.key.routing == routing },
+                elements.value.find { it.key.routing == routing },
                 { "element with routing $routing is not found" }
             )
         }
 
         fun remove(routing: String) {
-            state.update { list -> list.filter { it.key.routing != routing } }
+            updateState { list -> list.filter { it.key.routing != routing } }
         }
 
         fun changeState(routing: String, defaultState: State) {
-            state.update { list ->
+            updateState { list ->
                 sanitizeOffScreenTransitions(
                     list
                         .map {
