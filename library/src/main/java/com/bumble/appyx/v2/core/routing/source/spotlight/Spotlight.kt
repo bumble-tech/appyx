@@ -3,7 +3,6 @@ package com.bumble.appyx.v2.core.routing.source.spotlight
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
-import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
@@ -35,6 +34,6 @@ class Spotlight<Routing : Any>(
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
 
-    override val initialElements = savedStateMap?.restoreHistory() ?: items.toSpotlightElements(initialActiveIndex)
+    override val initialElements = items.toSpotlightElements(initialActiveIndex)
 
 }
