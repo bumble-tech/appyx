@@ -53,7 +53,7 @@ class PermanentRoutingSource<Routing : Any>(
         // no-op
     }
 
-    override fun onTransitionFinished(key: RoutingKey<Routing>) {
+    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
         // no-op
     }
 

@@ -29,6 +29,7 @@ import com.bumble.appyx.v2.core.plugin.Plugin
 import com.bumble.appyx.v2.core.routing.Resolver
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.RoutingSource
+import com.bumble.appyx.v2.core.routing.isTransitioning
 import com.bumble.appyx.v2.core.routing.source.combined.plus
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.v2.core.routing.source.permanent.operation.add
@@ -186,8 +187,8 @@ abstract class ParentNode<Routing : Any>(
             transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
                 routingSource.elements.collect { elements ->
                     elements
-                        .filter { it.fromState != it.targetState }
-                        .forEach { routingSource.onTransitionFinished(it.key) }
+                        .mapNotNull { if (it.isTransitioning) it.key else null }
+                        .also { routingSource.onTransitionFinished(it) }
                 }
             }
         }

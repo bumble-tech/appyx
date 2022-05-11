@@ -45,6 +45,10 @@ class CombinedRoutingSource<Key>(
         sources.forEach { it.onTransitionFinished(key) }
     }
 
+    override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
+        sources.forEach { it.onTransitionFinished(keys) }
+    }
+
     override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
         sources.forEach { it.saveInstanceState(savedStateMap) }
     }

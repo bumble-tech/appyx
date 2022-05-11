@@ -1,18 +1,17 @@
 package com.bumble.appyx.v2.sandbox.client.modal
 
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.CREATED
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.DESTROYED
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.FULL_SCREEN
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.MODAL
-import com.bumble.appyx.v2.sandbox.client.modal.operation.revert
 import com.bumble.appyx.v2.core.routing.onscreen.OnScreenMapper
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.Operation.Noop
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.RoutingSource
-import kotlin.coroutines.EmptyCoroutineContext
+import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState
+import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.CREATED
+import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.DESTROYED
+import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.FULL_SCREEN
+import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.MODAL
+import com.bumble.appyx.v2.sandbox.client.modal.operation.revert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
 class Modal<T : Any>(initialElement: T) : RoutingSource<T, TransitionState> {
 
@@ -58,10 +58,10 @@ class Modal<T : Any>(initialElement: T) : RoutingSource<T, TransitionState> {
         }
     }
 
-    override fun onTransitionFinished(key: RoutingKey<T>) {
+    override fun onTransitionFinished(keys: Collection<RoutingKey<T>>) {
         state.update { list ->
             list.mapNotNull {
-                if (it.key == key) {
+                if (it.key in keys) {
                     when (it.targetState) {
                         MODAL,
                         CREATED,
