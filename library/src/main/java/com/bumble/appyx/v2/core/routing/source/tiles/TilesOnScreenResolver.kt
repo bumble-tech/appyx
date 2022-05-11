@@ -1,6 +1,6 @@
 package com.bumble.appyx.v2.core.routing.source.tiles
 
-import com.bumble.appyx.v2.core.routing.OnScreenStateResolver
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.source.tiles.Tiles.TransitionState
 
 internal object TilesOnScreenResolver : OnScreenStateResolver<TransitionState> {

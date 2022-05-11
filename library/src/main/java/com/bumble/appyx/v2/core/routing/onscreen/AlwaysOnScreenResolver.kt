@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.core.routing
+package com.bumble.appyx.v2.core.routing.onscreen
 
 class AlwaysOnScreenResolver<State> : OnScreenStateResolver<State> {
 
