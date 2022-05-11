@@ -6,7 +6,7 @@ import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.DESTROYED
 import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.FULL_SCREEN
 import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.MODAL
 import com.bumble.appyx.v2.sandbox.client.modal.operation.revert
-import com.bumble.appyx.v2.core.routing.OnScreenMapper
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenMapper
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.Operation.Noop
 import com.bumble.appyx.v2.core.routing.RoutingElements

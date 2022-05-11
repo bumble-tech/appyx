@@ -1,5 +1,6 @@
-package com.bumble.appyx.v2.core.routing
+package com.bumble.appyx.v2.core.routing.onscreen
 
+import com.bumble.appyx.v2.core.routing.RoutingElements
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
