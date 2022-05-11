@@ -191,8 +191,8 @@ abstract class ParentNode<Routing : Any>(
             transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
                 routingSource.elements.collect { elements ->
                     elements
-                        .filter { it.fromState != it.targetState }
-                        .forEach { routingSource.onTransitionFinished(it.key) }
+                        .mapNotNull { if (it.fromState != it.targetState) it.key else null }
+                        .also { routingSource.onTransitionFinished(it) }
                 }
             }
         }
@@ -207,8 +207,8 @@ abstract class ParentNode<Routing : Any>(
             finishTransitionsForOffscreenElementsJob = lifecycle.coroutineScope.launch {
                 routingSource.offScreen.collect { elements ->
                     elements
-                        .filter { it.fromState != it.targetState }
-                        .forEach { routingSource.onTransitionFinished(it.key) }
+                        .mapNotNull { if (it.fromState != it.targetState) it.key else null }
+                        .also { routingSource.onTransitionFinished(it) }
                 }
             }
         }

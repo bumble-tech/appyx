@@ -92,10 +92,10 @@ class ParentLifecycleTest {
             // no-op
         }
 
-        override fun onTransitionFinished(key: RoutingKey<String>) {
+        override fun onTransitionFinished(keys: Collection<RoutingKey<String>>) {
             state.update { list ->
                 list.map {
-                    if (it.key == key) {
+                    if (it.key in keys) {
                         it.onTransitionFinished()
                     } else {
                         it

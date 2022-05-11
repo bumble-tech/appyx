@@ -90,10 +90,11 @@ abstract class BaseRoutingSource<Routing, State>(
         }
     }
 
-    override fun onTransitionFinished(key: RoutingKey<Routing>) {
+    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
+        if (keys.isEmpty()) return
         state.update { list ->
             list.mapNotNull {
-                if (it.key == key) {
+                if (it.key in keys) {
                     it.finishTransitionOrRemove()
                 } else {
                     it
@@ -114,9 +115,9 @@ abstract class BaseRoutingSource<Routing, State>(
             elements.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState.isFinalState) {
-                    it.onTransitionFinished()
-                } else {
                     null
+                } else {
+                    it.onTransitionFinished()
                 }
             }
     }

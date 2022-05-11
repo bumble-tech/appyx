@@ -11,10 +11,12 @@ class FinishTransitionsOnNewOperation<Routing, State> : BaseOperationStrategy<Ro
     }
 
     private fun finishUnfinishedTransitions() {
-        routingSource.elements.value.forEach { routingElement ->
-            if (routingElement.fromState != routingElement.targetState) {
-                routingSource.onTransitionFinished(routingElement.key)
+        routingSource
+            .elements
+            .value
+            .mapNotNull { routingElement ->
+                if (routingElement.fromState != routingElement.targetState) routingElement.key else null
             }
-        }
+            .also { if (it.isNotEmpty()) routingSource.onTransitionFinished(it) }
     }
 }

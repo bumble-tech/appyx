@@ -96,12 +96,12 @@ abstract class ChildAwareTestBase {
         override val offScreen: StateFlow<RoutingElements<Key, out Int>>
             get() = MutableStateFlow(emptyList())
 
-        override fun onBackPressed()  = Unit
+        override fun onBackPressed() = Unit
 
-        override fun onTransitionFinished(key: RoutingKey<Key>) {
+        override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
             state.update { list ->
                 list.mapNotNull {
-                    if (it.key == key) {
+                    if (it.key in keys) {
                         it.onTransitionFinished()
                     } else {
                         it

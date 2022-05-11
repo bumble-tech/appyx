@@ -16,7 +16,11 @@ interface RoutingSource<Routing, State> : RoutingSourceAdapter<Routing, State>,
 
     val canHandleBackPress: StateFlow<Boolean>
 
-    fun onTransitionFinished(key: RoutingKey<Routing>)
+    fun onTransitionFinished(key: RoutingKey<Routing>) {
+        onTransitionFinished(listOf(key))
+    }
+
+    fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>)
 
     fun accept(operation: Operation<Routing, State>) = Unit
 

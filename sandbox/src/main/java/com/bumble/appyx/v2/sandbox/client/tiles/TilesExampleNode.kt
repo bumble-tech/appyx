@@ -42,7 +42,7 @@ import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child4
 class TilesExampleNode(
     buildContext: BuildContext,
     private val tiles: Tiles<Routing> = Tiles(
-        initialElements = listOf(
+        initialItems = listOf(
             Child1, Child2, Child3, Child4
         )
     ),
