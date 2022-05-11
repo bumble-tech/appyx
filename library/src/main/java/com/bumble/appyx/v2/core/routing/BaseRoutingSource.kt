@@ -108,11 +108,11 @@ abstract class BaseRoutingSource<Routing, State>(
      * In case if we have any, lets finish them instantly.
      */
     protected fun sanitizeOffScreenTransitions(state: RoutingElements<Routing, State>): RoutingElements<Routing, State> =
-        state.map {
+        state.mapNotNull {
             if (screenResolver.isOnScreen(it)) {
                 it
             } else {
-                it.onTransitionFinished()
+                it.finishTransitionOrRemove()
             }
         }
 
