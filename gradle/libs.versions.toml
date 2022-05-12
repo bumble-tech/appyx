@@ -9,7 +9,7 @@ kotlin = "1.6.10"
 rxjava2 = "2.2.21"
 rxandroid = "2.1.1"
 junit5 = "5.8.2"
-appTreeUtils = "0.1.0"
+appTreeUtils = "0.1.1"
 
 [libraries]
 appTreeUtils = { module = "com.github.badoo:app-tree-utils", version.ref = "appTreeUtils" }
