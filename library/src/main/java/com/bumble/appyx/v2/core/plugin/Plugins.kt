@@ -22,11 +22,6 @@ interface NodeLifecycleAware : Plugin {
     fun onCreate(lifecycle: Lifecycle) {}
 }
 
-@Deprecated("Use SavesInstanceState")
-interface Saveable : Plugin {
-    fun onSavedInstanceState(scope: SaverScope): SavedStateMap
-}
-
 interface UpNavigationHandler : Plugin {
     fun handleUpNavigation() = false
 }
