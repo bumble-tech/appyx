@@ -40,7 +40,7 @@ import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.ListMode.va
 import com.bumble.appyx.v2.sandbox.client.list.LazyListContainerNode.Routing
 import kotlinx.parcelize.Parcelize
 
-class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
+class LazyListContainerNode constructor(
     buildContext: BuildContext,
     routingSource: PermanentRoutingSource<Routing> = PermanentRoutingSource(
         routings = buildSet<Routing> {
@@ -82,7 +82,6 @@ class LazyListContainerNode @OptIn(ExperimentalStdlibApi::class) constructor(
         }
     }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     private fun ColumnExample(elements: List<RoutingElement<Routing, out Any?>>) {
         LazyColumn(

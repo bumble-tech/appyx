@@ -14,13 +14,13 @@ import kotlinx.coroutines.flow.update
 class PermanentRoutingSource<Routing : Any>(
     routings: Set<Routing> = emptySet(),
     savedStateMap: SavedStateMap?,
-    private val key: String = PermanentRoutingSource::class.toString(),
+    private val key: String = requireNotNull(PermanentRoutingSource::class.qualifiedName),
 ) : RoutingSource<Routing, Int> {
 
     constructor(
         vararg routings: Routing,
         savedStateMap: SavedStateMap?,
-        key: String,
+        key: String = requireNotNull(PermanentRoutingSource::class.qualifiedName),
     ) : this(
         routings = routings.toSet(),
         savedStateMap = savedStateMap,
