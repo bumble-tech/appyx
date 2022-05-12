@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,7 +40,7 @@ import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.state.SavedStateMap
+import com.bumble.appyx.v2.core.state.SavedStateWriter
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -79,8 +78,7 @@ class GenericChildNode(
     private val id = Random.nextInt(10000)
     private var counter by mutableStateOf(counterStartValue)
     private var colorIndex by mutableStateOf(
-        buildContext.savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?:
-        Random.nextInt(colors.size)
+        buildContext.savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?: Random.nextInt(colors.size)
     )
 
     init {
@@ -92,12 +90,12 @@ class GenericChildNode(
         }
     }
 
-    override fun onSaveInstanceState(scope: SaverScope): SavedStateMap =
-        super.onSaveInstanceState(scope) + mapOf(
-            KEY_ID to id,
-            KEY_COUNTER to counter,
-            KEY_COLOR_INDEX to colorIndex
-        )
+    override fun onSaveInstanceState(writer: SavedStateWriter) {
+        super.onSaveInstanceState(writer)
+        writer.save(KEY_ID, id, this)
+        writer.save(KEY_COUNTER, counter, this)
+        writer.save(KEY_COLOR_INDEX, colorIndex, this)
+    }
 
     @Composable
     override fun View(modifier: Modifier) {
@@ -142,4 +140,3 @@ fun GenericChildNodePreview() {
         }
     }
 }
-

@@ -1,6 +1,5 @@
 package com.bumble.appyx.v2.core.routing
 
-import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.plugin.BackPressHandler
 import com.bumble.appyx.v2.core.plugin.Destroyable
 import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
@@ -11,6 +10,7 @@ import com.bumble.appyx.v2.core.routing.onscreen.isOnScreen
 import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
 import com.bumble.appyx.v2.core.state.SavedStateMap
+import com.bumble.appyx.v2.core.state.SavedStateWriter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -32,7 +32,7 @@ abstract class BaseRoutingSource<Routing, State>(
     private val screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val finalStates: Set<State>,
-    private val key: String = ParentNode.KEY_ROUTING_SOURCE,
+    private val key: String = KEY_ROUTING_SOURCE,
     savedStateMap: SavedStateMap?
 ) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
 
@@ -42,7 +42,7 @@ abstract class BaseRoutingSource<Routing, State>(
         screenResolver: OnScreenStateResolver<State>,
         scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
         finalState: State?,
-        key: String = ParentNode.KEY_ROUTING_SOURCE,
+        key: String = KEY_ROUTING_SOURCE,
         savedStateMap: SavedStateMap?
     ) : this(
         backPressHandler = backPressHandler,
@@ -136,16 +136,19 @@ abstract class BaseRoutingSource<Routing, State>(
             onTransitionFinished()
         }
 
-    override fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {
-        savedStateMap[key] =
-            elements.value.mapNotNull {
+    override fun saveInstanceState(writer: SavedStateWriter) {
+        writer.save(
+            key = key,
+            value = elements.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState.isFinalState) {
                     null
                 } else {
                     it.onTransitionFinished()
                 }
-            }
+            },
+            source = this,
+        )
     }
 
     override fun destroy() {
@@ -157,5 +160,9 @@ abstract class BaseRoutingSource<Routing, State>(
 
     private fun SavedStateMap.restoreHistory() =
         this[key] as? RoutingElements<Routing, State>
+
+    companion object {
+        const val KEY_ROUTING_SOURCE = "RoutingSource"
+    }
 
 }

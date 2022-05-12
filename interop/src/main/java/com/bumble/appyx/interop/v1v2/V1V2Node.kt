@@ -40,7 +40,7 @@ internal class V1V2NodeImpl<N : Node>(
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val state = v2Node.onSaveInstanceState { true }
+        val state = v2Node.saveInstanceState { true }
         outState.putBundle(V1V2NodeKey, state.toBundle())
     }
 

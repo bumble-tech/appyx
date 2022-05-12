@@ -14,7 +14,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -23,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.state.SavedStateMap
+import com.bumble.appyx.v2.core.state.SavedStateWriter
 import com.bumble.appyx.v2.sandbox.ui.atomic_tangerine
 import com.bumble.appyx.v2.sandbox.ui.manatee
 import com.bumble.appyx.v2.sandbox.ui.md_amber_500
@@ -70,8 +69,10 @@ class ChildNode(
         buildContext.savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?: Random.nextInt(colors.size)
     private val color = colors[colorIndex]
 
-    override fun onSaveInstanceState(scope: SaverScope): SavedStateMap =
-        super.onSaveInstanceState(scope) + mapOf(KEY_COLOR_INDEX to colorIndex)
+    override fun onSaveInstanceState(writer: SavedStateWriter) {
+        super.onSaveInstanceState(writer)
+        writer.save(KEY_COLOR_INDEX, colorIndex, this)
+    }
 
     @Composable
     override fun View(modifier: Modifier) {
