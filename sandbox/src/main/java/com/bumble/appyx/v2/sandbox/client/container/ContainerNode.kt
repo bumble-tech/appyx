@@ -35,6 +35,7 @@ import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.BackStackExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.BlockerExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.CombinedRoutingSource
+import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.Customisations
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.InteractorExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.LazyExamples
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.ModalExample
@@ -44,6 +45,7 @@ import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.Reques
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.RoutingSourcesExamples
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.SpotlightExample
 import com.bumble.appyx.v2.sandbox.client.container.ContainerNode.Routing.TilesExample
+import com.bumble.appyx.v2.sandbox.client.customisations.createViewCustomisationsActivityIntent
 import com.bumble.appyx.v2.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.v2.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity
@@ -107,6 +109,9 @@ class ContainerNode(
 
         @Parcelize
         object BlockerExample : Routing()
+
+        @Parcelize
+        object Customisations : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -126,6 +131,7 @@ class ContainerNode(
                 "MVICore initial state"
             )
             is BlockerExample -> BlockerExampleNode(buildContext)
+            is Customisations -> node(buildContext) { modifier -> Customisattions(modifier) }
         }
 
     @Composable
@@ -162,6 +168,7 @@ class ContainerNode(
                 label?.let {
                     Text(it, textAlign = TextAlign.Center)
                 }
+                TextButton("Customisations Example") { backStack.push(Customisations) }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
@@ -204,6 +211,38 @@ class ContainerNode(
                 TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
                 TextButton("Request permissions / start activities example") {
                     backStack.push(RequestPermissionsExamples)
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun Customisattions(modifier: Modifier) {
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                TextButton("Push default node") {
+                    integrationPoint.activityStarter.startActivity {
+                        createViewCustomisationsActivityIntent(
+                            context = this,
+                            hasCustomisedView = false
+                        )
+                    }
+                }
+                TextButton("Push node with customised view") {
+                    integrationPoint.activityStarter.startActivity {
+                        createViewCustomisationsActivityIntent(
+                            context = this,
+                            hasCustomisedView = true
+                        )
+                    }
                 }
             }
         }
