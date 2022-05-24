@@ -131,7 +131,7 @@ class ContainerNode(
                 "MVICore initial state"
             )
             is BlockerExample -> BlockerExampleNode(buildContext)
-            is Customisations -> node(buildContext) { modifier -> Customisattions(modifier) }
+            is Customisations -> node(buildContext) { modifier -> Customisations(modifier) }
         }
 
     @Composable
@@ -217,7 +217,7 @@ class ContainerNode(
     }
 
     @Composable
-    fun Customisattions(modifier: Modifier) {
+    fun Customisations(modifier: Modifier) {
         Box(
             modifier = modifier
                 .fillMaxSize()

@@ -18,7 +18,7 @@ class ViewCustomisationExampleNode(
 
     class Customisations(
         val viewFactory: ViewFactory<ViewCustomisationExampleNode> = ViewFactory {
-            ViewCustomisationExampleView()
+            ViewCustomisationExampleDefaultView()
         }
     ) : NodeCustomisation
 }

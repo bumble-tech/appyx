@@ -39,7 +39,7 @@ class ViewCustomisationsActivity : NodeActivity() {
         if (hasCustomisedView) {
             nodeCustomisationDirectory.apply {
                 put(ViewCustomisationExampleNode.Customisations(viewFactory = {
-                    ViewCustomisationExampleViewCustomised()
+                    ViewCustomisationExampleCustomisedView()
                 }))
             }
         }
