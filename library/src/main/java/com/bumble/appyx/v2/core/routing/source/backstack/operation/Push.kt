@@ -4,7 +4,7 @@ import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElement
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElements
-import com.bumble.appyx.v2.core.routing.source.backstack.current
+import com.bumble.appyx.v2.core.routing.source.backstack.activeRouting
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -19,7 +19,7 @@ data class Push<T : Any>(
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
-        element != elements.current?.key?.routing
+        element != elements.activeRouting
 
     override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
         return elements.map {

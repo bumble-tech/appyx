@@ -4,8 +4,8 @@ import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElement
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElements
-import com.bumble.appyx.v2.core.routing.source.backstack.current
-import com.bumble.appyx.v2.core.routing.source.backstack.currentIndex
+import com.bumble.appyx.v2.core.routing.source.backstack.activeIndex
+import com.bumble.appyx.v2.core.routing.source.backstack.activeRouting
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -20,7 +20,7 @@ data class Replace<T : Any>(
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
-        element != elements.current?.key?.routing
+        element != elements.activeRouting
 
     override fun invoke(
         elements: BackStackElements<T>
@@ -28,7 +28,7 @@ data class Replace<T : Any>(
         require(elements.any { it.targetState == BackStack.TransitionState.ACTIVE }) { "No element to be replaced, state=$elements" }
 
         return elements.mapIndexed { index, element ->
-            if (index == elements.currentIndex) {
+            if (index == elements.activeIndex) {
                 element.transitionTo(
                     targetState = BackStack.TransitionState.DESTROYED,
                     operation = this

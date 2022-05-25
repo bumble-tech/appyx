@@ -8,6 +8,7 @@ import com.bumble.appyx.v2.core.children.whenChildAttached
 import com.bumble.appyx.v2.core.clienthelper.interactor.Interactor
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
+import com.bumble.appyx.v2.core.routing.source.backstack.activeRouting
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.newRoot
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child1
@@ -29,7 +30,7 @@ class MviCoreExampleInteractor(
     private val backStackUpdater = Consumer<Event> { event ->
         when (event) {
             is Event.SwitchChildClicked -> {
-                if (backStack.routings.value == listOf(Child1)) {
+                if (backStack.activeRouting == Child1) {
                     backStack.newRoot(Child2)
                 } else {
                     backStack.newRoot(Child1)

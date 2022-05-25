@@ -25,6 +25,7 @@ import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
+import com.bumble.appyx.v2.core.routing.source.backstack.activeRouting
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.replace
 import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
 import kotlinx.parcelize.Parcelize
@@ -60,11 +61,12 @@ class RoutingSourceTeaser(
     }
 
     private fun switchToNextExample() {
-        val next = when (backStack.routings.value.last()) {
+        val next = when (backStack.activeRouting) {
             is BackStackTeaser -> RandomOtherTeaser
             is RandomOtherTeaser -> BackStackTeaser
+            null -> null
         }
-        backStack.replace(next)
+        if (next != null) backStack.replace(next)
     }
 
     @Composable

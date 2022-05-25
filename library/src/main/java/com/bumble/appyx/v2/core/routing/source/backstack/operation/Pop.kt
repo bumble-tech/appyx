@@ -2,7 +2,7 @@ package com.bumble.appyx.v2.core.routing.source.backstack.operation
 
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElements
-import com.bumble.appyx.v2.core.routing.source.backstack.currentIndex
+import com.bumble.appyx.v2.core.routing.source.backstack.activeIndex
 import kotlinx.parcelize.Parcelize
 
 /**
@@ -21,7 +21,7 @@ class Pop<T : Any> : BackStackOperation<T> {
         elements: BackStackElements<T>
     ): BackStackElements<T> {
 
-        val destroyIndex = elements.currentIndex
+        val destroyIndex = elements.activeIndex
         val unStashIndex =
             elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
         require(destroyIndex != -1) { "Nothing to destroy, state=$elements" }

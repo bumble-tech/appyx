@@ -25,6 +25,7 @@ import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
+import com.bumble.appyx.v2.core.routing.source.backstack.activeRouting
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.newRoot
 import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackFader
 import kotlinx.coroutines.delay
@@ -71,8 +72,8 @@ class RootNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        LaunchedEffect(backStack.routings) {
-            if (backStack.routings.value == listOf(Routing.Splash)) {
+        LaunchedEffect(backStack) {
+            if (backStack.activeRouting == Routing.Splash) {
                 delay(1000)
                 backStack.newRoot(Routing.Onboarding)
             }
