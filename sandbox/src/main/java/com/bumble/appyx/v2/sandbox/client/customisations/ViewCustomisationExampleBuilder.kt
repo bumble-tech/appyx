@@ -8,12 +8,10 @@ class ViewCustomisationExampleBuilder : SimpleBuilder() {
     override fun build(buildContext: BuildContext): Node {
         val viewFactory =
             buildContext.getOrDefault(ViewCustomisationExampleNode.Customisations()).viewFactory
-        val view = viewFactory.invoke()
 
         return ViewCustomisationExampleNode(
             buildContext = buildContext,
-            view = view,
-            plugins = listOf(view)
+            viewFactory = viewFactory
         )
     }
 }
