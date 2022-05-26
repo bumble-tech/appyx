@@ -10,7 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.bumble.appyx.v2.core.node.AbstractNodeView
 
-class ViewCustomisationExampleDefaultView : AbstractNodeView<ViewCustomisationExampleNode>() {
+abstract class ViewCustomisationExampleView : AbstractNodeView<ViewCustomisationExampleNode>()
+
+class ViewCustomisationExampleDefaultView : ViewCustomisationExampleView() {
 
     @Composable
     override fun ViewCustomisationExampleNode.NodeView(modifier: Modifier) {
@@ -25,7 +27,7 @@ class ViewCustomisationExampleDefaultView : AbstractNodeView<ViewCustomisationEx
     }
 }
 
-class ViewCustomisationExampleCustomisedView : AbstractNodeView<ViewCustomisationExampleNode>() {
+class ViewCustomisationExampleCustomisedView : ViewCustomisationExampleView() {
 
     @Composable
     override fun ViewCustomisationExampleNode.NodeView(modifier: Modifier) {

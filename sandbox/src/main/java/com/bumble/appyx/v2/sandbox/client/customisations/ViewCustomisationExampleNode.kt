@@ -7,14 +7,14 @@ import com.bumble.appyx.v2.core.node.ViewFactory
 
 class ViewCustomisationExampleNode(
     buildContext: BuildContext,
-    viewFactory: ViewFactory<ViewCustomisationExampleNode>,
+    view: ViewCustomisationExampleView,
 ) : Node(
-    view = viewFactory.invoke(),
+    view = view,
     buildContext = buildContext
 ) {
 
     class Customisations(
-        val viewFactory: ViewFactory<ViewCustomisationExampleNode> = ViewFactory {
+        val viewFactory: ViewFactory<ViewCustomisationExampleView> = ViewFactory {
             ViewCustomisationExampleDefaultView()
         }
     ) : NodeCustomisation

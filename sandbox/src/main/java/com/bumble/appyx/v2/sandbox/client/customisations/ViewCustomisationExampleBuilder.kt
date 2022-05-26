@@ -11,7 +11,7 @@ class ViewCustomisationExampleBuilder : SimpleBuilder() {
 
         return ViewCustomisationExampleNode(
             buildContext = buildContext,
-            viewFactory = viewFactory
+            view = viewFactory.invoke()
         )
     }
 }
