@@ -1,0 +1,24 @@
+package com.bumble.appyx.v2.sandbox.client.modal.backpresshandler
+
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState
+import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.FULL_SCREEN
+import com.bumble.appyx.v2.sandbox.client.modal.ModalElements
+import com.bumble.appyx.v2.sandbox.client.modal.operation.Revert
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+
+class RevertBackPressHandler<Routing : Any> :
+    BaseBackPressHandlerStrategy<Routing, TransitionState>() {
+
+    override val canHandleBackPressFlow: Flow<Boolean> by lazy {
+        routingSource.elements.map(::areThereStashedElements)
+    }
+
+    private fun areThereStashedElements(elements: ModalElements<Routing>) =
+        elements.any { it.targetState == FULL_SCREEN }
+
+    override fun onBackPressed() {
+        routingSource.accept(Revert())
+    }
+}
