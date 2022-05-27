@@ -2,7 +2,7 @@ package com.bumble.appyx.v2.core.routing.source.tiles.transitionhandler
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,7 +19,7 @@ import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class TilesTransitionHandler<T>(
-    private val transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { tween(500) }
+    private val transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { spring() }
 ) : ModifierTransitionHandler<T, Tiles.TransitionState>() {
 
     override fun createModifier(
@@ -60,7 +60,7 @@ class TilesTransitionHandler<T>(
 
 @Composable
 fun <T> rememberTilesTransitionHandler(
-    transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { tween(500) }
+    transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { spring() }
 ): ModifierTransitionHandler<T, Tiles.TransitionState> = remember {
     TilesTransitionHandler(transitionSpec)
 }
