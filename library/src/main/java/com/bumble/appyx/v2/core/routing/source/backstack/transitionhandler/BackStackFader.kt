@@ -2,7 +2,7 @@ package com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler
 
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -15,7 +15,7 @@ import com.bumble.appyx.v2.core.routing.transition.TransitionSpec
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackFader<T>(
-    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { tween(1500) }
+    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { spring() }
 ) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
 
     override fun createModifier(
@@ -38,7 +38,7 @@ class BackStackFader<T>(
 
 @Composable
 fun <T> rememberBackstackFader(
-    transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { tween(1500) }
+    transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { spring() }
 ): ModifierTransitionHandler<T, BackStack.TransitionState> = remember {
     BackStackFader(transitionSpec = transitionSpec)
 }
