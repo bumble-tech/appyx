@@ -27,7 +27,7 @@ class MviCoreExampleBuilder : Builder<String>() {
             buildContext = buildContext,
             backStack = backStack,
             view = view,
-            plugins = listOf(interactor, view)
+            plugins = listOf(interactor)
         )
     }
 }

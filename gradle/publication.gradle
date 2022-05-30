@@ -6,13 +6,22 @@
 
 apply plugin: 'maven-publish'
 
+android {
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
+}
+
 afterEvaluate { Project project ->
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.bumble.appyx.v2'
-                version = '2.0-dev05'
+                version = '2.0-dev06'
             }
         }
         repositories {

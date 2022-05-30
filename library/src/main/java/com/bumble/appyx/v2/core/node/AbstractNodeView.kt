@@ -22,3 +22,10 @@ abstract class AbstractNodeView<N : Node> : NodeView, NodeAware<N> {
     abstract fun N.NodeView(modifier: Modifier)
 
 }
+
+class EmptyNodeView : AbstractNodeView<Node>() {
+
+    @Composable
+    override fun Node.NodeView(modifier: Modifier) = Unit
+
+}

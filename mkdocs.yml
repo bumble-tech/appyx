@@ -1,0 +1,54 @@
+# General setup
+site_name: Appyx
+site_url: https://github.bumble.dev/android/appyx
+site_author: Bumble
+site_description: Kotlin-based architectural tree structure framework with Android Compose support
+
+# Repository
+repo_name: Appyx
+repo_url: https://github.bumble.dev/android/appyx
+edit_uri: ""
+
+# Copyright
+copyright: Copyright &copy; 2022 - 2022 Bumble
+
+# Navigation
+docs_dir: documentation
+
+nav:
+  - Overview: index.md
+  - Node: Node.md
+
+# theme configuration
+theme:
+  name: 'material'
+  logo: assets/logo.png
+  icon:
+    repo: fontawesome/brands/github
+  language: en
+  features:
+    - navigation.tabs
+  palette:
+    scheme: default
+    primary: amber
+    accent: deep orange
+  font:
+    text: Roboto
+    code: Roboto Mono
+  favicon: assets/favicon.png
+
+# extensions
+markdown_extensions:
+  - admonition
+  - codehilite
+  - footnotes
+  - meta
+  - toc:
+      permalink: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.smartsymbols
+  - pymdownx.superfences

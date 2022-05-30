@@ -30,13 +30,14 @@ import com.bumble.appyx.v2.core.state.SavedStateMap
 
 abstract class Node(
     buildContext: BuildContext,
+    val view: AbstractNodeView<*> = EmptyNodeView(),
     plugins: List<Plugin> = emptyList()
-) : NodeLifecycle, NodeView {
+) : NodeLifecycle, NodeView by view {
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
 
-    val plugins: List<Plugin> = plugins + listOfNotNull(this as? Plugin)
+    val plugins: List<Plugin> = plugins + view + listOfNotNull(this as? Plugin)
 
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo

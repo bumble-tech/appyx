@@ -4,7 +4,7 @@ import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElement
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStackElements
-import com.bumble.appyx.v2.core.routing.source.backstack.current
+import com.bumble.appyx.v2.core.routing.source.backstack.active
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -24,7 +24,7 @@ data class NewRoot<T : Any>(
         elements: BackStackElements<T>,
     ): BackStackElements<T> {
 
-        val current = elements.current
+        val current = elements.active
         requireNotNull(current) { "No previous elements, state=$elements" }
 
         return if (current.key.routing == element) {

@@ -47,10 +47,12 @@ import kotlin.reflect.KClass
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
     private val buildContext: BuildContext,
+    view: AbstractNodeView<*> = EmptyNodeView(),
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
+    view = view,
     buildContext = buildContext,
     plugins = plugins + routingSource + childAware
 ), Resolver<Routing>, ChildAware<ParentNode<Routing>> {

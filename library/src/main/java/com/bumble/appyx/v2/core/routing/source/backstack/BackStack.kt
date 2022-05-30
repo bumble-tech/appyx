@@ -11,10 +11,6 @@ import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionSta
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack.TransitionState.DESTROYED
 import com.bumble.appyx.v2.core.routing.source.backstack.backpresshandler.PopBackPressHandler
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 
 class BackStack<Routing : Any>(
     initialElement: Routing,
@@ -44,11 +40,5 @@ class BackStack<Routing : Any>(
             operation = Operation.Noop()
         )
     )
-
-    // TODO consider pulling up
-    val routings: StateFlow<List<Routing>> =
-        elements
-            .map { state -> state.map { routingElement -> routingElement.key.routing } }
-            .stateIn(scope, SharingStarted.Eagerly, listOf(initialElement))
 
 }
