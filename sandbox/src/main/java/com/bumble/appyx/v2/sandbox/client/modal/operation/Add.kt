@@ -13,8 +13,7 @@ data class Add<T : Any>(
     private val element: @RawValue T
 ) : ModalOperation<T> {
 
-    override fun isApplicable(elements: ModalElements<T>): Boolean =
-        true
+    override fun isApplicable(elements: ModalElements<T>) = true
 
     override fun invoke(elements: ModalElements<T>): ModalElements<T> {
         return elements + ModalElement(

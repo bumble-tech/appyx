@@ -1,88 +1,45 @@
 package com.bumble.appyx.v2.sandbox.client.modal
 
-import com.bumble.appyx.v2.core.routing.onscreen.OnScreenMapper
-import com.bumble.appyx.v2.core.routing.Operation
+import com.bumble.appyx.v2.core.node.ParentNode
+import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation.Noop
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.RoutingSource
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState
+import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
+import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
+import com.bumble.appyx.v2.core.state.SavedStateMap
 import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.CREATED
 import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.DESTROYED
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.FULL_SCREEN
-import com.bumble.appyx.v2.sandbox.client.modal.Modal.TransitionState.MODAL
-import com.bumble.appyx.v2.sandbox.client.modal.operation.revert
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
-import kotlin.coroutines.EmptyCoroutineContext
+import com.bumble.appyx.v2.sandbox.client.modal.backpresshandler.RevertBackPressHandler
 
-class Modal<T : Any>(initialElement: T) : RoutingSource<T, TransitionState> {
+class Modal<Routing : Any>(
+    initialElement: Routing,
+    savedStateMap: SavedStateMap?,
+    key: String = ParentNode.KEY_ROUTING_SOURCE,
+    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = RevertBackPressHandler(),
+    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
+    screenResolver: OnScreenStateResolver<TransitionState> = ModalOnScreenResolver
+) : BaseRoutingSource<Routing, Modal.TransitionState>(
+    savedStateMap = savedStateMap,
+    screenResolver = screenResolver,
+    operationStrategy = operationStrategy,
+    backPressHandler = backPressHandler,
+    key = key,
+    finalState = DESTROYED
+) {
 
     enum class TransitionState {
         CREATED, MODAL, FULL_SCREEN, DESTROYED
     }
 
-    private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-    private val onScreenMapper = OnScreenMapper<T, TransitionState>(scope, ModalOnScreenResolver)
-
-    private val state = MutableStateFlow(
-        value = listOf(
-            ModalElement(
-                key = RoutingKey(initialElement),
-                fromState = CREATED,
-                targetState = CREATED,
-                operation = Noop()
-            )
+    override val initialElements: RoutingElements<Routing, TransitionState> = listOf(
+        ModalElement(
+            key = RoutingKey(initialElement),
+            fromState = CREATED,
+            targetState = CREATED,
+            operation = Noop()
         )
-
     )
-
-    override val elements: StateFlow<RoutingElements<T, out TransitionState>>
-        get() = state
-
-    override val onScreen: StateFlow<ModalElements<T>> =
-        onScreenMapper.resolveOnScreenElements(state)
-
-    override val offScreen: StateFlow<ModalElements<T>> =
-        onScreenMapper.resolveOffScreenElements(state)
-
-    override fun accept(operation: Operation<T, TransitionState>) {
-        if (operation.isApplicable(state.value)) {
-            state.update { operation(it) }
-        }
-    }
-
-    override fun onTransitionFinished(keys: Collection<RoutingKey<T>>) {
-        state.update { list ->
-            list.mapNotNull {
-                if (it.key in keys) {
-                    when (it.targetState) {
-                        MODAL,
-                        CREATED,
-                        FULL_SCREEN -> it.onTransitionFinished()
-                        DESTROYED -> null
-                    }
-                } else {
-                    it
-                }
-            }
-        }
-    }
-
-    override val canHandleBackPress: StateFlow<Boolean> =
-        state
-            .map { elements ->
-                elements.any { it.targetState == FULL_SCREEN }
-            }
-            .stateIn(scope, SharingStarted.Eagerly, false)
-
-    override fun onBackPressed() {
-        revert()
-    }
 }

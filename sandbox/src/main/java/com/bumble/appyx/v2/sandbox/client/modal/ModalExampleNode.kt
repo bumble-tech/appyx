@@ -30,7 +30,10 @@ import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(
     buildContext: BuildContext,
-    private val modal: Modal<Routing> = Modal(initialElement = Child("first"))
+    private val modal: Modal<Routing> = Modal(
+        savedStateMap = buildContext.savedStateMap,
+        initialElement = Child("first")
+    )
 ) : ParentNode<Routing>(
     routingSource = modal,
     buildContext = buildContext,
