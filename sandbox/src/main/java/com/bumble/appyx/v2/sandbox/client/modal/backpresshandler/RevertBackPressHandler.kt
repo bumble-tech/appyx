@@ -12,10 +12,10 @@ class RevertBackPressHandler<Routing : Any> :
     BaseBackPressHandlerStrategy<Routing, TransitionState>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
-        routingSource.elements.map(::areThereStashedElements)
+        routingSource.elements.map(::areThereFullScreenElements)
     }
 
-    private fun areThereStashedElements(elements: ModalElements<Routing>) =
+    private fun areThereFullScreenElements(elements: ModalElements<Routing>) =
         elements.any { it.targetState == FULL_SCREEN }
 
     override fun onBackPressed() {
