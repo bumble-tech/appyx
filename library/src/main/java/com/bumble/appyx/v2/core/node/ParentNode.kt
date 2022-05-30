@@ -218,7 +218,6 @@ abstract class ParentNode<Routing : Any>(
     @CallSuper
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        routingSource.saveInstanceState(state)
         saveChildrenState(state)
     }
 
