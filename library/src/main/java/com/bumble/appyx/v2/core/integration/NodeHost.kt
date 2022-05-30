@@ -62,7 +62,7 @@ internal fun <N : Node> rememberNode(
     rememberSaveable(
         inputs = arrayOf(),
         stateSaver = mapSaver(
-            save = { node -> node.onSaveInstanceState(this) },
+            save = { node -> node.saveInstanceState(this) },
             restore = { state ->
                 factory.create(
                     buildContext = BuildContext.root(

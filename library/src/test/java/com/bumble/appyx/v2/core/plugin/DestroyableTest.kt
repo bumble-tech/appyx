@@ -25,7 +25,7 @@ class DestroyableTest {
         var isDestroyed = false
         val stub = Destroyable { isDestroyed = true }
 
-        val node = object : Node(BuildContext.root(null), listOf(stub)) {
+        val node = object : Node(BuildContext.root(null), plugins = listOf(stub)) {
             @Composable
             override fun View(modifier: Modifier) {
             }

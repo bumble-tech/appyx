@@ -1,5 +1,6 @@
 package com.bumble.appyx.v2.sandbox.client.blocker
 
+import android.os.Parcelable
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
 import com.bumble.appyx.v2.sandbox.client.child.ChildNode
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
 class BlockerExampleNode(
@@ -40,7 +42,8 @@ class BlockerExampleNode(
     routingSource = backStack,
 ) {
 
-    data class Child(val id: String)
+    @Parcelize
+    data class Child(val id: String) : Parcelable
 
     private val allowNavigateUpFromChildren = MutableStateFlow(true)
 

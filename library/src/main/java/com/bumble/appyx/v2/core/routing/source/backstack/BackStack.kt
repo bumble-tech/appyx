@@ -1,6 +1,5 @@
 package com.bumble.appyx.v2.core.routing.source.backstack
 
-import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
@@ -16,7 +15,7 @@ import com.bumble.appyx.v2.core.state.SavedStateMap
 class BackStack<Routing : Any>(
     initialElement: Routing,
     savedStateMap: SavedStateMap?,
-    key: String = ParentNode.KEY_ROUTING_SOURCE,
+    key: String = KEY_ROUTING_SOURCE,
     backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = PopBackPressHandler(),
     operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<TransitionState> = BackStackOnScreenResolver

@@ -9,7 +9,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -33,6 +32,7 @@ import com.bumble.appyx.v2.core.routing.isTransitioning
 import com.bumble.appyx.v2.core.routing.source.combined.plus
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.v2.core.routing.source.permanent.operation.add
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 import com.bumble.appyx.v2.core.state.SavedStateMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,7 +59,7 @@ abstract class ParentNode<Routing : Any>(
 
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(
         savedStateMap = buildContext.savedStateMap,
-        key = KEY_PERMANENT_ROUTING_SOURCE
+        key = KEY_PERMANENT_ROUTING_SOURCE,
     )
     val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
 
@@ -216,32 +216,26 @@ abstract class ParentNode<Routing : Any>(
     }
 
     @CallSuper
-    override fun onSaveInstanceState(scope: SaverScope): SavedStateMap =
-        super.onSaveInstanceState(scope) + HashMap<String, Any>().apply {
-            saveRoutingState(this)
-            saveChildrenState(scope, this)
-        }
-
-    private fun saveRoutingState(map: MutableMap<String, Any>) {
-        routingSource.saveInstanceState(map)
+    override fun onSaveInstanceState(state: MutableSavedStateMap) {
+        super.onSaveInstanceState(state)
+        routingSource.saveInstanceState(state)
+        saveChildrenState(state)
     }
 
-    private fun saveChildrenState(
-        scope: SaverScope,
-        map: MutableMap<String, Any>
-    ) {
+    private fun saveChildrenState(writer: MutableSavedStateMap) {
         val children = _children.value
         if (children.isNotEmpty()) {
             val childrenState =
                 children
                     .mapValues { (_, entry) ->
                         when (entry) {
-                            is ChildEntry.Eager -> entry.node.onSaveInstanceState(scope)
+                            is ChildEntry.Eager -> entry.node.saveInstanceState(writer.saverScope)
                             is ChildEntry.Lazy -> entry.buildContext.savedStateMap
                         }
                     }
-            if (childrenState.isNotEmpty()) map[KEY_CHILDREN_STATE] =
-                childrenState
+            if (childrenState.isNotEmpty()) {
+                writer[KEY_CHILDREN_STATE] = childrenState
+            }
         }
     }
 
@@ -264,9 +258,8 @@ abstract class ParentNode<Routing : Any>(
     }
 
     companion object {
-        const val KEY_ROUTING_SOURCE = "RoutingSource"
         const val KEY_CHILDREN_STATE = "ChildrenState"
-        private const val KEY_PERMANENT_ROUTING_SOURCE = "KeyPermanentRoutingSource"
+        const val KEY_PERMANENT_ROUTING_SOURCE = "PermanentRoutingSource"
     }
 
     private class PermanentChildRender(private val node: Node) : ChildRenderer {

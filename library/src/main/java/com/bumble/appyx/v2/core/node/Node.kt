@@ -21,9 +21,11 @@ import com.bumble.appyx.v2.core.plugin.Destroyable
 import com.bumble.appyx.v2.core.plugin.NodeAware
 import com.bumble.appyx.v2.core.plugin.NodeLifecycleAware
 import com.bumble.appyx.v2.core.plugin.Plugin
-import com.bumble.appyx.v2.core.plugin.Saveable
+import com.bumble.appyx.v2.core.plugin.SavesInstanceState
 import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
 import com.bumble.appyx.v2.core.plugin.plugins
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
+import com.bumble.appyx.v2.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.v2.core.state.SavedStateMap
 
 abstract class Node(
@@ -35,8 +37,7 @@ abstract class Node(
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
 
-    val plugins: List<Plugin> =
-        plugins + view + if (this is Plugin) listOf(this) else emptyList()
+    val plugins: List<Plugin> = plugins + view + listOfNotNull(this as? Plugin)
 
     val ancestryInfo: AncestryInfo =
         buildContext.ancestryInfo
@@ -106,25 +107,18 @@ abstract class Node(
         }
     }
 
-    @CallSuper
-    open fun onSaveInstanceState(scope: SaverScope): SavedStateMap {
-        val map = HashMap<String, Any>()
-        savePluginsState(scope, map)
-        return map
+    fun saveInstanceState(scope: SaverScope): SavedStateMap {
+        val writer = MutableSavedStateMapImpl(saverScope = scope)
+        onSaveInstanceState(writer)
+        plugins
+            .filterIsInstance<SavesInstanceState>()
+            .forEach { it.saveInstanceState(writer) }
+        return writer.savedState
     }
 
-    private fun savePluginsState(
-        scope: SaverScope,
-        map: MutableMap<String, Any>
-    ) {
-        val aggregatedPluginState = plugins
-            .filterIsInstance<Saveable>()
-            .map { saveable -> saveable.onSavedInstanceState(scope) }
-            .fold(mutableMapOf<String, Any?>()) { pluginsState, pluginSaved ->
-                pluginsState.putAll(pluginSaved)
-                pluginsState
-            }
-        if (aggregatedPluginState.isNotEmpty()) map[KEY_PLUGINS_STATE] = aggregatedPluginState
+    @CallSuper
+    protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
+        // no-op
     }
 
     fun finish() {
@@ -156,9 +150,5 @@ abstract class Node(
 
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
-
-    companion object {
-        const val KEY_PLUGINS_STATE = "PluginsState"
-    }
 
 }

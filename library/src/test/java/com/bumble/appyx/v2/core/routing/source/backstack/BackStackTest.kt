@@ -1,6 +1,6 @@
 package com.bumble.appyx.v2.core.routing.source.backstack
 
-import com.bumble.appyx.v2.core.node.ParentNode.Companion.KEY_ROUTING_SOURCE
+import com.bumble.appyx.v2.core.routing.BaseRoutingSource.Companion.KEY_ROUTING_SOURCE
 import com.bumble.appyx.v2.core.routing.Operation
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.source.assertRoutingElementsEqual
@@ -17,6 +17,7 @@ import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routi
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routing4
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.backStackElement
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
+import com.bumble.appyx.v2.core.state.MutableSavedStateMapImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -526,8 +527,9 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        backStack.saveInstanceState(savedStateMap = savedStateMap)
-        val actual = savedStateMap[KEY_ROUTING_SOURCE] as BackStackElements<Routing>
+        val writer = MutableSavedStateMapImpl { true }
+        backStack.saveInstanceState(writer)
+        val actual = writer.savedState[KEY_ROUTING_SOURCE] as BackStackElements<Routing>
 
         val expectedElements: BackStackElements<Routing> = listOf(
             backStackElement(

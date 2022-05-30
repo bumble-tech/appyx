@@ -1,9 +1,8 @@
 package com.bumble.appyx.v2.core.plugin
 
-import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.state.SavedStateMap
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 
 interface Plugin
 
@@ -19,10 +18,6 @@ interface NodeAware<N : Node> : Plugin {
 
 interface NodeLifecycleAware : Plugin {
     fun onCreate(lifecycle: Lifecycle) {}
-}
-
-interface Saveable : Plugin {
-    fun onSavedInstanceState(scope: SaverScope): SavedStateMap
 }
 
 interface UpNavigationHandler : Plugin {
@@ -43,5 +38,5 @@ interface BackPressHandler : Plugin {
  * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
  */
 interface SavesInstanceState : Plugin {
-    fun saveInstanceState(savedStateMap: MutableMap<String, Any>) {}
+    fun saveInstanceState(state: MutableSavedStateMap) {}
 }
