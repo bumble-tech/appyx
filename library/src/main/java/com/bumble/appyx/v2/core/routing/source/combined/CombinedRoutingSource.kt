@@ -4,7 +4,7 @@ import com.bumble.appyx.v2.core.plugin.Destroyable
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.RoutingSource
-import com.bumble.appyx.v2.core.state.SavedStateWriter
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -50,8 +50,8 @@ class CombinedRoutingSource<Key>(
         sources.forEach { it.onTransitionFinished(keys) }
     }
 
-    override fun saveInstanceState(writer: SavedStateWriter) {
-        sources.forEach { it.saveInstanceState(writer) }
+    override fun saveInstanceState(state: MutableSavedStateMap) {
+        sources.forEach { it.saveInstanceState(state) }
     }
 
     override fun destroy() {

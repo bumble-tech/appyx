@@ -32,8 +32,8 @@ import com.bumble.appyx.v2.core.routing.isTransitioning
 import com.bumble.appyx.v2.core.routing.source.combined.plus
 import com.bumble.appyx.v2.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.v2.core.routing.source.permanent.operation.add
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import com.bumble.appyx.v2.core.state.SavedStateWriter
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -214,13 +214,13 @@ abstract class ParentNode<Routing : Any>(
     }
 
     @CallSuper
-    override fun onSaveInstanceState(writer: SavedStateWriter) {
-        super.onSaveInstanceState(writer)
-        routingSource.saveInstanceState(writer)
-        saveChildrenState(writer)
+    override fun onSaveInstanceState(state: MutableSavedStateMap) {
+        super.onSaveInstanceState(state)
+        routingSource.saveInstanceState(state)
+        saveChildrenState(state)
     }
 
-    private fun saveChildrenState(writer: SavedStateWriter) {
+    private fun saveChildrenState(writer: MutableSavedStateMap) {
         val children = _children.value
         if (children.isNotEmpty()) {
             val childrenState =
@@ -232,7 +232,7 @@ abstract class ParentNode<Routing : Any>(
                         }
                     }
             if (childrenState.isNotEmpty()) {
-                writer.save(KEY_CHILDREN_STATE, childrenState, this)
+                writer[KEY_CHILDREN_STATE] = childrenState
             }
         }
     }

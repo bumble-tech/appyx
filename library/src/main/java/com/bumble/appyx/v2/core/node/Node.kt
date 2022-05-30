@@ -24,9 +24,9 @@ import com.bumble.appyx.v2.core.plugin.Plugin
 import com.bumble.appyx.v2.core.plugin.SavesInstanceState
 import com.bumble.appyx.v2.core.plugin.UpNavigationHandler
 import com.bumble.appyx.v2.core.plugin.plugins
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
+import com.bumble.appyx.v2.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import com.bumble.appyx.v2.core.state.SavedStateWriter
-import com.bumble.appyx.v2.core.state.SavedStateWriterImpl
 
 abstract class Node(
     buildContext: BuildContext,
@@ -107,7 +107,7 @@ abstract class Node(
     }
 
     fun saveInstanceState(scope: SaverScope): SavedStateMap {
-        val writer = SavedStateWriterImpl(scope)
+        val writer = MutableSavedStateMapImpl(saverScope = scope)
         onSaveInstanceState(writer)
         plugins
             .filterIsInstance<SavesInstanceState>()
@@ -116,7 +116,7 @@ abstract class Node(
     }
 
     @CallSuper
-    protected open fun onSaveInstanceState(writer: SavedStateWriter) {
+    protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
         // no-op
     }
 

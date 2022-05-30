@@ -17,7 +17,7 @@ import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routi
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.Routing.Routing4
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.backStackElement
 import com.bumble.appyx.v2.core.routing.source.backstack.operation.push
-import com.bumble.appyx.v2.core.state.SavedStateWriterImpl
+import com.bumble.appyx.v2.core.state.MutableSavedStateMapImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -527,7 +527,7 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val writer = SavedStateWriterImpl { true }
+        val writer = MutableSavedStateMapImpl { true }
         backStack.saveInstanceState(writer)
         val actual = writer.savedState[KEY_ROUTING_SOURCE] as BackStackElements<Routing>
 

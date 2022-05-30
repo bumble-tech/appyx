@@ -1,10 +1,8 @@
 package com.bumble.appyx.v2.core.plugin
 
-import androidx.compose.runtime.saveable.SaverScope
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.state.SavedStateMap
-import com.bumble.appyx.v2.core.state.SavedStateWriter
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 
 interface Plugin
 
@@ -40,5 +38,5 @@ interface BackPressHandler : Plugin {
  * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
  */
 interface SavesInstanceState : Plugin {
-    fun saveInstanceState(writer: SavedStateWriter) {}
+    fun saveInstanceState(state: MutableSavedStateMap) {}
 }

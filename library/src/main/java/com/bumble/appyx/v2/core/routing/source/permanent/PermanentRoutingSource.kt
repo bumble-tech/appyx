@@ -5,8 +5,8 @@ import com.bumble.appyx.v2.core.routing.RoutingElement
 import com.bumble.appyx.v2.core.routing.RoutingElements
 import com.bumble.appyx.v2.core.routing.RoutingKey
 import com.bumble.appyx.v2.core.routing.RoutingSource
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import com.bumble.appyx.v2.core.state.SavedStateWriter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -64,8 +64,8 @@ class PermanentRoutingSource<Routing : Any>(
         }
     }
 
-    override fun saveInstanceState(writer: SavedStateWriter) {
-        writer.save(key, state.value, this)
+    override fun saveInstanceState(state: MutableSavedStateMap) {
+        state[key] = this.state.value
     }
 
     private fun SavedStateMap?.restore(): List<RoutingElement<Routing, Int>>? =

@@ -9,8 +9,8 @@ import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.v2.core.routing.onscreen.isOnScreen
 import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 import com.bumble.appyx.v2.core.state.SavedStateMap
-import com.bumble.appyx.v2.core.state.SavedStateWriter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -136,19 +136,16 @@ abstract class BaseRoutingSource<Routing, State>(
             onTransitionFinished()
         }
 
-    override fun saveInstanceState(writer: SavedStateWriter) {
-        writer.save(
-            key = key,
-            value = elements.value.mapNotNull {
+    override fun saveInstanceState(state: MutableSavedStateMap) {
+        state[key] =
+            elements.value.mapNotNull {
                 // Sanitize outputs, removing all transitions
                 if (it.targetState.isFinalState) {
                     null
                 } else {
                     it.onTransitionFinished()
                 }
-            },
-            source = this,
-        )
+            }
     }
 
     override fun destroy() {

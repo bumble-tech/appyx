@@ -40,7 +40,7 @@ import com.bumble.appyx.v2.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.state.SavedStateWriter
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 import kotlinx.coroutines.delay
 import kotlin.random.Random
 
@@ -90,11 +90,11 @@ class GenericChildNode(
         }
     }
 
-    override fun onSaveInstanceState(writer: SavedStateWriter) {
-        super.onSaveInstanceState(writer)
-        writer.save(KEY_ID, id, this)
-        writer.save(KEY_COUNTER, counter, this)
-        writer.save(KEY_COLOR_INDEX, colorIndex, this)
+    override fun onSaveInstanceState(state: MutableSavedStateMap) {
+        super.onSaveInstanceState(state)
+        state[KEY_ID] = id
+        state[KEY_COUNTER] = counter
+        state[KEY_COLOR_INDEX] = colorIndex
     }
 
     @Composable

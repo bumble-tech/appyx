@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.state.SavedStateWriter
+import com.bumble.appyx.v2.core.state.MutableSavedStateMap
 import com.bumble.appyx.v2.sandbox.ui.atomic_tangerine
 import com.bumble.appyx.v2.sandbox.ui.manatee
 import com.bumble.appyx.v2.sandbox.ui.md_amber_500
@@ -69,9 +69,9 @@ class ChildNode(
         buildContext.savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?: Random.nextInt(colors.size)
     private val color = colors[colorIndex]
 
-    override fun onSaveInstanceState(writer: SavedStateWriter) {
-        super.onSaveInstanceState(writer)
-        writer.save(KEY_COLOR_INDEX, colorIndex, this)
+    override fun onSaveInstanceState(state: MutableSavedStateMap) {
+        super.onSaveInstanceState(state)
+        state[KEY_COLOR_INDEX] = colorIndex
     }
 
     @Composable
