@@ -1,6 +1,5 @@
 package com.bumble.appyx.v2.sandbox.client.modal
 
-import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.routing.BaseRoutingSource
 import com.bumble.appyx.v2.core.routing.Operation.Noop
 import com.bumble.appyx.v2.core.routing.RoutingElements
@@ -17,7 +16,7 @@ import com.bumble.appyx.v2.sandbox.client.modal.backpresshandler.RevertBackPress
 class Modal<Routing : Any>(
     initialElement: Routing,
     savedStateMap: SavedStateMap?,
-    key: String = ParentNode.KEY_ROUTING_SOURCE,
+    key: String = KEY_ROUTING_SOURCE,
     backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = RevertBackPressHandler(),
     operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<TransitionState> = ModalOnScreenResolver
