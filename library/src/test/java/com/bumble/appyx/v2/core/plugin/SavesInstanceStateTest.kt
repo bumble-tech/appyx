@@ -36,7 +36,7 @@ class SavesInstanceStateTest {
     }
 
     private fun createNode(vararg plugins: Plugin) =
-        object : Node(BuildContext.root(null), plugins.toList()) {
+        object : Node(BuildContext.root(null), plugins = plugins.toList()) {
             @Composable
             override fun View(modifier: Modifier) {
             }
