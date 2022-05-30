@@ -218,7 +218,8 @@ abstract class ParentNode<Routing : Any>(
     @CallSuper
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        routingSource.saveInstanceState(state)
+        // permanentRoutingSource is not provided as a plugin, store manually
+        permanentRoutingSource.saveInstanceState(state)
         saveChildrenState(state)
     }
 

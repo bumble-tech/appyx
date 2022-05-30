@@ -74,6 +74,8 @@ class SpotlightExampleNode(
                 spotlight.updateElements(items = Item.getItemList())
                 screenState.value = Loaded
             }
+        } else {
+            screenState.value = Loaded
         }
     }
 
