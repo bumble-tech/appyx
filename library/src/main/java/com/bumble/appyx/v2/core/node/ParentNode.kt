@@ -146,7 +146,7 @@ abstract class ParentNode<Routing : Any>(
     }
 
     @Composable
-    protected fun PermanentChild(
+    fun PermanentChild(
         routing: Routing,
         decorator: @Composable (child: ChildRenderer) -> Unit
     ) {
@@ -162,6 +162,11 @@ abstract class ParentNode<Routing : Any>(
         child?.let {
             decorator(child = PermanentChildRender(it.node))
         }
+    }
+
+    @Composable
+    fun PermanentChild(routing: Routing) {
+        PermanentChild(routing) { child -> child() }
     }
 
     /**
