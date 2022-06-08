@@ -13,10 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.v2.app.node.child.GenericChildNode
 import com.bumble.appyx.v2.app.node.teaser.promoter.PromoterTeaserNode.Routing
-import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.Promoter
-import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.operation.addFirst
-import com.bumble.appyx.v2.app.node.teaser.promoter.routingsource.operation.promoteAll
-import com.bumble.appyx.v2.app.node.teaser.promoter.transitionhandler.rememberPromoterTransitionHandler
+import com.bumble.appyx.routingsourcedemos.promoter.routingsource.Promoter
+import com.bumble.appyx.routingsourcedemos.promoter.routingsource.operation.addFirst
+import com.bumble.appyx.routingsourcedemos.promoter.routingsource.operation.promoteAll
+import com.bumble.appyx.routingsourcedemos.promoter.transitionhandler.rememberPromoterTransitionHandler
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.Node

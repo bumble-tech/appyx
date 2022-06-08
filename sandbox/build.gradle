@@ -48,6 +48,7 @@ dependencies {
     implementation project(':library')
     implementation project(':rx2')
     implementation project(':interop')
+    implementation project(':routing-source-demos')
 
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat

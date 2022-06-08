@@ -46,6 +46,7 @@ android {
 
 dependencies {
     implementation project(':library')
+    implementation project(':routing-source-demos')
 
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat
