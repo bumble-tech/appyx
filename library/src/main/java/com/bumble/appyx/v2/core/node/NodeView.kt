@@ -8,3 +8,10 @@ interface NodeView {
     @Composable
     fun View(modifier: Modifier)
 }
+
+
+object EmptyNodeView : NodeView {
+
+    @Composable
+    override fun View(modifier: Modifier) = Unit
+}

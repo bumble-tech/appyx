@@ -8,14 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.bumble.appyx.v2.core.node.AbstractNodeView
+import com.bumble.appyx.v2.core.node.NodeView
 
-abstract class ViewCustomisationExampleView : AbstractNodeView<ViewCustomisationExampleNode>()
-
-class ViewCustomisationExampleDefaultView : ViewCustomisationExampleView() {
+class ViewCustomisationExampleDefaultView : NodeView {
 
     @Composable
-    override fun ViewCustomisationExampleNode.NodeView(modifier: Modifier) {
+    override fun View(modifier: Modifier) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
@@ -27,10 +25,10 @@ class ViewCustomisationExampleDefaultView : ViewCustomisationExampleView() {
     }
 }
 
-class ViewCustomisationExampleCustomisedView : ViewCustomisationExampleView() {
+class ViewCustomisationExampleCustomisedView : NodeView {
 
     @Composable
-    override fun ViewCustomisationExampleNode.NodeView(modifier: Modifier) {
+    override fun View(modifier: Modifier) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
