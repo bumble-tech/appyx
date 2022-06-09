@@ -22,10 +22,3 @@ abstract class ParentNodeView<Routing : Any> : NodeView, NodeAware<ParentNode<Ro
     abstract fun ParentNode<Routing>.NodeView(modifier: Modifier)
 
 }
-
-class EmptyParentNodeView<Routing : Any> : ParentNodeView<Routing>() {
-
-    @Composable
-    override fun ParentNode<Routing>.NodeView(modifier: Modifier) = Unit
-
-}
