@@ -4,12 +4,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.v2.core.plugin.NodeAware
 
-abstract class AbstractNodeView<N : Node> : NodeView, NodeAware<N> {
+abstract class ParentNodeView<Routing : Any> : NodeView, NodeAware<ParentNode<Routing>> {
 
-    final override lateinit var node: N
+    final override lateinit var node: ParentNode<Routing>
         private set
 
-    override fun init(node: N) {
+    override fun init(node: ParentNode<Routing>) {
         this.node = node
     }
 
@@ -19,13 +19,6 @@ abstract class AbstractNodeView<N : Node> : NodeView, NodeAware<N> {
     }
 
     @Composable
-    abstract fun N.NodeView(modifier: Modifier)
-
-}
-
-class EmptyNodeView : AbstractNodeView<Node>() {
-
-    @Composable
-    override fun Node.NodeView(modifier: Modifier) = Unit
+    abstract fun ParentNode<Routing>.NodeView(modifier: Modifier)
 
 }

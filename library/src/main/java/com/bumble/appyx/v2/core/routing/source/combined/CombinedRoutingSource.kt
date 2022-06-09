@@ -14,23 +14,23 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlin.coroutines.EmptyCoroutineContext
 
-class CombinedRoutingSource<Key>(
-    val sources: List<RoutingSource<Key, *>>,
-) : RoutingSource<Key, Any?>, Destroyable {
+class CombinedRoutingSource<Routing>(
+    val sources: List<RoutingSource<Routing, *>>,
+) : RoutingSource<Routing, Any?>, Destroyable {
 
-    constructor(vararg sources: RoutingSource<Key, *>) : this(sources.toList())
+    constructor(vararg sources: RoutingSource<Routing, *>) : this(sources.toList())
 
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val elements: StateFlow<RoutingElements<Key, *>> =
+    override val elements: StateFlow<RoutingElements<Routing, *>> =
         combine(sources.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<RoutingElements<Key, *>> =
+    override val onScreen: StateFlow<RoutingElements<Routing, *>> =
         combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val offScreen: StateFlow<RoutingElements<Key, *>> =
+    override val offScreen: StateFlow<RoutingElements<Routing, *>> =
         combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
@@ -42,11 +42,11 @@ class CombinedRoutingSource<Key>(
         sources.firstOrNull { it.canHandleBackPress.value }?.onBackPressed()
     }
 
-    override fun onTransitionFinished(key: RoutingKey<Key>) {
+    override fun onTransitionFinished(key: RoutingKey<Routing>) {
         sources.forEach { it.onTransitionFinished(key) }
     }
 
-    override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
+    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
         sources.forEach { it.onTransitionFinished(keys) }
     }
 

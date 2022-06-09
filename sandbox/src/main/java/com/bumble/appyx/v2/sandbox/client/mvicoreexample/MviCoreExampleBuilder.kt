@@ -16,7 +16,7 @@ class MviCoreExampleBuilder : Builder<String>() {
             initialElement = Routing.Child1,
             savedStateMap = buildContext.savedStateMap,
         )
-        val view = MviCoreExampleView()
+        val view = MviCoreExampleView(backStack)
         val interactor = MviCoreExampleInteractor(
             feature = feature,
             backStack = backStack,
