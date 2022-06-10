@@ -18,10 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.node.ParentNodeView
+import com.bumble.appyx.v2.core.routing.RoutingSource
 import com.bumble.appyx.v2.core.routing.source.backstack.BackStack
 import com.bumble.appyx.v2.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
@@ -37,7 +39,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MviCoreExampleView(
-    private val backStack: BackStack<Routing>,
+    private val backStack: RoutingSource<Routing, BackStack.TransitionState>,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : ParentNodeView<Routing>(), ObservableSource<Event> by events, Consumer<ViewModel> {
 
@@ -76,15 +78,28 @@ class MviCoreExampleView(
             }
             when (viewModel) {
                 is Loading -> Box(modifier = modifier.fillMaxSize()) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .testTag(LoadingTestTag)
+                    )
                 }
                 is InitialState ->
                     Box(modifier = modifier.fillMaxSize()) {
                         Column(modifier = modifier.align(Alignment.Center)) {
-                            Text(color = Color.Black, text = viewModel.stateName)
+                            Text(
+                                modifier = Modifier.testTag(InitialStateTextTag),
+                                color = Color.Black, text = viewModel.stateName
+                            )
                             Spacer(modifier = Modifier.requiredHeight(8.dp))
-                            Button(onClick = { events.accept(LoadDataClicked) }) {
-                                Text(text = "Load data")
+                            Button(
+                                modifier = Modifier.testTag(InitialStateButtonTag),
+                                onClick = { events.accept(LoadDataClicked) }
+                            ) {
+                                Text(
+                                    modifier = Modifier.testTag(InitialStateButtonTextTag),
+                                    text = "Load data"
+                                )
                             }
                         }
                     }
@@ -100,3 +115,8 @@ class MviCoreExampleView(
         }
     }
 }
+
+const val LoadingTestTag = "Loading"
+const val InitialStateTextTag = "InitialStateText"
+const val InitialStateButtonTag = "InitialStateButton"
+const val InitialStateButtonTextTag = "InitialStateButton"
