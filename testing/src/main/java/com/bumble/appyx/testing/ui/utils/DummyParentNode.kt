@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.view.utils
+package com.bumble.appyx.testing.ui.utils
 
 import com.bumble.appyx.v2.core.modality.BuildContext
 import com.bumble.appyx.v2.core.node.ParentNode

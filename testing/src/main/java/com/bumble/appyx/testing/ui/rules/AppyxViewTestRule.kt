@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.view.rules
+package com.bumble.appyx.testing.ui.rules
 
 import androidx.test.rule.ActivityTestRule
 import com.bumble.appyx.v2.core.node.NodeView

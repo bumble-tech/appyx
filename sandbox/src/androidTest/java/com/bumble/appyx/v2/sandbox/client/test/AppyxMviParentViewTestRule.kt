@@ -1,6 +1,6 @@
 package com.bumble.appyx.v2.sandbox.client.test
 
-import com.bumble.appyx.testing.view.rules.AppyxParentViewTestRule
+import com.bumble.appyx.testing.ui.rules.AppyxParentViewTestRule
 import com.bumble.appyx.v2.core.node.ParentNodeView
 import com.bumble.appyx.v2.core.node.ViewFactory
 import io.reactivex.ObservableSource

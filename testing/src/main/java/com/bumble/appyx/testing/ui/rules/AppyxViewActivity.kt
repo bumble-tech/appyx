@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.view.rules
+package com.bumble.appyx.testing.ui.rules
 
 import android.os.Bundle
 import androidx.activity.compose.setContent

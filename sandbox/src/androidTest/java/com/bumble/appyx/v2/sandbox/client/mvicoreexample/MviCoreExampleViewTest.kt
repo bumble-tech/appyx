@@ -4,7 +4,7 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performClick
-import com.bumble.appyx.testing.view.utils.DummyRoutingSource
+import com.bumble.appyx.testing.ui.utils.DummyRoutingSource
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleView.Event
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.v2.sandbox.client.test.AppyxViewParentRule

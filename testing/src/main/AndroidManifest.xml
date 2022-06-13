@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.bumble.appyx.testing.view.rules.AppyxViewActivity"
+            android:name="com.bumble.appyx.testing.ui.rules.AppyxViewActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

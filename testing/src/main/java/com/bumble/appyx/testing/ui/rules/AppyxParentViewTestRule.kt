@@ -1,7 +1,7 @@
-package com.bumble.appyx.testing.view.rules
+package com.bumble.appyx.testing.ui.rules
 
 import androidx.test.rule.ActivityTestRule
-import com.bumble.appyx.testing.view.utils.DummyParentNode
+import com.bumble.appyx.testing.ui.utils.DummyParentNode
 import com.bumble.appyx.v2.core.node.ParentNodeView
 import com.bumble.appyx.v2.core.node.ViewFactory
 import org.junit.runner.Description
