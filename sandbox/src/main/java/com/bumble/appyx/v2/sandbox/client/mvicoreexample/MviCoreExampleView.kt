@@ -114,9 +114,11 @@ class MviCoreExampleView(
             }
         }
     }
-}
 
-const val LoadingTestTag = "Loading"
-const val InitialStateTextTag = "InitialStateText"
-const val InitialStateButtonTag = "InitialStateButton"
-const val InitialStateButtonTextTag = "InitialStateButton"
+    companion object {
+        const val LoadingTestTag = "Loading"
+        const val InitialStateTextTag = "InitialStateText"
+        const val InitialStateButtonTag = "InitialStateButton"
+        const val InitialStateButtonTextTag = "InitialStateButton"
+    }
+}
