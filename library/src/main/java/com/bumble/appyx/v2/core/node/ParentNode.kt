@@ -48,7 +48,7 @@ abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
     private val buildContext: BuildContext,
     view: ParentNodeView<Routing> = EmptyParentNodeView(),
-    private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.LAZY,
+    private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(

@@ -186,7 +186,6 @@ class ChildLifecycleTest {
     ) : ParentNode<String>(
         buildContext = buildContext,
         routingSource = routing,
-        childMode = ChildEntry.ChildMode.EAGER,
     ) {
         override fun resolve(routing: String, buildContext: BuildContext): Node =
             Child(routing, buildContext)
