@@ -8,12 +8,10 @@ import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 
 class AppyxMviViewTestRule<in ViewModel : Any, Event : Any, View : NodeView>(
-    launchActivity: Boolean = true,
     private val modelConsumer: (View) -> Consumer<in ViewModel>,
     private val eventObservable: (View) -> ObservableSource<out Event>,
     viewFactory: ViewFactory<View>,
 ) : AppyxViewTestRule<View>(
-    launchActivity = launchActivity,
     viewFactory = viewFactory,
 ) {
     private lateinit var _modelConsumer: Consumer<in ViewModel>
@@ -22,16 +20,16 @@ class AppyxMviViewTestRule<in ViewModel : Any, Event : Any, View : NodeView>(
         get() = testEvents.values()
     val testEvents: TestObserver<Event> = TestObserver()
 
-    override fun afterActivityLaunched() {
-        super.afterActivityLaunched()
+    override fun before() {
+        super.before()
         runOnMainSync {
             _modelConsumer = modelConsumer(view)
             eventObservable(view).wrapToObservable().subscribe(testEvents)
         }
     }
 
-    override fun afterActivityFinished() {
-        super.afterActivityFinished()
+    override fun after() {
+        super.after()
         testEvents.dispose()
     }
 

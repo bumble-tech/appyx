@@ -10,14 +10,12 @@ class AppyxViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initCallback?.invoke()
         setContent {
             view?.View(modifier = Modifier)
         }
     }
 
     companion object {
-        var initCallback : (() -> Unit)? = null
         var view: NodeView? = null
     }
 

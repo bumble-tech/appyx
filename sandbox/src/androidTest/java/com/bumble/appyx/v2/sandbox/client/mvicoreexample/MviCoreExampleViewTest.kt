@@ -7,7 +7,7 @@ import androidx.compose.ui.test.performClick
 import com.bumble.appyx.testing.ui.utils.DummyRoutingSource
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.MviCoreExampleView.Event
 import com.bumble.appyx.v2.sandbox.client.mvicoreexample.feature.ViewModel
-import com.bumble.appyx.v2.sandbox.client.test.AppyxViewParentRule
+import com.bumble.appyx.v2.sandbox.client.test.appyxParentViewRule
 import com.bumble.appyx.v2.sandbox.client.test.assertLastValueEqual
 import org.junit.Rule
 import org.junit.Test
@@ -16,16 +16,15 @@ import org.junit.Test
 internal class MviCoreExampleViewTest {
 
     @get:Rule
-    val rule = AppyxViewParentRule(launchActivity = false) {
+    val rule = appyxParentViewRule {
         MviCoreExampleView(backStack = DummyRoutingSource())
     }
 
-    private val screen = MviCorePageObject(rule.composeRule)
+    private val screen = MviCorePageObject(rule)
 
     @Test
     fun GIVEN_loading_view_model_WHEN_displayed_THEN_loading_is_shown() {
-        rule.appyxRule.start()
-        rule.appyxRule.accept(ViewModel.Loading)
+        rule.accept(ViewModel.Loading)
 
         with(screen) {
             loader.assertIsDisplayed()
@@ -35,8 +34,7 @@ internal class MviCoreExampleViewTest {
     @Test
     fun GIVEN_initial_state_view_model_WHEN_displayed_THEN_loading_is_shown() {
         val initialText = "Initial State"
-        rule.appyxRule.start()
-        rule.appyxRule.accept(ViewModel.InitialState(initialText))
+        rule.accept(ViewModel.InitialState(initialText))
 
         with(screen) {
             initialStateText.assert(hasText(initialText))
@@ -44,7 +42,7 @@ internal class MviCoreExampleViewTest {
         }
 
 
-        rule.appyxRule.testEvents.assertLastValueEqual(Event.LoadDataClicked)
+        rule.testEvents.assertLastValueEqual(Event.LoadDataClicked)
     }
 
 }
