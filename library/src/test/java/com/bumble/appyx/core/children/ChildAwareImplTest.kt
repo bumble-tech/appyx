@@ -16,7 +16,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
     fun `whenChildAttached is invoked for promoted to eager node`() {
         root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
         var capturedNode: Node? = null
-        root.whenChildAttached<Child1> { _, child ->
+        root.whenChildAttachedTest(Child1::class) { _, child ->
             capturedNode = child
         }
         val routingKey = RoutingKey<Configuration>(Configuration.Child1())
@@ -29,7 +29,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
     fun `whenChildAttached is invoked only once`() {
         root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
         val capturedNodes = mutableListOf<Node>()
-        root.whenChildAttached<Child1> { _, child ->
+        root.whenChildAttachedTest(Child1::class) { _, child ->
             capturedNodes.add(child)
         }
         val routingKey = RoutingKey<Configuration>(Configuration.Child1())
@@ -47,7 +47,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
     fun `whenChildrenAttached is invoked for promoted to eager nodes`() {
         root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
         val capturedNodes = HashSet<Pair<Node, Node>>()
-        root.whenChildrenAttached<Child1, Child2> { _, c1, c2 ->
+        root.whenChildrenAttachedTest(Child1::class, Child2::class) { _, c1, c2 ->
             capturedNodes += c1 to c2
         }
         val routingKey1 = RoutingKey<Configuration>(Configuration.Child1(id = 0))
@@ -77,7 +77,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
         add(routingKey1)
         var capturedNode: Node? = null
         root.updateLifecycleState(Lifecycle.State.DESTROYED)
-        root.whenChildAttached<Child1> { _, child ->
+        root.whenChildAttachedTest(Child1::class) { _, child ->
             capturedNode = child
         }
         assertNull(capturedNode)
