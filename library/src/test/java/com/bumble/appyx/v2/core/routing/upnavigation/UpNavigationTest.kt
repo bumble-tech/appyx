@@ -134,7 +134,6 @@ class UpNavigationTest {
     ) : ParentNode<Parent.Configuration>(
         buildContext = buildContext,
         routingSource = backStack,
-        childMode = ChildEntry.ChildMode.EAGER,
         plugins = upNavigationHandler?.let { listOf(it) } ?: emptyList(),
     ), NodeWithId {
         data class Configuration(val id: UUID)
