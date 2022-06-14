@@ -2,10 +2,10 @@
 
 [versions]
 androidx-lifecycle = "2.3.1"
-compose = "1.1.1"
+compose = "1.2.0-beta02"
 ribs = "0.33.0"
 coroutines = "1.5.2"
-kotlin = "1.6.10"
+kotlin = "1.6.21"
 rxjava2 = "2.2.21"
 rxandroid = "2.1.1"
 junit5 = "5.8.2"
