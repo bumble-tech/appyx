@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.bumble.appyx.v2.core.composable.Children
 import com.bumble.appyx.v2.core.node.ParentNode
 import com.bumble.appyx.v2.core.node.ParentNodeView
@@ -39,6 +40,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
 class MviCoreExampleView(
+    private val title: String = "Title",
     private val backStack: RoutingSource<Routing, BackStack.TransitionState>,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : ParentNodeView<Routing>(), ObservableSource<Event> by events, Consumer<ViewModel> {
@@ -61,6 +63,12 @@ class MviCoreExampleView(
             modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
+            Text(
+                text = title,
+                fontSize = 18.sp,
+                modifier = Modifier
+                    .testTag(TitleTag)
+            )
             Children(
                 transitionHandler = rememberBackstackSlider(),
                 modifier = modifier
@@ -116,6 +124,7 @@ class MviCoreExampleView(
     }
 
     companion object {
+        const val TitleTag = "Title"
         const val LoadingTestTag = "Loading"
         const val InitialStateTextTag = "InitialStateText"
         const val InitialStateButtonTag = "InitialStateButton"

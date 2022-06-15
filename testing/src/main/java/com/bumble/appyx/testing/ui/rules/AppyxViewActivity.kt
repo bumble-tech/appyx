@@ -10,8 +10,10 @@ class AppyxViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val view = view
         setContent {
-            view?.View(modifier = Modifier)
+            requireNotNull(view) { "AppyxViewActivity View has not been setup" }
+            view.View(modifier = Modifier)
         }
     }
 

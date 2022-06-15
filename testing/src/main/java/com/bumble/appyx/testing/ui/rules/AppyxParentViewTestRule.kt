@@ -5,15 +5,15 @@ import com.bumble.appyx.v2.core.node.ParentNodeView
 import com.bumble.appyx.v2.core.node.ViewFactory
 
 open class AppyxParentViewTestRule<Routing : Any, View : ParentNodeView<Routing>>(
+    launchActivity: Boolean = true,
     viewFactory: ViewFactory<View>
-) : AppyxViewTestRule<View>(viewFactory) {
+) : AppyxViewTestRule<View>(viewFactory, launchActivity) {
 
-    override fun before() {
-        super.before()
+    override fun beforeActivityLaunched() {
+        super.beforeActivityLaunched()
         runOnUiThread {
             val testNode = DummyParentNode<Routing>()
             view.init(testNode)
         }
     }
-
 }
