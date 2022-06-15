@@ -5,7 +5,7 @@ import kotlin.Throws
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-class RunRules(
+internal class RunRules(
     base: Statement,
     rules: Iterable<TestRule>,
     description: Description,
