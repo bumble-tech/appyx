@@ -13,4 +13,5 @@ include ':app',
         ':library',
         ':sandbox',
         ':rx2',
-        ':interop'
+        ':interop',
+        ':testing'
