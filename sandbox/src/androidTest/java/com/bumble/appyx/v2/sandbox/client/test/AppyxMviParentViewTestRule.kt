@@ -7,7 +7,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 
-class AppyxMviParentViewTestRule<Routing: Any, in ViewModel : Any, Event : Any, View : ParentNodeView<Routing>>(
+class AppyxMviParentViewTestRule<Routing : Any, in ViewModel : Any, Event : Any, View : ParentNodeView<Routing>>(
     launchActivity: Boolean = true,
     private val modelConsumer: (View) -> Consumer<in ViewModel>,
     private val eventObservable: (View) -> ObservableSource<out Event>,
@@ -30,8 +30,8 @@ class AppyxMviParentViewTestRule<Routing: Any, in ViewModel : Any, Event : Any, 
         }
     }
 
-    override fun afterActivityLaunched() {
-        super.afterActivityLaunched()
+    override fun after() {
+        super.after()
         testEvents.dispose()
     }
 

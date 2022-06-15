@@ -22,8 +22,8 @@ class AppyxMviViewTestRule<in ViewModel : Any, Event : Any, View : NodeView>(
         get() = testEvents.values()
     val testEvents: TestObserver<Event> = TestObserver()
 
-    override fun before() {
-        super.before()
+    override fun beforeActivityLaunched() {
+        super.beforeActivityLaunched()
         runOnUiThread {
             _modelConsumer = modelConsumer(view)
             eventObservable(view).wrapToObservable().subscribe(testEvents)

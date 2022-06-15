@@ -16,11 +16,10 @@ import org.junit.Test
 internal class MviCoreExampleViewTest {
 
     private var title = "Title"
-    private lateinit var view: MviCoreExampleView
 
     @get:Rule
     val rule = appyxParentViewRule(launchActivity = false) {
-        view
+        createView()
     }
 
     private val screen = MviCorePageObject(rule)
@@ -28,7 +27,6 @@ internal class MviCoreExampleViewTest {
     @Test
     fun GIVEN_loading_view_model_WHEN_displayed_THEN_loading_is_shown() {
         title = "Modified title"
-        createView()
         rule.start()
         rule.accept(ViewModel.Loading)
 
@@ -41,7 +39,6 @@ internal class MviCoreExampleViewTest {
 
     @Test
     fun GIVEN_initial_state_view_model_WHEN_displayed_THEN_loading_is_shown() {
-        createView()
         val initialText = "Initial State"
         rule.start()
         rule.accept(ViewModel.InitialState(initialText))
@@ -55,12 +52,10 @@ internal class MviCoreExampleViewTest {
         rule.testEvents.assertLastValueEqual(Event.LoadDataClicked)
     }
 
-    private fun createView() {
-        view = MviCoreExampleView(
-            title = title,
-            backStack = DummyRoutingSource()
-        )
-    }
+    private fun createView() = MviCoreExampleView(
+        title = title,
+        backStack = DummyRoutingSource()
+    )
 
 }
 

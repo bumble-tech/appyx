@@ -15,9 +15,9 @@ open class AppyxViewTestRule<View : NodeView>(
     private val launchActivity: Boolean = true,
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule()
 ) : ActivityTestRule<AppyxViewActivity>(
-/* activityClass = */ AppyxViewActivity::class.java,
-/* initialTouchMode = */ true,
-/* launchActivity = */ launchActivity
+    /* activityClass = */ AppyxViewActivity::class.java,
+    /* initialTouchMode = */ true,
+    /* launchActivity = */ launchActivity
 ), ComposeTestRule by composeTestRule {
 
     val view by lazy { viewFactory.invoke() }
