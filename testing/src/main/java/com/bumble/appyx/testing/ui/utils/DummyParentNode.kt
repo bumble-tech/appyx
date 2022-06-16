@@ -1,8 +1,8 @@
 package com.bumble.appyx.testing.ui.utils
 
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.core.node.node
+import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.core.node.node
 
 class DummyParentNode<Routing : Any> : ParentNode<Routing>(
     routingSource = DummyRoutingSource<Routing, Unit>(),

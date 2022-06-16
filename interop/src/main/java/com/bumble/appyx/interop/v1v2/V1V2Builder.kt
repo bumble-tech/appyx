@@ -3,10 +3,10 @@ package com.bumble.appyx.interop.v1v2
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.bumble.appyx.interop.v1v2.V1V2NodeImpl.Companion.V1V2NodeKey
-import com.bumble.appyx.v2.core.integration.NodeFactory
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.node.build
+import com.bumble.appyx.core.integration.NodeFactory
+import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.build
 
 class V1V2Builder<N : Node>(
     private val nodeFactory: NodeFactory<N>

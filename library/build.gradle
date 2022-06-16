@@ -7,7 +7,7 @@ plugins {
 apply from: '../gradle/publication.gradle'
 
 android {
-    namespace = "com.bumble.appyx.v2.lib"
+    namespace = "com.bumble.appyx.lib"
     compileSdk 31
 
     defaultConfig {

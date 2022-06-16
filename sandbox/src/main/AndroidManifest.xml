@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.bumble.appyx.v2">
+    package="com.bumble.appyx">
 
     <application
         android:allowBackup="true"
@@ -22,17 +22,17 @@
         </activity>
 
         <activity
-            android:name="com.bumble.appyx.v2.sandbox.client.integrationpoint.StartActivityExample"
+            android:name="com.bumble.appyx.sandbox.client.integrationpoint.StartActivityExample"
             android:exported="false"
             android:theme="@style/Theme.Appyx.NoActionBar" />
 
         <activity
-            android:name="com.bumble.appyx.v2.sandbox.client.customisations.ViewCustomisationsActivity"
+            android:name="com.bumble.appyx.sandbox.client.customisations.ViewCustomisationsActivity"
             android:exported="false"
             android:theme="@style/Theme.Appyx.NoActionBar" />
 
         <activity
-            android:name="com.bumble.appyx.v2.sandbox.client.interop.InteropExampleActivity"
+            android:name="com.bumble.appyx.sandbox.client.interop.InteropExampleActivity"
             android:exported="false"
             android:theme="@style/Theme.Appyx.NoActionBar" />
     </application>
