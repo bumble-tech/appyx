@@ -45,8 +45,6 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.androidx.lifecycle.java8
     implementation libs.androidx.lifecycle.runtime
-
-
     implementation libs.androidx.test.espresso.core
     implementation libs.compose.ui.ui
 }
