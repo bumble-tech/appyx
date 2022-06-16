@@ -7,7 +7,7 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 
-class AppyxMviViewTestRule<in ViewModel : Any, Event : Any, View : NodeView>(
+class AppyxMviViewTestRule<ViewModel : Any, Event : Any, View : NodeView>(
     launchActivity: Boolean = true,
     private val modelConsumer: (View) -> Consumer<in ViewModel>,
     private val eventObservable: (View) -> ObservableSource<out Event>,
