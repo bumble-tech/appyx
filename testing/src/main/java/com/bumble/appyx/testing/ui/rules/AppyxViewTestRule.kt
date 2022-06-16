@@ -4,8 +4,8 @@ import androidx.annotation.CallSuper
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.rule.ActivityTestRule
-import com.bumble.appyx.v2.core.node.NodeView
-import com.bumble.appyx.v2.core.node.ViewFactory
+import com.bumble.appyx.core.node.NodeView
+import com.bumble.appyx.core.node.ViewFactory
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement

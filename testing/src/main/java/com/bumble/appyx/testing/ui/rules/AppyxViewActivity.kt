@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.v2.core.node.NodeView
+import com.bumble.appyx.core.node.NodeView
 
 class AppyxViewActivity : AppCompatActivity() {
 
