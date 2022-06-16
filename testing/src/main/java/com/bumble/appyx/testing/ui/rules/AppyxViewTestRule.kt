@@ -1,6 +1,7 @@
 package com.bumble.appyx.testing.ui.rules
 
 import androidx.annotation.CallSuper
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.rule.ActivityTestRule
@@ -37,11 +38,13 @@ open class AppyxViewTestRule<View : NodeView>(
     }
 
     override fun beforeActivityLaunched() {
-        AppyxViewActivity.view = view
+        AppyxViewActivity.composableView =  {
+            view.View(modifier = Modifier)
+        }
     }
 
     override fun afterActivityLaunched() {
-        AppyxViewActivity.view = null
+        AppyxViewActivity.composableView = null
     }
 
     @CallSuper
