@@ -19,22 +19,17 @@ import com.bumble.appyx.core.routing.source.backstack.operation.backStackElement
 import com.bumble.appyx.core.routing.source.backstack.operation.push
 import com.bumble.appyx.core.state.MutableSavedStateMapImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.TestCoroutineScope
-import org.junit.After
+import kotlinx.coroutines.test.TestScope
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
 @ExperimentalCoroutinesApi
 internal class BackStackTest {
 
-    private val testScope = TestCoroutineScope()
-
-    @After
-    fun cleanUp() {
-        testScope.cleanupTestCoroutines()
-    }
+    private val testScope = TestScope(UnconfinedTestDispatcher())
 
     @Test
     fun `initial state should include initial element and have it on screen`() {
@@ -157,7 +152,7 @@ internal class BackStackTest {
     }
 
     @Test
-    fun `all gets notified when change in backstack state`() {
+    fun `all gets notified when change in backstack state`() = testScope.runTest {
 
         val initialElement = Routing1
         val backStack = BackStack<Routing>(
@@ -166,7 +161,7 @@ internal class BackStackTest {
         )
 
         var state: BackStackElements<Routing>? = null
-        testScope.launch {
+        val job = launch {
             backStack
                 .elements
                 .collect { state = it }
@@ -188,6 +183,7 @@ internal class BackStackTest {
                 operation = push(Routing2)
             )
         )
+        job.cancel()
         state!!.assertRoutingElementsEqual(expectedElements)
     }
 
@@ -211,11 +207,11 @@ internal class BackStackTest {
 
         val canHandleBackPress = backStack.canHandleBackPress.value
 
-        assertEquals(canHandleBackPress, true)
+        assertEquals(true, canHandleBackPress)
     }
 
     @Test
-    fun `canHandleBackPress gets notified when change in backstack`() {
+    fun `canHandleBackPress gets notified when change in backstack`() = testScope.runTest {
 
         val initialElement = Routing1
         val backStack = BackStack<Routing>(
@@ -224,7 +220,7 @@ internal class BackStackTest {
         )
 
         var canHandleBackPress: Boolean? = null
-        testScope.launch {
+        val job = launch {
             backStack
                 .canHandleBackPress
                 .collect { canHandleBackPress = it }
@@ -232,7 +228,8 @@ internal class BackStackTest {
 
         backStack.push(Routing2)
 
-        assertEquals(canHandleBackPress, true)
+        job.cancel()
+        assertEquals(true, canHandleBackPress)
     }
 
     @Test
@@ -255,7 +252,7 @@ internal class BackStackTest {
 
         val canHandleBackPress = backStack.canHandleBackPress.value
 
-        assertEquals(canHandleBackPress, false)
+        assertEquals(false, canHandleBackPress)
     }
 
     @Test
