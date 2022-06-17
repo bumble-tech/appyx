@@ -7,8 +7,8 @@ import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
-import com.bumble.appyx.v2.core.integrationpoint.IntegrationPoint
-import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.core.integrationpoint.IntegrationPoint
+import com.bumble.appyx.core.node.Node
 
 internal class V1V2View private constructor(
     override val context: Context,

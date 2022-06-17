@@ -1,8 +1,8 @@
 package com.bumble.appyx.testing.ui.utils
 
-import com.bumble.appyx.v2.core.routing.BaseRoutingSource
-import com.bumble.appyx.v2.core.routing.RoutingElements
-import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.routing.BaseRoutingSource
+import com.bumble.appyx.core.routing.RoutingElements
+import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 
 class DummyRoutingSource<Routing : Any, State> : BaseRoutingSource<Routing, State>(
     savedStateMap = null,
