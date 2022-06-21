@@ -4,7 +4,7 @@
 Application mechanics for your Android apps, built on top of Jetpack Compose
 
 
-## In a nuthshell
+## In a nutshell
 
 Appyx comes with simple but powerful abstractions:
 
@@ -36,3 +36,4 @@ Appyx comes with both a set of common implementations (e.g. back stack, tab swit
 
 ## Quick start guide
 
+See the [Quick start guide](quickstart.md)
