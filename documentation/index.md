@@ -33,7 +33,8 @@ Appyx comes with both a set of common implementations (e.g. back stack, tab swit
 
 ## Download
 
+See the [Downloads page](setup/dependencies.md)
 
 ## Quick start guide
 
-See the [Quick start guide](quickstart.md)
+See the [Quick start guide](setup/quickstart.md)
