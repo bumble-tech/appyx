@@ -50,10 +50,10 @@ import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleN
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
-import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode
+import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize

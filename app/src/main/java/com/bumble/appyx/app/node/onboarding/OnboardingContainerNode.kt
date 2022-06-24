@@ -45,13 +45,13 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsourcedemos.spotlight.Spotlight
-import com.bumble.appyx.routingsourcedemos.spotlight.backpresshandler.GoToPrevious
-import com.bumble.appyx.routingsourcedemos.spotlight.hasNext
-import com.bumble.appyx.routingsourcedemos.spotlight.hasPrevious
-import com.bumble.appyx.routingsourcedemos.spotlight.operation.next
-import com.bumble.appyx.routingsourcedemos.spotlight.operation.previous
-import com.bumble.appyx.routingsourcedemos.spotlight.transitionhandler.rememberSpotlightSlider
+import com.bumble.appyx.routingsource.spotlight.Spotlight
+import com.bumble.appyx.routingsource.spotlight.backpresshandler.GoToPrevious
+import com.bumble.appyx.routingsource.spotlight.hasNext
+import com.bumble.appyx.routingsource.spotlight.hasPrevious
+import com.bumble.appyx.routingsource.spotlight.operation.next
+import com.bumble.appyx.routingsource.spotlight.operation.previous
+import com.bumble.appyx.routingsource.spotlight.transitionhandler.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi

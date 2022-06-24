@@ -1,4 +1,4 @@
-package com.bumble.appyx.v2.sandbox.client.modal
+package com.bumble.appyx.sandbox.client.modal
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.Box
@@ -17,17 +17,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.routingsourcedemos.modal.Modal
-import com.bumble.appyx.routingsourcedemos.modal.ModalTransitionHandler
-import com.bumble.appyx.v2.core.composable.Children
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.sandbox.client.child.ChildNode
-import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode.Routing
-import com.bumble.appyx.v2.sandbox.client.modal.ModalExampleNode.Routing.Child
-import com.bumble.appyx.routingsourcedemos.modal.operation.fullScreen
-import com.bumble.appyx.routingsourcedemos.modal.operation.show
+import com.bumble.appyx.core.composable.Children
+import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.routingsource.modal.Modal
+import com.bumble.appyx.routingsource.modal.ModalTransitionHandler
+import com.bumble.appyx.routingsource.modal.operation.fullScreen
+import com.bumble.appyx.routingsource.modal.operation.show
+import com.bumble.appyx.sandbox.client.child.ChildNode
+import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing
+import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing.Child
 import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(

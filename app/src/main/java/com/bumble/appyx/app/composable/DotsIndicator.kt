@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.ui.appyx_yellow1
 import com.bumble.appyx.core.routing.transition.TransitionSpec
-import com.bumble.appyx.routingsourcedemos.spotlight.Spotlight
-import com.bumble.appyx.routingsourcedemos.spotlight.activeIndex
-import com.bumble.appyx.routingsourcedemos.spotlight.elementsCount
+import com.bumble.appyx.routingsource.spotlight.Spotlight
+import com.bumble.appyx.routingsource.spotlight.activeIndex
+import com.bumble.appyx.routingsource.spotlight.elementsCount
 
 @Composable
 fun DotsIndicator(

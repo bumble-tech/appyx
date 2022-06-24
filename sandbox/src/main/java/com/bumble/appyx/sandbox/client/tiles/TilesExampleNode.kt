@@ -1,7 +1,6 @@
-package com.bumble.appyx.v2.sandbox.client.tiles
+package com.bumble.appyx.sandbox.client.tiles
 
 import android.util.Log
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,9 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -22,22 +21,21 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.bumble.appyx.routingsourcedemos.tiles.Tiles
-import com.bumble.appyx.routingsourcedemos.tiles.operation.removeSelected
-import com.bumble.appyx.routingsourcedemos.tiles.operation.toggleSelection
-import com.bumble.appyx.routingsourcedemos.tiles.transitionhandler.rememberTilesTransitionHandler
-import com.bumble.appyx.v2.core.children.whenChildrenAttached
-import com.bumble.appyx.v2.core.composable.Child
-import com.bumble.appyx.v2.core.composable.visibleChildrenAsState
-import com.bumble.appyx.v2.core.modality.BuildContext
-import com.bumble.appyx.v2.core.node.Node
-import com.bumble.appyx.v2.core.node.ParentNode
-import com.bumble.appyx.v2.sandbox.client.child.ChildNode
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child1
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child2
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child3
-import com.bumble.appyx.v2.sandbox.client.tiles.TilesExampleNode.Routing.Child4
+import com.bumble.appyx.routingsource.tiles.Tiles
+import com.bumble.appyx.routingsource.tiles.operation.removeSelected
+import com.bumble.appyx.routingsource.tiles.operation.toggleSelection
+import com.bumble.appyx.routingsource.tiles.transitionhandler.rememberTilesTransitionHandler
+import com.bumble.appyx.core.composable.Child
+import com.bumble.appyx.core.composable.visibleChildrenAsState
+import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.sandbox.client.child.ChildNode
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child1
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child2
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child3
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child4
 
 class TilesExampleNode(
     buildContext: BuildContext,
@@ -79,7 +77,6 @@ class TilesExampleNode(
             Child4 -> ChildNode("4", buildContext)
         }
 
-    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     override fun View(modifier: Modifier) {
         Box(
@@ -95,12 +92,13 @@ class TilesExampleNode(
 
             val elements by tiles.visibleChildrenAsState()
             LazyVerticalGrid(
-                cells = GridCells.Fixed(2),
+                columns = GridCells.Fixed(2),
                 modifier = Modifier
                     .padding(top = 60.dp)
                     .fillMaxSize(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
             ) {
+
                 items(elements) { element ->
                     Child(
                         routingElement = element,

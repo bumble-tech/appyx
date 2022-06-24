@@ -3,7 +3,6 @@ package com.bumble.appyx.core.routing.upnavigation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
