@@ -1,8 +1,8 @@
 package com.bumble.appyx.routingsourcedemos.promoter.routingsource
 
 import com.bumble.appyx.routingsourcedemos.promoter.routingsource.Promoter.TransitionState
-import com.bumble.appyx.v2.core.routing.RoutingElement
-import com.bumble.appyx.v2.core.routing.RoutingElements
+import com.bumble.appyx.core.routing.RoutingElement
+import com.bumble.appyx.core.routing.RoutingElements
 
 typealias PromoterElement<T> = RoutingElement<T, TransitionState>
 

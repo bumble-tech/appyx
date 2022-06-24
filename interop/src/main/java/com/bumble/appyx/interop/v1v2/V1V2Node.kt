@@ -7,7 +7,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.bumble.appyx.interop.v1v2.V1V2View.Dependency
 import com.bumble.appyx.interop.v1v2.V1V2View.Factory
-import com.bumble.appyx.v2.core.node.Node
+import com.bumble.appyx.core.node.Node
 
 interface V1V2Node<N : Node> : Rib {
     val v2Node: N

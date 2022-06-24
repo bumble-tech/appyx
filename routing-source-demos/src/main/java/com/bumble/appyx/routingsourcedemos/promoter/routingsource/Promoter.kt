@@ -4,10 +4,9 @@ import com.bumble.appyx.routingsourcedemos.promoter.routingsource.Promoter.Trans
 import com.bumble.appyx.routingsourcedemos.promoter.routingsource.Promoter.TransitionState.CREATED
 import com.bumble.appyx.routingsourcedemos.promoter.routingsource.Promoter.TransitionState.DESTROYED
 import com.bumble.appyx.routingsourcedemos.promoter.routingsource.Promoter.TransitionState.STAGE1
-import com.bumble.appyx.v2.core.routing.BaseRoutingSource
-import com.bumble.appyx.v2.core.routing.Operation
-import com.bumble.appyx.v2.core.routing.Operation.Noop
-import com.bumble.appyx.v2.core.routing.RoutingKey
+import com.bumble.appyx.core.routing.BaseRoutingSource
+import com.bumble.appyx.core.routing.Operation.Noop
+import com.bumble.appyx.core.routing.RoutingKey
 
 class Promoter<T : Any>(
     initialItems: List<T> = listOf(),

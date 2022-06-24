@@ -20,8 +20,8 @@ afterEvaluate { Project project ->
         publications {
             release(MavenPublication) {
                 from components.release
-                groupId = 'com.bumble.appyx.v2'
-                version = '2.0-dev08'
+                groupId = 'com.bumble.appyx'
+                version = '2.0-dev010'
             }
         }
         repositories {

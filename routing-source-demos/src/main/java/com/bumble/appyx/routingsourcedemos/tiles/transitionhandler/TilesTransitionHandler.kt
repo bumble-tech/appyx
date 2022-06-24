@@ -12,9 +12,9 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.unit.IntOffset
 import com.bumble.appyx.routingsourcedemos.tiles.Tiles
-import com.bumble.appyx.v2.core.routing.transition.ModifierTransitionHandler
-import com.bumble.appyx.v2.core.routing.transition.TransitionDescriptor
-import com.bumble.appyx.v2.core.routing.transition.TransitionSpec
+import com.bumble.appyx.core.routing.transition.ModifierTransitionHandler
+import com.bumble.appyx.core.routing.transition.TransitionDescriptor
+import com.bumble.appyx.core.routing.transition.TransitionSpec
 import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")

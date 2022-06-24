@@ -1,9 +1,9 @@
 package com.bumble.appyx.routingsourcedemos.tiles
 
-import com.bumble.appyx.v2.core.routing.BaseRoutingSource
-import com.bumble.appyx.v2.core.routing.Operation.Noop
-import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.core.routing.BaseRoutingSource
+import com.bumble.appyx.core.routing.Operation.Noop
+import com.bumble.appyx.core.routing.RoutingKey
+import com.bumble.appyx.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.routingsourcedemos.tiles.backPressHandler.DeselectAllTiles
 import com.bumble.appyx.routingsourcedemos.tiles.Tiles.TransitionState
 import com.bumble.appyx.routingsourcedemos.tiles.Tiles.TransitionState.CREATED

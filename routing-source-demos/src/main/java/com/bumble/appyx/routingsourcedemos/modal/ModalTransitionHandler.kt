@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState
-import com.bumble.appyx.v2.core.routing.transition.ModifierTransitionHandler
-import com.bumble.appyx.v2.core.routing.transition.TransitionDescriptor
-import com.bumble.appyx.v2.core.routing.transition.TransitionSpec
+import com.bumble.appyx.core.routing.transition.ModifierTransitionHandler
+import com.bumble.appyx.core.routing.transition.TransitionDescriptor
+import com.bumble.appyx.core.routing.transition.TransitionSpec
 
 @Suppress("TransitionPropertiesLabel")
 class ModalTransitionHandler<T>(

@@ -2,7 +2,7 @@ package com.bumble.appyx.routingsourcedemos.promoter.routingsource.operation
 
 import com.bumble.appyx.routingsourcedemos.promoter.routingsource.Promoter
 import com.bumble.appyx.routingsourcedemos.promoter.routingsource.PromoterElements
-import com.bumble.appyx.v2.core.routing.RoutingElements
+import com.bumble.appyx.core.routing.RoutingElements
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

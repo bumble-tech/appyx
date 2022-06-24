@@ -1,6 +1,6 @@
 package com.bumble.appyx.routingsourcedemos.modal.backpresshandler
 
-import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState.FULL_SCREEN
 import com.bumble.appyx.routingsourcedemos.modal.ModalElements

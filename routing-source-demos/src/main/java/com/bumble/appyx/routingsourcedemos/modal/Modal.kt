@@ -1,15 +1,15 @@
 package com.bumble.appyx.routingsourcedemos.modal
 
+import com.bumble.appyx.core.routing.BaseRoutingSource
+import com.bumble.appyx.core.routing.Operation.Noop
+import com.bumble.appyx.core.routing.RoutingElements
+import com.bumble.appyx.core.routing.RoutingKey
+import com.bumble.appyx.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.routing.operationstrategies.ExecuteImmediately
+import com.bumble.appyx.core.routing.operationstrategies.OperationStrategy
+import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState
-import com.bumble.appyx.v2.core.routing.BaseRoutingSource
-import com.bumble.appyx.v2.core.routing.Operation.Noop
-import com.bumble.appyx.v2.core.routing.RoutingElements
-import com.bumble.appyx.v2.core.routing.RoutingKey
-import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
-import com.bumble.appyx.v2.core.routing.onscreen.OnScreenStateResolver
-import com.bumble.appyx.v2.core.routing.operationstrategies.ExecuteImmediately
-import com.bumble.appyx.v2.core.routing.operationstrategies.OperationStrategy
-import com.bumble.appyx.v2.core.state.SavedStateMap
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState.CREATED
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState.DESTROYED
 import com.bumble.appyx.routingsourcedemos.modal.backpresshandler.RevertBackPressHandler

@@ -3,7 +3,7 @@ package com.bumble.appyx.routingsourcedemos.modal.operation
 import com.bumble.appyx.routingsourcedemos.modal.Modal
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState.MODAL
 import com.bumble.appyx.routingsourcedemos.modal.ModalElements
-import com.bumble.appyx.v2.core.routing.RoutingKey
+import com.bumble.appyx.core.routing.RoutingKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize

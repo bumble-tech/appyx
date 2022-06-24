@@ -1,8 +1,8 @@
 package com.bumble.appyx.routingsourcedemos.modal
 
 import com.bumble.appyx.routingsourcedemos.modal.Modal.TransitionState
-import com.bumble.appyx.v2.core.routing.RoutingElement
-import com.bumble.appyx.v2.core.routing.RoutingElements
+import com.bumble.appyx.core.routing.RoutingElement
+import com.bumble.appyx.core.routing.RoutingElements
 
 typealias ModalElement<T> = RoutingElement<T, TransitionState>
 

@@ -1,6 +1,6 @@
 package com.bumble.appyx.routingsourcedemos.tiles.operation
 
-import com.bumble.appyx.v2.core.routing.RoutingElements
+import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.routingsourcedemos.tiles.Tiles
 import com.bumble.appyx.routingsourcedemos.tiles.TilesElements
 import kotlinx.parcelize.Parcelize

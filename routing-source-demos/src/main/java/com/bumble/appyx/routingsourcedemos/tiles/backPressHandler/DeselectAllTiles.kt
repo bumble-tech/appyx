@@ -1,6 +1,6 @@
 package com.bumble.appyx.routingsourcedemos.tiles.backPressHandler
 
-import com.bumble.appyx.v2.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.core.routing.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.routingsourcedemos.tiles.Tiles
 import com.bumble.appyx.routingsourcedemos.tiles.TilesElements
 import com.bumble.appyx.routingsourcedemos.tiles.operation.DeselectAll

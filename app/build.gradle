@@ -5,12 +5,12 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    compileSdk 32
 
     defaultConfig {
-        applicationId "com.bumble.appyx.v2"
+        applicationId "com.bumble.appyx"
         minSdk 21
-        targetSdk 31
+        compileSdk 32
         versionCode 1
         versionName "1.0"
 
