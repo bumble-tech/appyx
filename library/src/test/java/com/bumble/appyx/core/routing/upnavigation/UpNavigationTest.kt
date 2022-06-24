@@ -10,8 +10,8 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.plugin.StubUpNavigationHandler
 import com.bumble.appyx.core.plugin.UpNavigationHandler
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.push
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.core.testutils.MainDispatcherRule
 import com.bumble.appyx.core.testutils.TestIntegrationPoint
 import org.junit.Assert.assertEquals

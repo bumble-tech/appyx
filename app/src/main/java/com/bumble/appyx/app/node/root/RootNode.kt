@@ -24,10 +24,10 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.activeRouting
-import com.bumble.appyx.core.routing.source.backstack.operation.newRoot
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.activeRouting
+import com.bumble.appyx.routingsource.backstack.operation.newRoot
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 

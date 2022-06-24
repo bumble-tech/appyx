@@ -25,23 +25,24 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.push
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.core.routing.source.combined.plus
 import com.bumble.appyx.sandbox.client.child.ChildNode
+import com.bumble.appyx.sandbox.client.combined.CombinedRoutingSourceNode.Routing.Configuration.Child
 import java.util.*
 import kotlinx.parcelize.Parcelize
 
 class CombinedRoutingSourceNode(
     buildContext: BuildContext,
     private val backStack1: BackStack<Routing> = BackStack(
-        initialElement = Routing.Configuration.Child(UUID.randomUUID().toString()),
+        initialElement = Child(UUID.randomUUID().toString()),
         savedStateMap = buildContext.savedStateMap,
         key = "BackStack1",
     ),
     private val backStack2: BackStack<Routing> = BackStack(
-        initialElement = Routing.Configuration.Child(UUID.randomUUID().toString()),
+        initialElement = Child(UUID.randomUUID().toString()),
         savedStateMap = buildContext.savedStateMap,
         key = "BackStack2",
     ),

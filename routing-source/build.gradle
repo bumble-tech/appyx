@@ -34,13 +34,6 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8
         useIR = true
     }
-
-    testOptions {
-        unitTests.all {
-            // interface method default implementation
-            exclude '**/*$DefaultImpls.class'
-        }
-    }
 }
 
 dependencies {

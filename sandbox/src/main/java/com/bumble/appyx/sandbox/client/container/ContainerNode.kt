@@ -23,10 +23,10 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.push
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackFader
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.core.routing.transition.rememberCombinedHandler
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode
 import com.bumble.appyx.sandbox.client.blocker.BlockerExampleNode

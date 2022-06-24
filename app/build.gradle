@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId "com.bumble.appyx"
         minSdk 21
-        compileSdk 32
+        targetSdk 32
         versionCode 1
         versionName "1.0"
 

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing
+import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing.RoutingSource
 import com.bumble.appyx.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.app.node.onboarding.screen.IntroScreen
 import com.bumble.appyx.app.node.onboarding.screen.RoutingSourceTeaser
@@ -65,7 +66,7 @@ class OnboardingContainerNode(
             Routing.ApplicationTree,
             Routing.StatefulNode1,
             Routing.StatefulNode2,
-            Routing.RoutingSource,
+            RoutingSource,
         ),
         backPressHandler = GoToPrevious(),
         savedStateMap = buildContext.savedStateMap,
