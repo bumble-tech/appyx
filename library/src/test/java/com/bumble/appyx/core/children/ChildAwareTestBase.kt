@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Rule
 import kotlin.coroutines.EmptyCoroutineContext
+import kotlin.reflect.KClass
 
 abstract class ChildAwareTestBase {
 
@@ -70,6 +71,18 @@ abstract class ChildAwareTestBase {
 
         @Composable
         override fun View(modifier: Modifier) {
+        }
+
+        fun <T : Node> whenChildAttachedTest(child: KClass<T>, callback: ChildCallback<T>) {
+            super.whenChildAttached(child, callback)
+        }
+
+        fun <T1 : Node, T2 : Node> whenChildrenAttachedTest(
+            child1: KClass<T1>,
+            child2: KClass<T2>,
+            callback: ChildrenCallback<T1, T2>
+        ) {
+            super.whenChildrenAttached(child1, child2, callback)
         }
     }
 

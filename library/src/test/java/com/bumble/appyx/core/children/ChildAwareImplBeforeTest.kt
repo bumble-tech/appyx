@@ -11,7 +11,7 @@ class ChildAwareImplBeforeTest : ChildAwareTestBase(), ChildAwareCommonTestSpec 
         klass: KClass<T>,
         callback: ChildCallback<T>
     ) {
-        root.whenChildAttached(klass, callback)
+        root.whenChildAttachedTest(klass, callback)
     }
 
     override fun <T1 : Node, T2 : Node> whenChildrenAttached(
@@ -19,7 +19,7 @@ class ChildAwareImplBeforeTest : ChildAwareTestBase(), ChildAwareCommonTestSpec 
         klass2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
     ) {
-        root.whenChildrenAttached(klass1, klass2, callback)
+        root.whenChildrenAttachedTest(klass1, klass2, callback)
     }
 
 }

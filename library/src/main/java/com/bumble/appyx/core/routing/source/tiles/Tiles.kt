@@ -12,7 +12,7 @@ class Tiles<T : Any>(
 ) : BaseRoutingSource<T, Tiles.TransitionState>(
     backPressHandler = backPressHandler,
     screenResolver = TilesOnScreenResolver,
-    finalState = null,
+    finalState = TransitionState.DESTROYED,
     savedStateMap = null,
 ) {
 

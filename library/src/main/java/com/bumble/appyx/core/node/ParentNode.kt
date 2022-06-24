@@ -38,7 +38,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
@@ -55,7 +54,7 @@ abstract class ParentNode<Routing : Any>(
     view = view,
     buildContext = buildContext,
     plugins = plugins + routingSource + childAware + view
-), Resolver<Routing>, ChildAware<ParentNode<Routing>> {
+), Resolver<Routing> {
 
     private val permanentRoutingSource = PermanentRoutingSource<Routing>(
         savedStateMap = buildContext.savedStateMap,
@@ -74,9 +73,6 @@ abstract class ParentNode<Routing : Any>(
         routingSource = this.routingSource,
         children = children,
     )
-
-    override val node: ParentNode<Routing>
-        get() = this
 
     private var transitionsInBackgroundJob: Job? = null
 
@@ -245,17 +241,33 @@ abstract class ParentNode<Routing : Any>(
         }
     }
 
-    override fun <T : Node> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
+    // region ChildAware
+
+    protected fun <T : Node> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
         childAware.whenChildAttached(child, callback)
     }
 
-    override fun <T1 : Node, T2 : Node> whenChildrenAttached(
+    protected fun <T1 : Node, T2 : Node> whenChildrenAttached(
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
     ) {
         childAware.whenChildrenAttached(child1, child2, callback)
     }
+
+    protected inline fun <reified T : Node> whenChildAttached(
+        noinline callback: ChildCallback<T>,
+    ) {
+        whenChildAttached(T::class, callback)
+    }
+
+    protected inline fun <reified T1 : Node, reified T2 : Node> whenChildrenAttached(
+        noinline callback: ChildrenCallback<T1, T2>,
+    ) {
+        whenChildrenAttached(T1::class, T2::class, callback)
+    }
+
+    // endregion
 
     // TODO Investigate how to remove it
     @VisibleForTesting
