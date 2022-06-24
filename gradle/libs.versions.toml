@@ -1,7 +1,7 @@
 # keep sorted please, use Edit -> Sort Lines
 
 [versions]
-androidx-lifecycle = "2.3.1"
+androidx-lifecycle = "2.4.1"
 compose = "1.2.0-rc01"
 ribs = "0.33.0"
 coroutines = "1.5.2"
