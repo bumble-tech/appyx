@@ -18,6 +18,7 @@ Their capabilities differ from implementation to implementation, however, typica
 You can take a look at some of these examples:
 
 1. [Back stack](backstack.md)
+1. [Spotlight](spotlight.md)
 2. [Tiles](tiles.md)
 3. [Promoter carousel](promoter.md)
 
