@@ -5,7 +5,7 @@ The main structural element of the Appyx tree.
  
 It might or might not have a view, has its own lifecycle, and can host plugins. 
 
-See more in [Nodes and routing](node.md).
+See more in [Nodes and routing](nodes-and-routing.md).
 
 #### Root
 The topmost `Node` in the tree.

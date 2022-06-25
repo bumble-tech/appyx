@@ -18,7 +18,7 @@ docs_dir: documentation
 nav:
   - Overview: index.md
   - Basics:
-      - Nodes and routing: basics/node.md
+      - Nodes and routing: basics/nodes-and-routing.md
       - Plugins: basics/plugins.md
       - Terminology: basics/terminology.md
   - Quick start guide: setup/quickstart.md
