@@ -2,7 +2,7 @@
 site_name: Appyx
 site_url: https://github.bumble.dev/android/appyx
 site_author: Bumble
-site_description: Kotlin-based architectural tree structure framework with Android Compose support
+site_description: Application mechanics for your Android apps, built on top of Jetpack Compose
 
 # Repository
 repo_name: Appyx
@@ -17,7 +17,21 @@ docs_dir: documentation
 
 nav:
   - Overview: index.md
-  - Node: Node.md
+  - Quick start: setup/quickstart.md
+  - Basics:
+      - Terminology: basics/terminology.md
+      - Node: basics/node.md
+      - Plugins: basics/plugins.md
+  - Routing sources:
+      - Overview: routingsources/index.md
+      - Back stack: routingsources/backstack.md
+      - Spotlight: routingsources/spotlight.md
+      - Tiles: routingsources/tiles.md
+      - Promoter: routingsources/promoter.md
+      - Writing your own: routingsources/custom.md
+  - UI:
+      - Children: ui/children-view.md
+
 
 # theme configuration
 theme:
@@ -26,16 +40,27 @@ theme:
   icon:
     repo: fontawesome/brands/github
   language: en
+  include_search_page: false
+  search_index_only: true
   features:
-    - navigation.tabs
+#    - navigation.tabs
+    - search.highlight
+    - search.share
+    - search.suggest
   palette:
     scheme: default
     primary: amber
-    accent: deep orange
+    accent: amber
   font:
     text: Roboto
     code: Roboto Mono
   favicon: assets/favicon.png
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search
 
 # extensions
 markdown_extensions:
