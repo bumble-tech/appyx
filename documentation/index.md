@@ -34,7 +34,7 @@ See [Routing sources](routingsources/index.md)
 
 ## Download
 
-See the [Downloads page](setup/dependencies.md)
+See the [Downloads page](setup/downloads.md)
 
 ## Quick start guide
 
