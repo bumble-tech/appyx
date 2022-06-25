@@ -32,9 +32,16 @@ Appyx comes with both a set of common implementations (e.g. back stack, tab swit
 
 See [Routing sources](routingsources/index.md)
 
+
 ## Download
 
 See the [Downloads page](setup/downloads.md)
+
+
+## Launch the demo app
+
+Check out the project and launch the `:app` module for a quick demonstration
+
 
 ## Quick start guide
 

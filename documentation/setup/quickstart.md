@@ -1,5 +1,7 @@
 # Quick start guide
 
+Before you proceed, it's suggested you check out the project and launch the `:app` module for a quick demonstration – what you see below will make more sense afterwards!
+
 ## 1. Add Appyx to your project
 
 
