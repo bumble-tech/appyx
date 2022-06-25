@@ -17,7 +17,7 @@ Appyx comes with simple but powerful abstractions:
 
 Routing sources are the powerful engines driving all component state changes:
 
-![video1]() ![video2]() ![video3]() ![video4]()
+<img src="https://i.imgur.com/8gy3Ghb.gif" width="150"> <img src="https://i.imgur.com/Kj0P85H.gif" width="150"> <img src="https://i.imgur.com/N8rEPrJ.gif" width="150"> <img src="https://i.imgur.com/esLXh61.gif" width="150">
 
 All of the above are different implementations of the same abstraction.
 
@@ -30,6 +30,7 @@ All state transitions can have history and be animated by all the power of Jetpa
 
 Appyx comes with both a set of common implementations (e.g. back stack, tab switching) and the ability to define your own.  
 
+See [Routing sources](routingsources/index.md)
 
 ## Download
 

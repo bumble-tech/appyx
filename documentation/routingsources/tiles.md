@@ -1,5 +1,7 @@
 # Tiles
 
+<img src="https://i.imgur.com/N8rEPrJ.gif" width="200">
+
 Intended only as an illustration, but it should be easy enough to tailor it to your needs if you find it useful.
 
 ## States

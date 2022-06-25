@@ -1,5 +1,7 @@
 # Promoter carousel
 
+<img src="https://i.imgur.com/esLXh61.gif" width="200">
+
 Intended only as an illustration.
 
 ## States
@@ -26,6 +28,7 @@ internal object PromoterOnScreenResolver : OnScreenStateResolver<TransitionState
 ## Default transition handler
 
 As elements are promoted to next stages, they're:
+
 - animated on a circular path
 - scaled up
 - rotated in the selection / discard stages
@@ -48,10 +51,10 @@ Adds a new element at the start of the element list with a `CREATED` state.
 
 All elements are transitioned to the next state:
 
-`CREATED` -> `STAGE1`
-`STAGE1` -> `STAGE2`
-`STAGE2` -> `STAGE3`
-`STAGE3` -> `STAGE4`
-`STAGE4` -> `SELECTED`
-`SELECTED` -> `DESTROYED`
+- `CREATED` -> `STAGE1`
+- `STAGE1` -> `STAGE2`
+- `STAGE2` -> `STAGE3`
+- `STAGE3` -> `STAGE4`
+- `STAGE4` -> `SELECTED`
+- `SELECTED` -> `DESTROYED`
 

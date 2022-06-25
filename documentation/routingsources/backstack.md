@@ -1,9 +1,12 @@
 # Back stack
 
+<img src="https://i.imgur.com/8gy3Ghb.gif" width="200">
+
 Implements a simple linear history:
 
 - The last element at the end of the stack is considered "active".
 - All other elements are considered stashed.
+- Children associated with stashed elements are off the screen but kept alive (see how the counter values reflect this on the video)
 
 The back stack can never be empty – it always contains at least one element.
 
