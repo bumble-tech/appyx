@@ -157,6 +157,7 @@ Need something more custom?
 1. Instead of a back stack, you can find other control structures in the library, or you can implement your own
 2. Instead of the default transition handlers, you can also supply your own
 
+You can also read the [Back stack documentation](../routingsources/backstack.md) for more info.
 
 ## 6. Proper child nodes  
 
@@ -199,6 +200,4 @@ You can repeat the same pattern and make any embedded children also a `ParentNod
 3. At some point extract the increasing complexity from a placeholder to another `Node` 
 4. Repeat the same on children, go to `1.`
 
-You can (and probably should) also extract local business logic, the view, any any other components into separate classes and plugins.
-
-You can check out the full documentation for more details.
+You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [plugins](../basics/plugins.md).

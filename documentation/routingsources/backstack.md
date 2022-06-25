@@ -125,8 +125,7 @@ class BackStack<Routing : Any>(
     /* ... */
     backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = PopBackPressHandler(),
     /* ... */
-    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
-) : BaseRoutingSource<Routing, TransitionState>(
+) 
 ```
 
 #### PopBackPressHandler
