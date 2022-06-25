@@ -1,31 +1,60 @@
-# Node
+# Nodes and routing
 
 ```Nodes``` are the main structural element of an Appyx tree. 
+
+Routing is how we add dynamism to that tree.
+
+## Overview
  
-A ```Node``` is analogous to a Fragment in many ways: it has a ```@Composable View``` which is a part of UI tree, and it has similar (although simplified) lifecycle events.
+You can think of a `Node` as a standalone component with:
 
-## Tree structure of Nodes
-To support delegating responsibilities, ```Nodes``` can have children, which can have their own children, and so on. 
+- Their own simplified lifecycle
+- State restoration
+-  A `@Composable` view
+- Business logic that's kept alive even when the view isn't added to the composition
+- The ability to host generic [Plugins](plugins.md) to extract extra concerns without enforcing any particular architectural pattern
 
-There are two type of ```Nodes``` in Appyx tree: ```Node``` and ```ParentNode```.
+This panel represents a very simple `Node` – it has some local state (id, colour, and a counter):
 
-1. ```Node``` is a leaf in a graph representation. It can not have children.
-2. ```ParentNode``` is a node in a graph representation. It can have children.
+[image]()
+   
+## Parent nodes, child nodes
 
-This is similar to nesting Fragments, however, the typical nesting level of ```Node``` tree is encouraged to be a lot deeper than it's usual with Fragments. Also, children are referenced directly instead of a FragmentManager-like mechanism).
+Furthermore, `Nodes` are composable, as `ParentNodes` can have other `Nodes` as children:
 
-## Base functionality
-```Node``` as a base class provides these functionalities:
+[image]()
 
-- has a lifecycle
-- can host generic [Plugins](plugins.md) to extract all extra concerns to
+This allows to keep the complexity low in individual `Nodes` by extracting responsibilities to children, as well as composing other components to build more complex functionality. 
 
-```ParentNode``` extends ```Node's``` functionality:
 
-- has children and manages their lifecycle
-- has a [Routing source](../routingsources/index.md)
+## Dynamism
 
-## Responsibilities
-To avoid creating a god object similar to what can happen with Activities or Fragments, we consciously try to keep all extra responsibilities out of them. 
+Having a static composition of `Nodes` isn't very exciting though. Based on the changes of business logic you'll want to:
 
-On the client code side we highly encourage to extract all extra concerns either to dedicated classes via [Plugins](plugins.md), or to child nodes in the tree.
+- Add or remove child `Nodes` of a `ParentNode`
+- Move them on and off the screen
+- Change their states
+
+<img src="https://i.imgur.com/8gy3Ghb.gif" width="200"> <img src="https://i.imgur.com/N8rEPrJ.gif" width="200">
+
+The back stack illustrates adding and removing child `Nodes` as well as moving them on and off the screen.
+Tiles illustrates changing the state of children and removing them from the `ParentNode`.
+
+
+## Routing: local bits of navigation
+
+All `ParentNodes` have the option to achieve this dynamism by utilising [Routing sources](../routingsources/index.md) such as the back stack. Put simply:
+
+- A routing is a relation to a child `Node`
+- Since `Nodes` are composed and routing exist on every level, the sum total of those relations define which components are active and what part of the application the user sees
+- A routing change will look like a piece of navigation happening to the user of the app
+
+## Benefits of routing
+
+Following from the above:
+
+- Navigation is broken down to individual pieces of routing
+- Routing, as this piece of navigation is now the responsibility of the individual `ParentNode`
+- Navigation is now business-logic driven
+- Navigation is now unit-testable
+- You can avoid global navigation concerns, like shared modules needing to know about the application, or the application needing to know about all its possible modules

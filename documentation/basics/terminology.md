@@ -3,7 +3,9 @@
 ### Node
 The main structural element of the Appyx tree.
  
-It might or might not have a view, has its own lifecycle, and can host plugins.
+It might or might not have a view, has its own lifecycle, and can host plugins. 
+
+See more in [Nodes and routing](node.md).
 
 #### Root
 The topmost `Node` in the tree.
@@ -12,7 +14,7 @@ The topmost `Node` in the tree.
 A `Node` without any further children.
 
 #### Parent Node
-A `Node` that has other child Nodes. Usually has a `Routing source` too.
+A `Node` that has other child Nodes. It has a `Routing source` too.
 
 #### Container
 A `Node` with children whose only responsibility is to coordinate between them. This allows both the children and the container to each keep a single responsibility.
