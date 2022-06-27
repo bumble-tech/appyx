@@ -15,4 +15,4 @@ include ':app',
         ':rx2',
         ':interop',
         'testing',
-        ':routing-source'
+        ':routing-source-addons'
