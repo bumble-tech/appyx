@@ -4,6 +4,8 @@ plugins {
     id 'kotlin-parcelize'
 }
 
+apply from: '../gradle/publication.gradle'
+
 android {
     namespace = "com.bumble.appyx.routingsource"
     compileSdk 32
