@@ -28,7 +28,7 @@ data class Remove<T : Any>(
         }
 
     private fun BackStackElements<T>.hasContentWithKey() =
-        find { it.key == key && it.targetState != com.bumble.appyx.routingsource.backstack.BackStack.TransitionState.DESTROYED } != null
+        find { it.key == key && it.targetState != BackStack.TransitionState.DESTROYED } != null
 
     private fun updateContent(elements: BackStackElements<T>): BackStackElements<T> {
         val toRemove =
