@@ -1,7 +1,10 @@
 # Spotlight
 
+<img src="https://i.imgur.com/xtPRfij.gif" width="200">
+
 Implements a mechanism analogous to a view pager; has a single active element ("it's in the spotlight", hence the name), but unlike the back stack, it does not remove other elements.
 
+It's great for flows or tabbed containers.
 
 ## States
 
