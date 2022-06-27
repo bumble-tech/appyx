@@ -3,7 +3,6 @@ package com.bumble.appyx.core.routing.upnavigation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -11,8 +10,8 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.plugin.StubUpNavigationHandler
 import com.bumble.appyx.core.plugin.UpNavigationHandler
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.push
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.core.testutils.MainDispatcherRule
 import com.bumble.appyx.core.testutils.TestIntegrationPoint
 import org.junit.Assert.assertEquals

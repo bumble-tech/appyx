@@ -5,11 +5,6 @@ plugins {
 }
 
 android {
-    packagingOptions {
-        exclude "META-INF/AL2.0"
-        exclude "META-INF/LGPL2.1"
-    }
-
     compileSdk 32
 
     defaultConfig {
@@ -47,20 +42,23 @@ android {
     lintOptions {
         abortOnError false
     }
+    packagingOptions {
+        exclude "META-INF/AL2.0"
+        exclude "META-INF/LGPL2.1"
+    }
 }
 
 dependencies {
     implementation project(':library')
     implementation project(':rx2')
     implementation project(':interop')
-    implementation project(':testing')
+    implementation project(':routing-source-addons')
 
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat
     implementation libs.androidx.core
     implementation libs.androidx.lifecycle.java8
     implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.test.rules
     implementation libs.compose.material
     implementation libs.compose.ui.tooling
     implementation libs.compose.ui.ui

@@ -7,7 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import com.bumble.appyx.core.routing.source.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.core.routing.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.routing.transition.TransitionDescriptor
 

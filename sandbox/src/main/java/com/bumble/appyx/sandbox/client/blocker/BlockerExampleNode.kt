@@ -24,8 +24,8 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.push
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize

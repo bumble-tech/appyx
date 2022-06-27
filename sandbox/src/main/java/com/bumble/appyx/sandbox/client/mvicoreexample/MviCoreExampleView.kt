@@ -25,8 +25,8 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.ParentNodeView
 import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleView.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleView.Event.LoadDataClicked

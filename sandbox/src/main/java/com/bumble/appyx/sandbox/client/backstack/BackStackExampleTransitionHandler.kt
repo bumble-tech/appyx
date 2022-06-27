@@ -4,10 +4,10 @@ import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.Replace
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.BackStackFader
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.BackStackSlider
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.Replace
+import com.bumble.appyx.routingsource.backstack.transitionhandler.BackStackFader
+import com.bumble.appyx.routingsource.backstack.transitionhandler.BackStackSlider
 import com.bumble.appyx.core.routing.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.routing.transition.TransitionDescriptor
 

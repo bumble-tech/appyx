@@ -25,20 +25,21 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 import com.bumble.appyx.core.plugin.UpNavigationHandler
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.pop
-import com.bumble.appyx.core.routing.source.backstack.operation.push
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackFader
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.pop
+import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.core.routing.transition.rememberCombinedHandler
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.Routing
+import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.Routing.Child1
 import kotlinx.parcelize.Parcelize
 
 class InteractorExampleNode(
     interactor: Interactor<InteractorExampleNode>,
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
-        initialElement = Routing.Child1,
+        initialElement = Child1,
         savedStateMap = buildContext.savedStateMap,
     )
 ) : ParentNode<Routing>(

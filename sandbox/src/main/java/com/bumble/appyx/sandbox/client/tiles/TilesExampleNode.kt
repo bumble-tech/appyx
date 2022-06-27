@@ -21,16 +21,15 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.bumble.appyx.core.children.whenChildrenAttached
+import com.bumble.appyx.routingsource.tiles.Tiles
+import com.bumble.appyx.routingsource.tiles.operation.removeSelected
+import com.bumble.appyx.routingsource.tiles.operation.toggleSelection
+import com.bumble.appyx.routingsource.tiles.transitionhandler.rememberTilesTransitionHandler
 import com.bumble.appyx.core.composable.Child
 import com.bumble.appyx.core.composable.visibleChildrenAsState
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.tiles.Tiles
-import com.bumble.appyx.core.routing.source.tiles.operation.removeSelected
-import com.bumble.appyx.core.routing.source.tiles.operation.toggleSelection
-import com.bumble.appyx.core.routing.source.tiles.transitionhandler.rememberTilesTransitionHandler
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child1
@@ -99,6 +98,7 @@ class TilesExampleNode(
                     .fillMaxSize(),
                 contentPadding = PaddingValues(horizontal = 16.dp),
             ) {
+
                 items(elements) { element ->
                     Child(
                         routingElement = element,

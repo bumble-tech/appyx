@@ -21,11 +21,13 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.routingsource.modal.Modal
+import com.bumble.appyx.routingsource.modal.ModalTransitionHandler
+import com.bumble.appyx.routingsource.modal.operation.fullScreen
+import com.bumble.appyx.routingsource.modal.operation.show
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing
 import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing.Child
-import com.bumble.appyx.sandbox.client.modal.operation.fullScreen
-import com.bumble.appyx.sandbox.client.modal.operation.show
 import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(

@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
-import com.bumble.appyx.core.routing.source.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.core.routing.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.routing.transition.TransitionDescriptor
 import kotlin.math.roundToInt

@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing
+import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing.RoutingSource
 import com.bumble.appyx.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.app.node.onboarding.screen.IntroScreen
 import com.bumble.appyx.app.node.onboarding.screen.RoutingSourceTeaser
@@ -45,13 +46,13 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.spotlight.Spotlight
-import com.bumble.appyx.core.routing.source.spotlight.backpresshandler.GoToPrevious
-import com.bumble.appyx.core.routing.source.spotlight.hasNext
-import com.bumble.appyx.core.routing.source.spotlight.hasPrevious
-import com.bumble.appyx.core.routing.source.spotlight.operation.next
-import com.bumble.appyx.core.routing.source.spotlight.operation.previous
-import com.bumble.appyx.core.routing.source.spotlight.transitionhandler.rememberSpotlightSlider
+import com.bumble.appyx.routingsource.spotlight.Spotlight
+import com.bumble.appyx.routingsource.spotlight.backpresshandler.GoToPrevious
+import com.bumble.appyx.routingsource.spotlight.hasNext
+import com.bumble.appyx.routingsource.spotlight.hasPrevious
+import com.bumble.appyx.routingsource.spotlight.operation.next
+import com.bumble.appyx.routingsource.spotlight.operation.previous
+import com.bumble.appyx.routingsource.spotlight.transitionhandler.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
@@ -65,7 +66,7 @@ class OnboardingContainerNode(
             Routing.ApplicationTree,
             Routing.StatefulNode1,
             Routing.StatefulNode2,
-            Routing.RoutingSource,
+            RoutingSource,
         ),
         backPressHandler = GoToPrevious(),
         savedStateMap = buildContext.savedStateMap,

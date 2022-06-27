@@ -15,7 +15,6 @@ import com.bumble.appyx.app.node.onboarding.screen.RoutingSourceTeaser.Routing
 import com.bumble.appyx.app.node.onboarding.screen.RoutingSourceTeaser.Routing.BackStackTeaser
 import com.bumble.appyx.app.node.onboarding.screen.RoutingSourceTeaser.Routing.RandomOtherTeaser
 import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode
-import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.integration.NodeHost
@@ -24,10 +23,11 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.activeRouting
-import com.bumble.appyx.core.routing.source.backstack.operation.replace
-import com.bumble.appyx.core.routing.source.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.activeRouting
+import com.bumble.appyx.routingsource.backstack.operation.replace
+import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi

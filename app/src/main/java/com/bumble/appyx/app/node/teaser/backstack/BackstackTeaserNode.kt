@@ -8,14 +8,15 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.node.child.GenericChildNode
 import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.Routing
+import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.Routing.Child
 import com.bumble.appyx.app.node.teaser.backstack.transitionhandler.rememberCustomHandler
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.backstack.BackStack
-import com.bumble.appyx.core.routing.source.backstack.operation.pop
-import com.bumble.appyx.core.routing.source.backstack.operation.push
+import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.routingsource.backstack.operation.pop
+import com.bumble.appyx.routingsource.backstack.operation.push
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -25,7 +26,7 @@ import kotlin.random.Random
 class BackstackTeaserNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
-        initialElement = Routing.Child(100),
+        initialElement = Child(100),
         savedStateMap = buildContext.savedStateMap
     ),
 ) : ParentNode<Routing>(
