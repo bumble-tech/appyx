@@ -1,11 +1,9 @@
 package com.bumble.appyx.core
 
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.scan
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal fun <T> Flow<T>.withPrevious(): Flow<CompareValues<T>> =
     scan(CompareValues<T>()) { previous, current -> previous.combine(current) }
         .filter { it.isInitialized }

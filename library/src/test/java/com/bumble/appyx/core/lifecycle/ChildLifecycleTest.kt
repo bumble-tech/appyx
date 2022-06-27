@@ -4,29 +4,21 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.routing.onscreen.OnScreenMapper
-import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.routing.BaseRoutingSource
 import com.bumble.appyx.core.routing.Operation
 import com.bumble.appyx.core.routing.RoutingElement
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
-import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.testutils.MainDispatcherRule
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import kotlin.coroutines.EmptyCoroutineContext
 
 class ChildLifecycleTest {
 
@@ -47,7 +39,7 @@ class ChildLifecycleTest {
 
         assertEquals(
             Lifecycle.State.RESUMED,
-            parent.children.value.values.first().nodeOrNull?.lifecycle?.currentState,
+            parent.findChild()?.lifecycle?.currentState,
         )
     }
 
@@ -60,7 +52,7 @@ class ChildLifecycleTest {
 
         assertEquals(
             Lifecycle.State.CREATED,
-            parent.children.value.values.first().nodeOrNull?.lifecycle?.currentState,
+            parent.findChild()?.lifecycle?.currentState,
         )
     }
 
@@ -89,7 +81,11 @@ class ChildLifecycleTest {
 
         assertEquals(
             Lifecycle.State.RESUMED,
-            parent.children.value.values.first().nodeOrNull?.lifecycle?.currentState,
+            parent.findChild()?.lifecycle?.currentState,
+        )
+        assertEquals(
+            listOf(Lifecycle.State.CREATED, Lifecycle.State.RESUMED),
+            parent.findChild()?.lifecycleHistory,
         )
     }
 
@@ -103,7 +99,25 @@ class ChildLifecycleTest {
 
         assertEquals(
             Lifecycle.State.CREATED,
-            parent.children.value.values.first().nodeOrNull?.lifecycle?.currentState,
+            parent.findChild()?.lifecycle?.currentState,
+        )
+        assertEquals(
+            listOf(Lifecycle.State.CREATED, Lifecycle.State.RESUMED, Lifecycle.State.CREATED),
+            parent.findChild()?.lifecycleHistory,
+        )
+    }
+
+    @Test
+    fun `child is destroyed when parent is destroyed`() {
+        val parent = Parent(BuildContext.root(null)).build()
+        parent.routing.add(key = "0", onScreen = true)
+        parent.updateLifecycleState(Lifecycle.State.RESUMED)
+
+        parent.updateLifecycleState(Lifecycle.State.DESTROYED)
+
+        assertEquals(
+            Lifecycle.State.DESTROYED,
+            parent.findChild()?.lifecycle?.currentState,
         )
     }
 
@@ -111,45 +125,17 @@ class ChildLifecycleTest {
 
     // region Setup
 
-    private class RoutingImpl : RoutingSource<String, Boolean> {
-
-        private val state = MutableStateFlow<List<RoutingElement<String, Boolean>>>(emptyList())
-        private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-        private val onScreenResolver = object : OnScreenStateResolver<Boolean> {
+    private class RoutingImpl : BaseRoutingSource<String, Boolean>(
+        screenResolver = object : OnScreenStateResolver<Boolean> {
             override fun isOnScreen(state: Boolean): Boolean = state
-        }
-        private val onScreenMapper = OnScreenMapper<String, Boolean>(scope, onScreenResolver)
-
-        override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
-            state
-
-        override val onScreen: StateFlow<RoutingElements<String, out Boolean>> =
-            onScreenMapper.resolveOnScreenElements(state)
-
-        override val offScreen: StateFlow<RoutingElements<String, out Boolean>> =
-            onScreenMapper.resolveOffScreenElements(state)
-
-        override val canHandleBackPress: StateFlow<Boolean> =
-            MutableStateFlow(false)
-
-        override fun onBackPressed() {
-            // no-op
-        }
-
-        override fun onTransitionFinished(keys: Collection<RoutingKey<String>>) {
-            state.update { list ->
-                list.map {
-                    if (it.key in keys) {
-                        it.onTransitionFinished()
-                    } else {
-                        it
-                    }
-                }
-            }
-        }
+        },
+        finalState = null,
+        savedStateMap = null,
+    ) {
+        override val initialElements: RoutingElements<String, Boolean> = emptyList()
 
         fun add(key: String, onScreen: Boolean) {
-            state.update { list ->
+            updateState { list ->
                 list + RoutingElement(
                     key = RoutingKey(key),
                     targetState = onScreen,
@@ -160,11 +146,11 @@ class ChildLifecycleTest {
         }
 
         fun remove(key: String) {
-            state.update { list -> list.filter { it.key.routing != key } }
+            updateState { list -> list.filter { it.key.routing != key } }
         }
 
         fun changeState(key: String, onScreen: Boolean) {
-            state.update { list ->
+            updateState { list ->
                 list
                     .map {
                         if (it.key.routing == key) {
@@ -177,7 +163,6 @@ class ChildLifecycleTest {
                     }
             }
         }
-
     }
 
     private class Parent(
@@ -193,14 +178,27 @@ class ChildLifecycleTest {
         @Composable
         override fun View(modifier: Modifier) {
         }
+
+        fun findChild(): Child? =
+            children.value.values.first().nodeOrNull as Child?
+
     }
 
     private class Child(
         val id: String,
         buildContext: BuildContext
     ) : Node(buildContext) {
+        val lifecycleHistory = ArrayList<Lifecycle.State>()
+
         @Composable
         override fun View(modifier: Modifier) {
+        }
+
+        override fun updateLifecycleState(state: Lifecycle.State) {
+            if (lifecycleHistory.lastOrNull() != state) {
+                lifecycleHistory.add(state)
+            }
+            super.updateLifecycleState(state)
         }
     }
 
