@@ -15,6 +15,7 @@ import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.lifecycle.LifecycleLogger
 import com.bumble.appyx.core.lifecycle.NodeLifecycle
 import com.bumble.appyx.core.lifecycle.NodeLifecycleImpl
+import com.bumble.appyx.core.lifecycle.isDestroyed
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.plugin.Destroyable
@@ -101,9 +102,11 @@ abstract class Node(
         nodeLifecycle.lifecycle
 
     override fun updateLifecycleState(state: Lifecycle.State) {
-        nodeLifecycle.updateLifecycleState(state)
-        if (state == Lifecycle.State.DESTROYED) {
-            plugins<Destroyable>().forEach { it.destroy() }
+        if (!lifecycle.isDestroyed) {
+            nodeLifecycle.updateLifecycleState(state)
+            if (state == Lifecycle.State.DESTROYED) {
+                plugins<Destroyable>().forEach { it.destroy() }
+            }
         }
     }
 
