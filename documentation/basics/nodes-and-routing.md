@@ -14,22 +14,26 @@ You can think of a `Node` as a standalone component with:
 - Business logic that's kept alive even when the view isn't added to the composition
 - The ability to host generic [Plugins](plugins.md) to extract extra concerns without enforcing any particular architectural pattern
 
-This panel represents a very simple `Node` – it has some local state (id, colour, and a counter):
+## Node illustration 
 
-[image]()
+In many of the examples you'll see this panel as an illustration of a very simple `Node` – it has some local state (id, colour, and a counter).
+
+<img src="https://i.imgur.com/09qR6zl.png" width="150">
+
+If you launch `:app` you can also change its state (colour) by tapping it. Its counter is stepped automatically. All of its state is persisted and restored.
    
 ## Parent nodes, child nodes
 
-Furthermore, `Nodes` are composable, as `ParentNodes` can have other `Nodes` as children:
+`Nodes` are composable, as `ParentNodes` can have other `Nodes` as children. This means you can represent your whole application as a tree of Appyx nodes.
 
-[image]()
+<img src="https://i.imgur.com/iwSxuZi.png" width="450">
 
 This allows to keep the complexity low in individual `Nodes` by extracting responsibilities to children, as well as composing other components to build more complex functionality. 
 
 
 ## Dynamism
 
-Having a static composition of `Nodes` isn't very exciting though. Based on the changes of business logic you'll want to:
+Having a static composition of `Nodes` isn't very exciting. Based on the changes of business logic you'll want to:
 
 - Add or remove child `Nodes` of a `ParentNode`
 - Move them on and off the screen
