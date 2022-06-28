@@ -69,12 +69,6 @@ abstract class BaseRoutingSource<Routing, State>(
 
     private val onScreenMapper = OnScreenMapper<Routing, State>(scope, screenResolver)
 
-    override val onScreen: StateFlow<RoutingElements<Routing, out State>> by lazy(
-        LazyThreadSafetyMode.NONE
-    ) {
-        onScreenMapper.resolveOnScreenElements(visibilityState)
-    }
-
     override val canHandleBackPress: StateFlow<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
         backPressHandler.canHandleBackPress
     }

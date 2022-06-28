@@ -29,6 +29,7 @@ import com.bumble.appyx.core.routing.transition.TransitionBounds
 import com.bumble.appyx.core.routing.transition.TransitionDescriptor
 import com.bumble.appyx.core.routing.transition.TransitionHandler
 import com.bumble.appyx.core.routing.transition.TransitionParams
+import kotlinx.coroutines.flow.map
 
 @Composable
 fun <Routing : Any, State> ParentNode<Routing>.Child(
@@ -143,7 +144,8 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out 
 @Composable
 fun <R, S> RoutingSource<R, S>?.visibleChildrenAsState(): State<RoutingElements<R, out S>> =
     if (this != null) {
-        onScreen.collectAsState()
+        val visibleElements = remember(this) { visibilityState.map { it.onScreen } }
+        visibleElements.collectAsState(emptyList())
     } else {
         remember { mutableStateOf(emptyList()) }
     }

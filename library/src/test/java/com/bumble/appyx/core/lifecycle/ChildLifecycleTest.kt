@@ -11,7 +11,6 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.routing.Operation
 import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.routing.RoutingSourceAdapter
@@ -125,9 +124,6 @@ class ChildLifecycleTest {
 
         override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<String, out Boolean>> =
             onScreenMapper.resolveVisibilityState(state)
-
-        override val onScreen: StateFlow<RoutingElements<String, out Boolean>> =
-            onScreenMapper.resolveOnScreenElements(visibilityState)
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)

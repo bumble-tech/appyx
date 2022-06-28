@@ -59,9 +59,6 @@ class PermanentRoutingSource<Routing : Any>(
                 initialValue = RoutingSourceAdapter.VisibilityState(onScreen = state.value)
             )
 
-    override val onScreen: StateFlow<RoutingElements<Routing, Int>>
-        get() = state
-
     override val canHandleBackPress: StateFlow<Boolean> =
         MutableStateFlow(false)
 
