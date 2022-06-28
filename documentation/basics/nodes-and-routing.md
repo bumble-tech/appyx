@@ -60,6 +60,13 @@ Here:
 These are just two examples, you're of course not limited to using them.
 
 
+## Lifecycle
+
+Nodes have their own lifecycles, directly using the related classes of `androidx.lifecycle`.
+
+Read more in [Lifecycle](../other/lifecycle.md)
+
+
 ## Summary
 
 A summary of Appyx's approach to apps:

@@ -29,6 +29,7 @@ nav:
   - UI:
       - Children: ui/children-view.md
   - Other topics:
+      - Lifecycle: other/lifecycle.md
       - Plugins: other/plugins.md
       - Terminology: other/terminology.md
 
