@@ -2,20 +2,28 @@ package com.bumble.appyx.core.routing.source.permanent
 
 import com.bumble.appyx.core.routing.Operation
 import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
 class PermanentRoutingSource<Routing : Any>(
     routings: Set<Routing> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String = requireNotNull(PermanentRoutingSource::class.qualifiedName),
 ) : RoutingSource<Routing, Int> {
+    private val scope: CoroutineScope =
+        CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
     constructor(
         vararg routings: Routing,
@@ -41,11 +49,14 @@ class PermanentRoutingSource<Routing : Any>(
     override val elements: StateFlow<PermanentElements<Routing>>
         get() = state
 
-    override val onScreen: StateFlow<RoutingElements<Routing, Int>>
+    override val screenState: StateFlow<RoutingSourceAdapter.ScreenState<Routing, Int>>
         get() = state
-
-    override val offScreen: StateFlow<RoutingElements<Routing, Int>>
-        get() = MutableStateFlow(emptyList())
+            .map { RoutingSourceAdapter.ScreenState(onScreen = it) }
+            .stateIn(
+                scope = scope,
+                started = SharingStarted.Lazily,
+                initialValue = RoutingSourceAdapter.ScreenState(onScreen = state.value)
+            )
 
     override val canHandleBackPress: StateFlow<Boolean> =
         MutableStateFlow(false)

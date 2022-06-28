@@ -4,6 +4,7 @@ import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,13 +27,14 @@ class CombinedRoutingSource<Routing>(
         combine(sources.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val onScreen: StateFlow<RoutingElements<Routing, *>> =
-        combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
-
-    override val offScreen: StateFlow<RoutingElements<Routing, *>> =
-        combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
+    override val screenState: StateFlow<RoutingSourceAdapter.ScreenState<Routing, *>> =
+        combine(sources.map { it.screenState }) { arr ->
+            RoutingSourceAdapter.ScreenState(
+                onScreen = arr.flatMap { it.onScreen },
+                offScreen = arr.flatMap { it.offScreen },
+            )
+        }
+            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
 
     override val canHandleBackPress: StateFlow<Boolean> =
         combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }

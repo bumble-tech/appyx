@@ -2,7 +2,7 @@ package com.bumble.appyx.core.routing.onscreen
 
 import com.bumble.appyx.core.routing.RoutingElement
 
-fun <State> OnScreenStateResolver<State>.isOnScreen(element: RoutingElement<*, State>): Boolean =
+fun <State> OnScreenStateResolver<State>.isOnScreen(element: RoutingElement<*, out State>): Boolean =
     if (element.transitionHistory.isEmpty()) {
         isOnScreen(element.fromState) || isOnScreen(element.targetState)
     } else {

@@ -287,6 +287,7 @@ class BackStackExampleNode(
                                     )
                                 )
                             }
+                            null -> Unit
                         }
                     }
                 ) {
