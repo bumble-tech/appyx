@@ -28,12 +28,23 @@ If you launch `:app` you can also change its state (colour) by tapping it. Its c
 
 <img src="https://i.imgur.com/iwSxuZi.png" width="450">
 
-This allows to keep the complexity low in individual `Nodes` by extracting responsibilities to children, as well as composing other components to build more complex functionality. 
+You can go as granular or as high-level as it fits you. This allows to keep the complexity low in individual `Nodes` by extracting responsibilities to children, as well as composing other components to build more complex functionality. 
 
 
-## Dynamism
+## Dynamism by routing
 
-Having a static composition of `Nodes` isn't very exciting. Based on the changes of business logic you'll want to:
+<img src="https://i.imgur.com/iwSxuZi.png" width="450">
+
+Having a static composition of `Nodes` isn't very exciting. You can add dynamism to the tree by changing the control flow via routing:
+
+- A routing is a relation of a parent `Node` to a child `Node`
+- The sum total of those relations in the app defines what part of the application the user sees
+- A routing change will look and feel like navigation to the user of the app
+
+
+## Routing sources
+
+All `ParentNodes` have the option to achieve this dynamism by utilising [Routing sources](../routingsources/index.md) such as the back stack. Using them you can:
 
 - Add or remove child `Nodes` of a `ParentNode`
 - Move them on and off the screen
@@ -41,24 +52,22 @@ Having a static composition of `Nodes` isn't very exciting. Based on the changes
 
 <img src="https://i.imgur.com/8gy3Ghb.gif" width="200"> <img src="https://i.imgur.com/N8rEPrJ.gif" width="200">
 
-The back stack illustrates adding and removing child `Nodes` as well as moving them on and off the screen.
-Tiles illustrates changing the state of children and removing them from the `ParentNode`.
+Here:
+
+- `Back stack` illustrates adding and removing child `Nodes`
+- `Tiles` illustrates changing the state of children and removing them from the `ParentNode`
+
+These are just two examples, you're of course not limited to using them.
 
 
-## Routing: local bits of navigation
+## Summary
 
-All `ParentNodes` have the option to achieve this dynamism by utilising [Routing sources](../routingsources/index.md) such as the back stack. Put simply:
+A summary of Appyx's approach to apps:
 
-- A routing is a relation to a child `Node`
-- Since `Nodes` are composed and routing exist on every level, the sum total of those relations define which components are active and what part of the application the user sees
-- A routing change will look like a piece of navigation happening to the user of the app
-
-## Benefits of routing
-
-Following from the above:
-
-- Navigation is broken down to individual pieces of routing
-- Routing, as this piece of navigation is now the responsibility of the individual `ParentNode`
-- Navigation is now business-logic driven
-- Navigation is now unit-testable
-- You can avoid global navigation concerns, like shared modules needing to know about the application, or the application needing to know about all its possible modules
+- Compose your app out of components with their own lifecycles and state
+- Navigation is local, broken down to individual pieces of routing
+- Navigation is business-logic driven
+- Navigation is stateful
+- Navigation is unit-testable
+- You're free to implement your own navigation engines by utilising routing sources
+- Avoid global navigation concerns, like shared modules needing to know about the application, or the application needing to know about all its possible modules
