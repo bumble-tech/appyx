@@ -124,15 +124,15 @@ class ChildLifecycleTest {
         override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
             state
 
-        override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<String, out Boolean>> =
+        override val screenState: StateFlow<RoutingSourceAdapter.ScreenState<String, out Boolean>> =
             state
                 .map { elements ->
-                    RoutingSourceAdapter.VisibilityState(
+                    RoutingSourceAdapter.ScreenState(
                         onScreen = elements.filter { onScreenResolver.isOnScreen(it) },
                         offScreen = elements.filterNot { onScreenResolver.isOnScreen(it) },
                     )
                 }
-                .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
+                .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)

@@ -65,15 +65,15 @@ abstract class BaseRoutingSource<Routing, State>(
 
     override val elements: StateFlow<RoutingElements<Routing, State>> get() = state
 
-    override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<Routing, State>> by lazy {
+    override val screenState: StateFlow<RoutingSourceAdapter.ScreenState<Routing, State>> by lazy {
         state
             .map { elements ->
-                RoutingSourceAdapter.VisibilityState(
+                RoutingSourceAdapter.ScreenState(
                     onScreen = elements.filter { screenResolver.isOnScreen(it) },
                     offScreen = elements.filterNot { screenResolver.isOnScreen(it) },
                 )
             }
-            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
+            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
     }
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy(LazyThreadSafetyMode.NONE) {

@@ -50,7 +50,7 @@ internal class ChildNodeLifecycleManager<Routing>(
             // observe both routingSource and children
             combine(
                 lifecycleState,
-                routingSource.visibilityState,
+                routingSource.screenState,
                 children,
                 ::Triple
             ).collect { (state, visibility, children) ->

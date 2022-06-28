@@ -6,9 +6,9 @@ import kotlinx.coroutines.flow.StateFlow
 @Stable
 interface RoutingSourceAdapter<Routing, State> {
 
-    val visibilityState: StateFlow<VisibilityState<Routing, out State>>
+    val screenState: StateFlow<ScreenState<Routing, out State>>
 
-    data class VisibilityState<Routing, State>(
+    data class ScreenState<Routing, State>(
         val onScreen: RoutingElements<Routing, out State> = emptyList(),
         val offScreen: RoutingElements<Routing, out State> = emptyList(),
     )

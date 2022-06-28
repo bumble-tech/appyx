@@ -116,7 +116,7 @@ class ChildrenTransitionScope<T : Any, S>(
         val visibleElementsFlow = remember {
             this@ChildrenTransitionScope
                 .routingSource
-                .visibilityState
+                .screenState
                 .map { list ->
                     list
                         .onScreen

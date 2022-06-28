@@ -27,14 +27,14 @@ class CombinedRoutingSource<Routing>(
         combine(sources.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<Routing, *>> =
-        combine(sources.map { it.visibilityState }) { arr ->
-            RoutingSourceAdapter.VisibilityState(
+    override val screenState: StateFlow<RoutingSourceAdapter.ScreenState<Routing, *>> =
+        combine(sources.map { it.screenState }) { arr ->
+            RoutingSourceAdapter.ScreenState(
                 onScreen = arr.flatMap { it.onScreen },
                 offScreen = arr.flatMap { it.offScreen },
             )
         }
-            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
+            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
 
     override val canHandleBackPress: StateFlow<Boolean> =
         combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }

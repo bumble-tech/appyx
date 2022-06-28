@@ -2,7 +2,6 @@ package com.bumble.appyx.core.routing.source.permanent
 
 import com.bumble.appyx.core.routing.Operation
 import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.routing.RoutingSourceAdapter
@@ -50,13 +49,13 @@ class PermanentRoutingSource<Routing : Any>(
     override val elements: StateFlow<PermanentElements<Routing>>
         get() = state
 
-    override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<Routing, Int>>
+    override val screenState: StateFlow<RoutingSourceAdapter.ScreenState<Routing, Int>>
         get() = state
-            .map { RoutingSourceAdapter.VisibilityState(onScreen = it) }
+            .map { RoutingSourceAdapter.ScreenState(onScreen = it) }
             .stateIn(
                 scope = scope,
                 started = SharingStarted.Lazily,
-                initialValue = RoutingSourceAdapter.VisibilityState(onScreen = state.value)
+                initialValue = RoutingSourceAdapter.ScreenState(onScreen = state.value)
             )
 
     override val canHandleBackPress: StateFlow<Boolean> =
