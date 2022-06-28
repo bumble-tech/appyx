@@ -3,12 +3,11 @@ package com.bumble.appyx.core.lifecycle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.core.CompareValues
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
-import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -37,45 +36,33 @@ internal class ChildNodeLifecycleManager<Routing>(
         coroutineScope.launch {
             combine(
                 lifecycle.asFlow(),
-                routingSource.onScreen.keys(),
-                routingSource.offScreen.keys(),
+                routingSource.screenState.keys(),
                 children.withPrevious(),
-                ::State
+                ::Triple
             )
                 .onCompletion {
                     // when scope is closed we need to destroy all existing children
-                    // to do it we emmit special value where we consider all children removed from routing source
-                    val children = children.value
-                    emit(
-                        State(
-                            lifecycleState = Lifecycle.State.DESTROYED,
-                            onScreen = emptySet(),
-                            offScreen = emptySet(),
-                            children = CompareValues(children, emptyMap()),
-                        )
-                    )
+                    // do it manually here as emit() does not work for cancellation case
+                    children
+                        .value
+                        .values
+                        .forEach { entry -> entry.nodeOrNull?.updateLifecycleState(Lifecycle.State.DESTROYED) }
                 }
-                .collect { state ->
-                    // because onScreen and offScreen lists are updated independently
-                    // the same key might exists in both lists
-                    // to avoid lifecycle jumps we should exclude them from offScreen
-                    val overlapKeys = state.onScreen.intersect(state.offScreen)
-
-                    state.onScreen.forEach { key ->
-                        val childState = minOf(state.lifecycleState, Lifecycle.State.RESUMED)
-                        state.children.current[key]?.nodeOrNull?.updateLifecycleState(childState)
+                .collect { (parentState, screenState, children) ->
+                    screenState.onScreen.forEach { key ->
+                        val childState = minOf(parentState, Lifecycle.State.RESUMED)
+                        children.current[key]?.nodeOrNull?.updateLifecycleState(childState)
                     }
 
-                    state.offScreen.forEach { key ->
-                        if (key in overlapKeys) return@forEach
-                        val childState = minOf(state.lifecycleState, Lifecycle.State.CREATED)
-                        state.children.current[key]?.nodeOrNull?.updateLifecycleState(childState)
+                    screenState.offScreen.forEach { key ->
+                        val childState = minOf(parentState, Lifecycle.State.CREATED)
+                        children.current[key]?.nodeOrNull?.updateLifecycleState(childState)
                     }
 
-                    if (state.children.previous != null) {
-                        val removedKeys = state.children.previous.keys - state.children.current.keys
+                    if (children.previous != null) {
+                        val removedKeys = children.previous.keys - children.current.keys
                         removedKeys.forEach { key ->
-                            val removedChild = state.children.previous[key]
+                            val removedChild = children.previous[key]
                             removedChild?.nodeOrNull?.updateLifecycleState(Lifecycle.State.DESTROYED)
                         }
                     }
@@ -83,17 +70,19 @@ internal class ChildNodeLifecycleManager<Routing>(
         }
     }
 
-    private fun StateFlow<RoutingElements<Routing, *>>.keys(): Flow<Set<RoutingKey<Routing>>> =
+    private fun <Routing> Flow<RoutingSourceAdapter.ScreenState<Routing, *>>.keys() =
         this
-            .map { list -> list.mapTo(HashSet(list.size, 1f)) { it.key } }
+            .map { screenState ->
+                ScreenState(
+                    onScreen = screenState.onScreen.map { it.key },
+                    offScreen = screenState.offScreen.map { it.key },
+                )
+            }
             .distinctUntilChanged()
 
-    private class State<Routing>(
-        val lifecycleState: Lifecycle.State,
-        val onScreen: Set<RoutingKey<Routing>>,
-        val offScreen: Set<RoutingKey<Routing>>,
-        val children: CompareValues<ChildEntryMap<Routing>>,
-    ) {
-        override fun toString(): String = "($lifecycleState, $onScreen, $offScreen, $children)"
-    }
+    private data class ScreenState<Routing>(
+        val onScreen: List<RoutingKey<Routing>> = emptyList(),
+        val offScreen: List<RoutingKey<Routing>> = emptyList(),
+    )
+
 }
