@@ -4,6 +4,7 @@ import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -25,6 +26,15 @@ class CombinedRoutingSource<Routing>(
     override val elements: StateFlow<RoutingElements<Routing, *>> =
         combine(sources.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
+
+    override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<Routing, *>> =
+        combine(sources.map { it.visibilityState }) { arr ->
+            RoutingSourceAdapter.VisibilityState(
+                onScreen = arr.flatMap { it.onScreen },
+                offScreen = arr.flatMap { it.offScreen },
+            )
+        }
+            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
 
     override val onScreen: StateFlow<RoutingElements<Routing, *>> =
         combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }

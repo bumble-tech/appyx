@@ -12,11 +12,15 @@ import com.bumble.appyx.core.routing.RoutingElement
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import com.bumble.appyx.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Rule
@@ -120,6 +124,9 @@ abstract class ChildAwareTestBase {
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
         override val elements: StateFlow<RoutingElements<Key, Int>>
             get() = state
+        override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<Key, out Int>>
+            get() = state.map { RoutingSourceAdapter.VisibilityState(onScreen = it) }
+                .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
         override val onScreen: StateFlow<RoutingElements<Key, out Int>>
             get() = state
         override val offScreen: StateFlow<RoutingElements<Key, out Int>>

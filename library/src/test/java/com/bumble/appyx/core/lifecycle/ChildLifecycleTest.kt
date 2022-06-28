@@ -17,6 +17,7 @@ import com.bumble.appyx.core.routing.RoutingElement
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import com.bumble.appyx.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -123,11 +124,14 @@ class ChildLifecycleTest {
         override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
             state
 
+        override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<String, out Boolean>> =
+            onScreenMapper.resolveVisibilityState(state)
+
         override val onScreen: StateFlow<RoutingElements<String, out Boolean>> =
-            onScreenMapper.resolveOnScreenElements(state)
+            onScreenMapper.resolveOnScreenElements(visibilityState)
 
         override val offScreen: StateFlow<RoutingElements<String, out Boolean>> =
-            onScreenMapper.resolveOffScreenElements(state)
+            onScreenMapper.resolveOffScreenElements(visibilityState)
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)

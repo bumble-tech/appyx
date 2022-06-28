@@ -1,7 +1,9 @@
 package com.bumble.appyx.core.routing.onscreen
 
 import com.bumble.appyx.core.routing.RoutingElements
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -12,22 +14,26 @@ class OnScreenMapper<Routing, State>(
     private val onScreenStateResolver: OnScreenStateResolver<State>
 ) {
 
-    fun resolveOnScreenElements(state: StateFlow<RoutingElements<Routing, State>>): StateFlow<RoutingElements<Routing, State>> =
+    fun resolveVisibilityState(
+        state: Flow<RoutingElements<Routing, out State>>,
+    ): StateFlow<RoutingSourceAdapter.VisibilityState<Routing, State>> =
         state
             .map { elements ->
-                elements.filter { element ->
-                    onScreenStateResolver.isOnScreen(element)
-                }
+                RoutingSourceAdapter.VisibilityState(
+                    onScreen = elements.filter { onScreenStateResolver.isOnScreen(it) },
+                    offScreen = elements.filterNot { onScreenStateResolver.isOnScreen(it) },
+                )
             }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
+            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
 
-    fun resolveOffScreenElements(state: StateFlow<RoutingElements<Routing, State>>): StateFlow<RoutingElements<Routing, State>> =
-        state
-            .map { elements ->
-                elements.filterNot { element ->
-                    onScreenStateResolver.isOnScreen(element)
-                }
-            }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
+    fun resolveOnScreenElements(
+        state: Flow<RoutingSourceAdapter.VisibilityState<Routing, out State>>,
+    ): StateFlow<RoutingElements<Routing, out State>> =
+        state.map { it.onScreen }.stateIn(scope, SharingStarted.Eagerly, emptyList())
+
+    fun resolveOffScreenElements(
+        state: Flow<RoutingSourceAdapter.VisibilityState<Routing, out State>>,
+    ): StateFlow<RoutingElements<Routing, out State>> =
+        state.map { it.offScreen }.stateIn(scope, SharingStarted.Eagerly, emptyList())
 
 }
