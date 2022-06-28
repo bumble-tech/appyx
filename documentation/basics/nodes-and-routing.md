@@ -12,7 +12,7 @@ You can think of a `Node` as a standalone component with:
 - State restoration
 -  A `@Composable` view
 - Business logic that's kept alive even when the view isn't added to the composition
-- The ability to host generic [Plugins](plugins.md) to extract extra concerns without enforcing any particular architectural pattern
+- The ability to host generic [Plugins](../other/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
 
 ## Node illustration 
 

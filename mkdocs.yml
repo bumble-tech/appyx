@@ -29,8 +29,8 @@ nav:
   - UI:
       - Children: ui/children-view.md
   - Other topics:
-      - Plugins: basics/plugins.md
-      - Terminology: basics/terminology.md
+      - Plugins: other/plugins.md
+      - Terminology: other/terminology.md
 
 
 # theme configuration
