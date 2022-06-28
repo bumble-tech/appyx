@@ -4,7 +4,6 @@ import com.bumble.appyx.core.plugin.BackPressHandler
 import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.routing.backpresshandlerstrategies.DontHandleBackPress
-import com.bumble.appyx.core.routing.onscreen.OnScreenMapper
 import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.routing.onscreen.isOnScreen
 import com.bumble.appyx.core.routing.operationstrategies.ExecuteImmediately
@@ -15,7 +14,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -64,10 +66,15 @@ abstract class BaseRoutingSource<Routing, State>(
     override val elements: StateFlow<RoutingElements<Routing, State>> get() = state
 
     override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<Routing, State>> by lazy {
-        onScreenMapper.resolveVisibilityState(state)
+        state
+            .map { elements ->
+                RoutingSourceAdapter.VisibilityState(
+                    onScreen = elements.filter { screenResolver.isOnScreen(it) },
+                    offScreen = elements.filterNot { screenResolver.isOnScreen(it) },
+                )
+            }
+            .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
     }
-
-    private val onScreenMapper = OnScreenMapper<Routing, State>(scope, screenResolver)
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
         backPressHandler.canHandleBackPress

@@ -14,13 +14,16 @@ import com.bumble.appyx.core.routing.RoutingElement
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.routing.RoutingSourceAdapter
-import com.bumble.appyx.core.routing.onscreen.OnScreenMapper
 import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.routing.onscreen.isOnScreen
 import com.bumble.appyx.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -117,13 +120,19 @@ class ChildLifecycleTest {
         private val onScreenResolver = object : OnScreenStateResolver<Boolean> {
             override fun isOnScreen(state: Boolean): Boolean = state
         }
-        private val onScreenMapper = OnScreenMapper<String, Boolean>(scope, onScreenResolver)
 
         override val elements: StateFlow<List<RoutingElement<String, Boolean>>> =
             state
 
         override val visibilityState: StateFlow<RoutingSourceAdapter.VisibilityState<String, out Boolean>> =
-            onScreenMapper.resolveVisibilityState(state)
+            state
+                .map { elements ->
+                    RoutingSourceAdapter.VisibilityState(
+                        onScreen = elements.filter { onScreenResolver.isOnScreen(it) },
+                        offScreen = elements.filterNot { onScreenResolver.isOnScreen(it) },
+                    )
+                }
+                .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)
