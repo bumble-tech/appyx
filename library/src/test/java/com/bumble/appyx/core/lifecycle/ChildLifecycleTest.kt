@@ -4,20 +4,19 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.routing.onscreen.OnScreenMapper
-import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.routing.Operation
 import com.bumble.appyx.core.routing.RoutingElement
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.routing.RoutingSourceAdapter
+import com.bumble.appyx.core.routing.onscreen.OnScreenMapper
+import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.testutils.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -129,9 +128,6 @@ class ChildLifecycleTest {
 
         override val onScreen: StateFlow<RoutingElements<String, out Boolean>> =
             onScreenMapper.resolveOnScreenElements(visibilityState)
-
-        override val offScreen: StateFlow<RoutingElements<String, out Boolean>> =
-            onScreenMapper.resolveOffScreenElements(visibilityState)
 
         override val canHandleBackPress: StateFlow<Boolean> =
             MutableStateFlow(false)

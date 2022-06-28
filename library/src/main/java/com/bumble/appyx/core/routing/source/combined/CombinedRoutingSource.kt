@@ -40,10 +40,6 @@ class CombinedRoutingSource<Routing>(
         combine(sources.map { it.onScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val offScreen: StateFlow<RoutingElements<Routing, *>> =
-        combine(sources.map { it.offScreen }) { arr -> arr.reduce { acc, list -> acc + list } }
-            .stateIn(scope, SharingStarted.Eagerly, emptyList())
-
     override val canHandleBackPress: StateFlow<Boolean> =
         combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }
             .stateIn(scope, SharingStarted.Eagerly, false)

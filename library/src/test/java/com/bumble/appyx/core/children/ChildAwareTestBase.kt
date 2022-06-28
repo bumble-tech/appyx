@@ -129,8 +129,6 @@ abstract class ChildAwareTestBase {
                 .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.VisibilityState())
         override val onScreen: StateFlow<RoutingElements<Key, out Int>>
             get() = state
-        override val offScreen: StateFlow<RoutingElements<Key, out Int>>
-            get() = MutableStateFlow(emptyList())
 
         override fun onBackPressed() = Unit
 

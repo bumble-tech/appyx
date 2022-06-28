@@ -11,7 +11,6 @@ import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
@@ -51,16 +50,15 @@ internal class ChildNodeLifecycleManager<Routing>(
             // observe both routingSource and children
             combine(
                 lifecycleState,
-                routingSource.onScreen,
-                routingSource.offScreen,
+                routingSource.visibilityState,
                 children,
-                ::Quadruple
-            ).collect { (state, onScreen, offScreen, children) ->
-                onScreen.forEach { element ->
+                ::Triple
+            ).collect { (state, visibility, children) ->
+                visibility.onScreen.forEach { element ->
                     val current = minOf(state, Lifecycle.State.RESUMED)
                     children[element.key]?.nodeOrNull?.updateLifecycleState(current)
                 }
-                offScreen.forEach { element ->
+                visibility.offScreen.forEach { element ->
                     val current = minOf(state, Lifecycle.State.CREATED)
                     children[element.key]?.nodeOrNull?.updateLifecycleState(current)
                 }
@@ -84,12 +82,4 @@ internal class ChildNodeLifecycleManager<Routing>(
         }
     }
 
-    private data class Quadruple<out A, out B, out C, out D>(
-        val first: A,
-        val second: B,
-        val third: C,
-        val fourth: D,
-    ) {
-        override fun toString(): String = "($first, $second, $third, $fourth)"
-    }
 }

@@ -62,9 +62,6 @@ class PermanentRoutingSource<Routing : Any>(
     override val onScreen: StateFlow<RoutingElements<Routing, Int>>
         get() = state
 
-    override val offScreen: StateFlow<RoutingElements<Routing, Int>>
-        get() = MutableStateFlow(emptyList())
-
     override val canHandleBackPress: StateFlow<Boolean> =
         MutableStateFlow(false)
 

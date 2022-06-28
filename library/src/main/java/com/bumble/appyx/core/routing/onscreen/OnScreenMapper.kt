@@ -31,9 +31,4 @@ class OnScreenMapper<Routing, State>(
     ): StateFlow<RoutingElements<Routing, out State>> =
         state.map { it.onScreen }.stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    fun resolveOffScreenElements(
-        state: Flow<RoutingSourceAdapter.VisibilityState<Routing, out State>>,
-    ): StateFlow<RoutingElements<Routing, out State>> =
-        state.map { it.offScreen }.stateIn(scope, SharingStarted.Eagerly, emptyList())
-
 }
