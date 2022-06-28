@@ -2,7 +2,9 @@ package com.bumble.appyx.core.children
 
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.routing.RoutingKey
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import kotlin.reflect.KClass
 
@@ -150,25 +152,31 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildrenAttached is invoked multiple times for each instance`() {
-        val capturedNodes = mutableSetOf<Set<Node>>()
+        // order within pair matters as they are different classes
+        val capturedNodes = HashSet<Pair<Node, Node>>()
 
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child2> { _, c1, c2 ->
-                capturedNodes.add(setOf(c1, c2))
+                capturedNodes.add(c1 to c2)
             }
         }) {
             add(
                 RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
                 RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 0)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 1)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 2)),
+                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 3)),
             )
         }
 
-        assertTrue(capturedNodes.contains(setOf(children[0], children[2])))
-        assertTrue(capturedNodes.contains(setOf(children[0], children[3])))
-        assertTrue(capturedNodes.contains(setOf(children[1], children[2])))
-        assertTrue(capturedNodes.contains(setOf(children[1], children[3])))
+        assertEquals(
+            setOf(
+                children[0] to children[2],
+                children[0] to children[3],
+                children[1] to children[2],
+                children[1] to children[3],
+            ),
+            capturedNodes,
+        )
     }
 
     @Test
@@ -190,10 +198,11 @@ interface ChildAwareCommonTestSpec {
 
     @Test
     fun `whenChildrenAttached is invoked properly for same class connections`() {
-        val capturedNodes = HashSet<Pair<Node, Node>>()
+        // order within pair does not matter and is not guaranteed
+        val capturedNodes = HashSet<Set<Node>>()
         val children = withRegistration(register = {
             whenChildrenAttached<ChildAwareTestBase.Child1, ChildAwareTestBase.Child1> { _, c1, c2 ->
-                capturedNodes += c1 to c2
+                capturedNodes += setOf(c1, c2)
             }
         }) {
             add(
@@ -204,11 +213,11 @@ interface ChildAwareCommonTestSpec {
         }
         assertEquals(
             setOf(
-                children[0] to children[1],
-                children[0] to children[2],
-                children[1] to children[2],
+                setOf(children[0], children[1]),
+                setOf(children[0], children[2]),
+                setOf(children[1], children[2]),
             ),
-            capturedNodes
+            capturedNodes,
         )
     }
 
