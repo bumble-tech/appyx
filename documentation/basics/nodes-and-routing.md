@@ -33,7 +33,7 @@ You can go as granular or as high-level as it fits you. This allows to keep the 
 
 ## Dynamism by routing
 
-<img src="https://i.imgur.com/iwSxuZi.png" width="450">
+<img src="https://i.imgur.com/hKvOs3w.gif" width="450">
 
 Having a static composition of `Nodes` isn't very exciting. You can add dynamism to the tree by changing the control flow via routing:
 
