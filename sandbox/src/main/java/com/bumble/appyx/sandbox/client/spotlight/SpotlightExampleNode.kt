@@ -133,6 +133,7 @@ class SpotlightExampleNode(
         Column(
             verticalArrangement = Arrangement.spacedBy(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier,
         ) {
             Row(
                 modifier = Modifier
