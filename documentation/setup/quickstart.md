@@ -1,6 +1,10 @@
 # Quick start guide
 
-Before you proceed, it's suggested you check out the project and launch the `:app` module for a quick demonstration – what you see below will make more sense afterwards!
+## Suggestions
+
+- Check out the project and launch the `:app` module for a quick demonstration
+- Check out [Nodes and routing](basics/nodes-and-routing.md), which explains the concepts you'll encounter in this guide.
+
 
 ## 1. Add Appyx to your project
 
