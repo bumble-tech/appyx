@@ -144,8 +144,8 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out 
 @Composable
 fun <R, S> RoutingSource<R, S>?.visibleChildrenAsState(): State<RoutingElements<R, out S>> =
     if (this != null) {
-        val visibleElements = remember(this) { visibilityState.map { it.onScreen } }
-        visibleElements.collectAsState(emptyList())
+        val visibleElementsFlow = remember { visibilityState.map { it.onScreen } }
+        visibleElementsFlow.collectAsState(emptyList())
     } else {
         remember { mutableStateOf(emptyList()) }
     }

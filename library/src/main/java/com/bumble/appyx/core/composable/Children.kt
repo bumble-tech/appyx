@@ -113,7 +113,7 @@ class ChildrenTransitionScope<T : Any, S>(
         clazz: KClass<out T>,
         block: @Composable (transitionScope: ChildTransitionScope<S>, child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
     ) {
-        val visibleElements = remember(this@ChildrenTransitionScope.routingSource, clazz) {
+        val visibleElementsFlow = remember {
             this@ChildrenTransitionScope
                 .routingSource
                 .visibilityState
@@ -123,7 +123,7 @@ class ChildrenTransitionScope<T : Any, S>(
                         .filter { clazz.isInstance(it.key.routing) }
                 }
         }
-        val children by visibleElements.collectAsState(emptyList())
+        val children by visibleElementsFlow.collectAsState(emptyList())
 
         val saveableStateHolder = rememberSaveableStateHolder()
         children.forEach { routingElement ->
