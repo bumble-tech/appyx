@@ -102,7 +102,6 @@ abstract class Node(
         nodeLifecycle.lifecycle
 
     override fun updateLifecycleState(state: Lifecycle.State) {
-        if (lifecycle.isDestroyed) return
         nodeLifecycle.updateLifecycleState(state)
         if (state == Lifecycle.State.DESTROYED) {
             plugins<Destroyable>().forEach { it.destroy() }
