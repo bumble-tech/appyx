@@ -44,14 +44,30 @@ abstract class ChildAwareTestBase {
             .children
             .value
             .values
-            .filter { it.key.routing in key.map { it.routing } }
-            .mapNotNull { (it as? ChildEntry.Eager)?.node }
+            .filter { entry -> entry.key in key }
+            .sortedBy { it.key.routing }
+            .mapNotNull { it.nodeOrNull }
     }
 
-    sealed class Configuration {
-        data class Child1(val id: Int = 0) : Configuration()
-        data class Child2(val id: Int = 0) : Configuration()
-        data class Child3(val id: Int = 0) : Configuration()
+    sealed class Configuration : Comparable<Configuration> {
+        abstract val id: Int
+
+        data class Child1(override val id: Int = 0) : Configuration()
+        data class Child2(override val id: Int = 0) : Configuration()
+        data class Child3(override val id: Int = 0) : Configuration()
+
+        override fun compareTo(other: Configuration): Int {
+            val classOrder = arrayOf(Child1::class, Child2::class, Child3::class)
+            val compClassOrder =
+                classOrder
+                    .indexOf(this::class)
+                    .compareTo(classOrder.indexOf(other::class))
+            return if (compClassOrder != 0) {
+                compClassOrder
+            } else {
+                id.compareTo(other.id)
+            }
+        }
     }
 
     class Root(
