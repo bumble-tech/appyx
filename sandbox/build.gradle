@@ -49,10 +49,11 @@ android {
 }
 
 dependencies {
-    implementation project(':library')
+    implementation project(':core')
     implementation project(':rx2')
     implementation project(':interop')
     implementation project(':routing-source-addons')
+    implementation project(':testing')
 
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat
