@@ -1,12 +1,12 @@
 # General setup
 site_name: Appyx
-site_url: https://github.bumble.dev/android/appyx
+site_url: https://github.com/bumble-tech/appyx
 site_author: Bumble
 site_description: Application mechanics for your Android apps, built on top of Jetpack Compose
 
 # Repository
 repo_name: Appyx
-repo_url: https://github.bumble.dev/android/appyx
+repo_url: https://github.com/bumble-tech/appyx
 edit_uri: ""
 
 # Copyright
