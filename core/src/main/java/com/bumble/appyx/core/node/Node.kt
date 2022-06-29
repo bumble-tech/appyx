@@ -10,6 +10,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import com.bumble.appyx.core.BuildConfig
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.lifecycle.LifecycleLogger
@@ -65,7 +66,9 @@ abstract class Node(
     private var wasBuilt = false
 
     init {
-        lifecycle.addObserver(LifecycleLogger)
+        if (BuildConfig.DEBUG) {
+            lifecycle.addObserver(LifecycleLogger)
+        }
         lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {
                 if (!wasBuilt) error("onBuilt was not invoked for $this")

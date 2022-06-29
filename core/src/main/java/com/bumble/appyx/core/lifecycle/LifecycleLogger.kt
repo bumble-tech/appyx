@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 
-// TODO Remove later before release
 internal object LifecycleLogger : DefaultLifecycleObserver {
 
     private const val LOG_TAG = "Lifecycle"
