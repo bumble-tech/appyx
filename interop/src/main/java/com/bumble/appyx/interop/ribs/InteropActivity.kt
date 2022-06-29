@@ -1,13 +1,13 @@
-package com.bumble.appyx.interop.v1v2
+package com.bumble.appyx.interop.ribs
 
 import android.content.Intent
 import android.os.Bundle
 import com.badoo.ribs.android.RibActivity
 import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPoint
 
-abstract class InteropActivity : RibActivity(), IntegrationPointV2Provider {
+abstract class InteropActivity : RibActivity(), IntegrationPointAppyxProvider {
 
-    override lateinit var integrationPointV2: ActivityIntegrationPoint
+    override lateinit var integrationPointAppyx: ActivityIntegrationPoint
         protected set
 
     protected open fun createIntegrationPointV2(savedInstanceState: Bundle?): ActivityIntegrationPoint =
@@ -18,12 +18,12 @@ abstract class InteropActivity : RibActivity(), IntegrationPointV2Provider {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        integrationPointV2 = createIntegrationPointV2(savedInstanceState)
+        integrationPointAppyx = createIntegrationPointV2(savedInstanceState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        integrationPointV2.onActivityResult(requestCode, resultCode, data)
+        integrationPointAppyx.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(
@@ -32,12 +32,12 @@ abstract class InteropActivity : RibActivity(), IntegrationPointV2Provider {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        integrationPointV2.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        integrationPointAppyx.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        integrationPointV2.onSaveInstanceState(outState)
+        integrationPointAppyx.onSaveInstanceState(outState)
     }
 
 }

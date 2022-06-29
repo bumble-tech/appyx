@@ -4,8 +4,8 @@ import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 
-class V1ChildNode internal constructor(buildParams: BuildParams<*>) : Node<RibView>(
+class RibsChildNode internal constructor(buildParams: BuildParams<*>) : Node<RibView>(
     buildParams = buildParams,
-    viewFactory = V1ChildViewImpl.Factory().invoke(null),
+    viewFactory = RibsChildViewImpl.Factory().invoke(null),
     plugins = emptyList()
 )

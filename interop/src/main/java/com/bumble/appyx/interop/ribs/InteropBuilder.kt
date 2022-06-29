@@ -1,19 +1,19 @@
-package com.bumble.appyx.interop.v1v2
+package com.bumble.appyx.interop.ribs
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.bumble.appyx.interop.v1v2.V1V2NodeImpl.Companion.V1V2NodeKey
+import com.bumble.appyx.interop.ribs.InteropNodeImpl.Companion.InteropNodeKey
 import com.bumble.appyx.core.integration.NodeFactory
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
 
-class V1V2Builder<N : Node>(
+class InteropBuilder<N : Node>(
     private val nodeFactory: NodeFactory<N>
-) : SimpleBuilder<V1V2Node<N>>() {
+) : SimpleBuilder<InteropNode<N>>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): V1V2Node<N> {
-        val bundle = buildParams.savedInstanceState?.getBundle(V1V2NodeKey)
+    override fun build(buildParams: BuildParams<Nothing?>): InteropNode<N> {
+        val bundle = buildParams.savedInstanceState?.getBundle(InteropNodeKey)
         val stateMap = bundle?.let {
             val keys = bundle.keySet()
             val map = mutableMapOf<String, Any?>()
@@ -23,7 +23,7 @@ class V1V2Builder<N : Node>(
             map
         }
 
-        val v2Node = nodeFactory
+        val appyxNode = nodeFactory
             .create(
                 buildContext = BuildContext.root(
                     savedStateMap = stateMap,
@@ -32,6 +32,6 @@ class V1V2Builder<N : Node>(
             )
             .build()
 
-        return V1V2NodeImpl(buildParams = buildParams, v2Node = v2Node)
+        return InteropNodeImpl(buildParams = buildParams, appyxNode = appyxNode)
     }
 }

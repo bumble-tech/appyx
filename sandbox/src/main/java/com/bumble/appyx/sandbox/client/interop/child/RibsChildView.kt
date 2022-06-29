@@ -8,19 +8,19 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.R.layout
 
-interface V1ChildView : RibView {
+interface RibsChildView : RibView {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, V1ChildView>
+    interface Factory : ViewFactoryBuilder<Nothing?, RibsChildView>
 }
 
-class V1ChildViewImpl private constructor(
+class RibsChildViewImpl private constructor(
     override val androidView: ViewGroup
-) : AndroidRibView(), V1ChildView {
+) : AndroidRibView(), RibsChildView {
 
-    class Factory : V1ChildView.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<V1ChildView> =
+    class Factory : RibsChildView.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<RibsChildView> =
             ViewFactory {
-                V1ChildViewImpl(androidView = it.inflate(layout.rib_child))
+                RibsChildViewImpl(androidView = it.inflate(layout.rib_child))
             }
     }
 }

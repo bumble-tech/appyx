@@ -1,35 +1,35 @@
-package com.bumble.appyx.interop.v1v2
+package com.bumble.appyx.interop.ribs
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleEventObserver
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
-import com.bumble.appyx.interop.v1v2.V1V2View.Dependency
-import com.bumble.appyx.interop.v1v2.V1V2View.Factory
+import com.bumble.appyx.interop.ribs.InteropView.Dependency
+import com.bumble.appyx.interop.ribs.InteropView.Factory
 import com.bumble.appyx.core.node.Node
 
-interface V1V2Node<N : Node> : Rib {
-    val v2Node: N
+interface InteropNode<N : Node> : Rib {
+    val appyxNode: N
 }
 
-internal class V1V2NodeImpl<N : Node>(
+internal class InteropNodeImpl<N : Node>(
     buildParams: BuildParams<*>,
-    override val v2Node: N
-) : com.badoo.ribs.core.Node<V1V2View>(
+    override val appyxNode: N
+) : com.badoo.ribs.core.Node<InteropView>(
     buildParams = buildParams,
     viewFactory = Factory<N>().invoke(object : Dependency<N> {
-        override val v2Node: N = v2Node
+        override val appyxNode: N = appyxNode
     })
-), V1V2Node<N> {
+), InteropNode<N> {
 
     private val observer = LifecycleEventObserver { source, _ ->
-        v2Node.updateLifecycleState(source.lifecycle.currentState)
+        appyxNode.updateLifecycleState(source.lifecycle.currentState)
     }
 
     override fun onCreate() {
         super.onCreate()
-        v2Node.updateLifecycleState(lifecycle.currentState)
+        appyxNode.updateLifecycleState(lifecycle.currentState)
         lifecycle.addObserver(observer)
     }
 
@@ -40,12 +40,12 @@ internal class V1V2NodeImpl<N : Node>(
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val state = v2Node.saveInstanceState { true }
-        outState.putBundle(V1V2NodeKey, state.toBundle())
+        val state = appyxNode.saveInstanceState { true }
+        outState.putBundle(InteropNodeKey, state.toBundle())
     }
 
     companion object {
-        const val V1V2NodeKey = "V1V2NodeKey"
+        const val InteropNodeKey = "InteropNodeKey"
     }
 
     private fun Map<String, Any?>.toBundle(): Bundle = bundleOf(*this.toList().toTypedArray())

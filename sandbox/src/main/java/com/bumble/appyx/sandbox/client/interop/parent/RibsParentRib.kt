@@ -6,9 +6,9 @@ import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
-import com.bumble.appyx.sandbox.client.interop.parent.V1ParentViewImpl.Factory
+import com.bumble.appyx.sandbox.client.interop.parent.RibsParentViewImpl.Factory
 
-interface V1ParentRib : Rib {
+interface RibsParentRib : Rib {
 
     class Customisation(
         val viewFactory: Factory = Factory(),
@@ -16,12 +16,12 @@ interface V1ParentRib : Rib {
     ) : RibCustomisation
 }
 
-class V1ParentNode internal constructor(
+class RibsParentNode internal constructor(
     buildParams: BuildParams<*>,
-    viewFactory: ViewFactory<V1ParentView>?,
+    viewFactory: ViewFactory<RibsParentView>?,
     plugins: List<Plugin> = emptyList(),
-) : Node<V1ParentView>(
+) : Node<RibsParentView>(
     buildParams = buildParams,
     viewFactory = viewFactory,
     plugins = plugins
-), V1ParentRib
+), RibsParentRib

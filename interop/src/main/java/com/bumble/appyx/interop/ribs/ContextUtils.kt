@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.v1v2
+package com.bumble.appyx.interop.ribs
 
 import android.app.Activity
 import android.content.Context
