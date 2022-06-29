@@ -160,10 +160,10 @@ You can also use a fader instead: ```rememberBackstackFader()```, and you can su
 
 Need something more custom?
 
-1. Instead of a back stack, you can find other control structures in the library, or you can implement your own
-2. Instead of the default transition handlers, you can also supply your own
+1. Instead of a back stack, you can find other [routing sources](../routingsources) in the library, or you can [implement your own](../routingsources/custom.md)
+2. Instead of the default transition handlers, you can also [use Jetpack Compose provided ones, or supply your own](../ui/transitions.md)
 
-You can also read the [Back stack documentation](../routingsources/backstack.md) for more info.
+You can also read the [Back stack documentation](../routingsources/backstack.md) for more info on the specific options for the back stack.
 
 ## 6. Proper child nodes  
 

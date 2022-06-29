@@ -30,4 +30,4 @@ When you feel ready, you can try to [implement your own routing source](custom.m
 The routing source represents only the model, not the looks:
 
 - UI representation depends on your `@Composable` view hosting the children – See [Adding children to the view](../ui/children-view.md)
-- Transition animation (if any) depends on the `TransitionHandler` interpreting the states defined by the `RoutingSource` in question – See individual routing sources for details.
+- [Transition animations](../ui/transitions.md) (if any) is a separate concern

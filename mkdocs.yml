@@ -28,6 +28,7 @@ nav:
       - Writing your own: routingsources/custom.md
   - UI:
       - Children: ui/children-view.md
+      - Transitions: ui/transitions.md
   - Other topics:
       - Lifecycle: other/lifecycle.md
       - Plugins: other/plugins.md
