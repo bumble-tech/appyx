@@ -1,12 +1,12 @@
-package com.bumble.appyx.interop.ribsappyx
+package com.bumble.appyx.interop.ribs
 
 import android.os.Bundle
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleEventObserver
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
-import com.bumble.appyx.interop.ribsappyx.InteropView.Dependency
-import com.bumble.appyx.interop.ribsappyx.InteropView.Factory
+import com.bumble.appyx.interop.ribs.InteropView.Dependency
+import com.bumble.appyx.interop.ribs.InteropView.Factory
 import com.bumble.appyx.core.node.Node
 
 interface InteropNode<N : Node> : Rib {

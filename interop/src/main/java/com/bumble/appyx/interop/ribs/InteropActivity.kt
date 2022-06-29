@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.ribsappyx
+package com.bumble.appyx.interop.ribs
 
 import android.content.Intent
 import android.os.Bundle

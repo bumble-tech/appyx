@@ -7,7 +7,7 @@ import com.badoo.ribs.routing.resolution.ChildResolution.Companion.child
 import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.backstack.BackStack
-import com.bumble.appyx.interop.ribsappyx.InteropBuilder
+import com.bumble.appyx.interop.ribs.InteropBuilder
 import com.bumble.appyx.sandbox.client.container.ContainerNode
 import com.bumble.appyx.sandbox.client.interop.child.RibsChildNode
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentRouter.Configuration

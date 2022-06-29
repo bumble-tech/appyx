@@ -7,7 +7,7 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
 import com.badoo.ribs.core.modality.BuildContext
-import com.bumble.appyx.interop.ribsappyx.InteropActivity
+import com.bumble.appyx.interop.ribs.InteropActivity
 import com.bumble.appyx.sandbox.client.container.ContainerNode
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentBuilder
 

@@ -1,8 +1,8 @@
-package com.bumble.appyx.interop.ribsappyx
+package com.bumble.appyx.interop.ribs
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
-import com.bumble.appyx.interop.ribsappyx.InteropNodeImpl.Companion.InteropNodeKey
+import com.bumble.appyx.interop.ribs.InteropNodeImpl.Companion.InteropNodeKey
 import com.bumble.appyx.core.integration.NodeFactory
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
