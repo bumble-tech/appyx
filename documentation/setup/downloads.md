@@ -5,11 +5,9 @@ You need to specify the following repositories in your Gradle files:
 ```groovy
 repositories {
     mavenCentral()
-    maven { url 'https://jitpack.io' }
 }
 ```
 
-JitPack repository requirement will be eliminated soon.
 
 ## Core dependencies
 
@@ -42,6 +40,7 @@ dependencies {
     implementation "com.bumble.appyx:interop-rx2:$version"
 
     // Optional interoperability layer between Appyx and badoo/RIBs
+    // You have to add https://jitpack.io repository to use it because badoo/RIBs is hosted there
     implementation "com.bumble.appyx:interop-ribs:$version"
 
 }
