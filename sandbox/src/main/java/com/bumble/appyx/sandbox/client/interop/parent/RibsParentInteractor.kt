@@ -6,23 +6,23 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import com.bumble.appyx.sandbox.client.interop.parent.V1ParentRouter.Configuration
-import com.bumble.appyx.sandbox.client.interop.parent.V1ParentView.Event
+import com.bumble.appyx.sandbox.client.interop.parent.RibsParentRouter.Configuration
+import com.bumble.appyx.sandbox.client.interop.parent.RibsParentView.Event
 import io.reactivex.functions.Consumer
 
-internal class V1ParentInteractor(
+internal class RibsParentInteractor(
     private val backStack: BackStack<Configuration>,
     buildParams: BuildParams<*>
-) : Interactor<V1ParentRib, V1ParentView>(
+) : Interactor<RibsParentRib, RibsParentView>(
     buildParams = buildParams
 ) {
 
-    override fun onViewCreated(view: V1ParentView, viewLifecycle: Lifecycle) {
+    override fun onViewCreated(view: RibsParentView, viewLifecycle: Lifecycle) {
         viewLifecycle.createDestroy {
             bind(view to Consumer<Event> {
                 val current = backStack.activeConfiguration
                 if (current is Configuration.InteropNode) {
-                    backStack.push(Configuration.V1Node)
+                    backStack.push(Configuration.RibsNode)
                 } else {
                     backStack.push(Configuration.InteropNode)
                 }

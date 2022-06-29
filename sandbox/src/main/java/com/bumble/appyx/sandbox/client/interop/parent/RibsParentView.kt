@@ -10,24 +10,24 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.R
-import com.bumble.appyx.sandbox.client.interop.parent.V1ParentView.Event
-import com.bumble.appyx.sandbox.client.interop.parent.V1ParentView.Event.SwitchClicked
+import com.bumble.appyx.sandbox.client.interop.parent.RibsParentView.Event
+import com.bumble.appyx.sandbox.client.interop.parent.RibsParentView.Event.SwitchClicked
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 
-interface V1ParentView : RibView, ObservableSource<Event> {
+interface RibsParentView : RibView, ObservableSource<Event> {
 
-    interface Factory : ViewFactoryBuilder<Nothing?, V1ParentView>
+    interface Factory : ViewFactoryBuilder<Nothing?, RibsParentView>
 
     sealed class Event {
         object SwitchClicked : Event()
     }
 }
 
-class V1ParentViewImpl private constructor(
+class RibsParentViewImpl private constructor(
     private val events: PublishRelay<Event> = PublishRelay.create(),
     override val androidView: ViewGroup
-) : AndroidRibView(), V1ParentView, ObservableSource<Event> by events {
+) : AndroidRibView(), RibsParentView, ObservableSource<Event> by events {
 
     private val container = androidView.findViewById<FrameLayout>(R.id.child)
     private val switch = androidView.findViewById<Button>(R.id.switchButton)
@@ -38,11 +38,11 @@ class V1ParentViewImpl private constructor(
         }
     }
 
-    class Factory : V1ParentView.Factory {
-        override fun invoke(deps: Nothing?): ViewFactory<V1ParentView> =
+    class Factory : RibsParentView.Factory {
+        override fun invoke(deps: Nothing?): ViewFactory<RibsParentView> =
             ViewFactory {
                 val view = it.inflate<ViewGroup>(R.layout.rib_root)
-                V1ParentViewImpl(androidView = view)
+                RibsParentViewImpl(androidView = view)
             }
     }
 
