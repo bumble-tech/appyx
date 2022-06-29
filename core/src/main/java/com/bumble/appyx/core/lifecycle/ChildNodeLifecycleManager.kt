@@ -1,17 +1,22 @@
 package com.bumble.appyx.core.lifecycle
 
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
+import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
+import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
+import com.bumble.appyx.core.routing.RoutingSourceAdapter
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.launch
 
 /**
@@ -26,60 +31,63 @@ internal class ChildNodeLifecycleManager<Routing>(
 ) {
 
     fun launch() {
-        updateChildrenWhenDestroyed()
-        manageChildrenLifecycle()
-        updateRemovedChildren()
-    }
-
-    private fun updateChildrenWhenDestroyed() {
-        lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onDestroy(owner: LifecycleOwner) {
-                // lifecycle.coroutineScope is closed at this moment
-                // need to clean up children as they are out of sync now
-                children.value.values.forEach { child ->
-                    child.nodeOrNull?.updateLifecycleState(Lifecycle.State.DESTROYED)
-                }
-            }
-        })
-    }
-
-    private fun manageChildrenLifecycle() {
+        // previously state management was split into multiple jobs
+        // but we found execution order issues when the main thread is busy (?)
+        // so we merged it into single one
         coroutineScope.launch {
-            val lifecycleState = lifecycle.asFlow()
-
-            // observe both routingSource and children
             combine(
-                lifecycleState,
-                routingSource.screenState,
-                children,
+                lifecycle.asFlow(),
+                routingSource.screenState.keys(),
+                children.withPrevious(),
                 ::Triple
-            ).collect { (state, visibility, children) ->
-                visibility.onScreen.forEach { element ->
-                    val current = minOf(state, Lifecycle.State.RESUMED)
-                    children[element.key]?.nodeOrNull?.updateLifecycleState(current)
+            )
+                .onCompletion {
+                    // when scope is closed we need to destroy all existing children
+                    // do it manually here as emit() does not work for cancellation case
+                    children
+                        .value
+                        .values
+                        .forEach { entry -> entry.setState(Lifecycle.State.DESTROYED) }
                 }
-                visibility.offScreen.forEach { element ->
-                    val current = minOf(state, Lifecycle.State.CREATED)
-                    children[element.key]?.nodeOrNull?.updateLifecycleState(current)
-                }
-            }
-        }
-    }
+                .collect { (parentLifecycleState, screenState, children) ->
+                    screenState.onScreen.forEach { key ->
+                        val childState = minOf(parentLifecycleState, Lifecycle.State.RESUMED)
+                        children.current[key]?.setState(childState)
+                    }
 
-    private fun updateRemovedChildren() {
-        coroutineScope.launch {
-            children
-                .withPrevious()
-                .collect { value ->
-                    if (value.previous != null) {
-                        val removedKeys = value.previous.keys - value.current.keys
+                    screenState.offScreen.forEach { key ->
+                        val childState = minOf(parentLifecycleState, Lifecycle.State.CREATED)
+                        children.current[key]?.setState(childState)
+                    }
+
+                    if (children.previous != null) {
+                        val removedKeys = children.previous.keys - children.current.keys
                         removedKeys.forEach { key ->
-                            val removedChild = value.previous[key]
-                            removedChild?.nodeOrNull?.updateLifecycleState(Lifecycle.State.DESTROYED)
+                            val removedChild = children.previous[key]
+                            removedChild?.setState(Lifecycle.State.DESTROYED)
                         }
                     }
                 }
         }
     }
+
+    private fun <Routing> Flow<RoutingSourceAdapter.ScreenState<Routing, *>>.keys() =
+        this
+            .map { screenState ->
+                ScreenState(
+                    onScreen = screenState.onScreen.map { it.key },
+                    offScreen = screenState.offScreen.map { it.key },
+                )
+            }
+            .distinctUntilChanged()
+
+    private fun ChildEntry<*>.setState(state: Lifecycle.State) {
+        nodeOrNull?.updateLifecycleState(state)
+    }
+
+    private data class ScreenState<Routing>(
+        val onScreen: List<RoutingKey<Routing>> = emptyList(),
+        val offScreen: List<RoutingKey<Routing>> = emptyList(),
+    )
 
 }

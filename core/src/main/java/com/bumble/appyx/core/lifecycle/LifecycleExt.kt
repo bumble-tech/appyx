@@ -4,7 +4,6 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -12,7 +11,6 @@ import kotlinx.coroutines.flow.callbackFlow
 fun LifecycleOwner.asFlow(): Flow<Lifecycle.State> =
     lifecycle.asFlow()
 
-@OptIn(ExperimentalCoroutinesApi::class)
 fun Lifecycle.asFlow(): Flow<Lifecycle.State> =
     callbackFlow {
         val observer = LifecycleEventObserver { source, _ ->

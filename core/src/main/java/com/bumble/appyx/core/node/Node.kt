@@ -15,7 +15,6 @@ import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.lifecycle.LifecycleLogger
 import com.bumble.appyx.core.lifecycle.NodeLifecycle
 import com.bumble.appyx.core.lifecycle.NodeLifecycleImpl
-import com.bumble.appyx.core.lifecycle.isDestroyed
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.plugin.Destroyable
@@ -28,6 +27,7 @@ import com.bumble.appyx.core.plugin.plugins
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.core.state.SavedStateMap
+import com.bumble.appyx.debug.Appyx
 
 abstract class Node(
     buildContext: BuildContext,
@@ -102,11 +102,16 @@ abstract class Node(
         nodeLifecycle.lifecycle
 
     override fun updateLifecycleState(state: Lifecycle.State) {
-        if (!lifecycle.isDestroyed) {
-            nodeLifecycle.updateLifecycleState(state)
-            if (state == Lifecycle.State.DESTROYED) {
-                plugins<Destroyable>().forEach { it.destroy() }
-            }
+        if (lifecycle.currentState == state) return
+        if (lifecycle.currentState == Lifecycle.State.DESTROYED && state != Lifecycle.State.DESTROYED) {
+            Appyx.reportException(
+                IllegalStateException("Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}")
+            )
+            return
+        }
+        nodeLifecycle.updateLifecycleState(state)
+        if (state == Lifecycle.State.DESTROYED) {
+            plugins<Destroyable>().forEach { it.destroy() }
         }
     }
 
