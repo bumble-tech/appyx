@@ -83,27 +83,35 @@ abstract class ParentNode<Routing : Any>(
             _children.update { restoredMap }
             delayedChildRestoration = null
         }
-        lifecycle.coroutineScope.launch { this@ParentNode.routingSource.syncChildrenWithRoutingSource() }
+        syncChildrenWithRoutingSource()
         childNodeLifecycleManager.launch()
         manageTransitions()
     }
 
-    private suspend fun RoutingSource<Routing, *>.syncChildrenWithRoutingSource() {
-        elements.collect { elements ->
-            _children.update { map ->
-                val routingSourceKeys = elements.map { element -> element.key }
-                val localKeys = map.keys.toList()
-                val newKeys = routingSourceKeys - localKeys
-                val removedKeys = localKeys - routingSourceKeys
-                val mutableMap = map.toMutableMap()
-                newKeys.forEach { key ->
-                    mutableMap[key] =
-                        ChildEntry.create(key, this@ParentNode, null.toBuildContext(), childMode)
+    private fun syncChildrenWithRoutingSource() {
+        lifecycle.coroutineScope.launch {
+            routingSource.elements.collect { elements ->
+                _children.update { map ->
+                    val routingSourceKeys = elements
+                        .mapTo(HashSet(elements.size, 1f)) { element -> element.key }
+                    val localKeys = map.keys
+                    val newKeys = routingSourceKeys - localKeys
+                    val removedKeys = localKeys - routingSourceKeys
+                    val mutableMap = map.toMutableMap()
+                    newKeys.forEach { key ->
+                        mutableMap[key] =
+                            ChildEntry.create(
+                                key = key,
+                                resolver = this@ParentNode,
+                                buildContext = null.toBuildContext(),
+                                childMode = childMode,
+                            )
+                    }
+                    removedKeys.forEach { key ->
+                        mutableMap.remove(key)
+                    }
+                    mutableMap
                 }
-                removedKeys.forEach { key ->
-                    mutableMap.remove(key)
-                }
-                mutableMap
             }
         }
     }

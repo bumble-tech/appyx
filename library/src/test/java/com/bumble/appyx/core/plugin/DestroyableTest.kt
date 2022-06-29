@@ -8,6 +8,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.testutils.MainDispatcherRule
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -32,9 +33,29 @@ class DestroyableTest {
         }
         node.build()
         node.updateLifecycleState(Lifecycle.State.RESUMED)
+
         node.updateLifecycleState(Lifecycle.State.DESTROYED)
 
         assertTrue("Destroyable is not destroyed", isDestroyed)
+    }
+
+    @Test
+    fun `destroy is invoked only one for multiple lifecycle updates`() {
+        var isDestroyed = 0
+        val stub = Destroyable { isDestroyed++ }
+
+        val node = object : Node(BuildContext.root(null), plugins = listOf(stub)) {
+            @Composable
+            override fun View(modifier: Modifier) {
+            }
+        }
+        node.build()
+        node.updateLifecycleState(Lifecycle.State.RESUMED)
+
+        node.updateLifecycleState(Lifecycle.State.DESTROYED)
+        node.updateLifecycleState(Lifecycle.State.DESTROYED)
+
+        assertEquals("Destroyable is not destroyed only once", 1, isDestroyed)
     }
 
 }
