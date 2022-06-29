@@ -76,7 +76,9 @@ class GenericChildNode(
     )
 
     private val id = Random.nextInt(10000)
-    private var counter by mutableStateOf(counterStartValue)
+    private var counter by mutableStateOf(
+        buildContext.savedStateMap?.get(KEY_COUNTER) as? Int ?: counterStartValue
+    )
     private var colorIndex by mutableStateOf(
         buildContext.savedStateMap?.get(KEY_COLOR_INDEX) as? Int ?: Random.nextInt(colors.size)
     )
