@@ -10,7 +10,7 @@ dependencyResolutionManagement {
 enableFeaturePreview 'VERSION_CATALOGS'
 
 include ':app',
-        ':library',
+        ':core',
         ':sandbox',
         ':rx2',
         ':interop',

@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    api project(':library')
+    api project(':core')
     api libs.androidx.test.rules
     api libs.compose.ui.test.junit4
 
