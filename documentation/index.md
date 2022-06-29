@@ -12,7 +12,7 @@ Appyx comes with simple but powerful abstractions:
 2. Add dynamism to the component tree by granular navigation bits
 3. Add custom on-screen and off-screen states for your components with history and powerful transitions
 
-Read more in [Nodes and routing](basics/nodes.md).
+Read more in [Nodes and routing](basics/nodes-and-routing.md).
 
 
 ## Routing sources

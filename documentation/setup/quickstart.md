@@ -3,7 +3,7 @@
 ## Suggestions
 
 - Check out the project and launch the `:app` module for a quick demonstration
-- Check out [Nodes and routing](basics/nodes-and-routing.md), which explains the concepts you'll encounter in this guide.
+- Check out [Nodes and routing](../basics/nodes-and-routing.md), which explains the concepts you'll encounter in this guide.
 
 
 ## 1. Add Appyx to your project
