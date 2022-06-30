@@ -7,16 +7,14 @@ plugins {
 apply from: '../gradle/publication.gradle'
 
 android {
-    namespace = "com.bumble.appyx.routingsource"
+    namespace = 'com.bumble.appyx.routingsource'
     compileSdk 32
 
     defaultConfig {
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     compileOptions {
