@@ -1,29 +1,33 @@
 name: Build
+
 on:
   push:
     branches:
       - main
   pull_request:
+
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-java@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
         with:
+          distribution: 'zulu'
           java-version: '11'
-          distribution: 'adopt'
       - uses: gradle/wrapper-validation-action@v1
       - uses: gradle/gradle-build-action@v2
         with:
           arguments: build
 
   check-documentation:
+    name: Check documentation
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
-          python-version: 3.x
+          python-version: '3.x'
       - run: pip install mkdocs-material
       - run: mkdocs build --strict
