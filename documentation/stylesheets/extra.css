@@ -5,5 +5,18 @@
 }
 
 .md-header {
+    --md-primary-bg-color: white;
+}
+
+.md-nav label {
+    --md-primary-bg-color: white;
+}
+
+.md-search ::placeholder {
     color: white;
+    opacity: 0.5;
+}
+
+.md-search .md-icon {
+    opacity: 0.5;
 }
