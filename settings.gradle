@@ -14,5 +14,5 @@ include ':app',
         ':sandbox',
         ':interop-rx2',
         ':interop-ribs',
-        'testing',
+        'testing-ui',
         ':routing-source-addons'
