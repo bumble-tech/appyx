@@ -1,3 +1,5 @@
+<img src="https://user-images.githubusercontent.com/238198/177164121-3aa4d19d-7714-4f2e-af12-7d3335b43f9c.png" width="75" />
+
 # Appyx
 
 [![Build](https://github.com/bumble-tech/appyx/actions/workflows/build.yml/badge.svg)](https://github.com/bumble-tech/appyx/actions/workflows/build.yml)
