@@ -6,7 +6,7 @@ plugins {
 apply from: '../gradle/publication.gradle'
 
 android {
-    namespace 'com.bumble.appyx.testing'
+    namespace = 'com.bumble.appyx.interop.rx2'
     compileSdk 32
 
     defaultConfig {
@@ -26,23 +26,23 @@ android {
     lintOptions {
         abortOnError false
     }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.get()
+    testOptions {
+        unitTests.all {
+            // interface method default implementation
+            exclude '**/*$DefaultImpls.class'
+        }
     }
 }
 
 dependencies {
-    api project(':core')
-    api libs.androidx.test.rules
-    api libs.compose.ui.test.junit4
+    implementation project(':core')
 
-    implementation libs.androidx.activity.compose
-    implementation libs.androidx.appcompat
     implementation libs.androidx.lifecycle.java8
     implementation libs.androidx.lifecycle.runtime
-    implementation libs.androidx.test.espresso.core
-    implementation libs.compose.ui.ui
+    implementation libs.rxjava2
+    implementation libs.rxrelay
+
+    testImplementation libs.junit.api
+    testImplementation libs.junit.params
+    testRuntimeOnly libs.junit.engine
 }

@@ -12,7 +12,7 @@ enableFeaturePreview 'VERSION_CATALOGS'
 include ':app',
         ':core',
         ':sandbox',
-        ':rx2',
-        ':interop',
-        'testing',
+        ':interop-rx2',
+        ':interop-ribs',
+        'testing-ui',
         ':routing-source-addons'

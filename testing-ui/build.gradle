@@ -6,7 +6,7 @@ plugins {
 apply from: '../gradle/publication.gradle'
 
 android {
-    namespace = 'com.bumble.appyx.interop'
+    namespace 'com.bumble.appyx.testing.ui'
     compileSdk 32
 
     defaultConfig {
@@ -15,42 +15,34 @@ android {
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    buildFeatures {
-        compose true
-    }
-
-    composeOptions {
-        kotlinCompilerExtensionVersion libs.versions.compose.get()
-    }
-
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8
         useIR = true
     }
+    lintOptions {
+        abortOnError false
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion libs.versions.compose.get()
+    }
 }
 
 dependencies {
-    implementation project(':core')
+    api project(':core')
+    api libs.androidx.test.rules
+    api libs.compose.ui.test.junit4
 
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat
-    implementation libs.androidx.core
     implementation libs.androidx.lifecycle.java8
     implementation libs.androidx.lifecycle.runtime
-    implementation libs.compose.ui.tooling
-    implementation libs.ribs.base
-    implementation libs.ribs.compose
-
-    testImplementation libs.junit
-
-    androidTestImplementation libs.androidx.test.espresso.core
-    androidTestImplementation libs.androidx.test.junit
-    androidTestImplementation libs.compose.ui.test.junit4
-
+    implementation libs.androidx.test.espresso.core
+    implementation libs.compose.ui.ui
 }

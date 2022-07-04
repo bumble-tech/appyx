@@ -41,7 +41,7 @@ internal class InteropView private constructor(
         return if (activity is IntegrationPointAppyxProvider) {
             activity.integrationPointAppyx
         } else {
-            throw IllegalStateException("Activity where InteropNode is used must implement IntegrationPointV2Provider")
+            throw IllegalStateException("Activity where InteropNode is used must implement IntegrationPointAppyxProvider")
         }
     }
 
