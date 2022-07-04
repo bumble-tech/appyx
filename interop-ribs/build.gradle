@@ -6,7 +6,7 @@ plugins {
 apply from: '../gradle/publication.gradle'
 
 android {
-    namespace = 'com.bumble.appyx.interop'
+    namespace = 'com.bumble.appyx.interop.ribs'
     compileSdk 32
 
     defaultConfig {
