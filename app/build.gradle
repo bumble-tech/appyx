@@ -58,8 +58,8 @@ dependencies {
     implementation libs.compose.ui.ui
     implementation libs.google.accompanist.flow
     implementation libs.google.material
+    implementation project(':interop-rx2')
 
-    implementation project(':rx2')
     implementation libs.rxjava2
     implementation libs.rxrelay
 
