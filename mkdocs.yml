@@ -19,6 +19,7 @@ nav:
   - Overview: index.md
   - Nodes and routing: basics/nodes-and-routing.md
   - Quick start guide: setup/quickstart.md
+  - Downloads: setup/downloads.md
   - Routing sources:
       - Overview: routingsources/index.md
       - Back stack: routingsources/backstack.md
