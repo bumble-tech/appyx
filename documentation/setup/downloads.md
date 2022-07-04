@@ -17,7 +17,7 @@ JitPack repository requirement will be eliminated soon.
 dependencies {
     implementation "com.bumble.appyx:core:$version"
     
-    androidTestImplementation "com.bumble.appyx:testing:$version"
+    androidTestImplementation "com.bumble.appyx:testing-ui:$version"
 }
 ```
 
