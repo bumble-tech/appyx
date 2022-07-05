@@ -53,7 +53,12 @@ First, let's define the possible set of children using a sealed class. We'll ref
 
 ```kotlin
 
-// You can create this class inside the body of RootNode
+/**
+ * You can create this class inside the body of RootNode
+ * 
+ * Note: You must apply the 'kotlin-parcelize' plugin to use @Parcelize
+ * https://developer.android.com/kotlin/parcelize
+ */
 sealed class Routing : Parcelable {
     @Parcelize
     object Child1 : Routing()
@@ -72,6 +77,7 @@ Next, let's modify `RootNode` so it extends `ParentNode`:
 class RootNode(
     buildContext: BuildContext
 ) : ParentNode<Routing>(
+    routingSource = TODO("We will come back to this in Step 4"),
     buildContext = buildContext
 ) {
 ```
