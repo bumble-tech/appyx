@@ -6,7 +6,7 @@
 ![Maven Central](https://img.shields.io/maven-central/v/com.bumble.appyx/core)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](https://www.apache.org/licenses/LICENSE-2.0)
 
-## Documentation
+## Project page
 [https://bumble-tech.github.io/appyx](https://bumble-tech.github.io/appyx)
 
 ## License
