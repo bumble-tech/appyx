@@ -197,7 +197,7 @@ override fun resolve(routing: Routing, buildContext: BuildContext): Node =
     when (routing) {
         Routing.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
         Routing.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
-        Routing.Child3 -> SomeNode(buildContext)
+        Routing.Child3 -> SomeChildNode(buildContext)
     }
 ```
 
