@@ -50,7 +50,10 @@ fun <N : Node> NodeHost(
             node.updateLifecycleState(source.lifecycle.currentState)
         }
         lifecycle.addObserver(observer)
-        onDispose { lifecycle.removeObserver(observer) }
+        onDispose {
+            lifecycle.removeObserver(observer)
+            integrationPoint.detach()
+        }
     }
 }
 

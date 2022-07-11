@@ -30,6 +30,10 @@ abstract class IntegrationPoint(
         root.integrationPoint = this
     }
 
+    fun detach() {
+        _root = null
+    }
+
     fun onSaveInstanceState(outState: Bundle) {
         requestCodeRegistry.onSaveInstanceState(outState)
     }
