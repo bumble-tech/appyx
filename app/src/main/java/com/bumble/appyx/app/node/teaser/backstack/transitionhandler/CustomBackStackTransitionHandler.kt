@@ -1,6 +1,5 @@
 package com.bumble.appyx.app.node.teaser.backstack.transitionhandler
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateOffset
@@ -14,9 +13,9 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
-import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.core.routing.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.routing.transition.TransitionDescriptor
+import com.bumble.appyx.routingsource.backstack.BackStack
 import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
@@ -28,7 +27,7 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
         descriptor: TransitionDescriptor<T, BackStack.TransitionState>
     ): Modifier = modifier.composed {
         val alpha = transition.animateFloat(
-            transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
+            transitionSpec = { spring() },
             targetValueByState = {
                 when (it) {
                     BackStack.TransitionState.STASHED_IN_BACK_STACK,
@@ -38,7 +37,7 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
             })
 
         val scale = transition.animateFloat(
-            transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
+            transitionSpec = { spring() },
             targetValueByState = {
                 when (it) {
                     BackStack.TransitionState.DESTROYED -> 10f
@@ -47,7 +46,7 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
             })
 
         val offset = transition.animateOffset(
-            transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
+            transitionSpec = { spring() },
             targetValueByState = {
                 val width = descriptor.params.bounds.width.value
                 when (it) {

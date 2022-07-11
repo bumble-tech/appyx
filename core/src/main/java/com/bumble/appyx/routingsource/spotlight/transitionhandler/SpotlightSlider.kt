@@ -1,6 +1,5 @@
 package com.bumble.appyx.routingsource.spotlight.transitionhandler
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
 import androidx.compose.animation.core.spring
@@ -19,7 +18,7 @@ import com.bumble.appyx.routingsource.spotlight.Spotlight
 @Suppress("TransitionPropertiesLabel")
 class SpotlightSlider<T>(
     private val transitionSpec: TransitionSpec<Spotlight.TransitionState, Offset> = {
-        spring(stiffness = Spring.StiffnessVeryLow)
+        spring()
     },
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, Spotlight.TransitionState>() {
@@ -53,7 +52,7 @@ class SpotlightSlider<T>(
 
 @Composable
 fun <T> rememberSpotlightSlider(
-    transitionSpec: TransitionSpec<Spotlight.TransitionState, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
+    transitionSpec: TransitionSpec<Spotlight.TransitionState, Offset> = { spring() },
     clipToBounds: Boolean = false
 ): ModifierTransitionHandler<T, Spotlight.TransitionState> = remember {
     SpotlightSlider(transitionSpec = transitionSpec, clipToBounds = clipToBounds)

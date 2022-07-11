@@ -28,7 +28,7 @@ import kotlin.math.roundToInt
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider<T>(
     private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = {
-        spring(stiffness = Spring.StiffnessVeryLow)
+        spring()
     },
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
@@ -78,7 +78,7 @@ class BackStackSlider<T>(
 
 @Composable
 fun <T> rememberBackstackSlider(
-    transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
+    transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { spring() },
     clipToBounds: Boolean = false
 ): ModifierTransitionHandler<T, BackStack.TransitionState> = remember {
     BackStackSlider(transitionSpec = transitionSpec, clipToBounds = clipToBounds)
