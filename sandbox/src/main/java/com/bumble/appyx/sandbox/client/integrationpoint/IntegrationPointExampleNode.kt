@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
 import com.bumble.appyx.core.minimal.reactive.Cancellable
@@ -34,8 +35,8 @@ import java.util.*
 class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContext = buildContext),
     RequestCodeClient {
 
-    private val permissionRequester = integrationPoint.permissionRequester
-    private val activityStarter = integrationPoint.activityStarter
+    private val permissionRequester: PermissionRequester get() = integrationPoint.permissionRequester
+    private val activityStarter: ActivityStarter get() = integrationPoint.activityStarter
     private var permissionsResultCancellable: Cancellable? = null
     private var activityResultsCancellable: Cancellable? = null
     private var permissionsResultState by mutableStateOf("Press request permissions to check permissions state")
@@ -91,13 +92,13 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
     }
 
     private fun launchActivity() {
-        integrationPoint.activityStarter.startActivity {
+        activityStarter.startActivity {
             Intent(this, StartActivityExample::class.java)
         }
     }
 
     private fun launchActivityForResult() {
-        integrationPoint.activityStarter.startActivityForResult(this, StartActivityForResultCode) {
+        activityStarter.startActivityForResult(this, StartActivityForResultCode) {
             Intent(this, StartActivityExample::class.java)
         }
     }

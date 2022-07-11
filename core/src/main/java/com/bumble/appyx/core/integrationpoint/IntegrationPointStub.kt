@@ -8,7 +8,8 @@ class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
         private const val ERROR = "You're accessing an IntegrationPointStub. " +
             "This means you're using a Node without ever integrating it to a proper IntegrationPoint. " +
             "This is fine during tests with limited scope, but it looks like the code that leads here " +
-            "requires interfacing with a valid implementation."
+            "requires interfacing with a valid implementation. " +
+            "You may be attempting to access the IntegrationPoint before it is attached to the Node."
     }
 
     override val activityStarter: ActivityStarter
