@@ -42,7 +42,7 @@ android {
 }
 
 dependencies {
-    api libs.appTreeUtils
+    api project(':customisations')
     api libs.kotlin.coroutines.android
     api libs.androidx.lifecycle.common
     api libs.compose.animation.core
