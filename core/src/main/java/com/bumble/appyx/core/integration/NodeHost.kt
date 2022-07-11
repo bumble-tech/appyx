@@ -36,8 +36,9 @@ fun <N : Node> NodeHost(
     factory: NodeFactory<N>
 ) {
     val node by rememberNode(factory, customisations)
-    LaunchedEffect(integrationPoint) {
+    DisposableEffect(integrationPoint) {
         integrationPoint.attach(node)
+        onDispose { integrationPoint.detach() }
     }
     DisposableEffect(node) {
         onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
