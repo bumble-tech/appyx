@@ -60,6 +60,10 @@ abstract class Node(
                 "Non-root Node should have a parent"
             )
         }
+        set(value) {
+            check(isRoot) { "Only a root Node can have an integration point" }
+            field = value
+        }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 
