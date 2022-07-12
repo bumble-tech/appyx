@@ -20,6 +20,7 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         with:
+          cache-read-only: true
           arguments: |
             publishAppyxReleasePublicationToOSSRHRepository
             --no-parallel

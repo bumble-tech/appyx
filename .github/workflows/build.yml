@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -28,6 +29,18 @@ jobs:
             publishAppyxReleasePublicationToSonatypeSnapshotRepository
             --dry-run
             --no-parallel
+      - uses: gradle/gradle-build-action@v2
+        if: github.ref == 'refs/heads/main'
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        with:
+          arguments: |
+            publishAppyxReleasePublicationToSonatypeSnapshotRepository
+            -Psnapshot=true
+            --no-parallel
+            -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
+            -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}
+            -Psonatype.password=${{ secrets.SONATYPE_PASSWORD }}
 
   check-documentation:
     name: Check documentation
