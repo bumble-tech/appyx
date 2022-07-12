@@ -2,9 +2,9 @@ package com.bumble.appyx.core.routing
 
 import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import java.util.*
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
+import java.util.UUID
 
 @Parcelize
 @Immutable

@@ -71,7 +71,9 @@ dependencies {
     implementation libs.ribs.rx
     implementation libs.rxandroid
 
+    testImplementation libs.androidx.arch.core.testing
     testImplementation libs.junit
+    testImplementation project(':testing-unit')
 
     androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit

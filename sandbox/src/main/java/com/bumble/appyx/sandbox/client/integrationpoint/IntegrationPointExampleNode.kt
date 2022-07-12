@@ -30,7 +30,7 @@ import com.bumble.appyx.core.minimal.reactive.Cancellable
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.sandbox.client.integrationpoint.StartActivityExample.Companion.StringExtraKey
-import java.util.*
+import java.util.UUID
 
 class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContext = buildContext),
     RequestCodeClient {

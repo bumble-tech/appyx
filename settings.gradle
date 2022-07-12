@@ -15,5 +15,6 @@ include ':app',
         ':interop-rx2',
         ':interop-ribs',
         ':testing-ui',
+        ':testing-unit',
         ':routing-source-addons',
         ':customisations'

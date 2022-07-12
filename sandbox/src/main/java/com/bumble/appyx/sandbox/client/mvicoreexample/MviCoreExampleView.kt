@@ -28,9 +28,9 @@ import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleView.Event
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleView.Event.LoadDataClicked
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleView.Event.SwitchChildClicked
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event.LoadDataClicked
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event.SwitchChildClicked
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.InitialState
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.Loaded
@@ -39,11 +39,15 @@ import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 
-class MviCoreExampleView(
+interface MviCoreExampleView : Consumer<ViewModel>, ObservableSource<Event>
+
+class MviCoreExampleViewImpl(
     private val title: String = "Title",
     private val backStack: RoutingSource<Routing, BackStack.TransitionState>,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : ParentNodeView<Routing>(), ObservableSource<Event> by events, Consumer<ViewModel> {
+) : ParentNodeView<Routing>(),
+    MviCoreExampleView,
+    ObservableSource<Event> by events {
 
     sealed class Event {
         object LoadDataClicked : Event()

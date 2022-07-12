@@ -1,9 +1,9 @@
 package com.bumble.appyx.core.integrationpoint.requestcode
 
 import android.util.Log
+import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
 import com.bumble.appyx.core.minimal.reactive.Relay
 import com.bumble.appyx.core.minimal.reactive.Source
-import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStream.*
 
 abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val requestCodeRegistry: RequestCodeRegistry

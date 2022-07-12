@@ -17,17 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
+import com.bumble.appyx.core.routing.transition.rememberCombinedHandler
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
-import com.bumble.appyx.core.routing.transition.rememberCombinedHandler
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode
 import com.bumble.appyx.sandbox.client.blocker.BlockerExampleNode
 import com.bumble.appyx.sandbox.client.combined.CombinedRoutingSourceNode
@@ -40,6 +39,7 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.Interacto
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.LazyExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.ModalExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreLeafExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.Picker
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.RequestPermissionsExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.RoutingSourcesExamples
@@ -50,10 +50,12 @@ import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleN
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
+import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
+import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode
-import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -108,6 +110,9 @@ class ContainerNode(
         object MviCoreExample : Routing()
 
         @Parcelize
+        object MviCoreLeafExample : Routing()
+
+        @Parcelize
         object BlockerExample : Routing()
 
         @Parcelize
@@ -129,6 +134,10 @@ class ContainerNode(
             is MviCoreExample -> MviCoreExampleBuilder().build(
                 buildContext,
                 "MVICore initial state"
+            )
+            is MviCoreLeafExample -> MviCoreLeafBuilder().build(
+                buildContext,
+                "MVICore leaf initial state"
             )
             is BlockerExample -> BlockerExampleNode(buildContext)
             is Customisations -> node(buildContext) { modifier -> Customisations(modifier) }
@@ -170,6 +179,7 @@ class ContainerNode(
                 }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
+                TextButton("MVICore Leaf Example") { backStack.push(MviCoreLeafExample) }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, InteropExampleActivity::class.java)
@@ -207,7 +217,7 @@ class ContainerNode(
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
                 TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
-                TextButton("Node with interactor") { backStack.push(Routing.InteractorExample) }
+                TextButton("Node with interactor") { backStack.push(InteractorExample) }
                 TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
                 TextButton("Request permissions / start activities example") {
                     backStack.push(RequestPermissionsExamples)

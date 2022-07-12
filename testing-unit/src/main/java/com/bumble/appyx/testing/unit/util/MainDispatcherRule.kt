@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.testutils
+package com.bumble.appyx.testing.unit.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
