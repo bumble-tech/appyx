@@ -16,7 +16,7 @@ class RemoveSelected<T : Any> : TilesOperation<T> {
         elements.map {
             if (it.targetState == Tiles.TransitionState.SELECTED) {
                 it.transitionTo(
-                    targetState = Tiles.TransitionState.DESTROYED,
+                    newTargetState = Tiles.TransitionState.DESTROYED,
                     operation = this
                 )
             } else {

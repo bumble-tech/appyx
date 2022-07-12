@@ -107,7 +107,7 @@ class ParentLifecycleTest {
                     .map {
                         if (it.key.routing == routing) {
                             it.transitionTo(
-                                targetState = defaultState,
+                                newTargetState = defaultState,
                                 operation = Operation.Noop()
                             )
                         } else {

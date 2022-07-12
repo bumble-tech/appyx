@@ -32,7 +32,7 @@ data class Replace<T : Any>(
         return elements.mapIndexed { index, element ->
             if (index == elements.activeIndex) {
                 element.transitionTo(
-                    targetState = BackStack.TransitionState.DESTROYED,
+                    newTargetState = BackStack.TransitionState.DESTROYED,
                     operation = this
                 )
             } else {

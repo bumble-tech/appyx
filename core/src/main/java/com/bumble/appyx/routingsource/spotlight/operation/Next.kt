@@ -22,13 +22,13 @@ class Next<T : Any> : SpotlightOperation<T> {
             when {
                 it.targetState == ACTIVE -> {
                     it.transitionTo(
-                        targetState = INACTIVE_BEFORE,
+                        newTargetState = INACTIVE_BEFORE,
                         operation = this
                     )
                 }
                 it.key == nextKey -> {
                     it.transitionTo(
-                        targetState = ACTIVE,
+                        newTargetState = ACTIVE,
                         operation = this
                     )
                 }

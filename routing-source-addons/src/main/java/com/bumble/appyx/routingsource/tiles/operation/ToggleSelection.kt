@@ -20,11 +20,11 @@ data class ToggleSelection<T : Any>(
             if (it.key == key) {
                 when (it.targetState) {
                     Tiles.TransitionState.SELECTED -> it.transitionTo(
-                        targetState = Tiles.TransitionState.STANDARD,
+                        newTargetState = Tiles.TransitionState.STANDARD,
                         operation = this
                     )
                     Tiles.TransitionState.STANDARD -> it.transitionTo(
-                        targetState = Tiles.TransitionState.SELECTED,
+                        newTargetState = Tiles.TransitionState.SELECTED,
                         operation = this
                     )
                     else -> it

@@ -17,13 +17,13 @@ class Revert<T : Any> : ModalOperation<T> {
             when (it.targetState) {
                 FULL_SCREEN -> {
                     it.transitionTo(
-                        targetState = MODAL,
+                        newTargetState = MODAL,
                         operation = this
                     )
                 }
                 MODAL -> {
                     it.transitionTo(
-                        targetState = FULL_SCREEN,
+                        newTargetState = FULL_SCREEN,
                         operation = this
                     )
                 }

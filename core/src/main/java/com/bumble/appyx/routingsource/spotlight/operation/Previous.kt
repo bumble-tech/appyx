@@ -22,13 +22,13 @@ class Previous<T : Any> : SpotlightOperation<T> {
             when {
                 it.targetState == ACTIVE -> {
                     it.transitionTo(
-                        targetState = INACTIVE_AFTER,
+                        newTargetState = INACTIVE_AFTER,
                         operation = this
                     )
                 }
                 it.key == previousKey -> {
                     it.transitionTo(
-                        targetState = ACTIVE,
+                        newTargetState = ACTIVE,
                         operation = this
                     )
                 }

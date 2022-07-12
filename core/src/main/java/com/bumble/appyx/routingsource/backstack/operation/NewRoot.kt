@@ -34,7 +34,7 @@ data class NewRoot<T : Any>(
         } else {
             listOf(
                 current.transitionTo(
-                    targetState = BackStack.TransitionState.DESTROYED,
+                    newTargetState = BackStack.TransitionState.DESTROYED,
                     operation = this
                 ),
                 BackStackElement(
