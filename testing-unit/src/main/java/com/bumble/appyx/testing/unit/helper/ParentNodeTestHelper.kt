@@ -16,15 +16,19 @@ class ParentNodeTestHelper<Routing : Any, N : ParentNode<Routing>>(
 ) {
 
     fun <Routing : Any> assertChildHasLifecycle(routing: Routing, state: Lifecycle.State) {
-        node.children.value.keys
-            .find { it.routing == routing }
-            ?.let { node.children.value[it]?.nodeOrNull }
-            ?.also {
+        val childMap = node.children.value
+        val key = childMap.keys.find { it.routing == routing }
+
+        if (key != null) {
+            childMap[key]?.nodeOrNull?.also {
                 assertEquals(
                     state,
                     node.lifecycle.currentState
                 )
             }
+        } else {
+            throw NullPointerException("No child for routing $routing")
+        }
     }
 
     fun <Routing : Any> assertHasNoChild(routing: Routing) {
