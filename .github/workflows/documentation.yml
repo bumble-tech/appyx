@@ -1,14 +1,11 @@
 name: Deploy mkdocs to GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
-  deploy:
-    name: Deploy
+  deploy-documentation:
+    name: Deploy documentation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

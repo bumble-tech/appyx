@@ -26,3 +26,14 @@ jobs:
             -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
             -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}
             -Psonatype.password=${{ secrets.SONATYPE_PASSWORD }}
+
+  deploy-documentation:
+    name: Deploy documentation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - run: pip install mkdocs-material
+      - run: mkdocs gh-deploy --force
