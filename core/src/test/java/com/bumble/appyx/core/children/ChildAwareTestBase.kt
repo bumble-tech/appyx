@@ -13,7 +13,7 @@ import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.routing.RoutingSourceAdapter
-import com.bumble.appyx.core.testutils.MainDispatcherRule
+import com.bumble.appyx.testing.unit.util.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

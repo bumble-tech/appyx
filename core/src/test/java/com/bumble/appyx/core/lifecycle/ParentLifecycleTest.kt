@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.lifecycle.ParentLifecycleTest.RoutingImpl.State
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -16,7 +15,7 @@ import com.bumble.appyx.core.routing.RoutingElement
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
-import com.bumble.appyx.core.testutils.MainDispatcherRule
+import com.bumble.appyx.testing.unit.util.MainDispatcherRule
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Assert.assertEquals
