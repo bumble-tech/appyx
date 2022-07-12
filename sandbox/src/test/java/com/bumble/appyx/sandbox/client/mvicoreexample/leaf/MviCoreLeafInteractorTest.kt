@@ -9,8 +9,8 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeat
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.testing.unit.helper.interactorTestHelper
-import com.bumble.appyx.testing.unit.stub.FeatureStub
-import com.bumble.appyx.testing.unit.stub.NodeViewStub
+import com.bumble.appyx.sandbox.stub.FeatureStub
+import com.bumble.appyx.sandbox.stub.NodeViewStub
 import com.bumble.appyx.testing.unit.util.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test

@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.unit.stub
+package com.bumble.appyx.sandbox.stub
 
 import com.badoo.mvicore.feature.Feature
 import com.jakewharton.rxrelay2.BehaviorRelay

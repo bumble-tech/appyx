@@ -45,8 +45,4 @@ dependencies {
     implementation libs.androidx.lifecycle.runtime
     implementation libs.androidx.test.espresso.core
     implementation libs.compose.ui.ui
-    implementation libs.junit
-    implementation libs.mvicore
-    implementation libs.ribs.rx
-    implementation libs.rxandroid
 }

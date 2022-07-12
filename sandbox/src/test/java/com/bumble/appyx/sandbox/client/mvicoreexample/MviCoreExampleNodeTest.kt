@@ -10,9 +10,9 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeat
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
+import com.bumble.appyx.sandbox.stub.FeatureStub
+import com.bumble.appyx.sandbox.stub.NodeViewStub
 import com.bumble.appyx.testing.unit.helper.parentNodeTestHelper
-import com.bumble.appyx.testing.unit.stub.FeatureStub
-import com.bumble.appyx.testing.unit.stub.NodeViewStub
 import com.bumble.appyx.testing.unit.util.MainDispatcherRule
 import org.junit.Before
 import org.junit.Rule
@@ -68,10 +68,11 @@ class MviCoreExampleNodeTest {
 
     @Test
     fun `given node is create when navigating to child 2 then child 2 is attached`() {
-        node.parentNodeTestHelper().moveToStateAndCheck(Lifecycle.State.STARTED) {
+        val testHelper = node.parentNodeTestHelper()
+        testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             view.eventsRelay.accept(Event.SwitchChildClicked)
 
-            assertChildHasLifecycle(
+            testHelper.assertChildHasLifecycle(
                 routing = Routing.Child2,
                 state = Lifecycle.State.STARTED
             )

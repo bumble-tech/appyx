@@ -6,7 +6,7 @@ import com.bumble.appyx.core.node.build
 
 fun <N : Node> N.nodeTestHelper() = NodeTestHelper(this)
 
-class NodeTestHelper<N : Node>(private val node: N) {
+open class NodeTestHelper<N : Node>(private val node: N) {
 
     private val nodeLifecycle
         get() = node.lifecycle
