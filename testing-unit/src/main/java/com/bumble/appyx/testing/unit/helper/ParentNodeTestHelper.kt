@@ -20,11 +20,15 @@ class ParentNodeTestHelper<Routing : Any, N : ParentNode<Routing>>(
         val key = childMap.keys.find { it.routing == routing }
 
         if (key != null) {
-            childMap[key]?.nodeOrNull?.also {
-                assertEquals(
-                    state,
-                    node.lifecycle.currentState
-                )
+            childMap.getValue(key).nodeOrNull.also { childNode ->
+                if (childNode != null) {
+                    assertEquals(
+                        state,
+                        childNode.lifecycle.currentState
+                    )
+                } else {
+                    throw NullPointerException("Child node was not attached for routing $routing")
+                }
             }
         } else {
             throw NullPointerException("No child for routing $routing")
