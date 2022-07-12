@@ -1,13 +1,14 @@
-name: Release
+name: Publish snapshot
 
 on:
-  release:
-    types: [ created ]
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
-  publish:
-    name: Publish
+  publish-snapshot:
+    name: Publish snapshot
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,7 +22,8 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         with:
           arguments: |
-            publishAppyxReleasePublicationToOSSRHRepository
+            publishAppyxReleasePublicationToSonatypeSnapshotRepository
+            -Psnapshot=true
             --no-parallel
             -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
             -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}

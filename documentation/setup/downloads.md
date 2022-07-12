@@ -48,3 +48,17 @@ dependencies {
 
 }
 ```
+
+## Snapshot
+
+Snapshot version is available for all modules, use the provided repository url and `main-SNAPSHOT` version.
+
+```groovy
+repositories {
+    maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+dependencies {
+    implementation "com.bumble.appyx:core:main-SNAPSHOT"
+}
+```
