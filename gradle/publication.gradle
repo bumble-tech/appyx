@@ -71,4 +71,10 @@ afterEvaluate { Project project ->
             useInMemoryPgpKeys(inMemoryKey, project.findProperty('signing.password'))
         }
     }
+    tasks.named('publishAppyxReleasePublicationToSonatypeSnapshotRepository') { task ->
+        def fail = task.project.findProperty('snapshot') != 'true'
+        task.doFirst {
+            if (fail) throw new GradleException("Publishing to snapshot repository with disabled 'snapshot' flag is permitted")
+        }
+    }
 }
