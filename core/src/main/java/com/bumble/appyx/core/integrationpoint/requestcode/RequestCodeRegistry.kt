@@ -1,7 +1,6 @@
 package com.bumble.appyx.core.integrationpoint.requestcode
 
 import android.os.Bundle
-import java.util.*
 import kotlin.math.pow
 
 /**
@@ -21,7 +20,8 @@ class RequestCodeRegistry constructor(
     private val nbLowerBitsForIds: Int = 4
 ) {
     internal val requestCodes: HashMap<Int, String> =
-        (initialState?.getSerializable(KEY_REQUEST_CODE_REGISTRY) as? HashMap<Int, String>) ?: hashMapOf()
+        (initialState?.getSerializable(KEY_REQUEST_CODE_REGISTRY) as? HashMap<Int, String>)
+            ?: hashMapOf()
 
     private val lowerBitsShift: Int = nbLowerBitsForIds - 0
     private val maskLowerBits = (1 shl lowerBitsShift) - 1
@@ -58,7 +58,11 @@ class RequestCodeRegistry constructor(
     private fun ensureCodeIsCorrect(code: Int) {
         if (code < 1 || code != code and maskLowerBits) {
             throw RequestCodeDoesntFitInMask(
-                "Requestcode '$code' does not fit requirements. Allowed min: 1, max: ${2.0.pow(nbLowerBitsForIds).toInt() - 1}"
+                "Requestcode '$code' does not fit requirements. Allowed min: 1, max: ${
+                    2.0.pow(
+                        nbLowerBitsForIds
+                    ).toInt() - 1
+                }"
             )
         }
     }
