@@ -45,11 +45,11 @@ data class Remove<T : Any>(
             elements.mapIndexed { index, element ->
                 when (index) {
                     toRemoveIndex -> element.transitionTo(
-                        targetState = BackStack.TransitionState.DESTROYED,
+                        newTargetState = BackStack.TransitionState.DESTROYED,
                         operation = this
                     )
                     unStashIndex -> element.transitionTo(
-                        targetState = BackStack.TransitionState.ACTIVE,
+                        newTargetState = BackStack.TransitionState.ACTIVE,
                         operation = this
                     )
                     else -> element

@@ -19,7 +19,7 @@ data class Destroy<T : Any>(
         elements.map {
             if (it.key == key) {
                 it.transitionTo(
-                    targetState = Tiles.TransitionState.DESTROYED,
+                    newTargetState = Tiles.TransitionState.DESTROYED,
                     operation = this
                 )
             } else {

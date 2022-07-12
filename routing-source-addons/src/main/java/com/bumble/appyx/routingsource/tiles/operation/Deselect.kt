@@ -19,7 +19,7 @@ data class Deselect<T : Any>(
         elements.map {
             if (it.key == key && it.targetState == Tiles.TransitionState.SELECTED) {
                 it.transitionTo(
-                    targetState = Tiles.TransitionState.STANDARD,
+                    newTargetState = Tiles.TransitionState.STANDARD,
                     operation = this
                 )
             } else {

@@ -17,7 +17,7 @@ data class FullScreen<T : Any>(
         return elements.map {
             if (it.key == key) {
                 it.transitionTo(
-                    targetState = FULL_SCREEN,
+                    newTargetState = FULL_SCREEN,
                     operation = this
                 )
             } else {

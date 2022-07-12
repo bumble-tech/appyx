@@ -28,17 +28,17 @@ class RoutingElement<Routing, State> private constructor(
     )
 
     fun transitionTo(
-        targetState: @RawValue State,
+        newTargetState: @RawValue State,
         operation: @RawValue Operation<Routing, State>
     ): RoutingElement<Routing, State> =
         RoutingElement(
             key = key,
             fromState = fromState,
-            targetState = targetState,
+            targetState = newTargetState,
             operation = operation,
             transitionHistory =
-            if (isTransitioning) {
-                transitionHistory + listOf(fromState to targetState)
+            if (fromState != newTargetState) {
+                transitionHistory + listOf(fromState to newTargetState)
             } else transitionHistory
         )
 

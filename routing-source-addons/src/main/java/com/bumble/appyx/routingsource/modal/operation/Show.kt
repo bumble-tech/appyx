@@ -17,7 +17,7 @@ data class Show<T : Any>(
         return elements.map {
             if (it.key == key) {
                 it.transitionTo(
-                    targetState = MODAL,
+                    newTargetState = MODAL,
                     operation = this
                 )
             } else {

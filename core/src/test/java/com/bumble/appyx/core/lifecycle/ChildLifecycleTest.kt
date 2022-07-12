@@ -155,7 +155,7 @@ class ChildLifecycleTest {
                     .map {
                         if (it.key.routing == key) {
                             it
-                                .transitionTo(targetState = onScreen, operation = Operation.Noop())
+                                .transitionTo(newTargetState = onScreen, operation = Operation.Noop())
                                 .onTransitionFinished()
                         } else {
                             it

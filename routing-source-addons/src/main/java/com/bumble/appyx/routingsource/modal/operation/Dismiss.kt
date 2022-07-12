@@ -17,7 +17,7 @@ data class Dismiss<T : Any>(
         return elements.map {
             if (it.key == key) {
                 it.transitionTo(
-                    targetState = CREATED,
+                    newTargetState = CREATED,
                     operation = this
                 )
             } else {
