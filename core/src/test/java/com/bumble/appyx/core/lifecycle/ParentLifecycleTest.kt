@@ -4,7 +4,6 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.lifecycle.ParentLifecycleTest.RoutingImpl.State
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -108,7 +107,7 @@ class ParentLifecycleTest {
                     .map {
                         if (it.key.routing == routing) {
                             it.transitionTo(
-                                targetState = defaultState,
+                                newTargetState = defaultState,
                                 operation = Operation.Noop()
                             )
                         } else {

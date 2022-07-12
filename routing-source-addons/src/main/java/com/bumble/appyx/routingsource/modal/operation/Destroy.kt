@@ -17,7 +17,7 @@ data class Destroy<T : Any>(
         return elements.map {
             if (it.key == key) {
                 it.transitionTo(
-                    targetState = DESTROYED,
+                    newTargetState = DESTROYED,
                     operation = this
                 )
             } else {

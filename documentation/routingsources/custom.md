@@ -68,7 +68,7 @@ class SomeOperation<T : Any> : FooOperation<T> {
         //  In this example we're changing all elements to transition to BAR.
         elements.map {
             it.transitionTo(
-                targetState = BAR,
+                newTargetState = BAR,
                 operation = this
             )
         }

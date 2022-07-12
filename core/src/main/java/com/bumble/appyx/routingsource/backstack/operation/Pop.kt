@@ -29,11 +29,11 @@ class Pop<T : Any> : BackStackOperation<T> {
         return elements.mapIndexed { index, element ->
             when (index) {
                 destroyIndex -> element.transitionTo(
-                    targetState = BackStack.TransitionState.DESTROYED,
+                    newTargetState = BackStack.TransitionState.DESTROYED,
                     operation = this
                 )
                 unStashIndex -> element.transitionTo(
-                    targetState = BackStack.TransitionState.ACTIVE,
+                    newTargetState = BackStack.TransitionState.ACTIVE,
                     operation = this
                 )
                 else -> element

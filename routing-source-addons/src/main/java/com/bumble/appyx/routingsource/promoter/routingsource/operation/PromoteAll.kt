@@ -16,7 +16,7 @@ class PromoteAll<T : Any> : PromoterOperation<T> {
     ): RoutingElements<T, Promoter.TransitionState> =
         elements.map {
             it.transitionTo(
-                targetState = it.targetState.next(),
+                newTargetState = it.targetState.next(),
                 operation = this
             )
         }

@@ -19,7 +19,7 @@ data class Select<T : Any>(
         elements.map {
             if (it.key == key && it.targetState == Tiles.TransitionState.STANDARD) {
                 it.transitionTo(
-                    targetState = Tiles.TransitionState.SELECTED,
+                    newTargetState = Tiles.TransitionState.SELECTED,
                     operation = this
                 )
             } else {

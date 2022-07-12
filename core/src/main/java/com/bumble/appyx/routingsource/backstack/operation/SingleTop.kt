@@ -8,7 +8,6 @@ import com.bumble.appyx.routingsource.backstack.active
 import com.bumble.appyx.routingsource.backstack.activeRouting
 import com.bumble.appyx.routingsource.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.routingsource.backstack.BackStack.TransitionState.CREATED
-import com.bumble.appyx.routingsource.backstack.operation.SingleTop.Companion
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -41,14 +40,14 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
             return newElements.mapIndexed { index, element ->
                 if (index == newElements.lastIndex) {
                     element.transitionTo(
-                        targetState = BackStack.TransitionState.ACTIVE,
+                        newTargetState = BackStack.TransitionState.ACTIVE,
                         operation = this
                     )
                 } else {
                     element
                 }
             } + current.transitionTo(
-                targetState = BackStack.TransitionState.DESTROYED,
+                newTargetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             )
         }
@@ -75,7 +74,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
             val newElements = elements.dropLast(elements.size - position)
 
             return newElements + current.transitionTo(
-                targetState = BackStack.TransitionState.DESTROYED,
+                newTargetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             ) + BackStackElement(
                 key = RoutingKey(element),
