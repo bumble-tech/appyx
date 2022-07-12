@@ -20,6 +20,14 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           arguments: build
+      # checks integrity of release tasks, update publish workflows too if does not work
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            publishAppyxReleasePublicationToOSSRHRepository
+            publishAppyxReleasePublicationToSonatypeSnapshotRepository
+            --dry-run
+            --no-parallel
 
   check-documentation:
     name: Check documentation

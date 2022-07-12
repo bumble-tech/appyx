@@ -16,7 +16,7 @@ afterEvaluate { Project project ->
             appyxRelease(MavenPublication) {
                 from components.release
                 groupId = 'com.bumble.appyx'
-                version = '1.0-alpha01'
+                version = project.findProperty('snapshot') == 'true' ? 'main-SNAPSHOT' : '1.0-alpha01'
 
                 pom {
                     name = 'Appyx'
@@ -47,6 +47,14 @@ afterEvaluate { Project project ->
             maven {
                 name = 'OSSRH'
                 url = 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+                credentials {
+                    username = project.findProperty('sonatype.username').toString()
+                    password = project.findProperty('sonatype.password').toString()
+                }
+            }
+            maven {
+                name = 'SonatypeSnapshot'
+                url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
                 credentials {
                     username = project.findProperty('sonatype.username').toString()
                     password = project.findProperty('sonatype.password').toString()
