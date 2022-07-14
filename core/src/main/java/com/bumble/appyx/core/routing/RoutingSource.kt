@@ -14,8 +14,6 @@ interface RoutingSource<Routing, State> : RoutingSourceAdapter<Routing, State>,
 
     val elements: StateFlow<RoutingElements<Routing, out State>>
 
-    val canHandleBackPress: StateFlow<Boolean>
-
     fun onTransitionFinished(key: RoutingKey<Routing>) {
         onTransitionFinished(listOf(key))
     }
@@ -25,5 +23,6 @@ interface RoutingSource<Routing, State> : RoutingSourceAdapter<Routing, State>,
     fun accept(operation: Operation<Routing, State>) = Unit
 
     override fun handleUpNavigation(): Boolean =
-        canHandleBackPress.value.also { if (it) onBackPressed() }
+        handleOnBackPressed()
+
 }
