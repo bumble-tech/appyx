@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.plugin
 
+import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.state.MutableSavedStateMap
@@ -21,16 +22,35 @@ interface NodeLifecycleAware : Plugin {
 }
 
 interface UpNavigationHandler : Plugin {
-    fun handleUpNavigation() = false
+    fun handleUpNavigation(): Boolean = false
 }
 
 fun interface Destroyable : Plugin {
     fun destroy()
 }
 
-// TODO: It is not a plugin! Handled only in router!
+/**
+ * Implementing class can handle back presses via [OnBackPressedCallback].
+ *
+ * Implement either [onBackPressedCallback] or [onBackPressedCallbackList], not both.
+ * In case if both implemented, [onBackPressedCallback] will be ignored.
+ * There is runtime check in [Node] to verify correctness.
+ */
 interface BackPressHandler : Plugin {
-    fun onBackPressed()
+
+    val onBackPressedCallback: OnBackPressedCallback? get() = null
+
+    /** It is impossible to combine multiple [OnBackPressedCallback] into the single one, they are not observable. */
+    val onBackPressedCallbackList: List<OnBackPressedCallback>
+        get() = listOfNotNull(onBackPressedCallback)
+
+    fun handleOnBackPressed(): Boolean =
+        onBackPressedCallbackList.any { callback ->
+            val isEnabled = callback.isEnabled
+            if (isEnabled) callback.handleOnBackPressed()
+            isEnabled
+        }
+
 }
 
 /**

@@ -16,8 +16,6 @@ import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -71,13 +69,6 @@ class ParentLifecycleTest {
         }
 
         override val initialElements: RoutingElements<String, State> = emptyList()
-
-        override val canHandleBackPress: StateFlow<Boolean> =
-            MutableStateFlow(false)
-
-        override fun onBackPressed() {
-            // no-op
-        }
 
         fun add(routing: String, defaultState: State) {
             updateState { list ->

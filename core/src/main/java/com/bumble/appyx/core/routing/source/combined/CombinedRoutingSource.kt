@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.routing.source.combined
 
+import androidx.activity.OnBackPressedCallback
 import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
@@ -36,13 +37,8 @@ class CombinedRoutingSource<Routing>(
         }
             .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
 
-    override val canHandleBackPress: StateFlow<Boolean> =
-        combine(sources.map { it.canHandleBackPress }) { arr -> arr.any { it } }
-            .stateIn(scope, SharingStarted.Eagerly, false)
-
-    override fun onBackPressed() {
-        sources.firstOrNull { it.canHandleBackPress.value }?.onBackPressed()
-    }
+    override val onBackPressedCallbackList: List<OnBackPressedCallback>
+        get() = sources.flatMap { it.onBackPressedCallbackList }
 
     override fun onTransitionFinished(key: RoutingKey<Routing>) {
         sources.forEach { it.onTransitionFinished(key) }

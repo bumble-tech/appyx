@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.routing
 
+import androidx.activity.OnBackPressedCallback
 import com.bumble.appyx.core.plugin.BackPressHandler
 import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.routing.backpresshandlerstrategies.BackPressHandlerStrategy
@@ -19,6 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
 /**
@@ -36,7 +38,7 @@ abstract class BaseRoutingSource<Routing, State>(
     private val finalStates: Set<State>,
     private val key: String = KEY_ROUTING_SOURCE,
     savedStateMap: SavedStateMap?
-) : RoutingSource<Routing, State>, Destroyable, BackPressHandler by backPressHandler {
+) : RoutingSource<Routing, State>, Destroyable, BackPressHandler {
 
     constructor(
         backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
@@ -76,8 +78,18 @@ abstract class BaseRoutingSource<Routing, State>(
             .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
     }
 
-    override val canHandleBackPress: StateFlow<Boolean> by lazy(LazyThreadSafetyMode.NONE) {
-        backPressHandler.canHandleBackPress
+    override val onBackPressedCallback: OnBackPressedCallback by lazy {
+        val callback = object : OnBackPressedCallback(false) {
+            override fun handleOnBackPressed() {
+                backPressHandler.onBackPressed()
+            }
+        }
+        scope.launch {
+            backPressHandler.canHandleBackPress.collect {
+                callback.isEnabled = it
+            }
+        }
+        callback
     }
 
     init {
