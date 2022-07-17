@@ -54,8 +54,9 @@ jobs:
           java-version: '11'
       - uses: gradle/wrapper-validation-action@v1
       - name: Unit tests
-        run: ./gradlew testDebugUnitTest
-        working-directory: .
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: testDebugUnitTest
       - name: Upload failed unit test artifacts
         if: failure()
         uses: actions/upload-artifact@v3
@@ -96,6 +97,8 @@ jobs:
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
       - name: Instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
