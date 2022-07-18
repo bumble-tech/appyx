@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -164,8 +166,10 @@ class ContainerNode(
 
     @Composable
     fun ExamplesList(modifier: Modifier) {
+        val scrollState = rememberScrollState()
         Box(
             modifier = modifier
+                .verticalScroll(scrollState)
                 .fillMaxSize()
                 .padding(24.dp),
             contentAlignment = Alignment.Center
@@ -203,8 +207,10 @@ class ContainerNode(
 
     @Composable
     fun RoutingSources(modifier: Modifier) {
+        val scrollState = rememberScrollState()
         Box(
             modifier = modifier
+                .verticalScroll(scrollState)
                 .fillMaxSize()
                 .padding(24.dp),
             contentAlignment = Alignment.Center
