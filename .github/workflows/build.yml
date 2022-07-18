@@ -68,10 +68,6 @@ jobs:
     name: Instrumentation tests
     runs-on: macOS-latest
     timeout-minutes: 20
-    strategy:
-      fail-fast: false
-      matrix:
-        api-level: [31]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -86,12 +82,12 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-${{ matrix.api-level }}
+          key: avd-31
       - name: create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level }}
+          api-level: 31
           arch: x86_64
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -102,19 +98,19 @@ jobs:
       - name: Instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: ${{ matrix.api-level }}
+          api-level: 31
           arch: x86_64
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: true
           script: |
             adb logcat > logcat.out &
-            ./gradlew connectedCheck --stacktrace
+            ./gradlew connectedCheck
       - name: Upload failed instrumentation artifacts
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: instrumentation-failures-${{ matrix.api-level }}
+          name: instrumentation-failures-31
           path: |
             **/build/reports
             logcat.out
