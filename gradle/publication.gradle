@@ -16,7 +16,7 @@ afterEvaluate { Project project ->
             appyxRelease(MavenPublication) {
                 from components.release
                 groupId = 'com.bumble.appyx'
-                version = project.findProperty('snapshot') == 'true' ? 'main-SNAPSHOT' : '1.0-alpha01'
+                version = project.findProperty('snapshot') == 'true' ? 'main-SNAPSHOT' : '1.0-alpha02'
 
                 pom {
                     name = 'Appyx'
