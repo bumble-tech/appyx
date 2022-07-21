@@ -4,17 +4,17 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
-import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
-import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
-import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.*
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
-import com.bumble.appyx.testing.unit.helper.interactorTestHelper
 import com.bumble.appyx.sandbox.stub.FeatureStub
-import com.bumble.appyx.sandbox.stub.NodeViewStub
-import com.bumble.appyx.testing.unit.util.MainDispatcherRule
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
+import com.bumble.appyx.testing.unit.common.helper.interactorTestHelper
+import com.bumble.appyx.testing.unit.common.stub.NodeViewStub
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class MviCoreLeafInteractorTest {
 
     @get:Rule
@@ -23,8 +23,7 @@ class MviCoreLeafInteractorTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val view = object : NodeViewStub<Event, ViewModel, Routing>(),
-        MviCoreLeafView {}
+    private val view = object : NodeViewStub<Event, ViewModel, Routing>(), MviCoreLeafView {}
 
     private val feature = FeatureStub<Wish, State, News>(
         initialState = State.InitialState("Test Initial State")

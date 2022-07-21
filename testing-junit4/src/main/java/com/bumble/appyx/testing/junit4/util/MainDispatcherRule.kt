@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.unit.util
+package com.bumble.appyx.testing.junit4.util
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -7,14 +7,14 @@ import kotlinx.coroutines.test.setMain
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@ExperimentalCoroutinesApi
 class MainDispatcherRule : TestWatcher() {
 
-    override fun starting(description: Description?) {
+    override fun starting(description: Description) {
         Dispatchers.setMain(Dispatchers.Unconfined)
     }
 
-    override fun finished(description: Description?) {
+    override fun finished(description: Description) {
         Dispatchers.resetMain()
     }
 

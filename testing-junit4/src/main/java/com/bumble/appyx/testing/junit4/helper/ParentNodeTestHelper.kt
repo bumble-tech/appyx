@@ -1,8 +1,9 @@
-package com.bumble.appyx.testing.unit.helper
+package com.bumble.appyx.testing.junit4.helper
 
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.testing.unit.common.helper.NodeTestHelper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 

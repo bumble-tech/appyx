@@ -12,13 +12,15 @@ import com.bumble.appyx.core.plugin.StubUpNavigationHandler
 import com.bumble.appyx.core.plugin.UpNavigationHandler
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.operation.push
-import com.bumble.appyx.testing.unit.util.MainDispatcherRule
-import com.bumble.appyx.testing.unit.util.TestIntegrationPoint
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
+import com.bumble.appyx.testing.unit.common.util.TestIntegrationPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import java.util.UUID
+import java.util.*
 
+@ExperimentalCoroutinesApi
 class UpNavigationTest {
 
     @get:Rule

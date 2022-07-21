@@ -56,7 +56,7 @@ dependencies {
     implementation libs.compose.foundation.layout
     implementation libs.compose.foundation
 
-    testImplementation project(':testing-unit')
+    testImplementation project(':testing-junit4')
     testImplementation libs.androidx.arch.core.testing
     testImplementation libs.junit
     testImplementation libs.kotlin.coroutines.test

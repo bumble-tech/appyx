@@ -13,9 +13,10 @@ import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.routing.RoutingSourceAdapter
-import com.bumble.appyx.testing.unit.util.MainDispatcherRule
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,6 +28,7 @@ import org.junit.Rule
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 
+@ExperimentalCoroutinesApi
 abstract class ChildAwareTestBase {
 
     @get:Rule

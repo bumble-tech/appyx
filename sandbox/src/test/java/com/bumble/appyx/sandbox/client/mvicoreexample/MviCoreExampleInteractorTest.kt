@@ -6,19 +6,19 @@ import com.bumble.appyx.connectable.rx2.NodeConnector
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
-import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
-import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
-import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.*
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.InitialState
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.Loading
-import com.bumble.appyx.testing.unit.helper.interactorTestHelper
 import com.bumble.appyx.sandbox.stub.FeatureStub
-import com.bumble.appyx.sandbox.stub.NodeViewStub
-import com.bumble.appyx.testing.unit.util.MainDispatcherRule
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
+import com.bumble.appyx.testing.unit.common.helper.interactorTestHelper
+import com.bumble.appyx.testing.unit.common.stub.NodeViewStub
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test
 
+@ExperimentalCoroutinesApi
 class MviCoreExampleInteractorTest {
 
     @get:Rule
