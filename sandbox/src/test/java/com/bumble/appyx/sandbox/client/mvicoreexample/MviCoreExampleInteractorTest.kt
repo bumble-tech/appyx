@@ -6,7 +6,9 @@ import com.bumble.appyx.connectable.rx2.NodeConnector
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
-import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.*
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.InitialState
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.Loading

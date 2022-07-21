@@ -18,7 +18,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import java.util.*
+import java.util.UUID
 
 @ExperimentalCoroutinesApi
 class UpNavigationTest {
