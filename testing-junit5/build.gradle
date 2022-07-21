@@ -38,8 +38,8 @@ android {
 
 dependencies {
     api project(':testing-unit-common')
-    api libs.androidx.test.rules
 
-    implementation libs.junit
-    implementation libs.kotlin.coroutines.test
+    implementation libs.junit.api
+    implementation libs.androidx.arch.core.testing
+    implementation libs.kotlin.coroutines.test.jvm
 }

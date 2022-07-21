@@ -40,6 +40,7 @@ dependencies {
     api project(':core')
 
     implementation libs.androidx.lifecycle.runtime
+    implementation libs.junit
     implementation libs.compose.ui.ui
     implementation libs.ribs.rx
 }

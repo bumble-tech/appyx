@@ -9,8 +9,8 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Eve
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.*
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.stub.FeatureStub
-import com.bumble.appyx.testing.junit4.helper.parentNodeTestHelper
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
+import com.bumble.appyx.testing.unit.common.helper.parentNodeTestHelper
 import com.bumble.appyx.testing.unit.common.stub.NodeViewStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Before
