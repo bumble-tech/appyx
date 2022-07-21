@@ -12,8 +12,8 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.stub.FeatureStub
 import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
 import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
-import com.bumble.appyx.testing.unit.common.helper.parentNodeTestHelper
-import com.bumble.appyx.testing.unit.common.stub.NodeViewStub
+import com.bumble.appyx.testing.junit.common.helper.parentNodeTestHelper
+import com.bumble.appyx.testing.junit.common.stub.NodeViewStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach

@@ -14,8 +14,8 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.InitialS
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.Loading
 import com.bumble.appyx.sandbox.stub.FeatureStub
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import com.bumble.appyx.testing.unit.common.helper.interactorTestHelper
-import com.bumble.appyx.testing.unit.common.stub.NodeViewStub
+import com.bumble.appyx.testing.junit.common.helper.interactorTestHelper
+import com.bumble.appyx.testing.junit.common.stub.NodeViewStub
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Rule
 import org.junit.Test

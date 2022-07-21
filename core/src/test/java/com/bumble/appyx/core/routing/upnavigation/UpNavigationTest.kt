@@ -13,7 +13,7 @@ import com.bumble.appyx.core.plugin.UpNavigationHandler
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import com.bumble.appyx.testing.unit.common.util.TestIntegrationPoint
+import com.bumble.appyx.testing.junit.common.util.TestIntegrationPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Rule

@@ -16,7 +16,7 @@ include ':app',
         ':interop-ribs',
         ':testing-junit4',
         ':testing-junit5',
+        ':testing-junit-common',
         ':testing-ui',
-        ':testing-unit-common',
         ':routing-source-addons',
         ':customisations'

@@ -6,7 +6,7 @@ plugins {
 apply from: '../gradle/publication.gradle'
 
 android {
-    namespace 'com.bumble.appyx.testing.unit.common'
+    namespace 'com.bumble.appyx.testing.junit.common'
     compileSdk 32
 
     defaultConfig {
