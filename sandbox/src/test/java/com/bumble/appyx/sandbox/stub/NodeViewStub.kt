@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.unit.common.stub
+package com.bumble.appyx.sandbox.stub
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

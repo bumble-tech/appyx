@@ -13,7 +13,7 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.InitialS
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.Loading
 import com.bumble.appyx.sandbox.stub.FeatureStub
 import com.bumble.appyx.testing.unit.common.helper.interactorTestHelper
-import com.bumble.appyx.testing.unit.common.stub.NodeViewStub
+import com.bumble.appyx.sandbox.stub.NodeViewStub
 import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
 import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
 import org.junit.jupiter.api.Test

@@ -12,7 +12,7 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeat
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.stub.FeatureStub
 import com.bumble.appyx.testing.unit.common.helper.parentNodeTestHelper
-import com.bumble.appyx.testing.unit.common.stub.NodeViewStub
+import com.bumble.appyx.sandbox.stub.NodeViewStub
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Before
 import org.junit.Rule

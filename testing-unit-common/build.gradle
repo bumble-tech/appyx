@@ -42,6 +42,4 @@ dependencies {
     implementation libs.androidx.lifecycle.runtime
     implementation libs.kotlin.test
     implementation libs.compose.ui.ui
-    implementation libs.rxjava2
-    implementation libs.rxrelay
 }
