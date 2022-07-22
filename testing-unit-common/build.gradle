@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
 }
 
+apply from: '../gradle/publication.gradle'
+
 android {
     namespace 'com.bumble.appyx.testing.unit.common'
     compileSdk 32
