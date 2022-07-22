@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.junit.common.helper
+package com.bumble.appyx.testing.unit.common.helper
 
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.node.Node

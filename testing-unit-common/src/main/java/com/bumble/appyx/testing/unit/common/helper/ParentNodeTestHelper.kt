@@ -1,10 +1,10 @@
-package com.bumble.appyx.testing.junit.common.helper
+package com.bumble.appyx.testing.unit.common.helper
 
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.node.ParentNode
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
+import kotlin.test.assertEquals
+import kotlin.test.assertNull
 
 fun <Routing : Any, N : ParentNode<Routing>> N.parentNodeTestHelper() =
     ParentNodeTestHelper(this)

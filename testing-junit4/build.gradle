@@ -37,7 +37,7 @@ android {
 }
 
 dependencies {
-    api project(':testing-junit-common')
+    api project(':testing-unit-common')
     api libs.androidx.test.rules
 
     implementation libs.junit
