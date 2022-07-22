@@ -14,17 +14,21 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.children.ChildAware
 import com.bumble.appyx.core.children.ChildAwareImpl
 import com.bumble.appyx.core.children.ChildCallback
 import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.ChildrenCallback
+import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.plugin.ParenNodeBuilt
 import com.bumble.appyx.core.plugin.Plugin
+import com.bumble.appyx.core.plugin.plugins
 import com.bumble.appyx.core.routing.Resolver
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
@@ -34,6 +38,9 @@ import com.bumble.appyx.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.core.routing.source.permanent.operation.add
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
+import kotlin.coroutines.resume
+import kotlin.reflect.KClass
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,7 +48,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import kotlin.reflect.KClass
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
@@ -86,6 +94,7 @@ abstract class ParentNode<Routing : Any>(
         syncChildrenWithRoutingSource()
         childNodeLifecycleManager.launch()
         manageTransitions()
+        plugins<ParenNodeBuilt<ParentNode<*>>>().forEach { it.onBuilt(this) }
     }
 
     private fun syncChildrenWithRoutingSource() {
@@ -211,6 +220,48 @@ abstract class ParentNode<Routing : Any>(
             transitionsInBackgroundJob = null
         }
     }
+
+    protected suspend inline fun <reified T> attachWorkflow(
+        crossinline action: () -> Unit
+    ): T = withContext(lifecycleScope.coroutineContext + Dispatchers.Main) {
+        action()
+        val childNodes = children.value.values.mapNotNull { it.nodeOrNull }
+        val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
+        if (childNodesOfExpectedType.isEmpty()) {
+            throw IllegalStateException(
+                "Expected child of type [${T::class.java}] was not found after executing action. " +
+                    "Check that your action actually results in the expected child. " +
+                    "Child count: ${childNodes.size}. " +
+                    "Last child is: [${childNodes.lastOrNull()}]. " +
+                    "All children: $childNodes"
+            )
+        } else {
+            childNodesOfExpectedType.last()
+        }
+    }
+
+    protected suspend inline fun <reified T : Node> waitForChildAttached(): T =
+        withContext(lifecycleScope.coroutineContext + Dispatchers.Main) {
+            val childNodes = children.value.values.mapNotNull { it.nodeOrNull }
+            val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
+            if (childNodesOfExpectedType.isEmpty()) {
+                suspendCancellableCoroutine { continuation ->
+                    launch(lifecycleScope.coroutineContext + Dispatchers.Main) {
+                        children.collect { childMap ->
+                            val childNodes = childMap.entries.map { it.value.nodeOrNull }
+                            val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
+                            if (childNodesOfExpectedType.isNotEmpty()) {
+                                if (!continuation.isCompleted) {
+                                    continuation.resume(childNodesOfExpectedType.last())
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                childNodesOfExpectedType.last()
+            }
+        }
 
     @Composable
     final override fun DerivedSetup() {

@@ -54,6 +54,7 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode
 import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
+import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -170,6 +171,11 @@ class ContainerNode(
                 }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
+                TextButton("Launch workflow example") {
+                    integrationPoint.activityStarter.startActivity {
+                        Intent(this, WorkflowExampleActivity::class.java)
+                    }
+                }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, InteropExampleActivity::class.java)

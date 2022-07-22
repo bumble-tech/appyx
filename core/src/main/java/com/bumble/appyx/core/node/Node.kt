@@ -10,6 +10,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.BuildConfig
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
@@ -29,6 +30,9 @@ import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.debug.Appyx
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 abstract class Node(
     buildContext: BuildContext,
@@ -78,6 +82,13 @@ abstract class Node(
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
             }
         });
+    }
+
+    protected suspend inline fun <reified T> executeWorkflow(
+        crossinline action: () -> Unit
+    ): T = withContext(lifecycleScope.coroutineContext + Dispatchers.Main) {
+        action()
+        this@Node as T
     }
 
     @CallSuper
