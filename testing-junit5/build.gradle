@@ -34,6 +34,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.get()
     }
+    packagingOptions {
+        exclude 'META-INF/LICENSE.md'
+        exclude 'META-INF/LICENSE-notice.md'
+    }
 }
 
 dependencies {
