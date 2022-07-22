@@ -10,17 +10,14 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeat
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.stub.FeatureStub
-import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
-import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
 import com.bumble.appyx.testing.junit.common.helper.parentNodeTestHelper
 import com.bumble.appyx.testing.junit.common.stub.NodeViewStub
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
+import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
+import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
-@ExperimentalCoroutinesApi
 @ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class MviCoreExampleNodeJUnit5Test {
 
@@ -54,7 +51,7 @@ class MviCoreExampleNodeJUnit5Test {
     }
 
     @Test
-    fun `given node is created then first child is attached`() = runTest {
+    fun `given node is created then first child is attached`() {
         node.parentNodeTestHelper().also {
             it.assertChildHasLifecycle(
                 routing = Routing.Child1,
@@ -64,7 +61,7 @@ class MviCoreExampleNodeJUnit5Test {
     }
 
     @Test
-    fun `given node is create when navigating to child 2 then child 2 is attached`() = runTest {
+    fun `given node is create when navigating to child 2 then child 2 is attached`() {
         val testHelper = node.parentNodeTestHelper()
         testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             view.eventsRelay.accept(Event.SwitchChildClicked)

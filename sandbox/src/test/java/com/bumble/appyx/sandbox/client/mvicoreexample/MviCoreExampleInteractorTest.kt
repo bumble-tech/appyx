@@ -13,14 +13,12 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.InitialState
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.Loading
 import com.bumble.appyx.sandbox.stub.FeatureStub
-import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import com.bumble.appyx.testing.junit.common.helper.interactorTestHelper
 import com.bumble.appyx.testing.junit.common.stub.NodeViewStub
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class MviCoreExampleInteractorTest {
 
     @get:Rule

@@ -16,7 +16,6 @@ import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.junit.Assert.assertEquals
@@ -24,7 +23,6 @@ import org.junit.Rule
 import org.junit.Test
 
 // TODO: Make it BaseRoutingSource test
-@ExperimentalCoroutinesApi
 class ParentLifecycleTest {
 
     @get:Rule
@@ -94,8 +92,8 @@ class ParentLifecycleTest {
 
         fun get(routing: String): RoutingElement<String, State> {
             return requireNotNull(
-                elements.value.find { it.key.routing == routing },
-                { "element with routing $routing is not found" }
+                value = elements.value.find { it.key.routing == routing },
+                lazyMessage = { "element with routing $routing is not found" },
             )
         }
 

@@ -16,12 +16,10 @@ import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
-@ExperimentalCoroutinesApi
 class ChildLifecycleTest {
 
     @get:Rule
@@ -157,7 +155,10 @@ class ChildLifecycleTest {
                     .map {
                         if (it.key.routing == key) {
                             it
-                                .transitionTo(newTargetState = onScreen, operation = Operation.Noop())
+                                .transitionTo(
+                                    newTargetState = onScreen,
+                                    operation = Operation.Noop()
+                                )
                                 .onTransitionFinished()
                         } else {
                             it
