@@ -1,6 +1,5 @@
 package com.bumble.appyx.sandbox.client.mvicoreexample
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.routingsource.backstack.BackStack
@@ -13,19 +12,14 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.stub.FeatureStub
 import com.bumble.appyx.testing.unit.common.helper.parentNodeTestHelper
 import com.bumble.appyx.sandbox.stub.NodeViewStub
-import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import org.junit.Before
-import org.junit.Rule
-import org.junit.Test
+import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
+import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
-class MviCoreExampleNodeTest {
-
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
+@ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
+class MviCoreExampleNodeJUnit5Test {
 
     private val view = object : NodeViewStub<Event, ViewModel, Routing>(), MviCoreExampleView {}
 
@@ -46,7 +40,7 @@ class MviCoreExampleNodeTest {
 
     private lateinit var node: MviCoreExampleNode
 
-    @Before
+    @BeforeEach
     fun setUp() {
         node = MviCoreExampleNode(
             view = view,

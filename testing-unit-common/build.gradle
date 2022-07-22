@@ -6,7 +6,7 @@ plugins {
 apply from: '../gradle/publication.gradle'
 
 android {
-    namespace 'com.bumble.appyx.testing'
+    namespace 'com.bumble.appyx.testing.unit.common'
     compileSdk 32
 
     defaultConfig {
@@ -38,11 +38,8 @@ android {
 
 dependencies {
     api project(':core')
-    api libs.androidx.test.rules
 
-    implementation libs.androidx.lifecycle.java8
     implementation libs.androidx.lifecycle.runtime
+    implementation libs.kotlin.test
     implementation libs.compose.ui.ui
-    implementation libs.junit
-    implementation libs.kotlin.coroutines.test
 }

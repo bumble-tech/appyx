@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.unit.util
+package com.bumble.appyx.testing.unit.common.util
 
 import com.bumble.appyx.core.routing.BaseRoutingSource
 import com.bumble.appyx.core.routing.RoutingElements

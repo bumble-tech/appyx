@@ -1,6 +1,5 @@
 package com.bumble.appyx.sandbox.client.mvicoreexample
 
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.connectable.rx2.NodeConnector
 import com.bumble.appyx.routingsource.backstack.BackStack
@@ -15,18 +14,13 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel.Loading
 import com.bumble.appyx.sandbox.stub.FeatureStub
 import com.bumble.appyx.testing.unit.common.helper.interactorTestHelper
 import com.bumble.appyx.sandbox.stub.NodeViewStub
-import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import org.junit.Rule
-import org.junit.Test
+import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
+import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.extension.ExtendWith
 
-class MviCoreExampleInteractorTest {
-
-    @get:Rule
-    val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    @get:Rule
-    val mainDispatcherRule = MainDispatcherRule()
-
+@ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
+class MviCoreExampleInteractorJUnit5Test {
 
     private val view = object : NodeViewStub<Event, ViewModel, Routing>(), MviCoreExampleView {}
 

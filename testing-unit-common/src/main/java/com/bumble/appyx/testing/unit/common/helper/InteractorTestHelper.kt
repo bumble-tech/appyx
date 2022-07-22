@@ -1,4 +1,4 @@
-package com.bumble.appyx.testing.unit.helper
+package com.bumble.appyx.testing.unit.common.helper
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,7 +10,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.routing.BaseRoutingSource
 import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.testing.unit.util.DummyRoutingSource
+import com.bumble.appyx.testing.unit.common.util.DummyRoutingSource
 
 fun <N : Node> Interactor<N>.interactorTestHelper(
     routingSource: RoutingSource<*, *> = DummyRoutingSource<Any, Any>(),

@@ -35,6 +35,7 @@ google-material = "com.google.android.material:material:1.4.0"
 junit = "junit:junit:4.13.2"
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
+kotlin-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "coroutines" }
 kotlin-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 mvicore = { module = "com.github.badoo.RIBs:rib-mvicore", version.ref = "ribs" }
 ribs-base = { module = "com.github.badoo.RIBs:rib-base", version.ref = "ribs" }
@@ -45,6 +46,8 @@ rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava2" }
 rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
 rxrelay = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
 
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
+junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }

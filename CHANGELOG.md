@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-
+- [#38](https://github.com/bumble-tech/appyx/pull/38) – Added: JUnit5 support.
 
 ## 1.0-alpha02
 
