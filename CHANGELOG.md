@@ -3,6 +3,7 @@
 ## Pending changes
 
 - [#38](https://github.com/bumble-tech/appyx/pull/38) – Added: JUnit5 support.
+- [#43](https://github.com/bumble-tech/appyx/pull/43) – Update Jetpack Compose to 1.2.0 and kotlin to 1.7.0.
 
 ## 1.0-alpha02
 
