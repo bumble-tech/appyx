@@ -30,8 +30,6 @@ import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.debug.Appyx
-import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 abstract class Node(
@@ -84,9 +82,9 @@ abstract class Node(
         });
     }
 
-    protected suspend inline fun <reified T> executeWorkflow(
+    protected suspend inline fun <reified T : Node> executeWorkflow(
         crossinline action: () -> Unit
-    ): T = withContext(lifecycleScope.coroutineContext + Dispatchers.Main) {
+    ): T = withContext(lifecycleScope.coroutineContext) {
         action()
         this@Node as T
     }

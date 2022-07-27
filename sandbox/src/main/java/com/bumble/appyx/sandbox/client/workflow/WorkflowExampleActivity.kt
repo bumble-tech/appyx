@@ -9,7 +9,7 @@ import androidx.compose.material.Surface
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
-import com.bumble.appyx.core.plugin.ParenNodeBuilt
+import com.bumble.appyx.core.plugin.NodeAware
 import com.bumble.appyx.sandbox.ui.AppyxSandboxTheme
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -58,11 +58,14 @@ class WorkflowExampleActivity : NodeActivity() {
                         NodeHost(integrationPoint = integrationPoint) {
                             RootNode(
                                 buildContext = it,
-                                plugins = listOf(object : ParenNodeBuilt<RootNode> {
-                                    override fun onBuilt(node: RootNode) {
+                                plugins = listOf(object : NodeAware<RootNode> {
+                                    override fun init(node: RootNode) {
                                         rootNode = node
                                         handleDeepLink(intent = intent)
                                     }
+
+                                    override val node: RootNode
+                                        get() = rootNode
                                 })
                             )
                         }

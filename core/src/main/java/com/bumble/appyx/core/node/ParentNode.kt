@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.node
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
@@ -50,6 +51,8 @@ import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.withTimeoutOrNull
 
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
@@ -94,7 +97,6 @@ abstract class ParentNode<Routing : Any>(
         syncChildrenWithRoutingSource()
         childNodeLifecycleManager.launch()
         manageTransitions()
-        plugins<ParenNodeBuilt<ParentNode<*>>>().forEach { it.onBuilt(this) }
     }
 
     private fun syncChildrenWithRoutingSource() {
@@ -221,45 +223,34 @@ abstract class ParentNode<Routing : Any>(
         }
     }
 
-    protected suspend inline fun <reified T> attachWorkflow(
+    protected suspend inline fun <reified T : Node> attachWorkflow(
         crossinline action: () -> Unit
-    ): T = withContext(lifecycleScope.coroutineContext + Dispatchers.Main) {
+    ): T = withContext(lifecycleScope.coroutineContext) {
         action()
-        val childNodes = children.value.values.mapNotNull { it.nodeOrNull }
-        val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
-        if (childNodesOfExpectedType.isEmpty()) {
-            throw IllegalStateException(
-                "Expected child of type [${T::class.java}] was not found after executing action. " +
-                    "Check that your action actually results in the expected child. " +
-                    "Child count: ${childNodes.size}. " +
-                    "Last child is: [${childNodes.lastOrNull()}]. " +
-                    "All children: $childNodes"
-            )
-        } else {
-            childNodesOfExpectedType.last()
+
+        // after executing action waiting for the children to sync with routing source and
+        // throw an exception after short timeout if desired child was not found
+        val result = withTimeoutOrNull(AttachWorkFlowSyncTimeout) {
+            waitForChildAttached<T>()
         }
+        result ?: throw IllegalStateException(
+            "Expected child of type [${T::class.java}] was not found after executing action. " +
+                "Check that your action actually results in the expected child. "
+        )
     }
 
     protected suspend inline fun <reified T : Node> waitForChildAttached(): T =
-        withContext(lifecycleScope.coroutineContext + Dispatchers.Main) {
-            val childNodes = children.value.values.mapNotNull { it.nodeOrNull }
-            val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
-            if (childNodesOfExpectedType.isEmpty()) {
-                suspendCancellableCoroutine { continuation ->
-                    launch(lifecycleScope.coroutineContext + Dispatchers.Main) {
-                        children.collect { childMap ->
-                            val childNodes = childMap.entries.map { it.value.nodeOrNull }
-                            val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
-                            if (childNodesOfExpectedType.isNotEmpty()) {
-                                if (!continuation.isCompleted) {
-                                    continuation.resume(childNodesOfExpectedType.last())
-                                }
-                            }
+        suspendCancellableCoroutine { continuation ->
+            lifecycleScope.launch {
+                children.collect { childMap ->
+                    val childNodes = childMap.entries.mapNotNull { it.value.nodeOrNull }
+                    val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
+                    if (childNodesOfExpectedType.isNotEmpty()) {
+                        if (!continuation.isCompleted) {
+                            continuation.resume(childNodesOfExpectedType.last())
                         }
                     }
                 }
-            } else {
-                childNodesOfExpectedType.last()
             }
         }
 
@@ -335,6 +326,7 @@ abstract class ParentNode<Routing : Any>(
     }
 
     companion object {
+        const val AttachWorkFlowSyncTimeout = 1000L
         const val KEY_CHILDREN_STATE = "ChildrenState"
         const val KEY_PERMANENT_ROUTING_SOURCE = "PermanentRoutingSource"
     }
