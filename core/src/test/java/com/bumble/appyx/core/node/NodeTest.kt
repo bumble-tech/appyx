@@ -3,7 +3,7 @@ package com.bumble.appyx.core.node
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.NodeTest.TestNode.Companion.StatusExecuted
-import com.bumble.appyx.core.testutils.MainDispatcherRule
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -26,14 +26,15 @@ class NodeTest {
     private val testScope = TestScope(UnconfinedTestDispatcher())
 
     @Test
-    fun `execute workflow calls action and returns current node`() = testScope.runTest {
-        val node = TestNode()
-        assertThat(node.status, IsNull())
+    fun `executeWorkflow WHEN called THEN executes action returns current node`() =
+        testScope.runTest {
+            val node = TestNode()
+            assertThat(node.status, IsNull())
 
-        node.changeStatus()
+            node.changeStatus()
 
-        assertThat(node.status, IsEqual(StatusExecuted))
-    }
+            assertThat(node.status, IsEqual(StatusExecuted))
+        }
 
 
     private class TestNode : Node(BuildContext.root(null)) {
