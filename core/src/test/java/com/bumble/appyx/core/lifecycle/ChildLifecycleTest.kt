@@ -15,7 +15,7 @@ import com.bumble.appyx.core.routing.RoutingElement
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
-import com.bumble.appyx.core.testutils.MainDispatcherRule
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -155,7 +155,10 @@ class ChildLifecycleTest {
                     .map {
                         if (it.key.routing == key) {
                             it
-                                .transitionTo(newTargetState = onScreen, operation = Operation.Noop())
+                                .transitionTo(
+                                    newTargetState = onScreen,
+                                    operation = Operation.Noop()
+                                )
                                 .onTransitionFinished()
                         } else {
                             it

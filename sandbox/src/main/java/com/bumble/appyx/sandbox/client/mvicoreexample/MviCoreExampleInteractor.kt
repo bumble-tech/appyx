@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import com.badoo.binder.using
 import com.badoo.mvicore.android.lifecycle.createDestroy
 import com.badoo.mvicore.android.lifecycle.startStop
+import com.badoo.mvicore.feature.Feature
 import com.bumble.appyx.core.children.whenChildAttached
 import com.bumble.appyx.core.clienthelper.interactor.Interactor
 import com.bumble.appyx.core.node.Node
@@ -13,9 +14,12 @@ import com.bumble.appyx.routingsource.backstack.operation.newRoot
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child1
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child2
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleView.Event
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.EventsToWish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.OutputChild1ToWish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.OutputChild2ToWish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.StateToViewModel
@@ -23,7 +27,7 @@ import io.reactivex.functions.Consumer
 
 class MviCoreExampleInteractor(
     private val view: MviCoreExampleView,
-    private val feature: MviCoreExampleFeature,
+    private val feature: Feature<Wish, State, News>,
     private val backStack: BackStack<Routing>,
 ) : Interactor<MviCoreExampleNode>() {
 

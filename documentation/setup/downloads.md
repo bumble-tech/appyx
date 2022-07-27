@@ -18,6 +18,15 @@ dependencies {
 
     // Test rules and utility classes for testing on Android
     androidTestImplementation "com.bumble.appyx:testing-ui:$version"
+
+    // Utility classes for unit testing
+    testImplementation "com.bumble.appyx:testing-unit-common:$version"
+    
+    // Test rules and utility classes for unit testing using JUnit4
+    testImplementation "com.bumble.appyx:testing-junit4:$version"
+
+    // Test extensions and utility classes for unit testing using JUnit5
+    testImplementation "com.bumble.appyx:testing-junit5:$version"
 }
 ```
 
@@ -43,5 +52,19 @@ dependencies {
     // You have to add https://jitpack.io repository to use it because badoo/RIBs is hosted there
     implementation "com.bumble.appyx:interop-ribs:$version"
 
+}
+```
+
+## Snapshot
+
+Snapshot version is available for all modules, use the provided repository url and `main-SNAPSHOT` version.
+
+```groovy
+repositories {
+    maven { url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
+}
+
+dependencies {
+    implementation "com.bumble.appyx:core:main-SNAPSHOT"
 }
 ```

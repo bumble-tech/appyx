@@ -13,7 +13,7 @@ import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
 import com.bumble.appyx.core.routing.RoutingSourceAdapter
-import com.bumble.appyx.core.testutils.MainDispatcherRule
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -132,7 +132,7 @@ abstract class ChildAwareTestBase {
 
         override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
             state.update { list ->
-                list.mapNotNull {
+                list.map {
                     if (it.key in keys) {
                         it.onTransitionFinished()
                     } else {
@@ -147,7 +147,7 @@ abstract class ChildAwareTestBase {
 
         fun add(vararg key: RoutingKey<Key>) {
             state.update { list ->
-                require(list.none { it.key.routing in key.map { it.routing } })
+                require(list.none { it.key.routing in key.map { routingKey -> routingKey.routing } })
                 list + key.map {
                     RoutingElement(
                         key = it,

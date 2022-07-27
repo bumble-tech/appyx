@@ -18,7 +18,7 @@ Should be used in case if there are issues with automatic publication.
 1. Create PR with following changes:
     1. Update version in `gradle/publication.gradle`.
     2. Create a new section with version name taking all changes from pending section.
-2. `./gradle publish --no-parallel -Psigning.keyId=$KEY_ID -Psigning.password=$PASS -Psigning.secretKeyRingFile=$FILE -Psonatype.username=$NAME -Psonatype.password=$PASS`
+2. `./gradle publishAppyxReleasePublicationToOSSRHRepository --no-parallel -Psigning.keyId=$KEY_ID -Psigning.password=$PASS -Psigning.secretKeyRingFile=$FILE -Psonatype.username=$NAME -Psonatype.password=$PASS`
     1. `signing` properties are related to signing information.
     2. `sonatype` properties are your username and password from `oss.sonatype.org`.
     3. `--no-parallel` is required to avoid creation of multiple staging repositories.

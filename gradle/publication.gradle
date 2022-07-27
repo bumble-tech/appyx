@@ -16,7 +16,7 @@ afterEvaluate { Project project ->
             appyxRelease(MavenPublication) {
                 from components.release
                 groupId = 'com.bumble.appyx'
-                version = '1.0-alpha01'
+                version = project.findProperty('snapshot') == 'true' ? 'main-SNAPSHOT' : '1.0-alpha02'
 
                 pom {
                     name = 'Appyx'
@@ -52,6 +52,14 @@ afterEvaluate { Project project ->
                     password = project.findProperty('sonatype.password').toString()
                 }
             }
+            maven {
+                name = 'SonatypeSnapshot'
+                url = 'https://s01.oss.sonatype.org/content/repositories/snapshots/'
+                credentials {
+                    username = project.findProperty('sonatype.username').toString()
+                    password = project.findProperty('sonatype.password').toString()
+                }
+            }
         }
     }
     signing {
@@ -61,6 +69,12 @@ afterEvaluate { Project project ->
         def inMemoryKey = System.getenv('SIGNING_KEY')
         if (inMemoryKey != null) {
             useInMemoryPgpKeys(inMemoryKey, project.findProperty('signing.password'))
+        }
+    }
+    tasks.named('publishAppyxReleasePublicationToSonatypeSnapshotRepository') { task ->
+        def fail = task.project.findProperty('snapshot') != 'true'
+        task.doFirst {
+            if (fail) throw new GradleException("Publishing to snapshot repository with disabled 'snapshot' flag is permitted")
         }
     }
 }

@@ -17,7 +17,7 @@ class MviCoreExampleBuilder : Builder<String>() {
             initialElement = Child1,
             savedStateMap = buildContext.savedStateMap,
         )
-        val view = MviCoreExampleView(backStack = backStack)
+        val view = MviCoreExampleViewImpl(backStack = backStack)
         val interactor = MviCoreExampleInteractor(
             feature = feature,
             backStack = backStack,

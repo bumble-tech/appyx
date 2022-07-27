@@ -46,6 +46,11 @@ android {
         exclude "META-INF/AL2.0"
         exclude "META-INF/LGPL2.1"
     }
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
@@ -71,7 +76,13 @@ dependencies {
     implementation libs.ribs.rx
     implementation libs.rxandroid
 
+    testImplementation libs.androidx.arch.core.testing
     testImplementation libs.junit
+    testImplementation libs.junit.api
+    testRuntimeOnly libs.junit.engine
+    testRuntimeOnly libs.junit.vintage
+    testImplementation project(':testing-junit4')
+    testImplementation project(':testing-junit5')
 
     androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit

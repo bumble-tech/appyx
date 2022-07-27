@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:
 
 jobs:
   build:
@@ -20,6 +21,83 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           arguments: build
+      # checks integrity of release tasks, update publish workflows too if does not work
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: |
+            publishAppyxReleasePublicationToOSSRHRepository
+            publishAppyxReleasePublicationToSonatypeSnapshotRepository
+            --dry-run
+            --no-parallel
+      - uses: gradle/gradle-build-action@v2
+        if: github.ref == 'refs/heads/main'
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+        with:
+          arguments: |
+            publishAppyxReleasePublicationToSonatypeSnapshotRepository
+            -Psnapshot=true
+            --no-parallel
+            -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
+            -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}
+            -Psonatype.password=${{ secrets.SONATYPE_PASSWORD }}
+      - name: Upload failure artifacts
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: unit-test-failures
+          path: '**/build/reports'
+
+  instrumentation-tests:
+    name: Instrumentation tests
+    runs-on: macOS-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - uses: gradle/wrapper-validation-action@v1
+      - name: AVD cache
+        uses: actions/cache@v3
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-31
+      - name: create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+      - name: Instrumentation tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 31
+          arch: x86_64
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: |
+            adb logcat > logcat.out &
+            ./gradlew connectedCheck
+      - name: Upload failed instrumentation artifacts
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: instrumentation-failures-31
+          path: |
+            **/build/reports
+            logcat.out
 
   check-documentation:
     name: Check documentation

@@ -12,7 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import java.util.*
+import java.util.UUID
 
 class StartActivityExample : AppCompatActivity() {
 

@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.testutils
+package com.bumble.appyx.testing.unit.common.util
 
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter

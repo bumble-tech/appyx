@@ -4,9 +4,8 @@ import com.bumble.appyx.core.routing.Operation
 import com.bumble.appyx.core.routing.RoutingElements
 import com.bumble.appyx.core.routing.isTransitioning
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.LinkedList
 
 class QueueOperations<Routing, State> : BaseOperationStrategy<Routing, State>() {
 

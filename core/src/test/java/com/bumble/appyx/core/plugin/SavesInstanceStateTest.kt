@@ -7,7 +7,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.state.MutableSavedStateMap
-import com.bumble.appyx.core.testutils.MainDispatcherRule
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Rule

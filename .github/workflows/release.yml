@@ -20,8 +20,9 @@ jobs:
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         with:
+          cache-read-only: true
           arguments: |
-            publish
+            publishAppyxReleasePublicationToOSSRHRepository
             --no-parallel
             -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
             -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}
