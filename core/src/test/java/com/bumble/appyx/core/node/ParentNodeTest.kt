@@ -6,9 +6,9 @@ import com.bumble.appyx.core.node.ParentNodeTest.NodeB.Companion.StatusExecuted
 import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing
 import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing.ChildA
 import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing.ChildB
-import com.bumble.appyx.core.testutils.MainDispatcherRule
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import java.lang.IllegalStateException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch

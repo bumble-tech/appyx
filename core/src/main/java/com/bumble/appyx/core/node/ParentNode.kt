@@ -1,6 +1,5 @@
 package com.bumble.appyx.core.node
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
@@ -27,9 +26,7 @@ import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.plugin.ParenNodeBuilt
 import com.bumble.appyx.core.plugin.Plugin
-import com.bumble.appyx.core.plugin.plugins
 import com.bumble.appyx.core.routing.Resolver
 import com.bumble.appyx.core.routing.RoutingKey
 import com.bumble.appyx.core.routing.RoutingSource
@@ -41,7 +38,6 @@ import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlin.coroutines.resume
 import kotlin.reflect.KClass
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -51,7 +47,6 @@ import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
 
 abstract class ParentNode<Routing : Any>(
