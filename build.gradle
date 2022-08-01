@@ -21,3 +21,12 @@ allprojects {
         }
     }
 }
+
+// Required for the 'publish' plugin
+subprojects {
+    buildscript {
+        repositories {
+            google()
+        }
+    }
+}
