@@ -3,6 +3,7 @@
 ## Pending changes
 
 - [#38](https://github.com/bumble-tech/appyx/pull/38) – Added: JUnit5 support.
+- [#47](https://github.com/bumble-tech/appyx/issues/47) – Updated: The 'customisations' module is now pure Java/Kotlin.
 
 ## 1.0-alpha02
 
