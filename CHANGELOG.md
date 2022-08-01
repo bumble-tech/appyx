@@ -3,6 +3,7 @@
 ## Pending changes
 
 - [#39](https://github.com/bumble-tech/appyx/pull/39) – Added: Workflows implementation to support deeplinks
+- [#47](https://github.com/bumble-tech/appyx/issues/47) – Updated: The 'customisations' module is now pure Java/Kotlin.
 
 
 ## 1.0-alpha03
