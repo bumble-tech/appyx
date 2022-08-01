@@ -51,3 +51,5 @@ junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jun
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
 junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }
+
+plugin-kotlinGradle = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

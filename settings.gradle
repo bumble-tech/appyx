@@ -20,3 +20,5 @@ include ':app',
         ':testing-unit-common',
         ':routing-source-addons',
         ':customisations'
+
+includeBuild("plugins/publish-plugin")
