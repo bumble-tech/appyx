@@ -14,12 +14,14 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.children.ChildAware
 import com.bumble.appyx.core.children.ChildAwareImpl
 import com.bumble.appyx.core.children.ChildCallback
 import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.ChildrenCallback
+import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.AncestryInfo
@@ -34,6 +36,8 @@ import com.bumble.appyx.core.routing.source.permanent.PermanentRoutingSource
 import com.bumble.appyx.core.routing.source.permanent.operation.add
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
+import kotlin.coroutines.resume
+import kotlin.reflect.KClass
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,7 +45,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
-import kotlin.reflect.KClass
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 
 abstract class ParentNode<Routing : Any>(
     routingSource: RoutingSource<Routing, *>,
@@ -212,6 +218,53 @@ abstract class ParentNode<Routing : Any>(
         }
     }
 
+    /**
+     * attachWorkflow executes provided action e.g. backstack.push(NodeARouting) and waits for the specific
+     * Node of type T to appear in the ParentNode's children list. It should happen almost immediately because it happens
+     * on the main thread, but the order of actions is not preserved as lifecycleScope uses Dispatchers.Main.immediate.
+     * As the result we're doing it asynchronously with timeout after which exception is thrown if
+     * expected node has not appeared in the children list.
+     */
+    protected suspend inline fun <reified T : Node> attachWorkflow(
+        timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
+        crossinline action: () -> Unit
+    ): T = withContext(lifecycleScope.coroutineContext) {
+        action()
+
+        // after executing action waiting for the children to sync with routing source and
+        // throw an exception after short timeout if desired child was not found
+        val result = withTimeoutOrNull(timeout) {
+            waitForChildAttached<T>()
+        }
+        result ?: throw IllegalStateException(
+            "Expected child of type [${T::class.java}] was not found after executing action. " +
+                "Check that your action actually results in the expected child. "
+        )
+    }
+
+    /**
+     * waitForChildAttached waits for the specific child of type T to be attached. For instance, we may
+     * want to wait until user logs in to perform a certain action. Since we don't have control over
+     * when this happens this job can hang indefinitely therefore you need to provide timeout if
+     * you need one.
+     */
+    protected suspend inline fun <reified T : Node> waitForChildAttached(): T =
+        suspendCancellableCoroutine { continuation ->
+            lifecycleScope.launch {
+                children.collect { childMap ->
+                    val childNodeOfExpectedType = childMap.entries
+                        .mapNotNull { it.value.nodeOrNull }
+                        .filterIsInstance<T>()
+                        .takeIf { it.isNotEmpty() }
+                        ?.last()
+
+                    if (childNodeOfExpectedType != null && !continuation.isCompleted) {
+                        continuation.resume(childNodeOfExpectedType)
+                    }
+                }
+            }
+        }
+
     @Composable
     final override fun DerivedSetup() {
         val canHandleBackPress by routingSource.canHandleBackPress.collectAsState()
@@ -284,6 +337,7 @@ abstract class ParentNode<Routing : Any>(
     }
 
     companion object {
+        const val ATTACH_WORKFLOW_SYNC_TIMEOUT = 5000L
         const val KEY_CHILDREN_STATE = "ChildrenState"
         const val KEY_PERMANENT_ROUTING_SOURCE = "PermanentRoutingSource"
     }
