@@ -41,7 +41,7 @@ class RootNode(
         return waitForChildAttached()
     }
 
-    suspend fun attachChildBCoroutine(): ChildNodeB {
+    suspend fun attachChildB(): ChildNodeB {
         return attachWorkflow {
             backStack.push(ChildB)
         }

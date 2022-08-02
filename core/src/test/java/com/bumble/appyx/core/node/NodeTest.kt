@@ -8,9 +8,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.IsEqual
-import org.hamcrest.core.IsNull
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -29,11 +28,11 @@ class NodeTest {
     fun `executeWorkflow WHEN called THEN executes action returns current node`() =
         testScope.runTest {
             val node = TestNode()
-            assertThat(node.status, IsNull())
+            assertNull(node.status)
 
             node.changeStatus()
 
-            assertThat(node.status, IsEqual(StatusExecuted))
+            assertEquals(node.status, StatusExecuted)
         }
 
 

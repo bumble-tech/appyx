@@ -218,6 +218,13 @@ abstract class ParentNode<Routing : Any>(
         }
     }
 
+    /**
+     * attachWorkflow executes provided action e.g. backstack.push(NodeARouting) and waits for the specific
+     * Node of type T to appear in the ParentNode's children list. It should happen almost immediately because it happens
+     * on the main thread, but the order of actions is not preserved as lifecycleScope uses Dispatchers.Main.immediate.
+     * As the result we're doing it asynchronously with short timeout after which exception is thrown if
+     * expected node has not appeared in the children list.
+     */
     protected suspend inline fun <reified T : Node> attachWorkflow(
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
@@ -225,7 +232,7 @@ abstract class ParentNode<Routing : Any>(
 
         // after executing action waiting for the children to sync with routing source and
         // throw an exception after short timeout if desired child was not found
-        val result = withTimeoutOrNull(AttachWorkFlowSyncTimeout) {
+        val result = withTimeoutOrNull(ATTACH_WORKFLOW_SYNC_TIMEOUT) {
             waitForChildAttached<T>()
         }
         result ?: throw IllegalStateException(
@@ -234,16 +241,24 @@ abstract class ParentNode<Routing : Any>(
         )
     }
 
+    /**
+     * waitForChildAttached waits for the specific child of type T to be attached. For instance, we may
+     * want to wait until user logs in to perform a certain action. Since we don't have control over
+     * when this happens this job can hang indefinitely therefore you need to provide timeout if
+     * you need one.
+     */
     protected suspend inline fun <reified T : Node> waitForChildAttached(): T =
         suspendCancellableCoroutine { continuation ->
             lifecycleScope.launch {
                 children.collect { childMap ->
-                    val childNodes = childMap.entries.mapNotNull { it.value.nodeOrNull }
-                    val childNodesOfExpectedType = childNodes.filterIsInstance<T>()
-                    if (childNodesOfExpectedType.isNotEmpty()) {
-                        if (!continuation.isCompleted) {
-                            continuation.resume(childNodesOfExpectedType.last())
-                        }
+                    val childNodeOfExpectedType = childMap.entries
+                        .mapNotNull { it.value.nodeOrNull }
+                        .filterIsInstance<T>()
+                        .takeIf { it.isNotEmpty() }
+                        ?.last()
+
+                    if (childNodeOfExpectedType != null && !continuation.isCompleted) {
+                        continuation.resume(childNodeOfExpectedType)
                     }
                 }
             }
@@ -321,7 +336,7 @@ abstract class ParentNode<Routing : Any>(
     }
 
     companion object {
-        const val AttachWorkFlowSyncTimeout = 1000L
+        const val ATTACH_WORKFLOW_SYNC_TIMEOUT = 5000L
         const val KEY_CHILDREN_STATE = "ChildrenState"
         const val KEY_PERMANENT_ROUTING_SOURCE = "PermanentRoutingSource"
     }

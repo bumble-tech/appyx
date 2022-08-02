@@ -10,15 +10,14 @@ import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import java.lang.IllegalStateException
+import junit.framework.TestCase.assertEquals
+import junit.framework.TestCase.assertNull
+import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.core.IsEqual
-import org.hamcrest.core.IsInstanceOf
-import org.hamcrest.core.IsNull
 import org.junit.Rule
 import org.junit.Test
 
@@ -43,13 +42,13 @@ class ParentNodeTest {
             launch {
                 status = node.waitForBAttached().changeStatus().status
             }
-            assertThat(status, IsNull())
+            assertNull(status)
 
             //when
             backStack.push(ChildB)
 
             //then
-            assertThat(status, IsEqual(StatusExecuted))
+            assertEquals(status, StatusExecuted)
         }
 
     @Test(expected = IllegalStateException::class)
@@ -60,7 +59,7 @@ class ParentNodeTest {
             val node = buildParentNode(backStack)
 
             //when
-            node.incorrectAttachChildB()
+            node.incorrectlyAttachChildB()
         }
 
     @Test
@@ -74,7 +73,7 @@ class ParentNodeTest {
             val attachedNode: Node = node.attachChildB()
 
             //then
-            assertThat(attachedNode, IsInstanceOf(NodeB::class.java))
+            assertTrue(attachedNode is NodeB)
         }
 
     private fun buildBackStack(initialElement: Routing = ChildA) =
@@ -105,7 +104,7 @@ class ParentNodeTest {
             }
         }
 
-        suspend fun incorrectAttachChildB(): NodeB {
+        suspend fun incorrectlyAttachChildB(): NodeB {
             return attachWorkflow {
                 backStack.push(ChildA)
             }
