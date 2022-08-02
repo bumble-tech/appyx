@@ -20,14 +20,14 @@ import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.operation.pop
 import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing
-import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildA
-import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildB
+import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildOne
+import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildTwo
 import kotlinx.parcelize.Parcelize
 
 class RootNode(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
-        initialElement = ChildA,
+        initialElement = ChildOne,
         savedStateMap = buildContext.savedStateMap
     ),
     plugins: List<Plugin> = emptyList()
@@ -37,28 +37,28 @@ class RootNode(
     plugins = plugins
 ) {
 
-    suspend fun waitForChildBAttached(): ChildNodeB {
+    suspend fun waitForChildTwoAttached(): ChildNodeTwo {
         return waitForChildAttached()
     }
 
-    suspend fun attachChildB(): ChildNodeB {
+    suspend fun attachChildTwo(): ChildNodeTwo {
         return attachWorkflow {
-            backStack.push(ChildB)
+            backStack.push(ChildTwo)
         }
     }
 
     sealed class Routing : Parcelable {
         @Parcelize
-        object ChildA : Routing()
+        object ChildOne : Routing()
 
         @Parcelize
-        object ChildB : Routing()
+        object ChildTwo : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext) =
         when (routing) {
-            is ChildA -> ChildNodeA(buildContext)
-            is ChildB -> ChildNodeB(buildContext)
+            is ChildOne -> ChildNodeOne(buildContext)
+            is ChildTwo -> ChildNodeTwo(buildContext)
         }
 
     @Composable
@@ -68,10 +68,10 @@ class RootNode(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = { backStack.push(ChildA) }) {
+                Button(onClick = { backStack.push(ChildOne) }) {
                     Text(text = "Push A")
                 }
-                Button(onClick = { backStack.push(ChildB) }) {
+                Button(onClick = { backStack.push(ChildTwo) }) {
                     Text(text = "Push B")
                 }
                 Button(onClick = { backStack.pop() }) {

@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 
-class ChildNodeA(buildContext: BuildContext) : Node(buildContext) {
+class GrandchildNodeOne(buildContext: BuildContext) : Node(buildContext) {
 
     @Composable
     override fun View(modifier: Modifier) {
@@ -21,7 +21,7 @@ class ChildNodeA(buildContext: BuildContext) : Node(buildContext) {
                 .background(color = Color.LightGray)
         ) {
             Text(
-                text = "Child one",
+                text = "Grandchild one",
                 modifier = Modifier.align(Alignment.Center)
             )
         }

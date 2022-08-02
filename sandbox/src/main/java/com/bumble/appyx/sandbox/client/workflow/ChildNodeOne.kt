@@ -1,6 +1,5 @@
 package com.bumble.appyx.sandbox.client.workflow
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,13 +11,7 @@ import androidx.compose.ui.graphics.Color
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 
-class GrandChildNodeD(buildContext: BuildContext) : Node(buildContext) {
-
-    suspend fun printLifecycleEvent(): GrandChildNodeD {
-        return executeWorkflow {
-            Log.e("Lifecycle", lifecycle.currentState.toString())
-        }
-    }
+class ChildNodeOne(buildContext: BuildContext) : Node(buildContext) {
 
     @Composable
     override fun View(modifier: Modifier) {
@@ -28,7 +21,7 @@ class GrandChildNodeD(buildContext: BuildContext) : Node(buildContext) {
                 .background(color = Color.LightGray)
         ) {
             Text(
-                text = "Grandchild two",
+                text = "Child one",
                 modifier = Modifier.align(Alignment.Center)
             )
         }

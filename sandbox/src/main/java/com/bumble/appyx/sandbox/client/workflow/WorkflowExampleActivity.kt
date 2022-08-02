@@ -78,8 +78,8 @@ class WorkflowExampleActivity : NodeActivity() {
     private fun executeWorkflow1(): Job {
         return lifecycleScope.launch {
             rootNode
-                .waitForChildBAttached()
-                .attachChildD()
+                .waitForChildTwoAttached()
+                .attachGrandchildTwo()
         }
     }
 
@@ -87,8 +87,8 @@ class WorkflowExampleActivity : NodeActivity() {
     private fun executeWorkflow2(): Job {
         return lifecycleScope.launch {
             rootNode
-                .attachChildB()
-                .attachChildD()
+                .attachChildTwo()
+                .attachGrandchildTwo()
                 .printLifecycleEvent()
         }
     }
