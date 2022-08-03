@@ -14,11 +14,10 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-// TODO Remove me after migration
 allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
-            substitute module("com.github.badoo:app-tree-utils") using project(":customisations") because "We are migrating app-tree-utils here"
+            substitute module("com.bumble.appyx:customisations") using project(":customisations") because "RIBs uses Appyx customisations as external dependency"
         }
     }
 }

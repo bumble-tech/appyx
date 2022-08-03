@@ -3,7 +3,7 @@
 [versions]
 androidx-lifecycle = "2.4.1"
 compose = "1.2.0-rc01"
-ribs = "0.33.0"
+ribs = "0.34.0"
 coroutines = "1.5.2"
 kotlin = "1.6.21"
 rxjava2 = "2.2.21"
