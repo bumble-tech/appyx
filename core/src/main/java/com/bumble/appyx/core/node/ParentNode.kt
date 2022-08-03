@@ -1,11 +1,9 @@
 package com.bumble.appyx.core.node
 
-import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -209,14 +207,6 @@ abstract class ParentNode<Routing : Any>(
         transitionsInBackgroundJob?.run {
             cancel()
             transitionsInBackgroundJob = null
-        }
-    }
-
-    @Composable
-    final override fun DerivedSetup() {
-        val canHandleBackPress by routingSource.canHandleBackPress.collectAsState()
-        BackHandler(canHandleBackPress) {
-            routingSource.onBackPressed()
         }
     }
 
