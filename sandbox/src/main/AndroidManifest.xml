@@ -16,9 +16,24 @@
             android:theme="@style/Theme.Appyx.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name="com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity"
+            android:launchMode="singleInstance"
+            android:exported="true"
+            android:theme="@style/Theme.Appyx.NoActionBar">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="appyx-sample" />
+            </intent-filter>
+
         </activity>
 
         <activity

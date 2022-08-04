@@ -2,6 +2,8 @@
 
 ## Pending changes
 
+- [#39](https://github.com/bumble-tech/appyx/pull/39) – Added: Workflows implementation to support deeplinks
+
 
 ## 1.0-alpha03
 
