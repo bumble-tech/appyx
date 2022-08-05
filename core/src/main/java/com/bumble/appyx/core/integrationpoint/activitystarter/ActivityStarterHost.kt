@@ -3,7 +3,6 @@ package com.bumble.appyx.core.integrationpoint.activitystarter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.Fragment
 
 interface ActivityStarterHost {
 
@@ -23,19 +22,6 @@ interface ActivityStarterHost {
 
         override fun startActivityForResult(intent: Intent, requestCode: Int) {
             activity.startActivityForResult(intent, requestCode)
-        }
-    }
-
-    class FragmentHost(private val fragment: Fragment) : ActivityStarterHost {
-        override val context: Context
-            get() = fragment.requireContext()
-
-        override fun startActivity(intent: Intent) {
-            fragment.startActivity(intent)
-        }
-
-        override fun startActivityForResult(intent: Intent, requestCode: Int) {
-            fragment.startActivityForResult(intent, requestCode)
         }
     }
 

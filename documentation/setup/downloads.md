@@ -15,6 +15,9 @@ repositories {
 dependencies {
     // Core
     implementation "com.bumble.appyx:core:$version"
+    
+    // Core classes that depend on appcompat (NodeActivity and Fragments)
+    implementation "com.bumble.appyx:core-appcompat:$version"
 
     // Test rules and utility classes for testing on Android
     androidTestImplementation "com.bumble.appyx:testing-ui:$version"

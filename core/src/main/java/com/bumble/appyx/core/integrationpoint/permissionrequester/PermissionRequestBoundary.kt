@@ -2,7 +2,6 @@ package com.bumble.appyx.core.integrationpoint.permissionrequester
 
 import android.app.Activity
 import android.content.pm.PackageManager
-import androidx.fragment.app.Fragment
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester.CheckPermissionsResult
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester.RequestPermissionsEvent.Cancelled
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult
@@ -22,14 +21,6 @@ class PermissionRequestBoundary(
         requestCodeRegistry: RequestCodeRegistry
     ) : this(
         PermissionRequesterHost.ActivityHost(activity),
-        requestCodeRegistry
-    )
-
-    constructor(
-        fragment: Fragment,
-        requestCodeRegistry: RequestCodeRegistry
-    ) : this(
-        PermissionRequesterHost.FragmentHost(fragment),
         requestCodeRegistry
     )
 

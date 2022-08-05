@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityBoundary
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
+import com.bumble.appyx.core.integrationpoint.activitystarter.FragmentActivityStarterHost
+import com.bumble.appyx.core.integrationpoint.permissionrequester.FragmentPermissionRequesterHost
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequestBoundary
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
 
@@ -12,8 +14,8 @@ open class FragmentIntegrationPoint(
     private val fragment: Fragment,
     savedInstanceState: Bundle?
 ) : IntegrationPoint(savedInstanceState = savedInstanceState) {
-    private val activityBoundary = ActivityBoundary(fragment, requestCodeRegistry)
-    private val permissionRequestBoundary = PermissionRequestBoundary(fragment, requestCodeRegistry)
+    private val activityBoundary = ActivityBoundary(FragmentActivityStarterHost(fragment), requestCodeRegistry)
+    private val permissionRequestBoundary = PermissionRequestBoundary(FragmentPermissionRequesterHost(fragment), requestCodeRegistry)
 
     override val activityStarter: ActivityStarter
         get() = activityBoundary

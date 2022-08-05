@@ -3,7 +3,6 @@ package com.bumble.appyx.core.integrationpoint.activitystarter
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.fragment.app.Fragment
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter.ActivityResultEvent
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStreamImpl
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
@@ -21,14 +20,6 @@ class ActivityBoundary(
         requestCodeRegistry: RequestCodeRegistry
     ) : this(
         ActivityStarterHost.ActivityHost(activity),
-        requestCodeRegistry
-    )
-
-    constructor(
-        fragment: Fragment,
-        requestCodeRegistry: RequestCodeRegistry
-    ) : this(
-        ActivityStarterHost.FragmentHost(fragment),
         requestCodeRegistry
     )
 

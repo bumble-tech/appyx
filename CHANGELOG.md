@@ -4,6 +4,7 @@
 
 - [#39](https://github.com/bumble-tech/appyx/pull/39) – Added: Workflows implementation to support deeplinks
 - [#47](https://github.com/bumble-tech/appyx/issues/47) – Updated: The 'customisations' module is now pure Java/Kotlin.
+- [#56](https://github.com/bumble-tech/appyx/issues/56) – Added: `core-appcompat` module and moved `NodeActivity` and `Fragment` logic into this module.
 
 
 ## 1.0-alpha03

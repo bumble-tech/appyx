@@ -18,6 +18,7 @@ enableFeaturePreview 'VERSION_CATALOGS'
 
 include ':app',
         ':core',
+        ':core-appcompat',
         ':sandbox',
         ':interop-rx2',
         ':interop-ribs',

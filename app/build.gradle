@@ -46,6 +46,7 @@ android {
 
 dependencies {
     implementation project(':core')
+    implementation project(':core-appcompat')
     implementation project(':routing-source-addons')
 
     implementation libs.androidx.activity.compose
