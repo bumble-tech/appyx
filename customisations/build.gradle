@@ -1,9 +1,8 @@
 plugins {
     id 'java-library'
     id 'kotlin'
+    id 'appyx-publish-java'
 }
-
-apply from: '../gradle/publication.gradle'
 
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
