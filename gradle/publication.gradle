@@ -1,12 +1,19 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-android {
-    publishing {
-        singleVariant('release') {
-            withSourcesJar()
-            withJavadocJar()
+if (pluginManager.hasPlugin("com.android.library")) {
+    android {
+        publishing {
+            singleVariant('release') {
+                withSourcesJar()
+                withJavadocJar()
+            }
         }
+    }
+} else {
+    java {
+        withJavadocJar()
+        withSourcesJar()
     }
 }
 
@@ -14,7 +21,11 @@ afterEvaluate { Project project ->
     publishing {
         publications {
             appyxRelease(MavenPublication) {
-                from components.release
+                if (pluginManager.hasPlugin("com.android.library")) {
+                    from components.release
+                } else {
+                    from components.java
+                }
                 groupId = 'com.bumble.appyx'
                 version = project.findProperty('snapshot') == 'true' ? 'main-SNAPSHOT' : '1.0-alpha03'
 
