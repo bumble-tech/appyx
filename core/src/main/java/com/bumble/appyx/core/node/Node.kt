@@ -115,9 +115,12 @@ abstract class Node(
 
     @Composable
     private fun HandleBackPress() {
-        // reversed order because we want direct order, but onBackPressedDispatcher invokes them in reversed order
-        val backPressHandlerPlugins = remember { plugins.filterIsInstance<BackPressHandler>().reversed() }
-        val dispatcher = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
+        val backPressHandlerPlugins = remember {
+            // reversed order because we want direct order, but onBackPressedDispatcher invokes them in reversed order
+            plugins.filterIsInstance<BackPressHandler>().reversed()
+        }
+        val dispatcher =
+            LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher ?: return
         DisposableEffect(dispatcher) {
             backPressHandlerPlugins.forEach { plugin ->
                 if (!plugin.isCorrect()) {
@@ -125,7 +128,7 @@ abstract class Node(
                         IllegalStateException("Plugin $plugin has implementation for both BackPressHandler properties, implement only one")
                     )
                 }
-                plugin.onBackPressedCallbackList.forEach { dispatcher?.addCallback(it) }
+                plugin.onBackPressedCallbackList.forEach { dispatcher.addCallback(it) }
             }
             onDispose {
                 backPressHandlerPlugins.forEach { plugin ->
@@ -133,15 +136,6 @@ abstract class Node(
                 }
             }
         }
-    }
-
-    // BackPressHandler is correct when only one of its properties is implemented.
-    private fun BackPressHandler.isCorrect(): Boolean {
-        val listIsOverriddenOrPluginIgnored = onBackPressedCallback == null
-        val onlySingleCallbackIsOverridden = onBackPressedCallback != null &&
-                onBackPressedCallbackList.size == 1 &&
-                onBackPressedCallbackList[0] == onBackPressedCallback
-        return onlySingleCallbackIsOverridden || listIsOverriddenOrPluginIgnored
     }
 
     override fun getLifecycle(): Lifecycle =
@@ -205,4 +199,16 @@ abstract class Node(
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
+    companion object {
+
+        // BackPressHandler is correct when only one of its properties is implemented.
+        private fun BackPressHandler.isCorrect(): Boolean {
+            val listIsOverriddenOrPluginIgnored = onBackPressedCallback == null
+            val onlySingleCallbackIsOverridden = onBackPressedCallback != null &&
+                    onBackPressedCallbackList.size == 1 &&
+                    onBackPressedCallbackList[0] == onBackPressedCallback
+            return onlySingleCallbackIsOverridden || listIsOverriddenOrPluginIgnored
+        }
+
+    }
 }
