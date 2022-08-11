@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.core.plugin.NodeAware
 
-abstract class ParentNodeView<Routing : Any> : NodeView, NodeAware<ParentNode<Routing>> {
+abstract class ParentNodeView<Routing : Any> : ParentNodeViewBase<Routing> {
 
     final override lateinit var node: ParentNode<Routing>
         private set
@@ -17,8 +17,4 @@ abstract class ParentNodeView<Routing : Any> : NodeView, NodeAware<ParentNode<Ro
     override fun View(modifier: Modifier) {
         node.NodeView(modifier = modifier)
     }
-
-    @Composable
-    abstract fun ParentNode<Routing>.NodeView(modifier: Modifier)
-
 }
