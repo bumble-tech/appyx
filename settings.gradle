@@ -28,4 +28,4 @@ include ':app',
         ':routing-source-addons',
         ':customisations'
 
-includeBuild("plugins/publish-plugin")
+includeBuild 'plugins'

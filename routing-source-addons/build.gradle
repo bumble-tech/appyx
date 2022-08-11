@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'appyx-publish-android'
+    id 'appyx-report-lint-sarif'
 }
 
 android {

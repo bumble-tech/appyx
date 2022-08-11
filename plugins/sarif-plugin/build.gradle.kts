@@ -16,7 +16,6 @@ plugins {
 
 dependencies {
     implementation(libs.android.plugin)
-    implementation(libs.plugin.kotlinGradle)
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile::class.java).configureEach {
@@ -25,13 +24,13 @@ tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile::class.java).con
 
 gradlePlugin {
     plugins {
-        create("appyx-publish-android") {
-            id = "appyx-publish-android"
-            implementationClass = "AndroidAppyxPublishPlugin"
+        create("appyx-collect-lint-sarif") {
+            id = "appyx-collect-lint-sarif"
+            implementationClass = "CollectLintSarifPlugin"
         }
-        create("appyx-publish-java") {
-            id = "appyx-publish-java"
-            implementationClass = "JavaAppyxPublishPlugin"
+        create("appyx-report-lint-sarif") {
+            id = "appyx-report-lint-sarif"
+            implementationClass = "ReportLintSarifPlugin"
         }
     }
 }
