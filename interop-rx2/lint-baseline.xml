@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.1.3" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.3)" variant="all" version="7.1.3">
+
+    <issue
+        id="CheckResult"
+        message="The result of `subscribe` is not used"
+        errorLine1="        intake.subscribe { exhaust.accept(it) }"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/connectable/rx2/NodeConnector.kt"
+            line="58"
+            column="9"/>
+    </issue>
+
+</issues>

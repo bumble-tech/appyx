@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexMethod:ModalTransitionHandler.kt$ModalTransitionHandler$override fun createModifier( modifier: Modifier, transition: Transition&lt;TransitionState>, descriptor: TransitionDescriptor&lt;T, TransitionState> ): Modifier</ID>
+    <ID>MagicNumber:ModalTransitionHandler.kt$ModalTransitionHandler$0.5f</ID>
+    <ID>MagicNumber:ModalTransitionHandler.kt$ModalTransitionHandler$0.8f</ID>
+    <ID>MagicNumber:ModalTransitionHandler.kt$ModalTransitionHandler$0.9f</ID>
+    <ID>MagicNumber:ModalTransitionHandler.kt$ModalTransitionHandler$0xFFBDC6D1</ID>
+    <ID>MagicNumber:ModalTransitionHandler.kt$ModalTransitionHandler$20f</ID>
+    <ID>MagicNumber:ModalTransitionHandler.kt$ModalTransitionHandler$500</ID>
+    <ID>MagicNumber:ModalTransitionHandler.kt$ModalTransitionHandler$5f</ID>
+    <ID>MagicNumber:PromoterTransitionHandler.kt$500</ID>
+    <ID>MagicNumber:PromoterTransitionHandler.kt$PromoterTransitionHandler$200</ID>
+    <ID>MagicNumber:PromoterTransitionHandler.kt$PromoterTransitionHandler$500</ID>
+    <ID>MagicNumber:PromoterTransitionHandler.kt$PromoterTransitionHandler$90</ID>
+    <ID>MagicNumber:TilesTransitionHandler.kt$TilesTransitionHandler$0.75f</ID>
+    <ID>MagicNumber:TilesTransitionHandler.kt$TilesTransitionHandler$1000f</ID>
+    <ID>MagicNumber:TilesTransitionHandler.kt$TilesTransitionHandler$200</ID>
+    <ID>MagicNumber:TilesTransitionHandler.kt$TilesTransitionHandler$720</ID>
+  </CurrentIssues>
+</SmellBaseline>

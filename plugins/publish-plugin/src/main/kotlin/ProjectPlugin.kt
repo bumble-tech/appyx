@@ -30,7 +30,9 @@ internal abstract class ProjectPlugin : Plugin<Project> {
             project.tasks.named("publishAppyxReleasePublicationToSonatypeSnapshotRepository") {
                 val fail = project.findProperty("snapshot") != "true"
                 doFirst {
-                    if (fail) throw GradleException("Publishing to snapshot repository with disabled \"snapshot\" flag is permitted")
+                    if (fail) throw GradleException(
+                        "Publishing to snapshot repository with disabled \"snapshot\" flag is permitted"
+                    )
                 }
             }
         }
@@ -56,7 +58,10 @@ internal abstract class ProjectPlugin : Plugin<Project> {
                 }
             }
             addMaven("OSSRH", "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
-            addMaven("SonatypeSnapshot", "https://s01.oss.sonatype.org/content/repositories/snapshots/")
+            addMaven(
+                "SonatypeSnapshot",
+                "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            )
         }
     }
 

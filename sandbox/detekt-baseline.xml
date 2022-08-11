@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexMethod:BackStackExampleNode.kt$BackStackExampleNode$@Composable override fun View(modifier: Modifier)</ID>
+    <ID>ComplexMethod:ContainerNode.kt$ContainerNode$override fun resolve(routing: Routing, buildContext: BuildContext): Node</ID>
+    <ID>FunctionNaming:BlockerExampleNode.kt$BlockerExampleNode$@Composable private fun DisplayBackError()</ID>
+    <ID>FunctionNaming:ChildNode.kt$@Preview @Composable fun ChildPreview()</ID>
+    <ID>FunctionNaming:CombinedRoutingSourceNode.kt$CombinedRoutingSourceNode$@Composable private fun BackStack( name: String, backStack: BackStack&lt;Routing>, )</ID>
+    <ID>FunctionNaming:CombinedRoutingSourceNode.kt$CombinedRoutingSourceNode$@Composable private fun Permanent()</ID>
+    <ID>FunctionNaming:ContainerNode.kt$ContainerNode$@Composable fun Customisations(modifier: Modifier)</ID>
+    <ID>FunctionNaming:ContainerNode.kt$ContainerNode$@Composable fun ExamplesList(modifier: Modifier)</ID>
+    <ID>FunctionNaming:ContainerNode.kt$ContainerNode$@Composable fun RoutingSources(modifier: Modifier)</ID>
+    <ID>FunctionNaming:ContainerNode.kt$ContainerNode$@Composable private fun TextButton(text: String, onClick: () -> Unit)</ID>
+    <ID>FunctionNaming:IntegrationPointExampleNode.kt$@Preview @Composable fun IntegrationPointExampleNodePreview()</ID>
+    <ID>FunctionNaming:LazyListContainerNode.kt$LazyListContainerNode$@Composable private fun ColumnExample(elements: List&lt;RoutingElement&lt;Routing, out Any?>>)</ID>
+    <ID>FunctionNaming:LazyListContainerNode.kt$LazyListContainerNode$@Composable private fun GridExample(elements: List&lt;RoutingElement&lt;Routing, out Any?>>)</ID>
+    <ID>FunctionNaming:LazyListContainerNode.kt$LazyListContainerNode$@Composable private fun RadioItem( mode: LazyListContainerNode.ListMode, isSelected: Boolean, onClick: () -> Unit, )</ID>
+    <ID>FunctionNaming:LazyListContainerNode.kt$LazyListContainerNode$@Composable private fun RowExample(elements: List&lt;RoutingElement&lt;Routing, out Any?>>)</ID>
+    <ID>FunctionNaming:MainActivity.kt$@Preview(showBackground = true) @Composable fun DefaultPreview()</ID>
+    <ID>FunctionNaming:ModalExampleNode.kt$@Preview @Composable fun ModalPreview()</ID>
+    <ID>FunctionNaming:SpotlightExampleNode.kt$SpotlightExampleNode$@Composable private fun LoadedState(modifier: Modifier)</ID>
+    <ID>FunctionNaming:SpotlightExampleNode.kt$SpotlightExampleNode$@Composable private fun TextButton(text: String, enabled: Boolean = true, onClick: () -> Unit)</ID>
+    <ID>FunctionNaming:Theme.kt$@Composable fun AppyxSandboxTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit)</ID>
+    <ID>LongMethod:BackStackExampleNode.kt$BackStackExampleNode$@Composable override fun View(modifier: Modifier)</ID>
+    <ID>LongMethod:MviCoreExampleView.kt$MviCoreExampleViewImpl$@Composable override fun ParentNode&lt;Routing>.NodeView(modifier: Modifier)</ID>
+    <ID>LongMethod:SpotlightExampleNode.kt$SpotlightExampleNode$@Composable private fun LoadedState(modifier: Modifier)</ID>
+    <ID>MagicNumber:BackStackExampleNode.kt$BackStackExampleNode$1000</ID>
+    <ID>MagicNumber:BlockerExampleNode.kt$BlockerExampleNode$3000L</ID>
+    <ID>MagicNumber:Color.kt$0xFF03DAC5</ID>
+    <ID>MagicNumber:Color.kt$0xFF2B2D42</ID>
+    <ID>MagicNumber:Color.kt$0xFF3700B3</ID>
+    <ID>MagicNumber:Color.kt$0xFF5C6378</ID>
+    <ID>MagicNumber:Color.kt$0xFF6200EE</ID>
+    <ID>MagicNumber:Color.kt$0xFF8D99AE</ID>
+    <ID>MagicNumber:Color.kt$0xFFBB86FC</ID>
+    <ID>MagicNumber:Color.kt$0xFFBDC6D1</ID>
+    <ID>MagicNumber:Color.kt$0xFFD90429</ID>
+    <ID>MagicNumber:Color.kt$0xFFEDF2F4</ID>
+    <ID>MagicNumber:Color.kt$0xFFEF233C</ID>
+    <ID>MagicNumber:Color.kt$0xFFF05D5E</ID>
+    <ID>MagicNumber:Color.kt$0xFFF0965D</ID>
+    <ID>MagicNumber:CombinedRoutingSourceNode.kt$CombinedRoutingSourceNode$300</ID>
+    <ID>MagicNumber:ContainerNode.kt$ContainerNode$3_000</ID>
+    <ID>MagicNumber:LazyListContainerNode.kt$LazyListContainerNode$100</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF000000</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF004D40</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF006064</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00695C</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00796B</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00838F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00897B</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF0091EA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF009688</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF0097A7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00ACC1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00B0FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00B8D4</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00BCD4</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00BFA5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00C853</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00E5FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF00E676</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF01579B</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF0277BD</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF0288D1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF039BE5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF03A9F4</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF0D47A1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF1565C0</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF18FFFF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF1976D2</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF1A237E</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF1B5E20</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF1DE9B6</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF1E88E5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF212121</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF2196F3</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF263238</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF26A69A</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF26C6DA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF283593</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF2962FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF2979FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF29B6FC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF2E7D32</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF303F9F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF304FFE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF311B92</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF33691E</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF37474F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF388E3C</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF3949AB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF3D5AFE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF3E2723</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF3F51B5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF40C4FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF424242</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF42A5F5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF43A047</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF448AFF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF4527A0</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF455A64</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF4A148C</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF4CAF50</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF4DB6AC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF4DD0E1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF4E342E</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF4fC3F7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF512DA8</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF536DFE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF546E7A</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF558B2F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF5C6BC0</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF5D4037</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF5E35B1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF607D8B</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF616161</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF6200EA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF64B5F6</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF64DD17</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF64FFDA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF651FFF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF66BB6A</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF673AB7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF689F38</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF69F0AE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF6A1B9A</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF6D4C41</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF757575</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF76FF03</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF78909C</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF795548</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF7986CB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF7B1FA2</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF7C4DFF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF7CB342</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF7E57C2</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF80CBC4</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF80D8FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF80DEEA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF81C784</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF81D4fA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF827717</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF82B1FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF84FFFF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF880E4F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF8BC34A</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF8C9EFF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF8D6E63</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF8E24AA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF90A4AE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF90CAF9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF9575CD</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF9C27B0</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF9CCC65</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF9E9D24</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF9E9E9E</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFF9FA8DA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFA1887F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFA4B42B</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFA5D6A7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFA7FFEB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFAA00FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFAB47BC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFAD1457</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFAED581</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFAEEA00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB0BBC5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB2DFDB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB2EBF2</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB2FF59</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB388FF</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB39DDB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB3E5FC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB71C1C</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFB9F6CA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFBA68C8</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFBBDEFB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFBCAAA4</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFBDBDBD</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFBF360C</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC0CA33</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC2185B</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC51162</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC5CAE9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC5E1A5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC62828</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC6FF00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFC8E6C9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFCCFF90</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFCDDC39</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFCE93D8</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFCFD8DC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD1C4E9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD32F2F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD4E157</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD50000</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD500F9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD7CCC8</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD81B60</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFD84315</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFDCE775</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFDCEDC8</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFDD2600</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE040FB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE0E0E0</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE0F2F1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE0F7FA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE1BEE7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE1F5FE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE3F2FD</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE53935</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE57373</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE64A19</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE65100</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE6EE9C</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE8EAF6</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE8F5E9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFE91E63</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEA80FC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEC407A</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFECEFF1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEDE7F6</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEEEEEE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEEFF41</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEF5350</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEF6C00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEF9A9A</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFEFEBE9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF06292</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF0F4C3</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF1F8E9</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF3E5F5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF44336</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF4511E</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF48FB1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF4FF81</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF50057</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF57C00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF57F17</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF5F5F5</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF8BBD0</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF9A825</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFF9FBE7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFAFAFA</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFB8C00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFBC02D</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFBE9A7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFCE4EC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFDD835</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF1744</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF3D00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF4081</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF5252</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF5722</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF6D00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF6E40</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF6F00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF7043</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF80AB</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF8A65</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF8A80</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF8F00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF9100</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF9800</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFF9E80</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFA000</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFA726</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFAB00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFAB40</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFAB91</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFB300</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFB74D</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFC107</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFC400</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFCA28</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFCC80</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFCCBC</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFCDD2</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFD180</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFD54F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFD600</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFD740</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFE082</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFE0B2</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFE57F</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFEA00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFEB3B</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFEBEE</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFECB3</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFEE58</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFF176</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFF3E0</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFF590</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFF8E1</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFF9C4</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFFDE7</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFFF00</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFFFFF82</ID>
+    <ID>MagicNumber:MaterialColors.kt$0xFFffffff</ID>
+    <ID>MagicNumber:SpotlightExampleNode.kt$SpotlightExampleNode$2000</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$backStack.newRoot(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$backStack.push(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$backStack.replace(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$if</ID>
+    <ID>MaxLineLength:IntegrationPointExampleNode.kt$IntegrationPointExampleNode$if</ID>
+    <ID>UnusedPrivateMember:FeatureStub.kt$FeatureStub$private val testWishes = wishesRelay.test()</ID>
+  </CurrentIssues>
+</SmellBaseline>

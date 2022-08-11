@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>UnusedPrivateMember:AppyxTestRule.kt$AppyxTestRule$/** Add decorations like custom theme or CompositionLocalProvider. Do not forget to invoke `content()`. */ private val decorator: (@Composable (content: @Composable () -> Unit) -> Unit) = { content -> content() }</ID>
+  </CurrentIssues>
+</SmellBaseline>

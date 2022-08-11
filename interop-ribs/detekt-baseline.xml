@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>MaxLineLength:InteropView.kt$InteropView$throw IllegalStateException("Activity where InteropNode is used must implement IntegrationPointAppyxProvider")</ID>
+    <ID>SpreadOperator:InteropNode.kt$InteropNodeImpl$(*this.toList().toTypedArray())</ID>
+    <ID>UseCheckOrError:InteropView.kt$InteropView$throw IllegalStateException("Activity where InteropNode is used must implement IntegrationPointAppyxProvider")</ID>
+  </CurrentIssues>
+</SmellBaseline>
