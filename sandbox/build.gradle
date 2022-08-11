@@ -83,6 +83,8 @@ dependencies {
     testRuntimeOnly libs.junit.vintage
     testImplementation project(':testing-junit4')
     testImplementation project(':testing-junit5')
+    testImplementation libs.ribs.base.test
+    testImplementation libs.ribs.base.test.rx2
 
     androidTestImplementation libs.androidx.test.espresso.core
     androidTestImplementation libs.androidx.test.junit

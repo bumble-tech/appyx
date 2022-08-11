@@ -2,18 +2,18 @@ package com.bumble.appyx.sandbox.client.interop.parent
 
 import com.badoo.ribs.core.Node
 import com.badoo.ribs.core.Rib
-import com.badoo.ribs.core.customisation.RibCustomisation
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.plugin.Plugin
 import com.badoo.ribs.core.view.ViewFactory
-import com.bumble.appyx.sandbox.client.interop.parent.RibsParentViewImpl.Factory
+import com.bumble.appyx.sandbox.client.interop.parent.RibsParentView.Factory
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface RibsParentRib : Rib {
 
     class Customisation(
-        val viewFactory: Factory = Factory(),
+        val viewFactory: Factory = RibsParentViewImpl.Factory(),
         val name: String = "defaultName"
-    ) : RibCustomisation
+    ) : NodeCustomisation
 }
 
 class RibsParentNode internal constructor(
