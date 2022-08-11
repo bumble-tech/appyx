@@ -72,6 +72,30 @@ class SomeClass(
 ⚠️ Note: the reference to ```node``` is set by ```Node``` automatically, and isn't available immediately after constructing your object, but only after the construction of the ```Node``` itself.
 
 
+### Navigation plugins
+
+In case if you need to control navigation behaviour, you can use these plugins:
+
+```kotlin
+interface UpNavigationHandler : Plugin {
+    fun handleUpNavigation(): Boolean = false
+}
+
+interface BackPressHandler : Plugin {
+    val onBackPressedCallback: OnBackPressedCallback? get() = null
+}
+```
+
+`UpNavigationHandler` controls `Node.navigateUp` behaviour and allows to intercept its invocation.
+
+`BackPressHandler` controls device back press behaviour via `androidx.activity.OnBackPressedCallback`.
+You can read more about it [here](https://developer.android.com/guide/navigation/navigation-custom-back).
+
+⚠️ Note: `OnBackPressedCallback` are invoked in the following order:
+1. From children to parents. Render order of children matters! The last rendered child will be the first to handle back press.
+2. Direct order of plugins within a node. Plugins are invoked in order they appears in `Node(plugins = ...)` before routing source. 
+
+
 ## Using Plugins 
 
 All plugins are designed to have empty ```{}``` default implementations (or other sensible defaults when a return value is defined), so it's convenient to implement them only if you need.
