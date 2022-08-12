@@ -11,21 +11,20 @@ class InteropSimpleBuilderStub(
     val delegate: (BuildContext) -> Node = { _ -> NodeStub() },
 ) : SimpleBuilder() {
 
-    private val _createdNodes = ArrayList<Node>()
-
-    val last: Node?
-        get() = _createdNodes.lastOrNull()
+    var lastNode: Node? = null
+        private set
 
     override fun build(buildContext: BuildContext): Node =
         delegate(buildContext).also {
-            _createdNodes += it
+            lastNode = it
         }
 
     fun assertCreatedNode() {
-        assertTrue(last != null, "Has not created any node")
+        assertTrue(lastNode != null, "Has not created any node")
     }
 
     fun assertLastNodeState(state: Lifecycle.State) {
-        assertEquals(state, last?.lifecycle?.currentState)
+        assertCreatedNode()
+        assertEquals(state, lastNode?.lifecycle?.currentState)
     }
 }

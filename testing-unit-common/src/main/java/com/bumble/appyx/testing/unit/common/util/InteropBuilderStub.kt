@@ -11,17 +11,15 @@ class InteropBuilderStub<P>(
     val delegate: (BuildContext, P) -> Node = { _, _ -> NodeStub() },
 ) : Builder<P>() {
 
-    private val _createdNodes = ArrayList<Node>()
-
-    val last: Node?
-        get() = _createdNodes.lastOrNull()
+    var lastNode: Node? = null
+        private set
 
     var lastParam: P? = null
         private set
 
     override fun build(buildContext: BuildContext, payload: P): Node =
         delegate(buildContext, payload).also {
-            _createdNodes += it
+            lastNode = it
             lastParam = payload
         }
 
@@ -37,10 +35,11 @@ class InteropBuilderStub<P>(
     }
 
     fun assertCreatedNode() {
-        assertTrue(last != null, "Has not created any node")
+        assertTrue(lastNode != null, "Has not created any node")
     }
 
     fun assertLastNodeState(state: Lifecycle.State) {
-        assertEquals(state, last?.lifecycle?.currentState)
+        assertCreatedNode()
+        assertEquals(state, lastNode?.lifecycle?.currentState)
     }
 }
