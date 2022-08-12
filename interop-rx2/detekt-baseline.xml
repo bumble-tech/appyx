@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>EmptyDefaultConstructor:NodeConnectorTest.kt$Rx2NodeConnectorTest$()</ID>
+    <ID>EmptyFunctionBlock:NodeConnectorTest.kt$Rx2NodeConnectorTest.&lt;no name provided>${}</ID>
+    <ID>InvalidPackageDeclaration:NodeConnectorTest.kt$package com.bumble.appyx.connectable</ID>
+    <ID>MatchingDeclarationName:NodeConnectorTest.kt$Rx2NodeConnectorTest</ID>
+    <ID>MaxLineLength:NodeConnectorTest.kt$Rx2NodeConnectorTest$*</ID>
+    <ID>MaxLineLength:NodeConnectorTest.kt$Rx2NodeConnectorTest$fun</ID>
+  </CurrentIssues>
+</SmellBaseline>

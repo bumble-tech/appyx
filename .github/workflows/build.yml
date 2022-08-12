@@ -20,7 +20,12 @@ jobs:
       - uses: gradle/wrapper-validation-action@v1
       - uses: gradle/gradle-build-action@v2
         with:
-          arguments: build
+          arguments: |
+            build
+            mergeLintSarif
+            mergeDetektSarif
+            :plugins:buildPlugins
+            --continue
       # checks integrity of release tasks, update publish workflows too if does not work
       - uses: gradle/gradle-build-action@v2
         with:
@@ -41,11 +46,21 @@ jobs:
             -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
             -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}
             -Psonatype.password=${{ secrets.SONATYPE_PASSWORD }}
+      - uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: build/lint-merged.sarif
+          category: lint
+      - uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: build/detekt-merged.sarif
+          category: detekt
       - name: Upload failure artifacts
         if: failure()
         uses: actions/upload-artifact@v3
         with:
-          name: unit-test-failures
+          name: reports
           path: '**/build/reports'
 
   instrumentation-tests:

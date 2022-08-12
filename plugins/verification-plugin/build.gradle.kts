@@ -6,7 +6,7 @@ plugins {
 
 dependencies {
     implementation(libs.plugin.android)
-    implementation(libs.plugin.kotlin)
+    implementation(libs.plugin.detekt)
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile::class.java).configureEach {
@@ -20,13 +20,17 @@ detekt {
 
 gradlePlugin {
     plugins {
-        create("appyx-publish-android") {
-            id = "appyx-publish-android"
-            implementationClass = "AndroidAppyxPublishPlugin"
+        create("appyx-collect-sarif") {
+            id = "appyx-collect-sarif"
+            implementationClass = "CollectSarifPlugin"
         }
-        create("appyx-publish-java") {
-            id = "appyx-publish-java"
-            implementationClass = "JavaAppyxPublishPlugin"
+        create("appyx-lint") {
+            id = "appyx-lint"
+            implementationClass = "LintPlugin"
+        }
+        create("appyx-detekt") {
+            id = "appyx-detekt"
+            implementationClass = "DetektPlugin"
         }
     }
 }

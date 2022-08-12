@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.1.3" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.3)" variant="all" version="7.1.3">
+
+    <issue
+        id="RedundantLabel"
+        message="Redundant label can be removed"
+        errorLine1="            android:label=&quot;@string/app_name&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="15"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    override fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/app/node/teaser/backstack/transitionhandler/CustomBackStackTransitionHandler.kt"
+            line="25"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="UnnecessaryComposedModifier"
+        message="Unnecessary use of Modifier.composed"
+        errorLine1="    composed("
+        errorLine2="    ~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/app/composable/DashedBorder.kt"
+            line="84"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.appyx` appears to be unused">
+        <location
+            file="src/main/res/mipmap-anydpi-v26/appyx.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.white` appears to be unused"
+        errorLine1="    &lt;color name=&quot;white&quot;>#FFFFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="4"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_Appyx_AppBarOverlay` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.Appyx.AppBarOverlay&quot; parent=&quot;ThemeOverlay.AppCompat.Dark.ActionBar&quot; />"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="22"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_Appyx_PopupOverlay` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.Appyx.PopupOverlay&quot; parent=&quot;ThemeOverlay.AppCompat.Light&quot; />"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="24"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="IconDuplicatesConfig"
+        message="The `appyx.png` icon has identical contents in the following configuration folders: drawable, mipmap-anydpi-v26">
+        <location
+            file="src/main/res/mipmap-anydpi-v26/appyx.png"/>
+        <location
+            file="src/main/res/drawable/appyx.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/appyx.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/appyx.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/appyx_text_black_s.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/appyx_text_black_s.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/appyx_text_white_s.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/appyx_text_white_s.png"/>
+    </issue>
+
+</issues>

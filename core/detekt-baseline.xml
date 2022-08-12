@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>EmptyFunctionBlock:ChildAwareTestBase.kt$ChildAwareTestBase.EmptyLeafNode${ }</ID>
+    <ID>EmptyFunctionBlock:ChildAwareTestBase.kt$ChildAwareTestBase.Root${ }</ID>
+    <ID>EmptyFunctionBlock:ChildLifecycleTest.kt$ChildLifecycleTest.Child${ }</ID>
+    <ID>EmptyFunctionBlock:ChildLifecycleTest.kt$ChildLifecycleTest.Parent${ }</ID>
+    <ID>EmptyFunctionBlock:DestroyableTest.kt$DestroyableTest.&lt;no name provided>${ }</ID>
+    <ID>EmptyFunctionBlock:NodeLifecycleAwareTest.kt$NodeLifecycleAwareTest.&lt;no name provided>${}</ID>
+    <ID>EmptyFunctionBlock:NodeLifecycleAwareTest.kt$NodeLifecycleAwareTest.TestNode${ }</ID>
+    <ID>EmptyFunctionBlock:ParentLifecycleTest.kt$ParentLifecycleTest.Child${ }</ID>
+    <ID>EmptyFunctionBlock:ParentLifecycleTest.kt$ParentLifecycleTest.Parent${ }</ID>
+    <ID>EmptyFunctionBlock:SavesInstanceStateTest.kt$SavesInstanceStateTest.&lt;no name provided>${ }</ID>
+    <ID>EmptyFunctionBlock:UpNavigationTest.kt$UpNavigationTest.Child${ }</ID>
+    <ID>EmptyFunctionBlock:UpNavigationTest.kt$UpNavigationTest.Parent${ }</ID>
+    <ID>ForbiddenComment:BaseRoutingSource.kt$BaseRoutingSource$// TODO: think about how we can avoid keeping unnecessary object after state initialization</ID>
+    <ID>ForbiddenComment:ChildAwareImplTest.kt$ChildAwareImplTest$// TODO: test different child lifecycle combinations (except ones MinimumCombinedLifecycle already tested)</ID>
+    <ID>ForbiddenComment:ParentLifecycleTest.kt$ParentLifecycleTest$// TODO: Make it BaseRoutingSource test</ID>
+    <ID>FunctionNaming:Child.kt$@Composable fun &lt;Routing : Any, State> ParentNode&lt;Routing>.Child( routingElement: RoutingElement&lt;Routing, out State>, saveableStateHolder: SaveableStateHolder, transitionParams: TransitionParams, transitionHandler: TransitionHandler&lt;Routing, State>, decorator: @Composable ChildTransitionScope&lt;State>.( child: ChildRenderer, transitionDescriptor: TransitionDescriptor&lt;Routing, State> ) -> Unit )</ID>
+    <ID>FunctionNaming:Child.kt$@Composable fun &lt;Routing : Any, State> ParentNode&lt;Routing>.Child( routingElement: RoutingElement&lt;Routing, out State>, transitionHandler: TransitionHandler&lt;Routing, State> = JumpToEndTransitionHandler(), decorator: @Composable ChildTransitionScope&lt;State>.( child: ChildRenderer, transitionDescriptor: TransitionDescriptor&lt;Routing, State> ) -> Unit = { child, _ -> child() } )</ID>
+    <ID>FunctionNaming:Children.kt$@Composable inline fun &lt;reified Routing : Any, State> ParentNode&lt;Routing>.Children( routingSource: RoutingSource&lt;Routing, State>, modifier: Modifier = Modifier, transitionHandler: TransitionHandler&lt;Routing, State> = JumpToEndTransitionHandler(), noinline block: @Composable ChildrenTransitionScope&lt;Routing, State>.() -> Unit = { children&lt;Routing> { child -> child() } } )</ID>
+    <ID>FunctionNaming:Children.kt$ChildrenTransitionScope$@Composable private fun ParentNode&lt;T>._children( clazz: KClass&lt;out T>, block: @Composable (transitionScope: ChildTransitionScope&lt;S>, child: ChildRenderer, transitionDescriptor: TransitionDescriptor&lt;T, S>) -> Unit )</ID>
+    <ID>FunctionNaming:Node.kt$Node$@Composable fun Compose(modifier: Modifier = Modifier)</ID>
+    <ID>FunctionNaming:Node.kt$Node$@Composable private fun HandleBackPress()</ID>
+    <ID>FunctionNaming:NodeHost.kt$@Composable fun &lt;N : Node> NodeHost( customisations: NodeCustomisationDirectory = NodeCustomisationDirectoryImpl(), integrationPoint: IntegrationPoint, factory: NodeFactory&lt;N> )</ID>
+    <ID>FunctionNaming:NodeView.kt$NodeView$@Composable fun View(modifier: Modifier)</ID>
+    <ID>FunctionNaming:ParentNode.kt$ParentNode$@Composable fun PermanentChild( routing: Routing, decorator: @Composable (child: ChildRenderer) -> Unit )</ID>
+    <ID>FunctionNaming:ParentNode.kt$ParentNode$@Composable fun PermanentChild(routing: Routing)</ID>
+    <ID>FunctionNaming:ParentNodeView.kt$ParentNodeView$@Composable abstract fun ParentNode&lt;Routing>.NodeView(modifier: Modifier)</ID>
+    <ID>LongParameterList:BaseRoutingSource.kt$BaseRoutingSource$( backPressHandler: BackPressHandlerStrategy&lt;Routing, State> = DontHandleBackPress(), operationStrategy: OperationStrategy&lt;Routing, State> = ExecuteImmediately(), screenResolver: OnScreenStateResolver&lt;State>, scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined), finalState: State?, key: String = KEY_ROUTING_SOURCE, savedStateMap: SavedStateMap? )</ID>
+    <ID>LongParameterList:BaseRoutingSource.kt$BaseRoutingSource$( private val backPressHandler: BackPressHandlerStrategy&lt;Routing, State> = DontHandleBackPress(), private val operationStrategy: OperationStrategy&lt;Routing, State> = ExecuteImmediately(), private val screenResolver: OnScreenStateResolver&lt;State>, protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined), private val finalStates: Set&lt;State>, private val key: String = KEY_ROUTING_SOURCE, savedStateMap: SavedStateMap? )</ID>
+    <ID>LongParameterList:LifecycleExt.kt$( onCreate: () -> Unit = {}, onStart: () -> Unit = {}, onResume: () -> Unit = {}, onPause: () -> Unit = {}, onStop: () -> Unit = {}, onDestroy: () -> Unit = {} )</ID>
+    <ID>LongParameterList:Spotlight.kt$Spotlight$( items: List&lt;Routing>, initialActiveIndex: Int = 0, savedStateMap: SavedStateMap?, key: String = KEY_ROUTING_SOURCE, backPressHandler: BackPressHandlerStrategy&lt;Routing, TransitionState> = GoToDefault( initialActiveIndex ), operationStrategy: OperationStrategy&lt;Routing, TransitionState> = ExecuteImmediately(), screenResolver: OnScreenStateResolver&lt;TransitionState> = SpotlightOnScreenResolver )</ID>
+    <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$0x0000FFFF</ID>
+    <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$4</ID>
+    <ID>MatchingDeclarationName:BackStackTestHelper.kt$Routing</ID>
+    <ID>MatchingDeclarationName:NodeHost.kt$NodeFactory&lt;N : Node></ID>
+    <ID>MatchingDeclarationName:SpotligthFader.kt$SpotlightFader&lt;T> : ModifierTransitionHandler</ID>
+    <ID>MaxLineLength:BaseRoutingSource.kt$BaseRoutingSource$protected</ID>
+    <ID>MaxLineLength:Children.kt$ChildrenTransitionScope$block: @Composable (transitionScope: ChildTransitionScope&lt;S>, child: ChildRenderer, transitionDescriptor: TransitionDescriptor&lt;T, S>) -> Unit</ID>
+    <ID>MaxLineLength:Children.kt$ChildrenTransitionScope$block: @Composable ChildTransitionScope&lt;S>.(child: ChildRenderer, transitionDescriptor: TransitionDescriptor&lt;T, S>) -> Unit</ID>
+    <ID>MaxLineLength:Children.kt$ChildrenTransitionScope$noinline block: @Composable ChildTransitionScope&lt;S>.(child: ChildRenderer, transitionDescriptor: TransitionDescriptor&lt;T, S>) -> Unit</ID>
+    <ID>MaxLineLength:MutableSavedStateMapImpl.kt$MutableSavedStateMapImpl$check(!lock) { "This MutableSavedStateMap has already dumped its state, it is meaningless to write anything anymore" }</ID>
+    <ID>MaxLineLength:Node.kt$Node$IllegalStateException("Plugin $plugin has implementation for both BackPressHandler properties, implement only one")</ID>
+    <ID>MaxLineLength:Node.kt$Node$IllegalStateException("Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}")</ID>
+    <ID>MaxLineLength:ParentNode.kt$ParentNode$*</ID>
+    <ID>MaxLineLength:ParentNode.kt$ParentNode$?:</ID>
+    <ID>MaxLineLength:PermissionRequesterHost.kt$PermissionRequesterHost.FragmentHost$ContextCompat.checkSelfPermission(fragment.requireContext(), permission) == PackageManager.PERMISSION_GRANTED</ID>
+    <ID>MaxLineLength:Previous.kt$Previous$override</ID>
+    <ID>MaxLineLength:Replace.kt$Replace$require(elements.any { it.targetState == BackStack.TransitionState.ACTIVE }) { "No element to be replaced, state=$elements" }</ID>
+    <ID>MaxLineLength:RoutingElement.kt$RoutingElement$return "RoutingElement(key=$key, fromState=$fromState, targetState=$targetState, operation=$operation, transitionHistory=$transitionHistory)"</ID>
+    <ID>MaxLineLength:SingleTopTest.kt$SingleTopTest$fun</ID>
+    <ID>MaxLineLength:UpdateElements.kt$UpdateElements$"Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"</ID>
+    <ID>NewLineAtEndOfFile:Appyx.kt$com.bumble.appyx.debug.Appyx.kt</ID>
+    <ID>TooManyFunctions:Node.kt$Node : NodeLifecycleNodeView</ID>
+    <ID>TooManyFunctions:ParentNode.kt$ParentNode&lt;Routing : Any> : NodeResolver</ID>
+    <ID>UnnecessaryAbstractClass:Builder.kt$Builder$Builder</ID>
+    <ID>UnnecessaryAbstractClass:ChildAwareTestBase.kt$ChildAwareTestBase$ChildAwareTestBase</ID>
+    <ID>UnnecessaryAbstractClass:SimpleBuilder.kt$SimpleBuilder$SimpleBuilder</ID>
+    <ID>UnusedPrivateMember:Node.kt$Node$private val lifecycleRegistry = LifecycleRegistry(this)</ID>
+    <ID>UseRequire:RequestCodeRegistry.kt$RequestCodeRegistry$throw IllegalArgumentException("nbLowerBitsForIds can't be larger than 4")</ID>
+    <ID>UseRequire:RequestCodeRegistry.kt$RequestCodeRegistry$throw IllegalArgumentException("nbLowerBitsForIds can't be less than 1")</ID>
+  </CurrentIssues>
+</SmellBaseline>

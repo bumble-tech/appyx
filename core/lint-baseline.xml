@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.1.3" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.3)" variant="all" version="7.1.3">
+
+    <issue
+        id="NewApi"
+        message="Call requires API level 23 (current min is 21): `android.content.Context#checkSelfPermission`"
+        errorLine1="    context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/core/FlowExt.kt"
+            line="30"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    fun ParentNode&lt;T>.children("
+        errorLine2="                      ~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/core/composable/Children.kt"
+            line="87"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    fun ParentNode&lt;T>.children("
+        errorLine2="                      ~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/core/composable/Children.kt"
+            line="99"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    private fun ParentNode&lt;T>._children("
+        errorLine2="                              ~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/core/composable/Children.kt"
+            line="112"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    override fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/routingsource/backstack/transitionhandler/BackStackFader.kt"
+            line="21"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    override fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/routingsource/backstack/transitionhandler/BackStackSlider.kt"
+            line="36"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    override fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/core/routing/transition/CombinedHandler.kt"
+            line="12"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    override fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/core/routing/transition/JumpToEndTransitionHandler.kt"
+            line="9"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    abstract fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/core/routing/transition/ModifierTransitionHandler.kt"
+            line="44"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    override fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotlightSlider.kt"
+            line="27"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ModifierFactoryExtensionFunction"
+        message="Modifier factory functions should be extensions on Modifier"
+        errorLine1="    override fun createModifier("
+        errorLine2="                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotligthFader.kt"
+            line="22"
+            column="18"/>
+    </issue>
+
+</issues>
