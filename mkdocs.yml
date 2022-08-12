@@ -23,6 +23,7 @@ nav:
   - Using Appyx:
       - Quick start guide: how-to-use-appyx/quick-start.md
       - Codelabs: how-to-use-appyx/codelabs.md
+      - Sample apps: how-to-use-appyx/sample-apps.md
   - Nodes and routing: basics/nodes-and-routing.md
   - Routing sources:
       - Overview: routing-sources/index.md
