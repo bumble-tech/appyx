@@ -29,7 +29,7 @@ All state transitions can have history and be animated by all the power of Jetpa
 
 Appyx comes with both a set of common implementations (e.g. back stack, tab switching) and the ability to define your own.  
 
-See [Routing sources](routingsources/index.md).
+See [Routing sources](routing-sources/index.md).
 
 
 ## Launch the demo app
@@ -44,4 +44,4 @@ See the [Downloads page](releases/downloads.md).
 
 ## How to get started?
 
-See the [Quick start guide](setup/quickstart.md).
+See the [Quick start guide](how-to-use-appyx/quick-start.md).

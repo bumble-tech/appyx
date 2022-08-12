@@ -20,15 +20,16 @@ nav:
   - Releases:
       - Downloads: releases/downloads.md
       - Changelog: releases/changelog.md
+  - Using Appyx:
+      - Quick start guide: how-to-use-appyx/quick-start.md
   - Nodes and routing: basics/nodes-and-routing.md
-  - Quick start guide: setup/quickstart.md
   - Routing sources:
-      - Overview: routingsources/index.md
-      - Back stack: routingsources/backstack.md
-      - Spotlight: routingsources/spotlight.md
-      - Tiles: routingsources/tiles.md
-      - Promoter: routingsources/promoter.md
-      - Writing your own: routingsources/custom.md
+      - Overview: routing-sources/index.md
+      - Back stack: routing-sources/backstack.md
+      - Spotlight: routing-sources/spotlight.md
+      - Tiles: routing-sources/tiles.md
+      - Promoter: routing-sources/promoter.md
+      - Writing your own: routing-sources/custom.md
   - UI:
       - Children: ui/children-view.md
       - Transitions: ui/transitions.md

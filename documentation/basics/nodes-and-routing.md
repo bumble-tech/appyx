@@ -44,7 +44,7 @@ Having a static composition of `Nodes` isn't very exciting. You can add dynamism
 
 ## Routing sources
 
-All `ParentNodes` have the option to achieve this dynamism by utilising [Routing sources](../routingsources/index.md) such as the back stack. Using them you can:
+All `ParentNodes` have the option to achieve this dynamism by utilising [Routing sources](../routing-sources/index.md) such as the back stack. Using them you can:
 
 - Add or remove child `Nodes` of a `ParentNode`
 - Move them on and off the screen
