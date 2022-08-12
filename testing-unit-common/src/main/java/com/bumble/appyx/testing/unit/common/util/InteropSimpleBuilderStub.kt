@@ -25,6 +25,6 @@ class InteropSimpleBuilderStub(
 
     fun assertLastNodeState(state: Lifecycle.State) {
         assertCreatedNode()
-        assertEquals(state, lastNode?.lifecycle?.currentState)
+        assertEquals(state, lastNode!!.lifecycle.currentState)
     }
 }
