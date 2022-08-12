@@ -23,12 +23,12 @@ Child(routingElement) { child, _ ->
 
 All the [child composables](children-view.md) provided by Appyx accept an optional `transitionHandler` argument too:
 
-- You can use the provided ones as they're a one-liner to add – you can check the individual [Routing sources](../routingsources/index.md) for the ones they come shipped with.
+- You can use the provided ones as they're a one-liner to add – you can check the individual [Routing sources](../routing-sources/index.md) for the ones they come shipped with.
 - You can also implement your own.
 
 The benefit of using transition handlers is you can represent any custom state of elements defined by your routing source with Compose `Modifiers`.
 
-The example below is taken from [custom routing sources](../routingsources/custom.md). It matches custom transition states to different scaling values, and returns a `scale` `Modifier`. 
+The example below is taken from [custom routing sources](../routing-sources/custom.md). It matches custom transition states to different scaling values, and returns a `scale` `Modifier`. 
 
 ```kotlin
 class FooTransitionHandler<T>(
@@ -67,4 +67,4 @@ fun <T> rememberFooTransitionHandler(
 }
 ```
 
-You can find more complex examples in the implementations of other routing sources, such as the [Promoter carousel](../routingsources/promoter.md) 
+You can find more complex examples in the implementations of other routing sources, such as the [Promoter carousel](../routing-sources/promoter.md) 
