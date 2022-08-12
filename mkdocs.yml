@@ -22,6 +22,7 @@ nav:
       - Changelog: releases/changelog.md
   - Using Appyx:
       - Quick start guide: how-to-use-appyx/quick-start.md
+      - Codelabs: how-to-use-appyx/codelabs.md
   - Nodes and routing: basics/nodes-and-routing.md
   - Routing sources:
       - Overview: routing-sources/index.md
