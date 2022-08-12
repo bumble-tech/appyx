@@ -7,7 +7,7 @@ import org.gradle.kotlin.dsl.configure
 class ReportLintSarifPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
-        target.plugins.withId("com.android.library") {
+        /*target.plugins.withId("com.android.library") {
             target.extensions.configure<LibraryExtension> {
                 lint.sarifReport = true
             }
@@ -25,7 +25,7 @@ class ReportLintSarifPlugin : Plugin<Project> {
                     )
                 }
             }
-        }
+        }*/
     }
 
 }

@@ -50,6 +50,18 @@ jobs:
         with:
           sarif_file: build/lint-merged.sarif
           category: lint
+      - uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: core/build/reports/lint-results-debug.sarif
+      - uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: interop-rx2/build/reports/lint-results-debug.sarif
+      - uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: non-existant/build/reports/lint-results-debug.sarif
       - name: Upload failure artifacts
         if: failure()
         uses: actions/upload-artifact@v3
