@@ -5,6 +5,6 @@ import com.badoo.ribs.core.modality.BuildParams
 
 class RibsChildBuilder : SimpleBuilder<RibsChild>() {
 
-    override fun build(buildParams: BuildParams<Nothing?>): RibsChildNode =
+    override fun build(buildParams: BuildParams<Nothing?>): RibsChild =
         RibsChildNode(buildParams = buildParams)
 }
