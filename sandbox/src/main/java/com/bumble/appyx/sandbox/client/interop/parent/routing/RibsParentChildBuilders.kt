@@ -6,7 +6,7 @@ import com.bumble.appyx.sandbox.client.container.ContainerBuilder
 import com.bumble.appyx.sandbox.client.interop.child.RibsChild
 import com.bumble.appyx.sandbox.client.interop.child.RibsChildBuilder
 
-interface RibsParentChildBuilders {
+internal interface RibsParentChildBuilders {
     val interopNode: SimpleBuilder
     val ribsNode: Builder<Nothing?, RibsChild>
 }
