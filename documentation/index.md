@@ -1,35 +1,40 @@
 # Appyx
 
 
-Application mechanics for your Android apps, built on top of Jetpack Compose
+A navigation framework built on top of Jetpack Compose
 
 [https://github.com/bumble-tech/appyx](https://github.com/bumble-tech/appyx)
 
 
-## In a nutshell
+## Navigation for your Compose app on steroids
 
-Appyx comes with simple but powerful abstractions:
-
-1. Represent your application as a composition of encapsulated components with their own lifecycle
-2. Add dynamism to the component tree by granular navigation bits
-3. Add custom on-screen and off-screen states for your components with history and powerful transitions
-
-Read more in [Nodes and routing](basics/nodes-and-routing.md).
+- **Navigate directly from code** – In a type-safe way, without boilerplate
+- **Gain control of navigation state** – Making your navigation unit-testable
+- **Complete control over operations and behaviour** – Use and extend the back stack or the view pager from the library, or build your own 
+- **Use any animation for transitions** – Anything you can represent with Compose `Modifiers`
 
 
-## Routing sources
+## A different paradigm with superpowers
 
-Routing sources are the powerful engines driving all component state changes:
+Using Appyx you gain navigation superpowers in addition to screen-to-screen navigation:  
+
+- **Break down screen boundaries** – Using Routing sources you can navigate inside the screen as well as between them
+- **Make your navigation composable** – Navigate whole scopes of your application
+
+
+Routing sources are versatile tools you can use for screen-to-screen as well as in-screen navigation: back stacks, card stacks, view pagers are just the beginning:
 
 <img src="https://i.imgur.com/8gy3Ghb.gif" width="150"> <img src="https://i.imgur.com/Kj0P85H.gif" width="150"> <img src="https://i.imgur.com/N8rEPrJ.gif" width="150"> <img src="https://i.imgur.com/esLXh61.gif" width="150">
 
-You can define as many custom states for your components as you wish. 
 
-All state transitions can have history and be animated by all the power of Jetpack Compose. 
+You can create custom navigable components in no time:
 
-Appyx comes with both a set of common implementations (e.g. back stack, tab switching) and the ability to define your own.  
+<img src="https://i.imgur.com/V3bks8c.gif" width="150">
 
-See [Routing sources](routing-sources/index.md).
+
+With Appyx you can break down screen boundaries and transform the screen itself:
+
+<img src="https://i.imgur.com/pbDENSc.gif" width="150">
 
 
 ## Launch the demo app
@@ -41,7 +46,3 @@ Check out the project and launch the `:app` module for a quick demonstration
 
 See the [Downloads page](releases/downloads.md).
 
-
-## How to get started?
-
-See the [Quick start guide](how-to-use-appyx/quick-start.md).
