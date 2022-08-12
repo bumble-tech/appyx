@@ -12,7 +12,13 @@ The `:app` module showcases **Appyx** itself with multiple levels of navigation,
 
 ## Appyx + Jetpack Compose Navigation example 
 
-Coming soon!
+The `:samples:navigation-compose` module demonstrates how to use Appyx within Google's Jetpack Compose Navigation library.
+This example may be useful if you need to migrate to Appyx gradually.
+
+1. Go to the [GitHub project](https://github.com/bumble-tech/appyx)
+2. Fork and check out the code locally
+3. Import the project to Android Studio
+4. Select the `:samples:navigation-compose` from the dropdown and launch on your device
 
 
 ## Appyx + Hilt example
