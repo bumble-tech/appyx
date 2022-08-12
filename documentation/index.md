@@ -39,7 +39,7 @@ Check out the project and launch the `:app` module for a quick demonstration
 
 ## Download
 
-See the [Downloads page](setup/downloads.md).
+See the [Downloads page](releases/downloads.md).
 
 
 ## How to get started?

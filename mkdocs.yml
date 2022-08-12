@@ -17,7 +17,9 @@ docs_dir: documentation
 
 nav:
   - Overview: index.md
-  - Downloads: setup/downloads.md
+  - Releases:
+      - Downloads: releases/downloads.md
+      - Changelog: releases/changelog.md
   - Nodes and routing: basics/nodes-and-routing.md
   - Quick start guide: setup/quickstart.md
   - Routing sources:
