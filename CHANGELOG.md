@@ -3,6 +3,7 @@
 ## Pending changes
 
 - [#39](https://github.com/bumble-tech/appyx/pull/39) – Added: Workflows implementation to support deeplinks
+- [#65](https://github.com/bumble-tech/appyx/pull/65) – Added: `InteropBuilderStub` and `InteropSimpleBuilderStub` testing util classes
 
 
 ## 1.0-alpha03
