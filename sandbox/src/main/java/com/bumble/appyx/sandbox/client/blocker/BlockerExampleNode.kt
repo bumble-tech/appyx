@@ -2,7 +2,6 @@ package com.bumble.appyx.sandbox.client.blocker
 
 import android.os.Parcelable
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +10,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Checkbox
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +27,6 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.routingsource.backstack.BackStack
 import com.bumble.appyx.routingsource.backstack.operation.push
 import com.bumble.appyx.sandbox.client.child.ChildNode
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
@@ -36,16 +35,16 @@ class BlockerExampleNode(
     private val backStack: BackStack<Child> = BackStack(
         savedStateMap = buildContext.savedStateMap,
         initialElement = Child(UUID.randomUUID().toString()),
-    )
+    ),
+    private val interactor: BlockerExampleBackPressInteractor = BlockerExampleBackPressInteractor(),
 ) : ParentNode<BlockerExampleNode.Child>(
     buildContext = buildContext,
     routingSource = backStack,
+    plugins = listOf(interactor),
 ) {
 
     @Parcelize
     data class Child(val id: String) : Parcelable
-
-    private val allowNavigateUpFromChildren = MutableStateFlow(true)
 
     override fun resolve(routing: Child, buildContext: BuildContext): Node =
         ChildNode(routing.id, buildContext)
@@ -54,19 +53,7 @@ class BlockerExampleNode(
     override fun View(modifier: Modifier) {
         Column(modifier = Modifier.fillMaxWidth()) {
 
-            val context = LocalContext.current
-            var lastToastClickTime by remember { mutableStateOf(0L) }
-            BackHandler {
-                val time = System.currentTimeMillis()
-                if (time - lastToastClickTime > 5000L) {
-                    Toast.makeText(
-                        context,
-                        "It is a blocker, you can't go back by yourself, use 'go up'",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    lastToastClickTime = time
-                }
-            }
+            DisplayBackError()
 
             Button(onClick = { backStack.push(Child(UUID.randomUUID().toString())) }) {
                 Text(text = "Push child")
@@ -77,10 +64,22 @@ class BlockerExampleNode(
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(text = "Allow navigate up events from children")
-                val checked by allowNavigateUpFromChildren.collectAsState()
+                val checked by interactor.allowNavigateUp.collectAsState()
                 Checkbox(
                     checked = checked,
-                    onCheckedChange = { allowNavigateUpFromChildren.value = it },
+                    onCheckedChange = { interactor.allowNavigateUp.value = it },
+                )
+            }
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(text = "Block back presses")
+                val checked by interactor.interceptBackClicks.collectAsState()
+                Checkbox(
+                    checked = checked,
+                    onCheckedChange = { interactor.interceptBackClicks.value = it },
                 )
             }
 
@@ -93,11 +92,23 @@ class BlockerExampleNode(
         }
     }
 
-    override fun performUpNavigation(): Boolean =
-        if (allowNavigateUpFromChildren.value) {
-            super.performUpNavigation()
-        } else {
-            true
+    @Composable
+    private fun DisplayBackError() {
+        val context = LocalContext.current
+        var lastToastClickTime by remember { mutableStateOf(0L) }
+        LaunchedEffect(context) {
+            interactor.errors.collect {
+                val time = System.currentTimeMillis()
+                if (time - lastToastClickTime > 3000L) {
+                    Toast.makeText(
+                        context,
+                        "It is a blocker, you can't go back by yourself, use 'go up'",
+                        Toast.LENGTH_SHORT,
+                    ).show()
+                    lastToastClickTime = time
+                }
+            }
         }
+    }
 
 }

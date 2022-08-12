@@ -2,22 +2,22 @@ package com.bumble.appyx.testing.ui.rules
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import com.bumble.appyx.core.integrationpoint.NodeActivity
 
-class AppyxViewActivity : AppCompatActivity() {
+class AppyxViewActivity : NodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val composableView = composableView
         setContent {
             requireNotNull(composableView) { "AppyxViewActivity View has not been setup" }
-            composableView()
+            composableView(this)
         }
     }
 
     companion object {
-        var composableView: (@Composable () -> Unit)? = null
+        var composableView: (@Composable (activity: AppyxViewActivity) -> Unit)? = null
     }
 
 }

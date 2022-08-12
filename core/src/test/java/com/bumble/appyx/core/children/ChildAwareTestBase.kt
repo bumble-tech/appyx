@@ -128,8 +128,6 @@ abstract class ChildAwareTestBase {
             get() = state.map { RoutingSourceAdapter.ScreenState(onScreen = it) }
                 .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
 
-        override fun onBackPressed() = Unit
-
         override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
             state.update { list ->
                 list.map {
@@ -141,9 +139,6 @@ abstract class ChildAwareTestBase {
                 }
             }
         }
-
-        override val canHandleBackPress: StateFlow<Boolean>
-            get() = MutableStateFlow(false)
 
         fun add(vararg key: RoutingKey<Key>) {
             state.update { list ->
