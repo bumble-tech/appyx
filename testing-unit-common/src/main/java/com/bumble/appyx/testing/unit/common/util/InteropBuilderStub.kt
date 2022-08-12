@@ -28,10 +28,8 @@ class InteropBuilderStub<P>(
     }
 
     fun assertLastParam(assert: P.() -> Boolean) {
-        assertTrue(
-            lastParam != null && assert(lastParam!!),
-            "$lastParam does not satisfy requirements"
-        )
+        assertTrue(lastParam != null, "Last param is null")
+        assertTrue(assert(lastParam!!), "$lastParam does not satisfy requirements")
     }
 
     fun assertCreatedNode() {
