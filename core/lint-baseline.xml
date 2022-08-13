@@ -2,24 +2,13 @@
 <issues format="6" by="lint 7.1.3" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.3)" variant="all" version="7.1.3">
 
     <issue
-        id="NewApi"
-        message="Call requires API level 23 (current min is 21): `android.content.Context#checkSelfPermission`"
-        errorLine1="    context.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)"
-        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="src/main/java/com/bumble/appyx/core/FlowExt.kt"
-            line="30"
-            column="13"/>
-    </issue>
-
-    <issue
         id="ComposableNaming"
         message="Composable functions that return Unit should start with an uppercase letter"
         errorLine1="    fun ParentNode&lt;T>.children("
         errorLine2="                      ~~~~~~~~">
         <location
             file="src/main/java/com/bumble/appyx/core/composable/Children.kt"
-            line="87"
+            line="90"
             column="23"/>
     </issue>
 
@@ -30,7 +19,7 @@
         errorLine2="                      ~~~~~~~~">
         <location
             file="src/main/java/com/bumble/appyx/core/composable/Children.kt"
-            line="99"
+            line="102"
             column="23"/>
     </issue>
 
@@ -41,7 +30,7 @@
         errorLine2="                              ~~~~~~~~~">
         <location
             file="src/main/java/com/bumble/appyx/core/composable/Children.kt"
-            line="112"
+            line="118"
             column="31"/>
     </issue>
 
@@ -106,8 +95,8 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotlightSlider.kt"
-            line="27"
+            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotlightFader.kt"
+            line="22"
             column="18"/>
     </issue>
 
@@ -117,8 +106,8 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotligthFader.kt"
-            line="22"
+            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotlightSlider.kt"
+            line="27"
             column="18"/>
     </issue>
 

@@ -38,11 +38,10 @@ internal class InteropView private constructor(
 
     private fun retrieveIntegrationPoint(): IntegrationPoint {
         val activity = context.findActivity<AppCompatActivity>()
-        return if (activity is IntegrationPointAppyxProvider) {
-            activity.integrationPointAppyx
-        } else {
-            throw IllegalStateException("Activity where InteropNode is used must implement IntegrationPointAppyxProvider")
+        check(activity is IntegrationPointAppyxProvider) {
+            "Activity where InteropNode is used must implement IntegrationPointAppyxProvider"
         }
+        return activity.integrationPointAppyx
     }
 
     interface Dependency<N : Node> {

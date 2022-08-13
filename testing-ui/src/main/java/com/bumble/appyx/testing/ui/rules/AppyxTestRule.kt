@@ -16,6 +16,7 @@ open class AppyxTestRule<T : Node>(
     private val launchActivity: Boolean = true,
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule(),
     /** Add decorations like custom theme or CompositionLocalProvider. Do not forget to invoke `content()`. */
+    @Suppress("unused")
     private val decorator: (@Composable (content: @Composable () -> Unit) -> Unit) = { content -> content() },
     private val nodeFactory: NodeFactory<T>,
 ) : ActivityTestRule<AppyxViewActivity>(

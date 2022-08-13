@@ -1,2 +1,22 @@
 config:
   warningsAsErrors: true
+
+complexity:
+  LongParameterList:
+    # It is suggested to increase this for Compose: https://detekt.dev/docs/introduction/compose/#longparameterlist
+    functionThreshold: 8
+    ignoreDefaultParameters: true
+
+naming:
+  active: true
+  FunctionNaming:
+    active: true
+    ignoreAnnotated: ['Composable']
+
+style:
+  MaxLineLength:
+    excludes: ['**/test/**', '**/*.Test.kt', '**/*.Spec.kt']
+    excludeCommentStatements: true
+  UnusedPrivateMember:
+    # https://detekt.dev/docs/introduction/compose#unusedprivatemember
+    ignoreAnnotated: ['Preview']
