@@ -51,4 +51,8 @@ dependencies {
     implementation libs.androidx.appcompat
     implementation libs.compose.material
     implementation libs.compose.ui.ui
+
+    androidTestImplementation libs.androidx.test.espresso.core
+    androidTestImplementation libs.androidx.test.junit
+    androidTestImplementation libs.compose.ui.test.junit4
 }

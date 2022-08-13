@@ -50,7 +50,7 @@ fun GoogleRoute(onAppyxNavigationClick: () -> Unit) {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Jetpack navigation screen")
+        Text("Google's Jetpack Navigation screen")
         Button(onClick = { onAppyxNavigationClick() }) {
             Text("Navigate to Appyx")
         }
