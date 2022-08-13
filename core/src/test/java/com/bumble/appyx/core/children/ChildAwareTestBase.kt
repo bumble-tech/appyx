@@ -27,7 +27,7 @@ import org.junit.Rule
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 
-abstract class ChildAwareTestBase {
+open class ChildAwareTestBase {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -115,6 +115,7 @@ abstract class ChildAwareTestBase {
     ) : Node(buildContext = buildContext) {
         @Composable
         override fun View(modifier: Modifier) {
+            // Deliberately empty
         }
     }
 

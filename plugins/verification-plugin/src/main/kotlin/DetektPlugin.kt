@@ -13,7 +13,14 @@ class DetektPlugin : Plugin<Project> {
             target.extensions.configure<DetektExtension> {
                 buildUponDefaultConfig = true
                 baseline = target.file("detekt-baseline.xml")
-                config.from(target.rootProject.file("detekt.yml"))
+
+                val localDetektConfig = target.file("detekt.yml")
+                val rootDetektConfig = target.rootProject.file("detekt.yml")
+                if (localDetektConfig.exists()) {
+                    config.from(localDetektConfig, rootDetektConfig)
+                } else {
+                    config.from(rootDetektConfig)
+                }
             }
 
             val detektTask = target.tasks.named("detekt", Detekt::class.java)

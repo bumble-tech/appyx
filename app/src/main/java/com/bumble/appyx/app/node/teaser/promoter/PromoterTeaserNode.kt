@@ -67,7 +67,9 @@ class PromoterTeaserNode(
         Children(
             modifier = Modifier.fillMaxSize(),
             routingSource = promoter,
-            transitionHandler = rememberPromoterTransitionHandler(childSize) { spring(stiffness = Spring.StiffnessVeryLow / 4) }
+            transitionHandler = rememberPromoterTransitionHandler(childSize) {
+                spring(stiffness = Spring.StiffnessVeryLow / 4)
+            }
         ) {
             children<Routing> { child ->
                 child(Modifier.size(childSize))

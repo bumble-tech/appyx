@@ -122,7 +122,9 @@ abstract class BaseRoutingSource<Routing, State>(
      * Off screen transitions can't finish without [onTransitionFinished] callback from UI.
      * In case if we have any, lets finish them instantly.
      */
-    protected fun sanitizeOffScreenTransitions(state: RoutingElements<Routing, State>): RoutingElements<Routing, State> =
+    protected fun sanitizeOffScreenTransitions(
+        state: RoutingElements<Routing, State>
+    ): RoutingElements<Routing, State> =
         state.mapNotNull {
             if (screenResolver.isOnScreen(it)) {
                 it

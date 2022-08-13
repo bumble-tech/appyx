@@ -1,12 +1,11 @@
-package com.bumble.appyx.connectable
+package com.bumble.appyx.connectable.rx2
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.LifecycleObserver
-import com.bumble.appyx.connectable.Rx2NodeConnectorTest.Output.Output1
-import com.bumble.appyx.connectable.Rx2NodeConnectorTest.Output.Output2
-import com.bumble.appyx.connectable.Rx2NodeConnectorTest.Output.Output3
-import com.bumble.appyx.connectable.rx2.NodeConnector
+import com.bumble.appyx.connectable.rx2.Rx2NodeConnectorTest.Output.Output1
+import com.bumble.appyx.connectable.rx2.Rx2NodeConnectorTest.Output.Output2
+import com.bumble.appyx.connectable.rx2.Rx2NodeConnectorTest.Output.Output3
 import io.reactivex.observers.TestObserver
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
@@ -17,14 +16,18 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
-class Rx2NodeConnectorTest() {
+class Rx2NodeConnectorTest {
 
     private val firstTestObserver = TestObserver<Output>()
     private val secondTestObserver = TestObserver<Output>()
     private var lifecycleState = CREATED
     private val lifecycle = object : Lifecycle() {
-        override fun addObserver(observer: LifecycleObserver) {}
-        override fun removeObserver(observer: LifecycleObserver) {}
+        override fun addObserver(observer: LifecycleObserver) {
+            // Deliberately empty
+        }
+        override fun removeObserver(observer: LifecycleObserver) {
+            // Deliberately empty
+        }
         override fun getCurrentState() = lifecycleState
     }
 
