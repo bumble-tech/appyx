@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-parcelize'
+    id 'appyx-lint'
+    id 'appyx-detekt'
 }
 
 android {
@@ -38,9 +40,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion libs.versions.compose.get()
-    }
-    lintOptions {
-        abortOnError false
     }
 }
 

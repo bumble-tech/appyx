@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-parcelize'
     id 'appyx-publish-android'
+    id 'appyx-lint'
+    id 'appyx-detekt'
 }
 
 android {

@@ -6,6 +6,7 @@
 - [#47](https://github.com/bumble-tech/appyx/issues/47) – Updated: The 'customisations' module is now pure Java/Kotlin.
 - [#32](https://github.com/bumble-tech/appyx/pull/32) – Added: `BackPressHandler` plugin that allows to control back press behaviour via `androidx.activity.OnBackPressedCallback`
 - [#59](https://github.com/bumble-tech/appyx/issues/59) – Updated: Added interface for ParentNodeView<>
+- [#32](https://github.com/bumble-tech/appyx/issues/69) – Added: Jetpack Compose Navigation code sample
 
 
 ## 1.0-alpha03
