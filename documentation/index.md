@@ -1,7 +1,7 @@
 # Appyx
 
 
-A navigation framework built on top of Jetpack Compose
+Model-driven navigation for Jetpack Compose
 
 [https://github.com/bumble-tech/appyx](https://github.com/bumble-tech/appyx)
 
@@ -14,15 +14,14 @@ A navigation framework built on top of Jetpack Compose
 - **Use any animation for transitions** – Anything you can represent with Compose `Modifiers`
 
 
-## A different paradigm with superpowers
+## Model-driven navigation – a different paradigm with superpowers
 
 Using Appyx you gain navigation superpowers in addition to screen-to-screen navigation:  
 
 - **Break down screen boundaries** – Using Routing sources you can navigate inside the screen as well as between them
-- **Make your navigation composable** – Navigate whole scopes of your application
+- **Make your navigation composable** – Navigate whole scopes of your application 
 
-
-Routing sources are versatile tools you can use for screen-to-screen as well as in-screen navigation: back stacks, card stacks, view pagers are just the beginning:
+Using a model-driven approach, navigation states are yours to define – Appyx makes it happen with any animation you can represent using Compose `Modifiers`. Back stacks, card stacks, view pagers are just the beginning:
 
 <img src="https://i.imgur.com/8gy3Ghb.gif" width="150"> <img src="https://i.imgur.com/Kj0P85H.gif" width="150"> <img src="https://i.imgur.com/N8rEPrJ.gif" width="150"> <img src="https://i.imgur.com/esLXh61.gif" width="150">
 
