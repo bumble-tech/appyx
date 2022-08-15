@@ -205,30 +205,8 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val canHandleBackPress = backStack.canHandleBackPress.value
+        val canHandleBackPress = backStack.onBackPressedCallback.isEnabled
 
-        assertEquals(true, canHandleBackPress)
-    }
-
-    @Test
-    fun `canHandleBackPress gets notified when change in backstack`() = testScope.runTest {
-
-        val initialElement = Routing1
-        val backStack = BackStack<Routing>(
-            initialElement = initialElement,
-            savedStateMap = null
-        )
-
-        var canHandleBackPress: Boolean? = null
-        val job = launch {
-            backStack
-                .canHandleBackPress
-                .collect { canHandleBackPress = it }
-        }
-
-        backStack.push(Routing2)
-
-        job.cancel()
         assertEquals(true, canHandleBackPress)
     }
 
@@ -250,7 +228,7 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        val canHandleBackPress = backStack.canHandleBackPress.value
+        val canHandleBackPress = backStack.onBackPressedCallback.isEnabled
 
         assertEquals(false, canHandleBackPress)
     }
@@ -473,7 +451,7 @@ internal class BackStackTest {
             savedStateMap = savedStateMap
         )
 
-        backStack.onBackPressed()
+        backStack.handleOnBackPressed()
 
         val state = backStack.elements.value
 
