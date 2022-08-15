@@ -2,7 +2,7 @@
 site_name: Appyx
 site_url: https://github.com/bumble-tech/appyx
 site_author: Bumble
-site_description: Application mechanics for your Android apps, built on top of Jetpack Compose
+site_description: Model-driven navigation for Jetpack Compose
 
 # Repository
 repo_name: Appyx
