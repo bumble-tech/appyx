@@ -40,6 +40,8 @@ kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-te
 kotlin-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "coroutines" }
 mvicore = { module = "com.github.badoo.RIBs:rib-mvicore", version.ref = "ribs" }
 ribs-base = { module = "com.github.badoo.RIBs:rib-base", version.ref = "ribs" }
+ribs-base-test = { module = "com.github.badoo.RIBs:rib-base-test", version.ref = "ribs" }
+ribs-base-test-rx2 = { module = "com.github.badoo.RIBs:rib-base-test-rx2", version.ref = "ribs" }
 ribs-compose = { module = "com.github.badoo.RIBs:rib-compose", version.ref = "ribs" }
 ribs-rx = { module = "com.github.badoo.RIBs:rib-rx2", version.ref = "ribs" }
 

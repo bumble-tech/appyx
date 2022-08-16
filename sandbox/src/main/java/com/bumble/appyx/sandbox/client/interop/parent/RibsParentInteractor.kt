@@ -6,7 +6,7 @@ import com.badoo.ribs.clienthelper.interactor.Interactor
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import com.bumble.appyx.sandbox.client.interop.parent.RibsParentRouter.Configuration
+import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentRouter.Configuration
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentView.Event
 import io.reactivex.functions.Consumer
 

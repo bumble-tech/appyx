@@ -1,13 +1,23 @@
 package com.bumble.appyx.sandbox.client.interop.parent
 
+import androidx.annotation.VisibleForTesting
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentRib.Customisation
-import com.bumble.appyx.sandbox.client.interop.parent.RibsParentRouter.Configuration
-import com.bumble.appyx.sandbox.client.interop.parent.RibsParentRouter.Configuration.InteropNode
+import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentChildBuilders
+import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentChildBuildersImpl
+import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentRouter
+import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentRouter.Configuration
+import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentRouter.Configuration.InteropNode
 
-class RibsParentBuilder : SimpleBuilder<RibsParentRib>() {
+class RibsParentBuilder @VisibleForTesting internal constructor(
+    private val childBuilders: RibsParentChildBuilders?,
+) : SimpleBuilder<RibsParentRib>() {
+
+    constructor() : this(
+        childBuilders = null,
+    )
 
     override fun build(buildParams: BuildParams<Nothing?>): RibsParentRib {
         val customisation = buildParams.getOrDefault(Customisation())
@@ -15,7 +25,11 @@ class RibsParentBuilder : SimpleBuilder<RibsParentRib>() {
             buildParams = buildParams,
             initialConfiguration = InteropNode
         )
-        val router = RibsParentRouter(buildParams = buildParams, backStack = backStack)
+        val router = RibsParentRouter(
+            buildParams = buildParams,
+            backStack = backStack,
+            childBuilders = childBuilders ?: RibsParentChildBuildersImpl()
+        )
         val interactor = RibsParentInteractor(buildParams = buildParams, backStack = backStack)
         return node(
             buildParams = buildParams,
