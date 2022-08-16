@@ -10,7 +10,7 @@ import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.interop.ribs.InteropView.*
+import com.bumble.appyx.interop.ribs.InteropView.Dependency
 
 interface InteropView : RibView {
 
