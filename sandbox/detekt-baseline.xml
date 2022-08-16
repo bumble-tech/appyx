@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SmellBaseline>
+  <ManuallySuppressedIssues/>
+  <CurrentIssues>
+    <ID>ComplexMethod:BackStackExampleNode.kt$BackStackExampleNode$@Composable override fun View(modifier: Modifier)</ID>
+    <ID>ComplexMethod:ContainerNode.kt$ContainerNode$override fun resolve(routing: Routing, buildContext: BuildContext): Node</ID>
+    <ID>LongMethod:BackStackExampleNode.kt$BackStackExampleNode$@Composable override fun View(modifier: Modifier)</ID>
+    <ID>LongMethod:MviCoreExampleView.kt$MviCoreExampleViewImpl$@Composable override fun ParentNode&lt;Routing>.NodeView(modifier: Modifier)</ID>
+    <ID>LongMethod:SpotlightExampleNode.kt$SpotlightExampleNode$@Composable private fun LoadedState(modifier: Modifier)</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$backStack.newRoot(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$backStack.push(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$backStack.replace(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))</ID>
+    <ID>MaxLineLength:BackStackExampleNode.kt$BackStackExampleNode$if</ID>
+    <ID>MaxLineLength:IntegrationPointExampleNode.kt$IntegrationPointExampleNode$if</ID>
+  </CurrentIssues>
+</SmellBaseline>

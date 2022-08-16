@@ -69,8 +69,6 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
 
     private fun toOutsideRight(width: Float) = Offset(1.0f * width, 0f)
 
-    private fun toOutsideLeft(width: Float) = Offset(-1.0f * width, 0f)
-
     private fun toCenter() = Offset(0f, 0f)
 }
 

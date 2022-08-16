@@ -125,7 +125,9 @@ abstract class Node(
             backPressHandlerPlugins.forEach { plugin ->
                 if (!plugin.isCorrect()) {
                     Appyx.reportException(
-                        IllegalStateException("Plugin $plugin has implementation for both BackPressHandler properties, implement only one")
+                        IllegalStateException(
+                            "Plugin $plugin has implementation for both BackPressHandler properties, implement only one"
+                        )
                     )
                 }
                 plugin.onBackPressedCallbackList.forEach { dispatcher.addCallback(it) }
@@ -145,7 +147,9 @@ abstract class Node(
         if (lifecycle.currentState == state) return
         if (lifecycle.currentState == Lifecycle.State.DESTROYED && state != Lifecycle.State.DESTROYED) {
             Appyx.reportException(
-                IllegalStateException("Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}")
+                IllegalStateException(
+                    "Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}"
+                )
             )
             return
         }

@@ -26,6 +26,7 @@ include ':app',
         ':testing-ui',
         ':testing-unit-common',
         ':routing-source-addons',
-        ':customisations'
+        ':customisations',
+        ':samples:navigation-compose'
 
-includeBuild("plugins/publish-plugin")
+includeBuild 'plugins'

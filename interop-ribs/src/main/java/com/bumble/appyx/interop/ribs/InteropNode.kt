@@ -60,6 +60,7 @@ internal class InteropNodeImpl<N : Node>(
         const val InteropNodeKey = "InteropNodeKey"
     }
 
+    @Suppress("SpreadOperator")
     private fun Map<String, Any?>.toBundle(): Bundle = bundleOf(*this.toList().toTypedArray())
 
 }

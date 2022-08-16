@@ -2,8 +2,6 @@ package com.bumble.appyx.core.integration
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -18,11 +16,6 @@ import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
-
-@Stable
-fun interface NodeFactory<N : Node> {
-    fun create(buildContext: BuildContext): N
-}
 
 /**
  * Composable function to host [Node].

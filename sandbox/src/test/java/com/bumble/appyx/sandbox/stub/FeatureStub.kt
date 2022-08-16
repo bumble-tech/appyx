@@ -19,8 +19,6 @@ open class FeatureStub<Wish : Any, State : Any, News : Any>(
     Consumer<Wish> by wishesRelay,
     Disposable by disposable {
 
-    private val testWishes = wishesRelay.test()
-
     override val state: State
         get() = statesRelay.value!!
 

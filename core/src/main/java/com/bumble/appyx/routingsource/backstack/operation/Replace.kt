@@ -27,7 +27,7 @@ data class Replace<T : Any>(
     override fun invoke(
         elements: BackStackElements<T>
     ): BackStackElements<T> {
-        require(elements.any { it.targetState == BackStack.TransitionState.ACTIVE }) { "No element to be replaced, state=$elements" }
+        require(elements.any { it.targetState == ACTIVE }) { "No element to be replaced, state=$elements" }
 
         return elements.mapIndexed { index, element ->
             if (index == elements.activeIndex) {

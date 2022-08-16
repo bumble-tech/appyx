@@ -71,7 +71,10 @@ class ChildrenTransitionScope<T : Any, S>(
 
     @Composable
     inline fun <reified V : T> ParentNode<T>.children(
-        noinline block: @Composable ChildTransitionScope<S>.(child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
+        noinline block: @Composable ChildTransitionScope<S>.(
+            child: ChildRenderer,
+            transitionDescriptor: TransitionDescriptor<T, S>
+        ) -> Unit,
     ) {
         children(V::class, block)
     }
@@ -98,7 +101,10 @@ class ChildrenTransitionScope<T : Any, S>(
     @Composable
     fun ParentNode<T>.children(
         clazz: KClass<out T>,
-        block: @Composable ChildTransitionScope<S>.(child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit,
+        block: @Composable ChildTransitionScope<S>.(
+            child: ChildRenderer,
+            transitionDescriptor: TransitionDescriptor<T, S>
+        ) -> Unit,
     ) {
         _children(clazz) { scope, child, descriptor ->
             scope.block(
@@ -111,7 +117,11 @@ class ChildrenTransitionScope<T : Any, S>(
     @Composable
     private fun ParentNode<T>._children(
         clazz: KClass<out T>,
-        block: @Composable (transitionScope: ChildTransitionScope<S>, child: ChildRenderer, transitionDescriptor: TransitionDescriptor<T, S>) -> Unit
+        block: @Composable (
+            transitionScope: ChildTransitionScope<S>,
+            child: ChildRenderer,
+            transitionDescriptor: TransitionDescriptor<T, S>
+        ) -> Unit
     ) {
         val visibleElementsFlow = remember {
             this@ChildrenTransitionScope
