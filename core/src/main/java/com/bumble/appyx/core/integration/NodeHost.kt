@@ -2,6 +2,7 @@ package com.bumble.appyx.core.integration
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,9 +30,8 @@ fun <N : Node> NodeHost(
     factory: NodeFactory<N>
 ) {
     val node by rememberNode(factory, customisations)
-    DisposableEffect(integrationPoint) {
-        integrationPoint.attach(node)
-        onDispose { integrationPoint.detach() }
+    LaunchedEffect(integrationPoint, node) {
+        node.integrationPoint = integrationPoint
     }
     DisposableEffect(node) {
         onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
