@@ -35,7 +35,7 @@ jobs:
             --dry-run
             --no-parallel
       - uses: gradle/gradle-build-action@v2
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && github.repository == 'bumble-tech/appyx'
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         with:
