@@ -35,7 +35,7 @@ jobs:
             --dry-run
             --no-parallel
       - uses: gradle/gradle-build-action@v2
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/main' && github.repository == 'bumble-tech/appyx'
         env:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         with:
@@ -66,7 +66,7 @@ jobs:
   instrumentation-tests:
     name: Instrumentation tests
     runs-on: macOS-latest
-    timeout-minutes: 20
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -74,6 +74,10 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
       - uses: gradle/wrapper-validation-action@v1
+      - name: Pre build sources before launching emulator
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: compileDebugAndroidTestSources
       - name: AVD cache
         uses: actions/cache@v3
         id: avd-cache
@@ -81,23 +85,23 @@ jobs:
           path: |
             ~/.android/avd/*
             ~/.android/adb*
-          key: avd-31
-      - name: create AVD and generate snapshot for caching
+          key: avd-29
+      - name: Create AVD and generate snapshot for caching
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
+          api-level: 29
           arch: x86_64
           force-avd-creation: false
           emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
           disable-animations: false
           script: echo "Generated AVD snapshot for caching."
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
       - name: Instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 31
+          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
+          api-level: 29
           arch: x86_64
           force-avd-creation: false
           emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
@@ -109,7 +113,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v2
         with:
-          name: instrumentation-failures-31
+          name: instrumentation-failures
           path: |
             **/build/reports
             logcat.out
