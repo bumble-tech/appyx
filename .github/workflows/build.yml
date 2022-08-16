@@ -90,6 +90,7 @@ jobs:
         if: steps.avd-cache.outputs.cache-hit != 'true'
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
           api-level: 29
           arch: x86_64
           force-avd-creation: false
@@ -99,6 +100,7 @@ jobs:
       - name: Instrumentation tests
         uses: reactivecircus/android-emulator-runner@v2
         with:
+          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
           api-level: 29
           arch: x86_64
           force-avd-creation: false
