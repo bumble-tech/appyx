@@ -5,10 +5,8 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.RibView
 
-interface RibsChild : Rib
-
 class RibsChildNode internal constructor(buildParams: BuildParams<*>) : Node<RibView>(
     buildParams = buildParams,
     viewFactory = RibsChildViewImpl.Factory().invoke(null),
     plugins = emptyList()
-), RibsChild
+), Rib

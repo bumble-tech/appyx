@@ -2,6 +2,7 @@ package com.bumble.appyx.sandbox.client.interop.parent
 
 import androidx.lifecycle.Lifecycle
 import com.badoo.ribs.builder.Builder
+import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildContext
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
@@ -12,7 +13,6 @@ import com.badoo.ribs.test.rx2.view.RibViewStub
 import com.bumble.appyx.core.builder.SimpleBuilder
 import com.bumble.appyx.interop.ribs.InteropNode
 import com.bumble.appyx.interop.ribs.InteropView
-import com.bumble.appyx.sandbox.client.interop.child.RibsChild
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentView.Event
 import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentChildBuilders
 import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
@@ -27,8 +27,8 @@ import org.junit.jupiter.api.extension.ExtendWith
 internal class RibsParentNodeTest {
 
     private val interopNodeBuilder = InteropSimpleBuilderStub()
-    private val ribsNodeBuilder = RibBuilderStub<Nothing?, RibsChild> {
-        object : RibNodeStub<RibView>(it), RibsChild {}
+    private val ribsNodeBuilder = RibBuilderStub<Nothing?, Rib> {
+        object : RibNodeStub<RibView>(it), Rib {}
     }
     private val view = object : RibViewStub<Nothing, Event>(), RibsParentView {}
 
@@ -40,7 +40,7 @@ internal class RibsParentNodeTest {
         ribsParentNode = RibsParentBuilder(
             childBuilders = object : RibsParentChildBuilders {
                 override val interopNode: SimpleBuilder = interopNodeBuilder
-                override val ribsNode: Builder<Nothing?, RibsChild> = ribsNodeBuilder
+                override val ribsNode: Builder<Nothing?, Rib> = ribsNodeBuilder
             }
         ).build(
             buildContext = BuildContext.root(
