@@ -141,14 +141,14 @@ fun <T> rememberFooTransitionHandler(
 
 ## Test it
 
-Add `Children` to your `Node`. Pass the routing source and the transition handler:
+Add `Children` to your `Node`. Pass your NavModel and the transition handler:
 
 ```kotlin
 @Composable
 override fun View(modifier: Modifier) {
     Children(
         modifier = Modifier.fillMaxSize(),
-        routingSource = foo,
+        navModel = foo,
         transitionHandler = rememberFooTransitionHandler()
     )
 }

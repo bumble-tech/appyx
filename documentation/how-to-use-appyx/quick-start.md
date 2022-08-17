@@ -3,7 +3,7 @@
 ## Suggestions
 
 - Check out the project and launch the `:app` module for a quick demonstration
-- Check out [Nodes and routing](../basics/nodes-and-routing.md), which explains the concepts you'll encounter in this guide.
+- Check out [Nodes and routing](../composable-navigation/index.md), which explains the concepts you'll encounter in this guide.
 
 
 ## 1. Add Appyx to your project
@@ -97,7 +97,7 @@ Great! With this mapping created, we can now just refer to children using the se
 
 ## 4. Add a back stack
 
-The project wouldn't compile just yet. `ParentNode` expects us to pass an instance of a `RoutingSource` – the main control structure in any case when we want to add children. No need to worry now – for simplicity, let's just go with a simple `BackStack` implementation here:
+The project wouldn't compile just yet. `ParentNode` expects us to pass an instance of a `NavModel` – the main control structure in any case when we want to add children. No need to worry now – for simplicity, let's just go with a simple `BackStack` implementation here:
 
 ```kotlin
 class RootNode(
@@ -107,7 +107,7 @@ class RootNode(
         savedStateMap = buildContext.savedStateMap,
     )
 ) : ParentNode<Routing>(
-    routingSource = backStack, // pass it here
+    navModel = backStack, // pass it here
     buildContext = buildContext
 ) {
 ```
@@ -166,10 +166,10 @@ You can also use a fader instead: ```rememberBackstackFader()```, and you can su
 
 Need something more custom?
 
-1. Instead of a back stack, you can find other [routing sources](../routing-sources) in the library, or you can [implement your own](../routing-sources/custom.md)
+1. Instead of a back stack, you can find other [NavModels](../navmodel) in the library, or you can [implement your own](../navmodel/custom.md)
 2. Instead of the default transition handlers, you can also [use Jetpack Compose provided ones, or supply your own](../ui/transitions.md)
 
-You can also read the [Back stack documentation](../routing-sources/backstack.md) for more info on the specific options for the back stack.
+You can also read the [Back stack documentation](../navmodel/backstack.md) for more info on the specific options for the back stack.
 
 ## 6. Proper child nodes  
 
@@ -205,7 +205,7 @@ override fun resolve(routing: Routing, buildContext: BuildContext): Node =
 
 Congrats, you've just built your first Appyx tree!
 
-You can repeat the same pattern and make any embedded children also a `ParentNode` with their own children, routing sources, and transitions. As complexity grows, generally you would:
+You can repeat the same pattern and make any embedded children also a `ParentNode` with their own children, navigation models, and transitions. As complexity grows, generally you would:
 
 1. Have a `Node`
 2. At some point make it a `ParentNode` and add children to it

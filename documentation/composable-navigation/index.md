@@ -1,8 +1,11 @@
-# Nodes and routing
+# Composable navigation
 
 ```Nodes``` are the main structural element of an Appyx tree. 
 
-Routing is how we add dynamism to that tree.
+[NavModels](../navmodel/index.md) is how we add dynamism to that tree. As a single `NavModel` won't be enough for the whole of your whole app, you'll likely use many. 
+
+`NavModels` are composable, making your app's business logic also composable.
+
 
 ## Overview
  
@@ -14,6 +17,7 @@ You can think of a `Node` as a standalone component with:
 - Business logic that's kept alive even when the view isn't added to the composition
 - The ability to host generic [Plugins](../other/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
 
+
 ## Node illustration 
 
 In many of the examples you'll see this panel as an illustration of a very simple `Node` – it has some local state (id, colour, and a counter).
@@ -22,6 +26,7 @@ In many of the examples you'll see this panel as an illustration of a very simpl
 
 If you launch `:app` you can also change its state (colour) by tapping it. Its counter is stepped automatically. All of its state is persisted and restored.
    
+
 ## Parent nodes, child nodes
 
 `Nodes` are composable, as `ParentNodes` can have other `Nodes` as children. This means you can represent your whole application as a tree of Appyx nodes.
@@ -42,9 +47,9 @@ Having a static composition of `Nodes` isn't very exciting. You can add dynamism
 - A routing change will look and feel like navigation to the user of the app
 
 
-## Routing sources
+## Navigation model
 
-All `ParentNodes` have the option to achieve this dynamism by utilising [Routing sources](../routing-sources/index.md) such as the back stack. Using them you can:
+All `ParentNodes` have the option to achieve this dynamism by utilising [NavModels](../navmodel/index.md) such as the back stack. Using them you can:
 
 - Add or remove child `Nodes` of a `ParentNode`
 - Move them on and off the screen
@@ -76,5 +81,5 @@ A summary of Appyx's approach to apps:
 - Navigation is business-logic driven
 - Navigation is stateful
 - Navigation is unit-testable
-- You're free to implement your own navigation engines by utilising routing sources
+- You're free to implement your own navigable components by utilising `NavModels`
 - Avoid global navigation concerns, like shared modules needing to know about the application, or the application needing to know about all its possible modules
