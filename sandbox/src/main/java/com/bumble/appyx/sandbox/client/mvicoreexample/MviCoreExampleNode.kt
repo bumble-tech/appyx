@@ -6,7 +6,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.ParentNodeView
 import com.bumble.appyx.core.plugin.Plugin
-import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import kotlinx.parcelize.Parcelize
 
@@ -17,7 +17,7 @@ class MviCoreExampleNode(
     backStack: BackStack<Routing>,
 ) : ParentNode<Routing>(
     view = view,
-    routingSource = backStack,
+    navModel = backStack,
     buildContext = buildContext,
     plugins = plugins
 ) {

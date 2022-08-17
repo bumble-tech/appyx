@@ -21,10 +21,10 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsource.modal.Modal
-import com.bumble.appyx.routingsource.modal.ModalTransitionHandler
-import com.bumble.appyx.routingsource.modal.operation.fullScreen
-import com.bumble.appyx.routingsource.modal.operation.show
+import com.bumble.appyx.navmodel.modal.Modal
+import com.bumble.appyx.navmodel.modal.ModalTransitionHandler
+import com.bumble.appyx.navmodel.modal.operation.fullScreen
+import com.bumble.appyx.navmodel.modal.operation.show
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing
 import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing.Child
@@ -37,7 +37,7 @@ class ModalExampleNode(
         initialElement = Child("first")
     )
 ) : ParentNode<Routing>(
-    routingSource = modal,
+    navModel = modal,
     buildContext = buildContext,
 ) {
 
@@ -89,7 +89,7 @@ class ModalExampleNode(
 
             Children(
                 modifier = Modifier.fillMaxSize(),
-                routingSource = modal,
+                navModel = modal,
                 transitionHandler = ModalTransitionHandler()
             )
         }

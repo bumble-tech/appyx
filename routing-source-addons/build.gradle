@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = 'com.bumble.appyx.routingsource'
+    namespace = 'com.bumble.appyx.navmodel'
     compileSdk 32
 
     defaultConfig {

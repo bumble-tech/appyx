@@ -6,9 +6,9 @@ import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
-import com.bumble.appyx.core.routing.RoutingKey
-import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.core.routing.RoutingSourceAdapter
+import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
  */
 internal class ChildNodeLifecycleManager<Routing>(
     private val lifecycle: Lifecycle,
-    private val routingSource: RoutingSource<Routing, *>,
+    private val navModel: NavModel<Routing, *>,
     private val children: StateFlow<ChildEntryMap<Routing>>,
     private val coroutineScope: CoroutineScope = lifecycle.coroutineScope,
 ) {
@@ -37,7 +37,7 @@ internal class ChildNodeLifecycleManager<Routing>(
         coroutineScope.launch {
             combine(
                 lifecycle.asFlow(),
-                routingSource.screenState.keys(),
+                navModel.screenState.keys(),
                 children.withPrevious(),
                 ::Triple
             )
@@ -71,7 +71,7 @@ internal class ChildNodeLifecycleManager<Routing>(
         }
     }
 
-    private fun <Routing> Flow<RoutingSourceAdapter.ScreenState<Routing, *>>.keys() =
+    private fun <Routing> Flow<NavModelAdapter.ScreenState<Routing, *>>.keys() =
         this
             .map { screenState ->
                 ScreenState(

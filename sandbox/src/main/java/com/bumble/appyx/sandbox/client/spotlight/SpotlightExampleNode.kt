@@ -23,16 +23,16 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsource.spotlight.Spotlight
-import com.bumble.appyx.routingsource.spotlight.backpresshandler.GoToPrevious
-import com.bumble.appyx.routingsource.spotlight.elementsCount
-import com.bumble.appyx.routingsource.spotlight.hasNext
-import com.bumble.appyx.routingsource.spotlight.hasPrevious
-import com.bumble.appyx.routingsource.spotlight.operation.next
-import com.bumble.appyx.routingsource.spotlight.operation.activate
-import com.bumble.appyx.routingsource.spotlight.operation.previous
-import com.bumble.appyx.routingsource.spotlight.operation.updateElements
-import com.bumble.appyx.routingsource.spotlight.transitionhandler.rememberSpotlightSlider
+import com.bumble.appyx.navmodel.spotlight.Spotlight
+import com.bumble.appyx.navmodel.spotlight.backpresshandler.GoToPrevious
+import com.bumble.appyx.navmodel.spotlight.elementsCount
+import com.bumble.appyx.navmodel.spotlight.hasNext
+import com.bumble.appyx.navmodel.spotlight.hasPrevious
+import com.bumble.appyx.navmodel.spotlight.operation.next
+import com.bumble.appyx.navmodel.spotlight.operation.activate
+import com.bumble.appyx.navmodel.spotlight.operation.previous
+import com.bumble.appyx.navmodel.spotlight.operation.updateElements
+import com.bumble.appyx.navmodel.spotlight.transitionhandler.rememberSpotlightSlider
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Item.C1
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Item.C2
@@ -55,7 +55,7 @@ class SpotlightExampleNode(
     )
 ) : ParentNode<SpotlightExampleNode.Routing>(
     buildContext = buildContext,
-    routingSource = spotlight
+    navModel = spotlight
 ) {
 
     private val screenState = mutableStateOf<State?>(null)
@@ -187,7 +187,7 @@ class SpotlightExampleNode(
                     .padding(top = 12.dp, bottom = 12.dp)
                     .fillMaxWidth(),
                 transitionHandler = rememberSpotlightSlider(clipToBounds = true),
-                routingSource = spotlight
+                navModel = spotlight
             )
 
         }

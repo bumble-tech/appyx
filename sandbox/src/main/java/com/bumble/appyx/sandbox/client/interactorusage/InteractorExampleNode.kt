@@ -25,12 +25,12 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 import com.bumble.appyx.core.plugin.UpNavigationHandler
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.operation.pop
-import com.bumble.appyx.routingsource.backstack.operation.push
-import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
-import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
-import com.bumble.appyx.core.routing.transition.rememberCombinedHandler
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.pop
+import com.bumble.appyx.navmodel.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.Routing
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.Routing.Child1
 import kotlinx.parcelize.Parcelize
@@ -43,7 +43,7 @@ class InteractorExampleNode(
         savedStateMap = buildContext.savedStateMap,
     )
 ) : ParentNode<Routing>(
-    routingSource = backStack,
+    navModel = backStack,
     buildContext = buildContext,
     plugins = listOf(interactor)
 ), UpNavigationHandler {
@@ -83,7 +83,7 @@ class InteractorExampleNode(
                     .padding(16.dp)
                     .fillMaxWidth()
                     .requiredHeight(250.dp),
-                routingSource = backStack,
+                navModel = backStack,
                 transitionHandler = rememberCombinedHandler(
                     handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
                 )

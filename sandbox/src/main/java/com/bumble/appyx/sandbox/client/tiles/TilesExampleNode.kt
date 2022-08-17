@@ -21,10 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.bumble.appyx.routingsource.tiles.Tiles
-import com.bumble.appyx.routingsource.tiles.operation.removeSelected
-import com.bumble.appyx.routingsource.tiles.operation.toggleSelection
-import com.bumble.appyx.routingsource.tiles.transitionhandler.rememberTilesTransitionHandler
+import com.bumble.appyx.navmodel.tiles.Tiles
+import com.bumble.appyx.navmodel.tiles.operation.removeSelected
+import com.bumble.appyx.navmodel.tiles.operation.toggleSelection
+import com.bumble.appyx.navmodel.tiles.transitionhandler.rememberTilesTransitionHandler
 import com.bumble.appyx.core.composable.Child
 import com.bumble.appyx.core.composable.visibleChildrenAsState
 import com.bumble.appyx.core.modality.BuildContext
@@ -45,7 +45,7 @@ class TilesExampleNode(
         )
     ),
 ) : ParentNode<Routing>(
-    routingSource = tiles,
+    navModel = tiles,
     buildContext = buildContext,
 ) {
 

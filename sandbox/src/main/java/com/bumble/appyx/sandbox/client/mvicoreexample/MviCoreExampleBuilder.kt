@@ -3,7 +3,7 @@ package com.bumble.appyx.sandbox.client.mvicoreexample
 import com.bumble.appyx.core.builder.Builder
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child1
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature

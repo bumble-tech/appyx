@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.Routing
 import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.Routing.GrandchildOne
 import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.Routing.GrandchildTwo
@@ -30,7 +30,7 @@ class ChildNodeTwo(
     ),
 ) : ParentNode<Routing>(
     buildContext = buildContext,
-    routingSource = backStack,
+    navModel = backStack,
 ) {
 
     sealed class Routing : Parcelable {
@@ -64,7 +64,7 @@ class ChildNodeTwo(
         ) {
             Text(text = "Child two")
             Spacer(modifier = Modifier.requiredHeight(8.dp))
-            Children(routingSource = backStack)
+            Children(navModel = backStack)
         }
     }
 

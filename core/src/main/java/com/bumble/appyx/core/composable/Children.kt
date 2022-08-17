@@ -16,18 +16,18 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.core.routing.transition.JumpToEndTransitionHandler
-import com.bumble.appyx.core.routing.transition.TransitionBounds
-import com.bumble.appyx.core.routing.transition.TransitionDescriptor
-import com.bumble.appyx.core.routing.transition.TransitionHandler
-import com.bumble.appyx.core.routing.transition.TransitionParams
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.transition.JumpToEndTransitionHandler
+import com.bumble.appyx.core.navigation.transition.TransitionBounds
+import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
+import com.bumble.appyx.core.navigation.transition.TransitionHandler
+import com.bumble.appyx.core.navigation.transition.TransitionParams
 import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
 inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
-    routingSource: RoutingSource<Routing, State>,
+    navModel: NavModel<Routing, State>,
     modifier: Modifier = Modifier,
     transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
     noinline block: @Composable ChildrenTransitionScope<Routing, State>.() -> Unit = {
@@ -57,7 +57,7 @@ inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
             ChildrenTransitionScope(
                 transitionHandler = transitionHandler,
                 transitionParams = transitionParams,
-                routingSource = routingSource
+                navModel = navModel
             )
         )
     }
@@ -66,7 +66,7 @@ inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
 class ChildrenTransitionScope<T : Any, S>(
     private val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
-    private val routingSource: RoutingSource<T, S>
+    private val navModel: NavModel<T, S>
 ) {
 
     @Composable
@@ -125,7 +125,7 @@ class ChildrenTransitionScope<T : Any, S>(
     ) {
         val visibleElementsFlow = remember {
             this@ChildrenTransitionScope
-                .routingSource
+                .navModel
                 .screenState
                 .map { list ->
                     list

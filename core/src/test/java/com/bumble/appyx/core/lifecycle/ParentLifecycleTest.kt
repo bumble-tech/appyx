@@ -4,23 +4,22 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.core.lifecycle.ParentLifecycleTest.RoutingImpl.State
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.routing.BaseRoutingSource
-import com.bumble.appyx.core.routing.Operation
-import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.RoutingElements
-import com.bumble.appyx.core.routing.RoutingKey
-import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.navigation.BaseNavModel
+import com.bumble.appyx.core.navigation.Operation
+import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
-// TODO: Make it BaseRoutingSource test
+// TODO: Make it BaseNavModel test
 class ParentLifecycleTest {
 
     @get:Rule
@@ -32,14 +31,14 @@ class ParentLifecycleTest {
     @Test
     fun `parent node finishes transitions for off screen elements when lifecycle is not stopped`() {
         val parent = Parent(BuildContext.root(null)).build()
-        val routingSource = parent.routing
+        val navModel = parent.navModelImpl
         val routing = "0"
         parent.updateLifecycleState(Lifecycle.State.STARTED)
-        routingSource.add(routing = routing, defaultState = State.StateOne)
+        navModel.add(routing = routing, defaultState = NavModelImpl.State.StateOne)
 
-        routingSource.changeState(routing = routing, State.StateTwo)
+        navModel.changeState(routing = routing, NavModelImpl.State.StateTwo)
 
-        val element = routingSource.get(routing = routing)
+        val element = navModel.get(routing = routing)
 
         assertEquals(
             element.fromState,
@@ -47,7 +46,7 @@ class ParentLifecycleTest {
         )
     }
 
-    private class RoutingImpl : BaseRoutingSource<String, State>(
+    private class NavModelImpl : BaseNavModel<String, NavModelImpl.State>(
         screenResolver = object : OnScreenStateResolver<State> {
             override fun isOnScreen(state: State): Boolean =
                 when (state) {
@@ -112,10 +111,10 @@ class ParentLifecycleTest {
 
     private class Parent(
         buildContext: BuildContext,
-        val routing: RoutingImpl = RoutingImpl(),
+        val navModelImpl: NavModelImpl = NavModelImpl(),
     ) : ParentNode<String>(
         buildContext = buildContext,
-        routingSource = routing,
+        navModel = navModelImpl,
     ) {
         override fun resolve(routing: String, buildContext: BuildContext): Node =
             Child(routing, buildContext)

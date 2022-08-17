@@ -24,10 +24,10 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.activeRouting
-import com.bumble.appyx.routingsource.backstack.operation.newRoot
-import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.activeRouting
+import com.bumble.appyx.navmodel.backstack.operation.newRoot
+import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
@@ -41,7 +41,7 @@ class RootNode(
         savedStateMap = buildContext.savedStateMap,
     )
 ) : ParentNode<Routing>(
-    routingSource = backStack,
+    navModel = backStack,
     buildContext = buildContext
 ) {
 
@@ -80,7 +80,7 @@ class RootNode(
         }
 
         Children(
-            routingSource = backStack,
+            navModel = backStack,
             transitionHandler = rememberBackstackFader { tween(750) }
         )
     }

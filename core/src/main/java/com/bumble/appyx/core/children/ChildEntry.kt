@@ -3,8 +3,8 @@ package com.bumble.appyx.core.children
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.routing.Resolver
-import com.bumble.appyx.core.routing.RoutingKey
+import com.bumble.appyx.core.navigation.Resolver
+import com.bumble.appyx.core.navigation.RoutingKey
 
 // custom equals/hashCode for MutableStateFlow and equality checks
 sealed class ChildEntry<T> {

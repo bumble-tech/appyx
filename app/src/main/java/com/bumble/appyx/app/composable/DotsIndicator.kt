@@ -24,10 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.ui.appyx_yellow1
-import com.bumble.appyx.core.routing.transition.TransitionSpec
-import com.bumble.appyx.routingsource.spotlight.Spotlight
-import com.bumble.appyx.routingsource.spotlight.activeIndex
-import com.bumble.appyx.routingsource.spotlight.elementsCount
+import com.bumble.appyx.core.navigation.transition.TransitionSpec
+import com.bumble.appyx.navmodel.spotlight.Spotlight
+import com.bumble.appyx.navmodel.spotlight.activeIndex
+import com.bumble.appyx.navmodel.spotlight.elementsCount
 
 @Composable
 fun DotsIndicator(

@@ -2,7 +2,7 @@ package com.bumble.appyx.sandbox.client.mvicoreexample
 
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.connectable.rx2.NodeConnector
-import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
@@ -54,7 +54,7 @@ class MviCoreExampleInteractorJUnit5Test {
         val nodeConnector = NodeConnector<MviCoreChildNode1.Input, MviCoreChildNode1.Output>()
         val testObserver = feature.wishesRelay.test()
 
-        interactor.interactorTestHelper(routingSource = backStack) {
+        interactor.interactorTestHelper(navModel = backStack) {
             MviCoreChildNode1(
                 buildContext = it,
                 connector = nodeConnector
