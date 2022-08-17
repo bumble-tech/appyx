@@ -46,7 +46,7 @@ fun <N : Node> NodeHost(
 }
 
 @Composable
-private fun <N : Node> rememberNode(
+internal fun <N : Node> rememberNode(
     factory: NodeFactory<N>,
     customisations: NodeCustomisationDirectory,
     integrationPoint: IntegrationPoint,

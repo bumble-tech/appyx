@@ -57,13 +57,13 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
-class ContainerNode(
+class ContainerNode internal constructor(
     buildContext: BuildContext,
     private val backStack: BackStack<Routing> = BackStack(
         initialElement = Picker,
