@@ -5,6 +5,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -25,7 +26,7 @@ import com.bumble.appyx.core.state.SavedStateMap
  */
 @Composable
 fun <N : Node> NodeHost(
-    customisations: NodeCustomisationDirectory = NodeCustomisationDirectoryImpl(),
+    customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
     integrationPoint: IntegrationPoint,
     factory: NodeFactory<N>
 ) {
