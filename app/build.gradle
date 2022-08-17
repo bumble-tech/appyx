@@ -45,7 +45,7 @@ android {
 
 dependencies {
     implementation project(':core')
-    implementation project(':routing-source-addons')
+    implementation project(':navmodel-addons')
 
     implementation libs.androidx.activity.compose
     implementation libs.androidx.appcompat

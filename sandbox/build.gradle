@@ -56,7 +56,7 @@ dependencies {
     implementation project(':core')
     implementation project(':interop-rx2')
     implementation project(':interop-ribs')
-    implementation project(':routing-source-addons')
+    implementation project(':navmodel-addons')
     implementation project(':testing-ui')
 
     implementation libs.androidx.activity.compose
