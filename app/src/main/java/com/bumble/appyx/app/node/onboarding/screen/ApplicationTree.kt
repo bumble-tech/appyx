@@ -80,7 +80,8 @@ class ApplicationTree(
             modifier = modifier,
             title = "Nodes",
             body = "The app is organised into a tree of Nodes." +
-                "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, and can choose which of their children to delegate the control flow to."
+                    "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, " +
+                    "and can choose which of their children to delegate the control flow to."
         ) {
             Column(
                 modifier = Modifier

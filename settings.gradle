@@ -1,3 +1,10 @@
+pluginManagement {
+    repositories {
+        google()
+        gradlePluginPortal()
+    }
+}
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -19,4 +26,7 @@ include ':app',
         ':testing-ui',
         ':testing-unit-common',
         ':routing-source-addons',
-        ':customisations'
+        ':customisations',
+        ':samples:navigation-compose'
+
+includeBuild 'plugins'

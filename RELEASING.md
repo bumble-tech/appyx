@@ -3,7 +3,7 @@
 ## Automatic
 
 1. Create PR with following changes:
-    1. Update version in `gradle/publication.gradle`.
+    1. Update version in `gradle.properties`.
     2. Create a new section with version name taking all changes from pending section.
 2. Create GitHub release with a tag name of the version and fill notes from pending changes section.
 3. Library is published to staging repository automatically with GitHub Action.
@@ -16,7 +16,7 @@ In case of any issues you can launch Release manually from GitHub Actions tab.
 Should be used in case if there are issues with automatic publication.
 
 1. Create PR with following changes:
-    1. Update version in `gradle/publication.gradle`.
+    1. Update version in `gradle.properties`.
     2. Create a new section with version name taking all changes from pending section.
 2. `./gradle publishAppyxReleasePublicationToOSSRHRepository --no-parallel -Psigning.keyId=$KEY_ID -Psigning.password=$PASS -Psigning.secretKeyRingFile=$FILE -Psonatype.username=$NAME -Psonatype.password=$PASS`
     1. `signing` properties are related to signing information.

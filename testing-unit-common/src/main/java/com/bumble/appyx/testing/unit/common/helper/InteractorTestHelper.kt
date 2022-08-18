@@ -55,6 +55,7 @@ class InteractorTestHelper<N : Node>(
     ) : Node(buildContext = buildContext) {
         @Composable
         override fun View(modifier: Modifier) {
+            // Deliberately empty
         }
     }
 }

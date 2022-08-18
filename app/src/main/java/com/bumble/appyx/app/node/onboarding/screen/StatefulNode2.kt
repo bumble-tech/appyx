@@ -46,8 +46,9 @@ class StatefulNode2(
             modifier = modifier,
             title = "Nodes are alive",
             body = "– even when they're not visible. " +
-                "\n\nTry going back to the previous screen! " +
-                "You should see that the counters kept on working in the background, and changes you made to colours are persisted."
+                    "\n\nTry going back to the previous screen! " +
+                    "You should see that the counters kept on working in the background, " +
+                    "and changes you made to colours are persisted."
         ) {
             val shape = RoundedCornerShape(16.dp)
 

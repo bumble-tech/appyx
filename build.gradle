@@ -5,9 +5,13 @@ buildscript {
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath libs.android.plugin
-        classpath libs.kotlin.plugin
+        classpath libs.plugin.android
+        classpath libs.plugin.kotlin
     }
+}
+
+plugins {
+    id 'appyx-collect-sarif'
 }
 
 task clean(type: Delete) {

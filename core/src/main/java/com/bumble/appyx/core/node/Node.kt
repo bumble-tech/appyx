@@ -1,8 +1,11 @@
 package com.bumble.appyx.core.node
 
+import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -19,6 +22,7 @@ import com.bumble.appyx.core.lifecycle.NodeLifecycle
 import com.bumble.appyx.core.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.plugin.BackPressHandler
 import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.plugin.NodeAware
 import com.bumble.appyx.core.plugin.NodeLifecycleAware
@@ -104,14 +108,36 @@ abstract class Node(
             LocalNode provides this,
             LocalLifecycleOwner provides this,
         ) {
-            DerivedSetup()
+            HandleBackPress()
             View(modifier)
         }
     }
 
-    /** Derived classes can declare functional (non-ui) Composable blocks before [View()] is invoked. */
     @Composable
-    protected open fun DerivedSetup() {
+    private fun HandleBackPress() {
+        val backPressHandlerPlugins = remember {
+            // reversed order because we want direct order, but onBackPressedDispatcher invokes them in reversed order
+            plugins.filterIsInstance<BackPressHandler>().reversed()
+        }
+        val dispatcher =
+            LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher ?: return
+        DisposableEffect(dispatcher) {
+            backPressHandlerPlugins.forEach { plugin ->
+                if (!plugin.isCorrect()) {
+                    Appyx.reportException(
+                        IllegalStateException(
+                            "Plugin $plugin has implementation for both BackPressHandler properties, implement only one"
+                        )
+                    )
+                }
+                plugin.onBackPressedCallbackList.forEach { dispatcher.addCallback(it) }
+            }
+            onDispose {
+                backPressHandlerPlugins.forEach { plugin ->
+                    plugin.onBackPressedCallbackList.forEach { it.remove() }
+                }
+            }
+        }
     }
 
     override fun getLifecycle(): Lifecycle =
@@ -121,7 +147,9 @@ abstract class Node(
         if (lifecycle.currentState == state) return
         if (lifecycle.currentState == Lifecycle.State.DESTROYED && state != Lifecycle.State.DESTROYED) {
             Appyx.reportException(
-                IllegalStateException("Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}")
+                IllegalStateException(
+                    "Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}"
+                )
             )
             return
         }
@@ -175,4 +203,16 @@ abstract class Node(
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
+    companion object {
+
+        // BackPressHandler is correct when only one of its properties is implemented.
+        private fun BackPressHandler.isCorrect(): Boolean {
+            val listIsOverriddenOrPluginIgnored = onBackPressedCallback == null
+            val onlySingleCallbackIsOverridden = onBackPressedCallback != null &&
+                    onBackPressedCallbackList.size == 1 &&
+                    onBackPressedCallbackList[0] == onBackPressedCallback
+            return onlySingleCallbackIsOverridden || listIsOverriddenOrPluginIgnored
+        }
+
+    }
 }

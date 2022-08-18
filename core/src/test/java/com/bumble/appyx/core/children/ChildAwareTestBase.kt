@@ -27,7 +27,7 @@ import org.junit.Rule
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 
-abstract class ChildAwareTestBase {
+open class ChildAwareTestBase {
 
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -115,6 +115,7 @@ abstract class ChildAwareTestBase {
     ) : Node(buildContext = buildContext) {
         @Composable
         override fun View(modifier: Modifier) {
+            // Deliberately empty
         }
     }
 
@@ -128,8 +129,6 @@ abstract class ChildAwareTestBase {
             get() = state.map { RoutingSourceAdapter.ScreenState(onScreen = it) }
                 .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
 
-        override fun onBackPressed() = Unit
-
         override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
             state.update { list ->
                 list.map {
@@ -141,9 +140,6 @@ abstract class ChildAwareTestBase {
                 }
             }
         }
-
-        override val canHandleBackPress: StateFlow<Boolean>
-            get() = MutableStateFlow(false)
 
         fun add(vararg key: RoutingKey<Key>) {
             state.update { list ->

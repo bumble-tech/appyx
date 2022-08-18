@@ -14,7 +14,9 @@ class Previous<T : Any> : SpotlightOperation<T> {
     override fun isApplicable(elements: RoutingElements<T, Spotlight.TransitionState>) =
         elements.any { it.fromState == INACTIVE_BEFORE }
 
-    override fun invoke(elements: RoutingElements<T, Spotlight.TransitionState>): RoutingElements<T, Spotlight.TransitionState> {
+    override fun invoke(
+        elements: RoutingElements<T, Spotlight.TransitionState>
+    ): RoutingElements<T, Spotlight.TransitionState> {
         val previousKey =
             elements.last { it.targetState == INACTIVE_BEFORE }.key
 

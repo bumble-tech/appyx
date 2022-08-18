@@ -5,22 +5,34 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleEventObserver
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
-import com.bumble.appyx.interop.ribs.InteropView.Dependency
-import com.bumble.appyx.interop.ribs.InteropView.Factory
+import com.badoo.ribs.core.view.ViewFactory
 import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.interop.ribs.InteropNode.Customisation
+import com.bumble.appyx.interop.ribs.InteropViewImpl.Factory
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface InteropNode<N : Node> : Rib {
     val appyxNode: N
+
+    class Customisation(
+        val viewFactory: ViewFactory<InteropView>
+    ) : NodeCustomisation
 }
 
 internal class InteropNodeImpl<N : Node>(
     buildParams: BuildParams<*>,
-    override val appyxNode: N
+    override val appyxNode: N,
 ) : com.badoo.ribs.core.Node<InteropView>(
     buildParams = buildParams,
-    viewFactory = Factory<N>().invoke(object : Dependency<N> {
-        override val appyxNode: N = appyxNode
-    })
+    viewFactory = buildParams.getOrDefault(
+        Customisation(
+            viewFactory = Factory<N>().invoke(
+                object : InteropView.Dependency<N> {
+                    override val appyxNode: N = appyxNode
+                }
+            )
+        ),
+    ).viewFactory
 ), InteropNode<N> {
 
     private val observer = LifecycleEventObserver { source, _ ->
@@ -48,6 +60,7 @@ internal class InteropNodeImpl<N : Node>(
         const val InteropNodeKey = "InteropNodeKey"
     }
 
+    @Suppress("SpreadOperator")
     private fun Map<String, Any?>.toBundle(): Bundle = bundleOf(*this.toList().toTypedArray())
 
 }

@@ -1,19 +1,28 @@
 package com.bumble.appyx.interop.ribs
 
+import android.app.Activity
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
+import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.interop.ribs.InteropView.Dependency
 
-internal class InteropView private constructor(
+interface InteropView : RibView {
+
+    interface Dependency<N : Node> {
+        val appyxNode: N
+    }
+}
+
+internal class InteropViewImpl private constructor(
     override val context: Context,
     private val appyxNode: Node,
-) : ComposeRibView(context) {
+) : InteropView, ComposeRibView(context) {
 
     private val integrationPoint = retrieveIntegrationPoint()
 
@@ -26,10 +35,10 @@ internal class InteropView private constructor(
             appyxNode.Compose()
         }
 
-    class Factory<N: Node> : ViewFactoryBuilder<Dependency<N>, InteropView> {
+    class Factory<N : Node> : ViewFactoryBuilder<Dependency<N>, InteropView> {
         override fun invoke(deps: Dependency<N>): ViewFactory<InteropView> =
             ViewFactory {
-                InteropView(
+                InteropViewImpl(
                     context = it.parent.context,
                     appyxNode = deps.appyxNode
                 )
@@ -37,15 +46,14 @@ internal class InteropView private constructor(
     }
 
     private fun retrieveIntegrationPoint(): IntegrationPoint {
-        val activity = context.findActivity<AppCompatActivity>()
-        return if (activity is IntegrationPointAppyxProvider) {
-            activity.integrationPointAppyx
-        } else {
-            throw IllegalStateException("Activity where InteropNode is used must implement IntegrationPointAppyxProvider")
+        val activity = context.findActivity<Activity>()
+        check(activity != null) {
+            "Could not find an activity from the context: $context"
         }
-    }
-
-    interface Dependency<N : Node> {
-        val appyxNode: N
+        check(activity is IntegrationPointAppyxProvider) {
+            "Activity where InteropNode is used must implement IntegrationPointAppyxProvider. " +
+                    "Activity: '${activity::class.java.name}', Node: '${appyxNode::class.java.name}'"
+        }
+        return activity.integrationPointAppyx
     }
 }

@@ -58,13 +58,6 @@ class PermanentRoutingSource<Routing : Any>(
                 initialValue = RoutingSourceAdapter.ScreenState(onScreen = state.value)
             )
 
-    override val canHandleBackPress: StateFlow<Boolean> =
-        MutableStateFlow(false)
-
-    override fun onBackPressed() {
-        // no-op
-    }
-
     override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
         // no-op
     }
