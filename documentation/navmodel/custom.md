@@ -12,7 +12,7 @@ Create the class; define your possible states; define your initial state.
 class Foo<T : Any>(
     initialItems: List<T> = listOf(),
     savedStateMap: SavedStateMap?
-) : BaseRoutingSource<T, Foo.TransitionState>(
+) : BaseNavModel<T, Foo.TransitionState>(
     screenResolver = FooOnScreenResolver, // We'll see about this shortly
     finalState = DESTROYED, // Anything transitioning towards this state will be discarded eventually
     savedStateMap = savedStateMap // It's nullable if you don't need state restoration

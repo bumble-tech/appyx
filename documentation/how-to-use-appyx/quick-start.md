@@ -77,7 +77,7 @@ Next, let's modify `RootNode` so it extends `ParentNode`:
 class RootNode(
     buildContext: BuildContext
 ) : ParentNode<Routing>(
-    routingSource = TODO("We will come back to this in Step 4"),
+    navModel = TODO("We will come back to this in Step 4"),
     buildContext = buildContext
 ) {
 ```
@@ -129,7 +129,7 @@ override fun View(modifier: Modifier) {
         Text("Hello world!")
         // Let's add the children to the composition
         Children(
-            routingSource = backStack
+            navModel = backStack
         )
         
         // Let's also add some controls so we can test it
@@ -157,7 +157,7 @@ Adding some transitions is a one-liner:
 
 ```kotlin
 Children(
-    routingSource = backStack,
+    navModel = backStack,
     transitionHandler = rememberBackstackSlider()
 )
 ```

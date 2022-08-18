@@ -8,7 +8,7 @@ Navigation models describe navigation itself – by the states and operations th
 
 `NavModel` capabilities differ from implementation to implementation, however, typically:
 
-1. They store information on the states all children 
+1. They store information on the states of all children 
 2. They behave like a state machine
 3. They offer some public API to trigger changing the state of children  
 
