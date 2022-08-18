@@ -1,7 +1,7 @@
 package com.bumble.appyx.interop.ribs
 
+import android.app.Activity
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
 import com.badoo.ribs.compose.ComposeRibView
 import com.badoo.ribs.compose.ComposeView
@@ -46,9 +46,13 @@ internal class InteropViewImpl private constructor(
     }
 
     private fun retrieveIntegrationPoint(): IntegrationPoint {
-        val activity = context.findActivity<AppCompatActivity>()
+        val activity = context.findActivity<Activity>()
+        check(activity != null) {
+            "Could not find an activity from the context: $context"
+        }
         check(activity is IntegrationPointAppyxProvider) {
-            "Activity where InteropNode is used must implement IntegrationPointAppyxProvider"
+            "Activity where InteropNode is used must implement IntegrationPointAppyxProvider. " +
+                    "Activity: '${activity::class.java.name}', Node: '${appyxNode::class.java.name}'"
         }
         return activity.integrationPointAppyx
     }
