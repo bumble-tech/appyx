@@ -10,6 +10,7 @@
 - [#81](https://github.com/bumble-tech/appyx/issues/81) – Added: Support integration point for multiple roots
 - [#65](https://github.com/bumble-tech/appyx/pull/65) – Added: `InteropBuilderStub` and `InteropSimpleBuilderStub` testing util classes
 - [#47](https://github.com/bumble-tech/appyx/issues/47) – Updated: The 'customisations' module is now pure Java/Kotlin.
+- [#85](https://github.com/bumble-tech/appyx/issues/85) – Updated: Improved `InteropView` error messaging when `Activity` does not implement `IntegrationPointAppyxProvider`
 
 
 ## 1.0-alpha03
