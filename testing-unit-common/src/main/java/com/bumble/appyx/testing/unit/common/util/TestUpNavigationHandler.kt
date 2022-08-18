@@ -12,10 +12,10 @@ class TestUpNavigationHandler : UpNavigationHandler {
     }
 
     fun assertInvoked() {
-        assertTrue(invoked, "FallbackUpNavigationHandler.handle was not invoked")
+        assertTrue(invoked, "Has not navigated up")
     }
 
     fun assertNotInvoked() {
-        assertFalse(invoked, "FallbackUpNavigationHandler.handle was invoked")
+        assertFalse(invoked, "Has navigated up")
     }
 }
