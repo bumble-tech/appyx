@@ -1,8 +1,8 @@
 plugins {
-    id 'java-library'
-    id 'kotlin'
-    id 'appyx-publish-java'
-    id 'appyx-detekt'
+    id("java-library")
+    id("kotlin")
+    id("appyx-publish-java")
+    id("appyx-detekt")
 }
 
 java {
