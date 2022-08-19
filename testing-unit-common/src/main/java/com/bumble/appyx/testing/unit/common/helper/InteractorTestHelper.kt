@@ -8,28 +8,28 @@ import com.bumble.appyx.core.clienthelper.interactor.Interactor
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.BaseRoutingSource
-import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.testing.unit.common.util.DummyRoutingSource
+import com.bumble.appyx.core.navigation.BaseNavModel
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.testing.unit.common.util.DummyNavModel
 
 fun <N : Node> Interactor<N>.interactorTestHelper(
-    routingSource: RoutingSource<*, *> = DummyRoutingSource<Any, Any>(),
+    navModel: NavModel<*, *> = DummyNavModel<Any, Any>(),
     childBuilder: (BuildContext) -> Node = { InteractorTestHelper.EmptyLeafNode(it) }
 ) =
     InteractorTestHelper(
         interactor = this,
-        routingSource = routingSource,
+        navModel = navModel,
         childBuilder = childBuilder
     )
 
 class InteractorTestHelper<N : Node>(
     private val interactor: Interactor<N>,
-    private val routingSource: RoutingSource<*, *> = DummyRoutingSource<Any, Any>(),
+    private val navModel: NavModel<*, *> = DummyNavModel<Any, Any>(),
     private val childBuilder: (BuildContext) -> Node = { EmptyLeafNode(it) }
 ) {
     private val node = object : ParentNode<Any>(
         buildContext = BuildContext.root(savedStateMap = null),
-        routingSource = routingSource as BaseRoutingSource<Any, *>,
+        navModel = navModel as BaseNavModel<Any, *>,
         plugins = listOf(interactor),
         childMode = ChildEntry.ChildMode.EAGER
     ) {

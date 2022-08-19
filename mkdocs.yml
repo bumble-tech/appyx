@@ -24,14 +24,14 @@ nav:
       - Quick start guide: how-to-use-appyx/quick-start.md
       - Codelabs: how-to-use-appyx/codelabs.md
       - Sample apps: how-to-use-appyx/sample-apps.md
-  - Nodes and routing: basics/nodes-and-routing.md
-  - Routing sources:
-      - Overview: routing-sources/index.md
-      - Back stack: routing-sources/backstack.md
-      - Spotlight: routing-sources/spotlight.md
-      - Tiles: routing-sources/tiles.md
-      - Promoter: routing-sources/promoter.md
-      - Writing your own: routing-sources/custom.md
+  - NavModel:
+      - Overview: navmodel/index.md
+      - Back stack: navmodel/backstack.md
+      - Spotlight: navmodel/spotlight.md
+      - Tiles: navmodel/tiles.md
+      - Promoter: navmodel/promoter.md
+      - Writing your own: navmodel/custom.md
+  - Composable navigation: composable-navigation/index.md
   - UI:
       - Children: ui/children-view.md
       - Transitions: ui/transitions.md

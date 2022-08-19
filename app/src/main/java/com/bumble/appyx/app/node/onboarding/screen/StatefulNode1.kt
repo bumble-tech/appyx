@@ -32,7 +32,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.source.permanent.PermanentRoutingSource
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
@@ -43,7 +43,7 @@ class StatefulNode1(
     buildContext: BuildContext
 ) : ParentNode<Routing>(
     buildContext = buildContext,
-    routingSource = PermanentRoutingSource(
+    navModel = PermanentNavModel(
         savedStateMap = buildContext.savedStateMap
     )
 ) {

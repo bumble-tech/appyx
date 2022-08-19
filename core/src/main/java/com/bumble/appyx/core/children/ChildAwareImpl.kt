@@ -7,12 +7,11 @@ import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.core.lifecycle.isDestroyed
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.RoutingKey
+import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 

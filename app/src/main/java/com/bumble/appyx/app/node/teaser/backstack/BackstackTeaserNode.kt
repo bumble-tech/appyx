@@ -14,9 +14,9 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.operation.pop
-import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.pop
+import com.bumble.appyx.navmodel.backstack.operation.push
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
@@ -31,7 +31,7 @@ class BackstackTeaserNode(
     ),
 ) : ParentNode<Routing>(
     buildContext = buildContext,
-    routingSource = backStack
+    navModel = backStack
 ) {
 
     init {
@@ -65,7 +65,7 @@ class BackstackTeaserNode(
     override fun View(modifier: Modifier) {
         Children(
             modifier = Modifier.fillMaxSize(),
-            routingSource = backStack,
+            navModel = backStack,
             transitionHandler = rememberCustomHandler()
         )
     }

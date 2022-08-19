@@ -1,7 +1,7 @@
 package com.bumble.appyx.core.children
 
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.routing.RoutingKey
+import com.bumble.appyx.core.navigation.RoutingKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue

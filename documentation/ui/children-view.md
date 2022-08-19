@@ -1,20 +1,20 @@
 # Adding children to the view
 
-Routing sources define the model of dealing with children. This section describes different ways of adding them to the composition.
+Navigation models define only the abstract model, not how that model will look on the screen. This section describes different ways of adding children (navigation targets) to the composition.
 
 All the below mentioned composables should be added to the `View` of the parent node.
 
 
 ## Children
 
-Renders all visible children of a routing source. This is the simplest and most common case.
+Renders all visible children of a NavModel. This is the simplest and most common case.
 
 ```kotlin
 @Composable
 override fun View(modifier: Modifier) {
     Children(
         modifier = Modifier, // optional
-        routingSource = TODO(),
+        navModel = TODO(),
         transitionHandler = TODO() // optional
     )
 }
@@ -42,8 +42,8 @@ override fun View(modifier: Modifier) {
 ```kotlin
 @Composable
 override fun View(modifier: Modifier) {
-    // TODO grab all visible children from the routing source manually
-    val children by routingSource.visibleChildrenAsState()
+    // TODO grab all visible children from the navModel manually
+    val children by navModel.visibleChildrenAsState()
     GridExample(children)
 }
 

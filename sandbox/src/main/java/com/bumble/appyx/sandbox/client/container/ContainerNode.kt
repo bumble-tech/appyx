@@ -24,18 +24,18 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.core.routing.transition.rememberCombinedHandler
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.operation.push
-import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackFader
-import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
+import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode
 import com.bumble.appyx.sandbox.client.blocker.BlockerExampleNode
-import com.bumble.appyx.sandbox.client.combined.CombinedRoutingSourceNode
+import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.BackStackExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.BlockerExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.CombinedRoutingSource
+import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.CombinedNavModel
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.Customisations
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.InteractorExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.LazyExamples
@@ -44,7 +44,7 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreEx
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreLeafExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.Picker
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.RequestPermissionsExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.RoutingSourcesExamples
+import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.SpotlightExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.TilesExample
 import com.bumble.appyx.sandbox.client.customisations.createViewCustomisationsActivityIntent
@@ -70,7 +70,7 @@ class ContainerNode internal constructor(
         savedStateMap = buildContext.savedStateMap,
     )
 ) : ParentNode<Routing>(
-    routingSource = backStack,
+    navModel = backStack,
     buildContext = buildContext,
 ) {
 
@@ -92,7 +92,7 @@ class ContainerNode internal constructor(
         object ModalExample : Routing()
 
         @Parcelize
-        object CombinedRoutingSource : Routing()
+        object CombinedNavModel : Routing()
 
         @Parcelize
         object LazyExamples : Routing()
@@ -101,7 +101,7 @@ class ContainerNode internal constructor(
         object RequestPermissionsExamples : Routing()
 
         @Parcelize
-        object RoutingSourcesExamples : Routing()
+        object NavModelExamples : Routing()
 
         @Parcelize
         object SpotlightExample : Routing()
@@ -125,11 +125,11 @@ class ContainerNode internal constructor(
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
         when (routing) {
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
-            is RoutingSourcesExamples -> node(buildContext) { modifier -> RoutingSources(modifier) }
+            is NavModelExamples -> node(buildContext) { modifier -> NavModelExamples(modifier) }
             is BackStackExample -> BackStackExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
-            is CombinedRoutingSource -> CombinedRoutingSourceNode(buildContext)
+            is CombinedNavModel -> CombinedNavModelNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
             is SpotlightExample -> SpotlightExampleNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
@@ -150,7 +150,7 @@ class ContainerNode internal constructor(
     override fun View(modifier: Modifier) {
         Children(
             modifier = modifier.fillMaxSize(),
-            routingSource = backStack,
+            navModel = backStack,
             transitionHandler = rememberCombinedHandler(
                 handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
             )
@@ -195,7 +195,7 @@ class ContainerNode internal constructor(
                         Intent(this, InteropExampleActivity::class.java)
                     }
                 }
-                TextButton("Routing Sources Examples") { backStack.push(RoutingSourcesExamples) }
+                TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
 
                 val scope = rememberCoroutineScope()
                 TextButton("Trigger double navigation in 3 seconds") {
@@ -212,7 +212,7 @@ class ContainerNode internal constructor(
     }
 
     @Composable
-    fun RoutingSources(modifier: Modifier) {
+    fun NavModelExamples(modifier: Modifier) {
         val scrollState = rememberScrollState()
         Box(
             modifier = modifier
@@ -228,7 +228,7 @@ class ContainerNode internal constructor(
                 TextButton("Backstack example") { backStack.push(BackStackExample) }
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
-                TextButton("Combined routing source") { backStack.push(CombinedRoutingSource) }
+                TextButton("Combined navModel") { backStack.push(CombinedNavModel) }
                 TextButton("Node with interactor") { backStack.push(InteractorExample) }
                 TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
                 TextButton("Request permissions / start activities example") {

@@ -36,7 +36,7 @@ dependencies {
 ```groovy
 dependencies {
     // Additional routing sources (such as Tiles, Promoter carousel and Modal)
-    implementation "com.bumble.appyx:routing-source-addons:$version"
+    implementation "com.bumble.appyx:navmodel-addons:$version"
 }
 ```
 

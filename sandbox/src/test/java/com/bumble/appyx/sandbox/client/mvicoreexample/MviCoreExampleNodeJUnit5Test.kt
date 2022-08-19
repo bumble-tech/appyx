@@ -2,7 +2,7 @@ package com.bumble.appyx.sandbox.client.mvicoreexample
 
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News

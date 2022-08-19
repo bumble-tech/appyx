@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.node.AbstractParentNodeView
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event.LoadDataClicked
@@ -45,7 +45,7 @@ interface MviCoreExampleView : Consumer<ViewModel>, ObservableSource<Event>
 
 class MviCoreExampleViewImpl(
     private val title: String = "Title",
-    private val backStack: RoutingSource<Routing, BackStack.TransitionState>,
+    private val backStack: NavModel<Routing, BackStack.TransitionState>,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : AbstractParentNodeView<Routing>(),
     MviCoreExampleView,
@@ -83,7 +83,7 @@ class MviCoreExampleViewImpl(
                 modifier = modifier
                     .fillMaxWidth()
                     .requiredHeight(200.dp),
-                routingSource = backStack
+                navModel = backStack
             )
             Button(
                 modifier = Modifier

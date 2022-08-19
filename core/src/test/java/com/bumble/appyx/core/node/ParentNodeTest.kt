@@ -6,8 +6,8 @@ import com.bumble.appyx.core.node.ParentNodeTest.NodeB.Companion.StatusExecuted
 import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing
 import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing.ChildA
 import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing.ChildB
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import java.lang.IllegalStateException
 import junit.framework.TestCase.assertEquals
@@ -86,7 +86,7 @@ class ParentNodeTest {
         private val backStack: BackStack<Routing>
     ) : ParentNode<Routing>(
         buildContext = BuildContext.root(null),
-        routingSource = backStack
+        navModel = backStack
     ) {
 
         sealed class Routing {

@@ -31,10 +31,9 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing
-import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing.RoutingSource
 import com.bumble.appyx.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.app.node.onboarding.screen.IntroScreen
-import com.bumble.appyx.app.node.onboarding.screen.RoutingSourceTeaser
+import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode
 import com.bumble.appyx.app.node.onboarding.screen.StatefulNode1
 import com.bumble.appyx.app.node.onboarding.screen.StatefulNode2
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
@@ -46,13 +45,13 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsource.spotlight.Spotlight
-import com.bumble.appyx.routingsource.spotlight.backpresshandler.GoToPrevious
-import com.bumble.appyx.routingsource.spotlight.hasNext
-import com.bumble.appyx.routingsource.spotlight.hasPrevious
-import com.bumble.appyx.routingsource.spotlight.operation.next
-import com.bumble.appyx.routingsource.spotlight.operation.previous
-import com.bumble.appyx.routingsource.spotlight.transitionhandler.rememberSpotlightSlider
+import com.bumble.appyx.navmodel.spotlight.Spotlight
+import com.bumble.appyx.navmodel.spotlight.backpresshandler.GoToPrevious
+import com.bumble.appyx.navmodel.spotlight.hasNext
+import com.bumble.appyx.navmodel.spotlight.hasPrevious
+import com.bumble.appyx.navmodel.spotlight.operation.next
+import com.bumble.appyx.navmodel.spotlight.operation.previous
+import com.bumble.appyx.navmodel.spotlight.transitionhandler.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
@@ -66,13 +65,13 @@ class OnboardingContainerNode(
             Routing.ApplicationTree,
             Routing.StatefulNode1,
             Routing.StatefulNode2,
-            RoutingSource,
+            Routing.NavModelTeaser,
         ),
         backPressHandler = GoToPrevious(),
         savedStateMap = buildContext.savedStateMap,
     ),
 ) : ParentNode<Routing>(
-    routingSource = spotlight,
+    navModel = spotlight,
     buildContext = buildContext
 ) {
 
@@ -90,7 +89,7 @@ class OnboardingContainerNode(
         object StatefulNode2 : Routing()
 
         @Parcelize
-        object RoutingSource : Routing()
+        object NavModelTeaser : Routing()
     }
 
     override fun resolve(routing: Routing, buildContext: BuildContext): Node =
@@ -99,7 +98,7 @@ class OnboardingContainerNode(
             Routing.ApplicationTree -> ApplicationTree(buildContext)
             Routing.StatefulNode1 -> StatefulNode1(buildContext)
             Routing.StatefulNode2 -> StatefulNode2(buildContext)
-            Routing.RoutingSource -> RoutingSourceTeaser(buildContext)
+            Routing.NavModelTeaser -> NavModelTeaserNode(buildContext)
         }
 
     @Composable
@@ -118,7 +117,7 @@ class OnboardingContainerNode(
                     .weight(1f)
                     .fillMaxWidth(),
                 transitionHandler = rememberSpotlightSlider(clipToBounds = true),
-                routingSource = spotlight
+                navModel = spotlight
             )
             Box(
                 modifier = Modifier

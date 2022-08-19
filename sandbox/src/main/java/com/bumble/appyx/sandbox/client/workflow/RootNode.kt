@@ -16,9 +16,9 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.plugin.Plugin
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.operation.pop
-import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.pop
+import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing
 import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildOne
 import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildTwo
@@ -33,7 +33,7 @@ class RootNode(
     plugins: List<Plugin> = emptyList()
 ) : ParentNode<Routing>(
     buildContext = buildContext,
-    routingSource = backStack,
+    navModel = backStack,
     plugins = plugins
 ) {
 
@@ -79,7 +79,7 @@ class RootNode(
                 }
             }
             Spacer(modifier = Modifier.requiredHeight(8.dp))
-            Children(routingSource = backStack)
+            Children(navModel = backStack)
         }
     }
 }

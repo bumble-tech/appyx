@@ -11,9 +11,9 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 import com.bumble.appyx.debug.Appyx
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.activeRouting
-import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.activeRouting
+import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.testing.ui.rules.AppyxTestRule
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
@@ -122,7 +122,7 @@ class BackPressHandlerTest {
         plugin: Plugin,
     ) : ParentNode<TestParentNode.Routing>(
         buildContext = buildContext,
-        routingSource = backStack,
+        navModel = backStack,
         plugins = listOf(plugin),
     ) {
 
@@ -138,7 +138,7 @@ class BackPressHandlerTest {
 
         @Composable
         override fun View(modifier: Modifier) {
-            Children(routingSource = backStack, modifier = modifier)
+            Children(navModel = backStack, modifier = modifier)
         }
     }
 

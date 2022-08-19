@@ -7,12 +7,12 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.routing.Operation
-import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.RoutingElements
-import com.bumble.appyx.core.routing.RoutingKey
-import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.core.routing.RoutingSourceAdapter
+import com.bumble.appyx.core.navigation.Operation
+import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -75,11 +75,11 @@ open class ChildAwareTestBase {
     }
 
     class Root(
-        val routing: TestRoutingSource<Configuration> = TestRoutingSource(),
+        val routing: TestNavModel<Configuration> = TestNavModel(),
         childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
     ) : ParentNode<Configuration>(
         buildContext = BuildContext.root(null),
-        routingSource = routing,
+        navModel = routing,
         childMode = childMode,
     ) {
         override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
@@ -119,15 +119,15 @@ open class ChildAwareTestBase {
         }
     }
 
-    class TestRoutingSource<Key> : RoutingSource<Key, Int> {
+    class TestNavModel<Key> : NavModel<Key, Int> {
 
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
         private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
         override val elements: StateFlow<RoutingElements<Key, Int>>
             get() = state
-        override val screenState: StateFlow<RoutingSourceAdapter.ScreenState<Key, out Int>>
-            get() = state.map { RoutingSourceAdapter.ScreenState(onScreen = it) }
-                .stateIn(scope, SharingStarted.Eagerly, RoutingSourceAdapter.ScreenState())
+        override val screenState: StateFlow<NavModelAdapter.ScreenState<Key, out Int>>
+            get() = state.map { NavModelAdapter.ScreenState(onScreen = it) }
+                .stateIn(scope, SharingStarted.Eagerly, NavModelAdapter.ScreenState())
 
         override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
             state.update { list ->
