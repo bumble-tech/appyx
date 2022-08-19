@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 class Next<T : Any> : SpotlightOperation<T> {
 
     override fun isApplicable(elements: RoutingElements<T, TransitionState>) =
-        elements.any { it.fromState == INACTIVE_AFTER }
+        elements.any { it.fromState == INACTIVE_AFTER && it.targetState == INACTIVE_AFTER }
 
     override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
         val nextKey =

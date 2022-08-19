@@ -2,6 +2,7 @@
 
 ## Pending changes
 
+- [#91](https://github.com/bumble-tech/appyx/pull/91) – **Fixed**: Spotlight next and previous operations crash fix 
 
 ## 1.0-alpha04
 

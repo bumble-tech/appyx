@@ -12,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 class Previous<T : Any> : SpotlightOperation<T> {
 
     override fun isApplicable(elements: RoutingElements<T, Spotlight.TransitionState>) =
-        elements.any { it.fromState == INACTIVE_BEFORE }
+        elements.any { it.fromState == INACTIVE_BEFORE && it.targetState == INACTIVE_BEFORE }
 
     override fun invoke(
         elements: RoutingElements<T, Spotlight.TransitionState>
