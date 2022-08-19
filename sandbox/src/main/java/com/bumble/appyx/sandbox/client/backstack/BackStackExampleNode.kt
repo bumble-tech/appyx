@@ -32,15 +32,15 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.backpresshandlerstrategies.DontHandleBackPress
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.BackStackElements
-import com.bumble.appyx.routingsource.backstack.operation.newRoot
-import com.bumble.appyx.routingsource.backstack.operation.pop
-import com.bumble.appyx.routingsource.backstack.operation.push
-import com.bumble.appyx.routingsource.backstack.operation.remove
-import com.bumble.appyx.routingsource.backstack.operation.replace
-import com.bumble.appyx.routingsource.backstack.operation.singleTop
+import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.BackStackElements
+import com.bumble.appyx.navmodel.backstack.operation.newRoot
+import com.bumble.appyx.navmodel.backstack.operation.pop
+import com.bumble.appyx.navmodel.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.operation.remove
+import com.bumble.appyx.navmodel.backstack.operation.replace
+import com.bumble.appyx.navmodel.backstack.operation.singleTop
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.NEW_ROOT
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.POP
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.PUSH
@@ -66,7 +66,7 @@ class BackStackExampleNode(
         backPressHandler = DontHandleBackPress(),
     )
 ) : ParentNode<Routing>(
-    routingSource = backStack,
+    navModel = backStack,
     buildContext = buildContext,
 ) {
 
@@ -131,7 +131,7 @@ class BackStackExampleNode(
                     modifier = Modifier
                         .padding(top = 12.dp, bottom = 12.dp)
                         .fillMaxWidth(),
-                    routingSource = backStack,
+                    navModel = backStack,
                     transitionHandler = rememberBackStackExampleTransitionHandler()
                 ) {
                     children<Routing> { child, descriptor ->

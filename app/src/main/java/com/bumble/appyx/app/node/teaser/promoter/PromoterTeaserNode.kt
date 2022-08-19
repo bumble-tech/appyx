@@ -12,10 +12,10 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.node.child.GenericChildNode
-import com.bumble.appyx.routingsource.promoter.routingsource.Promoter
-import com.bumble.appyx.routingsource.promoter.routingsource.operation.addFirst
-import com.bumble.appyx.routingsource.promoter.routingsource.operation.promoteAll
-import com.bumble.appyx.routingsource.promoter.transitionhandler.rememberPromoterTransitionHandler
+import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
+import com.bumble.appyx.navmodel.promoter.navmodel.operation.addFirst
+import com.bumble.appyx.navmodel.promoter.navmodel.operation.promoteAll
+import com.bumble.appyx.navmodel.promoter.transitionhandler.rememberPromoterTransitionHandler
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -32,7 +32,7 @@ class PromoterTeaserNode(
     private val promoter: Promoter<Routing> = Promoter(),
 ) : ParentNode<Routing>(
     buildContext = buildContext,
-    routingSource = promoter
+    navModel = promoter
 ) {
 
     init {
@@ -66,7 +66,7 @@ class PromoterTeaserNode(
         val childSize = remember { 100.dp }
         Children(
             modifier = Modifier.fillMaxSize(),
-            routingSource = promoter,
+            navModel = promoter,
             transitionHandler = rememberPromoterTransitionHandler(childSize) {
                 spring(stiffness = Spring.StiffnessVeryLow / 4)
             }

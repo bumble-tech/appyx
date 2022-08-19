@@ -13,7 +13,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.routingsource.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.BackStack
 import kotlinx.parcelize.Parcelize
 
 class ComposeNavigationContainerNode(
@@ -24,7 +24,7 @@ class ComposeNavigationContainerNode(
         savedStateMap = buildContext.savedStateMap,
     )
 ) : ParentNode<ComposeNavigationContainerNode.Routing>(
-    routingSource = backStack,
+    navModel = backStack,
     buildContext = buildContext,
 ) {
 
@@ -52,7 +52,7 @@ class ComposeNavigationContainerNode(
     override fun View(modifier: Modifier) {
         Children(
             modifier = modifier.fillMaxSize(),
-            routingSource = backStack
+            navModel = backStack
         ) {
             children<Routing> { child ->
                 child()

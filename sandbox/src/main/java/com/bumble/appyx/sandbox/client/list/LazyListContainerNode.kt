@@ -30,8 +30,8 @@ import com.bumble.appyx.core.composable.visibleChildrenAsState
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.source.permanent.PermanentRoutingSource
+import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Column
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Grid
@@ -42,7 +42,7 @@ import kotlinx.parcelize.Parcelize
 
 class LazyListContainerNode constructor(
     buildContext: BuildContext,
-    routingSource: PermanentRoutingSource<Routing> = PermanentRoutingSource(
+    navModel: PermanentNavModel<Routing> = PermanentNavModel(
         routings = buildSet<Routing> {
             repeat(100) {
                 add(Routing(it.toString()))
@@ -50,7 +50,7 @@ class LazyListContainerNode constructor(
         },
         savedStateMap = buildContext.savedStateMap
     )
-) : ParentNode<Routing>(routingSource, buildContext) {
+) : ParentNode<Routing>(navModel, buildContext) {
     @Parcelize
     data class Routing(val name: String) : Parcelable
 
@@ -73,7 +73,7 @@ class LazyListContainerNode constructor(
                 }
             }
 
-            val children by routingSource.visibleChildrenAsState()
+            val children by navModel.visibleChildrenAsState()
             when (selectedMode) {
                 Column -> ColumnExample(children)
                 Row -> RowExample(children)

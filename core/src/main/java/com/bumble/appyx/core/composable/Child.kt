@@ -21,14 +21,14 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.RoutingElements
-import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.core.routing.transition.JumpToEndTransitionHandler
-import com.bumble.appyx.core.routing.transition.TransitionBounds
-import com.bumble.appyx.core.routing.transition.TransitionDescriptor
-import com.bumble.appyx.core.routing.transition.TransitionHandler
-import com.bumble.appyx.core.routing.transition.TransitionParams
+import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.transition.JumpToEndTransitionHandler
+import com.bumble.appyx.core.navigation.transition.TransitionBounds
+import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
+import com.bumble.appyx.core.navigation.transition.TransitionHandler
+import com.bumble.appyx.core.navigation.transition.TransitionParams
 import kotlinx.coroutines.flow.map
 
 @Composable
@@ -50,7 +50,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
         val transitionScope = transitionHandler.handle(
             descriptor = descriptor,
             onTransitionFinished = {
-                routingSource.onTransitionFinished(childEntry.key)
+                navModel.onTransitionFinished(childEntry.key)
             }
         )
 
@@ -134,7 +134,7 @@ private fun <Routing : Any, State> RoutingElement<Routing, State>.createDescript
     )
 
 @Composable
-fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out S>> =
+fun <R, S> NavModel<R, S>?.childrenAsState(): State<RoutingElements<R, out S>> =
     if (this != null) {
         elements.collectAsState()
     } else {
@@ -142,7 +142,7 @@ fun <R, S> RoutingSource<R, S>?.childrenAsState(): State<RoutingElements<R, out 
     }
 
 @Composable
-fun <R, S> RoutingSource<R, S>?.visibleChildrenAsState(): State<RoutingElements<R, out S>> =
+fun <R, S> NavModel<R, S>?.visibleChildrenAsState(): State<RoutingElements<R, out S>> =
     if (this != null) {
         val visibleElementsFlow = remember { screenState.map { it.onScreen } }
         visibleElementsFlow.collectAsState(emptyList())

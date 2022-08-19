@@ -4,7 +4,7 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performClick
-import com.bumble.appyx.testing.ui.utils.DummyRoutingSource
+import com.bumble.appyx.testing.ui.utils.DummyNavModel
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.client.test.appyxParentViewRule
@@ -54,7 +54,7 @@ internal class MviCoreExampleViewTest {
 
     private fun createView() = MviCoreExampleViewImpl(
         title = title,
-        backStack = DummyRoutingSource()
+        backStack = DummyNavModel()
     )
 
 }

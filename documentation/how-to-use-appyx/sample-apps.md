@@ -8,7 +8,7 @@
 
 ## Showcase app
 
-The `:app` module showcases **Appyx** itself with multiple levels of navigation, routing source demos, etc. See it in action, then check the related code how it works.
+The `:app` module showcases **Appyx** itself with multiple levels of navigation, NavModel demos, etc. See it in action, then check the related code how it works.
 
 ## Appyx + Jetpack Compose Navigation example 
 

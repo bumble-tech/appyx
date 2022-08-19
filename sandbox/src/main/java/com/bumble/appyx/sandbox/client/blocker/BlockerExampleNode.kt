@@ -24,8 +24,8 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.routingsource.backstack.BackStack
-import com.bumble.appyx.routingsource.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
@@ -39,7 +39,7 @@ class BlockerExampleNode(
     private val interactor: BlockerExampleBackPressInteractor = BlockerExampleBackPressInteractor(),
 ) : ParentNode<BlockerExampleNode.Child>(
     buildContext = buildContext,
-    routingSource = backStack,
+    navModel = backStack,
     plugins = listOf(interactor),
 ) {
 
@@ -87,7 +87,7 @@ class BlockerExampleNode(
                 modifier = Modifier
                     .padding(top = 12.dp, bottom = 12.dp)
                     .fillMaxWidth(),
-                routingSource = backStack,
+                navModel = backStack,
             )
         }
     }

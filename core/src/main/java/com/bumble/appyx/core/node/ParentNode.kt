@@ -25,13 +25,13 @@ import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.plugin.Plugin
-import com.bumble.appyx.core.routing.Resolver
-import com.bumble.appyx.core.routing.RoutingKey
-import com.bumble.appyx.core.routing.RoutingSource
-import com.bumble.appyx.core.routing.isTransitioning
-import com.bumble.appyx.core.routing.source.combined.plus
-import com.bumble.appyx.core.routing.source.permanent.PermanentRoutingSource
-import com.bumble.appyx.core.routing.source.permanent.operation.add
+import com.bumble.appyx.core.navigation.Resolver
+import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.isTransitioning
+import com.bumble.appyx.core.navigation.model.combined.plus
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
+import com.bumble.appyx.core.navigation.model.permanent.operation.add
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlin.coroutines.resume
@@ -48,7 +48,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 
 abstract class ParentNode<Routing : Any>(
-    routingSource: RoutingSource<Routing, *>,
+    navModel: NavModel<Routing, *>,
     private val buildContext: BuildContext,
     view: ParentNodeView<Routing> = EmptyParentNodeView(),
     private val childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
@@ -57,14 +57,14 @@ abstract class ParentNode<Routing : Any>(
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + routingSource + childAware + view
+    plugins = plugins + navModel + childAware + view
 ), Resolver<Routing> {
 
-    private val permanentRoutingSource = PermanentRoutingSource<Routing>(
+    private val permanentNavModel = PermanentNavModel<Routing>(
         savedStateMap = buildContext.savedStateMap,
-        key = KEY_PERMANENT_ROUTING_SOURCE,
+        key = KEY_PERMANENT_NAV_MODEL,
     )
-    val routingSource: RoutingSource<Routing, *> = permanentRoutingSource + routingSource
+    val navModel: NavModel<Routing, *> = permanentNavModel + navModel
 
     // It is impossible to restore _children directly because information for resolver is not ready yet
     private var delayedChildRestoration: SavedStateMap? = buildContext.savedStateMap
@@ -74,7 +74,7 @@ abstract class ParentNode<Routing : Any>(
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
         lifecycle = lifecycle,
-        routingSource = this.routingSource,
+        navModel = this.navModel,
         children = children,
     )
 
@@ -87,20 +87,20 @@ abstract class ParentNode<Routing : Any>(
             _children.update { restoredMap }
             delayedChildRestoration = null
         }
-        syncChildrenWithRoutingSource()
+        syncChildrenWithNavModel()
         childNodeLifecycleManager.launch()
         manageTransitions()
     }
 
-    private fun syncChildrenWithRoutingSource() {
+    private fun syncChildrenWithNavModel() {
         lifecycle.coroutineScope.launch {
-            routingSource.elements.collect { elements ->
+            navModel.elements.collect { elements ->
                 _children.update { map ->
-                    val routingSourceKeys = elements
+                    val navModelKeys = elements
                         .mapTo(HashSet(elements.size, 1f)) { element -> element.key }
                     val localKeys = map.keys
-                    val newKeys = routingSourceKeys - localKeys
-                    val removedKeys = localKeys - routingSourceKeys
+                    val newKeys = navModelKeys - localKeys
+                    val removedKeys = localKeys - navModelKeys
                     val mutableMap = map.toMutableMap()
                     newKeys.forEach { key ->
                         mutableMap[key] =
@@ -160,9 +160,9 @@ abstract class ParentNode<Routing : Any>(
     ) {
         var child by remember { mutableStateOf<ChildEntry.Eager<*>?>(null) }
         LaunchedEffect(routing) {
-            permanentRoutingSource.elements.collect { elements ->
+            permanentNavModel.elements.collect { elements ->
                 val routingKey = elements.find { it.key.routing == routing }?.key
-                    ?: RoutingKey(routing).also { permanentRoutingSource.add(it) }
+                    ?: RoutingKey(routing).also { permanentNavModel.add(it) }
                 child = childOrCreate(routingKey)
             }
         }
@@ -178,7 +178,7 @@ abstract class ParentNode<Routing : Any>(
     }
 
     /**
-     * [RoutingSource.onTransitionFinished] is invoked by Composable function when animation is finished.
+     * [NavModel.onTransitionFinished] is invoked by Composable function when animation is finished.
      * When application is in background, recomposition is paused, so we never invoke the callback.
      * Because we do not care about animations in background and still want to have
      * business-logic-driven routing in background, we need to instantly invoke the callback.
@@ -200,10 +200,10 @@ abstract class ParentNode<Routing : Any>(
     private fun manageTransitionsInBackground() {
         if (transitionsInBackgroundJob == null) {
             transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
-                routingSource.elements.collect { elements ->
+                navModel.elements.collect { elements ->
                     elements
                         .mapNotNull { if (it.isTransitioning) it.key else null }
-                        .also { routingSource.onTransitionFinished(it) }
+                        .also { navModel.onTransitionFinished(it) }
                 }
             }
         }
@@ -229,7 +229,7 @@ abstract class ParentNode<Routing : Any>(
     ): T = withContext(lifecycleScope.coroutineContext) {
         action()
 
-        // after executing action waiting for the children to sync with routing source and
+        // after executing action waiting for the children to sync with navModel and
         // throw an exception after short timeout if desired child was not found
         val result = withTimeoutOrNull(timeout) {
             waitForChildAttached<T>()
@@ -270,8 +270,8 @@ abstract class ParentNode<Routing : Any>(
     @CallSuper
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        // permanentRoutingSource is not provided as a plugin, store manually
-        permanentRoutingSource.saveInstanceState(state)
+        // permanentNavModel is not provided as a plugin, store manually
+        permanentNavModel.saveInstanceState(state)
         saveChildrenState(state)
     }
 
@@ -329,7 +329,7 @@ abstract class ParentNode<Routing : Any>(
     companion object {
         const val ATTACH_WORKFLOW_SYNC_TIMEOUT = 5000L
         const val KEY_CHILDREN_STATE = "ChildrenState"
-        const val KEY_PERMANENT_ROUTING_SOURCE = "PermanentRoutingSource"
+        const val KEY_PERMANENT_NAV_MODEL = "PermanentNavModel"
     }
 
     private class PermanentChildRender(private val node: Node) : ChildRenderer {

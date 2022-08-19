@@ -9,12 +9,12 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.routing.BaseRoutingSource
-import com.bumble.appyx.core.routing.Operation
-import com.bumble.appyx.core.routing.RoutingElement
-import com.bumble.appyx.core.routing.RoutingElements
-import com.bumble.appyx.core.routing.RoutingKey
-import com.bumble.appyx.core.routing.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.navigation.BaseNavModel
+import com.bumble.appyx.core.navigation.Operation
+import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -57,7 +57,7 @@ class ChildLifecycleTest {
     }
 
     @Test
-    fun `child is destroyed when is not represented in routing source anymore`() {
+    fun `child is destroyed when is not represented in navModel anymore`() {
         val parent = Parent(BuildContext.root(null)).build()
         parent.routing.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
@@ -125,7 +125,7 @@ class ChildLifecycleTest {
 
     // region Setup
 
-    private class RoutingImpl : BaseRoutingSource<String, Boolean>(
+    private class RoutingImpl : BaseNavModel<String, Boolean>(
         screenResolver = object : OnScreenStateResolver<Boolean> {
             override fun isOnScreen(state: Boolean): Boolean = state
         },
@@ -173,7 +173,7 @@ class ChildLifecycleTest {
         val routing: RoutingImpl = RoutingImpl(),
     ) : ParentNode<String>(
         buildContext = buildContext,
-        routingSource = routing,
+        navModel = routing,
     ) {
         override fun resolve(routing: String, buildContext: BuildContext): Node =
             Child(routing, buildContext)

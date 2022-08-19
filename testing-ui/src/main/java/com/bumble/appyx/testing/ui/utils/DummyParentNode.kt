@@ -5,7 +5,7 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 
 class DummyParentNode<Routing : Any> : ParentNode<Routing>(
-    routingSource = DummyRoutingSource<Routing, Unit>(),
+    navModel = DummyNavModel<Routing, Unit>(),
     buildContext = BuildContext.root(savedStateMap = null)
 ) {
     override fun resolve(routing: Routing, buildContext: BuildContext) = node(buildContext) { }

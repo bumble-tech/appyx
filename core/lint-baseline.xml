@@ -40,7 +40,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/routingsource/backstack/transitionhandler/BackStackFader.kt"
+            file="src/main/java/com/bumble/appyx/navmodel/backstack/transitionhandler/BackStackFader.kt"
             line="21"
             column="18"/>
     </issue>
@@ -51,7 +51,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/routingsource/backstack/transitionhandler/BackStackSlider.kt"
+            file="src/main/java/com/bumble/appyx/navmodel/backstack/transitionhandler/BackStackSlider.kt"
             line="36"
             column="18"/>
     </issue>
@@ -62,7 +62,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/core/routing/transition/CombinedHandler.kt"
+            file="src/main/java/com/bumble/appyx/core/navigation/transition/CombinedHandler.kt"
             line="12"
             column="18"/>
     </issue>
@@ -73,7 +73,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/core/routing/transition/JumpToEndTransitionHandler.kt"
+            file="src/main/java/com/bumble/appyx/core/navigation/transition/JumpToEndTransitionHandler.kt"
             line="9"
             column="18"/>
     </issue>
@@ -84,7 +84,7 @@
         errorLine1="    abstract fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/core/routing/transition/ModifierTransitionHandler.kt"
+            file="src/main/java/com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler.kt"
             line="44"
             column="18"/>
     </issue>
@@ -95,7 +95,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotlightFader.kt"
+            file="src/main/java/com/bumble/appyx/navmodel/spotlight/transitionhandler/SpotlightFader.kt"
             line="22"
             column="18"/>
     </issue>
@@ -106,7 +106,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/routingsource/spotlight/transitionhandler/SpotlightSlider.kt"
+            file="src/main/java/com/bumble/appyx/navmodel/spotlight/transitionhandler/SpotlightSlider.kt"
             line="27"
             column="18"/>
     </issue>
