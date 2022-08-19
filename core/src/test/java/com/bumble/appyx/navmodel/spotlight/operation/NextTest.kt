@@ -5,7 +5,8 @@ import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.INACTIVE_AF
 import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
 import com.bumble.appyx.navmodel.spotlight.operation.Routing.Routing1
 import com.bumble.appyx.navmodel.spotlight.spotlightElement
-import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 internal class NextTest {
@@ -27,7 +28,7 @@ internal class NextTest {
 
         val applicable = operation.isApplicable(elements)
 
-        assertEquals(applicable, false)
+        assertFalse(applicable)
     }
 
     @Test
@@ -47,7 +48,7 @@ internal class NextTest {
 
         val applicable = operation.isApplicable(elements)
 
-        assertEquals(applicable, true)
+        assertTrue(applicable)
     }
 
 }
