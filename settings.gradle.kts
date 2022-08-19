@@ -19,16 +19,16 @@ enableFeaturePreview("VERSION_CATALOGS")
 include(
     ":app",
     ":core",
+    ":customisations",
     ":sandbox",
-    ":interop-rx2",
     ":interop-ribs",
+    ":interop-rx2",
+    ":navmodel-addons",
+    ":samples:navigation-compose",
     ":testing-junit4",
     ":testing-junit5",
     ":testing-ui",
     ":testing-unit-common",
-    ":routing-source-addons",
-    ":customisations",
-    ":samples:navigation-compose",
 )
 
 includeBuild("plugins")
