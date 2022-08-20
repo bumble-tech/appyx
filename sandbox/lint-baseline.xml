@@ -7,7 +7,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/sandbox/client/backstack/BackStackExampleTransitionHandler.kt"
+            file="src/main/kotlin/com/bumble/appyx/sandbox/client/backstack/BackStackExampleTransitionHandler.kt"
             line="20"
             column="18"/>
     </issue>

@@ -7,7 +7,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/navmodel/modal/ModalTransitionHandler.kt"
+            file="src/main/kotlin/com/bumble/appyx/navmodel/modal/ModalTransitionHandler.kt"
             line="26"
             column="18"/>
     </issue>
@@ -18,7 +18,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/navmodel/promoter/transitionhandler/PromoterTransitionHandler.kt"
+            file="src/main/kotlin/com/bumble/appyx/navmodel/promoter/transitionhandler/PromoterTransitionHandler.kt"
             line="85"
             column="18"/>
     </issue>
@@ -29,7 +29,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/navmodel/tiles/transitionhandler/TilesTransitionHandler.kt"
+            file="src/main/kotlin/com/bumble/appyx/navmodel/tiles/transitionhandler/TilesTransitionHandler.kt"
             line="25"
             column="18"/>
     </issue>
