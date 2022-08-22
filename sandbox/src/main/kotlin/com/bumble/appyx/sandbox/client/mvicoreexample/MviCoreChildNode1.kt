@@ -24,7 +24,7 @@ class MviCoreChildNode1(
     Connectable<Input, Output> by connector {
 
     sealed class Input {
-        object ExampleInput: Input()
+        object ExampleInput1: Input()
     }
 
     sealed class Output {

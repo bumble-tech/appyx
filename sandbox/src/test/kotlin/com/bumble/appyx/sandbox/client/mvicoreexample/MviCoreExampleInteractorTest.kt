@@ -71,7 +71,7 @@ class MviCoreExampleInteractorTest {
         interactorTestHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             parentNodeConnector.input.accept(ParentInput.ExampleInput)
 
-            child1InputTestObserver.assertValue(Child1Input.ExampleInput)
+            child1InputTestObserver.assertValue(Child1Input.ExampleInput1)
             child2InputTestObserver.assertNoValues()
         }
     }
@@ -85,7 +85,7 @@ class MviCoreExampleInteractorTest {
         interactorTestHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             parentNodeConnector.input.accept(ParentInput.ExampleInput)
 
-            child2InputTestObserver.assertValue(Child2Input.ExampleInput)
+            child2InputTestObserver.assertValue(Child2Input.ExampleInput2)
             child1InputTestObserver.assertNoValues()
         }
     }
