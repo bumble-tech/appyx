@@ -16,6 +16,8 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child2
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.EventsToWish
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.InputToInputChild1
+import com.bumble.appyx.sandbox.client.mvicoreexample.feature.InputToInputChild2
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
@@ -52,8 +54,14 @@ class MviCoreExampleInteractor(
         whenChildAttached { _: Lifecycle, child: Node ->
             child.lifecycle.createDestroy {
                 when (child) {
-                    is MviCoreChildNode1 -> bind(child.output to feature using OutputChild1ToWish)
-                    is MviCoreChildNode2 -> bind(child.output to feature using OutputChild2ToWish)
+                    is MviCoreChildNode1 -> {
+                        bind(child.output to feature using OutputChild1ToWish)
+                        bind(node.input to child.input using InputToInputChild1)
+                    }
+                    is MviCoreChildNode2 -> {
+                        bind(child.output to feature using OutputChild2ToWish)
+                        bind(node.input to child.input using InputToInputChild2)
+                    }
                 }
             }
         }

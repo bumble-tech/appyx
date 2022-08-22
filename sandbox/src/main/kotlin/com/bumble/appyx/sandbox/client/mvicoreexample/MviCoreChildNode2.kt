@@ -22,7 +22,9 @@ class MviCoreChildNode2(
     private val connector: NodeConnector<Input, Output> = NodeConnector()
 ) : Node(buildContext), Connectable<Input, Output> by connector {
 
-    sealed class Input
+    sealed class Input {
+        object ExampleInput: Input()
+    }
 
     sealed class Output {
         data class Result(val data: String) : Output()
