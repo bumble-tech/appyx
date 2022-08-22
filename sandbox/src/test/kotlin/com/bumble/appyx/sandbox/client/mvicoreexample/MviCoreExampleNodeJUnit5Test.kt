@@ -1,7 +1,9 @@
 package com.bumble.appyx.sandbox.client.mvicoreexample
 
 import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.connectable.rx2.NodeConnector
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
@@ -10,13 +12,18 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeat
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.Wish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
 import com.bumble.appyx.sandbox.stub.FeatureStub
-import com.bumble.appyx.testing.unit.common.helper.parentNodeTestHelper
 import com.bumble.appyx.sandbox.stub.NodeViewStub
 import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
 import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
+import com.bumble.appyx.testing.unit.common.helper.ParentNodeTestHelper
+import com.bumble.appyx.testing.unit.common.helper.parentNodeTestHelper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode1.Input as Child1Input
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode1.Output as Child1Output
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode2.Input as Child2Input
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode2.Output as Child2Output
 
 @ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class MviCoreExampleNodeJUnit5Test {
@@ -38,7 +45,11 @@ class MviCoreExampleNodeJUnit5Test {
         backStack = backStack
     )
 
+    private val child1NodeConnector: NodeConnector<Child1Input, Child1Output> = NodeConnector()
+    private val child2NodeConnector: NodeConnector<Child2Input, Child2Output> = NodeConnector()
+
     private lateinit var node: MviCoreExampleNode
+    private lateinit var testHelper: ParentNodeTestHelper<Routing, ParentNode<Routing>>
 
     @BeforeEach
     fun setUp() {
@@ -46,23 +57,24 @@ class MviCoreExampleNodeJUnit5Test {
             view = view,
             buildContext = BuildContext.root(savedStateMap = null),
             plugins = listOf(interactor),
-            backStack = backStack
+            backStack = backStack,
+            child1NodeConnector = child1NodeConnector,
+            child2NodeConnector = child2NodeConnector,
         )
+
+        testHelper = node.parentNodeTestHelper()
     }
 
     @Test
     fun `given node is created then first child is attached`() {
-        node.parentNodeTestHelper().also {
-            it.assertChildHasLifecycle(
-                routing = Routing.Child1,
-                state = Lifecycle.State.CREATED
-            )
-        }
+        testHelper.assertChildHasLifecycle(
+            routing = Routing.Child1,
+            state = Lifecycle.State.CREATED,
+        )
     }
 
     @Test
     fun `given node is create when navigating to child 2 then child 2 is attached`() {
-        val testHelper = node.parentNodeTestHelper()
         testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
             view.eventsRelay.accept(Event.SwitchChildClicked)
 
@@ -72,4 +84,42 @@ class MviCoreExampleNodeJUnit5Test {
             )
         }
     }
+
+    @Test
+    fun `when load data clicked then load data wish is received`() {
+        val testObserver = feature.wishesRelay.test()
+        testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
+            view.eventsRelay.accept(Event.LoadDataClicked)
+
+            testObserver.assertValue(Wish.LoadData)
+        }
+    }
+
+    @Test
+    fun `given child 1 is set when child 1 outputs a result then wish is received`() {
+        val testObserver = feature.wishesRelay.test()
+
+        testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
+            child1NodeConnector.output.accept(MviCoreChildNode1.Output.Result("hello"))
+
+            testObserver.assertValue(Wish.ChildInput("hello"))
+        }
+    }
+
+    @Test
+    fun `given feature sends loading then view model is loading`() {
+        val testObserver = view.viewModelRelay.test()
+
+        testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
+            feature.statesRelay.accept(State.Loading)
+
+            testObserver.assertValueSequence(
+                listOf(
+                    ViewModel.InitialState("Test Initial State"),
+                    ViewModel.Loading
+                )
+            )
+        }
+    }
+
 }
