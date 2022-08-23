@@ -17,7 +17,10 @@ interface PermissionRequesterHost {
     class ActivityHost(private val activity: Activity) : PermissionRequesterHost {
 
         override fun isGranted(permission: String): Boolean =
-            ContextCompat.checkSelfPermission(activity, permission) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(
+                activity,
+                permission
+            ) == PackageManager.PERMISSION_GRANTED
 
         override fun shouldShowRationale(permission: String): Boolean =
             ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
@@ -31,7 +34,8 @@ interface PermissionRequesterHost {
     class FragmentHost(private val fragment: Fragment) : PermissionRequesterHost {
 
         override fun isGranted(permission: String): Boolean =
-            ContextCompat.checkSelfPermission(fragment.requireContext(), permission) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(fragment.requireContext(), permission) ==
+                    PackageManager.PERMISSION_GRANTED
 
         override fun shouldShowRationale(permission: String): Boolean =
             fragment.shouldShowRequestPermissionRationale(permission)

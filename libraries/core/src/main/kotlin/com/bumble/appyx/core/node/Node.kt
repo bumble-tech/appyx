@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.BuildConfig
@@ -92,7 +91,7 @@ abstract class Node(
             override fun onCreate(owner: LifecycleOwner) {
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
             }
-        });
+        })
     }
 
     protected suspend inline fun <reified T : Node> executeWorkflow(

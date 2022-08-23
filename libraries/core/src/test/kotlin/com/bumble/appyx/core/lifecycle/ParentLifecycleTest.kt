@@ -121,12 +121,14 @@ class ParentLifecycleTest {
 
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
     }
 
     private class Child(buildContext: BuildContext) : Node(buildContext) {
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
     }
 

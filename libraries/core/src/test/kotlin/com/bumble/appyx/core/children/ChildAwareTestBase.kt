@@ -89,6 +89,7 @@ open class ChildAwareTestBase {
 
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
 
         fun <T : Node> whenChildAttachedTest(child: KClass<T>, callback: ChildCallback<T>) {
