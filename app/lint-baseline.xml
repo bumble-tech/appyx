@@ -7,7 +7,7 @@
         errorLine1="    override fun createModifier("
         errorLine2="                 ~~~~~~~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/app/node/teaser/backstack/transitionhandler/CustomBackStackTransitionHandler.kt"
+            file="src/main/kotlin/com/bumble/appyx/app/node/teaser/backstack/transitionhandler/CustomBackStackTransitionHandler.kt"
             line="25"
             column="18"/>
     </issue>
@@ -18,7 +18,7 @@
         errorLine1="    composed("
         errorLine2="    ~~~~~~~~">
         <location
-            file="src/main/java/com/bumble/appyx/app/composable/DashedBorder.kt"
+            file="src/main/kotlin/com/bumble/appyx/app/composable/DashedBorder.kt"
             line="84"
             column="5"/>
     </issue>

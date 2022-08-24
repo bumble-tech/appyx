@@ -18,7 +18,7 @@ Model-driven navigation for Jetpack Compose
 
 Using Appyx you gain navigation superpowers in addition to screen-to-screen navigation:  
 
-- **Break down screen boundaries** – Using Routing sources you can navigate inside the screen as well as between them
+- **Break down screen boundaries** – Using NavModels you can navigate inside the screen as well as between them
 - **Make your navigation composable** – Navigate whole scopes of your application 
 
 Using a model-driven approach, navigation states are yours to define – Appyx makes it happen with any animation you can represent using Compose `Modifiers`. Back stacks, card stacks, view pagers are just the beginning:

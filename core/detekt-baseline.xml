@@ -13,9 +13,9 @@
     <ID>EmptyFunctionBlock:SavesInstanceStateTest.kt$SavesInstanceStateTest.&lt;no name provided>${ }</ID>
     <ID>EmptyFunctionBlock:UpNavigationTest.kt$UpNavigationTest.Child${ }</ID>
     <ID>EmptyFunctionBlock:UpNavigationTest.kt$UpNavigationTest.Parent${ }</ID>
-    <ID>ForbiddenComment:BaseRoutingSource.kt$BaseRoutingSource$// TODO: think about how we can avoid keeping unnecessary object after state initialization</ID>
+    <ID>ForbiddenComment:BaseNavModel.kt$BaseNavModel$// TODO: think about how we can avoid keeping unnecessary object after state initialization</ID>
     <ID>ForbiddenComment:ChildAwareImplTest.kt$ChildAwareImplTest$// TODO: test different child lifecycle combinations (except ones MinimumCombinedLifecycle already tested)</ID>
-    <ID>ForbiddenComment:ParentLifecycleTest.kt$ParentLifecycleTest$// TODO: Make it BaseRoutingSource test</ID>
+    <ID>ForbiddenComment:ParentLifecycleTest.kt$ParentLifecycleTest$// TODO: Make it BaseNavModel test</ID>
     <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$0x0000FFFF</ID>
     <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$4</ID>
     <ID>MaxLineLength:MutableSavedStateMapImpl.kt$MutableSavedStateMapImpl$check(!lock) { "This MutableSavedStateMap has already dumped its state, it is meaningless to write anything anymore" }</ID>

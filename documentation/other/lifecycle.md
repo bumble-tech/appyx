@@ -13,7 +13,7 @@ When `Nodes` are removed completely from their parents, they'll be `DESTROYED`
 ## Lifecycle changes
 The lifecycle state can be affected by:
 
-- The routing source of the parent (adding or removing child `Nodes`)
+- The NavModel of the parent (adding or removing child `Nodes`)
 - The parent's lifecycle state capping its children (transitive in the tree)
 - Android lifecycle (Activity) capping the whole tree
 
@@ -23,7 +23,7 @@ An example demonstrating the above:
 
 <img src="https://i.imgur.com/WlcQHqV.gif" width="200">
 
-Note that routing sources might have their slight differences (e.g. whether their operations remove a `Node` only from the view, or completely destroy it).
+Note that NavModels might have their slight differences (e.g. whether their operations remove a `Node` only from the view, or completely destroy it).
 
 In the case of the back stack:
 
