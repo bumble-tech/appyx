@@ -26,10 +26,10 @@ import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
-inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
+inline fun <reified Routing : Any, State : Any> ParentNode<Routing>.Children(
     navModel: NavModel<Routing, State>,
     modifier: Modifier = Modifier,
-    transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
+    transitionHandler: TransitionHandler<Routing, State> = remember { JumpToEndTransitionHandler() },
     noinline block: @Composable ChildrenTransitionScope<Routing, State>.() -> Unit = {
         children<Routing> { child ->
             child()

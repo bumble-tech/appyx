@@ -3,20 +3,8 @@ package com.bumble.appyx.app.node.onboarding
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -31,11 +19,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing
-import com.bumble.appyx.app.node.onboarding.screen.ApplicationTree
-import com.bumble.appyx.app.node.onboarding.screen.IntroScreen
-import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode1
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode2
+import com.bumble.appyx.app.node.onboarding.screen.*
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.app.ui.appyx_dark
 import com.bumble.appyx.core.composable.Children
@@ -43,10 +27,12 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
+import com.bumble.appyx.core.navigation.gesture.swipe.swipeNavigationModifier
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.spotlight.Spotlight
 import com.bumble.appyx.navmodel.spotlight.backpresshandler.GoToPrevious
+import com.bumble.appyx.navmodel.spotlight.gesturehandler.rememberSpotlightSwipeGestureHandler
 import com.bumble.appyx.navmodel.spotlight.hasNext
 import com.bumble.appyx.navmodel.spotlight.hasPrevious
 import com.bumble.appyx.navmodel.spotlight.operation.next
@@ -108,6 +94,7 @@ class OnboardingContainerNode(
         val previousVisibility = animateFloatAsState(
             targetValue = if (hasPrevious.value) 1f else 0f
         )
+
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -115,6 +102,7 @@ class OnboardingContainerNode(
             Children(
                 modifier = Modifier
                     .weight(1f)
+                    .swipeNavigationModifier(rememberSpotlightSwipeGestureHandler(spotlight))
                     .fillMaxWidth(),
                 transitionHandler = rememberSpotlightSlider(clipToBounds = true),
                 navModel = spotlight
