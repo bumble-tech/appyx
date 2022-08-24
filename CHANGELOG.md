@@ -2,6 +2,8 @@
 
 ## Pending changes
 
+- [#99](https://github.com/bumble-tech/appyx/pull/99) – **Added**: Extension to convert Source<T> to Observable<T>
+
 ## 1.0-alpha05 – 19 Aug 2022
 
 - [#83](https://github.com/bumble-tech/appyx/issues/83) – **Breaking change**: `RoutingSource` renamed to `NavModel`. All subclasses, fields, package names, etc., any mentions of the word follow suit.
