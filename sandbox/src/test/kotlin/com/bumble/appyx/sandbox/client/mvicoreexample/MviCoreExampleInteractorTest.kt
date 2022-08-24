@@ -2,7 +2,7 @@ package com.bumble.appyx.sandbox.client.mvicoreexample
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.connectable.rx2.NodeConnector
+import com.bumble.appyx.interop.rx2.connectable.NodeConnector
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event

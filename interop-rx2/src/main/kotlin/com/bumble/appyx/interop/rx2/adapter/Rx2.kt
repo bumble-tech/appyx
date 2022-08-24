@@ -1,4 +1,4 @@
-package com.bumble.appyx.connectable.rx2.adapter
+package com.bumble.appyx.interop.rx2.adapter
 
 import com.bumble.appyx.core.minimal.reactive.Source
 import io.reactivex.Observable

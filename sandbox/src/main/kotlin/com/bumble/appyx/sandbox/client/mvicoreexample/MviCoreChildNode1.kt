@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.bumble.appyx.connectable.rx2.Connectable
-import com.bumble.appyx.connectable.rx2.NodeConnector
+import com.bumble.appyx.interop.rx2.connectable.Connectable
+import com.bumble.appyx.interop.rx2.connectable.NodeConnector
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode1.Input

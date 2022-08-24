@@ -1,11 +1,11 @@
-package com.bumble.appyx.connectable.rx2
+package com.bumble.appyx.interop.rx2.connectable
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.LifecycleObserver
-import com.bumble.appyx.connectable.rx2.Rx2NodeConnectorTest.Output.Output1
-import com.bumble.appyx.connectable.rx2.Rx2NodeConnectorTest.Output.Output2
-import com.bumble.appyx.connectable.rx2.Rx2NodeConnectorTest.Output.Output3
+import com.bumble.appyx.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output1
+import com.bumble.appyx.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output2
+import com.bumble.appyx.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output3
 import io.reactivex.observers.TestObserver
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
