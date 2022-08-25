@@ -18,7 +18,7 @@ Model-driven navigation for Jetpack Compose
 
 Using Appyx you gain navigation superpowers in addition to screen-to-screen navigation:  
 
-- **Break down screen boundaries** – Using NavModels you can navigate inside the screen as well as between them
+- **Break down screen boundaries** – Using `NavModels` you can navigate inside the screen as well as between them
 - **Make your navigation composable** – Navigate whole scopes of your application 
 
 Using a model-driven approach, navigation states are yours to define – Appyx makes it happen with any animation you can represent using Compose `Modifiers`. Back stacks, card stacks, view pagers are just the beginning:
@@ -50,3 +50,12 @@ See the [Downloads page](releases/downloads.md).
 
 1. [Appyx is released! (1.0-alpha02)](https://medium.com/bumble-tech/appyx-is-released-1-0-alpha02-41a27ad3b0cd)
 2. [Appyx vs Jetpack Compose Navigation](https://medium.com/bumble-tech/appyx-vs-jetpack-compose-navigation-b91bd23369f2)
+
+
+## News & announcements
+
+This project page gets updated with new sections regularly, make sure to visit back from time to time. If you'd like to hear updates about new features and articles related to Appyx, you can follow us on these accounts: 
+
+- [@ZsoltKocsi](https://twitter.com/ZsoltKocsi)
+- [@andreyk_nn](https://twitter.com/andreyk_nn)
+- (more to be added)
