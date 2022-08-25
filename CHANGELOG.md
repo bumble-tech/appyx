@@ -4,6 +4,7 @@
 
 - [#96](https://github.com/bumble-tech/appyx/pull/96) – **Breaking change**: Removed `InteractorTestHelper`. Please use Node tests instead of Interactor tests.
 - [#99](https://github.com/bumble-tech/appyx/pull/99) – **Added**: Source<T>.rx2() to convert Source<T> to io.reactivex.Observable<T>
+- [#99](https://github.com/bumble-tech/appyx/pull/99) – **Breaking change**: Modified package of `NodeConnector` and `Connectable`
 
 ## 1.0-alpha05 – 19 Aug 2022
 
