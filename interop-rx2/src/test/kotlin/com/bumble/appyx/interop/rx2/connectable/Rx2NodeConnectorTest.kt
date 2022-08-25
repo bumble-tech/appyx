@@ -1,8 +1,11 @@
 package com.bumble.appyx.interop.rx2.connectable
 
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.CREATED
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
 import com.bumble.appyx.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output1
 import com.bumble.appyx.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output2
 import com.bumble.appyx.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output3
@@ -22,15 +25,23 @@ class Rx2NodeConnectorTest {
     private val secondTestObserver = TestObserver<Output>()
     private var lifecycleState = CREATED
     private val lifecycle = object : Lifecycle() {
-        override fun addObserver(observer: LifecycleObserver) {
-            // Deliberately empty
+
+        private val lifecycleOwner = object : LifecycleOwner {
+            override fun getLifecycle(): Lifecycle = LifecycleRegistry(this)
         }
+
+        override fun addObserver(observer: LifecycleObserver) {
+            if (lifecycleState == CREATED) {
+                (observer as DefaultLifecycleObserver).onCreate(lifecycleOwner)
+            }
+        }
+
         override fun removeObserver(observer: LifecycleObserver) {
             // Deliberately empty
         }
+
         override fun getCurrentState() = lifecycleState
     }
-
 
     sealed class Output {
         object Output1 : Output()
@@ -55,7 +66,7 @@ class Rx2NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN and output is accepted before onAttached WHEN nodeConnector onAttached is called THEN accepted output reach the observer`() {
+    fun `GIVEN an output is accepted before onAttached WHEN nodeConnector onAttached is called THEN accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
 
