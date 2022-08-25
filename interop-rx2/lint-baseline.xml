@@ -7,7 +7,7 @@
         errorLine1="        intake.subscribe { exhaust.accept(it) }"
         errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
-            file="src/main/kotlin/com/bumble/appyx/connectable/rx2/NodeConnector.kt"
+            file="src/main/kotlin/com/bumble/appyx/interop/rx2/connectable/NodeConnector.kt"
             line="58"
             column="9"/>
     </issue>
