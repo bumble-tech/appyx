@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-- [#99](https://github.com/bumble-tech/appyx/pull/99) – **Added**: Extension to convert Source<T> to Observable<T>
+- [#99](https://github.com/bumble-tech/appyx/pull/99) – **Added**: Source<T>.rx2() to convert Source<T> to io.reactivex.Observable<T>
 
 ## 1.0-alpha05 – 19 Aug 2022
 
