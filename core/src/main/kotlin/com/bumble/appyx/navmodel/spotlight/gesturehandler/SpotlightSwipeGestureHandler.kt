@@ -9,7 +9,7 @@ import com.bumble.appyx.navmodel.spotlight.operation.next
 import com.bumble.appyx.navmodel.spotlight.operation.previous
 
 class SpotlightSwipeGestureHandler<Routing : Any>(
-    val spotlight: Spotlight<Routing>
+    private val spotlight: Spotlight<Routing>
 ) : GestureHandler<SwipeGesture> {
 
     override fun handleGesture(gesture: SwipeGesture) {
