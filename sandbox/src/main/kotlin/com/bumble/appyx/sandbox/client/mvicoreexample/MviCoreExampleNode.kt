@@ -1,12 +1,12 @@
 package com.bumble.appyx.sandbox.client.mvicoreexample
 
 import android.os.Parcelable
-import com.bumble.appyx.connectable.rx2.NodeConnector
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.ParentNodeView
 import com.bumble.appyx.core.plugin.Plugin
+import com.bumble.appyx.interop.rx2.connectable.NodeConnector
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import kotlinx.parcelize.Parcelize
