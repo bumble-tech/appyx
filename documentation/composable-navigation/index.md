@@ -1,13 +1,18 @@
 # Composable navigation
 
-```Nodes``` are the main structural element of an Appyx tree. 
+[NavModels](../navmodel/index.md) in Appyx are composable. 
 
-[NavModels](../navmodel/index.md) is how we add dynamism to that tree. As a single `NavModel` won't be enough for the whole of your whole app, you'll likely use many. 
-
-`NavModels` are composable, making your app's business logic also composable.
+As a single `NavModel` won't be enough for the whole of your whole app, you can use many in a composable way. That is, any navigation target of a `NavModel` can also host its own `NavModel`.
 
 
-## Overview
+## Structural element for composing navigation
+
+```Nodes``` are the main structural element in Appyx. They can host `NavModels`, and they form a tree.
+
+This allows you to make your app's business logic also composable by leveraging `Nodes` as lifecycled components.
+
+
+## Node overview
  
 You can think of a `Node` as a standalone component with:
 
@@ -29,22 +34,23 @@ If you launch `:app` you can also change its state (colour) by tapping it. Its c
 
 ## Parent nodes, child nodes
 
-`Nodes` are composable, as `ParentNodes` can have other `Nodes` as children. This means you can represent your whole application as a tree of Appyx nodes.
+`ParentNodes` can have other `Nodes` as children. This means you can represent your whole application as a tree of Appyx nodes.
 
 <img src="https://i.imgur.com/iwSxuZi.png" width="450">
 
 You can go as granular or as high-level as it fits you. This allows to keep the complexity low in individual `Nodes` by extracting responsibilities to children, as well as composing other components to build more complex functionality. 
 
 
-## Dynamism by routing
+## Navigation in the tree
 
 <img src="https://i.imgur.com/hKvOs3w.gif" width="450">
 
-Having a static composition of `Nodes` isn't very exciting. You can add dynamism to the tree by changing the control flow via routing:
+Having a static composition of `Nodes` isn't very exciting. So rather:
 
-- A routing is a relation of a parent `Node` to a child `Node`
-- The sum total of those relations in the app defines what part of the application the user sees
-- A routing change will look and feel like navigation to the user of the app
+- Some parts in this tree are active while others ore not
+- The activate parts define what state the application is in, and what the user sees on the screen
+- We can change what's active by using `NavModels` on each level of the tree
+- Changes will feel like navigation to the user
 
 
 ## Navigation model
@@ -74,11 +80,10 @@ Read more in [Lifecycle](../other/lifecycle.md)
 
 ## Summary
 
-A summary of Appyx's approach to apps:
+A summary of Appyx's approach to structuring applications:
 
-- Compose your app out of components with their own lifecycles and state
-- Navigation is local, broken down to individual pieces of routing
-- Navigation is business-logic driven
+- Compose your app out of `Nodes` with their own lifecycles and state
+- Navigation is local, composed of individual pieces of `NavModels` 
 - Navigation is stateful
 - Navigation is unit-testable
 - You're free to implement your own navigable components by utilising `NavModels`
