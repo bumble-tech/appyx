@@ -20,3 +20,6 @@ style:
   UnusedPrivateMember:
     # https://detekt.dev/docs/introduction/compose#unusedprivatemember
     ignoreAnnotated: ['Preview']
+  WildcardImport:
+    active: true
+    excludeImports: []
