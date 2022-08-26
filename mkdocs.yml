@@ -41,6 +41,7 @@ nav:
       - Lifecycle: other/lifecycle.md
       - Plugins: other/plugins.md
       - Terminology: other/terminology.md
+  - FAQ: faq.md
 
 
 # theme configuration
