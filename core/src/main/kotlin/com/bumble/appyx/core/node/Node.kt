@@ -115,13 +115,16 @@ abstract class Node(
 
     @Composable
     private fun HandleBackPress() {
+        // can't use BackHandler Composable because plugins provide OnBackPressedCallback which is not observable
+        // mimic the behaviour of BackHandler Composable here instead
         val backPressHandlerPlugins = remember {
             // reversed order because we want direct order, but onBackPressedDispatcher invokes them in reversed order
             plugins.filterIsInstance<BackPressHandler>().reversed()
         }
         val dispatcher =
             LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher ?: return
-        DisposableEffect(dispatcher) {
+        val lifecycleOwner = LocalLifecycleOwner.current
+        DisposableEffect(lifecycleOwner, dispatcher) {
             backPressHandlerPlugins.forEach { plugin ->
                 if (!plugin.isCorrect()) {
                     Appyx.reportException(
@@ -130,7 +133,9 @@ abstract class Node(
                         )
                     )
                 }
-                plugin.onBackPressedCallbackList.forEach { dispatcher.addCallback(it) }
+                plugin.onBackPressedCallbackList.forEach { callback ->
+                    dispatcher.addCallback(lifecycleOwner, callback)
+                }
             }
             onDispose {
                 backPressHandlerPlugins.forEach { plugin ->
