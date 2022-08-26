@@ -38,4 +38,4 @@ See [NavModels](../navmodel/index.md) for more details.
 
 `NavModels` in Appyx are composable.
 
-See [Composable navigation](../composable-navigation/index.md) for more details.
+See [Composable navigation](composable-navigation.md) for more details.
