@@ -11,6 +11,7 @@ Model-driven navigation for Jetpack Compose
 - **Navigate directly from code** – In a type-safe way, without boilerplate
 - **Gain control of navigation state** – Making your navigation unit-testable
 - **Complete control over operations and behaviour** – Use and extend the back stack or the view pager from the library, or build your own 
+- **Your own navigation** – With Appyx, you can define your own navigation models
 - **Use any animation for transitions** – Anything you can represent with Compose `Modifiers`
 
 
@@ -34,6 +35,8 @@ You can create custom navigable components in no time:
 With Appyx you can break down screen boundaries and transform the screen itself:
 
 <img src="https://i.imgur.com/pbDENSc.gif" width="150">
+
+See [Model-driven navigation](navigation/model-driven-navigation.md) for more details.
 
 
 ## Launch the demo app
