@@ -20,7 +20,7 @@ You can think of a `Node` as a standalone component with:
 - State restoration
 -  A `@Composable` view
 - Business logic that's kept alive even when the view isn't added to the composition
-- The ability to host generic [Plugins](../other/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
+- The ability to host generic [Plugins](../apps/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
 
 
 ## Node illustration 
@@ -75,7 +75,7 @@ These are just two examples, you're of course not limited to using them.
 
 Nodes have their own lifecycles, directly using the related classes of `androidx.lifecycle`.
 
-Read more in [Lifecycle](../other/lifecycle.md)
+Read more in [Lifecycle](../apps/lifecycle.md)
 
 
 ## Summary

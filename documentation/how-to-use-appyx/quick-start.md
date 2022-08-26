@@ -3,7 +3,7 @@
 ## Suggestions
 
 - Check out the project and launch the `:app` module for a quick demonstration
-- Check out [Nodes and routing](../composable-navigation/index.md), which explains the concepts you'll encounter in this guide.
+- Check out [Nodes and routing](../navigation/composable-navigation.md), which explains the concepts you'll encounter in this guide.
 
 
 ## 1. Add Appyx to your project
@@ -212,4 +212,4 @@ You can repeat the same pattern and make any embedded children also a `ParentNod
 3. At some point extract the increasing complexity from a placeholder to another `Node` 
 4. Repeat the same on children, go to `1.`
 
-You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [plugins](../other/plugins.md).
+You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [plugins](../apps/plugins.md).

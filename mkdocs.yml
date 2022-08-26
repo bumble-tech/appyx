@@ -37,9 +37,9 @@ nav:
   - UI:
       - Children: ui/children-view.md
       - Transitions: ui/transitions.md
-  - Other topics:
-      - Lifecycle: other/lifecycle.md
-      - Plugins: other/plugins.md
+  - App:
+      - Lifecycle: apps/lifecycle.md
+      - Plugins: apps/plugins.md
   - FAQ: faq.md
 
 
