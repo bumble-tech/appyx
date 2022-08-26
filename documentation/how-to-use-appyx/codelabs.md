@@ -2,4 +2,4 @@
 
 ## Coming soon!
 
-ETA week of 15 Aug
+ETA week of 12 Sep

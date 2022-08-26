@@ -24,21 +24,24 @@ nav:
       - Quick start guide: how-to-use-appyx/quick-start.md
       - Codelabs: how-to-use-appyx/codelabs.md
       - Sample apps: how-to-use-appyx/sample-apps.md
-  - NavModel:
-      - Overview: navmodel/index.md
-      - Back stack: navmodel/backstack.md
-      - Spotlight: navmodel/spotlight.md
-      - Tiles: navmodel/tiles.md
-      - Promoter: navmodel/promoter.md
-      - Writing your own: navmodel/custom.md
-  - Composable navigation: composable-navigation/index.md
+  - Navigation:
+      - Model-driven navigation: navigation/model-driven-navigation.md
+      - NavModel:
+          - Overview: navmodel/index.md
+          - Back stack: navmodel/backstack.md
+          - Spotlight: navmodel/spotlight.md
+          - Tiles: navmodel/tiles.md
+          - Promoter: navmodel/promoter.md
+          - Writing your own: navmodel/custom.md
+      - Composable navigation: navigation/composable-navigation.md
   - UI:
       - Children: ui/children-view.md
       - Transitions: ui/transitions.md
-  - Other topics:
-      - Lifecycle: other/lifecycle.md
-      - Plugins: other/plugins.md
-      - Terminology: other/terminology.md
+  - App:
+      - Structuring your app navigation: apps/structure.md
+      - Lifecycle: apps/lifecycle.md
+      - Plugins: apps/plugins.md
+  - FAQ: faq.md
 
 
 # theme configuration

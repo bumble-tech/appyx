@@ -1,9 +1,23 @@
 # Quick start guide
 
+## Scope of this guide
+
+The steps below will cover:
+
+1. Integrating Appyx into your project
+2. Creating a very simple `Node` hierarchy
+3. We'll use a simple back stack for navigation
+4. We'll add some simple transitions to it
+
+This should be enough to get you started as a rudimentary application structure.
+
+Tutorials & codelabs on more advanced topics & the full power of Appyx to follow soon.
+
+
 ## Suggestions
 
 - Check out the project and launch the `:app` module for a quick demonstration
-- Check out [Nodes and routing](../composable-navigation/index.md), which explains the concepts you'll encounter in this guide.
+- Check out [App structure](../apps/structure.md), which explains the concepts you'll encounter in this guide.
 
 
 ## 1. Add Appyx to your project
@@ -212,4 +226,8 @@ You can repeat the same pattern and make any embedded children also a `ParentNod
 3. At some point extract the increasing complexity from a placeholder to another `Node` 
 4. Repeat the same on children, go to `1.`
 
-You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [plugins](../other/plugins.md).
+
+## Further reading
+
+- Check out [Model-driven navigation](../navigation/model-driven-navigation.md) how to take your navigation to the next level
+- You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [Plugins](../apps/plugins.md).
