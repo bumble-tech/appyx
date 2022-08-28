@@ -2,13 +2,16 @@ package com.bumble.appyx.interop.ribs
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.viewinterop.AndroidView
 import com.badoo.ribs.android.RibActivity
 import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPoint
+import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
 
-abstract class InteropActivity : RibActivity(), IntegrationPointAppyxProvider {
+abstract class InteropActivity : RibActivity() {
 
-    override lateinit var integrationPointAppyx: ActivityIntegrationPoint
-        protected set
+    private lateinit var integrationPointAppyx: ActivityIntegrationPoint
 
     protected open fun createIntegrationPointV2(savedInstanceState: Bundle?): ActivityIntegrationPoint =
         ActivityIntegrationPoint(
@@ -19,6 +22,12 @@ abstract class InteropActivity : RibActivity(), IntegrationPointAppyxProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         integrationPointAppyx = createIntegrationPointV2(savedInstanceState)
+
+        setContent {
+            CompositionLocalProvider(LocalIntegrationPoint provides integrationPointAppyx) {
+                AndroidView(factory = { rootViewGroup })
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -1,6 +1,5 @@
 package com.bumble.appyx.interop.ribs
 
-import android.app.Activity
 import android.content.Context
 import androidx.compose.runtime.Composable
 import com.badoo.ribs.compose.ComposeRibView
@@ -8,7 +7,7 @@ import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
-import com.bumble.appyx.core.integrationpoint.IntegrationPoint
+import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.interop.ribs.InteropView.Dependency
 
@@ -24,14 +23,9 @@ internal class InteropViewImpl private constructor(
     private val appyxNode: Node,
 ) : InteropView, ComposeRibView(context) {
 
-    private val integrationPoint = retrieveIntegrationPoint()
-
-    init {
-        appyxNode.integrationPoint = integrationPoint
-    }
-
     override val composable: ComposeView
         get() = @Composable {
+            appyxNode.integrationPoint = LocalIntegrationPoint.current
             appyxNode.Compose()
         }
 
@@ -43,17 +37,5 @@ internal class InteropViewImpl private constructor(
                     appyxNode = deps.appyxNode
                 )
             }
-    }
-
-    private fun retrieveIntegrationPoint(): IntegrationPoint {
-        val activity = context.findActivity<Activity>()
-        check(activity != null) {
-            "Could not find an activity from the context: $context"
-        }
-        check(activity is IntegrationPointAppyxProvider) {
-            "Activity where InteropNode is used must implement IntegrationPointAppyxProvider. " +
-                    "Activity: '${activity::class.java.name}', Node: '${appyxNode::class.java.name}'"
-        }
-        return activity.integrationPointAppyx
     }
 }

@@ -2,7 +2,9 @@ package com.bumble.appyx.sandbox.client.interop
 
 import android.os.Bundle
 import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.customisation.RibCustomisationDirectory
 import com.badoo.ribs.core.customisation.RibCustomisationDirectoryImpl
@@ -33,8 +35,9 @@ class InteropExampleActivity : InteropActivity() {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        rootView = FrameLayout(this)
-        setContentView(rootView)
+        rootView = FrameLayout(this).apply {
+            layoutParams = LinearLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT)
+        }
         super.onCreate(savedInstanceState)
     }
 }
