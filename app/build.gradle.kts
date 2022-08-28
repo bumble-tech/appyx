@@ -7,12 +7,12 @@ plugins {
 }
 
 android {
-    compileSdk = 32
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "com.bumble.appyx"
-        minSdk = 21
-        targetSdk = 32
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
 

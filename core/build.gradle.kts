@@ -9,11 +9,11 @@ plugins {
 
 android {
     namespace = "com.bumble.appyx.core"
-    compileSdk = 32
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 32
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
