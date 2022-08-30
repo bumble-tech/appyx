@@ -10,6 +10,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
@@ -24,18 +25,16 @@ import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.plugin.Plugin
+import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.Resolver
 import com.bumble.appyx.core.navigation.RoutingKey
-import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.isTransitioning
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.navigation.model.permanent.operation.add
+import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
-import kotlin.coroutines.resume
-import kotlin.reflect.KClass
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -46,6 +45,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.coroutines.resume
+import kotlin.reflect.KClass
 
 abstract class ParentNode<Routing : Any>(
     navModel: NavModel<Routing, *>,
@@ -73,9 +74,9 @@ abstract class ParentNode<Routing : Any>(
     val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
-        lifecycle = lifecycle,
         navModel = this.navModel,
         children = children,
+        coroutineScope = lifecycleScope,
     )
 
     private var transitionsInBackgroundJob: Job? = null
@@ -177,6 +178,11 @@ abstract class ParentNode<Routing : Any>(
         PermanentChild(routing) { child -> child() }
     }
 
+    override fun updateLifecycleState(state: Lifecycle.State) {
+        super.updateLifecycleState(state)
+        childNodeLifecycleManager.propagateLifecycleToChildren(state)
+    }
+
     /**
      * [NavModel.onTransitionFinished] is invoked by Composable function when animation is finished.
      * When application is in background, recomposition is paused, so we never invoke the callback.
@@ -236,7 +242,7 @@ abstract class ParentNode<Routing : Any>(
         }
         result ?: throw IllegalStateException(
             "Expected child of type [${T::class.java}] was not found after executing action. " +
-                "Check that your action actually results in the expected child. "
+                    "Check that your action actually results in the expected child. "
         )
     }
 

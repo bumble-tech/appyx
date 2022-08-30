@@ -3,18 +3,20 @@ package com.bumble.appyx.core.lifecycle
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.RoutingElement
 import com.bumble.appyx.core.navigation.RoutingElements
 import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.core.node.build
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -41,6 +43,32 @@ class ChildLifecycleTest {
             Lifecycle.State.RESUMED,
             parent.findChild()?.lifecycle?.currentState,
         )
+    }
+
+    @Test
+    fun `parent lifecycle callbacks is invoked before child`() {
+        var counter = 1
+
+        class TestResumedObserver : DefaultLifecycleObserver {
+            var isInvoked = 0
+            override fun onResume(owner: LifecycleOwner) {
+                isInvoked = counter++
+            }
+        }
+
+        val parentObserver = TestResumedObserver()
+        val childObserver = TestResumedObserver()
+
+        val parent = Parent(BuildContext.root(null)).build()
+        parent.lifecycle.addObserver(parentObserver)
+        parent.routing.add(key = "0", onScreen = true)
+        parent.updateLifecycleState(Lifecycle.State.STARTED)
+        parent.findChild()?.lifecycle?.addObserver(childObserver)
+
+        parent.updateLifecycleState(Lifecycle.State.RESUMED)
+
+        assertEquals(parentObserver.isInvoked, 1)
+        assertEquals(childObserver.isInvoked, 2)
     }
 
     @Test

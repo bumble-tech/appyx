@@ -1,11 +1,22 @@
 package com.bumble.appyx.core.plugin
 
 import android.app.Activity
+import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
+import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
@@ -14,7 +25,7 @@ import com.bumble.appyx.debug.Appyx
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.activeRouting
 import com.bumble.appyx.navmodel.backstack.operation.push
-import com.bumble.appyx.testing.ui.rules.AppyxTestRule
+import kotlinx.parcelize.Parcelize
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.equalTo
 import org.hamcrest.Matchers.instanceOf
@@ -24,71 +35,68 @@ import org.junit.Test
 
 class BackPressHandlerTest {
 
-    private var onBackPressedHandled = false
-    private var backPressHandler: BackPressHandler = object : BackPressHandler {
-        override val onBackPressedCallback: OnBackPressedCallback =
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    onBackPressedHandled = true
-                }
-            }
-    }
+    private var backHandler = TestPlugin()
+    private var childBackHandler = TestPlugin()
 
     @get:Rule
-    val rule = AppyxTestRule(launchActivity = false) { buildContext ->
-        TestParentNode(buildContext = buildContext, plugin = backPressHandler)
+    val rule = AppyxTestScenario { buildContext ->
+        TestParentNode(
+            buildContext = buildContext,
+            plugin = backHandler,
+            childPlugin = childBackHandler,
+        )
     }
 
     @After
     fun after() {
         Appyx.exceptionHandler = null
+        BackPressHandlerTestActivity.reset()
     }
 
     @Test
     fun routing_handles_back_press_when_plugin_has_disabled_listener() {
         rule.start()
-        runOnMainSync {
-            backPressHandler.onBackPressedCallback!!.isEnabled = false
-            rule.node.backStack.push(TestParentNode.Routing.ChildB)
-        }
+        pushChildB()
+        disablePlugin()
 
         Espresso.pressBack()
         Espresso.onIdle()
+        rule.waitForIdle()
 
         assertThat(rule.node.backStack.activeRouting, equalTo(TestParentNode.Routing.ChildA))
-        assertThat(onBackPressedHandled, equalTo(false))
+        assertThat(backHandler.onBackPressedHandled, equalTo(false))
     }
 
     @Test
     fun custom_plugin_handles_back_press_before_routing() {
         rule.start()
-        runOnMainSync { rule.node.backStack.push(TestParentNode.Routing.ChildB) }
+        pushChildB()
 
         Espresso.pressBack()
         Espresso.onIdle()
+        rule.waitForIdle()
 
         assertThat(rule.node.backStack.activeRouting, equalTo(TestParentNode.Routing.ChildB))
-        assertThat(onBackPressedHandled, equalTo(true))
+        assertThat(backHandler.onBackPressedHandled, equalTo(true))
     }
 
     @Test
     fun activity_is_closed_when_nobody_can_handle_back_press() {
         rule.start()
-        runOnMainSync {
-            backPressHandler.onBackPressedCallback!!.isEnabled = false
-        }
+        disablePlugin()
 
         Espresso.pressBackUnconditionally()
         Espresso.onIdle()
+        rule.waitForIdle()
 
-        assertThat(rule.activityResult.resultCode, equalTo(Activity.RESULT_CANCELED))
+        assertThat(rule.activityScenario.result.resultCode, equalTo(Activity.RESULT_CANCELED))
     }
 
     @Test
     fun reports_incorrect_handler() {
         var exception: Exception? = null
         Appyx.exceptionHandler = { exception = it }
-        backPressHandler = object : BackPressHandler {
+        backHandler = object : TestPlugin() {
             override val onBackPressedCallback: OnBackPressedCallback =
                 object : OnBackPressedCallback(true) {
                     override fun handleOnBackPressed() {
@@ -105,12 +113,88 @@ class BackPressHandlerTest {
         rule.start()
 
         Espresso.onIdle()
+        rule.waitForIdle()
 
         assertThat(exception, instanceOf(IllegalStateException::class.java))
     }
 
+    @Test
+    fun child_back_handler_works_before_parent() {
+        rule.start()
+        runOnMainSync { rule.node.backStack.push(TestParentNode.Routing.ChildWithPlugin) }
+
+        Espresso.pressBack()
+        Espresso.onIdle()
+        rule.waitForIdle()
+
+        assertThat(childBackHandler.onBackPressedHandled, equalTo(true))
+    }
+
+    @Test
+    fun appyx_handles_back_press_before_activity_handler() {
+        BackPressHandlerTestActivity.handleBackPress.value = true
+        rule.start()
+        pushChildB()
+
+        Espresso.pressBack()
+        Espresso.onIdle()
+        rule.waitForIdle()
+
+        assertThat(backHandler.onBackPressedHandled, equalTo(true))
+    }
+
+    @Test
+    fun activity_handles_back_press_if_appyx_cant() {
+        BackPressHandlerTestActivity.handleBackPress.value = true
+        rule.start()
+        disablePlugin()
+
+        Espresso.pressBack()
+        Espresso.onIdle()
+        rule.waitForIdle()
+
+        assertThat(BackPressHandlerTestActivity.onBackPressedHandled, equalTo(true))
+    }
+
+    @Test
+    // real case for https://github.com/bumble-tech/appyx/issues/118
+    fun appyx_handles_back_press_after_activity_returns_from_background() {
+        fun TestParentNode.findChildNode() =
+            children.value.values.firstNotNullOf { value ->
+                value.nodeOrNull?.takeIf { value.key.routing == TestParentNode.Routing.ChildWithPlugin }
+            } as TestParentNode
+
+        rule.start()
+        runOnMainSync {
+            rule.node.run {
+                backStack.push(TestParentNode.Routing.ChildWithPlugin)
+                val node = findChildNode()
+                node.backStack.push(TestParentNode.Routing.ChildB)
+            }
+        }
+
+        rule.activityScenario.moveToState(Lifecycle.State.CREATED)
+        rule.waitForIdle()
+        rule.activityScenario.moveToState(Lifecycle.State.RESUMED)
+        rule.waitForIdle()
+
+        Espresso.pressBack()
+        Espresso.onIdle()
+        rule.waitForIdle()
+
+        assertThat(childBackHandler.onBackPressedHandled, equalTo(true))
+    }
+
     private fun runOnMainSync(runner: Runnable) {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(runner)
+    }
+
+    private fun pushChildB() {
+        runOnMainSync { rule.node.backStack.push(TestParentNode.Routing.ChildB) }
+    }
+
+    private fun disablePlugin() {
+        backHandler.onBackPressedCallback.isEnabled = false
     }
 
     class TestParentNode(
@@ -119,27 +203,77 @@ class BackPressHandlerTest {
             initialElement = Routing.ChildA,
             savedStateMap = null,
         ),
-        plugin: Plugin,
+        plugin: Plugin?,
+        private val childPlugin: Plugin?,
     ) : ParentNode<TestParentNode.Routing>(
         buildContext = buildContext,
         navModel = backStack,
-        plugins = listOf(plugin),
+        plugins = listOfNotNull(plugin),
     ) {
 
-        sealed class Routing {
+        sealed class Routing : Parcelable {
+
+            @Parcelize
             object ChildA : Routing()
+
+            @Parcelize
             object ChildB : Routing()
+
+            @Parcelize
+            object ChildWithPlugin : Routing()
+
         }
 
         override fun resolve(routing: Routing, buildContext: BuildContext) = when (routing) {
-            Routing.ChildA -> node(buildContext) {}
-            Routing.ChildB -> node(buildContext) {}
+            Routing.ChildA -> node(buildContext) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Green)
+                )
+            }
+            Routing.ChildB -> node(buildContext) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Red)
+                )
+            }
+            Routing.ChildWithPlugin -> TestParentNode(
+                buildContext = buildContext,
+                plugin = childPlugin,
+                childPlugin = null,
+            )
         }
 
         @Composable
         override fun View(modifier: Modifier) {
-            Children(navModel = backStack, modifier = modifier)
+            Column(modifier) {
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Black)
+                        .height(26.dp)
+                )
+                Spacer(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(10.dp)
+                )
+                Children(navModel = backStack, modifier = Modifier.fillMaxSize())
+            }
         }
+    }
+
+    private open class TestPlugin : BackPressHandler {
+        var onBackPressedHandled = false
+            private set
+        override val onBackPressedCallback: OnBackPressedCallback =
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    onBackPressedHandled = true
+                }
+            }
     }
 
 }
