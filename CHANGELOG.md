@@ -2,6 +2,8 @@
 
 ## Pending changes
 
+- [#119](https://github.com/bumble-tech/appyx/pull/119) - **Fixed**: Lifecycle observers are invoked in incorrect order (child before parent)
+
 ## 1.0-alpha06 – 26 Aug 2022
 
 - [#96](https://github.com/bumble-tech/appyx/pull/96) – **Breaking change**: Removed `InteractorTestHelper`. Please use Node tests instead of Interactor tests.

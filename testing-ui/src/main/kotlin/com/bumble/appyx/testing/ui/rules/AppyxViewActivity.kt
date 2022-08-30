@@ -5,7 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 
-class AppyxViewActivity : NodeActivity() {
+open class AppyxViewActivity : NodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

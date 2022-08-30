@@ -2,16 +2,16 @@ package com.bumble.appyx.core.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
-import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
-import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
+import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -24,11 +24,26 @@ import kotlinx.coroutines.launch
  * and updates lifecycle of children nodes when updated.
  */
 internal class ChildNodeLifecycleManager<Routing>(
-    private val lifecycle: Lifecycle,
     private val navModel: NavModel<Routing, *>,
     private val children: StateFlow<ChildEntryMap<Routing>>,
-    private val coroutineScope: CoroutineScope = lifecycle.coroutineScope,
+    private val coroutineScope: CoroutineScope,
 ) {
+
+    private val lifecycleState = MutableStateFlow(Lifecycle.State.INITIALIZED)
+
+    /**
+     * Propagates the parent lifecycle to children.
+     *
+     * Child lifecycles should be updated only after all lifecycle callbacks are invoked in the current node.
+     *
+     * **DO NOT USE LIFECYCLE.OBSERVE HERE!**
+     *
+     * Otherwise a child node lifecycle might be updated before the parent.
+     * It leads to incorrect registration order of back handlers.
+     */
+    fun propagateLifecycleToChildren(state: Lifecycle.State) {
+        lifecycleState.value = state
+    }
 
     fun launch() {
         // previously state management was split into multiple jobs
@@ -36,7 +51,7 @@ internal class ChildNodeLifecycleManager<Routing>(
         // so we merged it into single one
         coroutineScope.launch {
             combine(
-                lifecycle.asFlow(),
+                lifecycleState,
                 navModel.screenState.keys(),
                 children.withPrevious(),
                 ::Triple
