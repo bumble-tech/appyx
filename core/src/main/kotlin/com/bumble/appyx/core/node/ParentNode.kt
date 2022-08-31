@@ -86,7 +86,7 @@ abstract class ParentNode<Routing : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Eager<Routing> =
+    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Initialized<Routing> =
         childNodeCreationManager.childOrCreate(routingKey)
 
     @Composable
@@ -94,7 +94,7 @@ abstract class ParentNode<Routing : Any>(
         routing: Routing,
         decorator: @Composable (child: ChildRenderer) -> Unit
     ) {
-        var child by remember { mutableStateOf<ChildEntry.Eager<*>?>(null) }
+        var child by remember { mutableStateOf<ChildEntry.Initialized<*>?>(null) }
         LaunchedEffect(routing) {
             permanentNavModel.elements.collect { elements ->
                 val routingKey = elements.find { it.key.routing == routing }?.key

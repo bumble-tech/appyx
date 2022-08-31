@@ -1,10 +1,8 @@
 package com.bumble.appyx.core.children
 
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.navigation.Resolver
 import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.state.SavedStateMap
 
 // custom equals/hashCode for MutableStateFlow and equality checks
 sealed class ChildEntry<T> {
@@ -20,20 +18,15 @@ sealed class ChildEntry<T> {
         "$key@${javaClass.simpleName}"
 
     /** All public APIs should return this type of child which is ready to work with. */
-    class Eager<T>(
+    class Initialized<T>(
         override val key: RoutingKey<T>,
         val node: Node,
     ) : ChildEntry<T>()
 
-    /** Child representation for Lazy mode. */
-    class Lazy<T>(
+    class Suspended<T>(
         override val key: RoutingKey<T>,
-        private val resolver: Resolver<T>,
-        val buildContext: BuildContext,
-    ) : ChildEntry<T>() {
-        internal fun initialize(): Eager<T> =
-            Eager(key, resolver.resolve(key.routing, buildContext).build())
-    }
+        val savedState: SavedStateMap?,
+    ) : ChildEntry<T>()
 
     /** When to create child nodes? */
     enum class ChildMode {
@@ -46,19 +39,10 @@ sealed class ChildEntry<T> {
 
     }
 
-    companion object {
-        fun <T> create(
-            key: RoutingKey<T>,
-            resolver: Resolver<T>,
-            buildContext: BuildContext,
-            childMode: ChildMode,
-        ): ChildEntry<T> =
-            when (childMode) {
-                ChildMode.EAGER ->
-                    Eager(key, resolver.resolve(key.routing, buildContext).build())
-                ChildMode.LAZY ->
-                    Lazy(key, resolver, buildContext)
-            }
+    /** Keep not on screen nodes in the memory? */
+    enum class KeepMode {
+        KEEP,
+        SUSPEND,
     }
 
 }

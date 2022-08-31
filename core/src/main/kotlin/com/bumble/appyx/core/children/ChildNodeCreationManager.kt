@@ -5,6 +5,7 @@ import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
@@ -23,9 +24,11 @@ internal class ChildNodeCreationManager<Routing : Any>(
     private val _children =
         MutableStateFlow<Map<RoutingKey<Routing>, ChildEntry<Routing>>>(emptyMap())
     val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
+    private lateinit var parentNode: ParentNode<Routing>
 
     fun launch(parentNode: ParentNode<Routing>) {
-        savedStateMap.restoreChildren(parentNode)?.also { restoredMap ->
+        this.parentNode = parentNode
+        savedStateMap.restoreChildren()?.also { restoredMap ->
             _children.update { restoredMap }
             savedStateMap = null
         }
@@ -40,11 +43,10 @@ internal class ChildNodeCreationManager<Routing : Any>(
                     val mutableMap = map.toMutableMap()
                     newKeys.forEach { key ->
                         mutableMap[key] =
-                            ChildEntry.create(
+                            childEntry(
                                 key = key,
-                                resolver = parentNode,
-                                buildContext = null.toBuildContext(parentNode),
-                                childMode = childMode,
+                                savedState = null,
+                                suspended = childMode == ChildEntry.ChildMode.LAZY,
                             )
                     }
                     removedKeys.forEach { key ->
@@ -56,37 +58,41 @@ internal class ChildNodeCreationManager<Routing : Any>(
         }
     }
 
-    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Eager<Routing> {
+    @Suppress("ForbiddenComment")
+    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Initialized<Routing> {
+        // TODO: Should not allow child creation and throw exception instead to avoid desynchronisation
         val value = _children.value
         val child = value[routingKey] ?: error(
             "Rendering and children management is out of sync: requested $routingKey but have only ${value.keys}"
         )
         return when (child) {
-            is ChildEntry.Eager ->
+            is ChildEntry.Initialized ->
                 child
-            is ChildEntry.Lazy ->
+            is ChildEntry.Suspended ->
                 _children.updateAndGet { map ->
                     val updateChild = map[routingKey]
                         ?: error("Requested child $routingKey disappeared")
                     when (updateChild) {
-                        is ChildEntry.Eager -> map
-                        is ChildEntry.Lazy -> map.plus(routingKey to updateChild.initialize())
+                        is ChildEntry.Initialized -> map
+                        is ChildEntry.Suspended -> {
+                            val initialized = ChildEntry.Initialized(
+                                key = updateChild.key,
+                                node = parentNode.resolve(
+                                    routing = updateChild.key.routing,
+                                    buildContext = childBuildContext(child.savedState),
+                                ).build()
+                            )
+                            map.plus(routingKey to initialized)
+                        }
                     }
-                }[routingKey] as ChildEntry.Eager
+                }[routingKey] as ChildEntry.Initialized
         }
     }
 
-    private fun SavedStateMap?.restoreChildren(parentNode: ParentNode<Routing>): ChildEntryMap<Routing>? =
+    private fun SavedStateMap?.restoreChildren(): ChildEntryMap<Routing>? =
         (this?.get(KEY_CHILDREN_STATE) as? Map<RoutingKey<Routing>, SavedStateMap>)?.mapValues {
-            ChildEntry.create(it.key, parentNode, it.value.toBuildContext(parentNode), childMode)
+            childEntry(it.key, it.value, childMode == ChildEntry.ChildMode.LAZY)
         }
-
-    private fun SavedStateMap?.toBuildContext(parentNode: ParentNode<Routing>): BuildContext =
-        BuildContext(
-            ancestryInfo = AncestryInfo.Child(parentNode),
-            savedStateMap = this,
-            customisations = customisations.getSubDirectoryOrSelf(parentNode::class)
-        )
 
     fun saveChildrenState(writer: MutableSavedStateMap) {
         val children = _children.value
@@ -95,8 +101,8 @@ internal class ChildNodeCreationManager<Routing : Any>(
                 children
                     .mapValues { (_, entry) ->
                         when (entry) {
-                            is ChildEntry.Eager -> entry.node.saveInstanceState(writer.saverScope)
-                            is ChildEntry.Lazy -> entry.buildContext.savedStateMap
+                            is ChildEntry.Initialized -> entry.node.saveInstanceState(writer.saverScope)
+                            is ChildEntry.Suspended -> entry.savedState
                         }
                     }
             if (childrenState.isNotEmpty()) {
@@ -104,6 +110,29 @@ internal class ChildNodeCreationManager<Routing : Any>(
             }
         }
     }
+
+    private fun childBuildContext(savedState: SavedStateMap?): BuildContext =
+        BuildContext(
+            ancestryInfo = AncestryInfo.Child(parentNode),
+            savedStateMap = savedState,
+            customisations = customisations.getSubDirectoryOrSelf(parentNode::class),
+        )
+
+    private fun childEntry(
+        key: RoutingKey<Routing>,
+        savedState: SavedStateMap?,
+        suspended: Boolean,
+    ): ChildEntry<Routing> =
+        if (suspended) {
+            ChildEntry.Suspended(key, savedState)
+        } else {
+            ChildEntry.Initialized(
+                key = key,
+                node = parentNode
+                    .resolve(key.routing, childBuildContext(savedState))
+                    .build()
+            )
+        }
 
     private companion object {
         const val KEY_CHILDREN_STATE = "ChildrenState"

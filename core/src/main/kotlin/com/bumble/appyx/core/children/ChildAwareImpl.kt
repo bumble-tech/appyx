@@ -5,9 +5,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.core.lifecycle.isDestroyed
+import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-class ChildAwareImpl<N: Node> : ChildAware<N> {
+class ChildAwareImpl<N : Node> : ChildAware<N> {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
@@ -74,7 +74,7 @@ class ChildAwareImpl<N: Node> : ChildAware<N> {
                 val visitedSet = HashSet<Node>()
                 commonKeys.forEach { key ->
                     val current = value.current[key]
-                    if (current != value.previous[key] && current is ChildEntry.Eager) {
+                    if (current != value.previous[key] && current is ChildEntry.Initialized) {
                         notifyWhenChanged(current.node, nodes, visitedSet)
                         visitedSet.add(current.node)
                     }
@@ -131,11 +131,6 @@ class ChildAwareImpl<N: Node> : ChildAware<N> {
     }
 
     private fun getCreatedNodes(childEntryMap: Map<out RoutingKey<*>, ChildEntry<*>>) =
-        childEntryMap.values.mapNotNull { entry ->
-            when (entry) {
-                is ChildEntry.Eager -> entry.node
-                is ChildEntry.Lazy -> null
-            }
-        }
+        childEntryMap.values.mapNotNull { entry -> entry.nodeOrNull }
 
 }
