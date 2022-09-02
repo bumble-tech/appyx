@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         google()
@@ -24,6 +26,26 @@ allprojects {
             substitute(module("com.bumble.appyx:customisations"))
                 .using(project(":customisations"))
                 .because("RIBs uses Appyx customisations as external dependency")
+        }
+    }
+}
+
+subprojects {
+    tasks.withType<KotlinCompile>().configureEach {
+        kotlinOptions {
+            if (project.findProperty("enableComposeCompilerReports") == "true") {
+                freeCompilerArgs += listOf(
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
+                            File(project.buildDir, "compose_metrics").absolutePath
+
+                )
+                freeCompilerArgs += listOf(
+                    "-P",
+                    "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
+                            File(project.buildDir, "compose_metrics").absolutePath
+                )
+            }
         }
     }
 }
