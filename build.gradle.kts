@@ -31,21 +31,21 @@ allprojects {
 }
 
 subprojects {
-    tasks.withType<KotlinCompile>().all {
+    tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             if (project.findProperty("enableComposeCompilerReports") == "true") {
                 freeCompilerArgs += listOf(
                     "-P",
                     "plugin:androidx.compose.compiler.plugins.kotlin:reportsDestination=" +
-                            project.buildDir.absolutePath + "/compose_metrics"
+                            File(project.buildDir, "compose_metrics").absolutePath
+
                 )
                 freeCompilerArgs += listOf(
                     "-P",
                     "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
-                            project.buildDir.absolutePath + "/compose_metrics"
+                            File(project.buildDir, "compose_metrics").absolutePath
                 )
             }
         }
     }
 }
-
