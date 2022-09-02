@@ -5,6 +5,7 @@ import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
@@ -36,6 +37,7 @@ import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.debug.Appyx
 import kotlinx.coroutines.withContext
 
+@Stable
 abstract class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
