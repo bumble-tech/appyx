@@ -3,7 +3,7 @@ package com.bumble.appyx.sandbox.client.mvicoreexample
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.interop.rx2.connectable.NodeConnector
+import com.bumble.appyx.core.node.firstChildOfType
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
@@ -20,10 +20,6 @@ import com.bumble.appyx.testing.unit.common.helper.parentNodeTestHelper
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode1.Input as Child1Input
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode1.Output as Child1Output
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode2.Input as Child2Input
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreChildNode2.Output as Child2Output
 
 @ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class MviCoreExampleNodeJUnit5Test {
@@ -45,8 +41,6 @@ class MviCoreExampleNodeJUnit5Test {
         backStack = backStack
     )
 
-    private val child1NodeConnector: NodeConnector<Child1Input, Child1Output> = NodeConnector()
-    private val child2NodeConnector: NodeConnector<Child2Input, Child2Output> = NodeConnector()
 
     private lateinit var node: MviCoreExampleNode
     private lateinit var testHelper: ParentNodeTestHelper<Routing, ParentNode<Routing>>
@@ -58,8 +52,6 @@ class MviCoreExampleNodeJUnit5Test {
             buildContext = BuildContext.root(savedStateMap = null),
             plugins = listOf(interactor),
             backStack = backStack,
-            child1NodeConnector = child1NodeConnector,
-            child2NodeConnector = child2NodeConnector,
         )
 
         testHelper = node.parentNodeTestHelper()
@@ -100,7 +92,9 @@ class MviCoreExampleNodeJUnit5Test {
         val testObserver = feature.wishesRelay.test()
 
         testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
-            child1NodeConnector.output.accept(MviCoreChildNode1.Output.Result("hello"))
+            node.firstChildOfType<MviCoreChildNode1>().output.accept(
+                MviCoreChildNode1.Output.Result("hello")
+            )
 
             testObserver.assertValue(Wish.ChildInput("hello"))
         }
