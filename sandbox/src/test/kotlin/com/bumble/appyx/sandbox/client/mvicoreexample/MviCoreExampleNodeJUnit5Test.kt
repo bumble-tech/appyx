@@ -92,7 +92,7 @@ class MviCoreExampleNodeJUnit5Test {
         val testObserver = feature.wishesRelay.test()
 
         testHelper.moveToStateAndCheck(Lifecycle.State.STARTED) {
-            node.firstChildOfType<MviCoreChildNode1>().output.accept(
+            node.firstChildOfType<MviCoreChildNode1>()?.output?.accept(
                 MviCoreChildNode1.Output.Result("hello")
             )
 
