@@ -4,15 +4,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.node.build
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.RoutingElement
 import com.bumble.appyx.core.navigation.RoutingElements
 import com.bumble.appyx.core.navigation.RoutingKey
-import com.bumble.appyx.core.navigation.NavModel
-import com.bumble.appyx.core.navigation.NavModelAdapter
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.core.node.build
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,11 +76,9 @@ open class ChildAwareTestBase {
 
     class Root(
         val routing: TestNavModel<Configuration> = TestNavModel(),
-        childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
     ) : ParentNode<Configuration>(
         buildContext = BuildContext.root(null),
         navModel = routing,
-        childMode = childMode,
     ) {
         override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
             when (routing) {

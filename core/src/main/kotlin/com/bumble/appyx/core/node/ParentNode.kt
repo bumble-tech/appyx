@@ -47,7 +47,6 @@ abstract class ParentNode<Routing : Any>(
     navModel: NavModel<Routing, *>,
     buildContext: BuildContext,
     view: ParentNodeView<Routing> = EmptyParentNodeView(),
-    childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
     keepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
@@ -66,7 +65,6 @@ abstract class ParentNode<Routing : Any>(
     private val childNodeCreationManager = ChildNodeCreationManager<Routing>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
-        childMode = childMode,
         keepMode = keepMode,
     )
     val children: StateFlow<ChildEntryMap<Routing>>

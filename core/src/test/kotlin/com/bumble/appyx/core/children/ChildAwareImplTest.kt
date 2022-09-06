@@ -1,9 +1,9 @@
 package com.bumble.appyx.core.children
 
 import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.core.navigation.RoutingKey
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.navigation.RoutingKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
@@ -14,7 +14,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
 
     @Test
     fun `whenChildAttached is invoked for promoted to eager node`() {
-        root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
+        root = Root().build()
         var capturedNode: Node? = null
         root.whenChildAttachedTest(Child1::class) { _, child ->
             capturedNode = child
@@ -27,7 +27,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
 
     @Test
     fun `whenChildAttached is invoked only once`() {
-        root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
+        root = Root().build()
         val capturedNodes = mutableListOf<Node>()
         root.whenChildAttachedTest(Child1::class) { _, child ->
             capturedNodes.add(child)
@@ -45,7 +45,7 @@ class ChildAwareImplTest : ChildAwareTestBase() {
 
     @Test
     fun `whenChildrenAttached is invoked for promoted to eager nodes`() {
-        root = Root(childMode = ChildEntry.ChildMode.LAZY).build()
+        root = Root().build()
         val capturedNodes = HashSet<Pair<Node, Node>>()
         root.whenChildrenAttachedTest(Child1::class, Child2::class) { _, c1, c2 ->
             capturedNodes += c1 to c2

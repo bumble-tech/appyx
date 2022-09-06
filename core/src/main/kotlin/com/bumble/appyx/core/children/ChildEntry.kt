@@ -28,17 +28,6 @@ sealed class ChildEntry<T> {
         val savedState: SavedStateMap?,
     ) : ChildEntry<T>()
 
-    /** When to create child nodes? */
-    enum class ChildMode {
-
-        /** When routing state was changed. */
-        EAGER,
-
-        /** When node rendering was requested. */
-        LAZY,
-
-    }
-
     /** Keep not on screen nodes in the memory? */
     enum class KeepMode {
         KEEP,

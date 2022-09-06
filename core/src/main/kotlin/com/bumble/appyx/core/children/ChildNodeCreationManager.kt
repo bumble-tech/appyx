@@ -24,7 +24,6 @@ import kotlinx.coroutines.launch
 internal class ChildNodeCreationManager<Routing : Any>(
     private var savedStateMap: SavedStateMap?,
     private val customisations: NodeCustomisationDirectory,
-    private val childMode: ChildEntry.ChildMode,
     private val keepMode: ChildEntry.KeepMode,
 ) {
     private val _children =
@@ -68,7 +67,6 @@ internal class ChildNodeCreationManager<Routing : Any>(
         }
     }
 
-    // TODO: Does not work with CHILD_MODE = LAZY
     private fun updateChildren(
         navModelKeys: Set<RoutingKey<Routing>>,
         navModelOnScreenKeys: Set<RoutingKey<Routing>>,
@@ -93,13 +91,13 @@ internal class ChildNodeCreationManager<Routing : Any>(
             }
             val mutableMap = map.toMutableMap()
             newKeys.forEach { key ->
-                val shouldSuspend = keepMode == ChildEntry.KeepMode.SUSPEND &&
-                        navModelOffScreenKeys.contains(key)
+                val shouldSuspend =
+                    keepMode == ChildEntry.KeepMode.SUSPEND && navModelOffScreenKeys.contains(key)
                 mutableMap[key] =
                     childEntry(
                         key = key,
                         savedState = null,
-                        suspended = childMode == ChildEntry.ChildMode.LAZY || shouldSuspend,
+                        suspended = shouldSuspend,
                     )
             }
             removedKeys.forEach { key ->
@@ -140,7 +138,8 @@ internal class ChildNodeCreationManager<Routing : Any>(
 
     private fun SavedStateMap?.restoreChildren(): ChildEntryMap<Routing>? =
         (this?.get(KEY_CHILDREN_STATE) as? Map<RoutingKey<Routing>, SavedStateMap>)?.mapValues {
-            childEntry(it.key, it.value, childMode == ChildEntry.ChildMode.LAZY)
+            // Always restore in suspended mode, they will be unsuspended or destroyed on the first sync cycle
+            childEntry(it.key, it.value, true)
         }
 
     fun saveChildrenState(writer: MutableSavedStateMap) {
