@@ -195,6 +195,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
                 )
         }
 
+    @Suppress("ForbiddenComment")
     private fun ChildEntry<Routing>.suspend(): ChildEntry.Suspended<Routing> =
         when (this) {
             is ChildEntry.Suspended -> this
