@@ -28,7 +28,7 @@ sealed class ChildEntry<T> {
         val savedState: SavedStateMap?,
     ) : ChildEntry<T>()
 
-    /** Keep not on screen nodes in the memory? */
+    /** Keep off-screen nodes in the memory? */
     enum class KeepMode {
         KEEP,
         SUSPEND,
