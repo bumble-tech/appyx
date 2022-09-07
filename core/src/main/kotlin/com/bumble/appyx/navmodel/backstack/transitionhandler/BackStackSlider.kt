@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.transitionhandler
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
@@ -11,6 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
+import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
+import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
+import com.bumble.appyx.core.navigation.transition.TransitionSpec
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.BackStackOperation
 import com.bumble.appyx.navmodel.backstack.operation.NewRoot
@@ -20,9 +24,6 @@ import com.bumble.appyx.navmodel.backstack.operation.Remove
 import com.bumble.appyx.navmodel.backstack.operation.Replace
 import com.bumble.appyx.navmodel.backstack.operation.SingleTop.SingleTopReactivateBackStackOperation
 import com.bumble.appyx.navmodel.backstack.operation.SingleTop.SingleTopReplaceBackStackOperation
-import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
-import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
-import com.bumble.appyx.core.navigation.transition.TransitionSpec
 import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
@@ -33,6 +34,7 @@ class BackStackSlider<T>(
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
 
+    @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<BackStack.TransitionState>,
@@ -56,6 +58,7 @@ class BackStackSlider<T>(
                             is NewRoot,
                             is SingleTopReplaceBackStackOperation -> toOutsideLeft(width)
                             null -> error("Unexpected operation: $operation")
+                            else -> toOutsideRight(width)
                         }
                     }
                 }
