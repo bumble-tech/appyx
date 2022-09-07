@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.modal
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
@@ -13,16 +14,17 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
-import com.bumble.appyx.navmodel.modal.Modal.TransitionState
 import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionSpec
+import com.bumble.appyx.navmodel.modal.Modal.TransitionState
 
 @Suppress("TransitionPropertiesLabel")
 class ModalTransitionHandler<T>(
     private val transitionSpec: TransitionSpec<TransitionState, Float> = { tween(500) }
 ) : ModifierTransitionHandler<T, TransitionState>() {
 
+    @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<TransitionState>,

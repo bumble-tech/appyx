@@ -17,10 +17,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
 import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionSpec
+import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -81,7 +81,7 @@ class PromoterTransitionHandler<T>(
         rotationZ = 540f,
     )
 
-    @SuppressLint("UnusedTransitionTargetStateParameter")
+    @SuppressLint("UnusedTransitionTargetStateParameter", "ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<Promoter.TransitionState>,

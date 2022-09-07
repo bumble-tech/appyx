@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlight.transitionhandler
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
@@ -24,6 +25,7 @@ class SpotlightSlider<T>(
     override val clipToBounds: Boolean = false
 ) : ModifierTransitionHandler<T, Spotlight.TransitionState>() {
 
+    @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<Spotlight.TransitionState>,

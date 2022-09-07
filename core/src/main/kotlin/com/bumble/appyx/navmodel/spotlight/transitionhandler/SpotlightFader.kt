@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlight.transitionhandler
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
@@ -19,6 +20,7 @@ class SpotlightFader<T>(
     private val transitionSpec: TransitionSpec<Spotlight.TransitionState, Float> = { spring() }
 ) : ModifierTransitionHandler<T, Spotlight.TransitionState>() {
 
+    @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<Spotlight.TransitionState>,
