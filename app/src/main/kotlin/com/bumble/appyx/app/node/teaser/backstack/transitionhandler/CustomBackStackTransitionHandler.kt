@@ -1,5 +1,6 @@
 package com.bumble.appyx.app.node.teaser.backstack.transitionhandler
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -14,14 +15,15 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.IntOffset
-import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
+import com.bumble.appyx.navmodel.backstack.BackStack
 import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackStack.TransitionState>() {
 
+    @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<BackStack.TransitionState>,

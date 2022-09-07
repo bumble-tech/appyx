@@ -3,4 +3,4 @@ package com.bumble.appyx.navmodel.tiles.operation
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.navmodel.tiles.Tiles
 
-sealed interface TilesOperation<T> : Operation<T, Tiles.TransitionState>
+interface TilesOperation<T> : Operation<T, Tiles.TransitionState>

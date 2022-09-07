@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation.transition
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.updateTransition
@@ -41,6 +42,7 @@ abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = 
         return rememberTransitionScope(transition, descriptor)
     }
 
+    @SuppressLint("ModifierFactoryExtensionFunction")
     abstract fun createModifier(
         modifier: Modifier,
         transition: Transition<S>,
