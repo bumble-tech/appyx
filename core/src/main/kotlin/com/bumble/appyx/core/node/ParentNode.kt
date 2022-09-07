@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
+import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.children.ChildAware
 import com.bumble.appyx.core.children.ChildAwareImpl
 import com.bumble.appyx.core.children.ChildCallback
@@ -47,7 +48,7 @@ abstract class ParentNode<Routing : Any>(
     navModel: NavModel<Routing, *>,
     buildContext: BuildContext,
     view: ParentNodeView<Routing> = EmptyParentNodeView(),
-    keepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP,
+    keepMode: ChildEntry.KeepMode = Appyx.defaultKeepMode,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(

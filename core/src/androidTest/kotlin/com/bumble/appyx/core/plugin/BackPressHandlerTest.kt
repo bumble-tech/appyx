@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
+import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.debug.Appyx
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.activeRouting
 import com.bumble.appyx.navmodel.backstack.operation.push

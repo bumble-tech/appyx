@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.lifecycleScope
+import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.BuildConfig
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
@@ -34,7 +35,6 @@ import com.bumble.appyx.core.plugin.plugins
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.core.state.SavedStateMap
-import com.bumble.appyx.debug.Appyx
 import kotlinx.coroutines.withContext
 
 @Stable
