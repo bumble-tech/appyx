@@ -14,6 +14,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
+import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.children.ChildAware
 import com.bumble.appyx.core.children.ChildAwareImpl
 import com.bumble.appyx.core.children.ChildCallback
@@ -47,7 +48,7 @@ abstract class ParentNode<Routing : Any>(
     navModel: NavModel<Routing, *>,
     buildContext: BuildContext,
     view: ParentNodeView<Routing> = EmptyParentNodeView(),
-    childMode: ChildEntry.ChildMode = ChildEntry.ChildMode.EAGER,
+    childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
@@ -65,7 +66,7 @@ abstract class ParentNode<Routing : Any>(
     private val childNodeCreationManager = ChildNodeCreationManager<Routing>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
-        childMode = childMode,
+        keepMode = childKeepMode,
     )
     val children: StateFlow<ChildEntryMap<Routing>>
         get() = childNodeCreationManager.children
@@ -86,7 +87,7 @@ abstract class ParentNode<Routing : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Eager<Routing> =
+    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Initialized<Routing> =
         childNodeCreationManager.childOrCreate(routingKey)
 
     @Composable
@@ -94,7 +95,7 @@ abstract class ParentNode<Routing : Any>(
         routing: Routing,
         decorator: @Composable (child: ChildRenderer) -> Unit
     ) {
-        var child by remember { mutableStateOf<ChildEntry.Eager<*>?>(null) }
+        var child by remember { mutableStateOf<ChildEntry.Initialized<*>?>(null) }
         LaunchedEffect(routing) {
             permanentNavModel.elements.collect { elements ->
                 val routingKey = elements.find { it.key.routing == routing }?.key

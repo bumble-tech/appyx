@@ -1,16 +1,9 @@
 package com.bumble.appyx.debug
 
-object Appyx {
+import com.bumble.appyx.Appyx
 
-    var exceptionHandler: ((Exception) -> Unit)? = null
-
-    fun reportException(exception: Exception) {
-        val handler = exceptionHandler
-        if (handler != null) {
-            handler(exception)
-        } else {
-            throw exception
-        }
-    }
-
-}
+@Deprecated(
+    message = "Moved to com.bumble.appyx package",
+    replaceWith = ReplaceWith("Appyx", imports = ["com.bumble.appyx.Appyx"]),
+)
+typealias Appyx = Appyx

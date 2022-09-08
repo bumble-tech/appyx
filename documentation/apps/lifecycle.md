@@ -3,17 +3,31 @@
 Nodes have their own lifecycles, directly using the related classes of `androidx.lifecycle`.
 
 ## Capping
-No `Node` can be in a higher lifecycle state than any of its parents or the Android Activity it lives in.
 
-## Off-screen
-`Nodes` can be kept alive by their parents when removed from the view (they'll be `STOPPED`)
+No node can be in a higher lifecycle state than any of its parents or the Android Activity it lives in.
 
-When `Nodes` are removed completely from their parents, they'll be `DESTROYED`
+## On-screen & off-screen
+
+`NavModel` controls which children should be rendered on the screen and which should not with `NavModel.screenState`.
+The behaviour is customisable in `BaseNavModel` via `OnScreenStateResolver`.
+
+When `RoutingElement` of the node is marked as on-screen, its lifecycle follows the parent node lifecycle.
+The rendering status does not affect it, the node might not be added to Compose view and still be in `RESUMED` state.
+
+When `RoutingElement` of the node is marked as off-screen, the following might happen:
+
+- Its lifecycle is capped with `CREATED` (or `STOPPED`) in case of `ChildEntry.KeepMode.KEEP`. 
+- The node is destroyed and its state is saved in case of `ChildEntry.KeepMode.SUSPEND`.
+
+`ChildEntry.KeepMode` settings can be setup on each `ParentNode` separately or globally via `Appyx.defaultChildKeepMode`.
+
+When a node is removed completely from `NavModel`, it will be in `DESTROYED` state.
 
 ## Lifecycle changes
+
 The lifecycle state can be affected by:
 
-- The NavModel of the parent (adding or removing child `Nodes`)
+- The NavModel of the parent (adding or removing child `Nodes` and changing their on-screen status)
 - The parent's lifecycle state capping its children (transitive in the tree)
 - Android lifecycle (Activity) capping the whole tree
 

@@ -48,7 +48,8 @@ class StatefulNode2(
             body = "– even when they're not visible. " +
                     "\n\nTry going back to the previous screen! " +
                     "You should see that the counters kept on working in the background, " +
-                    "and changes you made to colours are persisted."
+                    "and changes you made to colours are persisted." +
+                    "\n\nIf this behaviour is not desired you can destroy them by using different KeepMode."
         ) {
             val shape = RoundedCornerShape(16.dp)
 
@@ -72,10 +73,10 @@ class StatefulNode2(
             ) {
                 var counter by remember { mutableStateOf(105) }
                 LaunchedEffect(Unit) {
-                        while (true) {
-                            delay(1000)
-                            counter++
-                        }
+                    while (true) {
+                        delay(1000)
+                        counter++
+                    }
                 }
 
                 Text(

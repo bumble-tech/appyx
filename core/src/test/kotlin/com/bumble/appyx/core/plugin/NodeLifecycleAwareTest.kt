@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.lifecycle
+package com.bumble.appyx.core.plugin
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable

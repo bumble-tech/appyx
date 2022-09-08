@@ -48,7 +48,7 @@ fun Page(
 
         Column(
             modifier = Modifier
-                .weight(0.35f)
+                .weight(0.5f)
         ) {
             Text(
                 text = title,
