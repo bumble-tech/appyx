@@ -49,8 +49,7 @@ class StatefulNode2(
                     "\n\nTry going back to the previous screen! " +
                     "You should see that the counters kept on working in the background, " +
                     "and changes you made to colours are persisted." +
-                    "\n\nStill this behaviour is configurable and you can make them to be destroyed " +
-                    "by using different KeepMode."
+                    "\n\nIf this behaviour is not desired you can destroy them by using different KeepMode."
         ) {
             val shape = RoundedCornerShape(16.dp)
 

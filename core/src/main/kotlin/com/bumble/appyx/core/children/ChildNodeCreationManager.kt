@@ -26,10 +26,10 @@ internal class ChildNodeCreationManager<Routing : Any>(
     private val customisations: NodeCustomisationDirectory,
     private val keepMode: ChildEntry.KeepMode,
 ) {
+    private lateinit var parentNode: ParentNode<Routing>
     private val _children =
         MutableStateFlow<Map<RoutingKey<Routing>, ChildEntry<Routing>>>(emptyMap())
     val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
-    private lateinit var parentNode: ParentNode<Routing>
 
     fun launch(parentNode: ParentNode<Routing>) {
         this.parentNode = parentNode
@@ -43,56 +43,55 @@ internal class ChildNodeCreationManager<Routing : Any>(
     private fun syncNavModelWithChildren(parentNode: ParentNode<Routing>) {
         parentNode.lifecycle.coroutineScope.launch {
             parentNode.navModel.screenState.collect { state ->
-                val navModelOnScreenKeys: Set<RoutingKey<Routing>>
-                val navModelOffScreenKeys: Set<RoutingKey<Routing>>
+                val navModelKeepKeys: Set<RoutingKey<Routing>>
+                val navModelSuspendKeys: Set<RoutingKey<Routing>>
                 val navModelKeys: Set<RoutingKey<Routing>>
                 when (keepMode) {
                     ChildEntry.KeepMode.KEEP -> {
-                        // Consider everything as on-screen for keep mode
-                        navModelOnScreenKeys =
+                        navModelKeepKeys =
                             (state.onScreen + state.offScreen).mapNotNullToSet { element -> element.key }
-                        navModelOffScreenKeys = emptySet()
-                        navModelKeys = navModelOnScreenKeys
+                        navModelSuspendKeys = emptySet()
+                        navModelKeys = navModelKeepKeys
                     }
                     ChildEntry.KeepMode.SUSPEND -> {
-                        navModelOnScreenKeys =
+                        navModelKeepKeys =
                             state.onScreen.mapNotNullToSet { element -> element.key }
-                        navModelOffScreenKeys =
+                        navModelSuspendKeys =
                             state.offScreen.mapNotNullToSet { element -> element.key }
-                        navModelKeys = navModelOnScreenKeys + navModelOffScreenKeys
+                        navModelKeys = navModelKeepKeys + navModelSuspendKeys
                     }
                 }
-                updateChildren(navModelKeys, navModelOnScreenKeys, navModelOffScreenKeys)
+                updateChildren(navModelKeys, navModelKeepKeys, navModelSuspendKeys)
             }
         }
     }
 
     private fun updateChildren(
         navModelKeys: Set<RoutingKey<Routing>>,
-        navModelOnScreenKeys: Set<RoutingKey<Routing>>,
-        navModelOffScreenKeys: Set<RoutingKey<Routing>>,
+        navModelKeepKeys: Set<RoutingKey<Routing>>,
+        navModelSuspendKeys: Set<RoutingKey<Routing>>,
     ) {
         _children.update { map ->
             val localKeys = map.keys
-            val localOnScreenKeys = map.entries.mapNotNullToSet { entry ->
+            val localKeptKeys = map.entries.mapNotNullToSet { entry ->
                 entry.key.takeIf { entry.value is ChildEntry.Initialized }
             }
-            val localOffScreenKeys = map.entries.mapNotNullToSet { entry ->
+            val localSuspendedKeys = map.entries.mapNotNullToSet { entry ->
                 entry.key.takeIf { entry.value is ChildEntry.Suspended }
             }
             val newKeys = navModelKeys - localKeys
             val removedKeys = localKeys - navModelKeys
-            val offToOnScreenKeys = localOffScreenKeys.intersect(navModelOnScreenKeys)
-            val onToOffScreenKeys = localOnScreenKeys.intersect(navModelOffScreenKeys)
+            val keepKeys = localSuspendedKeys.intersect(navModelKeepKeys)
+            val suspendKeys = localKeptKeys.intersect(navModelSuspendKeys)
             val noKeysChanges = newKeys.isEmpty() && removedKeys.isEmpty()
-            val noScreenChanges = offToOnScreenKeys.isEmpty() && onToOffScreenKeys.isEmpty()
-            if (noKeysChanges && noScreenChanges) {
+            val noSuspendChanges = keepKeys.isEmpty() && suspendKeys.isEmpty()
+            if (noKeysChanges && noSuspendChanges) {
                 return@update map
             }
             val mutableMap = map.toMutableMap()
             newKeys.forEach { key ->
                 val shouldSuspend =
-                    keepMode == ChildEntry.KeepMode.SUSPEND && navModelOffScreenKeys.contains(key)
+                    keepMode == ChildEntry.KeepMode.SUSPEND && navModelSuspendKeys.contains(key)
                 mutableMap[key] =
                     childEntry(
                         key = key,
@@ -103,10 +102,10 @@ internal class ChildNodeCreationManager<Routing : Any>(
             removedKeys.forEach { key ->
                 mutableMap.remove(key)
             }
-            offToOnScreenKeys.forEach { key ->
+            keepKeys.forEach { key ->
                 mutableMap[key] = requireNotNull(mutableMap[key]).initialize()
             }
-            onToOffScreenKeys.forEach { key ->
+            suspendKeys.forEach { key ->
                 mutableMap[key] = requireNotNull(mutableMap[key]).suspend()
             }
             mutableMap

@@ -5,7 +5,7 @@ import com.bumble.appyx.core.children.ChildEntry
 object Appyx {
 
     var exceptionHandler: ((Exception) -> Unit)? = null
-    var defaultKeepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP
+    var defaultChildKeepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP
 
     fun reportException(exception: Exception) {
         val handler = exceptionHandler

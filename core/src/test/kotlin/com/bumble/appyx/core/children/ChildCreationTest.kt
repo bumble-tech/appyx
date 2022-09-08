@@ -218,7 +218,7 @@ class ChildCreationTest {
     ) : ParentNode<String>(
         buildContext = buildContext,
         navModel = routing,
-        keepMode = keepMode,
+        childKeepMode = keepMode,
     ) {
         init {
             build()

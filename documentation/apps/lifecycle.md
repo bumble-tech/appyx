@@ -19,7 +19,7 @@ When `RoutingElement` of the node is marked as off-screen, the following might h
 - Its lifecycle is capped with `CREATED` (or `STOPPED`) in case of `ChildEntry.KeepMode.KEEP`. 
 - The node is destroyed and its state is saved in case of `ChildEntry.KeepMode.SUSPEND`.
 
-`ChildEntry.KeepMode` settings can be setup on each `ParentNode` separately or globally via `Appyx.defaultKeepMode`.
+`ChildEntry.KeepMode` settings can be setup on each `ParentNode` separately or globally via `Appyx.defaultChildKeepMode`.
 
 When a node is removed completely from `NavModel`, it will be in `DESTROYED` state.
 

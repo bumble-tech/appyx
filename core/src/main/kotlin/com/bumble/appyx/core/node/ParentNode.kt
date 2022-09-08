@@ -48,7 +48,7 @@ abstract class ParentNode<Routing : Any>(
     navModel: NavModel<Routing, *>,
     buildContext: BuildContext,
     view: ParentNodeView<Routing> = EmptyParentNodeView(),
-    keepMode: ChildEntry.KeepMode = Appyx.defaultKeepMode,
+    childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
@@ -66,7 +66,7 @@ abstract class ParentNode<Routing : Any>(
     private val childNodeCreationManager = ChildNodeCreationManager<Routing>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
-        keepMode = keepMode,
+        keepMode = childKeepMode,
     )
     val children: StateFlow<ChildEntryMap<Routing>>
         get() = childNodeCreationManager.children
