@@ -3,10 +3,11 @@ package com.bumble.appyx.core.integrationpoint
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
-import androidx.appcompat.app.AppCompatActivity
 
 /**
- * Helper class for root [Node] integration into projects using ComponentActivity.
+ * Helper class for root [Node] integration into projects using [ComponentActivity].
+ *
+ * See [NodeActivity] for building upon [AppCompatActivity]
  *
  * Also offers base functionality to satisfy dependencies of Android-related functionality
  * down the tree via [integrationPoint]:

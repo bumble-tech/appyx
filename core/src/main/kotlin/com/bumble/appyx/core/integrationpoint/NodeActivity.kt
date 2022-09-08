@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 
 /**
- * Helper class for root [Node] integration.
+ * Helper class for root [Node] integration into projects using [AppCompatActivity].
+ *
+ * See [NodeComponentActivity] for building upon [ComponentActivity].
  *
  * Also offers base functionality to satisfy dependencies of Android-related functionality
  * down the tree via [integrationPoint]:
