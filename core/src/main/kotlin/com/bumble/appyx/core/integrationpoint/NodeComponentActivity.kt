@@ -23,7 +23,7 @@ abstract class NodeComponentActivity : ComponentActivity() {
         protected set
 
     protected open fun createIntegrationPoint(savedInstanceState: Bundle?): ActivityIntegrationPoint =
-        ActivityIntegrationPoint(
+        ActivityIntegrationPoint.createIntegrationPoint(
             activity = this,
             savedInstanceState = savedInstanceState
         )

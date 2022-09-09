@@ -5,13 +5,12 @@ import android.os.Bundle
 import com.badoo.ribs.android.RibActivity
 import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPoint
 
-abstract class InteropActivity : RibActivity(), IntegrationPointAppyxProvider {
+abstract class InteropActivity : RibActivity() {
 
-    override lateinit var integrationPointAppyx: ActivityIntegrationPoint
-        protected set
+    private lateinit var integrationPointAppyx: ActivityIntegrationPoint
 
     protected open fun createIntegrationPointV2(savedInstanceState: Bundle?): ActivityIntegrationPoint =
-        ActivityIntegrationPoint(
+        ActivityIntegrationPoint.createIntegrationPoint(
             activity = this,
             savedInstanceState = savedInstanceState
         )
