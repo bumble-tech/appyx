@@ -2,14 +2,16 @@
 
 ## Pending changes
 
+## 1.0-alpha07 – 9 Sep 2022
+
 - [#122](https://github.com/bumble-tech/appyx/pull/122) - **Breaking change**: `ChildEntry.ChildMode` is removed, now nodes are always created when a nav model changes (previously default behaviour)
 - [#99](https://github.com/bumble-tech/appyx/pull/99) – **Breaking change**: Removed `IntegrationPointAppyxProvider` and made `ActivityIntegrationPoint`'s constructor private. Use `ActivityIntegrationPoint.createIntegrationPoint`. This uses a weak reference to keep track of the integration points, and will not introduce memory leaks.
 - [#122](https://github.com/bumble-tech/appyx/pull/122) - **Added**: New `ChildEntry.KeepMode` that allows to destroy nodes that are currently not visible on the screen
-- [#132](https://github.com/bumble-tech/appyx/pull/132) - **Added**: New `NodeComponentActivity` to extend when wanting to work with ComponentActivity as your base activity, eg when migrating from a project built from the Jetpack Compose template
+- [#132](https://github.com/bumble-tech/appyx/pull/132) - **Added**: New `NodeComponentActivity` to extend when wanting to work with `ComponentActivity` as your base activity, eg when migrating from a project built from the Jetpack Compose template
 - [#119](https://github.com/bumble-tech/appyx/pull/119) - **Fixed**: Lifecycle observers are invoked in incorrect order (child before parent)
 - [#62](https://github.com/bumble-tech/appyx/pull/62) - **Fixed**: Node is marked with stable annotation making some of the composable functions skippable
 - [#129](https://github.com/bumble-tech/appyx/pull/129) - **Updated**: Removed sealed interface from operations to allow client to define their own
-- [#133](https://github.com/bumble-tech/appyx/pull/133) - **Updated**: NodeView interface and ParentNode marked as stable improving amount of skippable composables
+- [#133](https://github.com/bumble-tech/appyx/pull/133) - **Updated**: `NodeView` interface and `ParentNode` marked as stable improving amount of skippable composables
 
 ## 1.0-alpha06 – 26 Aug 2022
 
