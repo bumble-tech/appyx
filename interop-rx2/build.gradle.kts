@@ -34,11 +34,9 @@ dependencies {
     implementation(project(":core"))
 
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.rxjava2)
     implementation(libs.rxrelay)
 
     testImplementation(libs.junit.api)
-    testImplementation(libs.junit.params)
     testRuntimeOnly(libs.junit.engine)
 }
