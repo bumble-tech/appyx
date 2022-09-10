@@ -30,15 +30,23 @@ open class AppyxViewTestRule<View : NodeView>(
         return RunRules(base, listOf(composeTestRule, parent), description, ::before, ::after)
     }
 
+    @Suppress("TooGenericExceptionCaught") // launchActivity does throw RuntimeException
     fun start() {
         require(!launchActivity) {
             "Activity will be launched automatically, launchActivity parameter was passed into constructor"
         }
-        launchActivity(null)
+        try {
+            launchActivity(null)
+        } catch (e: RuntimeException) {
+            throw IllegalStateException(
+                "Unable to start Appyx test rule. Have you added 'debugImplementation " +
+                        "\"com.bumble.appyx:testing-ui-activity:x.x.x\"' to your build.gradle?", e
+            )
+        }
     }
 
     override fun beforeActivityLaunched() {
-        AppyxViewActivity.composableView =  {
+        AppyxViewActivity.composableView = {
             view.View(modifier = Modifier)
         }
     }
