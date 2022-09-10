@@ -28,6 +28,7 @@ include(
     ":testing-junit4",
     ":testing-junit5",
     ":testing-ui",
+    ":testing-ui-activity",
     ":testing-unit-common",
 )
 

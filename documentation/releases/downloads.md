@@ -17,6 +17,7 @@ dependencies {
     implementation "com.bumble.appyx:core:$version"
 
     // Test rules and utility classes for testing on Android
+    debugImplementation "com.bumble.appyx:testing-ui-activity:$version"
     androidTestImplementation "com.bumble.appyx:testing-ui:$version"
 
     // Utility classes for unit testing

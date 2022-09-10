@@ -7,14 +7,12 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.testing.ui"
+    namespace = "com.bumble.appyx.testing.ui.activity"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -33,14 +31,7 @@ android {
 
 dependencies {
     api(project(":core"))
-    api(project(":testing-ui-activity"))
-    api(libs.androidx.test.rules)
-    api(libs.compose.ui.test.junit4)
-
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.test.espresso.core)
     implementation(libs.compose.ui.ui)
 }

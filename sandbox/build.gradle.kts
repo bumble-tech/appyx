@@ -56,7 +56,8 @@ dependencies {
     implementation(project(":interop-rx2"))
     implementation(project(":interop-ribs"))
     implementation(project(":navmodel-addons"))
-    implementation(project(":testing-ui"))
+    // The testing activity needs to be in the main manifest, otherwise it cannot be launched.
+    debugImplementation(project(":testing-ui-activity"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
@@ -87,4 +88,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(project(":testing-ui"))
 }
