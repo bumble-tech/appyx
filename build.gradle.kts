@@ -48,4 +48,21 @@ subprojects {
             }
         }
     }
+    afterEvaluate {
+        val isJavaLibrary = plugins.hasPlugin("java")
+
+        val isAndroidLibrary =
+            plugins.hasPlugin("com.android.application") ||
+                    plugins.hasPlugin("com.android.library")
+
+        if (isAndroidLibrary || isJavaLibrary) {
+            tasks.register("printAllDependencies", DependencyReportTask::class.java) {
+                if (isAndroidLibrary) {
+                    setConfiguration("releaseRuntimeClasspath")
+                } else {
+                    setConfiguration("runtimeClasspath")
+                }
+            }
+        }
+    }
 }
