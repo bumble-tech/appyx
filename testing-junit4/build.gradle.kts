@@ -33,7 +33,6 @@ android {
 
 dependencies {
     api(project(":testing-unit-common"))
-
-    implementation(libs.junit)
+    api(libs.junit)
     implementation(libs.kotlin.coroutines.test)
 }

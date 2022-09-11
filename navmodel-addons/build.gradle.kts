@@ -33,11 +33,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
+    api(libs.compose.ui.ui)
 
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.ui)
     implementation(libs.compose.foundation.layout)
     implementation(libs.compose.foundation)
 }
