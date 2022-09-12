@@ -37,6 +37,6 @@ android {
 
 dependencies {
     api(project(":testing-unit-common"))
-    implementation(libs.junit.api)
-    implementation(libs.kotlin.coroutines.test.jvm)
+    api(libs.junit.api)
+    api(libs.kotlin.coroutines.test.jvm)
 }

@@ -32,11 +32,11 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
+    api(libs.ribs.base)
 
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.ui.ui)
-    implementation(libs.ribs.base)
     implementation(libs.ribs.compose)
 }
