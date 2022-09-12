@@ -9,6 +9,7 @@ import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityBoundary
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequestBoundary
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
+import java.lang.ref.WeakReference
 import java.util.WeakHashMap
 
 open class ActivityIntegrationPoint private constructor(
@@ -49,14 +50,14 @@ open class ActivityIntegrationPoint private constructor(
     }
 
     companion object {
-        private val integrationPoints = WeakHashMap<Activity, IntegrationPoint>()
+        private val integrationPoints = WeakHashMap<Activity, WeakReference<IntegrationPoint>>()
 
         fun createIntegrationPoint(
             activity: Activity,
             savedInstanceState: Bundle?,
         ): ActivityIntegrationPoint =
             ActivityIntegrationPoint(activity, savedInstanceState)
-                .also { integrationPoints[activity] = it }
+                .also { integrationPoints[activity] = WeakReference(it) }
 
         fun getIntegrationPoint(context: Context): IntegrationPoint {
             val activity = context.findActivity<Activity>()
@@ -66,7 +67,7 @@ open class ActivityIntegrationPoint private constructor(
             val integrationPoint = integrationPoints
                 .entries
                 .firstOrNull { (key, _) -> key === activity }
-                ?.value
+                ?.value?.get()
 
             return requireNotNull(integrationPoint) {
                 "Unable to find integration point. It was either not created " +
