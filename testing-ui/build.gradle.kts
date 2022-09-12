@@ -37,10 +37,5 @@ dependencies {
     api(libs.androidx.test.rules)
     api(libs.compose.ui.test.junit4)
 
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.test.espresso.core)
-    implementation(libs.compose.ui.ui)
 }

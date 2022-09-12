@@ -48,20 +48,12 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.compose.material)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
-    implementation(libs.google.accompanist.flow)
     implementation(libs.google.material)
-    implementation(project(":interop-rx2"))
-
-    implementation(libs.rxjava2)
-    implementation(libs.rxrelay)
-
-    testImplementation(libs.junit)
 
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)

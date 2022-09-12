@@ -7,15 +7,16 @@ import androidx.compose.animation.core.animateOffset
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Dp
 import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionSpec
 import com.bumble.appyx.navmodel.spotlight.Spotlight
+import com.bumble.appyx.navmodel.toIntOffset
 
 @Suppress("TransitionPropertiesLabel")
 class SpotlightSlider<T>(
@@ -31,7 +32,7 @@ class SpotlightSlider<T>(
         transition: Transition<Spotlight.TransitionState>,
         descriptor: TransitionDescriptor<T, Spotlight.TransitionState>
     ): Modifier = modifier.composed {
-        val offset = transition.animateOffset(
+        val offset by transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 val width = descriptor.params.bounds.width.value
@@ -43,7 +44,9 @@ class SpotlightSlider<T>(
             },
         )
 
-        offset(Dp(offset.value.x), Dp(offset.value.y))
+        offset {
+            offset.toIntOffset(density)
+        }
     }
 
     private fun toOutsideRight(width: Float) = Offset(1.0f * width, 0f)

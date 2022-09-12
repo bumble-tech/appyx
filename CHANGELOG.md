@@ -1,11 +1,24 @@
 # Changelog
 
+
 ## Pending changes
 
-- [#140](https://github.com/bumble-tech/appyx/issues/140) - **Breaking change**: Added `testing-ui-activity` module to avoid needing to add `testing-ui` as a debug implementation as part of instrumentation testing. See the linked issue for more details
+- [#138](https://github.com/bumble-tech/appyx/pull/139) - **Fixed**: `androidx.appcompat:appcompat` from is exposed via `api` within `com.bumble.appyx:core`. This prevents potential compilation bugs.
+- **Updated**: `SpotlightSlider` now uses offset modifier with lambda
 - [#146](https://github.com/bumble-tech/appyx/issues/146) - **Breaking change**: Removed `FragmentIntegrationPoint`. Clients should use `ActivityIntegrationPoint.getIntegrationPoint(context: Context)` to get integration point from Fragment 
 
-## 1.0-alpha07 – 9 Sep 2022
+---
+
+## 1.0-alpha08
+
+- [#140](https://github.com/bumble-tech/appyx/issues/140) - **Breaking change**: Added `testing-ui-activity` module to avoid needing to add `testing-ui` as a debug implementation as part of instrumentation testing. See the linked issue for more details
+- [#139](https://github.com/bumble-tech/appyx/pull/139) - **Fixed**: `IntegrationPoint` memory leak created by `ActivityIntegrationPoint`
+
+<div style="text-align: center"><small>12 Sep 2022</small></div>
+
+---
+
+## 1.0-alpha07
 
 - [#122](https://github.com/bumble-tech/appyx/pull/122) - **Breaking change**: `ChildEntry.ChildMode` is removed, now nodes are always created when a nav model changes (previously default behaviour)
 - [#99](https://github.com/bumble-tech/appyx/pull/99) – **Breaking change**: Removed `IntegrationPointAppyxProvider` and made `ActivityIntegrationPoint`'s constructor private. Use `ActivityIntegrationPoint.createIntegrationPoint`. This uses a weak reference to keep track of the integration points, and will not introduce memory leaks.
@@ -16,19 +29,31 @@
 - [#129](https://github.com/bumble-tech/appyx/pull/129) - **Updated**: Removed sealed interface from operations to allow client to define their own
 - [#133](https://github.com/bumble-tech/appyx/pull/133) - **Updated**: `NodeView` interface and `ParentNode` marked as stable improving amount of skippable composables
 
-## 1.0-alpha06 – 26 Aug 2022
+<div style="text-align: center"><small>9 Sep 2022</small></div>
+
+---
+
+## 1.0-alpha06
 
 - [#96](https://github.com/bumble-tech/appyx/pull/96) – **Breaking change**: Removed `InteractorTestHelper`. Please use Node tests instead of Interactor tests.
 - [#99](https://github.com/bumble-tech/appyx/pull/99) – **Breaking change**: Modified package of `NodeConnector` and `Connectable`
 - [#99](https://github.com/bumble-tech/appyx/pull/99) – **Added**: Source<T>.rx2() to convert Source<T> to io.reactivex.Observable<T>
 - [#107](https://github.com/bumble-tech/appyx/pull/107) – **Fixed**: Back press handlers are not properly registered on lifecycle events
 
-## 1.0-alpha05 – 19 Aug 2022
+<div style="text-align: center"><small>26 Aug 2022</small></div>
+
+---
+
+## 1.0-alpha05
 
 - [#83](https://github.com/bumble-tech/appyx/issues/83) – **Breaking change**: `RoutingSource` renamed to `NavModel`. All subclasses, fields, package names, etc., any mentions of the word follow suit.
 - [#91](https://github.com/bumble-tech/appyx/pull/91) – **Fixed**: Spotlight next and previous operations crash fix 
 
-## 1.0-alpha04 – 18 Aug 2022
+<div style="text-align: center"><small>19 Aug 2022</small></div>
+
+---
+
+## 1.0-alpha04
 
 - [#39](https://github.com/bumble-tech/appyx/pull/39) – **Added**: Workflows implementation to support deeplinks
 - [#32](https://github.com/bumble-tech/appyx/pull/32) – **Added**: `BackPressHandler` plugin that allows to control back press behaviour via `androidx.activity.OnBackPressedCallback`
@@ -40,13 +65,19 @@
 - [#85](https://github.com/bumble-tech/appyx/issues/85) – **Updated**: Improved `InteropView` error messaging when `Activity` does not implement `IntegrationPointAppyxProvider`
 - [#88](https://github.com/bumble-tech/appyx/issues/88) – **Updated**: Moved `TestUpNavigationHandler` to `testing-unit-common`
 
+<div style="text-align: center"><small>18 Aug 2022</small></div>
 
-## 1.0-alpha03 – 2 Aug 2022
+---
+
+## 1.0-alpha03
 
 - [#38](https://github.com/bumble-tech/appyx/pull/38) – **Added**: JUnit5 support
 
+<div style="text-align: center"><small>2 Aug 2022</small></div>
 
-## 1.0-alpha02 – 19 Jul 2022
+---
+
+## 1.0-alpha02
 
 - [#19](https://github.com/bumble-tech/appyx/pull/19) – **Fixed**: Do not allow setting `Node.integrationPoint` on non-root nodes
 - [#23](https://github.com/bumble-tech/appyx/pull/21) – **Fixed**: Integration point attached twice crash when using live literals
@@ -55,7 +86,12 @@
 - [#26](https://github.com/bumble-tech/appyx/issues/26) – **Added**: Publish snapshot versions
 - [#9](https://github.com/bumble-tech/appyx/pull/9) – **Migrated**: [app-tree-utils](https://github.com/badoo/app-tree-utils) into this repository
 
+<div style="text-align: center"><small>19 Jul 2022</small></div>
 
-## 1.0-alpha01 – 4 July
+---
+
+## 1.0-alpha01
 
 - Initial release
+
+<div style="text-align: center"><small>4 Jul 2022</small></div>
