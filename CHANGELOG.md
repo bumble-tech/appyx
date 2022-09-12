@@ -4,6 +4,7 @@
 ## Pending changes
 
 - [#138](https://github.com/bumble-tech/appyx/pull/139) - **Fixed**: `androidx.appcompat:appcompat` from is exposed via `api` within `com.bumble.appyx:core`. This prevents potential compilation bugs.
+- **Updated**: `SpotlightSlider` now uses offset modifier with lambda
 
 ---
 
