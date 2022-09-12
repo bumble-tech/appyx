@@ -2,7 +2,6 @@
 
 ## Pending changes
 - [#139](https://github.com/bumble-tech/appyx/pull/139) - **Fixed**: `IntegrationPoint` memory leak created by `ActivityIntegrationPoint`
-
 - [#140](https://github.com/bumble-tech/appyx/issues/140) - **Breaking change**: Added `testing-ui-activity` module to avoid needing to add `testing-ui` as a debug implementation as part of instrumentation testing. See the linked issue for more details
 - **Updated**: `SpotlightSlider` now uses offset modifier with lambda
 
