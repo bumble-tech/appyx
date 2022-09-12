@@ -33,8 +33,5 @@ android {
 
 dependencies {
     api(project(":core"))
-
-    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.kotlin.test)
-    implementation(libs.compose.ui.ui)
 }
