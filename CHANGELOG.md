@@ -14,6 +14,7 @@
 - [#62](https://github.com/bumble-tech/appyx/pull/62) - **Fixed**: Node is marked with stable annotation making some of the composable functions skippable
 - [#129](https://github.com/bumble-tech/appyx/pull/129) - **Updated**: Removed sealed interface from operations to allow client to define their own
 - [#133](https://github.com/bumble-tech/appyx/pull/133) - **Updated**: `NodeView` interface and `ParentNode` marked as stable improving amount of skippable composables
+- **Updated**: `SpotlightSlider` now uses offset modifier with lambda 
 
 ## 1.0-alpha06 – 26 Aug 2022
 
