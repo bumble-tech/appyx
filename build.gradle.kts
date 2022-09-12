@@ -20,6 +20,9 @@ plugins {
 dependencyAnalysis {
     issues {
         all {
+            onIncorrectConfiguration {
+                severity("fail")
+            }
             onUnusedDependencies {
                 severity("fail")
 
