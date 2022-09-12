@@ -3,6 +3,7 @@
 ## Pending changes
 
 - [#140](https://github.com/bumble-tech/appyx/issues/140) - **Breaking change**: Added `testing-ui-activity` module to avoid needing to add `testing-ui` as a debug implementation as part of instrumentation testing. See the linked issue for more details
+- [#146](https://github.com/bumble-tech/appyx/issues/146) - **Breaking change**: Removed `FragmentIntegrationPoint`. Clients should use `ActivityIntegrationPoint.getIntegrationPoint(context: Context)` to get integration point from Fragment 
 
 ## 1.0-alpha07 – 9 Sep 2022
 
