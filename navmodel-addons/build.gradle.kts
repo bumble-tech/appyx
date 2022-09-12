@@ -35,13 +35,9 @@ android {
 dependencies {
     implementation(project(":core"))
 
-    implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.compose.foundation.layout)
     implementation(libs.compose.foundation)
-
-    testImplementation(libs.junit)
 }

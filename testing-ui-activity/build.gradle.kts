@@ -32,6 +32,4 @@ android {
 dependencies {
     api(project(":core"))
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.compose.ui.ui)
 }
