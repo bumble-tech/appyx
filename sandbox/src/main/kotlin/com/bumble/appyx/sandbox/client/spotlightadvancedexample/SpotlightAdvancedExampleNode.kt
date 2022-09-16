@@ -35,6 +35,7 @@ import com.bumble.appyx.navmodel.spotlightadvanced.operation.switchToPager
 import com.bumble.appyx.navmodel.spotlightadvanced.transitionhandler.rememberSpotlightAdvancedSlider
 import kotlinx.parcelize.Parcelize
 
+@Suppress("MaxLineLength")
 class SpotlightAdvancedExampleNode(
     buildContext: BuildContext,
     private val spotlightAdvanced: SpotlightAdvanced<Routing> = SpotlightAdvanced(
