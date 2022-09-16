@@ -30,9 +30,9 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
@@ -197,7 +197,7 @@ class BackStackExampleNode(
                         expanded = expanded.value,
                         onDismissRequest = { expanded.value = false }
                     ) {
-                        backStackState.value.forEach { element ->
+                        backStackState.value.iterator().forEach { element ->
                             DropdownMenuItem(onClick = {
                                 selectedId.value = element.key.id
                                 expanded.value = false
