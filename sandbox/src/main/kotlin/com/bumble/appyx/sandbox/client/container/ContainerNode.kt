@@ -21,10 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
@@ -42,9 +42,9 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.LazyExamp
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.ModalExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreLeafExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.Picker
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.RequestPermissionsExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.SpotlightExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.TilesExample
 import com.bumble.appyx.sandbox.client.customisations.createViewCustomisationsActivityIntent
@@ -56,6 +56,7 @@ import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
+import com.bumble.appyx.sandbox.client.spotlightadvancedexample.SpotlightAdvancedExampleNode
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode
 import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
 import com.bumble.appyx.utils.customisations.NodeCustomisation
@@ -116,6 +117,9 @@ class ContainerNode internal constructor(
         object MviCoreLeafExample : Routing()
 
         @Parcelize
+        object SpotlightAdvancedExample : Routing()
+
+        @Parcelize
         object BlockerExample : Routing()
 
         @Parcelize
@@ -127,6 +131,7 @@ class ContainerNode internal constructor(
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
             is NavModelExamples -> node(buildContext) { modifier -> NavModelExamples(modifier) }
             is BackStackExample -> BackStackExampleNode(buildContext)
+            is Routing.SpotlightAdvancedExample -> SpotlightAdvancedExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedNavModel -> CombinedNavModelNode(buildContext)
@@ -225,6 +230,7 @@ class ContainerNode internal constructor(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                TextButton("SpotlightAdvanced example") { backStack.push(Routing.SpotlightAdvancedExample) }
                 TextButton("Backstack example") { backStack.push(BackStackExample) }
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
