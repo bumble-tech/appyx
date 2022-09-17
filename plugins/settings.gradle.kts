@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 include("publish-plugin")
 include("verification-plugin")
+include("dependency-diff")

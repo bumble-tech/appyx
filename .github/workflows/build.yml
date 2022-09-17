@@ -64,6 +64,44 @@ jobs:
           name: reports
           path: '**/build/reports'
 
+  generate-diff:
+    name: Check dependency diff
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/gradle-build-action@v2
+        with:
+          arguments: dependencies
+      - id: dependency-diff
+        env:
+          INPUT_BASEREF: ${{ github.base_ref }}
+          INPUT_BUILD_ROOT_DIR: ${{ inputs.build-root-directory }}
+          INPUT_VERSION: '1.2.0'
+        run: .github/workflows/diff-generator.sh
+        shell: bash
+      - uses: peter-evans/find-comment@v1
+        id: find_comment
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-includes: Dependency diff
+      - uses: peter-evans/create-or-update-comment@v1
+        if: ${{ steps.dependency-diff.outputs.text-diff != null || steps.find_comment.outputs.comment-id != null }}
+        with:
+          body: |
+            Dependency diff: 
+              ```diff
+              ${{ steps.dependency-diff.outputs.text-diff }}
+              ```
+          edit-mode: replace
+          comment-id: ${{ steps.find_comment.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
   instrumentation-tests:
     name: Instrumentation tests
     runs-on: macOS-latest

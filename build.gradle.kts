@@ -15,6 +15,7 @@ buildscript {
 plugins {
     id("appyx-collect-sarif")
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
+    id("dependency-diff") apply false
 }
 
 dependencyAnalysis {
@@ -69,6 +70,8 @@ allprojects {
 }
 
 subprojects {
+    plugins.apply("dependency-diff")
+
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             if (project.findProperty("enableComposeCompilerReports") == "true") {

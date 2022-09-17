@@ -10,6 +10,7 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 build/
+dependency-diff/
 /captures
 .externalNativeBuild
 .cxx
