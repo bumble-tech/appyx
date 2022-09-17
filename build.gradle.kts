@@ -15,6 +15,7 @@ buildscript {
 plugins {
     id("appyx-collect-sarif")
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
+    id("release-dependencies-diff") apply false
 }
 
 dependencyAnalysis {
@@ -58,6 +59,8 @@ tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
 
+tasks.register("releaseDependenciesDiffFiles", ReleaseDependenciesDiffFilesTask::class)
+
 allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
@@ -69,6 +72,8 @@ allprojects {
 }
 
 subprojects {
+    plugins.apply("release-dependencies-diff")
+
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             if (project.findProperty("enableComposeCompilerReports") == "true") {
