@@ -110,7 +110,7 @@ class ParentNodeTest {
             }
         }
 
-        override fun resolve(routing: Routing, buildContext: BuildContext) = when (routing) {
+        override fun resolve(navTarget: Routing, buildContext: BuildContext) = when (navTarget) {
             ChildA -> node(buildContext) {}
             ChildB -> NodeB(buildContext)
         }

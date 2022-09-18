@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.updateAndGet
 import kotlinx.coroutines.launch
 
 /**
- * Initializes and removes nodes based on parent node routing source.
+ * Initializes and removes nodes based on parent node's navModel.
  *
  * Lifecycle of these nodes is managed in [com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager].
  */
@@ -188,7 +188,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
                 ChildEntry.Initialized(
                     key = key,
                     node = parentNode.resolve(
-                        routing = key.navTarget,
+                        navTarget = key.navTarget,
                         buildContext = childBuildContext(savedState),
                     ).build()
                 )

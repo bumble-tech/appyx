@@ -18,7 +18,7 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key not found`() {
 
-        val key = NavKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(navTarget = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
@@ -37,7 +37,7 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key found but element to be destroyed`() {
 
-        val key = NavKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(navTarget = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
@@ -56,7 +56,7 @@ internal class RemoveTest {
     @Test
     fun `applicable when key found and element not to be destroyed`() {
 
-        val key = NavKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(navTarget = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 key = key,
@@ -75,7 +75,7 @@ internal class RemoveTest {
 
     @Test
     fun `does nothing when key not found`() {
-        val key = NavKey<Routing>(routing = Routing2)
+        val key = NavKey<Routing>(navTarget = Routing2)
 
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -116,7 +116,7 @@ internal class RemoveTest {
     @Test
     fun `does nothing when key found but element to be destroyed`() {
 
-        val key = NavKey<Routing>(routing = Routing2)
+        val key = NavKey<Routing>(navTarget = Routing2)
 
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -158,7 +158,7 @@ internal class RemoveTest {
     fun `crashes when item to remove on screen but no element stashed`() {
 
         val key = NavKey<Routing>(
-            routing = Routing1
+            navTarget = Routing1
         )
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -180,7 +180,7 @@ internal class RemoveTest {
     fun `destroys current element on screen and add on screen last stashed element`() {
 
         val key = NavKey<Routing>(
-            routing = Routing2
+            navTarget = Routing2
         )
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -221,7 +221,7 @@ internal class RemoveTest {
     @Test
     fun `silently removes item when not on screen`() {
 
-        val key = NavKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(navTarget = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 key = key,

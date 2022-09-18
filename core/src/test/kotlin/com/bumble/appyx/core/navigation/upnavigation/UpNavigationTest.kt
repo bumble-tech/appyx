@@ -142,8 +142,8 @@ class UpNavigationTest {
             manageTransitionsInTest()
         }
 
-        override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
-            Child(routing.id, buildContext, childUpNavigationHandler)
+        override fun resolve(navTarget: Configuration, buildContext: BuildContext): Node =
+            Child(navTarget.id, buildContext, childUpNavigationHandler)
 
         @Composable
         override fun View(modifier: Modifier) {

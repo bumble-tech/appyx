@@ -102,8 +102,8 @@ class SpotlightExampleNode(
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
             Child1 -> ChildNode(name = "Child1", buildContext = buildContext)
             Child2 -> ChildNode(name = "Child2", buildContext = buildContext)
             Child3 -> ChildNode(name = "Child3", buildContext = buildContext)

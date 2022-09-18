@@ -62,8 +62,8 @@ class InteractorExampleNode(
         object Child3 : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Routing.Child1 -> node(buildContext) { modifier ->
                 Box(
                     modifier = modifier

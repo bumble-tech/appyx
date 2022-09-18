@@ -80,8 +80,8 @@ open class ChildAwareTestBase {
         buildContext = BuildContext.root(null),
         navModel = routing,
     ) {
-        override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
-            when (routing) {
+        override fun resolve(navTarget: Configuration, buildContext: BuildContext): Node =
+            when (navTarget) {
                 is Configuration.Child1 -> Child1(buildContext)
                 is Configuration.Child2 -> Child2(buildContext)
                 is Configuration.Child3 -> Child3(buildContext)

@@ -43,7 +43,7 @@ import kotlinx.parcelize.Parcelize
 class LazyListContainerNode constructor(
     buildContext: BuildContext,
     navModel: PermanentNavModel<Routing> = PermanentNavModel(
-        routings = buildSet<Routing> {
+        navTargets = buildSet<Routing> {
             repeat(100) {
                 add(Routing(it.toString()))
             }
@@ -54,8 +54,8 @@ class LazyListContainerNode constructor(
     @Parcelize
     data class Routing(val name: String) : Parcelable
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        ChildNode(routing.name, buildContext)
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        ChildNode(navTarget.name, buildContext)
 
     enum class ListMode {
         Column, Row, Grid

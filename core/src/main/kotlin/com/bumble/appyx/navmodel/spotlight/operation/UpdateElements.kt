@@ -30,12 +30,12 @@ class UpdateElements<T : Any>(
         return if (initialActiveIndex == null) {
             val currentActiveElement = elements.find { it.targetState == ACTIVE }
 
-            // if current routing exists in the new list of items and initialActiveIndex is null
-            // then keep existing routing active
+            // if current navTarget exists in the new list of items and initialActiveIndex is null
+            // then keep existing navTarget active
             if (this.elements.contains(currentActiveElement?.key?.navTarget)) {
                 this.elements.toSpotlightElements(elements.indexOf(currentActiveElement))
             } else {
-                // if current routing does not exist in the new list of items and initialActiveIndex is null
+                // if current navTarget does not exist in the new list of items and initialActiveIndex is null
                 // then set 0 as active index
                 this.elements.toSpotlightElements(0)
             }

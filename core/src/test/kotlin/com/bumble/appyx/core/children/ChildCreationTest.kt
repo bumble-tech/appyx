@@ -225,8 +225,8 @@ class ChildCreationTest {
             manageTransitionsInTest()
         }
 
-        override fun resolve(routing: String, buildContext: BuildContext): Node =
-            Child(routing, buildContext)
+        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+            Child(navTarget, buildContext)
 
         fun key(routing: String): NavKey<String>? =
             children.value.keys.find { it.navTarget == routing }

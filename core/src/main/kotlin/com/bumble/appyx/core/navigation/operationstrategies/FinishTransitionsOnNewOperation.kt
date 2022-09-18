@@ -15,8 +15,8 @@ class FinishTransitionsOnNewOperation<Routing, State> : BaseOperationStrategy<Ro
         navModel
             .elements
             .value
-            .mapNotNull { routingElement ->
-                if (routingElement.isTransitioning) routingElement.key else null
+            .mapNotNull { navElement ->
+                if (navElement.isTransitioning) navElement.key else null
             }
             .also { if (it.isNotEmpty()) navModel.onTransitionFinished(it) }
     }

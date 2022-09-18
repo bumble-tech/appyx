@@ -136,10 +136,10 @@ class ChildrenTransitionScope<T : Any, S>(
         val children by visibleElementsFlow.collectAsState(emptyList())
 
         val saveableStateHolder = rememberSaveableStateHolder()
-        children.forEach { routingElement ->
-            key(routingElement.key.id) {
+        children.forEach { navElement ->
+            key(navElement.key.id) {
                 Child(
-                    routingElement,
+                    navElement,
                     saveableStateHolder,
                     transitionParams,
                     transitionHandler,

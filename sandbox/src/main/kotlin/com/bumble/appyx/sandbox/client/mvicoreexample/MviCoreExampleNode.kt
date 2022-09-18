@@ -30,8 +30,8 @@ class MviCoreExampleNode(
         object Child2 : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Routing.Child1 -> MviCoreChildNode1(buildContext)
             is Routing.Child2 -> MviCoreChildNode2(buildContext)
         }

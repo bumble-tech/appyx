@@ -33,8 +33,8 @@ class ComposeNavigationContainerNode(
         object Main : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Routing.Main -> node(buildContext) {
                 Column(
                     modifier = Modifier.fillMaxSize(),

@@ -203,8 +203,8 @@ class ChildLifecycleTest {
         buildContext = buildContext,
         navModel = routing,
     ) {
-        override fun resolve(routing: String, buildContext: BuildContext): Node =
-            Child(routing, buildContext)
+        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+            Child(navTarget, buildContext)
 
         @Composable
         override fun View(modifier: Modifier) {

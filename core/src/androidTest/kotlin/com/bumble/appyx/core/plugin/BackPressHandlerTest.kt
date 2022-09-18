@@ -224,7 +224,7 @@ class BackPressHandlerTest {
 
         }
 
-        override fun resolve(routing: Routing, buildContext: BuildContext) = when (routing) {
+        override fun resolve(navTarget: Routing, buildContext: BuildContext) = when (navTarget) {
             Routing.ChildA -> node(buildContext) {
                 Spacer(
                     modifier = Modifier

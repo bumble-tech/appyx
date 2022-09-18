@@ -55,8 +55,8 @@ class RootNode(
         object ChildTwo : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext) =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext) =
+        when (navTarget) {
             is ChildOne -> ChildNodeOne(buildContext)
             is ChildTwo -> ChildNodeTwo(buildContext)
         }

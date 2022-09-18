@@ -63,9 +63,9 @@ class CombinedNavModelNode(
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is Routing.Configuration.Child -> ChildNode(routing.id, buildContext)
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is Routing.Configuration.Child -> ChildNode(navTarget.id, buildContext)
             is Routing.Permanent.Child1 -> ChildNode("Permanent", buildContext)
         }
 

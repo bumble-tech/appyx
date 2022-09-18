@@ -49,8 +49,8 @@ class ModalExampleNode(
         data class Child(override val value: String) : Routing(value)
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Child -> ChildNode("", buildContext)
         }
 

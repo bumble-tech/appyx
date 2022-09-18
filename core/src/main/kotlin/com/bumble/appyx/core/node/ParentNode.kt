@@ -46,31 +46,31 @@ import kotlin.coroutines.resume
 import kotlin.reflect.KClass
 
 @Stable
-abstract class ParentNode<Routing : Any>(
-    navModel: NavModel<Routing, *>,
+abstract class ParentNode<NavTarget : Any>(
+    navModel: NavModel<NavTarget, *>,
     buildContext: BuildContext,
-    view: ParentNodeView<Routing> = EmptyParentNodeView(),
+    view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-    private val childAware: ChildAware<ParentNode<Routing>> = ChildAwareImpl(),
+    private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
     view = view,
     buildContext = buildContext,
     plugins = plugins + navModel + childAware + view
-), Resolver<Routing> {
+), Resolver<NavTarget> {
 
-    private val permanentNavModel = PermanentNavModel<Routing>(
+    private val permanentNavModel = PermanentNavModel<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
         key = KEY_PERMANENT_NAV_MODEL,
     )
-    val navModel: NavModel<Routing, *> = permanentNavModel + navModel
+    val navModel: NavModel<NavTarget, *> = permanentNavModel + navModel
 
-    private val childNodeCreationManager = ChildNodeCreationManager<Routing>(
+    private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
         keepMode = childKeepMode,
     )
-    val children: StateFlow<ChildEntryMap<Routing>>
+    val children: StateFlow<ChildEntryMap<NavTarget>>
         get() = childNodeCreationManager.children
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
@@ -89,19 +89,19 @@ abstract class ParentNode<Routing : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(navKey: NavKey<Routing>): ChildEntry.Initialized<Routing> =
+    fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> =
         childNodeCreationManager.childOrCreate(navKey)
 
     @Composable
     fun PermanentChild(
-        routing: Routing,
+        navTarget: NavTarget,
         decorator: @Composable (child: ChildRenderer) -> Unit
     ) {
         var child by remember { mutableStateOf<ChildEntry.Initialized<*>?>(null) }
-        LaunchedEffect(routing) {
+        LaunchedEffect(navTarget) {
             permanentNavModel.elements.collect { elements ->
-                val navKey = elements.find { it.key.navTarget == routing }?.key
-                    ?: NavKey(routing).also { permanentNavModel.add(it) }
+                val navKey = elements.find { it.key.navTarget == navTarget }?.key
+                    ?: NavKey(navTarget).also { permanentNavModel.add(it) }
                 child = childOrCreate(navKey)
             }
         }
@@ -112,8 +112,8 @@ abstract class ParentNode<Routing : Any>(
     }
 
     @Composable
-    fun PermanentChild(routing: Routing) {
-        PermanentChild(routing) { child -> child() }
+    fun PermanentChild(navTarget: NavTarget) {
+        PermanentChild(navTarget) { child -> child() }
     }
 
     override fun updateLifecycleState(state: Lifecycle.State) {
@@ -125,7 +125,7 @@ abstract class ParentNode<Routing : Any>(
      * [NavModel.onTransitionFinished] is invoked by Composable function when animation is finished.
      * When application is in background, recomposition is paused, so we never invoke the callback.
      * Because we do not care about animations in background and still want to have
-     * business-logic-driven routing in background, we need to instantly invoke the callback.
+     * business-logic-driven navigation state change in background, we need to instantly invoke the callback.
      */
     private fun manageTransitions() {
         lifecycle.addObserver(

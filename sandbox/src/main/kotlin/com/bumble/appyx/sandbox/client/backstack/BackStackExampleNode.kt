@@ -97,12 +97,12 @@ class BackStackExampleNode(
         ) : Routing("D")
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is ChildA -> ChildNode(routing.name, buildContext)
-            is ChildB -> ChildNode(routing.name, buildContext)
-            is ChildC -> ChildNode(routing.name, buildContext)
-            is ChildD -> ChildNode(routing.name, buildContext)
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is ChildA -> ChildNode(navTarget.name, buildContext)
+            is ChildB -> ChildNode(navTarget.name, buildContext)
+            is ChildC -> ChildNode(navTarget.name, buildContext)
+            is ChildD -> ChildNode(navTarget.name, buildContext)
         }
 
     @Composable

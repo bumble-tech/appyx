@@ -122,8 +122,8 @@ class ContainerNode internal constructor(
         object Customisations : Routing()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
             is NavModelExamples -> node(buildContext) { modifier -> NavModelExamples(modifier) }
             is BackStackExample -> BackStackExampleNode(buildContext)

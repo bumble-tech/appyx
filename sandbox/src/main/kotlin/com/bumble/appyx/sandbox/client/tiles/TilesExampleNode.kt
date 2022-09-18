@@ -69,8 +69,8 @@ class TilesExampleNode(
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+        when (navTarget) {
             Child1 -> ChildNode("1", buildContext)
             Child2 -> ChildNode("2", buildContext)
             Child3 -> ChildNode("3", buildContext)

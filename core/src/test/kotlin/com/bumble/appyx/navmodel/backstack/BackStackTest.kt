@@ -238,7 +238,7 @@ internal class BackStackTest {
 
         val initialElement = Routing1
         val transitionedItemKey: NavKey<Routing> = NavKey(
-            routing = Routing3
+            navTarget = Routing3
         )
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -280,7 +280,7 @@ internal class BackStackTest {
     @Test
     fun `when transition of item to be stashed is finished then its state is changed`() {
         val initialElement = Routing1
-        val transitionedItemKey: NavKey<Routing> = NavKey(routing = Routing2)
+        val transitionedItemKey: NavKey<Routing> = NavKey(navTarget = Routing2)
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing4("Content"),
@@ -328,7 +328,7 @@ internal class BackStackTest {
 
         val initialElement = Routing1
         val transitionedItemKey: NavKey<Routing> = NavKey(
-            routing = Routing4("Content")
+            navTarget = Routing4("Content")
         )
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(

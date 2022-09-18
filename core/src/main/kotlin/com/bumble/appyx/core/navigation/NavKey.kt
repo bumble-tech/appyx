@@ -13,8 +13,8 @@ class NavKey<NavTarget> private constructor(
     val id: String
 ) : Parcelable {
 
-    constructor(routing: @RawValue NavTarget) : this(
-        navTarget = routing,
+    constructor(navTarget: @RawValue NavTarget) : this(
+        navTarget = navTarget,
         id = UUID.randomUUID().toString()
     )
 
