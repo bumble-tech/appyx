@@ -8,10 +8,10 @@ abstract class ReleaseDependenciesCreateFilesTask : DependencyReportTask() {
 
     @get:Input
     @set:Option(
-        option = "outputPath",
-        description = "The directory where the dependency files are stored"
+        option = "directoryName",
+        description = "The name of the directory where the dependency files are stored"
     )
-    var outputPath: String? = null
+    var directoryName: String? = null
 
     override fun generate(project: Project) {
         val isJavaLibrary = project.plugins.hasPlugin("java")
@@ -32,9 +32,11 @@ abstract class ReleaseDependenciesCreateFilesTask : DependencyReportTask() {
     }
 
     override fun getOutputFile(): File? {
-        val directory = File(checkNotNull(outputPath) { "outputPath was not supplied" })
-        directory.mkdirs()
-        return File(directory, project.fileName)
+        val directoryName = checkNotNull(directoryName) { "directoryName was not supplied" }
+
+        return project
+            .rootProject
+            .file("build/release-dependencies-diff/$directoryName/${project.fileName}")
     }
 
     private val Project.fileName: String

@@ -6,19 +6,16 @@ wget "https://github.com/JakeWharton/dependency-tree-diff/releases/download/$INP
 
 cd "$INPUT_BUILD_ROOT_DIR"
 
-baselineDependenciesDir=build/release-dependencies-diff/baseline-dependencies
-dependenciesDir=build/release-dependencies-diff/dependencies
-
 # Determine the dependencies of the PR before switching to the base branch.
-./gradlew releaseDependenciesCreateFiles --outputPath=$dependenciesDir
+./gradlew releaseDependenciesCreateFiles --directoryName=dependencies
 
 # Switch to base ref and determine the dependencies
 git fetch --force origin "$INPUT_BASEREF":"$INPUT_BASEREF" --no-tags
 git switch --force "$INPUT_BASEREF"
-./gradlew releaseDependenciesCreateFiles --outputPath=$baselineDependenciesDir
+./gradlew releaseDependenciesCreateFiles --directoryName=baseline-dependencies
 
 # Note: We execute releaseDependenciesDiffFiles on the base branch, so if you update this
 # gradle task you may see unexpected results.
 ./gradlew releaseDependenciesDiffFiles \
-  --baselineDependenciesPath=$baselineDependenciesDir \
-  --dependenciesPath=$dependenciesDir
+  --baselineDependenciesDirectoryName=baseline-dependencies \
+  --dependenciesDirectoryName=dependencies

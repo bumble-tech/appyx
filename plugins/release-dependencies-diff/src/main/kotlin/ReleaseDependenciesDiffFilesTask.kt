@@ -12,17 +12,17 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
 
     @get:Input
     @set:Option(
-        option = "baselineDependenciesPath",
-        description = "Path to the baseline dependencies directory"
+        option = "baselineDependenciesDirectoryName",
+        description = "Name of the baseline dependencies directory"
     )
-    var baselineDependenciesPath: String? = null
+    var baselineDependenciesDirectoryName: String? = null
 
     @get:Input
     @set:Option(
-        option = "dependenciesPath",
-        description = "Path to the dependencies directory"
+        option = "dependenciesDirectoryName",
+        description = "Name of the dependencies directory"
     )
-    var dependenciesPath: String? = null
+    var dependenciesDirectoryName: String? = null
 
     @get:OutputFile
     abstract val outputFile: RegularFileProperty
@@ -31,10 +31,12 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
     fun compile() {
         val diffResults = getDiffResults(
             baselineDependencyFiles = getDirectoryFiles(
-                checkNotNull(baselineDependenciesPath) { "baselineDependenciesPath was not supplied" }
+                checkNotNull(baselineDependenciesDirectoryName) {
+                    "baselineDependencyFiles was not supplied"
+                }
             ),
             dependencyFiles = getDirectoryFiles(
-                checkNotNull(dependenciesPath) { "dependenciesPath was not supplied" }
+                checkNotNull(dependenciesDirectoryName) { "directoryName was not supplied" }
             )
         )
 
@@ -52,8 +54,13 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
         )
     }
 
-    private fun getDirectoryFiles(directory: String): Array<File> =
-        requireNotNull(File(directory).listFiles()) { "A null was returned for $directory files" }
+    private fun getDirectoryFiles(directoryName: String): Array<File> {
+        val folderFiles = project
+            .rootProject
+            .file("build/release-dependencies-diff/$directoryName")
+            .listFiles()
+        return requireNotNull(folderFiles) { "A null was returned for $directoryName files" }
+    }
 
     @Suppress("ForbiddenComment")
     private fun getDiffResults(
