@@ -6,18 +6,18 @@ import com.bumble.appyx.core.node.ParentNode
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-fun <Routing : Any, N : ParentNode<Routing>> N.parentNodeTestHelper() =
+fun <NavTarget : Any, N : ParentNode<NavTarget>> N.parentNodeTestHelper() =
     ParentNodeTestHelper(this)
 
-class ParentNodeTestHelper<Routing : Any, N : ParentNode<Routing>>(
+class ParentNodeTestHelper<NavTarget : Any, N : ParentNode<NavTarget>>(
     private val node: N
 ) : NodeTestHelper<N>(
     node = node
 ) {
 
-    fun <Routing : Any> assertChildHasLifecycle(routing: Routing, state: Lifecycle.State) {
+    fun <NavTarget : Any> assertChildHasLifecycle(navTarget: NavTarget, state: Lifecycle.State) {
         val childMap = node.children.value
-        val key = childMap.keys.find { it.navTarget == routing }
+        val key = childMap.keys.find { it.navTarget == navTarget }
 
         if (key != null) {
             childMap.getValue(key).nodeOrNull.also { childNode ->
@@ -27,16 +27,16 @@ class ParentNodeTestHelper<Routing : Any, N : ParentNode<Routing>>(
                         childNode.lifecycle.currentState
                     )
                 } else {
-                    throw NullPointerException("Child node was not attached for routing $routing")
+                    throw NullPointerException("Child node was not attached for navTarget $navTarget")
                 }
             }
         } else {
-            throw NullPointerException("No child for routing $routing")
+            throw NullPointerException("No child for navTarget $navTarget")
         }
     }
 
-    fun <Routing : Any> assertHasNoChild(routing: Routing) {
-        val key = node.children.value.keys.find { it.navTarget == routing }
+    fun <NavTarget : Any> assertHasNoChild(navTarget: NavTarget) {
+        val key = node.children.value.keys.find { it.navTarget == navTarget }
         assertNull(key)
     }
 }
