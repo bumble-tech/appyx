@@ -40,18 +40,21 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
             )
         )
 
-        outputFile.get().asFile.writeText(
-            buildString {
-                appendLine("Dependency diff")
-                appendLine("```diff")
-                if (diffResults.isNotEmpty()) {
-                    diffResults.onEach(::appendLine)
-                } else {
-                    appendLine("No changes")
-                }
-                appendLine("```")
+        val diffOutput = buildString {
+            appendLine("Dependency diff")
+            appendLine("```diff")
+            if (diffResults.isNotEmpty()) {
+                diffResults.onEach(::appendLine)
+            } else {
+                appendLine("No changes")
             }
-        )
+            appendLine("```")
+        }
+        if (diffOutput.length < MAX_CHARACTERS) {
+            outputFile.get().asFile.writeText(diffOutput)
+        } else {
+            outputFile.get().asFile.writeText(diffOutput.substring(0, MAX_CHARACTERS - 4) + "...")
+        }
     }
 
     private fun getDirectoryFiles(directoryName: String): Array<File> {
@@ -106,4 +109,8 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
             resultLines.onEach(::appendLine)
             appendReproducibleNewLine()
         }
+
+    private companion object {
+        private const val MAX_CHARACTERS = 65535
+    }
 }
