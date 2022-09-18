@@ -40,7 +40,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode creates second child on add on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -50,7 +50,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode creates second child on add off screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.add("second", TestNavModel.State.OFF_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.OFF_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -60,8 +60,8 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode removes second child on remove`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
-        parent.routing.remove("second")
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.remove("second")
 
         assertEquals(1, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -70,7 +70,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode keeps not on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.suspend("initial")
+        parent.testNavModel.suspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -79,9 +79,9 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode reuses same node when becomes on screen`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.suspend("initial")
+        parent.testNavModel.suspend("initial")
         val node = parent.child("initial")
-        parent.routing.unsuspend("initial")
+        parent.testNavModel.unsuspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertEquals(node, parent.child("initial"))
@@ -102,7 +102,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode creates second child on add on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -112,7 +112,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode does not create second child on add off screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.add("second", TestNavModel.State.OFF_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.OFF_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -122,8 +122,8 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode removes second child on remove`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
-        parent.routing.remove("second")
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.remove("second")
 
         assertEquals(1, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -132,7 +132,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode suspends not on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.suspend("initial")
+        parent.testNavModel.suspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertNull(parent.child("initial"))
@@ -141,8 +141,8 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode restores child when becomes on screen`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.suspend("initial")
-        parent.routing.unsuspend("initial")
+        parent.testNavModel.suspend("initial")
+        parent.testNavModel.unsuspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertEquals(true, parent.child("initial")?.hasRestoredState)
@@ -214,10 +214,10 @@ class ChildCreationTest {
     private class Parent(
         keepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP,
         buildContext: BuildContext = BuildContext.root(null),
-        val routing: TestNavModel = TestNavModel(),
+        val testNavModel: TestNavModel = TestNavModel(),
     ) : ParentNode<String>(
         buildContext = buildContext,
-        navModel = routing,
+        navModel = testNavModel,
         childKeepMode = keepMode,
     ) {
         init {

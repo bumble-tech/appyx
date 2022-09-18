@@ -35,7 +35,7 @@ class ChildLifecycleTest {
     @Test
     fun `on screen child follows parent state`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
 
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
@@ -61,7 +61,7 @@ class ChildLifecycleTest {
 
         val parent = Parent(BuildContext.root(null)).build()
         parent.lifecycle.addObserver(parentObserver)
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.STARTED)
         parent.findChild()?.lifecycle?.addObserver(childObserver)
 
@@ -74,7 +74,7 @@ class ChildLifecycleTest {
     @Test
     fun `off screen child is limited to created`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = false)
+        parent.testNavModel.add(key = "0", onScreen = false)
 
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
@@ -87,11 +87,11 @@ class ChildLifecycleTest {
     @Test
     fun `child is destroyed when is not represented in navModel anymore`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
         val child = parent.children.value.values.first().nodeOrNull
 
-        parent.routing.remove(key = "0")
+        parent.testNavModel.remove(key = "0")
 
         assertEquals(
             Lifecycle.State.DESTROYED,
@@ -102,10 +102,10 @@ class ChildLifecycleTest {
     @Test
     fun `child is correctly moved from off screen to on screen`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = false)
+        parent.testNavModel.add(key = "0", onScreen = false)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
-        parent.routing.changeState(key = "0", onScreen = true)
+        parent.testNavModel.changeState(key = "0", onScreen = true)
 
         assertEquals(
             Lifecycle.State.RESUMED,
@@ -120,10 +120,10 @@ class ChildLifecycleTest {
     @Test
     fun `child is correctly moved from on screen to off screen`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
-        parent.routing.changeState(key = "0", onScreen = false)
+        parent.testNavModel.changeState(key = "0", onScreen = false)
 
         assertEquals(
             Lifecycle.State.CREATED,
@@ -138,7 +138,7 @@ class ChildLifecycleTest {
     @Test
     fun `child is destroyed when parent is destroyed`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
         parent.updateLifecycleState(Lifecycle.State.DESTROYED)
@@ -153,7 +153,7 @@ class ChildLifecycleTest {
 
     // region Setup
 
-    private class NavTargetImpl : BaseNavModel<String, Boolean>(
+    private class TestNavModel : BaseNavModel<String, Boolean>(
         screenResolver = object : OnScreenStateResolver<Boolean> {
             override fun isOnScreen(state: Boolean): Boolean = state
         },
@@ -198,10 +198,10 @@ class ChildLifecycleTest {
 
     private class Parent(
         buildContext: BuildContext,
-        val routing: NavTargetImpl = NavTargetImpl(),
+        val testNavModel: TestNavModel = TestNavModel(),
     ) : ParentNode<String>(
         buildContext = buildContext,
-        navModel = routing,
+        navModel = testNavModel,
     ) {
         override fun resolve(navTarget: String, buildContext: BuildContext): Node =
             Child(navTarget, buildContext)

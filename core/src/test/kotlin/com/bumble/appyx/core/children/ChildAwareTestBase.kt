@@ -43,7 +43,7 @@ open class ChildAwareTestBase {
     }
 
     fun add(vararg key: NavKey<Configuration>): List<Node> {
-        root.routing.add(*key)
+        root.testNavModel.add(*key)
         return root
             .children
             .value
@@ -75,10 +75,10 @@ open class ChildAwareTestBase {
     }
 
     class Root(
-        val routing: TestNavModel<Configuration> = TestNavModel(),
+        val testNavModel: TestNavModel<Configuration> = TestNavModel(),
     ) : ParentNode<Configuration>(
         buildContext = BuildContext.root(null),
-        navModel = routing,
+        navModel = testNavModel,
     ) {
         override fun resolve(navTarget: Configuration, buildContext: BuildContext): Node =
             when (navTarget) {
