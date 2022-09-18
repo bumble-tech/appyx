@@ -15,7 +15,8 @@ buildscript {
 plugins {
     id("appyx-collect-sarif")
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
-    id("release-dependencies-diff") apply false
+    id("release-dependencies-diff-compare")
+    id("release-dependencies-diff-create") apply false
 }
 
 dependencyAnalysis {
@@ -59,8 +60,6 @@ tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
 }
 
-tasks.register("releaseDependenciesDiffFiles", ReleaseDependenciesDiffFilesTask::class)
-
 allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
@@ -72,7 +71,7 @@ allprojects {
 }
 
 subprojects {
-    plugins.apply("release-dependencies-diff")
+    plugins.apply("release-dependencies-diff-create")
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {

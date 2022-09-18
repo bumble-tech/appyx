@@ -1,36 +1,59 @@
 import org.gradle.api.DefaultTask
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.options.Option
 import org.gradle.kotlin.dsl.support.appendReproducibleNewLine
 import java.io.ByteArrayOutputStream
 import java.io.File
 
 abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
+
+    @get:Input
+    @set:Option(
+        option = "baselineDependenciesPath",
+        description = "Path to the baseline dependencies directory"
+    )
+    var baselineDependenciesPath: String? = null
+
+    @get:Input
+    @set:Option(
+        option = "dependenciesPath",
+        description = "Path to the dependencies directory"
+    )
+    var dependenciesPath: String? = null
+
+    @get:OutputFile
+    abstract val outputFile: RegularFileProperty
+
     @TaskAction
     fun compile() {
         val diffResults = getDiffResults(
-            baselineDependencyFiles = getFolderFiles("baselineFolderName"),
-            dependencyFiles = getFolderFiles("folderName")
+            baselineDependencyFiles = getDirectoryFiles(
+                checkNotNull(baselineDependenciesPath) { "baselineDependenciesPath was not supplied" }
+            ),
+            dependencyFiles = getDirectoryFiles(
+                checkNotNull(dependenciesPath) { "dependenciesPath was not supplied" }
+            )
         )
-        println("Dependency diff")
-        println("```diff")
-        if (diffResults.isNotEmpty()) {
-            diffResults.onEach(::println)
-        } else {
-            println("No changes")
-        }
-        println("```")
+
+        outputFile.get().asFile.writeText(
+            buildString {
+                appendLine("Dependency diff")
+                appendLine("```diff")
+                if (diffResults.isNotEmpty()) {
+                    diffResults.onEach(::appendLine)
+                } else {
+                    appendLine("No changes")
+                }
+                appendLine("```")
+            }
+        )
     }
 
-    private fun getFolderFiles(folderNameParam: String): Array<File> {
-        if (!project.hasProperty(folderNameParam)) {
-            throw IllegalArgumentException("$folderNameParam argument must be set")
-        }
-        val folderFiles = project
-            .rootProject
-            .file("build/release-dependencies-diff/${project.property(folderNameParam)}")
-            .listFiles()
-        return requireNotNull(folderFiles) { "A null was returned for $folderNameParam files" }
-    }
+    private fun getDirectoryFiles(directory: String): Array<File> =
+        requireNotNull(File(directory).listFiles()) { "A null was returned for $directory files" }
 
     @Suppress("ForbiddenComment")
     private fun getDiffResults(
@@ -39,8 +62,11 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
     ): List<String> =
         //  TODO: Handle cases where modules are added, renamed or removed
         baselineDependencyFiles
-            .mapIndexedNotNull { index: Int, file1: File ->
-                val resultLines = executeDependencyTreeDiff(file1, dependencyFiles[index])
+            .mapNotNull { baselineDependencyFile: File ->
+                val dependencyFile =
+                    dependencyFiles.single { it.name == baselineDependencyFile.name }
+
+                val resultLines = executeDependencyTreeDiff(baselineDependencyFile, dependencyFile)
                     .toString("UTF-8")
                     .lineSequence()
                     .filter { it.isNotEmpty() }
@@ -48,7 +74,7 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
 
                 if (resultLines.isNotEmpty()) {
                     createDiffResult(
-                        projectName = file1.name.replace("_", ":"),
+                        projectName = baselineDependencyFile.name.replace("_", ":"),
                         resultLines = resultLines
                     )
                 } else {

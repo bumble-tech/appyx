@@ -6,9 +6,13 @@ class ReleaseDependenciesDiffPlugin : Plugin<Project> {
         with(project) {
             afterEvaluate {
                 tasks.register(
-                    "releaseDependenciesCreateFiles",
-                    ReleaseDependenciesCreateFilesTask::class.java
-                )
+                    "releaseDependenciesDiffFiles",
+                    ReleaseDependenciesDiffFilesTask::class.java
+                ) {
+                    outputFile.set(
+                        rootProject.file("build/release-dependencies-diff-result.txt")
+                    )
+                }
             }
         }
     }
