@@ -9,7 +9,7 @@ val <T : Any> BackStack<T>.active: BackStackElement<T>?
     get() = elements.value.active
 
 val <T> BackStackElements<T>.activeElement: T?
-    get() = active?.key?.routing
+    get() = active?.key?.navTarget
 
 val <T : Any> BackStack<T>.activeElement: T?
     get() = elements.value.activeElement

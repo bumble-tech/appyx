@@ -29,7 +29,7 @@ data class NewRoot<T : Any>(
         val current = elements.active
         requireNotNull(current) { "No previous elements, state=$elements" }
 
-        return if (current.key.routing == element) {
+        return if (current.key.navTarget == element) {
             listOf(current)
         } else {
             listOf(

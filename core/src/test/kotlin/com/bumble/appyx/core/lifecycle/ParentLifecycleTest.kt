@@ -82,20 +82,20 @@ class ParentLifecycleTest {
 
         fun get(routing: String): RoutingElement<String, State> {
             return requireNotNull(
-                value = elements.value.find { it.key.routing == routing },
+                value = elements.value.find { it.key.navTarget == routing },
                 lazyMessage = { "element with routing $routing is not found" },
             )
         }
 
         fun remove(routing: String) {
-            updateState { list -> list.filter { it.key.routing != routing } }
+            updateState { list -> list.filter { it.key.navTarget != routing } }
         }
 
         fun changeState(routing: String, defaultState: State) {
             updateState { list ->
                 list
                     .map {
-                        if (it.key.routing == routing) {
+                        if (it.key.navTarget == routing) {
                             it.transitionTo(
                                 newTargetState = defaultState,
                                 operation = Operation.Noop()

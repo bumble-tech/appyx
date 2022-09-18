@@ -11,7 +11,7 @@ internal fun <Routing, State> RoutingElements<Routing, State>.assertRoutingEleme
 
     forEachIndexed { index, element ->
         val elementToCompare = elements[index]
-        assertEquals(element.key.routing, elementToCompare.key.routing)
+        assertEquals(element.key.navTarget, elementToCompare.key.navTarget)
         assertEquals(element.fromState, elementToCompare.fromState)
         assertEquals(element.targetState, elementToCompare.targetState)
         assertEquals(element.operation, elementToCompare.operation)

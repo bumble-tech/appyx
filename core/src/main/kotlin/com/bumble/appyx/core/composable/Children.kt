@@ -130,7 +130,7 @@ class ChildrenTransitionScope<T : Any, S>(
                 .map { list ->
                     list
                         .onScreen
-                        .filter { clazz.isInstance(it.key.routing) }
+                        .filter { clazz.isInstance(it.key.navTarget) }
                 }
         }
         val children by visibleElementsFlow.collectAsState(emptyList())

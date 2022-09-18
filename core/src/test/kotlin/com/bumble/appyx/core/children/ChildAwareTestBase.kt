@@ -49,7 +49,7 @@ open class ChildAwareTestBase {
             .value
             .values
             .filter { entry -> entry.key in key }
-            .sortedBy { it.key.routing }
+            .sortedBy { it.key.navTarget }
             .mapNotNull { it.nodeOrNull }
     }
 
@@ -141,7 +141,7 @@ open class ChildAwareTestBase {
 
         fun add(vararg key: NavKey<Key>) {
             state.update { list ->
-                require(list.none { it.key.routing in key.map { routingKey -> routingKey.routing } })
+                require(list.none { it.key.navTarget in key.map { routingKey -> routingKey.navTarget } })
                 list + key.map {
                     RoutingElement(
                         key = it,

@@ -17,7 +17,7 @@ class ParentNodeTestHelper<Routing : Any, N : ParentNode<Routing>>(
 
     fun <Routing : Any> assertChildHasLifecycle(routing: Routing, state: Lifecycle.State) {
         val childMap = node.children.value
-        val key = childMap.keys.find { it.routing == routing }
+        val key = childMap.keys.find { it.navTarget == routing }
 
         if (key != null) {
             childMap.getValue(key).nodeOrNull.also { childNode ->
@@ -36,7 +36,7 @@ class ParentNodeTestHelper<Routing : Any, N : ParentNode<Routing>>(
     }
 
     fun <Routing : Any> assertHasNoChild(routing: Routing) {
-        val key = node.children.value.keys.find { it.routing == routing }
+        val key = node.children.value.keys.find { it.navTarget == routing }
         assertNull(key)
     }
 }

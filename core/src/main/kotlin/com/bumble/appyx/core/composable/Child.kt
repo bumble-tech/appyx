@@ -128,7 +128,7 @@ private fun <Routing : Any, State> RoutingElement<Routing, State>.createDescript
     TransitionDescriptor(
         params = transitionParams,
         operation = operation,
-        element = key.routing,
+        element = key.navTarget,
         fromState = fromState,
         toState = targetState
     )

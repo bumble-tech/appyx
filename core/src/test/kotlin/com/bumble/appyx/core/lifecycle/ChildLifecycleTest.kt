@@ -174,14 +174,14 @@ class ChildLifecycleTest {
         }
 
         fun remove(key: String) {
-            updateState { list -> list.filter { it.key.routing != key } }
+            updateState { list -> list.filter { it.key.navTarget != key } }
         }
 
         fun changeState(key: String, onScreen: Boolean) {
             updateState { list ->
                 list
                     .map {
-                        if (it.key.routing == key) {
+                        if (it.key.navTarget == key) {
                             it
                                 .transitionTo(
                                     newTargetState = onScreen,

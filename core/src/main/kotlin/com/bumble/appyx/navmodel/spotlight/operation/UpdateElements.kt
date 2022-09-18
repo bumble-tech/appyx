@@ -32,7 +32,7 @@ class UpdateElements<T : Any>(
 
             // if current routing exists in the new list of items and initialActiveIndex is null
             // then keep existing routing active
-            if (this.elements.contains(currentActiveElement?.key?.routing)) {
+            if (this.elements.contains(currentActiveElement?.key?.navTarget)) {
                 this.elements.toSpotlightElements(elements.indexOf(currentActiveElement))
             } else {
                 // if current routing does not exist in the new list of items and initialActiveIndex is null

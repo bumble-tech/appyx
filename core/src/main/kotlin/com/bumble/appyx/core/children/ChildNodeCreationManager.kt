@@ -176,7 +176,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
             ChildEntry.Initialized(
                 key = key,
                 node = parentNode
-                    .resolve(key.routing, childBuildContext(savedState))
+                    .resolve(key.navTarget, childBuildContext(savedState))
                     .build()
             )
         }
@@ -188,7 +188,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
                 ChildEntry.Initialized(
                     key = key,
                     node = parentNode.resolve(
-                        routing = key.routing,
+                        routing = key.navTarget,
                         buildContext = childBuildContext(savedState),
                     ).build()
                 )

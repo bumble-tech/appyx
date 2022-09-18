@@ -97,12 +97,12 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
         ): BackStackOperation<T> {
             val targetClass = element.javaClass
             val lastIndexOfSameClass =
-                elements.indexOfLast { targetClass.isInstance(it.key.routing) }
+                elements.indexOfLast { targetClass.isInstance(it.key.navTarget) }
 
             return if (lastIndexOfSameClass == -1) {
                 Push(element)
             } else {
-                if (elements[lastIndexOfSameClass].key.routing == element) {
+                if (elements[lastIndexOfSameClass].key.navTarget == element) {
                     SingleTopReactivateBackStackOperation(
                         element,
                         lastIndexOfSameClass

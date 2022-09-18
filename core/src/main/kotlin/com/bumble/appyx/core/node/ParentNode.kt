@@ -100,7 +100,7 @@ abstract class ParentNode<Routing : Any>(
         var child by remember { mutableStateOf<ChildEntry.Initialized<*>?>(null) }
         LaunchedEffect(routing) {
             permanentNavModel.elements.collect { elements ->
-                val navKey = elements.find { it.key.routing == routing }?.key
+                val navKey = elements.find { it.key.navTarget == routing }?.key
                     ?: NavKey(routing).also { permanentNavModel.add(it) }
                 child = childOrCreate(navKey)
             }

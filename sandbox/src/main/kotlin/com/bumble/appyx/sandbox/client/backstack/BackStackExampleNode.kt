@@ -325,8 +325,8 @@ class BackStackExampleNode(
 
     private fun BackStackElements<Routing>.toStateString() = map { element ->
         val key = element.key
-        val name = key.routing.name
-        val value = key.routing.value
+        val name = key.navTarget.name
+        val value = key.navTarget.value
         val id = key.id
         "$name(Value: $value. Id: $id)"
     }

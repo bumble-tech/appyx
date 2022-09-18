@@ -151,7 +151,7 @@ class UpNavigationTest {
 
         @Suppress("UNCHECKED_CAST")
         fun <T : NodeWithId> findChild(id: UUID): T =
-            children.value.values.find { it.key.routing.id == id }?.nodeOrNull as T
+            children.value.values.find { it.key.navTarget.id == id }?.nodeOrNull as T
 
     }
 

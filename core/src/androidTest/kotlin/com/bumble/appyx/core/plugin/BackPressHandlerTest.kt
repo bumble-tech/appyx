@@ -161,7 +161,7 @@ class BackPressHandlerTest {
     fun appyx_handles_back_press_after_activity_returns_from_background() {
         fun TestParentNode.findChildNode() =
             children.value.values.firstNotNullOf { value ->
-                value.nodeOrNull?.takeIf { value.key.routing == TestParentNode.Routing.ChildWithPlugin }
+                value.nodeOrNull?.takeIf { value.key.navTarget == TestParentNode.Routing.ChildWithPlugin }
             } as TestParentNode
 
         rule.start()
