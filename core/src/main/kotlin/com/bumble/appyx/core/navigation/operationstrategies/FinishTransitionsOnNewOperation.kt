@@ -4,9 +4,9 @@ import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.isTransitioning
 
 
-class FinishTransitionsOnNewOperation<Routing, State> : BaseOperationStrategy<Routing, State>() {
+class FinishTransitionsOnNewOperation<NavTarget, State> : BaseOperationStrategy<NavTarget, State>() {
 
-    override fun accept(operation: Operation<Routing, State>) {
+    override fun accept(operation: Operation<NavTarget, State>) {
         finishUnfinishedTransitions()
         executeOperation(operation)
     }

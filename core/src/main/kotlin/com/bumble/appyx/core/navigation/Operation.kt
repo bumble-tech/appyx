@@ -3,19 +3,19 @@ package com.bumble.appyx.core.navigation
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-interface Operation<Routing, State> :
-        (NavElements<Routing, State>) -> NavElements<Routing, State>, Parcelable {
+interface Operation<NavTarget, State> :
+        (NavElements<NavTarget, State>) -> NavElements<NavTarget, State>, Parcelable {
 
-    fun isApplicable(elements: NavElements<Routing, State>): Boolean
+    fun isApplicable(elements: NavElements<NavTarget, State>): Boolean
 
     @Parcelize
-    class Noop<Routing, State> : Operation<Routing, State> {
+    class Noop<NavTarget, State> : Operation<NavTarget, State> {
 
-        override fun isApplicable(elements: NavElements<Routing, State>) = false
+        override fun isApplicable(elements: NavElements<NavTarget, State>) = false
 
         override fun invoke(
-            elements: NavElements<Routing, State>
-        ): NavElements<Routing, State> = elements
+            elements: NavElements<NavTarget, State>
+        ): NavElements<NavTarget, State> = elements
 
         override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
 

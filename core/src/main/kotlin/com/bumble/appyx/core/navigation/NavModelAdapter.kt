@@ -4,13 +4,13 @@ import androidx.compose.runtime.Stable
 import kotlinx.coroutines.flow.StateFlow
 
 @Stable
-interface NavModelAdapter<Routing, State> {
+interface NavModelAdapter<NavTarget, State> {
 
-    val screenState: StateFlow<ScreenState<Routing, out State>>
+    val screenState: StateFlow<ScreenState<NavTarget, out State>>
 
-    data class ScreenState<Routing, State>(
-        val onScreen: NavElements<Routing, out State> = emptyList(),
-        val offScreen: NavElements<Routing, out State> = emptyList(),
+    data class ScreenState<NavTarget, State>(
+        val onScreen: NavElements<NavTarget, out State> = emptyList(),
+        val offScreen: NavElements<NavTarget, out State> = emptyList(),
     )
 
 }

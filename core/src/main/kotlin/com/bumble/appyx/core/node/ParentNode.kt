@@ -161,7 +161,7 @@ abstract class ParentNode<NavTarget : Any>(
     }
 
     /**
-     * attachWorkflow executes provided action e.g. backstack.push(NodeARouting) and waits for the specific
+     * attachWorkflow executes provided action e.g. backstack.push(NodeANavTarget) and waits for the specific
      * Node of type T to appear in the ParentNode's children list. It should happen almost immediately because it happens
      * on the main thread, but the order of actions is not preserved as lifecycleScope uses Dispatchers.Main.immediate.
      * As the result we're doing it asynchronously with timeout after which exception is thrown if

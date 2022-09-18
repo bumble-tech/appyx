@@ -7,14 +7,14 @@ import com.bumble.appyx.navmodel.backstack.operation.Pop
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class PopBackPressHandler<Routing : Any> :
-    BaseBackPressHandlerStrategy<Routing, BackStack.TransitionState>() {
+class PopBackPressHandler<NavTarget : Any> :
+    BaseBackPressHandlerStrategy<NavTarget, BackStack.TransitionState>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
         navModel.elements.map(::areThereStashedElements)
     }
 
-    private fun areThereStashedElements(elements: BackStackElements<Routing>) =
+    private fun areThereStashedElements(elements: BackStackElements<NavTarget>) =
         elements.any { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
 
     override fun onBackPressed() {

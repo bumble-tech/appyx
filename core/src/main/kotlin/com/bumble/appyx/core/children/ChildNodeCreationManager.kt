@@ -21,17 +21,17 @@ import kotlinx.coroutines.launch
  *
  * Lifecycle of these nodes is managed in [com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager].
  */
-internal class ChildNodeCreationManager<Routing : Any>(
+internal class ChildNodeCreationManager<NavTarget : Any>(
     private var savedStateMap: SavedStateMap?,
     private val customisations: NodeCustomisationDirectory,
     private val keepMode: ChildEntry.KeepMode,
 ) {
-    private lateinit var parentNode: ParentNode<Routing>
+    private lateinit var parentNode: ParentNode<NavTarget>
     private val _children =
-        MutableStateFlow<Map<NavKey<Routing>, ChildEntry<Routing>>>(emptyMap())
-    val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
+        MutableStateFlow<Map<NavKey<NavTarget>, ChildEntry<NavTarget>>>(emptyMap())
+    val children: StateFlow<ChildEntryMap<NavTarget>> = _children.asStateFlow()
 
-    fun launch(parentNode: ParentNode<Routing>) {
+    fun launch(parentNode: ParentNode<NavTarget>) {
         this.parentNode = parentNode
         savedStateMap.restoreChildren()?.also { restoredMap ->
             _children.update { restoredMap }
@@ -40,12 +40,12 @@ internal class ChildNodeCreationManager<Routing : Any>(
         syncNavModelWithChildren(parentNode)
     }
 
-    private fun syncNavModelWithChildren(parentNode: ParentNode<Routing>) {
+    private fun syncNavModelWithChildren(parentNode: ParentNode<NavTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
             parentNode.navModel.screenState.collect { state ->
-                val navModelKeepKeys: Set<NavKey<Routing>>
-                val navModelSuspendKeys: Set<NavKey<Routing>>
-                val navModelKeys: Set<NavKey<Routing>>
+                val navModelKeepKeys: Set<NavKey<NavTarget>>
+                val navModelSuspendKeys: Set<NavKey<NavTarget>>
+                val navModelKeys: Set<NavKey<NavTarget>>
                 when (keepMode) {
                     ChildEntry.KeepMode.KEEP -> {
                         navModelKeepKeys =
@@ -67,9 +67,9 @@ internal class ChildNodeCreationManager<Routing : Any>(
     }
 
     private fun updateChildren(
-        navModelKeys: Set<NavKey<Routing>>,
-        navModelKeepKeys: Set<NavKey<Routing>>,
-        navModelSuspendKeys: Set<NavKey<Routing>>,
+        navModelKeys: Set<NavKey<NavTarget>>,
+        navModelKeepKeys: Set<NavKey<NavTarget>>,
+        navModelSuspendKeys: Set<NavKey<NavTarget>>,
     ) {
         _children.update { map ->
             val localKeys = map.keys
@@ -113,7 +113,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
     }
 
     @Suppress("ForbiddenComment")
-    fun childOrCreate(navKey: NavKey<Routing>): ChildEntry.Initialized<Routing> {
+    fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> {
         // TODO: Should not allow child creation and throw exception instead to avoid desynchronisation
         val value = _children.value
         val child = value[navKey] ?: error(
@@ -135,8 +135,8 @@ internal class ChildNodeCreationManager<Routing : Any>(
         }
     }
 
-    private fun SavedStateMap?.restoreChildren(): ChildEntryMap<Routing>? =
-        (this?.get(KEY_CHILDREN_STATE) as? Map<NavKey<Routing>, SavedStateMap>)?.mapValues {
+    private fun SavedStateMap?.restoreChildren(): ChildEntryMap<NavTarget>? =
+        (this?.get(KEY_CHILDREN_STATE) as? Map<NavKey<NavTarget>, SavedStateMap>)?.mapValues {
             // Always restore in suspended mode, they will be unsuspended or destroyed on the first sync cycle
             childEntry(it.key, it.value, true)
         }
@@ -166,10 +166,10 @@ internal class ChildNodeCreationManager<Routing : Any>(
         )
 
     private fun childEntry(
-        key: NavKey<Routing>,
+        key: NavKey<NavTarget>,
         savedState: SavedStateMap?,
         suspended: Boolean,
-    ): ChildEntry<Routing> =
+    ): ChildEntry<NavTarget> =
         if (suspended) {
             ChildEntry.Suspended(key, savedState)
         } else {
@@ -181,7 +181,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
             )
         }
 
-    private fun ChildEntry<Routing>.initialize(): ChildEntry.Initialized<Routing> =
+    private fun ChildEntry<NavTarget>.initialize(): ChildEntry.Initialized<NavTarget> =
         when (this) {
             is ChildEntry.Initialized -> this
             is ChildEntry.Suspended ->
@@ -195,7 +195,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
         }
 
     @Suppress("ForbiddenComment")
-    private fun ChildEntry<Routing>.suspend(): ChildEntry.Suspended<Routing> =
+    private fun ChildEntry<NavTarget>.suspend(): ChildEntry.Suspended<NavTarget> =
         when (this) {
             is ChildEntry.Suspended -> this
             is ChildEntry.Initialized ->

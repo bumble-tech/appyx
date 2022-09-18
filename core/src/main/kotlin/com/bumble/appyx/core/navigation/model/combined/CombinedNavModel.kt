@@ -16,19 +16,19 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlin.coroutines.EmptyCoroutineContext
 
-class CombinedNavModel<Routing>(
-    val navModels: List<NavModel<Routing, *>>,
-) : NavModel<Routing, Any?>, Destroyable {
+class CombinedNavModel<NavTarget>(
+    val navModels: List<NavModel<NavTarget, *>>,
+) : NavModel<NavTarget, Any?>, Destroyable {
 
-    constructor(vararg navModels: NavModel<Routing, *>) : this(navModels.toList())
+    constructor(vararg navModels: NavModel<NavTarget, *>) : this(navModels.toList())
 
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val elements: StateFlow<NavElements<Routing, *>> =
+    override val elements: StateFlow<NavElements<NavTarget, *>> =
         combine(navModels.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 
-    override val screenState: StateFlow<NavModelAdapter.ScreenState<Routing, *>> =
+    override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, *>> =
         combine(navModels.map { it.screenState }) { arr ->
             NavModelAdapter.ScreenState(
                 onScreen = arr.flatMap { it.onScreen },
@@ -40,11 +40,11 @@ class CombinedNavModel<Routing>(
     override val onBackPressedCallbackList: List<OnBackPressedCallback>
         get() = navModels.flatMap { it.onBackPressedCallbackList }
 
-    override fun onTransitionFinished(key: NavKey<Routing>) {
+    override fun onTransitionFinished(key: NavKey<NavTarget>) {
         navModels.forEach { it.onTransitionFinished(key) }
     }
 
-    override fun onTransitionFinished(keys: Collection<NavKey<Routing>>) {
+    override fun onTransitionFinished(keys: Collection<NavKey<NavTarget>>) {
         navModels.forEach { it.onTransitionFinished(keys) }
     }
 

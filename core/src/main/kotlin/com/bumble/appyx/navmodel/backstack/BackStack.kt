@@ -13,14 +13,14 @@ import com.bumble.appyx.navmodel.backstack.backpresshandler.PopBackPressHandler
 import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
 
-class BackStack<Routing : Any>(
-    initialElement: Routing,
+class BackStack<NavTarget : Any>(
+    initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
-    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = PopBackPressHandler(),
-    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
+    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = PopBackPressHandler(),
+    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<TransitionState> = BackStackOnScreenResolver
-) : BaseNavModel<Routing, TransitionState>(
+) : BaseNavModel<NavTarget, TransitionState>(
     backPressHandler = backPressHandler,
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,

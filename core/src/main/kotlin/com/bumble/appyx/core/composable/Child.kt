@@ -32,14 +32,14 @@ import com.bumble.appyx.core.navigation.transition.TransitionParams
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun <Routing : Any, State> ParentNode<Routing>.Child(
-    navElement: NavElement<Routing, out State>,
+fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
+    navElement: NavElement<NavTarget, out State>,
     saveableStateHolder: SaveableStateHolder,
     transitionParams: TransitionParams,
-    transitionHandler: TransitionHandler<Routing, State>,
+    transitionHandler: TransitionHandler<NavTarget, State>,
     decorator: @Composable ChildTransitionScope<State>.(
         child: ChildRenderer,
-        transitionDescriptor: TransitionDescriptor<Routing, State>
+        transitionDescriptor: TransitionDescriptor<NavTarget, State>
     ) -> Unit
 ) {
     val childEntry = remember(navElement.key.id) { childOrCreate(navElement.key) }
@@ -85,12 +85,12 @@ private class ChildRendererImpl(
 }
 
 @Composable
-fun <Routing : Any, State> ParentNode<Routing>.Child(
-    navElement: NavElement<Routing, out State>,
-    transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
+fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
+    navElement: NavElement<NavTarget, out State>,
+    transitionHandler: TransitionHandler<NavTarget, State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(
         child: ChildRenderer,
-        transitionDescriptor: TransitionDescriptor<Routing, State>
+        transitionDescriptor: TransitionDescriptor<NavTarget, State>
     ) -> Unit = { child, _ -> child() }
 ) {
     val density = LocalDensity.current.density
@@ -122,7 +122,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
     }
 }
 
-private fun <Routing : Any, State> NavElement<Routing, State>.createDescriptor(
+private fun <NavTarget : Any, State> NavElement<NavTarget, State>.createDescriptor(
     transitionParams: TransitionParams
 ) =
     TransitionDescriptor(

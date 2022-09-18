@@ -10,17 +10,17 @@ import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.navmodel.spotlight.backpresshandler.GoToDefault
 import com.bumble.appyx.navmodel.spotlight.operation.toSpotlightElements
 
-class Spotlight<Routing : Any>(
-    items: List<Routing>,
+class Spotlight<NavTarget : Any>(
+    items: List<NavTarget>,
     initialActiveIndex: Int = 0,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
-    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = GoToDefault(
+    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = GoToDefault(
         initialActiveIndex
     ),
-    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
+    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
-) : BaseNavModel<Routing, TransitionState>(
+) : BaseNavModel<NavTarget, TransitionState>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,

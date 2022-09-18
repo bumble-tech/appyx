@@ -8,9 +8,9 @@ import com.bumble.appyx.navmodel.spotlight.operation.Activate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UndoHistory<Routing : Any>(
+class UndoHistory<NavTarget : Any>(
     private val historyLimit: Int = 10
-) : BaseBackPressHandlerStrategy<Routing, Spotlight.TransitionState>() {
+) : BaseBackPressHandlerStrategy<NavTarget, Spotlight.TransitionState>() {
 
     private val history = ArrayDeque<Int>()
 
@@ -29,7 +29,7 @@ class UndoHistory<Routing : Any>(
     private fun historyHasElements() =
         history.size > 1
 
-    private fun SpotlightElements<Routing>.addToHistory() {
+    private fun SpotlightElements<NavTarget>.addToHistory() {
         val newIndex = indexOfFirst { it.targetState == ACTIVE }
         if (newIndex != history.lastOrNull()) {
             history.addLast(newIndex)
