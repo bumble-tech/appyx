@@ -82,7 +82,7 @@ jobs:
           INPUT_VERSION: '1.2.0'
         run: .github/workflows/release-dependencies-diff-generator.sh
         shell: bash
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@e3c0353c9ad3f0cad0fbab901e5bcd7d04c6e97b
         with:
           path: release-dependencies-diff-result.txt
 
