@@ -8,12 +8,12 @@ import java.util.UUID
 
 @Parcelize
 @Immutable
-class NavKey<Routing> private constructor(
-    val navTarget: @RawValue Routing,
+class NavKey<NavTarget> private constructor(
+    val navTarget: @RawValue NavTarget,
     val id: String
 ) : Parcelable {
 
-    constructor(routing: @RawValue Routing) : this(
+    constructor(routing: @RawValue NavTarget) : this(
         navTarget = routing,
         id = UUID.randomUUID().toString()
     )
