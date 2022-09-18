@@ -8,8 +8,8 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
     @TaskAction
     fun compile() {
         val diffResults = getDiffResults(
-            folder1Files = getFolderFiles("folderName1"),
-            folder2Files = getFolderFiles("folderName2")
+            baselineDependencyFiles = getFolderFiles("baselineFolderName"),
+            dependencyFiles = getFolderFiles("folderName")
         )
         println("Dependency diff")
         println("```diff")
@@ -32,13 +32,15 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
         return requireNotNull(folderFiles) { "A null was returned for $folderNameParam files" }
     }
 
-    /**
-     * TODO: Handle cases where modules are added, renamed or removed
-     */
-    private fun getDiffResults(folder1Files: Array<File>, folder2Files: Array<File>): List<String> =
-        folder1Files
+    @Suppress("ForbiddenComment")
+    private fun getDiffResults(
+        baselineDependencyFiles: Array<File>,
+        dependencyFiles: Array<File>
+    ): List<String> =
+        //  TODO: Handle cases where modules are added, renamed or removed
+        baselineDependencyFiles
             .mapIndexedNotNull { index: Int, file1: File ->
-                val resultLines = executeDependencyTreeDiff(file1, folder2Files[index])
+                val resultLines = executeDependencyTreeDiff(file1, dependencyFiles[index])
                     .toString("UTF-8")
                     .lineSequence()
                     .filter { it.isNotEmpty() }
