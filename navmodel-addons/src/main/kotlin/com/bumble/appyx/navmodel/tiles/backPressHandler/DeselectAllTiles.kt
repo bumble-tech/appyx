@@ -7,14 +7,14 @@ import com.bumble.appyx.navmodel.tiles.operation.DeselectAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class DeselectAllTiles<Routing : Any> :
-    BaseBackPressHandlerStrategy<Routing, Tiles.TransitionState>() {
+class DeselectAllTiles<NavTarget : Any> :
+    BaseBackPressHandlerStrategy<NavTarget, Tiles.TransitionState>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
         navModel.elements.map(::areThereSelectedTiles)
     }
 
-    private fun areThereSelectedTiles(elements: TilesElements<Routing>) =
+    private fun areThereSelectedTiles(elements: TilesElements<NavTarget>) =
         elements.any { it.targetState == Tiles.TransitionState.SELECTED }
 
     override fun onBackPressed() {

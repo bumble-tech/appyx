@@ -14,14 +14,14 @@ import com.bumble.appyx.navmodel.modal.Modal.TransitionState.CREATED
 import com.bumble.appyx.navmodel.modal.Modal.TransitionState.DESTROYED
 import com.bumble.appyx.navmodel.modal.backpresshandler.RevertBackPressHandler
 
-class Modal<Routing : Any>(
-    initialElement: Routing,
+class Modal<NavTarget : Any>(
+    initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
-    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = RevertBackPressHandler(),
-    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),
+    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = RevertBackPressHandler(),
+    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<TransitionState> = ModalOnScreenResolver
-) : BaseNavModel<Routing, TransitionState>(
+) : BaseNavModel<NavTarget, TransitionState>(
     savedStateMap = savedStateMap,
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,
@@ -34,7 +34,7 @@ class Modal<Routing : Any>(
         CREATED, MODAL, FULL_SCREEN, DESTROYED
     }
 
-    override val initialElements: NavElements<Routing, TransitionState> = listOf(
+    override val initialElements: NavElements<NavTarget, TransitionState> = listOf(
         ModalElement(
             key = NavKey(initialElement),
             fromState = CREATED,
