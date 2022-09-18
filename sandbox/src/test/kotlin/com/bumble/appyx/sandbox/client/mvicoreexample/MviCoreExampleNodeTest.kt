@@ -6,7 +6,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.firstChildOfType
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
@@ -30,10 +30,10 @@ class MviCoreExampleNodeTest {
     val mainDispatcherRule = MainDispatcherRule()
 
 
-    private val view = object : NodeViewStub<Event, ViewModel, Routing>(), MviCoreExampleView {}
+    private val view = object : NodeViewStub<Event, ViewModel, NavTarget>(), MviCoreExampleView {}
 
-    private val backStack = BackStack<Routing>(
-        initialElement = Routing.Child1,
+    private val backStack = BackStack<NavTarget>(
+        initialElement = NavTarget.Child1,
         savedStateMap = null
     )
 
@@ -48,7 +48,7 @@ class MviCoreExampleNodeTest {
     )
 
     private lateinit var node: MviCoreExampleNode
-    private lateinit var testHelper: ParentNodeTestHelper<Routing, ParentNode<Routing>>
+    private lateinit var testHelper: ParentNodeTestHelper<NavTarget, ParentNode<NavTarget>>
 
     @Before
     fun setUp() {
@@ -65,7 +65,7 @@ class MviCoreExampleNodeTest {
     @Test
     fun `given node is created then first child is attached`() {
         testHelper.assertChildHasLifecycle(
-            routing = Routing.Child1,
+            navTarget = NavTarget.Child1,
             state = Lifecycle.State.CREATED,
         )
     }
@@ -76,7 +76,7 @@ class MviCoreExampleNodeTest {
             view.eventsRelay.accept(Event.SwitchChildClicked)
 
             testHelper.assertChildHasLifecycle(
-                routing = Routing.Child2,
+                navTarget = NavTarget.Child2,
                 state = Lifecycle.State.STARTED
             )
         }
