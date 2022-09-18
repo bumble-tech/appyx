@@ -47,7 +47,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.appcompat)
     implementation(libs.compose.material)
     implementation(libs.compose.ui.ui)
 

@@ -44,14 +44,12 @@ dependencies {
     api(libs.androidx.lifecycle.common)
     api(libs.compose.animation.core)
     api(libs.compose.runtime)
+    api(libs.androidx.appcompat)
 
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.core)
-    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.compose.foundation.layout)
-    implementation(libs.compose.foundation)
 
     testImplementation(project(":testing-junit4"))
     testImplementation(libs.androidx.arch.core.testing)
@@ -61,5 +59,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.compose.foundation)
     androidTestImplementation(project(":testing-ui"))
 }

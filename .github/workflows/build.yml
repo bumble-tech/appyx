@@ -22,6 +22,7 @@ jobs:
         with:
           arguments: |
             build
+            projectHealth
             mergeLintSarif
             mergeDetektSarif
             :plugins:buildPlugins

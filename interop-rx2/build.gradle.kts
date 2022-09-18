@@ -31,14 +31,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
+    api(project(":core"))
+    api(libs.rxjava2)
+    api(libs.rxrelay)
 
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.rxjava2)
-    implementation(libs.rxrelay)
 
     testImplementation(libs.junit.api)
-    testImplementation(libs.junit.params)
     testRuntimeOnly(libs.junit.engine)
 }

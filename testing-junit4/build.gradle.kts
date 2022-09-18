@@ -33,8 +33,6 @@ android {
 
 dependencies {
     api(project(":testing-unit-common"))
-    api(libs.androidx.test.rules)
-
-    implementation(libs.junit)
+    api(libs.junit)
     implementation(libs.kotlin.coroutines.test)
 }
