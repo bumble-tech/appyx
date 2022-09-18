@@ -141,7 +141,7 @@ open class ChildAwareTestBase {
 
         fun add(vararg key: NavKey<Key>) {
             state.update { list ->
-                require(list.none { it.key.navTarget in key.map { routingKey -> routingKey.navTarget } })
+                require(list.none { it.key.navTarget in key.map { navKey -> navKey.navTarget } })
                 list + key.map {
                     NavElement(
                         key = it,

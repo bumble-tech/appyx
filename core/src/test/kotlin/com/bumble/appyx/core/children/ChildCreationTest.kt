@@ -168,10 +168,10 @@ class ChildCreationTest {
             )
         )
 
-        fun add(routing: String, state: State) {
+        fun add(navTarget: String, state: State) {
             updateState {
                 it + NavElement(
-                    key = NavKey(routing),
+                    key = NavKey(navTarget),
                     fromState = state,
                     targetState = state,
                     operation = Operation.Noop(),
@@ -179,16 +179,16 @@ class ChildCreationTest {
             }
         }
 
-        fun remove(routing: String) {
+        fun remove(navTarget: String) {
             updateState {
-                it.filterNot { it.key.navTarget == routing }
+                it.filterNot { it.key.navTarget == navTarget }
             }
         }
 
-        fun suspend(routing: String) {
+        fun suspend(navTarget: String) {
             updateState { list ->
                 list.map {
-                    if (it.key.navTarget == routing) {
+                    if (it.key.navTarget == navTarget) {
                         it.transitionTo(State.OFF_SCREEN, Operation.Noop())
                     } else {
                         it
@@ -197,10 +197,10 @@ class ChildCreationTest {
             }
         }
 
-        fun unsuspend(routing: String) {
+        fun unsuspend(navTarget: String) {
             updateState { list ->
                 list.map {
-                    if (it.key.navTarget == routing) {
+                    if (it.key.navTarget == navTarget) {
                         it.transitionTo(State.ON_SCREEN, Operation.Noop())
                     } else {
                         it
@@ -228,11 +228,11 @@ class ChildCreationTest {
         override fun resolve(navTarget: String, buildContext: BuildContext): Node =
             Child(navTarget, buildContext)
 
-        fun key(routing: String): NavKey<String>? =
-            children.value.keys.find { it.navTarget == routing }
+        fun key(navTarget: String): NavKey<String>? =
+            children.value.keys.find { it.navTarget == navTarget }
 
-        fun child(routing: String): Child? =
-            children.value.values.find { it.key.navTarget == routing }?.nodeOrNull as Child?
+        fun child(navTarget: String): Child? =
+            children.value.values.find { it.key.navTarget == navTarget }?.nodeOrNull as Child?
 
     }
 

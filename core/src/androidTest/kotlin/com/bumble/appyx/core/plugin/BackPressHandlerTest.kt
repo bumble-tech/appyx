@@ -54,7 +54,7 @@ class BackPressHandlerTest {
     }
 
     @Test
-    fun routing_handles_back_press_when_plugin_has_disabled_listener() {
+    fun navigation_handles_back_press_when_plugin_has_disabled_listener() {
         rule.start()
         pushChildB()
         disablePlugin()
@@ -68,7 +68,7 @@ class BackPressHandlerTest {
     }
 
     @Test
-    fun custom_plugin_handles_back_press_before_routing() {
+    fun custom_plugin_handles_back_press_before_navigation() {
         rule.start()
         pushChildB()
 

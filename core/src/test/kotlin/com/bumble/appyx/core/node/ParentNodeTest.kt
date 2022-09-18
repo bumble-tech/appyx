@@ -33,7 +33,7 @@ class ParentNodeTest {
     private val testScope = TestScope(UnconfinedTestDispatcher())
 
     @Test
-    fun `waitForChildAttached WHEN expected routing provided THEN returns associated Node`() =
+    fun `waitForChildAttached WHEN expected navTarget provided THEN returns associated Node`() =
         testScope.runTest {
             //given
             val backStack: BackStack<NavTarget> = buildBackStack()
@@ -52,7 +52,7 @@ class ParentNodeTest {
         }
 
     @Test(expected = IllegalStateException::class)
-    fun `attachWorkflow WHEN expected routing not provided THEN fails after timeout`() =
+    fun `attachWorkflow WHEN expected navTarget not provided THEN fails after timeout`() =
         testScope.runTest {
             //given
             val backStack: BackStack<NavTarget> = buildBackStack()
@@ -63,7 +63,7 @@ class ParentNodeTest {
         }
 
     @Test
-    fun `attachWorkflow WHEN expected routing provided THEN returns expected Node`() =
+    fun `attachWorkflow WHEN expected navTarget provided THEN returns expected Node`() =
         testScope.runTest {
             //given
             val backStack: BackStack<NavTarget> = buildBackStack()

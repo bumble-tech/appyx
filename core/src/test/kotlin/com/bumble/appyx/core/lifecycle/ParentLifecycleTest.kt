@@ -32,13 +32,13 @@ class ParentLifecycleTest {
     fun `parent node finishes transitions for off screen elements when lifecycle is not stopped`() {
         val parent = Parent(BuildContext.root(null)).build()
         val navModel = parent.navModelImpl
-        val routing = "0"
+        val navTarget = "0"
         parent.updateLifecycleState(Lifecycle.State.STARTED)
-        navModel.add(routing = routing, defaultState = NavModelImpl.State.StateOne)
+        navModel.add(navTarget = navTarget, defaultState = NavModelImpl.State.StateOne)
 
-        navModel.changeState(routing = routing, NavModelImpl.State.StateTwo)
+        navModel.changeState(navTarget = navTarget, NavModelImpl.State.StateTwo)
 
-        val element = navModel.get(routing = routing)
+        val element = navModel.get(navTarget = navTarget)
 
         assertEquals(
             element.fromState,
@@ -69,10 +69,10 @@ class ParentLifecycleTest {
 
         override val initialElements: NavElements<String, State> = emptyList()
 
-        fun add(routing: String, defaultState: State) {
+        fun add(navTarget: String, defaultState: State) {
             updateState { list ->
                 list + NavElement(
-                    key = NavKey(routing),
+                    key = NavKey(navTarget),
                     targetState = defaultState,
                     fromState = defaultState,
                     operation = Operation.Noop(),
@@ -80,22 +80,22 @@ class ParentLifecycleTest {
             }
         }
 
-        fun get(routing: String): NavElement<String, State> {
+        fun get(navTarget: String): NavElement<String, State> {
             return requireNotNull(
-                value = elements.value.find { it.key.navTarget == routing },
-                lazyMessage = { "element with routing $routing is not found" },
+                value = elements.value.find { it.key.navTarget == navTarget },
+                lazyMessage = { "element with navTarget $navTarget is not found" },
             )
         }
 
-        fun remove(routing: String) {
-            updateState { list -> list.filter { it.key.navTarget != routing } }
+        fun remove(navTarget: String) {
+            updateState { list -> list.filter { it.key.navTarget != navTarget } }
         }
 
-        fun changeState(routing: String, defaultState: State) {
+        fun changeState(navTarget: String, defaultState: State) {
             updateState { list ->
                 list
                     .map {
-                        if (it.key.navTarget == routing) {
+                        if (it.key.navTarget == navTarget) {
                             it.transitionTo(
                                 newTargetState = defaultState,
                                 operation = Operation.Noop()
