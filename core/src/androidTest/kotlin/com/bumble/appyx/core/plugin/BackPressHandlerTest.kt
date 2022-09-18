@@ -23,7 +23,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.activeRouting
+import com.bumble.appyx.navmodel.backstack.activeElement
 import com.bumble.appyx.navmodel.backstack.operation.push
 import kotlinx.parcelize.Parcelize
 import org.hamcrest.MatcherAssert.assertThat
@@ -63,7 +63,7 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(rule.node.backStack.activeRouting, equalTo(TestParentNode.Routing.ChildA))
+        assertThat(rule.node.backStack.activeElement, equalTo(TestParentNode.Routing.ChildA))
         assertThat(backHandler.onBackPressedHandled, equalTo(false))
     }
 
@@ -76,7 +76,7 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(rule.node.backStack.activeRouting, equalTo(TestParentNode.Routing.ChildB))
+        assertThat(rule.node.backStack.activeElement, equalTo(TestParentNode.Routing.ChildB))
         assertThat(backHandler.onBackPressedHandled, equalTo(true))
     }
 

@@ -9,7 +9,6 @@ import com.bumble.appyx.core.children.whenChildAttached
 import com.bumble.appyx.core.clienthelper.interactor.Interactor
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.activeRouting
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child1
@@ -33,7 +32,7 @@ class MviCoreExampleInteractor(
     private val backStackUpdater = Consumer<Event> { event ->
         when (event) {
             is Event.SwitchChildClicked -> {
-                if (backStack.activeRouting == Child1) {
+                if (backStack.activeElement == Child1) {
                     backStack.newRoot(Child2)
                 } else {
                     backStack.newRoot(Child1)

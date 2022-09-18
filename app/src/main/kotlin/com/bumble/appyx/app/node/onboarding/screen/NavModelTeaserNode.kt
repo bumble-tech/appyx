@@ -24,7 +24,6 @@ import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.activeRouting
 import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode
@@ -61,7 +60,7 @@ class NavModelTeaserNode(
     }
 
     private fun switchToNextExample() {
-        val next = when (backStack.activeRouting) {
+        val next = when (backStack.activeElement) {
             is BackStackTeaser -> RandomOtherTeaser
             is RandomOtherTeaser -> BackStackTeaser
             null -> null

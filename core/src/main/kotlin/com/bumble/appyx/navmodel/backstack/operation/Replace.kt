@@ -5,9 +5,9 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.activeIndex
-import com.bumble.appyx.navmodel.backstack.activeRouting
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
+import com.bumble.appyx.navmodel.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -22,7 +22,7 @@ data class Replace<T : Any>(
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
-        element != elements.activeRouting
+        element != elements.activeElement
 
     override fun invoke(
         elements: BackStackElements<T>
