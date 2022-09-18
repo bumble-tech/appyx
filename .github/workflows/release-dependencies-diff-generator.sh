@@ -16,4 +16,4 @@ git switch --force "$INPUT_BASEREF"
 
 # Note: We execute releaseDependenciesDiffFiles on the base branch, so if you update this
 # gradle task you may see unexpected results.
-./gradlew releaseDependenciesDiffFiles -PfolderName1=old -PfolderName2=new --quiet > release-dependencies-diff-result.txt
+./gradlew releaseDependenciesDiffFiles -PfolderName1=old -PfolderName2=new --quiet > build/release-dependencies-diff-result.txt

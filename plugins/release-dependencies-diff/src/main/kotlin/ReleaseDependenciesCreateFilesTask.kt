@@ -27,7 +27,7 @@ abstract class ReleaseDependenciesCreateFilesTask : DependencyReportTask() {
 
         return project
             .rootProject
-            .file("release-dependencies-diff/$folderName/${project.fileName}")
+            .file("build/release-dependencies-diff/$folderName/${project.fileName}")
     }
 
     private val Project.fileName: String

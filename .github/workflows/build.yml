@@ -84,7 +84,7 @@ jobs:
         shell: bash
       - uses: marocchino/sticky-pull-request-comment@e3c0353c9ad3f0cad0fbab901e5bcd7d04c6e97b
         with:
-          path: release-dependencies-diff-result.txt
+          path: build/release-dependencies-diff-result.txt
 
   instrumentation-tests:
     name: Instrumentation tests

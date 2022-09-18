@@ -27,7 +27,7 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
         }
         val folderFiles = project
             .rootProject
-            .file("release-dependencies-diff/${project.property(folderNameParam)}")
+            .file("build/release-dependencies-diff/${project.property(folderNameParam)}")
             .listFiles()
         return requireNotNull(folderFiles) { "A null was returned for $folderNameParam files" }
     }
