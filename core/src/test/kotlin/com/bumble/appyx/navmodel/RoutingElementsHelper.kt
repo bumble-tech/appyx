@@ -1,11 +1,11 @@
 package com.bumble.appyx.navmodel
 
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import org.junit.Assert.assertEquals
 
 
-internal fun <Routing, State> RoutingElements<Routing, State>.assertRoutingElementsEqual(
-    elements: RoutingElements<Routing, State>
+internal fun <Routing, State> NavElements<Routing, State>.assertRoutingElementsEqual(
+    elements: NavElements<Routing, State>
 ) {
     assertEquals(size, elements.size)
 

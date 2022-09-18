@@ -30,7 +30,7 @@ import com.bumble.appyx.core.composable.visibleChildrenAsState
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Column
@@ -83,7 +83,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun ColumnExample(elements: List<RoutingElement<Routing, out Any?>>) {
+    private fun ColumnExample(elements: List<NavElement<Routing, out Any?>>) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -91,33 +91,33 @@ class LazyListContainerNode constructor(
 
         ) {
             items(elements, key = { element -> element.key.id }) { element ->
-                Child(routingElement = element)
+                Child(navElement = element)
             }
         }
     }
 
     @Composable
-    private fun RowExample(elements: List<RoutingElement<Routing, out Any?>>) {
+    private fun RowExample(elements: List<NavElement<Routing, out Any?>>) {
         LazyRow(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(elements, key = { element -> element.key.id }) { element ->
-                Child(routingElement = element)
+                Child(navElement = element)
             }
         }
     }
 
     @Composable
-    private fun GridExample(elements: List<RoutingElement<Routing, out Any?>>) {
+    private fun GridExample(elements: List<NavElement<Routing, out Any?>>) {
         LazyVerticalGrid(
             columns = Fixed(2),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
             items(elements) { element ->
-                Child(routingElement = element)
+                Child(navElement = element)
             }
         }
     }

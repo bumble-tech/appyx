@@ -1,7 +1,7 @@
 package com.bumble.appyx.testing.unit.common.util
 
 import com.bumble.appyx.core.navigation.BaseNavModel
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 
 class DummyNavModel<Routing : Any, State> : BaseNavModel<Routing, State>(
@@ -11,7 +11,7 @@ class DummyNavModel<Routing : Any, State> : BaseNavModel<Routing, State>(
         override fun isOnScreen(state: State) = true
     }
 ) {
-    override val initialElements: RoutingElements<Routing, State>
+    override val initialElements: NavElements<Routing, State>
         get() = emptyList()
 
 }

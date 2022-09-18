@@ -2,7 +2,7 @@ package com.bumble.appyx.core.navigation.model.combined
 
 import androidx.activity.OnBackPressedCallback
 import com.bumble.appyx.core.plugin.Destroyable
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
@@ -24,7 +24,7 @@ class CombinedNavModel<Routing>(
 
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val elements: StateFlow<RoutingElements<Routing, *>> =
+    override val elements: StateFlow<NavElements<Routing, *>> =
         combine(navModels.map { it.elements }) { arr -> arr.reduce { acc, list -> acc + list } }
             .stateIn(scope, SharingStarted.Eagerly, emptyList())
 

@@ -1,7 +1,7 @@
 package com.bumble.appyx.navmodel.spotlight.operation
 
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.spotlight.Spotlight
 import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState
@@ -19,9 +19,9 @@ class UpdateElements<T : Any>(
     private val initialActiveIndex: Int? = null,
 ) : SpotlightOperation<T> {
 
-    override fun isApplicable(elements: RoutingElements<T, TransitionState>) = true
+    override fun isApplicable(elements: NavElements<T, TransitionState>) = true
 
-    override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
+    override fun invoke(elements: NavElements<T, TransitionState>): NavElements<T, TransitionState> {
         if (initialActiveIndex != null) {
             require(initialActiveIndex in this.elements.indices) {
                 "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"

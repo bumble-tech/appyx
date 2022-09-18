@@ -1,7 +1,7 @@
 package com.bumble.appyx.core.navigation.model.permanent
 
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
@@ -72,7 +72,7 @@ class PermanentNavModel<Routing : Any>(
         state[key] = this.state.value
     }
 
-    private fun SavedStateMap?.restore(): List<RoutingElement<Routing, Int>>? =
+    private fun SavedStateMap?.restore(): List<NavElement<Routing, Int>>? =
         (this?.get(key) as? PermanentElements<Routing>)
 
 }

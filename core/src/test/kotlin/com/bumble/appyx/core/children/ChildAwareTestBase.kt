@@ -7,8 +7,8 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -120,8 +120,8 @@ open class ChildAwareTestBase {
     class TestNavModel<Key> : NavModel<Key, Int> {
 
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-        private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
-        override val elements: StateFlow<RoutingElements<Key, Int>>
+        private val state = MutableStateFlow(emptyList<NavElement<Key, Int>>())
+        override val elements: StateFlow<NavElements<Key, Int>>
             get() = state
         override val screenState: StateFlow<NavModelAdapter.ScreenState<Key, out Int>>
             get() = state.map { NavModelAdapter.ScreenState(onScreen = it) }
@@ -143,7 +143,7 @@ open class ChildAwareTestBase {
             state.update { list ->
                 require(list.none { it.key.navTarget in key.map { routingKey -> routingKey.navTarget } })
                 list + key.map {
-                    RoutingElement(
+                    NavElement(
                         key = it,
                         fromState = 0,
                         targetState = 0,

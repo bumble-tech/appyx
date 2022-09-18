@@ -12,7 +12,7 @@ interface NavModel<Routing, State> : NavModelAdapter<Routing, State>,
     SavesInstanceState,
     BackPressHandler {
 
-    val elements: StateFlow<RoutingElements<Routing, out State>>
+    val elements: StateFlow<NavElements<Routing, out State>>
 
     fun onTransitionFinished(key: NavKey<Routing>) {
         onTransitionFinished(listOf(key))

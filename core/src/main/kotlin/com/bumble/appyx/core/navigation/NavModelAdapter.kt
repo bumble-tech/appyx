@@ -9,8 +9,8 @@ interface NavModelAdapter<Routing, State> {
     val screenState: StateFlow<ScreenState<Routing, out State>>
 
     data class ScreenState<Routing, State>(
-        val onScreen: RoutingElements<Routing, out State> = emptyList(),
-        val offScreen: RoutingElements<Routing, out State> = emptyList(),
+        val onScreen: NavElements<Routing, out State> = emptyList(),
+        val offScreen: NavElements<Routing, out State> = emptyList(),
     )
 
 }

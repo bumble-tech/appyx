@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.transition.JumpToEndTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionBounds
@@ -33,7 +33,7 @@ import kotlinx.coroutines.flow.map
 
 @Composable
 fun <Routing : Any, State> ParentNode<Routing>.Child(
-    routingElement: RoutingElement<Routing, out State>,
+    navElement: NavElement<Routing, out State>,
     saveableStateHolder: SaveableStateHolder,
     transitionParams: TransitionParams,
     transitionHandler: TransitionHandler<Routing, State>,
@@ -42,10 +42,10 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
         transitionDescriptor: TransitionDescriptor<Routing, State>
     ) -> Unit
 ) {
-    val childEntry = remember(routingElement.key.id) { childOrCreate(routingElement.key) }
-    saveableStateHolder.SaveableStateProvider(key = routingElement.key) {
-        val descriptor = remember(routingElement) {
-            routingElement.createDescriptor(transitionParams)
+    val childEntry = remember(navElement.key.id) { childOrCreate(navElement.key) }
+    saveableStateHolder.SaveableStateProvider(key = navElement.key) {
+        val descriptor = remember(navElement) {
+            navElement.createDescriptor(transitionParams)
         }
         val transitionScope = transitionHandler.handle(
             descriptor = descriptor,
@@ -86,7 +86,7 @@ private class ChildRendererImpl(
 
 @Composable
 fun <Routing : Any, State> ParentNode<Routing>.Child(
-    routingElement: RoutingElement<Routing, out State>,
+    navElement: NavElement<Routing, out State>,
     transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(
         child: ChildRenderer,
@@ -110,9 +110,9 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
             transitionBounds = it
         }
     ) {
-        key(routingElement.key.id) {
+        key(navElement.key.id) {
             Child(
-                routingElement = routingElement,
+                navElement = navElement,
                 saveableStateHolder = rememberSaveableStateHolder(),
                 transitionParams = transitionParams,
                 transitionHandler = transitionHandler,
@@ -122,7 +122,7 @@ fun <Routing : Any, State> ParentNode<Routing>.Child(
     }
 }
 
-private fun <Routing : Any, State> RoutingElement<Routing, State>.createDescriptor(
+private fun <Routing : Any, State> NavElement<Routing, State>.createDescriptor(
     transitionParams: TransitionParams
 ) =
     TransitionDescriptor(
@@ -134,7 +134,7 @@ private fun <Routing : Any, State> RoutingElement<Routing, State>.createDescript
     )
 
 @Composable
-fun <R, S> NavModel<R, S>?.childrenAsState(): State<RoutingElements<R, out S>> =
+fun <R, S> NavModel<R, S>?.childrenAsState(): State<NavElements<R, out S>> =
     if (this != null) {
         elements.collectAsState()
     } else {
@@ -142,7 +142,7 @@ fun <R, S> NavModel<R, S>?.childrenAsState(): State<RoutingElements<R, out S>> =
     }
 
 @Composable
-fun <R, S> NavModel<R, S>?.visibleChildrenAsState(): State<RoutingElements<R, out S>> =
+fun <R, S> NavModel<R, S>?.visibleChildrenAsState(): State<NavElements<R, out S>> =
     if (this != null) {
         val visibleElementsFlow = remember { screenState.map { it.onScreen } }
         visibleElementsFlow.collectAsState(emptyList())

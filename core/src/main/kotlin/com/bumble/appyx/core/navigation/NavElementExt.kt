@@ -1,4 +1,4 @@
 package com.bumble.appyx.core.navigation
 
-val RoutingElement<*, *>.isTransitioning: Boolean
+val NavElement<*, *>.isTransitioning: Boolean
     get() = fromState != targetState

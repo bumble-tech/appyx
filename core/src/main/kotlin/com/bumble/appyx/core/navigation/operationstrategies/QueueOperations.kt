@@ -1,7 +1,7 @@
 package com.bumble.appyx.core.navigation.operationstrategies
 
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.isTransitioning
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -32,7 +32,7 @@ class QueueOperations<Routing, State> : BaseOperationStrategy<Routing, State>() 
         }
     }
 
-    private fun addToQueueIfTransitionInProgress(transitionList: RoutingElements<Routing, out State>) {
+    private fun addToQueueIfTransitionInProgress(transitionList: NavElements<Routing, out State>) {
         if (transitionList.none { it.isTransitioning } && operationQueue.isNotEmpty()) {
             val operation = operationQueue.removeLast()
             executeOperation(operation)

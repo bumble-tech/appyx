@@ -101,7 +101,7 @@ class TilesExampleNode(
 
                 items(elements) { element ->
                     Child(
-                        routingElement = element,
+                        navElement = element,
                         transitionHandler = rememberTilesTransitionHandler()
                     ) { child, _ ->
                         Box(modifier = Modifier

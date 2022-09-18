@@ -7,18 +7,18 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 @Immutable
-class RoutingElement<Routing, State> private constructor(
-    val key: @RawValue NavKey<Routing>,
+class NavElement<NavTarget, State> private constructor(
+    val key: @RawValue NavKey<NavTarget>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
-    val operation: @RawValue Operation<Routing, State>,
+    val operation: @RawValue Operation<NavTarget, State>,
     val transitionHistory: List<Pair<State, State>>
 ) : Parcelable {
     constructor(
-        key: @RawValue NavKey<Routing>,
+        key: @RawValue NavKey<NavTarget>,
         fromState: @RawValue State,
         targetState: @RawValue State,
-        operation: @RawValue Operation<Routing, State>,
+        operation: @RawValue Operation<NavTarget, State>,
     ) : this(
         key,
         fromState,
@@ -29,9 +29,9 @@ class RoutingElement<Routing, State> private constructor(
 
     fun transitionTo(
         newTargetState: @RawValue State,
-        operation: @RawValue Operation<Routing, State>
-    ): RoutingElement<Routing, State> =
-        RoutingElement(
+        operation: @RawValue Operation<NavTarget, State>
+    ): NavElement<NavTarget, State> =
+        NavElement(
             key = key,
             fromState = fromState,
             targetState = newTargetState,
@@ -42,8 +42,8 @@ class RoutingElement<Routing, State> private constructor(
             } else transitionHistory
         )
 
-    fun onTransitionFinished(): RoutingElement<Routing, State> =
-        RoutingElement(
+    fun onTransitionFinished(): NavElement<NavTarget, State> =
+        NavElement(
             key = key,
             fromState = targetState,
             targetState = targetState,
@@ -56,7 +56,7 @@ class RoutingElement<Routing, State> private constructor(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as RoutingElement<*, *>
+        other as NavElement<*, *>
 
         if (key != other.key) return false
         if (fromState != other.fromState) return false
@@ -77,6 +77,6 @@ class RoutingElement<Routing, State> private constructor(
     }
 
     override fun toString(): String {
-        return "RoutingElement(key=$key, fromState=$fromState, targetState=$targetState, operation=$operation, transitionHistory=$transitionHistory)"
+        return "NavElement(key=$key, fromState=$fromState, targetState=$targetState, operation=$operation, transitionHistory=$transitionHistory)"
     }
 }

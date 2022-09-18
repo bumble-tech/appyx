@@ -10,8 +10,8 @@ import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
@@ -160,11 +160,11 @@ class ChildLifecycleTest {
         finalState = null,
         savedStateMap = null,
     ) {
-        override val initialElements: RoutingElements<String, Boolean> = emptyList()
+        override val initialElements: NavElements<String, Boolean> = emptyList()
 
         fun add(key: String, onScreen: Boolean) {
             updateState { list ->
-                list + RoutingElement(
+                list + NavElement(
                     key = NavKey(key),
                     targetState = onScreen,
                     fromState = onScreen,

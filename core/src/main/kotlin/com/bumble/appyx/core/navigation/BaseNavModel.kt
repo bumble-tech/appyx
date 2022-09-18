@@ -59,13 +59,13 @@ abstract class BaseNavModel<Routing, State>(
     )
 
     // TODO: think about how we can avoid keeping unnecessary object after state initialization
-    protected abstract val initialElements: RoutingElements<Routing, State>
+    protected abstract val initialElements: NavElements<Routing, State>
 
-    private val state: MutableStateFlow<RoutingElements<Routing, State>> by lazy {
+    private val state: MutableStateFlow<NavElements<Routing, State>> by lazy {
         MutableStateFlow(savedStateMap?.restoreHistory() ?: initialElements)
     }
 
-    override val elements: StateFlow<RoutingElements<Routing, State>> get() = state
+    override val elements: StateFlow<NavElements<Routing, State>> get() = state
 
     override val screenState: StateFlow<NavModelAdapter.ScreenState<Routing, State>> by lazy {
         state
@@ -101,7 +101,7 @@ abstract class BaseNavModel<Routing, State>(
         operationStrategy.accept(operation)
     }
 
-    protected fun updateState(block: (RoutingElements<Routing, State>) -> RoutingElements<Routing, State>) {
+    protected fun updateState(block: (NavElements<Routing, State>) -> NavElements<Routing, State>) {
         state.update { currentState ->
             val newState = block(currentState)
             sanitizeOffScreenTransitions(newState)
@@ -123,8 +123,8 @@ abstract class BaseNavModel<Routing, State>(
      * In case if we have any, lets finish them instantly.
      */
     protected fun sanitizeOffScreenTransitions(
-        state: RoutingElements<Routing, State>
-    ): RoutingElements<Routing, State> =
+        state: NavElements<Routing, State>
+    ): NavElements<Routing, State> =
         state.mapNotNull {
             if (screenResolver.isOnScreen(it)) {
                 it
@@ -146,7 +146,7 @@ abstract class BaseNavModel<Routing, State>(
         }
     }
 
-    protected open fun RoutingElement<Routing, State>.finishTransitionOrRemove(): RoutingElement<Routing, State>? =
+    protected open fun NavElement<Routing, State>.finishTransitionOrRemove(): NavElement<Routing, State>? =
         if (targetState.isFinalState) {
             null
         } else {
@@ -173,7 +173,7 @@ abstract class BaseNavModel<Routing, State>(
         get() = finalStates.contains(this)
 
     private fun SavedStateMap.restoreHistory() =
-        this[key] as? RoutingElements<Routing, State>
+        this[key] as? NavElements<Routing, State>
 
     companion object {
         const val KEY_NAV_MODEL = "NavModel"

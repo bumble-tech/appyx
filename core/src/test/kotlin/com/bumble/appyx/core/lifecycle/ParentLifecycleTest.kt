@@ -10,8 +10,8 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
@@ -67,11 +67,11 @@ class ParentLifecycleTest {
             StateFour,
         }
 
-        override val initialElements: RoutingElements<String, State> = emptyList()
+        override val initialElements: NavElements<String, State> = emptyList()
 
         fun add(routing: String, defaultState: State) {
             updateState { list ->
-                list + RoutingElement(
+                list + NavElement(
                     key = NavKey(routing),
                     targetState = defaultState,
                     fromState = defaultState,
@@ -80,7 +80,7 @@ class ParentLifecycleTest {
             }
         }
 
-        fun get(routing: String): RoutingElement<String, State> {
+        fun get(routing: String): NavElement<String, State> {
             return requireNotNull(
                 value = elements.value.find { it.key.navTarget == routing },
                 lazyMessage = { "element with routing $routing is not found" },

@@ -4,8 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
@@ -159,8 +159,8 @@ class ChildCreationTest {
     ) {
         enum class State { ON_SCREEN, OFF_SCREEN, DESTROYED }
 
-        override val initialElements: RoutingElements<String, State> = listOf(
-            RoutingElement(
+        override val initialElements: NavElements<String, State> = listOf(
+            NavElement(
                 key = NavKey("initial"),
                 fromState = State.ON_SCREEN,
                 targetState = State.ON_SCREEN,
@@ -170,7 +170,7 @@ class ChildCreationTest {
 
         fun add(routing: String, state: State) {
             updateState {
-                it + RoutingElement(
+                it + NavElement(
                     key = NavKey(routing),
                     fromState = state,
                     targetState = state,
