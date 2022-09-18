@@ -19,19 +19,19 @@ import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
-import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing
-import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildOne
-import com.bumble.appyx.sandbox.client.workflow.RootNode.Routing.ChildTwo
+import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget
+import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget.ChildOne
+import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget.ChildTwo
 import kotlinx.parcelize.Parcelize
 
 class RootNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = ChildOne,
         savedStateMap = buildContext.savedStateMap
     ),
     plugins: List<Plugin> = emptyList()
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     navModel = backStack,
     plugins = plugins
@@ -47,15 +47,15 @@ class RootNode(
         }
     }
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object ChildOne : Routing()
+        object ChildOne : NavTarget()
 
         @Parcelize
-        object ChildTwo : Routing()
+        object ChildTwo : NavTarget()
     }
 
-    override fun resolve(navTarget: Routing, buildContext: BuildContext) =
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext) =
         when (navTarget) {
             is ChildOne -> ChildNodeOne(buildContext)
             is ChildTwo -> ChildNodeTwo(buildContext)

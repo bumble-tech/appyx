@@ -31,25 +31,25 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.sandbox.client.child.ChildNode
-import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing
-import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child1
-import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child2
-import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child3
-import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.Routing.Child4
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child1
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child2
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child3
+import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child4
 
 class TilesExampleNode(
     buildContext: BuildContext,
-    private val tiles: Tiles<Routing> = Tiles(
+    private val tiles: Tiles<NavTarget> = Tiles(
         initialItems = listOf(
             Child1, Child2, Child3, Child4
         )
     ),
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = tiles,
     buildContext = buildContext,
 ) {
 
-    enum class Routing {
+    enum class NavTarget {
         Child1, Child2, Child3, Child4,
     }
 
@@ -69,7 +69,7 @@ class TilesExampleNode(
         }
     }
 
-    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             Child1 -> ChildNode("1", buildContext)
             Child2 -> ChildNode("2", buildContext)

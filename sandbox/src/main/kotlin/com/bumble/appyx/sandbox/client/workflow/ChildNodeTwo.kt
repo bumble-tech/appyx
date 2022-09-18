@@ -17,28 +17,28 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
-import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.Routing
-import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.Routing.GrandchildOne
-import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.Routing.GrandchildTwo
+import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.NavTarget
+import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.NavTarget.GrandchildOne
+import com.bumble.appyx.sandbox.client.workflow.ChildNodeTwo.NavTarget.GrandchildTwo
 import kotlinx.parcelize.Parcelize
 
 class ChildNodeTwo(
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = GrandchildOne,
         savedStateMap = buildContext.savedStateMap
     ),
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     navModel = backStack,
 ) {
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object GrandchildOne : Routing()
+        object GrandchildOne : NavTarget()
 
         @Parcelize
-        object GrandchildTwo : Routing()
+        object GrandchildTwo : NavTarget()
     }
 
     suspend fun attachGrandchildTwo(): GrandchildNodeTwo {
@@ -47,7 +47,7 @@ class ChildNodeTwo(
         }
     }
 
-    override fun resolve(navTarget: Routing, buildContext: BuildContext) =
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext) =
         when (navTarget) {
             is GrandchildOne -> GrandchildNodeOne(buildContext)
             is GrandchildTwo -> GrandchildNodeTwo(buildContext)

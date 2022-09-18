@@ -37,24 +37,24 @@ import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Colum
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Grid
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Row
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.values
-import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.Routing
+import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.NavTarget
 import kotlinx.parcelize.Parcelize
 
 class LazyListContainerNode constructor(
     buildContext: BuildContext,
-    navModel: PermanentNavModel<Routing> = PermanentNavModel(
-        navTargets = buildSet<Routing> {
+    navModel: PermanentNavModel<NavTarget> = PermanentNavModel(
+        navTargets = buildSet<NavTarget> {
             repeat(100) {
-                add(Routing(it.toString()))
+                add(NavTarget(it.toString()))
             }
         },
         savedStateMap = buildContext.savedStateMap
     )
-) : ParentNode<Routing>(navModel, buildContext) {
+) : ParentNode<NavTarget>(navModel, buildContext) {
     @Parcelize
-    data class Routing(val name: String) : Parcelable
+    data class NavTarget(val name: String) : Parcelable
 
-    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         ChildNode(navTarget.name, buildContext)
 
     enum class ListMode {
@@ -83,7 +83,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun ColumnExample(elements: List<NavElement<Routing, out Any?>>) {
+    private fun ColumnExample(elements: List<NavElement<NavTarget, out Any?>>) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -97,7 +97,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun RowExample(elements: List<NavElement<Routing, out Any?>>) {
+    private fun RowExample(elements: List<NavElement<NavTarget, out Any?>>) {
         LazyRow(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
@@ -110,7 +110,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun GridExample(elements: List<NavElement<Routing, out Any?>>) {
+    private fun GridExample(elements: List<NavElement<NavTarget, out Any?>>) {
         LazyVerticalGrid(
             columns = Fixed(2),
             modifier = Modifier.fillMaxSize(),

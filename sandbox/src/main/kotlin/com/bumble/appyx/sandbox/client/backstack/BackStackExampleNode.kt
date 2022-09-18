@@ -48,11 +48,11 @@ import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.REPLACE
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.SINGLE_TOP
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.values
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Routing
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Routing.ChildA
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Routing.ChildB
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Routing.ChildC
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Routing.ChildD
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildA
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildB
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildC
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildD
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
@@ -60,17 +60,17 @@ import kotlin.random.Random
 
 class BackStackExampleNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = ChildA(value = DEFAULT_VALUE),
         savedStateMap = buildContext.savedStateMap,
         backPressHandler = DontHandleBackPress(),
     )
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = backStack,
     buildContext = buildContext,
 ) {
 
-    sealed class Routing(
+    sealed class NavTarget(
         val name: String
     ) : Parcelable {
 
@@ -79,25 +79,25 @@ class BackStackExampleNode(
         @Parcelize
         data class ChildA(
             override val value: String
-        ) : Routing("A")
+        ) : NavTarget("A")
 
         @Parcelize
         data class ChildB(
             override val value: String
-        ) : Routing("B")
+        ) : NavTarget("B")
 
         @Parcelize
         data class ChildC(
             override val value: String
-        ) : Routing("C")
+        ) : NavTarget("C")
 
         @Parcelize
         data class ChildD(
             override val value: String
-        ) : Routing("D")
+        ) : NavTarget("D")
     }
 
-    override fun resolve(navTarget: Routing, buildContext: BuildContext): Node =
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is ChildA -> ChildNode(navTarget.name, buildContext)
             is ChildB -> ChildNode(navTarget.name, buildContext)
@@ -115,7 +115,7 @@ class BackStackExampleNode(
         val isIdNeeded = rememberSaveable { mutableStateOf(false) }
         val selectedOperation = rememberSaveable { mutableStateOf<Operation?>(null) }
         val areThereMissingParams = rememberSaveable { mutableStateOf(true) }
-        val skipChildRenderingByRouting = rememberSaveable { mutableStateOf(NONE_VALUE) }
+        val skipChildRenderingByNavTarget = rememberSaveable { mutableStateOf(NONE_VALUE) }
 
         Column(
             modifier = modifier
@@ -134,8 +134,8 @@ class BackStackExampleNode(
                     navModel = backStack,
                     transitionHandler = rememberBackStackExampleTransitionHandler()
                 ) {
-                    children<Routing> { child, descriptor ->
-                        if (!descriptor.element.isFiltered(skipChildRenderingByRouting.value)) {
+                    children<NavTarget> { child, descriptor ->
+                        if (!descriptor.element.isFiltered(skipChildRenderingByNavTarget.value)) {
                             child()
                         }
                     }
@@ -310,8 +310,8 @@ class BackStackExampleNode(
                         listOf(NONE_VALUE, "A", "B", "C", "D").forEach {
                             Row {
                                 RadioButton(
-                                    selected = it == skipChildRenderingByRouting.value,
-                                    onClick = { skipChildRenderingByRouting.value = it }
+                                    selected = it == skipChildRenderingByNavTarget.value,
+                                    onClick = { skipChildRenderingByNavTarget.value = it }
                                 )
                                 Text(text = it)
                                 Spacer(modifier = Modifier.size(36.dp))
@@ -323,7 +323,7 @@ class BackStackExampleNode(
         }
     }
 
-    private fun BackStackElements<Routing>.toStateString() = map { element ->
+    private fun BackStackElements<NavTarget>.toStateString() = map { element ->
         val key = element.key
         val name = key.navTarget.name
         val value = key.navTarget.value
@@ -331,7 +331,7 @@ class BackStackExampleNode(
         "$name(Value: $value. Id: $id)"
     }
 
-    private fun String.toChild(random: Boolean): Routing {
+    private fun String.toChild(random: Boolean): NavTarget {
         val value = if (random) Random.nextInt(1000).toString() else DEFAULT_VALUE
         return when (this) {
             "A" -> ChildA(value = value)
@@ -342,7 +342,7 @@ class BackStackExampleNode(
         }
     }
 
-    private fun Routing.isFiltered(filter: String) = when (filter) {
+    private fun NavTarget.isFiltered(filter: String) = when (filter) {
         "A" -> this is ChildA
         "B" -> this is ChildB
         "C" -> this is ChildC
