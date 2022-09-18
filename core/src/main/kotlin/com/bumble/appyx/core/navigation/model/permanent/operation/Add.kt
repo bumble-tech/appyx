@@ -2,13 +2,13 @@ package com.bumble.appyx.core.navigation.model.permanent.operation
 
 import com.bumble.appyx.core.navigation.RoutingElement
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Add<T : Any>(
-    private val key: RoutingKey<T>
+    private val key: NavKey<T>
 ) : PermanentOperation<T> {
 
     override fun isApplicable(elements: RoutingElements<T, Int>): Boolean =
@@ -29,6 +29,6 @@ data class Add<T : Any>(
         }
 }
 
-fun <T : Any> PermanentNavModel<T>.add(routingKey: RoutingKey<T>) {
-    accept(Add(routingKey))
+fun <T : Any> PermanentNavModel<T>.add(navKey: NavKey<T>) {
+    accept(Add(navKey))
 }

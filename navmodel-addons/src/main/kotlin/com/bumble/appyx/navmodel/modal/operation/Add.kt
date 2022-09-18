@@ -4,7 +4,7 @@ import com.bumble.appyx.navmodel.modal.Modal
 import com.bumble.appyx.navmodel.modal.Modal.TransitionState.CREATED
 import com.bumble.appyx.navmodel.modal.ModalElement
 import com.bumble.appyx.navmodel.modal.ModalElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -17,7 +17,7 @@ data class Add<T : Any>(
 
     override fun invoke(elements: ModalElements<T>): ModalElements<T> {
         return elements + ModalElement(
-            key = RoutingKey(element),
+            key = NavKey(element),
             fromState = CREATED,
             targetState = CREATED,
             operation = this

@@ -14,11 +14,11 @@ interface NavModel<Routing, State> : NavModelAdapter<Routing, State>,
 
     val elements: StateFlow<RoutingElements<Routing, out State>>
 
-    fun onTransitionFinished(key: RoutingKey<Routing>) {
+    fun onTransitionFinished(key: NavKey<Routing>) {
         onTransitionFinished(listOf(key))
     }
 
-    fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>)
+    fun onTransitionFinished(keys: Collection<NavKey<Routing>>)
 
     fun accept(operation: Operation<Routing, State>) = Unit
 

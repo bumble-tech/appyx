@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
@@ -34,7 +34,7 @@ data class Push<T : Any>(
                 it
             }
         } + BackStackElement(
-            key = RoutingKey(element),
+            key = NavKey(element),
             fromState = CREATED,
             targetState = ACTIVE,
             operation = this

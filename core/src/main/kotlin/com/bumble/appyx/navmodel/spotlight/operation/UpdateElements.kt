@@ -2,7 +2,7 @@ package com.bumble.appyx.navmodel.spotlight.operation
 
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.spotlight.Spotlight
 import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.ACTIVE
@@ -60,7 +60,7 @@ internal fun <T> List<T>.toSpotlightElements(activeIndex: Int): SpotlightElement
             else -> INACTIVE_AFTER
         }
         SpotlightElement(
-            key = RoutingKey(item),
+            key = NavKey(item),
             fromState = state,
             targetState = state,
             operation = Noop()

@@ -1,7 +1,7 @@
 package com.bumble.appyx.core.children
 
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -13,7 +13,7 @@ interface ChildAwareCommonTestSpec {
 
     val registerBefore: Boolean
 
-    fun add(vararg key: RoutingKey<ChildAwareTestBase.Configuration>): List<Node>
+    fun add(vararg key: NavKey<ChildAwareTestBase.Configuration>): List<Node>
 
     fun <T : Node> whenChildAttached(klass: KClass<T>, callback: ChildCallback<T>)
 
@@ -52,7 +52,7 @@ interface ChildAwareCommonTestSpec {
                 capturedNode = child
             }
         }) {
-            add(RoutingKey(ChildAwareTestBase.Configuration.Child1()))
+            add(NavKey(ChildAwareTestBase.Configuration.Child1()))
         }
         assertEquals(children[0], capturedNode)
     }
@@ -70,7 +70,7 @@ interface ChildAwareCommonTestSpec {
                 capturedNode2 = child
             }
         }) {
-            add(RoutingKey(ChildAwareTestBase.Configuration.Child1()))
+            add(NavKey(ChildAwareTestBase.Configuration.Child1()))
         }
 
         assertEquals(children[0], capturedNode1)
@@ -86,8 +86,8 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
+                NavKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
+                NavKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
             )
         }
         assertEquals(setOf(children[0], children[1]), capturedNodes)
@@ -101,7 +101,7 @@ interface ChildAwareCommonTestSpec {
                 capturedNode = child
             }
         }) {
-            add(RoutingKey(ChildAwareTestBase.Configuration.Child2()))
+            add(NavKey(ChildAwareTestBase.Configuration.Child2()))
         }
         assertNull(capturedNode)
     }
@@ -120,8 +120,8 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                RoutingKey(ChildAwareTestBase.Configuration.Child1()),
-                RoutingKey(ChildAwareTestBase.Configuration.Child2()),
+                NavKey(ChildAwareTestBase.Configuration.Child1()),
+                NavKey(ChildAwareTestBase.Configuration.Child2()),
             )
         }
         assertEquals(setOf(children[0], children[1]), capturedNodes)
@@ -142,8 +142,8 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                RoutingKey(ChildAwareTestBase.Configuration.Child1()),
-                RoutingKey(ChildAwareTestBase.Configuration.Child2()),
+                NavKey(ChildAwareTestBase.Configuration.Child1()),
+                NavKey(ChildAwareTestBase.Configuration.Child2()),
             )
         }
         assertEquals(setOf(children[0], children[1]), capturedNodes1)
@@ -161,10 +161,10 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 2)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child2(id = 3)),
+                NavKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
+                NavKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
+                NavKey(ChildAwareTestBase.Configuration.Child2(id = 2)),
+                NavKey(ChildAwareTestBase.Configuration.Child2(id = 3)),
             )
         }
 
@@ -189,8 +189,8 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                RoutingKey(ChildAwareTestBase.Configuration.Child1()),
-                RoutingKey(ChildAwareTestBase.Configuration.Child3()),
+                NavKey(ChildAwareTestBase.Configuration.Child1()),
+                NavKey(ChildAwareTestBase.Configuration.Child3()),
             )
         }
         assertTrue(capturedNodes.isEmpty())
@@ -206,9 +206,9 @@ interface ChildAwareCommonTestSpec {
             }
         }) {
             add(
-                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
-                RoutingKey(ChildAwareTestBase.Configuration.Child1(id = 2)),
+                NavKey(ChildAwareTestBase.Configuration.Child1(id = 0)),
+                NavKey(ChildAwareTestBase.Configuration.Child1(id = 1)),
+                NavKey(ChildAwareTestBase.Configuration.Child1(id = 2)),
             )
         }
         assertEquals(

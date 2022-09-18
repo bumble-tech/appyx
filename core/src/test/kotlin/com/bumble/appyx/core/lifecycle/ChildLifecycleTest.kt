@@ -12,7 +12,7 @@ import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.RoutingElement
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -165,7 +165,7 @@ class ChildLifecycleTest {
         fun add(key: String, onScreen: Boolean) {
             updateState { list ->
                 list + RoutingElement(
-                    key = RoutingKey(key),
+                    key = NavKey(key),
                     targetState = onScreen,
                     fromState = onScreen,
                     operation = Operation.Noop(),

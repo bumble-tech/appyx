@@ -7,7 +7,7 @@ import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -101,8 +101,8 @@ internal class ChildNodeLifecycleManager<Routing>(
     }
 
     private data class ScreenState<Routing>(
-        val onScreen: List<RoutingKey<Routing>> = emptyList(),
-        val offScreen: List<RoutingKey<Routing>> = emptyList(),
+        val onScreen: List<NavKey<Routing>> = emptyList(),
+        val offScreen: List<NavKey<Routing>> = emptyList(),
     )
 
 }

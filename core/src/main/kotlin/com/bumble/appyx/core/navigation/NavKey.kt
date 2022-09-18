@@ -8,7 +8,7 @@ import java.util.UUID
 
 @Parcelize
 @Immutable
-class RoutingKey<Routing> private constructor(
+class NavKey<Routing> private constructor(
     val routing: @RawValue Routing,
     val id: String
 ) : Parcelable {
@@ -22,7 +22,7 @@ class RoutingKey<Routing> private constructor(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as RoutingKey<*>
+        other as NavKey<*>
 
         if (routing != other.routing) return false
         if (id != other.id) return false

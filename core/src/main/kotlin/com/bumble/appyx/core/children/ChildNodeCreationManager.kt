@@ -3,7 +3,7 @@ package com.bumble.appyx.core.children
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.state.MutableSavedStateMap
@@ -28,7 +28,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
 ) {
     private lateinit var parentNode: ParentNode<Routing>
     private val _children =
-        MutableStateFlow<Map<RoutingKey<Routing>, ChildEntry<Routing>>>(emptyMap())
+        MutableStateFlow<Map<NavKey<Routing>, ChildEntry<Routing>>>(emptyMap())
     val children: StateFlow<ChildEntryMap<Routing>> = _children.asStateFlow()
 
     fun launch(parentNode: ParentNode<Routing>) {
@@ -43,9 +43,9 @@ internal class ChildNodeCreationManager<Routing : Any>(
     private fun syncNavModelWithChildren(parentNode: ParentNode<Routing>) {
         parentNode.lifecycle.coroutineScope.launch {
             parentNode.navModel.screenState.collect { state ->
-                val navModelKeepKeys: Set<RoutingKey<Routing>>
-                val navModelSuspendKeys: Set<RoutingKey<Routing>>
-                val navModelKeys: Set<RoutingKey<Routing>>
+                val navModelKeepKeys: Set<NavKey<Routing>>
+                val navModelSuspendKeys: Set<NavKey<Routing>>
+                val navModelKeys: Set<NavKey<Routing>>
                 when (keepMode) {
                     ChildEntry.KeepMode.KEEP -> {
                         navModelKeepKeys =
@@ -67,9 +67,9 @@ internal class ChildNodeCreationManager<Routing : Any>(
     }
 
     private fun updateChildren(
-        navModelKeys: Set<RoutingKey<Routing>>,
-        navModelKeepKeys: Set<RoutingKey<Routing>>,
-        navModelSuspendKeys: Set<RoutingKey<Routing>>,
+        navModelKeys: Set<NavKey<Routing>>,
+        navModelKeepKeys: Set<NavKey<Routing>>,
+        navModelSuspendKeys: Set<NavKey<Routing>>,
     ) {
         _children.update { map ->
             val localKeys = map.keys
@@ -113,30 +113,30 @@ internal class ChildNodeCreationManager<Routing : Any>(
     }
 
     @Suppress("ForbiddenComment")
-    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Initialized<Routing> {
+    fun childOrCreate(navKey: NavKey<Routing>): ChildEntry.Initialized<Routing> {
         // TODO: Should not allow child creation and throw exception instead to avoid desynchronisation
         val value = _children.value
-        val child = value[routingKey] ?: error(
-            "Rendering and children management is out of sync: requested $routingKey but have only ${value.keys}"
+        val child = value[navKey] ?: error(
+            "Rendering and children management is out of sync: requested $navKey but have only ${value.keys}"
         )
         return when (child) {
             is ChildEntry.Initialized ->
                 child
             is ChildEntry.Suspended ->
                 _children.updateAndGet { map ->
-                    val updateChild = map[routingKey]
-                        ?: error("Requested child $routingKey disappeared")
+                    val updateChild = map[navKey]
+                        ?: error("Requested child $navKey disappeared")
                     when (updateChild) {
                         is ChildEntry.Initialized -> map
                         is ChildEntry.Suspended ->
-                            map.plus(routingKey to updateChild.initialize())
+                            map.plus(navKey to updateChild.initialize())
                     }
-                }[routingKey] as ChildEntry.Initialized
+                }[navKey] as ChildEntry.Initialized
         }
     }
 
     private fun SavedStateMap?.restoreChildren(): ChildEntryMap<Routing>? =
-        (this?.get(KEY_CHILDREN_STATE) as? Map<RoutingKey<Routing>, SavedStateMap>)?.mapValues {
+        (this?.get(KEY_CHILDREN_STATE) as? Map<NavKey<Routing>, SavedStateMap>)?.mapValues {
             // Always restore in suspended mode, they will be unsuspended or destroyed on the first sync cycle
             childEntry(it.key, it.value, true)
         }
@@ -166,7 +166,7 @@ internal class ChildNodeCreationManager<Routing : Any>(
         )
 
     private fun childEntry(
-        key: RoutingKey<Routing>,
+        key: NavKey<Routing>,
         savedState: SavedStateMap?,
         suspended: Boolean,
     ): ChildEntry<Routing> =

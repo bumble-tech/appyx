@@ -1,7 +1,7 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.assertRoutingElementsEqual
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.DESTROYED
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
@@ -18,7 +18,7 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key not found`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
@@ -37,7 +37,7 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key found but element to be destroyed`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing1,
@@ -56,7 +56,7 @@ internal class RemoveTest {
     @Test
     fun `applicable when key found and element not to be destroyed`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 key = key,
@@ -75,7 +75,7 @@ internal class RemoveTest {
 
     @Test
     fun `does nothing when key not found`() {
-        val key = RoutingKey<Routing>(routing = Routing2)
+        val key = NavKey<Routing>(routing = Routing2)
 
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -116,7 +116,7 @@ internal class RemoveTest {
     @Test
     fun `does nothing when key found but element to be destroyed`() {
 
-        val key = RoutingKey<Routing>(routing = Routing2)
+        val key = NavKey<Routing>(routing = Routing2)
 
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
@@ -157,7 +157,7 @@ internal class RemoveTest {
     @Test
     fun `crashes when item to remove on screen but no element stashed`() {
 
-        val key = RoutingKey<Routing>(
+        val key = NavKey<Routing>(
             routing = Routing1
         )
         val elements = listOf<BackStackElement<Routing>>(
@@ -179,7 +179,7 @@ internal class RemoveTest {
     @Test
     fun `destroys current element on screen and add on screen last stashed element`() {
 
-        val key = RoutingKey<Routing>(
+        val key = NavKey<Routing>(
             routing = Routing2
         )
         val elements = listOf<BackStackElement<Routing>>(
@@ -221,7 +221,7 @@ internal class RemoveTest {
     @Test
     fun `silently removes item when not on screen`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
+        val key = NavKey<Routing>(routing = Routing1)
         val elements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 key = key,

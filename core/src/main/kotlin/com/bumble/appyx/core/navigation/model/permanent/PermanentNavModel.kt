@@ -2,7 +2,7 @@ package com.bumble.appyx.core.navigation.model.permanent
 
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.state.MutableSavedStateMap
@@ -38,7 +38,7 @@ class PermanentNavModel<Routing : Any>(
     private val state = MutableStateFlow(
         savedStateMap.restore() ?: routings.map { key ->
             PermanentElement(
-                key = RoutingKey(routing = key),
+                key = NavKey(routing = key),
                 fromState = 0,
                 targetState = 0,
                 operation = Operation.Noop()
@@ -58,7 +58,7 @@ class PermanentNavModel<Routing : Any>(
                 initialValue = NavModelAdapter.ScreenState(onScreen = state.value)
             )
 
-    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
+    override fun onTransitionFinished(keys: Collection<NavKey<Routing>>) {
         // no-op
     }
 

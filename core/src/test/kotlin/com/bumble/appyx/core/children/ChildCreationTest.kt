@@ -6,7 +6,7 @@ import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.RoutingElement
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -161,7 +161,7 @@ class ChildCreationTest {
 
         override val initialElements: RoutingElements<String, State> = listOf(
             RoutingElement(
-                key = RoutingKey("initial"),
+                key = NavKey("initial"),
                 fromState = State.ON_SCREEN,
                 targetState = State.ON_SCREEN,
                 operation = Operation.Noop(),
@@ -171,7 +171,7 @@ class ChildCreationTest {
         fun add(routing: String, state: State) {
             updateState {
                 it + RoutingElement(
-                    key = RoutingKey(routing),
+                    key = NavKey(routing),
                     fromState = state,
                     targetState = state,
                     operation = Operation.Noop(),
@@ -228,7 +228,7 @@ class ChildCreationTest {
         override fun resolve(routing: String, buildContext: BuildContext): Node =
             Child(routing, buildContext)
 
-        fun key(routing: String): RoutingKey<String>? =
+        fun key(routing: String): NavKey<String>? =
             children.value.keys.find { it.routing == routing }
 
         fun child(routing: String): Child? =

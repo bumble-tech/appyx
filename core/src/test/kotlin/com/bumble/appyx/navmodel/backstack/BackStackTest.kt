@@ -2,7 +2,7 @@ package com.bumble.appyx.navmodel.backstack
 
 import com.bumble.appyx.core.navigation.BaseNavModel.Companion.KEY_NAV_MODEL
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.assertRoutingElementsEqual
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
@@ -44,7 +44,7 @@ internal class BackStackTest {
 
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
-                key = RoutingKey(initialElement),
+                key = NavKey(initialElement),
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
@@ -237,7 +237,7 @@ internal class BackStackTest {
     fun `when transition of item to be destroyed is finished then it is removed from state`() {
 
         val initialElement = Routing1
-        val transitionedItemKey: RoutingKey<Routing> = RoutingKey(
+        val transitionedItemKey: NavKey<Routing> = NavKey(
             routing = Routing3
         )
         val storedElements = listOf<BackStackElement<Routing>>(
@@ -280,7 +280,7 @@ internal class BackStackTest {
     @Test
     fun `when transition of item to be stashed is finished then its state is changed`() {
         val initialElement = Routing1
-        val transitionedItemKey: RoutingKey<Routing> = RoutingKey(routing = Routing2)
+        val transitionedItemKey: NavKey<Routing> = NavKey(routing = Routing2)
         val storedElements = listOf<BackStackElement<Routing>>(
             backStackElement(
                 element = Routing4("Content"),
@@ -327,7 +327,7 @@ internal class BackStackTest {
     fun `when transition of item to get on screen is finished then its state is changed`() {
 
         val initialElement = Routing1
-        val transitionedItemKey: RoutingKey<Routing> = RoutingKey(
+        val transitionedItemKey: NavKey<Routing> = NavKey(
             routing = Routing4("Content")
         )
         val storedElements = listOf<BackStackElement<Routing>>(
@@ -387,13 +387,13 @@ internal class BackStackTest {
 
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
-                key = RoutingKey(initialElement),
+                key = NavKey(initialElement),
                 fromState = ACTIVE,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = operation
             ),
             BackStackElement(
-                key = RoutingKey(Routing2),
+                key = NavKey(Routing2),
                 fromState = CREATED,
                 targetState = ACTIVE,
                 operation = operation
@@ -418,7 +418,7 @@ internal class BackStackTest {
 
         val expectedElements: BackStackElements<Routing> = listOf(
             BackStackElement(
-                key = RoutingKey(initialElement),
+                key = NavKey(initialElement),
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop(),

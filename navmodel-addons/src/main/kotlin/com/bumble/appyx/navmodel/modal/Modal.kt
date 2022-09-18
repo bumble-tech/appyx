@@ -3,7 +3,7 @@ package com.bumble.appyx.navmodel.modal
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
@@ -36,7 +36,7 @@ class Modal<Routing : Any>(
 
     override val initialElements: RoutingElements<Routing, TransitionState> = listOf(
         ModalElement(
-            key = RoutingKey(initialElement),
+            key = NavKey(initialElement),
             fromState = CREATED,
             targetState = CREATED,
             operation = Noop()

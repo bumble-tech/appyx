@@ -3,7 +3,7 @@ package com.bumble.appyx.core.navigation.model.combined
 import androidx.activity.OnBackPressedCallback
 import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.state.MutableSavedStateMap
@@ -40,11 +40,11 @@ class CombinedNavModel<Routing>(
     override val onBackPressedCallbackList: List<OnBackPressedCallback>
         get() = navModels.flatMap { it.onBackPressedCallbackList }
 
-    override fun onTransitionFinished(key: RoutingKey<Routing>) {
+    override fun onTransitionFinished(key: NavKey<Routing>) {
         navModels.forEach { it.onTransitionFinished(key) }
     }
 
-    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
+    override fun onTransitionFinished(keys: Collection<NavKey<Routing>>) {
         navModels.forEach { it.onTransitionFinished(keys) }
     }
 

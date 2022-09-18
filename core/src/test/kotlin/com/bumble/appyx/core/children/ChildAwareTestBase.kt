@@ -9,7 +9,7 @@ import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.RoutingElement
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
@@ -42,7 +42,7 @@ open class ChildAwareTestBase {
         root = Root().build()
     }
 
-    fun add(vararg key: RoutingKey<Configuration>): List<Node> {
+    fun add(vararg key: NavKey<Configuration>): List<Node> {
         root.routing.add(*key)
         return root
             .children
@@ -127,7 +127,7 @@ open class ChildAwareTestBase {
             get() = state.map { NavModelAdapter.ScreenState(onScreen = it) }
                 .stateIn(scope, SharingStarted.Eagerly, NavModelAdapter.ScreenState())
 
-        override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
+        override fun onTransitionFinished(keys: Collection<NavKey<Key>>) {
             state.update { list ->
                 list.map {
                     if (it.key in keys) {
@@ -139,7 +139,7 @@ open class ChildAwareTestBase {
             }
         }
 
-        fun add(vararg key: RoutingKey<Key>) {
+        fun add(vararg key: NavKey<Key>) {
             state.update { list ->
                 require(list.none { it.key.routing in key.map { routingKey -> routingKey.routing } })
                 list + key.map {

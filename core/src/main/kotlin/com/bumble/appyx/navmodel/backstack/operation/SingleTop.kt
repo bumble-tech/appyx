@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
@@ -77,7 +77,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 newTargetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             ) + BackStackElement(
-                key = RoutingKey(element),
+                key = NavKey(element),
                 fromState = CREATED,
                 targetState = ACTIVE,
                 operation = this,

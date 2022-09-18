@@ -12,7 +12,7 @@ import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.RoutingElement
 import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
@@ -72,7 +72,7 @@ class ParentLifecycleTest {
         fun add(routing: String, defaultState: State) {
             updateState { list ->
                 list + RoutingElement(
-                    key = RoutingKey(routing),
+                    key = NavKey(routing),
                     targetState = defaultState,
                     fromState = defaultState,
                     operation = Operation.Noop(),

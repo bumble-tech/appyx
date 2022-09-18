@@ -2,7 +2,7 @@ package com.bumble.appyx.navmodel.backstack
 
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
@@ -35,7 +35,7 @@ class BackStack<Routing : Any>(
 
     override val initialElements = listOf(
         BackStackElement(
-            key = RoutingKey(initialElement),
+            key = NavKey(initialElement),
             fromState = ACTIVE,
             targetState = ACTIVE,
             operation = Noop()

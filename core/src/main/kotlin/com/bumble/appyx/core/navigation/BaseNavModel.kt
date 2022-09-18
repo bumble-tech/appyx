@@ -133,7 +133,7 @@ abstract class BaseNavModel<Routing, State>(
             }
         }
 
-    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
+    override fun onTransitionFinished(keys: Collection<NavKey<Routing>>) {
         if (keys.isEmpty()) return
         state.update { list ->
             list.mapNotNull {

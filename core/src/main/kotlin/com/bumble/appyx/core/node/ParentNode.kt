@@ -29,7 +29,7 @@ import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.Resolver
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.isTransitioning
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
@@ -89,8 +89,8 @@ abstract class ParentNode<Routing : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(routingKey: RoutingKey<Routing>): ChildEntry.Initialized<Routing> =
-        childNodeCreationManager.childOrCreate(routingKey)
+    fun childOrCreate(navKey: NavKey<Routing>): ChildEntry.Initialized<Routing> =
+        childNodeCreationManager.childOrCreate(navKey)
 
     @Composable
     fun PermanentChild(
@@ -100,9 +100,9 @@ abstract class ParentNode<Routing : Any>(
         var child by remember { mutableStateOf<ChildEntry.Initialized<*>?>(null) }
         LaunchedEffect(routing) {
             permanentNavModel.elements.collect { elements ->
-                val routingKey = elements.find { it.key.routing == routing }?.key
-                    ?: RoutingKey(routing).also { permanentNavModel.add(it) }
-                child = childOrCreate(routingKey)
+                val navKey = elements.find { it.key.routing == routing }?.key
+                    ?: NavKey(routing).also { permanentNavModel.add(it) }
+                child = childOrCreate(navKey)
             }
         }
 

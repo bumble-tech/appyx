@@ -8,14 +8,14 @@ import kotlinx.parcelize.RawValue
 @Parcelize
 @Immutable
 class RoutingElement<Routing, State> private constructor(
-    val key: @RawValue RoutingKey<Routing>,
+    val key: @RawValue NavKey<Routing>,
     val fromState: @RawValue State,
     val targetState: @RawValue State,
     val operation: @RawValue Operation<Routing, State>,
     val transitionHistory: List<Pair<State, State>>
 ) : Parcelable {
     constructor(
-        key: @RawValue RoutingKey<Routing>,
+        key: @RawValue NavKey<Routing>,
         fromState: @RawValue State,
         targetState: @RawValue State,
         operation: @RawValue Operation<Routing, State>,

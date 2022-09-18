@@ -3,12 +3,12 @@ package com.bumble.appyx.navmodel.modal.operation
 import com.bumble.appyx.navmodel.modal.Modal
 import com.bumble.appyx.navmodel.modal.Modal.TransitionState.FULL_SCREEN
 import com.bumble.appyx.navmodel.modal.ModalElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class FullScreen<T : Any>(
-    private val key: RoutingKey<T>
+    private val key: NavKey<T>
 ) : ModalOperation<T> {
 
     override fun isApplicable(elements: ModalElements<T>) = true
@@ -27,6 +27,6 @@ data class FullScreen<T : Any>(
     }
 }
 
-fun <T : Any> Modal<T>.fullScreen(key: RoutingKey<T>) {
+fun <T : Any> Modal<T>.fullScreen(key: NavKey<T>) {
     accept(FullScreen(key))
 }
