@@ -111,6 +111,6 @@ abstract class ReleaseDependenciesDiffFilesTask : DefaultTask() {
         }
 
     private companion object {
-        private const val MAX_CHARACTERS = 65535
+        private const val MAX_CHARACTERS = 65500
     }
 }
