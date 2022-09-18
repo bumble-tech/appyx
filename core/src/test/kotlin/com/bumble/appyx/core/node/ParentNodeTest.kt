@@ -3,9 +3,9 @@ package com.bumble.appyx.core.node
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNodeTest.NodeB.Companion.StatusExecuted
-import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing
-import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing.ChildA
-import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.Routing.ChildB
+import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.NavTarget
+import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.NavTarget.ChildA
+import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.NavTarget.ChildB
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
@@ -36,7 +36,7 @@ class ParentNodeTest {
     fun `waitForChildAttached WHEN expected routing provided THEN returns associated Node`() =
         testScope.runTest {
             //given
-            val backStack: BackStack<Routing> = buildBackStack()
+            val backStack: BackStack<NavTarget> = buildBackStack()
             val node = buildParentNode(backStack)
             var status: String? = null
             launch {
@@ -55,7 +55,7 @@ class ParentNodeTest {
     fun `attachWorkflow WHEN expected routing not provided THEN fails after timeout`() =
         testScope.runTest {
             //given
-            val backStack: BackStack<Routing> = buildBackStack()
+            val backStack: BackStack<NavTarget> = buildBackStack()
             val node = buildParentNode(backStack)
 
             //when
@@ -66,7 +66,7 @@ class ParentNodeTest {
     fun `attachWorkflow WHEN expected routing provided THEN returns expected Node`() =
         testScope.runTest {
             //given
-            val backStack: BackStack<Routing> = buildBackStack()
+            val backStack: BackStack<NavTarget> = buildBackStack()
             val node = buildParentNode(backStack)
 
             // when
@@ -76,22 +76,22 @@ class ParentNodeTest {
             assertTrue(attachedNode is NodeB)
         }
 
-    private fun buildBackStack(initialElement: Routing = ChildA) =
+    private fun buildBackStack(initialElement: NavTarget = ChildA) =
         BackStack(initialElement = initialElement, savedStateMap = null)
 
-    private fun buildParentNode(backStack: BackStack<Routing>) =
+    private fun buildParentNode(backStack: BackStack<NavTarget>) =
         TestParentNode(backStack).apply { onBuilt() }
 
     private class TestParentNode(
-        private val backStack: BackStack<Routing>
-    ) : ParentNode<Routing>(
+        private val backStack: BackStack<NavTarget>
+    ) : ParentNode<NavTarget>(
         buildContext = BuildContext.root(null),
         navModel = backStack
     ) {
 
-        sealed class Routing {
-            object ChildA : Routing()
-            object ChildB : Routing()
+        sealed class NavTarget {
+            object ChildA : NavTarget()
+            object ChildB : NavTarget()
         }
 
         suspend fun waitForBAttached(): NodeB {
@@ -110,7 +110,7 @@ class ParentNodeTest {
             }
         }
 
-        override fun resolve(navTarget: Routing, buildContext: BuildContext) = when (navTarget) {
+        override fun resolve(navTarget: NavTarget, buildContext: BuildContext) = when (navTarget) {
             ChildA -> node(buildContext) {}
             ChildB -> NodeB(buildContext)
         }

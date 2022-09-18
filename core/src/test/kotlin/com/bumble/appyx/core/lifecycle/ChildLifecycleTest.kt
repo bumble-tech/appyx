@@ -153,7 +153,7 @@ class ChildLifecycleTest {
 
     // region Setup
 
-    private class RoutingImpl : BaseNavModel<String, Boolean>(
+    private class NavTargetImpl : BaseNavModel<String, Boolean>(
         screenResolver = object : OnScreenStateResolver<Boolean> {
             override fun isOnScreen(state: Boolean): Boolean = state
         },
@@ -198,7 +198,7 @@ class ChildLifecycleTest {
 
     private class Parent(
         buildContext: BuildContext,
-        val routing: RoutingImpl = RoutingImpl(),
+        val routing: NavTargetImpl = NavTargetImpl(),
     ) : ParentNode<String>(
         buildContext = buildContext,
         navModel = routing,

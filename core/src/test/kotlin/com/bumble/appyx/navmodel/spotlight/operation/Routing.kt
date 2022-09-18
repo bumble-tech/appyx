@@ -1,7 +1,7 @@
 package com.bumble.appyx.navmodel.spotlight.operation
 
-internal sealed class Routing {
-    object Routing1 : Routing()
-    object Routing2 : Routing()
-    object Routing3 : Routing()
+internal sealed class NavTarget {
+    object NavTarget1 : NavTarget()
+    object NavTarget2 : NavTarget()
+    object NavTarget3 : NavTarget()
 }

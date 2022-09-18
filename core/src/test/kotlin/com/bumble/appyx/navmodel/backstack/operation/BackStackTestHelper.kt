@@ -5,7 +5,7 @@ import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 
-internal fun <T : Routing> backStackElement(
+internal fun <T : NavTarget> backStackElement(
     element: T,
     key: NavKey<T> = NavKey(navTarget = element),
     fromState: BackStack.TransitionState,

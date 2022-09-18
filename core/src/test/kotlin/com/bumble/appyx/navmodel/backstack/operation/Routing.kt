@@ -1,8 +1,8 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
-internal sealed class Routing {
-    object Routing1 : Routing()
-    object Routing2 : Routing()
-    object Routing3 : Routing()
-    data class Routing4(val dummy: String) : Routing()
+internal sealed class NavTarget {
+    object NavTarget1 : NavTarget()
+    object NavTarget2 : NavTarget()
+    object NavTarget3 : NavTarget()
+    data class NavTarget4(val dummy: String) : NavTarget()
 }
