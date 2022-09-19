@@ -64,31 +64,6 @@ jobs:
           name: reports
           path: '**/build/reports'
 
-  generate-diff:
-    name: Check dependency diff
-    runs-on: ubuntu-latest
-    if: github.ref != 'refs/heads/main'
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'zulu'
-          java-version: '11'
-      - uses: gradle/wrapper-validation-action@v1
-      - uses: gradle/gradle-build-action@v2
-        with:
-          cache-read-only: true
-      - id: release-dependencies-diff
-        env:
-          INPUT_BASEREF: ${{ github.base_ref }}
-          INPUT_BUILD_ROOT_DIR: ${{ inputs.build-root-directory }}
-          INPUT_VERSION: '1.2.0'
-        run: .github/workflows/release-dependencies-diff-generator.sh
-        shell: bash
-      - uses: marocchino/sticky-pull-request-comment@e3c0353c9ad3f0cad0fbab901e5bcd7d04c6e97b
-        with:
-          path: build/release-dependencies-diff-result.txt
-
   instrumentation-tests:
     name: Instrumentation tests
     runs-on: macOS-latest
