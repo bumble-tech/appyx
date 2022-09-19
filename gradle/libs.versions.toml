@@ -64,7 +64,7 @@ junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref
 
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-plugin-android = "com.android.tools.build:gradle:7.1.3"
+plugin-android = "com.android.tools.build:gradle:7.2.2"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
