@@ -7,7 +7,7 @@ Intended only as an illustration.
 ## States
 
 ```kotlin
-enum class TransitionState {
+enum class State {
     CREATED, STAGE1, STAGE2, STAGE3, STAGE4, SELECTED, DESTROYED
 }
 ```
@@ -15,10 +15,10 @@ enum class TransitionState {
 ## Default on screen resolution
 
 ```kotlin
-internal object PromoterOnScreenResolver : OnScreenStateResolver<TransitionState> {
-    override fun isOnScreen(state: TransitionState): Boolean =
+internal object PromoterOnScreenResolver : OnScreenStateResolver<State> {
+    override fun isOnScreen(state: State): Boolean =
         when (state) {
-            TransitionState.DESTROYED -> false
+            State.DESTROYED -> false
             else -> true
         }
 }

@@ -9,7 +9,7 @@ It's great for flows or tabbed containers.
 ## States
 
 ```kotlin
-enum class TransitionState {
+enum class State {
     INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
 }
 ```
@@ -32,12 +32,12 @@ class Spotlight<NavTarget : Any>(
 As a default, only the active element is considered on screen.
 
 ```kotlin
-object SpotlightOnScreenResolver : OnScreenStateResolver<Spotlight.TransitionState> {
-    override fun isOnScreen(state: Spotlight.TransitionState): Boolean =
+object SpotlightOnScreenResolver : OnScreenStateResolver<Spotlight.State> {
+    override fun isOnScreen(state: Spotlight.State): Boolean =
         when (state) {
-            Spotlight.TransitionState.INACTIVE_BEFORE,
-            Spotlight.TransitionState.INACTIVE_AFTER -> false
-            Spotlight.TransitionState.ACTIVE -> true
+            Spotlight.State.INACTIVE_BEFORE,
+            Spotlight.State.INACTIVE_AFTER -> false
+            Spotlight.State.ACTIVE -> true
         }
 }
 ```
@@ -97,7 +97,7 @@ You can override the default strategy in the constructor. You're not limited to 
 ```kotlin
 class Spotlight<NavTarget : Any>(
     /* ... */
-    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = GoToDefault(
+    backPressHandler: BackPressHandlerStrategy<NavTarget, State> = GoToDefault(
         initialActiveIndex
     )
     /* ... */
@@ -120,7 +120,7 @@ You can override the default strategy in the constructor. You're not limited to 
 ```kotlin
 class Spotlight<NavTarget : Any>(
     /* ... */
-    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),    
+    operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),    
     /* ... */
 )
 ```

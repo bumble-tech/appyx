@@ -7,7 +7,7 @@ Intended only as an illustration, but it should be easy enough to tailor it to y
 ## States
 
 ```kotlin
-enum class TransitionState {
+enum class State {
     CREATED, STANDARD, SELECTED, DESTROYED
 }
 ```
@@ -15,13 +15,13 @@ enum class TransitionState {
 ## Default on screen resolution
 
 ```kotlin
-internal object TilesOnScreenResolver : OnScreenStateResolver<TransitionState> {
-    override fun isOnScreen(state: TransitionState): Boolean =
+internal object TilesOnScreenResolver : OnScreenStateResolver<State> {
+    override fun isOnScreen(state: State): Boolean =
         when (state) {
-            TransitionState.CREATED,
-            TransitionState.STANDARD,
-            TransitionState.SELECTED -> true
-            TransitionState.DESTROYED -> false
+            State.CREATED,
+            State.STANDARD,
+            State.SELECTED -> true
+            State.DESTROYED -> false
         }
 }
 ```

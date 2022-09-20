@@ -16,8 +16,8 @@ The back stack also supports different back press and operation strategies (see 
 ## States
 
 ```kotlin
-enum class TransitionState {
-    CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
+enum class State {
+    CREATED, ACTIVE, STASHED, DESTROYED,
 }
 ```
 
@@ -38,13 +38,13 @@ class BackStack<NavTarget : Any>(
 As a default, only the active element is considered on screen.
 
 ```kotlin
-object BackStackOnScreenResolver : OnScreenStateResolver<TransitionState> {
-    override fun isOnScreen(state: TransitionState): Boolean =
+object BackStackOnScreenResolver : OnScreenStateResolver<State> {
+    override fun isOnScreen(state: State): Boolean =
         when (state) {
-            TransitionState.CREATED,
-            TransitionState.STASHED_IN_BACK_STACK,
-            TransitionState.DESTROYED -> false
-            TransitionState.ACTIVE -> true
+            State.CREATED,
+            State.STASHED,
+            State.DESTROYED -> false
+            State.ACTIVE -> true
         }
 }
 ```
@@ -76,7 +76,7 @@ Effect on stack:
 [A, B, C] + Push(D) = [A, B, C, D]
 ```
 
-Transitions the active element `ACTIVE` -> `STASHED_IN_BACK_STACK`.
+Transitions the active element `ACTIVE` -> `STASHED`.
 Adds a new element at the end of the stack with a `CREATED` -> `ACTIVE` transition.
 
 
@@ -103,7 +103,7 @@ Effect on stack:
 ```
 
 Transitions the active element `ACTIVE` -> `DESTROYED`, which will be removed when the transition finishes.
-Transitions the last stashed element `STASHED_IN_BACK_STACK` -> `ACTIVE`.
+Transitions the last stashed element `STASHED` -> `ACTIVE`.
 
 
 #### Single top
@@ -126,7 +126,7 @@ You can override the default strategy in the constructor. You're not limited to 
 ```kotlin
 class BackStack<NavTarget : Any>(
     /* ... */
-    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = PopBackPressHandler(),
+    backPressHandler: BackPressHandlerStrategy<NavTarget, State> = PopBackPressHandler(),
     /* ... */
 ) 
 ```
@@ -147,7 +147,7 @@ You can override the default strategy in the constructor. You're not limited to 
 ```kotlin
 class BackStack<NavTarget : Any>(
     /* ... */
-    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),    
+    operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),    
     /* ... */
 )
 ```
