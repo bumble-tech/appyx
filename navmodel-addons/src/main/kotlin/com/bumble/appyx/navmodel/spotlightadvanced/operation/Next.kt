@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.operation
 
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.Active
@@ -12,10 +12,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class Next<T : Any> : SpotlightAdvancedOperation<T> {
 
-    override fun isApplicable(elements: RoutingElements<T, TransitionState>) =
+    override fun isApplicable(elements: NavElements<T, TransitionState>) =
         elements.any { (it.fromState == InactiveAfter && it.targetState == InactiveAfter) || it.fromState is Carousel }
 
-    override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
+    override fun invoke(elements: NavElements<T, TransitionState>): NavElements<T, TransitionState> {
         if (elements.all { it.fromState is Carousel }) {
             return elements.map {
                 when (val state = it.fromState) {

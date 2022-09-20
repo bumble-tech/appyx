@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.operation
 
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState
 import kotlinx.parcelize.Parcelize
@@ -8,10 +8,10 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 class SwitchToCarousel<T : Any>: SpotlightAdvancedOperation<T> {
 
-    override fun isApplicable(elements: RoutingElements<T, TransitionState>) =
+    override fun isApplicable(elements: NavElements<T, TransitionState>) =
         elements.all { it.fromState !is TransitionState.Carousel }
 
-    override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
+    override fun invoke(elements: NavElements<T, TransitionState>): NavElements<T, TransitionState> {
         val activeIndex =
             elements.indexOfFirst { it.targetState == TransitionState.Active }
 
