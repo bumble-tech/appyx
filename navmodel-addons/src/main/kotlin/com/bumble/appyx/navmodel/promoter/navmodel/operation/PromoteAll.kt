@@ -13,7 +13,7 @@ class PromoteAll<T : Any> : PromoterOperation<T> {
 
     override fun invoke(
         elements: PromoterElements<T>,
-    ): NavElements<T, Promoter.TransitionState> =
+    ): NavElements<T, Promoter.State> =
         elements.map {
             it.transitionTo(
                 newTargetState = it.targetState.next(),

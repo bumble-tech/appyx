@@ -29,8 +29,8 @@ import kotlin.math.sin
 @Suppress("TransitionPropertiesLabel")
 class PromoterTransitionHandler<T>(
     private val childSize: Dp,
-    private val transitionSpec: TransitionSpec<Promoter.TransitionState, Float> = { tween(500) }
-) : ModifierTransitionHandler<T, Promoter.TransitionState>() {
+    private val transitionSpec: TransitionSpec<Promoter.State, Float> = { tween(500) }
+) : ModifierTransitionHandler<T, Promoter.State>() {
 
     data class TargetStateValues(
         val dpOffset: DpOffset,
@@ -84,8 +84,8 @@ class PromoterTransitionHandler<T>(
     @SuppressLint("UnusedTransitionTargetStateParameter", "ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<Promoter.TransitionState>,
-        descriptor: TransitionDescriptor<T, Promoter.TransitionState>
+        transition: Transition<Promoter.State>,
+        descriptor: TransitionDescriptor<T, Promoter.State>
     ): Modifier = modifier.composed {
 
         val halfWidthDp = (descriptor.params.bounds.width.value - childSize.value) / 2
@@ -144,22 +144,22 @@ class PromoterTransitionHandler<T>(
     }
 
     @Composable
-    private fun Promoter.TransitionState.target() =
+    private fun Promoter.State.target() =
         when (this) {
-            Promoter.TransitionState.CREATED -> created
-            Promoter.TransitionState.STAGE1 -> stage1
-            Promoter.TransitionState.STAGE2 -> stage2
-            Promoter.TransitionState.STAGE3 -> stage3
-            Promoter.TransitionState.STAGE4 -> stage4
-            Promoter.TransitionState.SELECTED -> selected
-            Promoter.TransitionState.DESTROYED -> destroyed
+            Promoter.State.CREATED -> created
+            Promoter.State.STAGE1 -> stage1
+            Promoter.State.STAGE2 -> stage2
+            Promoter.State.STAGE3 -> stage3
+            Promoter.State.STAGE4 -> stage4
+            Promoter.State.SELECTED -> selected
+            Promoter.State.DESTROYED -> destroyed
         }
 }
 
 @Composable
 fun <T> rememberPromoterTransitionHandler(
     childSize: Dp,
-    transitionSpec: TransitionSpec<Promoter.TransitionState, Float> = { tween(500) }
-): ModifierTransitionHandler<T, Promoter.TransitionState> = remember {
+    transitionSpec: TransitionSpec<Promoter.State, Float> = { tween(500) }
+): ModifierTransitionHandler<T, Promoter.State> = remember {
     PromoterTransitionHandler(childSize, transitionSpec)
 }
