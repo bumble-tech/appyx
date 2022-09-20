@@ -4,10 +4,10 @@ import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.spotlight.Spotlight
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.INACTIVE_AFTER
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State.ACTIVE
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State.INACTIVE_AFTER
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State.INACTIVE_BEFORE
 import com.bumble.appyx.navmodel.spotlight.SpotlightElement
 import com.bumble.appyx.navmodel.spotlight.SpotlightElements
 import kotlinx.parcelize.Parcelize
@@ -19,9 +19,9 @@ class UpdateElements<T : Any>(
     private val initialActiveIndex: Int? = null,
 ) : SpotlightOperation<T> {
 
-    override fun isApplicable(elements: NavElements<T, TransitionState>) = true
+    override fun isApplicable(elements: NavElements<T, State>) = true
 
-    override fun invoke(elements: NavElements<T, TransitionState>): NavElements<T, TransitionState> {
+    override fun invoke(elements: NavElements<T, State>): NavElements<T, State> {
         if (initialActiveIndex != null) {
             require(initialActiveIndex in this.elements.indices) {
                 "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"

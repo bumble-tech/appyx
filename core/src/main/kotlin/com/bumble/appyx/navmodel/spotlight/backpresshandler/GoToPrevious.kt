@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class GoToPrevious<NavTarget : Any> :
-    BaseBackPressHandlerStrategy<NavTarget, Spotlight.TransitionState>() {
+    BaseBackPressHandlerStrategy<NavTarget, Spotlight.State>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
         navModel.elements.map(::areTherePreviousElements)
     }
 
     private fun areTherePreviousElements(elements: SpotlightElements<NavTarget>) =
-        elements.any { it.targetState == Spotlight.TransitionState.INACTIVE_BEFORE }
+        elements.any { it.targetState == Spotlight.State.INACTIVE_BEFORE }
 
     override fun onBackPressed() {
         navModel.accept(Previous())

@@ -6,7 +6,7 @@ import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.core.navigation.operationstrategies.OperationStrategy
 import com.bumble.appyx.core.state.SavedStateMap
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State
 import com.bumble.appyx.navmodel.spotlight.backpresshandler.GoToDefault
 import com.bumble.appyx.navmodel.spotlight.operation.toSpotlightElements
 
@@ -15,12 +15,12 @@ class Spotlight<NavTarget : Any>(
     initialActiveIndex: Int = 0,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
-    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = GoToDefault(
+    backPressHandler: BackPressHandlerStrategy<NavTarget, State> = GoToDefault(
         initialActiveIndex
     ),
-    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),
-    screenResolver: OnScreenStateResolver<TransitionState> = SpotlightOnScreenResolver
-) : BaseNavModel<NavTarget, TransitionState>(
+    operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
+    screenResolver: OnScreenStateResolver<State> = SpotlightOnScreenResolver
+) : BaseNavModel<NavTarget, State>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
@@ -29,7 +29,7 @@ class Spotlight<NavTarget : Any>(
     key = key,
 ) {
 
-    enum class TransitionState {
+    enum class State {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
 
