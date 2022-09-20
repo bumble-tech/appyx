@@ -5,15 +5,16 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityBoundary
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequestBoundary
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
-import java.lang.ref.WeakReference
-import java.util.WeakHashMap
 
 open class ActivityIntegrationPoint private constructor(
-    private val activity: Activity,
+    private val activity: ComponentActivity,
     savedInstanceState: Bundle?,
 ) : IntegrationPoint(savedInstanceState = savedInstanceState) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
@@ -50,14 +51,22 @@ open class ActivityIntegrationPoint private constructor(
     }
 
     companion object {
-        private val integrationPoints = WeakHashMap<Activity, WeakReference<IntegrationPoint>>()
+        private val integrationPoints = HashMap<ComponentActivity, IntegrationPoint>()
 
         fun createIntegrationPoint(
-            activity: Activity,
+            activity: ComponentActivity,
             savedInstanceState: Bundle?,
         ): ActivityIntegrationPoint =
             ActivityIntegrationPoint(activity, savedInstanceState)
-                .also { integrationPoints[activity] = WeakReference(it) }
+                .also {
+                    integrationPoints[activity] = it
+
+                    activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+                        override fun onDestroy(owner: LifecycleOwner) {
+                            integrationPoints.remove(activity)
+                        }
+                    })
+                }
 
         fun getIntegrationPoint(context: Context): IntegrationPoint {
             val activity = context.findActivity<Activity>()
@@ -67,7 +76,7 @@ open class ActivityIntegrationPoint private constructor(
             val integrationPoint = integrationPoints
                 .entries
                 .firstOrNull { (key, _) -> key === activity }
-                ?.value?.get()
+                ?.value
 
             return requireNotNull(integrationPoint) {
                 "Unable to find integration point. It was either not created " +

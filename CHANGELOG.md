@@ -3,6 +3,7 @@
 
 ## Pending changes
 
+- [#142](https://github.com/bumble-tech/appyx/issues/142) - **Breaking change**: ActivityIntegrationPoint uses ComponentActivity and explicitly removes entity from Map in onDestroy
 - [#146](https://github.com/bumble-tech/appyx/issues/146) - **Breaking change**: Removed `FragmentIntegrationPoint`. Clients should use `ActivityIntegrationPoint.getIntegrationPoint(context: Context)` to get integration point from Fragment 
 - [#138](https://github.com/bumble-tech/appyx/pull/138) - **Fixed**: `androidx.appcompat:appcompat` from is exposed via `api` within `com.bumble.appyx:core`. This prevents potential compilation bugs.
 - [#143](https://github.com/bumble-tech/appyx/issues/143) - **Fixed**: Correctly exposed transitive dependencies that are part of the libraries ABI
