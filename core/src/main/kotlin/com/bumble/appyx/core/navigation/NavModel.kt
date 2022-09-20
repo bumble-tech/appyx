@@ -7,20 +7,20 @@ import com.bumble.appyx.core.plugin.UpNavigationHandler
 import kotlinx.coroutines.flow.StateFlow
 
 @Stable
-interface NavModel<Routing, State> : NavModelAdapter<Routing, State>,
+interface NavModel<NavTarget, State> : NavModelAdapter<NavTarget, State>,
     UpNavigationHandler,
     SavesInstanceState,
     BackPressHandler {
 
-    val elements: StateFlow<RoutingElements<Routing, out State>>
+    val elements: StateFlow<NavElements<NavTarget, out State>>
 
-    fun onTransitionFinished(key: RoutingKey<Routing>) {
+    fun onTransitionFinished(key: NavKey<NavTarget>) {
         onTransitionFinished(listOf(key))
     }
 
-    fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>)
+    fun onTransitionFinished(keys: Collection<NavKey<NavTarget>>)
 
-    fun accept(operation: Operation<Routing, State>) = Unit
+    fun accept(operation: Operation<NavTarget, State>) = Unit
 
     override fun handleUpNavigation(): Boolean =
         handleOnBackPressed()

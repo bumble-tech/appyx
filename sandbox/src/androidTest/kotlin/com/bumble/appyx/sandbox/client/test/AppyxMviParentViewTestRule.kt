@@ -7,12 +7,12 @@ import io.reactivex.ObservableSource
 import io.reactivex.functions.Consumer
 import io.reactivex.observers.TestObserver
 
-class AppyxMviParentViewTestRule<Routing : Any, ViewModel : Any, Event : Any, View : ParentNodeView<Routing>>(
+class AppyxMviParentViewTestRule<NavTarget : Any, ViewModel : Any, Event : Any, View : ParentNodeView<NavTarget>>(
     launchActivity: Boolean = true,
     private val modelConsumer: (View) -> Consumer<in ViewModel>,
     private val eventObservable: (View) -> ObservableSource<out Event>,
     viewFactory: ViewFactory<View>,
-) : AppyxParentViewTestRule<Routing, View>(
+) : AppyxParentViewTestRule<NavTarget, View>(
     launchActivity = launchActivity,
     viewFactory = viewFactory,
 ) {

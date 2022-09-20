@@ -29,7 +29,7 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event.LoadDataClicked
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event.SwitchChildClicked
@@ -45,9 +45,9 @@ interface MviCoreExampleView : Consumer<ViewModel>, ObservableSource<Event>
 
 class MviCoreExampleViewImpl(
     private val title: String = "Title",
-    private val backStack: NavModel<Routing, BackStack.TransitionState>,
+    private val backStack: NavModel<NavTarget, BackStack.TransitionState>,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : AbstractParentNodeView<Routing>(),
+) : AbstractParentNodeView<NavTarget>(),
     MviCoreExampleView,
     ObservableSource<Event> by events {
 
@@ -63,7 +63,7 @@ class MviCoreExampleViewImpl(
     }
 
     @Composable
-    override fun ParentNode<Routing>.NodeView(modifier: Modifier) {
+    override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) {
         val viewModel = vm ?: return
         val scrollState = rememberScrollState()
         Column(

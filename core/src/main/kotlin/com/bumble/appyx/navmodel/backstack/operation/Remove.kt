@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.activeIndex
@@ -13,7 +13,7 @@ import kotlinx.parcelize.Parcelize
  */
 @Parcelize
 data class Remove<T : Any>(
-    private val key: RoutingKey<T>
+    private val key: NavKey<T>
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>) =
@@ -61,6 +61,6 @@ data class Remove<T : Any>(
     }
 }
 
-fun <T : Any> BackStack<T>.remove(key: RoutingKey<T>) {
+fun <T : Any> BackStack<T>.remove(key: NavKey<T>) {
     accept(Remove(key))
 }

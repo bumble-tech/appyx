@@ -4,9 +4,9 @@ import com.bumble.appyx.core.navigation.BaseNavModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-interface BackPressHandlerStrategy<Routing, State> {
+interface BackPressHandlerStrategy<NavTarget, State> {
 
-    fun init(navModel: BaseNavModel<Routing, State>, scope: CoroutineScope)
+    fun init(navModel: BaseNavModel<NavTarget, State>, scope: CoroutineScope)
 
     val canHandleBackPress: StateFlow<Boolean>
 

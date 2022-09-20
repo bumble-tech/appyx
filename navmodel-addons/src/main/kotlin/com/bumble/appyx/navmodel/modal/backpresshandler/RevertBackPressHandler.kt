@@ -8,14 +8,14 @@ import com.bumble.appyx.navmodel.modal.operation.Revert
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class RevertBackPressHandler<Routing : Any> :
-    BaseBackPressHandlerStrategy<Routing, TransitionState>() {
+class RevertBackPressHandler<NavTarget : Any> :
+    BaseBackPressHandlerStrategy<NavTarget, TransitionState>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
         navModel.elements.map(::areThereFullScreenElements)
     }
 
-    private fun areThereFullScreenElements(elements: ModalElements<Routing>) =
+    private fun areThereFullScreenElements(elements: ModalElements<NavTarget>) =
         elements.any { it.targetState == FULL_SCREEN }
 
     override fun onBackPressed() {

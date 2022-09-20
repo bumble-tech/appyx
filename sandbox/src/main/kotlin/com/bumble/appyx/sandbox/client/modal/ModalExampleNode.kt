@@ -26,31 +26,31 @@ import com.bumble.appyx.navmodel.modal.ModalTransitionHandler
 import com.bumble.appyx.navmodel.modal.operation.fullScreen
 import com.bumble.appyx.navmodel.modal.operation.show
 import com.bumble.appyx.sandbox.client.child.ChildNode
-import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing
-import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.Routing.Child
+import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.modal.ModalExampleNode.NavTarget.Child
 import kotlinx.parcelize.Parcelize
 
 class ModalExampleNode(
     buildContext: BuildContext,
-    private val modal: Modal<Routing> = Modal(
+    private val modal: Modal<NavTarget> = Modal(
         savedStateMap = buildContext.savedStateMap,
         initialElement = Child("first")
     )
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = modal,
     buildContext = buildContext,
 ) {
 
-    sealed class Routing(val name: String) : Parcelable {
+    sealed class NavTarget(val name: String) : Parcelable {
 
         abstract val value: String
 
         @Parcelize
-        data class Child(override val value: String) : Routing(value)
+        data class Child(override val value: String) : NavTarget(value)
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Child -> ChildNode("", buildContext)
         }
 

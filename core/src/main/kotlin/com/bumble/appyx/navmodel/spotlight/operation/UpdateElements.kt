@@ -1,8 +1,8 @@
 package com.bumble.appyx.navmodel.spotlight.operation
 
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavElements
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.spotlight.Spotlight
 import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState
 import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.ACTIVE
@@ -19,9 +19,9 @@ class UpdateElements<T : Any>(
     private val initialActiveIndex: Int? = null,
 ) : SpotlightOperation<T> {
 
-    override fun isApplicable(elements: RoutingElements<T, TransitionState>) = true
+    override fun isApplicable(elements: NavElements<T, TransitionState>) = true
 
-    override fun invoke(elements: RoutingElements<T, TransitionState>): RoutingElements<T, TransitionState> {
+    override fun invoke(elements: NavElements<T, TransitionState>): NavElements<T, TransitionState> {
         if (initialActiveIndex != null) {
             require(initialActiveIndex in this.elements.indices) {
                 "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"
@@ -30,12 +30,12 @@ class UpdateElements<T : Any>(
         return if (initialActiveIndex == null) {
             val currentActiveElement = elements.find { it.targetState == ACTIVE }
 
-            // if current routing exists in the new list of items and initialActiveIndex is null
-            // then keep existing routing active
-            if (this.elements.contains(currentActiveElement?.key?.routing)) {
+            // if current navTarget exists in the new list of items and initialActiveIndex is null
+            // then keep existing navTarget active
+            if (this.elements.contains(currentActiveElement?.key?.navTarget)) {
                 this.elements.toSpotlightElements(elements.indexOf(currentActiveElement))
             } else {
-                // if current routing does not exist in the new list of items and initialActiveIndex is null
+                // if current navTarget does not exist in the new list of items and initialActiveIndex is null
                 // then set 0 as active index
                 this.elements.toSpotlightElements(0)
             }
@@ -60,7 +60,7 @@ internal fun <T> List<T>.toSpotlightElements(activeIndex: Int): SpotlightElement
             else -> INACTIVE_AFTER
         }
         SpotlightElement(
-            key = RoutingKey(item),
+            key = NavKey(item),
             fromState = state,
             targetState = state,
             operation = Noop()

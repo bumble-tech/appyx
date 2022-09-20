@@ -30,43 +30,43 @@ import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.sandbox.client.child.ChildNode
-import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode.Routing.Configuration.Child
+import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode.NavTarget.Dynamic.Child
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
 class CombinedNavModelNode(
     buildContext: BuildContext,
-    private val backStack1: BackStack<Routing> = BackStack(
+    private val backStack1: BackStack<NavTarget> = BackStack(
         initialElement = Child(UUID.randomUUID().toString()),
         savedStateMap = buildContext.savedStateMap,
         key = "BackStack1",
     ),
-    private val backStack2: BackStack<Routing> = BackStack(
+    private val backStack2: BackStack<NavTarget> = BackStack(
         initialElement = Child(UUID.randomUUID().toString()),
         savedStateMap = buildContext.savedStateMap,
         key = "BackStack2",
     ),
-) : ParentNode<CombinedNavModelNode.Routing>(
+) : ParentNode<CombinedNavModelNode.NavTarget>(
     buildContext = buildContext,
     navModel = backStack1 + backStack2,
 ) {
 
-    sealed class Routing : Parcelable {
-        sealed class Permanent : Routing() {
+    sealed class NavTarget : Parcelable {
+        sealed class Permanent : NavTarget() {
             @Parcelize
             object Child1 : Permanent()
         }
 
-        sealed class Configuration : Routing() {
+        sealed class Dynamic : NavTarget() {
             @Parcelize
-            data class Child(val id: String) : Configuration()
+            data class Child(val id: String) : Dynamic()
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is Routing.Configuration.Child -> ChildNode(routing.id, buildContext)
-            is Routing.Permanent.Child1 -> ChildNode("Permanent", buildContext)
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.Dynamic.Child -> ChildNode(navTarget.id, buildContext)
+            is NavTarget.Permanent.Child1 -> ChildNode("Permanent", buildContext)
         }
 
     @Composable
@@ -99,7 +99,7 @@ class CombinedNavModelNode(
         Button(onClick = { visibility = !visibility }) {
             Text(text = "Trigger visibility")
         }
-        PermanentChild(Routing.Permanent.Child1) { child ->
+        PermanentChild(NavTarget.Permanent.Child1) { child ->
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -115,7 +115,7 @@ class CombinedNavModelNode(
     @Composable
     private fun BackStack(
         name: String,
-        backStack: BackStack<Routing>,
+        backStack: BackStack<NavTarget>,
     ) {
         Text(text = name)
         Children(
@@ -131,7 +131,7 @@ class CombinedNavModelNode(
         Button(
             onClick = {
                 backStack.push(
-                    Routing.Configuration.Child(
+                    NavTarget.Dynamic.Child(
                         UUID.randomUUID().toString()
                     )
                 )

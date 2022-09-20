@@ -1,14 +1,14 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingKey
-import com.bumble.appyx.navmodel.assertRoutingElementsEqual
+import com.bumble.appyx.core.navigation.NavKey
+import com.bumble.appyx.navmodel.assertNavTargetElementsEqual
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.DESTROYED
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
 import com.bumble.appyx.navmodel.backstack.BackStackElement
-import com.bumble.appyx.navmodel.backstack.operation.Routing.Routing1
-import com.bumble.appyx.navmodel.backstack.operation.Routing.Routing2
+import com.bumble.appyx.navmodel.backstack.operation.NavTarget.NavTarget1
+import com.bumble.appyx.navmodel.backstack.operation.NavTarget.NavTarget2
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
@@ -18,10 +18,10 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key not found`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
-        val elements = listOf<BackStackElement<Routing>>(
+        val key = NavKey<NavTarget>(navTarget = NavTarget1)
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
@@ -37,10 +37,10 @@ internal class RemoveTest {
     @Test
     fun `not applicable when key found but element to be destroyed`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
-        val elements = listOf<BackStackElement<Routing>>(
+        val key = NavKey<NavTarget>(navTarget = NavTarget1)
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Noop()
@@ -56,11 +56,11 @@ internal class RemoveTest {
     @Test
     fun `applicable when key found and element not to be destroyed`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
-        val elements = listOf<BackStackElement<Routing>>(
+        val key = NavKey<NavTarget>(navTarget = NavTarget1)
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 key = key,
-                element = Routing1,
+                element = NavTarget1,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
@@ -75,17 +75,17 @@ internal class RemoveTest {
 
     @Test
     fun `does nothing when key not found`() {
-        val key = RoutingKey<Routing>(routing = Routing2)
+        val key = NavKey<NavTarget>(navTarget = NavTarget2)
 
-        val elements = listOf<BackStackElement<Routing>>(
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Noop()
             ),
             backStackElement(
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
@@ -95,38 +95,38 @@ internal class RemoveTest {
 
         val newElements = operation.invoke(elements)
 
-        val expectedElements = listOf<BackStackElement<Routing>>(
+        val expectedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Noop()
             ),
             backStackElement(
                 key = key,
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
             )
         )
-        newElements.assertRoutingElementsEqual(expectedElements)
+        newElements.assertNavTargetElementsEqual(expectedElements)
     }
 
     @Test
     fun `does nothing when key found but element to be destroyed`() {
 
-        val key = RoutingKey<Routing>(routing = Routing2)
+        val key = NavKey<NavTarget>(navTarget = NavTarget2)
 
-        val elements = listOf<BackStackElement<Routing>>(
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Noop()
             ),
             backStackElement(
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Noop()
@@ -136,34 +136,34 @@ internal class RemoveTest {
 
         val newElements = operation.invoke(elements)
 
-        val expectedElements = listOf<BackStackElement<Routing>>(
+        val expectedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Noop()
             ),
             backStackElement(
                 key = key,
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = Noop()
             )
         )
-        newElements.assertRoutingElementsEqual(expectedElements)
+        newElements.assertNavTargetElementsEqual(expectedElements)
     }
 
     @Test
     fun `crashes when item to remove on screen but no element stashed`() {
 
-        val key = RoutingKey<Routing>(
-            routing = Routing1
+        val key = NavKey<NavTarget>(
+            navTarget = NavTarget1
         )
-        val elements = listOf<BackStackElement<Routing>>(
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 key = key,
-                element = Routing1,
+                element = NavTarget1,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
@@ -179,19 +179,19 @@ internal class RemoveTest {
     @Test
     fun `destroys current element on screen and add on screen last stashed element`() {
 
-        val key = RoutingKey<Routing>(
-            routing = Routing2
+        val key = NavKey<NavTarget>(
+            navTarget = NavTarget2
         )
-        val elements = listOf<BackStackElement<Routing>>(
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Noop()
             ),
             backStackElement(
                 key = key,
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
@@ -203,35 +203,35 @@ internal class RemoveTest {
 
         val expectedElements = listOf(
             backStackElement(
-                element = Routing1,
+                element = NavTarget1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = ACTIVE,
                 operation = operation
             ),
             backStackElement(
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = DESTROYED,
                 operation = operation
             )
         )
-        newElements.assertRoutingElementsEqual(expectedElements)
+        newElements.assertNavTargetElementsEqual(expectedElements)
     }
 
     @Test
     fun `silently removes item when not on screen`() {
 
-        val key = RoutingKey<Routing>(routing = Routing1)
-        val elements = listOf<BackStackElement<Routing>>(
+        val key = NavKey<NavTarget>(navTarget = NavTarget1)
+        val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 key = key,
-                element = Routing1,
+                element = NavTarget1,
                 fromState = STASHED_IN_BACK_STACK,
                 targetState = STASHED_IN_BACK_STACK,
                 operation = Noop()
             ),
             backStackElement(
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
@@ -241,14 +241,14 @@ internal class RemoveTest {
 
         val newElements = operation.invoke(elements)
 
-        val expectedElements = listOf<BackStackElement<Routing>>(
+        val expectedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
-                element = Routing2,
+                element = NavTarget2,
                 fromState = ACTIVE,
                 targetState = ACTIVE,
                 operation = Noop()
             )
         )
-        newElements.assertRoutingElementsEqual(expectedElements)
+        newElements.assertNavTargetElementsEqual(expectedElements)
     }
 }

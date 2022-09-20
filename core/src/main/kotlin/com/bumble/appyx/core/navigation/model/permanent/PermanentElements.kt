@@ -1,5 +1,5 @@
 package com.bumble.appyx.core.navigation.model.permanent
 
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 
-typealias PermanentElements<T> = RoutingElements<T, Int>
+typealias PermanentElements<T> = NavElements<T, Int>

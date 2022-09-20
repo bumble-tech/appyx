@@ -12,7 +12,7 @@ You can use [standard Compose animations](https://developer.android.com/jetpack/
 ```kotlin
 var visibility by remember { mutableStateOf(true) }
 
-Child(routingElement) { child, _ ->
+Child(navElement) { child, _ ->
     AnimatedVisibility(visible = visibility) {
         child()
     }
@@ -28,7 +28,7 @@ All the [child composables](children-view.md) provided by Appyx accept an option
 
 The benefit of using transition handlers is you can represent any custom state of elements defined by your NavModel with Compose `Modifiers`.
 
-The example below is taken from [custom routing sources](../navmodel/custom.md). It matches custom transition states to different scaling values, and returns a `scale` `Modifier`. 
+The example below is taken from [custom navigation models](../navmodel/custom.md). It matches custom transition states to different scaling values, and returns a `scale` `Modifier`. 
 
 ```kotlin
 class FooTransitionHandler<T>(
@@ -67,4 +67,4 @@ fun <T> rememberFooTransitionHandler(
 }
 ```
 
-You can find more complex examples in the implementations of other routing sources, such as the [Promoter carousel](../navmodel/promoter.md) 
+You can find more complex examples in the implementations of other NavModels, such as the [Promoter carousel](../navmodel/promoter.md) 

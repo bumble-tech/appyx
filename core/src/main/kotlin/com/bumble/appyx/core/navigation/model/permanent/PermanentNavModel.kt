@@ -1,8 +1,8 @@
 package com.bumble.appyx.core.navigation.model.permanent
 
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.state.MutableSavedStateMap
@@ -17,28 +17,28 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
-class PermanentNavModel<Routing : Any>(
-    routings: Set<Routing> = emptySet(),
+class PermanentNavModel<NavTarget : Any>(
+    navTargets: Set<NavTarget> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String = requireNotNull(PermanentNavModel::class.qualifiedName),
-) : NavModel<Routing, Int> {
+) : NavModel<NavTarget, Int> {
     private val scope: CoroutineScope =
         CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
     constructor(
-        vararg routings: Routing,
+        vararg navTargets: NavTarget,
         savedStateMap: SavedStateMap?,
         key: String = requireNotNull(PermanentNavModel::class.qualifiedName),
     ) : this(
-        routings = routings.toSet(),
+        navTargets = navTargets.toSet(),
         savedStateMap = savedStateMap,
         key = key
     )
 
     private val state = MutableStateFlow(
-        savedStateMap.restore() ?: routings.map { key ->
+        savedStateMap.restore() ?: navTargets.map { key ->
             PermanentElement(
-                key = RoutingKey(routing = key),
+                key = NavKey(navTarget = key),
                 fromState = 0,
                 targetState = 0,
                 operation = Operation.Noop()
@@ -46,10 +46,10 @@ class PermanentNavModel<Routing : Any>(
         }
     )
 
-    override val elements: StateFlow<PermanentElements<Routing>>
+    override val elements: StateFlow<PermanentElements<NavTarget>>
         get() = state
 
-    override val screenState: StateFlow<NavModelAdapter.ScreenState<Routing, Int>>
+    override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, Int>>
         get() = state
             .map { NavModelAdapter.ScreenState(onScreen = it) }
             .stateIn(
@@ -58,11 +58,11 @@ class PermanentNavModel<Routing : Any>(
                 initialValue = NavModelAdapter.ScreenState(onScreen = state.value)
             )
 
-    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
+    override fun onTransitionFinished(keys: Collection<NavKey<NavTarget>>) {
         // no-op
     }
 
-    override fun accept(operation: Operation<Routing, Int>) {
+    override fun accept(operation: Operation<NavTarget, Int>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }
@@ -72,7 +72,7 @@ class PermanentNavModel<Routing : Any>(
         state[key] = this.state.value
     }
 
-    private fun SavedStateMap?.restore(): List<RoutingElement<Routing, Int>>? =
-        (this?.get(key) as? PermanentElements<Routing>)
+    private fun SavedStateMap?.restore(): List<NavElement<NavTarget, Int>>? =
+        (this?.get(key) as? PermanentElements<NavTarget>)
 
 }

@@ -9,11 +9,11 @@ import com.bumble.appyx.core.children.whenChildAttached
 import com.bumble.appyx.core.clienthelper.interactor.Interactor
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.activeRouting
+import com.bumble.appyx.navmodel.backstack.activeElement
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child1
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child2
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget.Child1
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget.Child2
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.EventsToWish
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
@@ -27,13 +27,13 @@ import io.reactivex.functions.Consumer
 class MviCoreExampleInteractor(
     private val view: MviCoreExampleView,
     private val feature: Feature<Wish, State, News>,
-    private val backStack: BackStack<Routing>,
+    private val backStack: BackStack<NavTarget>,
 ) : Interactor<MviCoreExampleNode>() {
 
     private val backStackUpdater = Consumer<Event> { event ->
         when (event) {
             is Event.SwitchChildClicked -> {
-                if (backStack.activeRouting == Child1) {
+                if (backStack.activeElement == Child1) {
                     backStack.newRoot(Child2)
                 } else {
                     backStack.newRoot(Child1)

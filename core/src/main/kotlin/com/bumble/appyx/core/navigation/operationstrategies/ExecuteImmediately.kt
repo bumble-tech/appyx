@@ -2,9 +2,9 @@ package com.bumble.appyx.core.navigation.operationstrategies
 
 import com.bumble.appyx.core.navigation.Operation
 
-class ExecuteImmediately<Routing, State> : BaseOperationStrategy<Routing, State>() {
+class ExecuteImmediately<NavTarget, State> : BaseOperationStrategy<NavTarget, State>() {
 
-    override fun accept(operation: Operation<Routing, State>) {
+    override fun accept(operation: Operation<NavTarget, State>) {
         executeOperation(operation)
     }
 }

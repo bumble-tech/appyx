@@ -19,23 +19,23 @@ import kotlinx.parcelize.Parcelize
 class ComposeNavigationContainerNode(
     buildContext: BuildContext,
     private val onGoogleNavigationClick: () -> Unit,
-    private val backStack: BackStack<Routing> = BackStack(
-        initialElement = Routing.Main,
+    private val backStack: BackStack<NavTarget> = BackStack(
+        initialElement = NavTarget.Main,
         savedStateMap = buildContext.savedStateMap,
     )
-) : ParentNode<ComposeNavigationContainerNode.Routing>(
+) : ParentNode<ComposeNavigationContainerNode.NavTarget>(
     navModel = backStack,
     buildContext = buildContext,
 ) {
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Main : Routing()
+        object Main : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is Routing.Main -> node(buildContext) {
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.Main -> node(buildContext) {
                 Column(
                     modifier = Modifier.fillMaxSize(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -54,7 +54,7 @@ class ComposeNavigationContainerNode(
             modifier = modifier.fillMaxSize(),
             navModel = backStack
         ) {
-            children<Routing> { child ->
+            children<NavTarget> { child ->
                 child()
             }
         }

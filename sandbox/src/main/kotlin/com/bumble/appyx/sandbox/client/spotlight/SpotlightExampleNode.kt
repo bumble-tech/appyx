@@ -37,9 +37,9 @@ import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Item.C1
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Item.C2
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Item.C3
-import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child1
-import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child2
-import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.Routing.Child3
+import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.NavTarget.Child1
+import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.NavTarget.Child2
+import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.NavTarget.Child3
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.State.Loaded
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode.State.Loading
 import kotlinx.coroutines.delay
@@ -48,12 +48,12 @@ import kotlinx.parcelize.Parcelize
 
 class SpotlightExampleNode(
     buildContext: BuildContext,
-    private val spotlight: Spotlight<Routing> = Spotlight(
+    private val spotlight: Spotlight<NavTarget> = Spotlight(
         items = emptyList(),
         savedStateMap = buildContext.savedStateMap,
         backPressHandler = GoToPrevious(),
     )
-) : ParentNode<SpotlightExampleNode.Routing>(
+) : ParentNode<SpotlightExampleNode.NavTarget>(
     buildContext = buildContext,
     navModel = spotlight
 ) {
@@ -79,31 +79,31 @@ class SpotlightExampleNode(
         }
     }
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
 
         @Parcelize
-        object Child1 : Routing()
+        object Child1 : NavTarget()
 
         @Parcelize
-        object Child2 : Routing()
+        object Child2 : NavTarget()
 
         @Parcelize
-        object Child3 : Routing()
+        object Child3 : NavTarget()
     }
 
     @Parcelize
-    private enum class Item(val routing: Routing) : Parcelable {
+    private enum class Item(val navTarget: NavTarget) : Parcelable {
         C1(Child1),
         C2(Child2),
         C3(Child3);
 
         companion object {
-            fun getItemList() = values().map { it.routing }
+            fun getItemList() = values().map { it.navTarget }
         }
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             Child1 -> ChildNode(name = "Child1", buildContext = buildContext)
             Child2 -> ChildNode(name = "Child2", buildContext = buildContext)
             Child3 -> ChildNode(name = "Child3", buildContext = buildContext)

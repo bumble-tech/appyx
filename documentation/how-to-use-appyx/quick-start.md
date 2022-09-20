@@ -63,7 +63,7 @@ You only need to do this for the root of the tree.
 
 A single leaf node isn't all that interesting. Let's add some children to the root!
 
-First, let's define the possible set of children using a sealed class. We'll refer them via these routings:
+First, let's define the possible set of children using a sealed class. We'll refer them via these navigation targets:
 
 ```kotlin
 
@@ -73,15 +73,15 @@ First, let's define the possible set of children using a sealed class. We'll ref
  * Note: You must apply the 'kotlin-parcelize' plugin to use @Parcelize
  * https://developer.android.com/kotlin/parcelize
  */
-sealed class Routing : Parcelable {
+sealed class NavTarget : Parcelable {
     @Parcelize
-    object Child1 : Routing()
+    object Child1 : NavTarget()
 
     @Parcelize
-    object Child2 : Routing()
+    object Child2 : NavTarget()
 
     @Parcelize
-    object Child3 : Routing()
+    object Child3 : NavTarget()
 }
 ```
 
@@ -90,20 +90,20 @@ Next, let's modify `RootNode` so it extends `ParentNode`:
 ```kotlin
 class RootNode(
     buildContext: BuildContext
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = TODO("We will come back to this in Step 4"),
     buildContext = buildContext
 ) {
 ```
 
-`ParentNode` expects us to implement the abstract method `resolve`. This is how we relate routings to actual children. Let's use these helper methods to define some placeholders for the time being – we'll soon make them more appealing:
+`ParentNode` expects us to implement the abstract method `resolve`. This is how we relate navigation targets to actual children. Let's use these helper methods to define some placeholders for the time being – we'll soon make them more appealing:
 
 ```kotlin
-override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-    when (routing) {
-        Routing.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
-        Routing.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
-        Routing.Child3 -> node(buildContext) { Text(text = "Placeholder for child 3") }
+override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    when (navTarget) {
+        NavTarget.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
+        NavTarget.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
+        NavTarget.Child3 -> node(buildContext) { Text(text = "Placeholder for child 3") }
     }
 ```
 
@@ -116,11 +116,11 @@ The project wouldn't compile just yet. `ParentNode` expects us to pass an instan
 ```kotlin
 class RootNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
-        initialElement = Routing.Child1,
+    private val backStack: BackStack<NavTarget> = BackStack(
+        initialElement = NavTarget.Child1,
         savedStateMap = buildContext.savedStateMap,
     )
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = backStack, // pass it here
     buildContext = buildContext
 ) {
@@ -129,8 +129,8 @@ class RootNode(
 With this simple addition we've immediately gained a lot of power! Now we can use the back stack's API to add, replace, pop children with operations like:
 
 ```kotlin
-backStack.push(Routing.Child2)      // will add a new routing to the end of the stack and make it active 
-backStack.replace(Routing.Child3)   // will replace the currently active child
+backStack.push(NavTarget.Child2)    // will add a new navigation target to the end of the stack and make it active 
+backStack.replace(NavTarget.Child3) // will replace the currently active child
 backStack.pop()                     // will remove the currently active child and restore the one before it
 ```
 
@@ -148,13 +148,13 @@ override fun View(modifier: Modifier) {
         
         // Let's also add some controls so we can test it
         Row {
-            TextButton(onClick = { backStack.push(Routing.Child1) }) {
+            TextButton(onClick = { backStack.push(NavTarget.Child1) }) {
                 Text(text = "Push child 1")
             }
-            TextButton(onClick = { backStack.push(Routing.Child2) }) {
+            TextButton(onClick = { backStack.push(NavTarget.Child2) }) {
                 Text(text = "Push child 2")
             }
-            TextButton(onClick = { backStack.push(Routing.Child3) }) {
+            TextButton(onClick = { backStack.push(NavTarget.Child3) }) {
                 Text(text = "Push child 3")
             }
             TextButton(onClick = { backStack.pop() }) {
@@ -204,14 +204,14 @@ class SomeChildNode(
 }
 ```
 
-Now we can update the `resolve` method in `RootNode` so that the routing `Child3` refers to this node. It should work out of the box:
+Now we can update the `resolve` method in `RootNode` so that the target `Child3` refers to this node. It should work out of the box:
 
 ```kotlin
-override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-    when (routing) {
-        Routing.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
-        Routing.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
-        Routing.Child3 -> SomeChildNode(buildContext)
+override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    when (navTarget) {
+        NavTarget.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
+        NavTarget.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
+        NavTarget.Child3 -> SomeChildNode(buildContext)
     }
 ```
 

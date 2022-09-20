@@ -10,15 +10,15 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
 import io.reactivex.functions.Consumer
 
-open class NodeViewStub<Event : Any, ViewModel : Any, Routing : Any>(
+open class NodeViewStub<Event : Any, ViewModel : Any, NavTarget : Any>(
     val eventsRelay: PublishRelay<Event> = PublishRelay.create(),
     val viewModelRelay: PublishRelay<ViewModel> = PublishRelay.create(),
     private val disposable: Disposable = Disposables.empty()
-) : AbstractParentNodeView<Routing>(),
+) : AbstractParentNodeView<NavTarget>(),
     ObservableSource<Event> by eventsRelay,
     Consumer<ViewModel> by viewModelRelay,
     Disposable by disposable {
 
     @Composable
-    override fun ParentNode<Routing>.NodeView(modifier: Modifier) = Unit
+    override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) = Unit
 }

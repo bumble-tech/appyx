@@ -4,16 +4,16 @@ import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavModel
 import kotlinx.coroutines.CoroutineScope
 
-abstract class BaseOperationStrategy<Routing, State> : OperationStrategy<Routing, State> {
+abstract class BaseOperationStrategy<NavTarget, State> : OperationStrategy<NavTarget, State> {
 
     protected lateinit var scope: CoroutineScope
-    protected lateinit var navModel: NavModel<Routing, State>
-    protected lateinit var executeOperation: (operation: Operation<Routing, State>) -> Unit
+    protected lateinit var navModel: NavModel<NavTarget, State>
+    protected lateinit var executeOperation: (operation: Operation<NavTarget, State>) -> Unit
 
     override fun init(
-        navModel: NavModel<Routing, State>,
+        navModel: NavModel<NavTarget, State>,
         scope: CoroutineScope,
-        executeOperation: (operation: Operation<Routing, State>) -> Unit
+        executeOperation: (operation: Operation<NavTarget, State>) -> Unit
     ) {
         this.scope = scope
         this.navModel = navModel

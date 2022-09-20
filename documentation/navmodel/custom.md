@@ -1,4 +1,4 @@
-# Implementing your own routing sources
+# Implementing your own navigation models
 
 A step-by-step guide. You can also take a look at other existing examples to see these in practice.
 
@@ -6,31 +6,29 @@ A step-by-step guide. You can also take a look at other existing examples to see
 
 Create the class; define your possible states; define your initial state. 
 
-`<T>` will refer to the `Routing` sealed class of the client code.
-
 ```kotlin
-class Foo<T : Any>(
-    initialItems: List<T> = listOf(),
+class Foo<NavTarget : Any>(
+    initialItems: List<NavTarget> = listOf(),
     savedStateMap: SavedStateMap?
-) : BaseNavModel<T, Foo.TransitionState>(
+) : BaseNavModel<NavTarget, Foo.State>(
     screenResolver = FooOnScreenResolver, // We'll see about this shortly
     finalState = DESTROYED, // Anything transitioning towards this state will be discarded eventually
     savedStateMap = savedStateMap // It's nullable if you don't need state restoration
 ) {
 
-    // Your possible states for any single routing
-    enum class TransitionState {
+    // Your possible states for any single navigation target
+    enum class State {
         CREATED, FOO, BAR, BAZ, DESTROYED;
     }
 
     // You can go about it any other way.
     // Back stack for example defines only a single element.
-    // Here we take all the <T> elements and make them transition CREATED -> FOO immediately.
+    // Here we take all the <NavTarget> elements and make them transition CREATED -> FOO immediately.
     override val initialElements = initialItems.map {
         FooElement(
-            key = RoutingKey(it),
-            fromState = TransitionState.CREATED,
-            targetState = TransitionState.FOO,
+            key = NavKey(it),
+            fromState = State.CREATED,
+            targetState = State.FOO,
             operation = Operation.Noop()
         )
     }
@@ -42,11 +40,11 @@ class Foo<T : Any>(
 Add some convenience aliases:
 
 ```kotlin
-typealias FooElement<T> = RoutingElement<T, Foo.TransitionState>
+typealias FooElement<NavTarget> = NavElement<NavTarget, Foo.State>
 
-typealias FooElements<T> = RoutingElements<T, Foo.TransitionState>
+typealias FooElements<NavTarget> = NavElements<NavTarget, Foo.State>
 
-sealed interface FooOperation<T> : Operation<T, Foo.TransitionState>
+sealed interface FooOperation<NavTarget> : Operation<NavTarget, Foo.State>
 ```
 
 
@@ -56,14 +54,14 @@ Define one or more operations.
 
 ```kotlin
 @Parcelize
-class SomeOperation<T : Any> : FooOperation<T> {
+class SomeOperation<NavTarget : Any> : FooOperation<NavTarget> {
 
-    override fun isApplicable(elements: FooElements<T>): Boolean =
+    override fun isApplicable(elements: FooElements<NavTarget>): Boolean =
         TODO("Define whether this operation is applicable given the current state")
     
     override fun invoke(
-        elements: FooElements<T>,
-    ): RoutingElements<T, Foo.TransitionState> =
+        elements: FooElements<NavTarget>,
+    ): NavElements<NavTarget, Foo.State> =
         // TODO: Mutate elements however you please. Add, remove, change.
         //  In this example we're changing all elements to transition to BAR.
         elements.map {
@@ -75,7 +73,7 @@ class SomeOperation<T : Any> : FooOperation<T> {
 }
 
 // You can add an extension method for a leaner API
-fun <T : Any> Foo<T>.someOperation() {
+fun <NavTarget : Any> Foo<NavTarget>.someOperation() {
     accept(FooOperation())
 }
 ```
@@ -85,14 +83,14 @@ fun <T : Any> Foo<T>.someOperation() {
 Add the screen resolver to define which states should be / should not be part of the composition in the end:
 
 ```kotlin
-object FooOnScreenResolver : OnScreenStateResolver<TransitionState> {
-    override fun isOnScreen(state: TransitionState): Boolean =
+object FooOnScreenResolver : OnScreenStateResolver<State> {
+    override fun isOnScreen(state: State): Boolean =
         when (state) {
-            Foo.TransitionState.CREATED,
-            Foo.TransitionState.DESTROYED -> false
-            Foo.TransitionState.FOO,
-            Foo.TransitionState.BAR,
-            Foo.TransitionState.BAZ, -> true
+            Foo.State.CREATED,
+            Foo.State.DESTROYED -> false
+            Foo.State.FOO,
+            Foo.State.BAR,
+            Foo.State.BAZ, -> true
         }
 }
 ```
@@ -102,26 +100,26 @@ object FooOnScreenResolver : OnScreenStateResolver<TransitionState> {
 Add one or more transition handlers to interpret different states and translate them to Jetpack Compose `Modifiers`. 
 
 ```kotlin
-class FooTransitionHandler<T>(
-    private val transitionSpec: TransitionSpec<Foo.TransitionState, Float> = { spring() }
-) : ModifierTransitionHandler<T, Foo.TransitionState>() {
+class FooTransitionHandler<NavTarget>(
+    private val transitionSpec: TransitionSpec<Foo.State, Float> = { spring() }
+) : ModifierTransitionHandler<NavTarget, Foo.State>() {
 
     // TODO define a Modifier depending on the state.
     //  Here we'll just mutate scaling: 
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<Foo.TransitionState>,
-        descriptor: TransitionDescriptor<T, Foo.TransitionState>
+        transition: Transition<Foo.State>,
+        descriptor: TransitionDescriptor<NavTarget, Foo.State>
     ): Modifier = modifier.composed {
         val scale = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    Foo.TransitionState.CREATED -> 0f
-                    Foo.TransitionState.FOO -> 0.33f
-                    Foo.TransitionState.BAR -> 0.66f
-                    Foo.TransitionState.BAZ -> 1.0f
-                    Foo.TransitionState.DESTROYED -> 0f
+                    Foo.State.CREATED -> 0f
+                    Foo.State.FOO -> 0.33f
+                    Foo.State.BAR -> 0.66f
+                    Foo.State.BAZ -> 1.0f
+                    Foo.State.DESTROYED -> 0f
                 }
             })
 
@@ -131,9 +129,9 @@ class FooTransitionHandler<T>(
 
 // TODO remember to add:
 @Composable
-fun <T> rememberFooTransitionHandler(
-    transitionSpec: TransitionSpec<Foo.TransitionState, Float> = { spring() }
-): ModifierTransitionHandler<T, Foo.TransitionState> = remember {
+fun <NavTarget> rememberFooTransitionHandler(
+    transitionSpec: TransitionSpec<Foo.State, Float> = { spring() }
+): ModifierTransitionHandler<NavTarget, Foo.State> = remember {
     FooTransitionHandler(transitionSpec)
 }
 ```

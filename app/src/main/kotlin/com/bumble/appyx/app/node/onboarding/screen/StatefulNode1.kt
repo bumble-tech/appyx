@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.Page
 import com.bumble.appyx.app.node.child.GenericChildNode
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode1.Routing
+import com.bumble.appyx.app.node.onboarding.screen.StatefulNode1.NavTarget
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
@@ -41,20 +41,20 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalComposeUiApi
 class StatefulNode1(
     buildContext: BuildContext
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     navModel = PermanentNavModel(
         savedStateMap = buildContext.savedStateMap
     )
 ) {
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        data class Child(val counterStartValue: Int) : Routing()
+        data class Child(val counterStartValue: Int) : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is Routing.Child -> GenericChildNode(buildContext, routing.counterStartValue)
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> GenericChildNode(buildContext, navTarget.counterStartValue)
         }
 
     @Composable
@@ -73,14 +73,14 @@ class StatefulNode1(
                         .padding(bottom = 8.dp)
                 ) {
                     ChildInABox(
-                        routing = Routing.Child(BASE_COUNTER),
+                        navTarget = NavTarget.Child(BASE_COUNTER),
                         showWithDelay = BASE_DELAY,
                         modifier = Modifier
                             .weight(0.5f)
                             .padding(end = 8.dp)
                     )
                     ChildInABox(
-                        routing = Routing.Child(BASE_COUNTER * 2),
+                        navTarget = NavTarget.Child(BASE_COUNTER * 2),
                         showWithDelay = BASE_DELAY * 2,
                         modifier = Modifier
                             .weight(0.5f)
@@ -91,14 +91,14 @@ class StatefulNode1(
                         .weight(0.5f)
                 ) {
                     ChildInABox(
-                        routing = Routing.Child(BASE_COUNTER * 3),
+                        navTarget = NavTarget.Child(BASE_COUNTER * 3),
                         showWithDelay = BASE_DELAY * 3,
                         modifier = Modifier
                             .weight(0.5f)
                             .padding(end = 8.dp)
                     )
                     ChildInABox(
-                        routing = Routing.Child(BASE_COUNTER * 4),
+                        navTarget = NavTarget.Child(BASE_COUNTER * 4),
                         showWithDelay = BASE_DELAY * 4,
                         modifier = Modifier
                             .weight(0.5f)
@@ -109,8 +109,8 @@ class StatefulNode1(
     }
 
     @Composable
-    private fun ChildInABox(routing: Routing, showWithDelay: Long, modifier: Modifier) {
-        PermanentChild(routing) { child ->
+    private fun ChildInABox(navTarget: NavTarget, showWithDelay: Long, modifier: Modifier) {
+        PermanentChild(navTarget) { child ->
             Box(modifier) {
                 var visible by remember { mutableStateOf(false) }
                 AnimatedVisibility(
