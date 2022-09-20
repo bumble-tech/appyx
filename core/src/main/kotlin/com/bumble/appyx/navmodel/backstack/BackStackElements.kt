@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.backstack
 
 import com.bumble.appyx.core.navigation.NavElements
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState
+import com.bumble.appyx.navmodel.backstack.BackStack.State
 
-typealias BackStackElements<T> = NavElements<T, TransitionState>
+typealias BackStackElements<T> = NavElements<T, State>

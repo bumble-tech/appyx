@@ -4,8 +4,8 @@ import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.CREATED
 import com.bumble.appyx.navmodel.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -25,9 +25,9 @@ data class Push<T : Any>(
 
     override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
         return elements.map {
-            if (it.targetState == BackStack.TransitionState.ACTIVE) {
+            if (it.targetState == BackStack.State.ACTIVE) {
                 it.transitionTo(
-                    newTargetState = BackStack.TransitionState.STASHED,
+                    newTargetState = BackStack.State.STASHED,
                     operation = this
                 )
             } else {

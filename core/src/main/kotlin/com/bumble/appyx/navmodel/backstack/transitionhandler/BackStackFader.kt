@@ -16,20 +16,20 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackFader<T>(
-    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { spring() }
-) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
+    private val transitionSpec: TransitionSpec<BackStack.State, Float> = { spring() }
+) : ModifierTransitionHandler<T, BackStack.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<BackStack.TransitionState>,
-        descriptor: TransitionDescriptor<T, BackStack.TransitionState>
+        transition: Transition<BackStack.State>,
+        descriptor: TransitionDescriptor<T, BackStack.State>
     ): Modifier = modifier.composed {
         val alpha = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    BackStack.TransitionState.ACTIVE -> 1f
+                    BackStack.State.ACTIVE -> 1f
                     else -> 0f
                 }
             })
@@ -40,7 +40,7 @@ class BackStackFader<T>(
 
 @Composable
 fun <T> rememberBackstackFader(
-    transitionSpec: TransitionSpec<BackStack.TransitionState, Float> = { spring() }
-): ModifierTransitionHandler<T, BackStack.TransitionState> = remember {
+    transitionSpec: TransitionSpec<BackStack.State, Float> = { spring() }
+): ModifierTransitionHandler<T, BackStack.State> = remember {
     BackStackFader(transitionSpec = transitionSpec)
 }

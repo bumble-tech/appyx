@@ -28,27 +28,27 @@ import com.bumble.appyx.navmodel.toIntOffset
 
 @Suppress("TransitionPropertiesLabel")
 class BackStackSlider<T>(
-    private val transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = {
+    private val transitionSpec: TransitionSpec<BackStack.State, Offset> = {
         spring(stiffness = Spring.StiffnessVeryLow)
     },
     override val clipToBounds: Boolean = false
-) : ModifierTransitionHandler<T, BackStack.TransitionState>() {
+) : ModifierTransitionHandler<T, BackStack.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<BackStack.TransitionState>,
-        descriptor: TransitionDescriptor<T, BackStack.TransitionState>
+        transition: Transition<BackStack.State>,
+        descriptor: TransitionDescriptor<T, BackStack.State>
     ): Modifier = modifier.composed {
         val offset by transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 val width = descriptor.params.bounds.width.value
                 when (it) {
-                    BackStack.TransitionState.CREATED -> toOutsideRight(width)
-                    BackStack.TransitionState.ACTIVE -> toCenter()
-                    BackStack.TransitionState.STASHED -> toOutsideLeft(width)
-                    BackStack.TransitionState.DESTROYED -> {
+                    BackStack.State.CREATED -> toOutsideRight(width)
+                    BackStack.State.ACTIVE -> toCenter()
+                    BackStack.State.STASHED -> toOutsideLeft(width)
+                    BackStack.State.DESTROYED -> {
                         when (val operation = descriptor.operation as? BackStackOperation) {
                             is Push,
                             is Pop,
@@ -78,8 +78,8 @@ class BackStackSlider<T>(
 
 @Composable
 fun <T> rememberBackstackSlider(
-    transitionSpec: TransitionSpec<BackStack.TransitionState, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
+    transitionSpec: TransitionSpec<BackStack.State, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
     clipToBounds: Boolean = false
-): ModifierTransitionHandler<T, BackStack.TransitionState> = remember {
+): ModifierTransitionHandler<T, BackStack.State> = remember {
     BackStackSlider(transitionSpec = transitionSpec, clipToBounds = clipToBounds)
 }

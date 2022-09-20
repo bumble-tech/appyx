@@ -4,10 +4,10 @@ import com.bumble.appyx.core.navigation.BaseNavModel.Companion.KEY_NAV_MODEL
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.assertNavTargetElementsEqual
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.DESTROYED
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.STASHED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.CREATED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.DESTROYED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.STASHED
 import com.bumble.appyx.navmodel.backstack.operation.Pop
 import com.bumble.appyx.navmodel.backstack.operation.Push
 import com.bumble.appyx.navmodel.backstack.operation.NavTarget
