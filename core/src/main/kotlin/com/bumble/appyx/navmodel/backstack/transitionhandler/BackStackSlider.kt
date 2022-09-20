@@ -47,7 +47,7 @@ class BackStackSlider<T>(
                 when (it) {
                     BackStack.TransitionState.CREATED -> toOutsideRight(width)
                     BackStack.TransitionState.ACTIVE -> toCenter()
-                    BackStack.TransitionState.STASHED_IN_BACK_STACK -> toOutsideLeft(width)
+                    BackStack.TransitionState.STASHED -> toOutsideLeft(width)
                     BackStack.TransitionState.DESTROYED -> {
                         when (val operation = descriptor.operation as? BackStackOperation) {
                             is Push,

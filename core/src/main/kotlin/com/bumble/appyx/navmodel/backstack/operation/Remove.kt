@@ -39,7 +39,7 @@ data class Remove<T : Any>(
 
         return if (toRemoveIndex == elements.activeIndex) {
             val unStashIndex =
-                elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
+                elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED }
             require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }
 
             elements.mapIndexed { index, element ->

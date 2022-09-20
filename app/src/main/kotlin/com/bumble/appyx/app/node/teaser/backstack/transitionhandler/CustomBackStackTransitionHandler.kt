@@ -33,7 +33,7 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
             transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
             targetValueByState = {
                 when (it) {
-                    BackStack.TransitionState.STASHED_IN_BACK_STACK,
+                    BackStack.TransitionState.STASHED,
                     BackStack.TransitionState.DESTROYED -> 0f
                     else -> 1f
                 }

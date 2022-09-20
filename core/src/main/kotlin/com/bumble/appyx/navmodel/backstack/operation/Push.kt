@@ -27,7 +27,7 @@ data class Push<T : Any>(
         return elements.map {
             if (it.targetState == BackStack.TransitionState.ACTIVE) {
                 it.transitionTo(
-                    newTargetState = BackStack.TransitionState.STASHED_IN_BACK_STACK,
+                    newTargetState = BackStack.TransitionState.STASHED,
                     operation = this
                 )
             } else {

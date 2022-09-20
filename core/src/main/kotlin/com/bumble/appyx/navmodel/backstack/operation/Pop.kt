@@ -15,7 +15,7 @@ class Pop<T : Any> : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         elements.any { it.targetState == BackStack.TransitionState.ACTIVE } &&
-                elements.any { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
+                elements.any { it.targetState == BackStack.TransitionState.STASHED }
 
     override fun invoke(
         elements: BackStackElements<T>
@@ -23,7 +23,7 @@ class Pop<T : Any> : BackStackOperation<T> {
 
         val destroyIndex = elements.activeIndex
         val unStashIndex =
-            elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
+            elements.indexOfLast { it.targetState == BackStack.TransitionState.STASHED }
         require(destroyIndex != -1) { "Nothing to destroy, state=$elements" }
         require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }
         return elements.mapIndexed { index, element ->

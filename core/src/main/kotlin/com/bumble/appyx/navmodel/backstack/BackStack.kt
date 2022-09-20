@@ -30,7 +30,7 @@ class BackStack<NavTarget : Any>(
 ) {
 
     enum class TransitionState {
-        CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
+        CREATED, ACTIVE, STASHED, DESTROYED,
     }
 
     override val initialElements = listOf(

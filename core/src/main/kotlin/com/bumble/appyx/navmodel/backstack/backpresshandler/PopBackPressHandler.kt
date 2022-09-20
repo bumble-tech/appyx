@@ -15,7 +15,7 @@ class PopBackPressHandler<NavTarget : Any> :
     }
 
     private fun areThereStashedElements(elements: BackStackElements<NavTarget>) =
-        elements.any { it.targetState == BackStack.TransitionState.STASHED_IN_BACK_STACK }
+        elements.any { it.targetState == BackStack.TransitionState.STASHED }
 
     override fun onBackPressed() {
         navModel.accept(Pop())

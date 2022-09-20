@@ -5,7 +5,7 @@ import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.assertNavTargetElementsEqual
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.DESTROYED
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
+import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.STASHED
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.operation.NavTarget.NavTarget1
 import com.bumble.appyx.navmodel.backstack.operation.NavTarget.NavTarget2
@@ -80,8 +80,8 @@ internal class RemoveTest {
         val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(
@@ -98,8 +98,8 @@ internal class RemoveTest {
         val expectedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(
@@ -121,8 +121,8 @@ internal class RemoveTest {
         val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(
@@ -139,8 +139,8 @@ internal class RemoveTest {
         val expectedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(
@@ -185,8 +185,8 @@ internal class RemoveTest {
         val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(
@@ -204,7 +204,7 @@ internal class RemoveTest {
         val expectedElements = listOf(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
                 targetState = ACTIVE,
                 operation = operation
             ),
@@ -226,8 +226,8 @@ internal class RemoveTest {
             backStackElement(
                 key = key,
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(
