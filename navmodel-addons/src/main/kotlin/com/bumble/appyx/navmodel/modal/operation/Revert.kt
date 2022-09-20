@@ -1,8 +1,8 @@
 package com.bumble.appyx.navmodel.modal.operation
 
 import com.bumble.appyx.navmodel.modal.Modal
-import com.bumble.appyx.navmodel.modal.Modal.TransitionState.FULL_SCREEN
-import com.bumble.appyx.navmodel.modal.Modal.TransitionState.MODAL
+import com.bumble.appyx.navmodel.modal.Modal.State.FULL_SCREEN
+import com.bumble.appyx.navmodel.modal.Modal.State.MODAL
 import com.bumble.appyx.navmodel.modal.ModalElements
 import kotlinx.parcelize.Parcelize
 

@@ -9,19 +9,19 @@ import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.core.navigation.operationstrategies.OperationStrategy
 import com.bumble.appyx.core.state.SavedStateMap
-import com.bumble.appyx.navmodel.modal.Modal.TransitionState
-import com.bumble.appyx.navmodel.modal.Modal.TransitionState.CREATED
-import com.bumble.appyx.navmodel.modal.Modal.TransitionState.DESTROYED
+import com.bumble.appyx.navmodel.modal.Modal.State
+import com.bumble.appyx.navmodel.modal.Modal.State.CREATED
+import com.bumble.appyx.navmodel.modal.Modal.State.DESTROYED
 import com.bumble.appyx.navmodel.modal.backpresshandler.RevertBackPressHandler
 
 class Modal<NavTarget : Any>(
     initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
-    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = RevertBackPressHandler(),
-    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),
-    screenResolver: OnScreenStateResolver<TransitionState> = ModalOnScreenResolver
-) : BaseNavModel<NavTarget, TransitionState>(
+    backPressHandler: BackPressHandlerStrategy<NavTarget, State> = RevertBackPressHandler(),
+    operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
+    screenResolver: OnScreenStateResolver<State> = ModalOnScreenResolver
+) : BaseNavModel<NavTarget, State>(
     savedStateMap = savedStateMap,
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,
@@ -30,11 +30,11 @@ class Modal<NavTarget : Any>(
     finalState = DESTROYED
 ) {
 
-    enum class TransitionState {
+    enum class State {
         CREATED, MODAL, FULL_SCREEN, DESTROYED
     }
 
-    override val initialElements: NavElements<NavTarget, TransitionState> = listOf(
+    override val initialElements: NavElements<NavTarget, State> = listOf(
         ModalElement(
             key = NavKey(initialElement),
             fromState = CREATED,

@@ -17,28 +17,28 @@ import androidx.compose.ui.unit.Dp
 import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionSpec
-import com.bumble.appyx.navmodel.modal.Modal.TransitionState
+import com.bumble.appyx.navmodel.modal.Modal.State
 
 @Suppress("TransitionPropertiesLabel")
 class ModalTransitionHandler<T>(
-    private val transitionSpec: TransitionSpec<TransitionState, Float> = { tween(500) }
-) : ModifierTransitionHandler<T, TransitionState>() {
+    private val transitionSpec: TransitionSpec<State, Float> = { tween(500) }
+) : ModifierTransitionHandler<T, State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<TransitionState>,
-        descriptor: TransitionDescriptor<T, TransitionState>
+        transition: Transition<State>,
+        descriptor: TransitionDescriptor<T, State>
     ): Modifier = modifier.composed {
         val screenHeight = LocalConfiguration.current.screenHeightDp
         val offset = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    TransitionState.CREATED -> 1f
-                    TransitionState.MODAL -> 0.5f
-                    TransitionState.FULL_SCREEN -> 0f
-                    TransitionState.DESTROYED -> -5f
+                    State.CREATED -> 1f
+                    State.MODAL -> 0.5f
+                    State.FULL_SCREEN -> 0f
+                    State.DESTROYED -> -5f
                 }
             })
 
@@ -46,10 +46,10 @@ class ModalTransitionHandler<T>(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    TransitionState.CREATED -> 0f
-                    TransitionState.MODAL -> 0.5f
-                    TransitionState.FULL_SCREEN -> 1f
-                    TransitionState.DESTROYED -> 1f
+                    State.CREATED -> 0f
+                    State.MODAL -> 0.5f
+                    State.FULL_SCREEN -> 1f
+                    State.DESTROYED -> 1f
                 }
             })
 
@@ -57,10 +57,10 @@ class ModalTransitionHandler<T>(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    TransitionState.CREATED -> 0.8f
-                    TransitionState.MODAL -> 0.9f
-                    TransitionState.FULL_SCREEN -> 1f
-                    TransitionState.DESTROYED -> 1f
+                    State.CREATED -> 0.8f
+                    State.MODAL -> 0.9f
+                    State.FULL_SCREEN -> 1f
+                    State.DESTROYED -> 1f
                 }
             })
 
@@ -68,10 +68,10 @@ class ModalTransitionHandler<T>(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    TransitionState.CREATED -> 20f
-                    TransitionState.MODAL -> 20f
-                    TransitionState.FULL_SCREEN -> 0f
-                    TransitionState.DESTROYED -> 0f
+                    State.CREATED -> 20f
+                    State.MODAL -> 20f
+                    State.FULL_SCREEN -> 0f
+                    State.DESTROYED -> 0f
                 }
             })
 
