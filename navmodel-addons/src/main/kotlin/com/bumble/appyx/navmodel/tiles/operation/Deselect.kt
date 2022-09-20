@@ -15,11 +15,11 @@ data class Deselect<T : Any>(
 
     override fun invoke(
         elements: TilesElements<T>
-    ): NavElements<T, Tiles.TransitionState> =
+    ): NavElements<T, Tiles.State> =
         elements.map {
-            if (it.key == key && it.targetState == Tiles.TransitionState.SELECTED) {
+            if (it.key == key && it.targetState == Tiles.State.SELECTED) {
                 it.transitionTo(
-                    newTargetState = Tiles.TransitionState.STANDARD,
+                    newTargetState = Tiles.State.STANDARD,
                     operation = this
                 )
             } else {

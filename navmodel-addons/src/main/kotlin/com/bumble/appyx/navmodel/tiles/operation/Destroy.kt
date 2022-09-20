@@ -15,11 +15,11 @@ data class Destroy<T : Any>(
 
     override fun invoke(
         elements: TilesElements<T>
-    ): NavElements<T, Tiles.TransitionState> =
+    ): NavElements<T, Tiles.State> =
         elements.map {
             if (it.key == key) {
                 it.transitionTo(
-                    newTargetState = Tiles.TransitionState.DESTROYED,
+                    newTargetState = Tiles.State.DESTROYED,
                     operation = this
                 )
             } else {
