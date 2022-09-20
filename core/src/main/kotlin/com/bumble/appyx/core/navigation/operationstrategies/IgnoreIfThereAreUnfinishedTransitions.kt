@@ -3,9 +3,9 @@ package com.bumble.appyx.core.navigation.operationstrategies
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.isTransitioning
 
-class IgnoreIfThereAreUnfinishedTransitions<Routing, State> : BaseOperationStrategy<Routing, State>() {
+class IgnoreIfThereAreUnfinishedTransitions<NavTarget, State> : BaseOperationStrategy<NavTarget, State>() {
 
-    override fun accept(operation: Operation<Routing, State>) {
+    override fun accept(operation: Operation<NavTarget, State>) {
         if (hasNoUnfinishedTransitions()) {
             executeOperation(operation)
         }

@@ -9,9 +9,9 @@ object EmptyNodeView : NodeView {
     override fun View(modifier: Modifier) = Unit
 }
 
-class EmptyParentNodeView<Routing : Any> : AbstractParentNodeView<Routing>() {
+class EmptyParentNodeView<NavTarget : Any> : AbstractParentNodeView<NavTarget>() {
 
     @Composable
-    override fun ParentNode<Routing>.NodeView(modifier: Modifier) = Unit
+    override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) = Unit
 
 }

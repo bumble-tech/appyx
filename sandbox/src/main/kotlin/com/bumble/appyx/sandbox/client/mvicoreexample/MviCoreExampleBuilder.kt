@@ -4,8 +4,8 @@ import com.bumble.appyx.core.builder.Builder
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing.Child1
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget.Child1
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature
 
 class MviCoreExampleBuilder : Builder<String>() {
@@ -13,7 +13,7 @@ class MviCoreExampleBuilder : Builder<String>() {
     override fun build(buildContext: BuildContext, payload: String): Node {
         val feature = MviCoreExampleFeature(payload)
 
-        val backStack = BackStack<Routing>(
+        val backStack = BackStack<NavTarget>(
             initialElement = Child1,
             savedStateMap = buildContext.savedStateMap,
         )

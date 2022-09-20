@@ -4,9 +4,9 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 
-class DummyParentNode<Routing : Any> : ParentNode<Routing>(
-    navModel = DummyNavModel<Routing, Unit>(),
+class DummyParentNode<NavTarget : Any> : ParentNode<NavTarget>(
+    navModel = DummyNavModel<NavTarget, Unit>(),
     buildContext = BuildContext.root(savedStateMap = null)
 ) {
-    override fun resolve(routing: Routing, buildContext: BuildContext) = node(buildContext) { }
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext) = node(buildContext) { }
 }

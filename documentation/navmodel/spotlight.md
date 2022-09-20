@@ -19,8 +19,8 @@ enum class TransitionState {
 Requires defining items and an active index.
 
 ```kotlin
-class Spotlight<Routing : Any>(
-    items: List<Routing>,
+class Spotlight<NavTarget : Any>(
+    items: List<NavTarget>,
     initialActiveIndex: Int = 0,
     savedStateMap: SavedStateMap?,
     // Optional parameters are omitted
@@ -62,7 +62,7 @@ Adds horizontal sliding transitions so that the `ACTIVE` element is in the cente
 
 #### Activate
 
-`spotlight.activate(routing)`
+`spotlight.activate(navTarget)`
 
 Transitions the element to `ACTIVE`. Transitions other elements to `INACTIVE_BEFORE` or `INACTIVE_AFTER` depending on their relative position to the activated element.
 
@@ -95,9 +95,9 @@ Replaces elements held by the spotlight instance with a new list. Transitions ne
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class Spotlight<Routing : Any>(
+class Spotlight<NavTarget : Any>(
     /* ... */
-    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = GoToDefault(
+    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = GoToDefault(
         initialActiveIndex
     )
     /* ... */
@@ -118,9 +118,9 @@ Runs a `Previous` operation.
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class Spotlight<Routing : Any>(
+class Spotlight<NavTarget : Any>(
     /* ... */
-    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),    
+    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),    
     /* ... */
 )
 ```

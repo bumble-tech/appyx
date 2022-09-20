@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.node.child.GenericChildNode
-import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.Routing
-import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.Routing.Child
+import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.NavTarget
+import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.NavTarget.Child
 import com.bumble.appyx.app.node.teaser.backstack.transitionhandler.rememberCustomHandler
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
@@ -25,11 +25,11 @@ import kotlin.random.Random
 @ExperimentalUnitApi
 class BackstackTeaserNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = Child(100),
         savedStateMap = buildContext.savedStateMap
     ),
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     navModel = backStack
 ) {
@@ -38,7 +38,7 @@ class BackstackTeaserNode(
         lifecycle.coroutineScope.launch {
             delay(1000)
             repeat(4) {
-                backStack.push(Routing.Child((it + 2) * 100))
+                backStack.push(NavTarget.Child((it + 2) * 100))
                 delay(400)
             }
             delay(500)
@@ -51,14 +51,14 @@ class BackstackTeaserNode(
         }
     }
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        data class Child(val int: Int = Random.nextInt(1000)) : Routing()
+        data class Child(val int: Int = Random.nextInt(1000)) : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is Routing.Child -> GenericChildNode(buildContext, routing.int)
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> GenericChildNode(buildContext, navTarget.int)
         }
 
     @Composable

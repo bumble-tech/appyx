@@ -142,8 +142,8 @@ class UpNavigationTest {
             manageTransitionsInTest()
         }
 
-        override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
-            Child(routing.id, buildContext, childUpNavigationHandler)
+        override fun resolve(navTarget: Configuration, buildContext: BuildContext): Node =
+            Child(navTarget.id, buildContext, childUpNavigationHandler)
 
         @Composable
         override fun View(modifier: Modifier) {
@@ -151,7 +151,7 @@ class UpNavigationTest {
 
         @Suppress("UNCHECKED_CAST")
         fun <T : NodeWithId> findChild(id: UUID): T =
-            children.value.values.find { it.key.routing.id == id }?.nodeOrNull as T
+            children.value.values.find { it.key.navTarget.id == id }?.nodeOrNull as T
 
     }
 

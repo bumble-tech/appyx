@@ -20,7 +20,7 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode.Routing
+import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode.NavTarget
 import kotlin.random.Random
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -29,8 +29,8 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalUnitApi
 class PromoterTeaserNode(
     buildContext: BuildContext,
-    private val promoter: Promoter<Routing> = Promoter(),
-) : ParentNode<Routing>(
+    private val promoter: Promoter<NavTarget> = Promoter(),
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     navModel = promoter
 ) {
@@ -38,27 +38,27 @@ class PromoterTeaserNode(
     init {
         lifecycle.coroutineScope.launch {
             repeat(4) {
-                promoter.addFirst(Routing.Child((it + 1) * 100))
+                promoter.addFirst(NavTarget.Child((it + 1) * 100))
                 promoter.promoteAll()
             }
             delay(500)
             repeat(4) {
                 delay(1500)
-                promoter.addFirst(Routing.Child((it + 5) * 100))
+                promoter.addFirst(NavTarget.Child((it + 5) * 100))
                 promoter.promoteAll()
             }
             finish()
         }
     }
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        data class Child(val int: Int = Random.nextInt(1000)) : Routing()
+        data class Child(val int: Int = Random.nextInt(1000)) : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is Routing.Child -> GenericChildNode(buildContext, routing.int)
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> GenericChildNode(buildContext, navTarget.int)
         }
 
     @Composable
@@ -71,7 +71,7 @@ class PromoterTeaserNode(
                 spring(stiffness = Spring.StiffnessVeryLow / 4)
             }
         ) {
-            children<Routing> { child ->
+            children<NavTarget> { child ->
                 child(Modifier.size(childSize))
             }
         }

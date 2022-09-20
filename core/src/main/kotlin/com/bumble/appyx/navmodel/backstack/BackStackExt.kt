@@ -8,11 +8,11 @@ val <T> BackStackElements<T>.active: BackStackElement<T>?
 val <T : Any> BackStack<T>.active: BackStackElement<T>?
     get() = elements.value.active
 
-val <T> BackStackElements<T>.activeRouting: T?
-    get() = active?.key?.routing
+val <T> BackStackElements<T>.activeElement: T?
+    get() = active?.key?.navTarget
 
-val <T : Any> BackStack<T>.activeRouting: T?
-    get() = elements.value.activeRouting
+val <T : Any> BackStack<T>.activeElement: T?
+    get() = elements.value.activeElement
 
 val <T> BackStackElements<T>.activeIndex: Int
     get() = indexOfLast { it.targetState == ACTIVE }

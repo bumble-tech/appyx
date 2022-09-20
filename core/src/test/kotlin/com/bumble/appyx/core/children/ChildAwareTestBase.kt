@@ -7,9 +7,9 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
@@ -42,14 +42,14 @@ open class ChildAwareTestBase {
         root = Root().build()
     }
 
-    fun add(vararg key: RoutingKey<Configuration>): List<Node> {
-        root.routing.add(*key)
+    fun add(vararg key: NavKey<Configuration>): List<Node> {
+        root.testNavModel.add(*key)
         return root
             .children
             .value
             .values
             .filter { entry -> entry.key in key }
-            .sortedBy { it.key.routing }
+            .sortedBy { it.key.navTarget }
             .mapNotNull { it.nodeOrNull }
     }
 
@@ -75,13 +75,13 @@ open class ChildAwareTestBase {
     }
 
     class Root(
-        val routing: TestNavModel<Configuration> = TestNavModel(),
+        val testNavModel: TestNavModel<Configuration> = TestNavModel(),
     ) : ParentNode<Configuration>(
         buildContext = BuildContext.root(null),
-        navModel = routing,
+        navModel = testNavModel,
     ) {
-        override fun resolve(routing: Configuration, buildContext: BuildContext): Node =
-            when (routing) {
+        override fun resolve(navTarget: Configuration, buildContext: BuildContext): Node =
+            when (navTarget) {
                 is Configuration.Child1 -> Child1(buildContext)
                 is Configuration.Child2 -> Child2(buildContext)
                 is Configuration.Child3 -> Child3(buildContext)
@@ -120,14 +120,14 @@ open class ChildAwareTestBase {
     class TestNavModel<Key> : NavModel<Key, Int> {
 
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-        private val state = MutableStateFlow(emptyList<RoutingElement<Key, Int>>())
-        override val elements: StateFlow<RoutingElements<Key, Int>>
+        private val state = MutableStateFlow(emptyList<NavElement<Key, Int>>())
+        override val elements: StateFlow<NavElements<Key, Int>>
             get() = state
         override val screenState: StateFlow<NavModelAdapter.ScreenState<Key, out Int>>
             get() = state.map { NavModelAdapter.ScreenState(onScreen = it) }
                 .stateIn(scope, SharingStarted.Eagerly, NavModelAdapter.ScreenState())
 
-        override fun onTransitionFinished(keys: Collection<RoutingKey<Key>>) {
+        override fun onTransitionFinished(keys: Collection<NavKey<Key>>) {
             state.update { list ->
                 list.map {
                     if (it.key in keys) {
@@ -139,11 +139,11 @@ open class ChildAwareTestBase {
             }
         }
 
-        fun add(vararg key: RoutingKey<Key>) {
+        fun add(vararg key: NavKey<Key>) {
             state.update { list ->
-                require(list.none { it.key.routing in key.map { routingKey -> routingKey.routing } })
+                require(list.none { it.key.navTarget in key.map { navKey -> navKey.navTarget } })
                 list + key.map {
-                    RoutingElement(
+                    NavElement(
                         key = it,
                         fromState = 0,
                         targetState = 0,

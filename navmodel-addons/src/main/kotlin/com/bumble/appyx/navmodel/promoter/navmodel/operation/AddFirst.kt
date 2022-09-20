@@ -4,8 +4,8 @@ import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
 import com.bumble.appyx.navmodel.promoter.navmodel.Promoter.TransitionState.CREATED
 import com.bumble.appyx.navmodel.promoter.navmodel.PromoterElement
 import com.bumble.appyx.navmodel.promoter.navmodel.PromoterElements
-import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavElements
+import com.bumble.appyx.core.navigation.NavKey
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -19,9 +19,9 @@ data class AddFirst<T : Any>(
 
     override fun invoke(
         elements: PromoterElements<T>,
-    ): RoutingElements<T, Promoter.TransitionState> {
+    ): NavElements<T, Promoter.TransitionState> {
         val new = PromoterElement(
-            key = RoutingKey(element),
+            key = NavKey(element),
             fromState = CREATED,
             targetState = CREATED,
             operation = this

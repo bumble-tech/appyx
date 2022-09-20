@@ -19,13 +19,13 @@ import com.bumble.appyx.R
 import com.bumble.appyx.app.composable.ScreenCenteredContent
 import com.bumble.appyx.app.node.helper.screenNode
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode
-import com.bumble.appyx.app.node.root.RootNode.Routing
+import com.bumble.appyx.app.node.root.RootNode.NavTarget
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.activeRouting
+import com.bumble.appyx.navmodel.backstack.activeElement
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
 import kotlinx.coroutines.delay
@@ -36,36 +36,36 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalComposeUiApi
 class RootNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
-        initialElement = Routing.Splash,
+    private val backStack: BackStack<NavTarget> = BackStack(
+        initialElement = NavTarget.Splash,
         savedStateMap = buildContext.savedStateMap,
     )
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = backStack,
     buildContext = buildContext
 ) {
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Splash : Routing()
+        object Splash : NavTarget()
 
         @Parcelize
-        object Onboarding : Routing()
+        object Onboarding : NavTarget()
 
         @Parcelize
-        object Main : Routing()
+        object Main : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            Routing.Splash -> screenNode(buildContext) { Splash() }
-            Routing.Onboarding -> OnboardingContainerNode(buildContext)
-            Routing.Main -> screenNode(buildContext) { Text(text = "Main") }
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            NavTarget.Splash -> screenNode(buildContext) { Splash() }
+            NavTarget.Onboarding -> OnboardingContainerNode(buildContext)
+            NavTarget.Main -> screenNode(buildContext) { Text(text = "Main") }
         }
 
     override fun onChildFinished(child: Node) {
         when (child) {
-            is OnboardingContainerNode -> backStack.newRoot(Routing.Main)
+            is OnboardingContainerNode -> backStack.newRoot(NavTarget.Main)
             else -> super.onChildFinished(child)
         }
     }
@@ -73,9 +73,9 @@ class RootNode(
     @Composable
     override fun View(modifier: Modifier) {
         LaunchedEffect(backStack) {
-            if (backStack.activeRouting == Routing.Splash) {
+            if (backStack.activeElement == NavTarget.Splash) {
                 delay(1000)
-                backStack.newRoot(Routing.Onboarding)
+                backStack.newRoot(NavTarget.Onboarding)
             }
         }
 

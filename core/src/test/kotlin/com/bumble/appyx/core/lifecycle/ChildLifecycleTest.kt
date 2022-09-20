@@ -10,9 +10,9 @@ import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -35,7 +35,7 @@ class ChildLifecycleTest {
     @Test
     fun `on screen child follows parent state`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
 
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
@@ -61,7 +61,7 @@ class ChildLifecycleTest {
 
         val parent = Parent(BuildContext.root(null)).build()
         parent.lifecycle.addObserver(parentObserver)
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.STARTED)
         parent.findChild()?.lifecycle?.addObserver(childObserver)
 
@@ -74,7 +74,7 @@ class ChildLifecycleTest {
     @Test
     fun `off screen child is limited to created`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = false)
+        parent.testNavModel.add(key = "0", onScreen = false)
 
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
@@ -87,11 +87,11 @@ class ChildLifecycleTest {
     @Test
     fun `child is destroyed when is not represented in navModel anymore`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
         val child = parent.children.value.values.first().nodeOrNull
 
-        parent.routing.remove(key = "0")
+        parent.testNavModel.remove(key = "0")
 
         assertEquals(
             Lifecycle.State.DESTROYED,
@@ -102,10 +102,10 @@ class ChildLifecycleTest {
     @Test
     fun `child is correctly moved from off screen to on screen`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = false)
+        parent.testNavModel.add(key = "0", onScreen = false)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
-        parent.routing.changeState(key = "0", onScreen = true)
+        parent.testNavModel.changeState(key = "0", onScreen = true)
 
         assertEquals(
             Lifecycle.State.RESUMED,
@@ -120,10 +120,10 @@ class ChildLifecycleTest {
     @Test
     fun `child is correctly moved from on screen to off screen`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
-        parent.routing.changeState(key = "0", onScreen = false)
+        parent.testNavModel.changeState(key = "0", onScreen = false)
 
         assertEquals(
             Lifecycle.State.CREATED,
@@ -138,7 +138,7 @@ class ChildLifecycleTest {
     @Test
     fun `child is destroyed when parent is destroyed`() {
         val parent = Parent(BuildContext.root(null)).build()
-        parent.routing.add(key = "0", onScreen = true)
+        parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
 
         parent.updateLifecycleState(Lifecycle.State.DESTROYED)
@@ -153,19 +153,19 @@ class ChildLifecycleTest {
 
     // region Setup
 
-    private class RoutingImpl : BaseNavModel<String, Boolean>(
+    private class TestNavModel : BaseNavModel<String, Boolean>(
         screenResolver = object : OnScreenStateResolver<Boolean> {
             override fun isOnScreen(state: Boolean): Boolean = state
         },
         finalState = null,
         savedStateMap = null,
     ) {
-        override val initialElements: RoutingElements<String, Boolean> = emptyList()
+        override val initialElements: NavElements<String, Boolean> = emptyList()
 
         fun add(key: String, onScreen: Boolean) {
             updateState { list ->
-                list + RoutingElement(
-                    key = RoutingKey(key),
+                list + NavElement(
+                    key = NavKey(key),
                     targetState = onScreen,
                     fromState = onScreen,
                     operation = Operation.Noop(),
@@ -174,14 +174,14 @@ class ChildLifecycleTest {
         }
 
         fun remove(key: String) {
-            updateState { list -> list.filter { it.key.routing != key } }
+            updateState { list -> list.filter { it.key.navTarget != key } }
         }
 
         fun changeState(key: String, onScreen: Boolean) {
             updateState { list ->
                 list
                     .map {
-                        if (it.key.routing == key) {
+                        if (it.key.navTarget == key) {
                             it
                                 .transitionTo(
                                     newTargetState = onScreen,
@@ -198,13 +198,13 @@ class ChildLifecycleTest {
 
     private class Parent(
         buildContext: BuildContext,
-        val routing: RoutingImpl = RoutingImpl(),
+        val testNavModel: TestNavModel = TestNavModel(),
     ) : ParentNode<String>(
         buildContext = buildContext,
-        navModel = routing,
+        navModel = testNavModel,
     ) {
-        override fun resolve(routing: String, buildContext: BuildContext): Node =
-            Child(routing, buildContext)
+        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+            Child(navTarget, buildContext)
 
         @Composable
         override fun View(modifier: Modifier) {

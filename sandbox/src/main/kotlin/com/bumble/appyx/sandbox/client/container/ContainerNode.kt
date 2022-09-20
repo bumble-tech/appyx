@@ -21,10 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
+import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
@@ -32,21 +32,22 @@ import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSl
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode
 import com.bumble.appyx.sandbox.client.blocker.BlockerExampleNode
 import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.BackStackExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.BlockerExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.CombinedNavModel
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.Customisations
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.InteractorExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.LazyExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.ModalExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.MviCoreLeafExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.NavModelExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.Picker
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.RequestPermissionsExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.SpotlightExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.Routing.TilesExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.BackStackExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.BlockerExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.CombinedNavModel
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Customisations
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.InteractorExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExamples
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.ModalExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreLeafExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.RequestPermissionsExamples
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightAdvancedExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.TilesExample
 import com.bumble.appyx.sandbox.client.customisations.createViewCustomisationsActivityIntent
 import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorNodeBuilder
@@ -66,11 +67,11 @@ import kotlinx.parcelize.Parcelize
 
 class ContainerNode internal constructor(
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = Picker,
         savedStateMap = buildContext.savedStateMap,
     )
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = backStack,
     buildContext = buildContext,
 ) {
@@ -79,59 +80,59 @@ class ContainerNode internal constructor(
 
     private val label: String? = buildContext.getOrDefault(Customisation()).name
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Picker : Routing()
+        object Picker : NavTarget()
 
         @Parcelize
-        object BackStackExample : Routing()
+        object BackStackExample : NavTarget()
 
         @Parcelize
-        object TilesExample : Routing()
+        object TilesExample : NavTarget()
 
         @Parcelize
-        object ModalExample : Routing()
+        object ModalExample : NavTarget()
 
         @Parcelize
-        object CombinedNavModel : Routing()
+        object CombinedNavModel : NavTarget()
 
         @Parcelize
-        object LazyExamples : Routing()
+        object LazyExamples : NavTarget()
 
         @Parcelize
-        object RequestPermissionsExamples : Routing()
+        object RequestPermissionsExamples : NavTarget()
 
         @Parcelize
-        object NavModelExamples : Routing()
+        object NavModelExamples : NavTarget()
 
         @Parcelize
-        object SpotlightExample : Routing()
+        object SpotlightExample : NavTarget()
 
         @Parcelize
-        object InteractorExample : Routing()
+        object InteractorExample : NavTarget()
 
         @Parcelize
-        object MviCoreExample : Routing()
+        object MviCoreExample : NavTarget()
 
         @Parcelize
-        object MviCoreLeafExample : Routing()
+        object MviCoreLeafExample : NavTarget()
 
         @Parcelize
-        object SpotlightAdvancedExample : Routing()
+        object SpotlightAdvancedExample : NavTarget()
 
         @Parcelize
-        object BlockerExample : Routing()
+        object BlockerExample : NavTarget()
 
         @Parcelize
-        object Customisations : Routing()
+        object Customisations : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
             is NavModelExamples -> node(buildContext) { modifier -> NavModelExamples(modifier) }
             is BackStackExample -> BackStackExampleNode(buildContext)
-            is Routing.SpotlightAdvancedExample -> SpotlightAdvancedExampleNode(buildContext)
+            is SpotlightAdvancedExample -> SpotlightAdvancedExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedNavModel -> CombinedNavModelNode(buildContext)
@@ -160,7 +161,7 @@ class ContainerNode internal constructor(
                 handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
             )
         ) {
-            children<Routing> { child, descriptor ->
+            children<NavTarget> { child, descriptor ->
                 val color = when (descriptor.element) {
                     is BackStackExample -> Color.LightGray
                     else -> Color.White
@@ -230,7 +231,7 @@ class ContainerNode internal constructor(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TextButton("SpotlightAdvanced example") { backStack.push(Routing.SpotlightAdvancedExample) }
+                TextButton("SpotlightAdvanced example") { backStack.push(SpotlightAdvancedExample) }
                 TextButton("Backstack example") { backStack.push(BackStackExample) }
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }

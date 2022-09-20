@@ -20,10 +20,10 @@
     <ID>MagicNumber:RequestCodeRegistry.kt$RequestCodeRegistry$4</ID>
     <ID>MaxLineLength:MutableSavedStateMapImpl.kt$MutableSavedStateMapImpl$check(!lock) { "This MutableSavedStateMap has already dumped its state, it is meaningless to write anything anymore" }</ID>
     <ID>MaxLineLength:PermissionRequesterHost.kt$PermissionRequesterHost.FragmentHost$ContextCompat.checkSelfPermission(fragment.requireContext(), permission) == PackageManager.PERMISSION_GRANTED</ID>
-    <ID>MaxLineLength:RoutingElement.kt$RoutingElement$return "RoutingElement(key=$key, fromState=$fromState, targetState=$targetState, operation=$operation, transitionHistory=$transitionHistory)"</ID>
+    <ID>MaxLineLength:NavElement.kt$NavElement$return "NavElement(key=$key, fromState=$fromState, targetState=$targetState, operation=$operation, transitionHistory=$transitionHistory)"</ID>
     <ID>MaxLineLength:UpdateElements.kt$UpdateElements$"Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"</ID>
     <ID>TooManyFunctions:Node.kt$Node : NodeLifecycleNodeView</ID>
-    <ID>TooManyFunctions:ParentNode.kt$ParentNode&lt;Routing : Any> : NodeResolver</ID>
+    <ID>TooManyFunctions:ParentNode.kt$ParentNode&lt;NavTarget : Any> : NodeResolver</ID>
     <ID>UnusedPrivateMember:Node.kt$Node$private val lifecycleRegistry = LifecycleRegistry(this)</ID>
     <ID>UseRequire:RequestCodeRegistry.kt$RequestCodeRegistry$throw IllegalArgumentException("nbLowerBitsForIds can't be larger than 4")</ID>
     <ID>UseRequire:RequestCodeRegistry.kt$RequestCodeRegistry$throw IllegalArgumentException("nbLowerBitsForIds can't be less than 1")</ID>

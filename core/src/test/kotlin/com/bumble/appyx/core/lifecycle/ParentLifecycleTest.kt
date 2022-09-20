@@ -10,9 +10,9 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
@@ -32,13 +32,13 @@ class ParentLifecycleTest {
     fun `parent node finishes transitions for off screen elements when lifecycle is not stopped`() {
         val parent = Parent(BuildContext.root(null)).build()
         val navModel = parent.navModelImpl
-        val routing = "0"
+        val navTarget = "0"
         parent.updateLifecycleState(Lifecycle.State.STARTED)
-        navModel.add(routing = routing, defaultState = NavModelImpl.State.StateOne)
+        navModel.add(navTarget = navTarget, defaultState = NavModelImpl.State.StateOne)
 
-        navModel.changeState(routing = routing, NavModelImpl.State.StateTwo)
+        navModel.changeState(navTarget = navTarget, NavModelImpl.State.StateTwo)
 
-        val element = navModel.get(routing = routing)
+        val element = navModel.get(navTarget = navTarget)
 
         assertEquals(
             element.fromState,
@@ -67,12 +67,12 @@ class ParentLifecycleTest {
             StateFour,
         }
 
-        override val initialElements: RoutingElements<String, State> = emptyList()
+        override val initialElements: NavElements<String, State> = emptyList()
 
-        fun add(routing: String, defaultState: State) {
+        fun add(navTarget: String, defaultState: State) {
             updateState { list ->
-                list + RoutingElement(
-                    key = RoutingKey(routing),
+                list + NavElement(
+                    key = NavKey(navTarget),
                     targetState = defaultState,
                     fromState = defaultState,
                     operation = Operation.Noop(),
@@ -80,22 +80,22 @@ class ParentLifecycleTest {
             }
         }
 
-        fun get(routing: String): RoutingElement<String, State> {
+        fun get(navTarget: String): NavElement<String, State> {
             return requireNotNull(
-                value = elements.value.find { it.key.routing == routing },
-                lazyMessage = { "element with routing $routing is not found" },
+                value = elements.value.find { it.key.navTarget == navTarget },
+                lazyMessage = { "element with navTarget $navTarget is not found" },
             )
         }
 
-        fun remove(routing: String) {
-            updateState { list -> list.filter { it.key.routing != routing } }
+        fun remove(navTarget: String) {
+            updateState { list -> list.filter { it.key.navTarget != navTarget } }
         }
 
-        fun changeState(routing: String, defaultState: State) {
+        fun changeState(navTarget: String, defaultState: State) {
             updateState { list ->
                 list
                     .map {
-                        if (it.key.routing == routing) {
+                        if (it.key.navTarget == navTarget) {
                             it.transitionTo(
                                 newTargetState = defaultState,
                                 operation = Operation.Noop()
@@ -116,8 +116,8 @@ class ParentLifecycleTest {
         buildContext = buildContext,
         navModel = navModelImpl,
     ) {
-        override fun resolve(routing: String, buildContext: BuildContext): Node =
-            Child(routing, buildContext)
+        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+            Child(navTarget, buildContext)
 
         @Composable
         override fun View(modifier: Modifier) {

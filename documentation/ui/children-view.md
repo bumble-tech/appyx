@@ -22,13 +22,13 @@ override fun View(modifier: Modifier) {
 
 ## Child
 
-Renders a single child associated to a `RoutingElement`. Useful if you want to define different child placements in the layout individually. 
+Renders a single child associated to a `NavElement`. Useful if you want to define different child placements in the layout individually. 
 
 ```kotlin
 @Composable
 override fun View(modifier: Modifier) {
     Child(
-        routingElement = element,
+        navElement = element,
         transitionHandler = TODO()
     ) { child, _ ->
         // TODO wrap in your own composables
@@ -48,7 +48,7 @@ override fun View(modifier: Modifier) {
 }
 
 @Composable
-private fun GridExample(elements: List<RoutingElement<Routing, out Any?>>) {
+private fun GridExample(elements: List<NavElement<NavTarget, out Any?>>) {
     LazyVerticalGrid(
         columns = Fixed(2),
         modifier = Modifier.fillMaxSize(),
@@ -56,7 +56,7 @@ private fun GridExample(elements: List<RoutingElement<Routing, out Any?>>) {
     ) {
         items(elements) { element ->
             // TODO use Child composable to render them individually inside the list / grid
-            Child(routingElement = element)
+            Child(navElement = element)
         }
     }
 }

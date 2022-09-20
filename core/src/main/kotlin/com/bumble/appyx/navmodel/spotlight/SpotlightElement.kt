@@ -1,9 +1,9 @@
 package com.bumble.appyx.navmodel.spotlight
 
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState
 
-typealias SpotlightElement<T> = RoutingElement<T, TransitionState>
+typealias SpotlightElement<T> = NavElement<T, TransitionState>
 
-typealias SpotlightElements<T> = RoutingElements<T, TransitionState>
+typealias SpotlightElements<T> = NavElements<T, TransitionState>

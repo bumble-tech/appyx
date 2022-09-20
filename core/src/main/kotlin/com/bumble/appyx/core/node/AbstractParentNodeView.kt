@@ -3,12 +3,12 @@ package com.bumble.appyx.core.node
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-abstract class AbstractParentNodeView<Routing : Any> : ParentNodeView<Routing> {
+abstract class AbstractParentNodeView<NavTarget : Any> : ParentNodeView<NavTarget> {
 
-    final override lateinit var node: ParentNode<Routing>
+    final override lateinit var node: ParentNode<NavTarget>
         private set
 
-    override fun init(node: ParentNode<Routing>) {
+    override fun init(node: ParentNode<NavTarget>) {
         this.node = node
     }
 

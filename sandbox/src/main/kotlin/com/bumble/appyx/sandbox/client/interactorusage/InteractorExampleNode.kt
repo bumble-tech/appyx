@@ -31,18 +31,18 @@ import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
-import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.Routing
-import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.Routing.Child1
+import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.interactorusage.InteractorExampleNode.NavTarget.Child1
 import kotlinx.parcelize.Parcelize
 
 class InteractorExampleNode(
     interactor: Interactor<InteractorExampleNode>,
     buildContext: BuildContext,
-    private val backStack: BackStack<Routing> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = Child1,
         savedStateMap = buildContext.savedStateMap,
     )
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = backStack,
     buildContext = buildContext,
     plugins = listOf(interactor)
@@ -51,28 +51,28 @@ class InteractorExampleNode(
     var child2InfoState by mutableStateOf("Here will appear child2 info")
     var child2And3InfoState by mutableStateOf("Here will appear child2 and child3 combined info")
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Child1 : Routing()
+        object Child1 : NavTarget()
 
         @Parcelize
-        object Child2 : Routing()
+        object Child2 : NavTarget()
 
         @Parcelize
-        object Child3 : Routing()
+        object Child3 : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            is Routing.Child1 -> node(buildContext) { modifier ->
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.Child1 -> node(buildContext) { modifier ->
                 Box(
                     modifier = modifier
                         .fillMaxSize()
                         .background(color = Color.LightGray)
                 )
             }
-            is Routing.Child2 -> Child2Node(buildContext)
-            is Routing.Child3 -> Child3Node(buildContext)
+            is NavTarget.Child2 -> Child2Node(buildContext)
+            is NavTarget.Child3 -> Child3Node(buildContext)
         }
 
     @Composable
@@ -90,7 +90,7 @@ class InteractorExampleNode(
             )
             Spacer(modifier = Modifier.requiredHeight(4.dp))
             Button(
-                onClick = { backStack.push(Routing.Child2) },
+                onClick = { backStack.push(NavTarget.Child2) },
                 modifier = Modifier.padding(4.dp),
             ) {
                 Text(text = "Push Child2")
@@ -98,7 +98,7 @@ class InteractorExampleNode(
 
             Spacer(modifier = Modifier.requiredHeight(4.dp))
             Button(
-                onClick = { backStack.push(Routing.Child3) },
+                onClick = { backStack.push(NavTarget.Child3) },
                 modifier = Modifier.padding(4.dp),
             ) {
                 Text(text = "Push Child3")

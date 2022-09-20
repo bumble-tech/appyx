@@ -26,12 +26,12 @@ import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
-inline fun <reified Routing : Any, State> ParentNode<Routing>.Children(
-    navModel: NavModel<Routing, State>,
+inline fun <reified NavTarget : Any, State> ParentNode<NavTarget>.Children(
+    navModel: NavModel<NavTarget, State>,
     modifier: Modifier = Modifier,
-    transitionHandler: TransitionHandler<Routing, State> = JumpToEndTransitionHandler(),
-    noinline block: @Composable ChildrenTransitionScope<Routing, State>.() -> Unit = {
-        children<Routing> { child ->
+    transitionHandler: TransitionHandler<NavTarget, State> = JumpToEndTransitionHandler(),
+    noinline block: @Composable ChildrenTransitionScope<NavTarget, State>.() -> Unit = {
+        children<NavTarget> { child ->
             child()
         }
     }
@@ -130,16 +130,16 @@ class ChildrenTransitionScope<T : Any, S>(
                 .map { list ->
                     list
                         .onScreen
-                        .filter { clazz.isInstance(it.key.routing) }
+                        .filter { clazz.isInstance(it.key.navTarget) }
                 }
         }
         val children by visibleElementsFlow.collectAsState(emptyList())
 
         val saveableStateHolder = rememberSaveableStateHolder()
-        children.forEach { routingElement ->
-            key(routingElement.key.id) {
+        children.forEach { navElement ->
+            key(navElement.key.id) {
                 Child(
-                    routingElement,
+                    navElement,
                     saveableStateHolder,
                     transitionParams,
                     transitionHandler,

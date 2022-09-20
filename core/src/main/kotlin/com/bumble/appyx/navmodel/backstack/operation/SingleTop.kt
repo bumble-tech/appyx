@@ -1,13 +1,13 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.active
-import com.bumble.appyx.navmodel.backstack.activeRouting
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
 import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
+import com.bumble.appyx.navmodel.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -27,7 +27,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
     ) : SingleTop<T>() {
 
         override fun isApplicable(elements: BackStackElements<T>): Boolean =
-            element != elements.activeRouting
+            element != elements.activeElement
 
         override fun invoke(
             elements: BackStackElements<T>
@@ -77,7 +77,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
                 newTargetState = BackStack.TransitionState.DESTROYED,
                 operation = this
             ) + BackStackElement(
-                key = RoutingKey(element),
+                key = NavKey(element),
                 fromState = CREATED,
                 targetState = ACTIVE,
                 operation = this,
@@ -97,12 +97,12 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
         ): BackStackOperation<T> {
             val targetClass = element.javaClass
             val lastIndexOfSameClass =
-                elements.indexOfLast { targetClass.isInstance(it.key.routing) }
+                elements.indexOfLast { targetClass.isInstance(it.key.navTarget) }
 
             return if (lastIndexOfSameClass == -1) {
                 Push(element)
             } else {
-                if (elements[lastIndexOfSameClass].key.routing == element) {
+                if (elements[lastIndexOfSameClass].key.navTarget == element) {
                     SingleTopReactivateBackStackOperation(
                         element,
                         lastIndexOfSameClass

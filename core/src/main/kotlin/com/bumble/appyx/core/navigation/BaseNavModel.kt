@@ -30,19 +30,19 @@ import kotlin.coroutines.EmptyCoroutineContext
  *
  * If more granular configuration is required, you should inherit NavModel interface instead.
  */
-abstract class BaseNavModel<Routing, State>(
-    private val backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
-    private val operationStrategy: OperationStrategy<Routing, State> = ExecuteImmediately(),
+abstract class BaseNavModel<NavTarget, State>(
+    private val backPressHandler: BackPressHandlerStrategy<NavTarget, State> = DontHandleBackPress(),
+    private val operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
     private val screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val finalStates: Set<State>,
     private val key: String = KEY_NAV_MODEL,
     savedStateMap: SavedStateMap?
-) : NavModel<Routing, State>, Destroyable, BackPressHandler {
+) : NavModel<NavTarget, State>, Destroyable, BackPressHandler {
 
     constructor(
-        backPressHandler: BackPressHandlerStrategy<Routing, State> = DontHandleBackPress(),
-        operationStrategy: OperationStrategy<Routing, State> = ExecuteImmediately(),
+        backPressHandler: BackPressHandlerStrategy<NavTarget, State> = DontHandleBackPress(),
+        operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
         screenResolver: OnScreenStateResolver<State>,
         scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
         finalState: State?,
@@ -59,15 +59,15 @@ abstract class BaseNavModel<Routing, State>(
     )
 
     // TODO: think about how we can avoid keeping unnecessary object after state initialization
-    protected abstract val initialElements: RoutingElements<Routing, State>
+    protected abstract val initialElements: NavElements<NavTarget, State>
 
-    private val state: MutableStateFlow<RoutingElements<Routing, State>> by lazy {
+    private val state: MutableStateFlow<NavElements<NavTarget, State>> by lazy {
         MutableStateFlow(savedStateMap?.restoreHistory() ?: initialElements)
     }
 
-    override val elements: StateFlow<RoutingElements<Routing, State>> get() = state
+    override val elements: StateFlow<NavElements<NavTarget, State>> get() = state
 
-    override val screenState: StateFlow<NavModelAdapter.ScreenState<Routing, State>> by lazy {
+    override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, State>> by lazy {
         state
             .map { elements ->
                 NavModelAdapter.ScreenState(
@@ -97,18 +97,18 @@ abstract class BaseNavModel<Routing, State>(
         operationStrategy.init(this, scope, ::execute)
     }
 
-    override fun accept(operation: Operation<Routing, State>) {
+    override fun accept(operation: Operation<NavTarget, State>) {
         operationStrategy.accept(operation)
     }
 
-    protected fun updateState(block: (RoutingElements<Routing, State>) -> RoutingElements<Routing, State>) {
+    protected fun updateState(block: (NavElements<NavTarget, State>) -> NavElements<NavTarget, State>) {
         state.update { currentState ->
             val newState = block(currentState)
             sanitizeOffScreenTransitions(newState)
         }
     }
 
-    private fun execute(operation: Operation<Routing, State>) {
+    private fun execute(operation: Operation<NavTarget, State>) {
         updateState {
             if (operation.isApplicable(it)) {
                 operation(it)
@@ -123,8 +123,8 @@ abstract class BaseNavModel<Routing, State>(
      * In case if we have any, lets finish them instantly.
      */
     protected fun sanitizeOffScreenTransitions(
-        state: RoutingElements<Routing, State>
-    ): RoutingElements<Routing, State> =
+        state: NavElements<NavTarget, State>
+    ): NavElements<NavTarget, State> =
         state.mapNotNull {
             if (screenResolver.isOnScreen(it)) {
                 it
@@ -133,7 +133,7 @@ abstract class BaseNavModel<Routing, State>(
             }
         }
 
-    override fun onTransitionFinished(keys: Collection<RoutingKey<Routing>>) {
+    override fun onTransitionFinished(keys: Collection<NavKey<NavTarget>>) {
         if (keys.isEmpty()) return
         state.update { list ->
             list.mapNotNull {
@@ -146,7 +146,7 @@ abstract class BaseNavModel<Routing, State>(
         }
     }
 
-    protected open fun RoutingElement<Routing, State>.finishTransitionOrRemove(): RoutingElement<Routing, State>? =
+    protected open fun NavElement<NavTarget, State>.finishTransitionOrRemove(): NavElement<NavTarget, State>? =
         if (targetState.isFinalState) {
             null
         } else {
@@ -173,7 +173,7 @@ abstract class BaseNavModel<Routing, State>(
         get() = finalStates.contains(this)
 
     private fun SavedStateMap.restoreHistory() =
-        this[key] as? RoutingElements<Routing, State>
+        this[key] as? NavElements<NavTarget, State>
 
     companion object {
         const val KEY_NAV_MODEL = "NavModel"
