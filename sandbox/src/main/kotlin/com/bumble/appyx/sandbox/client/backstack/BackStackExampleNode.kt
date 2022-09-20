@@ -41,6 +41,11 @@ import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.operation.remove
 import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.navmodel.backstack.operation.singleTop
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildA
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildB
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildC
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildD
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.NEW_ROOT
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.POP
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.PUSH
@@ -48,11 +53,6 @@ import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.REPLACE
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.SINGLE_TOP
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.values
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildA
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildB
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildC
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildD
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
@@ -197,7 +197,7 @@ class BackStackExampleNode(
                         expanded = expanded.value,
                         onDismissRequest = { expanded.value = false }
                     ) {
-                        backStackState.value.iterator().forEach { element ->
+                        backStackState.value.forEach { element ->
                             DropdownMenuItem(onClick = {
                                 selectedId.value = element.key.id
                                 expanded.value = false

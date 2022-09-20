@@ -1,14 +1,14 @@
 package com.bumble.appyx.navmodel.spotlightadvanced
 
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.Active
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.Carousel
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.InactiveAfter
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.InactiveBefore
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.Active
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.Carousel
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.InactiveAfter
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.InactiveBefore
 
-object SpotlightAdvancedOnScreenResolver : OnScreenStateResolver<TransitionState> {
-    override fun isOnScreen(state: TransitionState): Boolean =
+object SpotlightAdvancedOnScreenResolver : OnScreenStateResolver<State> {
+    override fun isOnScreen(state: State): Boolean =
         when (state) {
             is InactiveBefore,
             is InactiveAfter -> false

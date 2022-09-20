@@ -1,4 +1,4 @@
-package com.bumble.appyx.sandbox.client.spotlightadvancedexample
+package com.bumble.appyx.sandbox.client.profilecard
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column

@@ -16,4 +16,4 @@ fun <T : Any> SpotlightAdvanced<T>.elementsCount() =
     elements.value.size
 
 fun <T : Any> SpotlightAdvanced<T>.isCarousel(): Flow<Boolean> =
-    elements.map { it.any { it.targetState is SpotlightAdvanced.TransitionState.Carousel } }
+    elements.map { it.any { it.targetState is SpotlightAdvanced.State.Carousel } }

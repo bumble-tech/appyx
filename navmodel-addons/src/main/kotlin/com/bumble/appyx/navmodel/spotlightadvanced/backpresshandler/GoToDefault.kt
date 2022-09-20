@@ -2,15 +2,15 @@ package com.bumble.appyx.navmodel.spotlightadvanced.backpresshandler
 
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.Active
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.Active
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvancedElements
 import com.bumble.appyx.navmodel.spotlightadvanced.operation.Activate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GoToDefault<Routing : Any>(
+class GoToDefault<NavTarget : Any>(
     private val defaultElementIndex: Int = 0
-) : BaseBackPressHandlerStrategy<Routing, SpotlightAdvanced.TransitionState>() {
+) : BaseBackPressHandlerStrategy<NavTarget, SpotlightAdvanced.State>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
         navModel.elements.map(::defaultElementIsNotActive)
@@ -20,6 +20,6 @@ class GoToDefault<Routing : Any>(
         navModel.accept(Activate(defaultElementIndex))
     }
 
-    private fun defaultElementIsNotActive(elements: SpotlightAdvancedElements<Routing>) =
+    private fun defaultElementIsNotActive(elements: SpotlightAdvancedElements<NavTarget>) =
         elements.getOrNull(defaultElementIndex)?.targetState != Active
 }

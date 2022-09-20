@@ -33,71 +33,72 @@ import com.bumble.appyx.navmodel.spotlightadvanced.operation.previous
 import com.bumble.appyx.navmodel.spotlightadvanced.operation.switchToCarousel
 import com.bumble.appyx.navmodel.spotlightadvanced.operation.switchToPager
 import com.bumble.appyx.navmodel.spotlightadvanced.transitionhandler.rememberSpotlightAdvancedSlider
+import com.bumble.appyx.sandbox.client.profilecard.ProfileCardNode
 import kotlinx.parcelize.Parcelize
 
 @Suppress("MaxLineLength")
 class SpotlightAdvancedExampleNode(
     buildContext: BuildContext,
-    private val spotlightAdvanced: SpotlightAdvanced<Routing> = SpotlightAdvanced(
+    private val spotlightAdvanced: SpotlightAdvanced<NavTarget> = SpotlightAdvanced(
         items = listOf(
-            Routing.Michaelle,
-            Routing.Lara,
-            Routing.Victoria,
-            Routing.Jessica,
-            Routing.Kane
+            NavTarget.Michaelle,
+            NavTarget.Lara,
+            NavTarget.Victoria,
+            NavTarget.Jessica,
+            NavTarget.Kane
         ),
         savedStateMap = buildContext.savedStateMap,
         backPressHandler = GoToPrevious(),
     )
-) : ParentNode<SpotlightAdvancedExampleNode.Routing>(
+) : ParentNode<SpotlightAdvancedExampleNode.NavTarget>(
     buildContext = buildContext,
     navModel = spotlightAdvanced
 ) {
 
     @Parcelize
-    sealed class Routing(val url: String, val name: String, val age: Int) : Parcelable {
+    sealed class NavTarget(val url: String, val name: String, val age: Int) : Parcelable {
 
         @Parcelize
-        object Michaelle : Routing(
+        object Michaelle : NavTarget(
             url = "https://images.pexels.com/photos/1572878/pexels-photo-1572878.jpeg?auto=compress&cs=tinysrgb&w=1600",
             name = "Michaelle",
             age = 21
         )
 
         @Parcelize
-        object Lara : Routing(
+        object Lara : NavTarget(
             url = "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
             name = "Lara",
             age = 19
         )
 
         @Parcelize
-        object Victoria : Routing(
+        object Victoria : NavTarget(
             url = "https://images.pexels.com/photos/2235071/pexels-photo-2235071.jpeg?auto=compress&cs=tinysrgb&w=1600",
             name = "Victoria",
             age = 25
         )
 
         @Parcelize
-        object Jessica : Routing(
+        object Jessica : NavTarget(
             url = "https://images.pexels.com/photos/2811089/pexels-photo-2811089.jpeg?auto=compress&cs=tinysrgb&w=1600",
             name = "Jessica",
             age = 24
         )
 
         @Parcelize
-        object Kane : Routing(
+        object Kane : NavTarget(
             url = "https://images.pexels.com/photos/428340/pexels-photo-428340.jpeg?auto=compress&cs=tinysrgb&w=1600",
             name = "Kane",
             age = 27
         )
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         ProfileCardNode(
-            imageUrl = routing.url,
-            name = routing.name,
-            age = routing.age,
+            imageUrl = navTarget.url,
+            name = navTarget.name,
+            age = navTarget.age,
             buildContext = buildContext
         )
 
@@ -121,10 +122,10 @@ class SpotlightAdvancedExampleNode(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                val isCircular by spotlightAdvanced.isCarousel().collectAsState(initial = false)
+                val isCarousel by spotlightAdvanced.isCarousel().collectAsState(initial = false)
                 TextButton(
                     onClick = {
-                        if (isCircular) {
+                        if (isCarousel) {
                             spotlightAdvanced.switchToPager()
                         } else {
                             spotlightAdvanced.switchToCarousel()
@@ -132,7 +133,7 @@ class SpotlightAdvancedExampleNode(
                     }
                 ) {
                     Text(
-                        text = (if (isCircular) "Pager" else "Circular").toUpperCase(Locale.current),
+                        text = (if (isCarousel) "Pager" else "Carousel").toUpperCase(Locale.current),
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )

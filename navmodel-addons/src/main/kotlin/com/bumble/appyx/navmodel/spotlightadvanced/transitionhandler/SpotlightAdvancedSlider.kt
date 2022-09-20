@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -23,11 +22,11 @@ import androidx.compose.ui.unit.IntOffset
 import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionSpec
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.Active
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.Carousel
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.InactiveAfter
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState.InactiveBefore
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.Active
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.Carousel
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.InactiveAfter
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.InactiveBefore
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -35,16 +34,16 @@ import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
 class SpotlightAdvancedSlider<T>(
-    private val transitionSpec: TransitionSpec<TransitionState, Offset> = {
+    private val transitionSpec: TransitionSpec<SpotlightAdvanced.State, Offset> = {
         spring(stiffness = Spring.StiffnessLow)
     }
-) : ModifierTransitionHandler<T, TransitionState>() {
+) : ModifierTransitionHandler<T, SpotlightAdvanced.State>() {
 
     @Suppress("ModifierFactoryExtensionFunction", "MagicNumber")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<TransitionState>,
-        descriptor: TransitionDescriptor<T, TransitionState>
+        transition: Transition<SpotlightAdvanced.State>,
+        descriptor: TransitionDescriptor<T, SpotlightAdvanced.State>
     ): Modifier = modifier.composed {
         val offset by transition.animateOffset(
             transitionSpec = transitionSpec,
@@ -101,9 +100,9 @@ class SpotlightAdvancedSlider<T>(
     @Composable
     @Suppress("MagicNumber")
     private fun toCarousel(
-        transition: Transition<TransitionState>,
-        descriptor: TransitionDescriptor<T, TransitionState>
-    ): State<Offset> {
+        transition: Transition<SpotlightAdvanced.State>,
+        descriptor: TransitionDescriptor<T, SpotlightAdvanced.State>
+    ): androidx.compose.runtime.State<Offset> {
         val radius = descriptor.params.bounds.width.value / 3
         val halfWidthDp =
             (descriptor.params.bounds.width.value - radius) / 2
@@ -142,8 +141,8 @@ class SpotlightAdvancedSlider<T>(
 
 @Composable
 fun <T> rememberSpotlightAdvancedSlider(
-    transitionSpec: TransitionSpec<TransitionState, Offset> = { spring(stiffness = Spring.StiffnessLow) }
-): ModifierTransitionHandler<T, TransitionState> = remember {
+    transitionSpec: TransitionSpec<SpotlightAdvanced.State, Offset> = { spring(stiffness = Spring.StiffnessLow) }
+): ModifierTransitionHandler<T, SpotlightAdvanced.State> = remember {
     SpotlightAdvancedSlider(
         transitionSpec = transitionSpec
     )

@@ -2,7 +2,7 @@ package com.bumble.appyx.navmodel.spotlightadvanced.operation
 
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
-import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.TransitionState
+import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State
 import com.bumble.appyx.navmodel.spotlightadvanced.currentIndex
 import kotlinx.parcelize.Parcelize
 
@@ -11,29 +11,29 @@ class Activate<T : Any>(
     private val index: Int
 ) : SpotlightAdvancedOperation<T> {
 
-    override fun isApplicable(elements: NavElements<T, TransitionState>) =
+    override fun isApplicable(elements: NavElements<T, State>) =
         index != elements.currentIndex && index <= elements.lastIndex && index >= 0
 
-    override fun invoke(elements: NavElements<T, TransitionState>): NavElements<T, TransitionState> {
+    override fun invoke(elements: NavElements<T, State>): NavElements<T, State> {
 
         val toActivateIndex = this.index
         return elements.mapIndexed { index, element ->
             when {
                 index < toActivateIndex -> {
                     element.transitionTo(
-                        newTargetState = TransitionState.InactiveBefore,
+                        newTargetState = State.InactiveBefore,
                         operation = this
                     )
                 }
                 index == toActivateIndex -> {
                     element.transitionTo(
-                        newTargetState = TransitionState.Active,
+                        newTargetState = State.Active,
                         operation = this
                     )
                 }
                 else -> {
                     element.transitionTo(
-                        newTargetState = TransitionState.InactiveAfter,
+                        newTargetState = State.InactiveAfter,
                         operation = this
                     )
                 }
