@@ -15,16 +15,16 @@ data class ToggleSelection<T : Any>(
 
     override fun invoke(
         elements: TilesElements<T>
-    ): NavElements<T, Tiles.TransitionState> =
+    ): NavElements<T, Tiles.State> =
         elements.map {
             if (it.key == key) {
                 when (it.targetState) {
-                    Tiles.TransitionState.SELECTED -> it.transitionTo(
-                        newTargetState = Tiles.TransitionState.STANDARD,
+                    Tiles.State.SELECTED -> it.transitionTo(
+                        newTargetState = Tiles.State.STANDARD,
                         operation = this
                     )
-                    Tiles.TransitionState.STANDARD -> it.transitionTo(
-                        newTargetState = Tiles.TransitionState.SELECTED,
+                    Tiles.State.STANDARD -> it.transitionTo(
+                        newTargetState = Tiles.State.SELECTED,
                         operation = this
                     )
                     else -> it

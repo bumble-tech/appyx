@@ -32,25 +32,25 @@ The example below is taken from [custom navigation models](../navmodel/custom.md
 
 ```kotlin
 class FooTransitionHandler<T>(
-    private val transitionSpec: TransitionSpec<Foo.TransitionState, Float> = { spring() }
-) : ModifierTransitionHandler<T, Foo.TransitionState>() {
+    private val transitionSpec: TransitionSpec<Foo.State, Float> = { spring() }
+) : ModifierTransitionHandler<T, Foo.State>() {
 
     // TODO define a Modifier depending on the state.
     //  Here we'll just mutate scaling: 
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<Foo.TransitionState>,
-        descriptor: TransitionDescriptor<T, Foo.TransitionState>
+        transition: Transition<Foo.State>,
+        descriptor: TransitionDescriptor<T, Foo.State>
     ): Modifier = modifier.composed {
         val scale = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    Foo.TransitionState.CREATED -> 0f
-                    Foo.TransitionState.FOO -> 0.33f
-                    Foo.TransitionState.BAR -> 0.66f
-                    Foo.TransitionState.BAZ -> 1.0f
-                    Foo.TransitionState.DESTROYED -> 0f
+                    Foo.State.CREATED -> 0f
+                    Foo.State.FOO -> 0.33f
+                    Foo.State.BAR -> 0.66f
+                    Foo.State.BAZ -> 1.0f
+                    Foo.State.DESTROYED -> 0f
                 }
             })
 
@@ -61,8 +61,8 @@ class FooTransitionHandler<T>(
 // TODO remember to add:
 @Composable
 fun <T> rememberFooTransitionHandler(
-    transitionSpec: TransitionSpec<Foo.TransitionState, Float> = { spring() }
-): ModifierTransitionHandler<T, Foo.TransitionState> = remember {
+    transitionSpec: TransitionSpec<Foo.State, Float> = { spring() }
+): ModifierTransitionHandler<T, Foo.State> = remember {
     FooTransitionHandler(transitionSpec)
 }
 ```

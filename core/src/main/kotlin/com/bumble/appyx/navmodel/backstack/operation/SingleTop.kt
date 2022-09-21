@@ -5,8 +5,8 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.active
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.CREATED
 import com.bumble.appyx.navmodel.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -40,14 +40,14 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
             return newElements.mapIndexed { index, element ->
                 if (index == newElements.lastIndex) {
                     element.transitionTo(
-                        newTargetState = BackStack.TransitionState.ACTIVE,
+                        newTargetState = BackStack.State.ACTIVE,
                         operation = this
                     )
                 } else {
                     element
                 }
             } + current.transitionTo(
-                newTargetState = BackStack.TransitionState.DESTROYED,
+                newTargetState = BackStack.State.DESTROYED,
                 operation = this
             )
         }
@@ -74,7 +74,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
             val newElements = elements.dropLast(elements.size - position)
 
             return newElements + current.transitionTo(
-                newTargetState = BackStack.TransitionState.DESTROYED,
+                newTargetState = BackStack.State.DESTROYED,
                 operation = this
             ) + BackStackElement(
                 key = NavKey(element),

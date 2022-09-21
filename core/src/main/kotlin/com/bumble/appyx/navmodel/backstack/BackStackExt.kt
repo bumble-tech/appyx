@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.backstack
 
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
 
 val <T> BackStackElements<T>.active: BackStackElement<T>?
     get() = lastOrNull { it.targetState == ACTIVE }

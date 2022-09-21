@@ -45,7 +45,7 @@ interface MviCoreExampleView : Consumer<ViewModel>, ObservableSource<Event>
 
 class MviCoreExampleViewImpl(
     private val title: String = "Title",
-    private val backStack: NavModel<NavTarget, BackStack.TransitionState>,
+    private val backStack: NavModel<NavTarget, BackStack.State>,
     private val events: PublishRelay<Event> = PublishRelay.create()
 ) : AbstractParentNodeView<NavTarget>(),
     MviCoreExampleView,

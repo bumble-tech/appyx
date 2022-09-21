@@ -20,23 +20,23 @@ import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
 class TilesTransitionHandler<T>(
-    private val transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { spring() }
-) : ModifierTransitionHandler<T, Tiles.TransitionState>() {
+    private val transitionSpec: TransitionSpec<Tiles.State, Float> = { spring() }
+) : ModifierTransitionHandler<T, Tiles.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<Tiles.TransitionState>,
-        descriptor: TransitionDescriptor<T, Tiles.TransitionState>
+        transition: Transition<Tiles.State>,
+        descriptor: TransitionDescriptor<T, Tiles.State>
     ): Modifier = modifier.composed {
         val scale = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    Tiles.TransitionState.CREATED -> 0f
-                    Tiles.TransitionState.STANDARD -> 0.75f
-                    Tiles.TransitionState.SELECTED -> 1.0f
-                    Tiles.TransitionState.DESTROYED -> 0f
+                    Tiles.State.CREATED -> 0f
+                    Tiles.State.STANDARD -> 0.75f
+                    Tiles.State.SELECTED -> 1.0f
+                    Tiles.State.DESTROYED -> 0f
                 }
             })
 
@@ -44,7 +44,7 @@ class TilesTransitionHandler<T>(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    Tiles.TransitionState.DESTROYED -> 1f
+                    Tiles.State.DESTROYED -> 1f
                     else -> 0f
                 }
             })
@@ -62,7 +62,7 @@ class TilesTransitionHandler<T>(
 
 @Composable
 fun <T> rememberTilesTransitionHandler(
-    transitionSpec: TransitionSpec<Tiles.TransitionState, Float> = { spring() }
-): ModifierTransitionHandler<T, Tiles.TransitionState> = remember {
+    transitionSpec: TransitionSpec<Tiles.State, Float> = { spring() }
+): ModifierTransitionHandler<T, Tiles.State> = remember {
     TilesTransitionHandler(transitionSpec)
 }

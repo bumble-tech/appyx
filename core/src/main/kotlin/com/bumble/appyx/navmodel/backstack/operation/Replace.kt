@@ -5,8 +5,8 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.activeIndex
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.CREATED
 import com.bumble.appyx.navmodel.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -32,7 +32,7 @@ data class Replace<T : Any>(
         return elements.mapIndexed { index, element ->
             if (index == elements.activeIndex) {
                 element.transitionTo(
-                    newTargetState = BackStack.TransitionState.DESTROYED,
+                    newTargetState = BackStack.State.DESTROYED,
                     operation = this
                 )
             } else {

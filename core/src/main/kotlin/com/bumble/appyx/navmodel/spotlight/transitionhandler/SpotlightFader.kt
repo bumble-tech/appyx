@@ -17,20 +17,20 @@ import com.bumble.appyx.navmodel.spotlight.Spotlight
 @Suppress("TransitionPropertiesLabel")
 
 class SpotlightFader<T>(
-    private val transitionSpec: TransitionSpec<Spotlight.TransitionState, Float> = { spring() }
-) : ModifierTransitionHandler<T, Spotlight.TransitionState>() {
+    private val transitionSpec: TransitionSpec<Spotlight.State, Float> = { spring() }
+) : ModifierTransitionHandler<T, Spotlight.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<Spotlight.TransitionState>,
-        descriptor: TransitionDescriptor<T, Spotlight.TransitionState>
+        transition: Transition<Spotlight.State>,
+        descriptor: TransitionDescriptor<T, Spotlight.State>
     ): Modifier = modifier.composed {
         val alpha = transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
-                    Spotlight.TransitionState.ACTIVE -> 1f
+                    Spotlight.State.ACTIVE -> 1f
                     else -> 0f
                 }
             })
@@ -41,7 +41,7 @@ class SpotlightFader<T>(
 
 @Composable
 fun <T> rememberSpotlightFader(
-    transitionSpec: TransitionSpec<Spotlight.TransitionState, Float> = { spring() }
-): ModifierTransitionHandler<T, Spotlight.TransitionState> = remember {
+    transitionSpec: TransitionSpec<Spotlight.State, Float> = { spring() }
+): ModifierTransitionHandler<T, Spotlight.State> = remember {
     SpotlightFader(transitionSpec = transitionSpec)
 }

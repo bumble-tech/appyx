@@ -7,20 +7,20 @@ import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHand
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.core.navigation.operationstrategies.OperationStrategy
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.DESTROYED
+import com.bumble.appyx.navmodel.backstack.BackStack.State
+import com.bumble.appyx.navmodel.backstack.BackStack.State.DESTROYED
 import com.bumble.appyx.navmodel.backstack.backpresshandler.PopBackPressHandler
 import com.bumble.appyx.core.state.SavedStateMap
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
 
 class BackStack<NavTarget : Any>(
     initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
-    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = PopBackPressHandler(),
-    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),
-    screenResolver: OnScreenStateResolver<TransitionState> = BackStackOnScreenResolver
-) : BaseNavModel<NavTarget, TransitionState>(
+    backPressHandler: BackPressHandlerStrategy<NavTarget, State> = PopBackPressHandler(),
+    operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
+    screenResolver: OnScreenStateResolver<State> = BackStackOnScreenResolver
+) : BaseNavModel<NavTarget, State>(
     backPressHandler = backPressHandler,
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,
@@ -29,8 +29,8 @@ class BackStack<NavTarget : Any>(
     key = key,
 ) {
 
-    enum class TransitionState {
-        CREATED, ACTIVE, STASHED_IN_BACK_STACK, DESTROYED,
+    enum class State {
+        CREATED, ACTIVE, STASHED, DESTROYED,
     }
 
     override val initialElements = listOf(

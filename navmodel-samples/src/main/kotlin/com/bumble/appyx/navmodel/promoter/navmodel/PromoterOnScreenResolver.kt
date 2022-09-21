@@ -1,12 +1,12 @@
 package com.bumble.appyx.navmodel.promoter.navmodel
 
-import com.bumble.appyx.navmodel.promoter.navmodel.Promoter.TransitionState
+import com.bumble.appyx.navmodel.promoter.navmodel.Promoter.State
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 
-internal object PromoterOnScreenResolver : OnScreenStateResolver<TransitionState> {
-    override fun isOnScreen(state: TransitionState): Boolean =
+internal object PromoterOnScreenResolver : OnScreenStateResolver<State> {
+    override fun isOnScreen(state: State): Boolean =
         when (state) {
-            TransitionState.DESTROYED -> false
+            State.DESTROYED -> false
             else -> true
         }
 }

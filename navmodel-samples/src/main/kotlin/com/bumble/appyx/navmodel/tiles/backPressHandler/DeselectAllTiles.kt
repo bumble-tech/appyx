@@ -8,14 +8,14 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class DeselectAllTiles<NavTarget : Any> :
-    BaseBackPressHandlerStrategy<NavTarget, Tiles.TransitionState>() {
+    BaseBackPressHandlerStrategy<NavTarget, Tiles.State>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
         navModel.elements.map(::areThereSelectedTiles)
     }
 
     private fun areThereSelectedTiles(elements: TilesElements<NavTarget>) =
-        elements.any { it.targetState == Tiles.TransitionState.SELECTED }
+        elements.any { it.targetState == Tiles.State.SELECTED }
 
     override fun onBackPressed() {
         navModel.accept(DeselectAll())

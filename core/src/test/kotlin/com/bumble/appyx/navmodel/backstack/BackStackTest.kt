@@ -4,10 +4,10 @@ import com.bumble.appyx.core.navigation.BaseNavModel.Companion.KEY_NAV_MODEL
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.assertNavTargetElementsEqual
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.DESTROYED
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.CREATED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.DESTROYED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.STASHED
 import com.bumble.appyx.navmodel.backstack.operation.Pop
 import com.bumble.appyx.navmodel.backstack.operation.Push
 import com.bumble.appyx.navmodel.backstack.operation.NavTarget
@@ -60,14 +60,14 @@ internal class BackStackTest {
         val storedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget2,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Pop()
             ),
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -82,14 +82,14 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<NavTarget> = listOf(
             backStackElement(
                 element = NavTarget2,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Pop()
             ),
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -103,7 +103,7 @@ internal class BackStackTest {
         val storedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
                 targetState = ACTIVE,
                 operation = Pop()
             ),
@@ -116,7 +116,7 @@ internal class BackStackTest {
             backStackElement(
                 element = NavTarget2,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -131,7 +131,7 @@ internal class BackStackTest {
         val expectedElements: BackStackElements<NavTarget> = listOf(
             backStackElement(
                 element = NavTarget4("Content"),
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
                 targetState = ACTIVE,
                 operation = Pop()
             ),
@@ -144,7 +144,7 @@ internal class BackStackTest {
             backStackElement(
                 element = NavTarget2,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -173,7 +173,7 @@ internal class BackStackTest {
             backStackElement(
                 element = NavTarget1,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = push(NavTarget2)
             ),
             backStackElement(
@@ -195,7 +195,7 @@ internal class BackStackTest {
             backStackElement(
                 element = NavTarget2,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -217,7 +217,7 @@ internal class BackStackTest {
         val storedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
                 targetState = ACTIVE,
                 operation = Pop()
             )
@@ -292,7 +292,7 @@ internal class BackStackTest {
                 key = transitionedItemKey,
                 element = NavTarget2,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -315,8 +315,8 @@ internal class BackStackTest {
             ),
             backStackElement(
                 element = NavTarget2,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -341,7 +341,7 @@ internal class BackStackTest {
             backStackElement(
                 element = NavTarget2,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -364,7 +364,7 @@ internal class BackStackTest {
             backStackElement(
                 element = NavTarget2,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -389,7 +389,7 @@ internal class BackStackTest {
             BackStackElement(
                 key = NavKey(initialElement),
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = operation
             ),
             BackStackElement(
@@ -440,8 +440,8 @@ internal class BackStackTest {
             ),
             backStackElement(
                 element = NavTarget2,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -464,7 +464,7 @@ internal class BackStackTest {
             ),
             backStackElement(
                 element = NavTarget2,
-                fromState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
                 targetState = ACTIVE,
                 operation = Pop()
             )
@@ -492,7 +492,7 @@ internal class BackStackTest {
             backStackElement(
                 element = NavTarget2,
                 fromState = ACTIVE,
-                targetState = STASHED_IN_BACK_STACK,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
@@ -515,8 +515,8 @@ internal class BackStackTest {
             ),
             backStackElement(
                 element = NavTarget2,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Pop()
             )
         )
