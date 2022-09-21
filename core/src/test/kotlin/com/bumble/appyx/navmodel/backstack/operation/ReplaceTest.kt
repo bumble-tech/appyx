@@ -2,10 +2,10 @@ package com.bumble.appyx.navmodel.backstack.operation
 
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.navmodel.assertNavTargetElementsEqual
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.CREATED
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.DESTROYED
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.backstack.BackStack.TransitionState.STASHED_IN_BACK_STACK
+import com.bumble.appyx.navmodel.backstack.BackStack.State.CREATED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.DESTROYED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
+import com.bumble.appyx.navmodel.backstack.BackStack.State.STASHED
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.operation.NavTarget.NavTarget1
 import com.bumble.appyx.navmodel.backstack.operation.NavTarget.NavTarget2
@@ -58,8 +58,8 @@ internal class ReplaceTest {
         val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             )
         )
@@ -87,8 +87,8 @@ internal class ReplaceTest {
         val elements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(
@@ -106,8 +106,8 @@ internal class ReplaceTest {
         val expectedElements = listOf<BackStackElement<NavTarget>>(
             backStackElement(
                 element = NavTarget1,
-                fromState = STASHED_IN_BACK_STACK,
-                targetState = STASHED_IN_BACK_STACK,
+                fromState = STASHED,
+                targetState = STASHED,
                 operation = Noop()
             ),
             backStackElement(

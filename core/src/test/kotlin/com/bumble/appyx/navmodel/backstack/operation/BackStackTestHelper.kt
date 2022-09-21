@@ -8,9 +8,9 @@ import com.bumble.appyx.navmodel.backstack.BackStackElement
 internal fun <T : NavTarget> backStackElement(
     element: T,
     key: NavKey<T> = NavKey(navTarget = element),
-    fromState: BackStack.TransitionState,
-    targetState: BackStack.TransitionState,
-    operation: Operation<T, BackStack.TransitionState>
+    fromState: BackStack.State,
+    targetState: BackStack.State,
+    operation: Operation<T, BackStack.State>
 ) = BackStackElement(
     key = key,
     fromState = fromState,

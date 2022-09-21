@@ -13,7 +13,7 @@ interface Operation<NavTarget, State> :
      */
     fun NavElements<NavTarget, State>.transitionTo(
         newTargetState: State
-    ) = transitionTo(newTargetState) { _, _ -> true }
+    ) = transitionToIndexed(newTargetState) { _, _ -> true }
 
     /**
      * Transitions all elements to a new state based on the individual elements
@@ -46,7 +46,7 @@ interface Operation<NavTarget, State> :
     /**
      * Transitions elements to a new state if they pass a condition based on the element and its position
      */
-    fun NavElements<NavTarget, State>.transitionTo(
+    fun NavElements<NavTarget, State>.transitionToIndexed(
         newTargetState: State, condition: (index: Int, element: NavElement<NavTarget, State>) -> Boolean
     ) = mapIndexed { index, element ->
         if (condition.invoke(index, element)) {

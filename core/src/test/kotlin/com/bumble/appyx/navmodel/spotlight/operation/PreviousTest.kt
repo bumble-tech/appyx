@@ -1,8 +1,8 @@
 package com.bumble.appyx.navmodel.spotlight.operation
 
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.ACTIVE
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.INACTIVE_AFTER
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.INACTIVE_BEFORE
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State.ACTIVE
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State.INACTIVE_AFTER
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State.INACTIVE_BEFORE
 import com.bumble.appyx.navmodel.spotlight.operation.NavTarget.NavTarget1
 import com.bumble.appyx.navmodel.spotlight.spotlightElement
 import org.junit.Assert.assertFalse

@@ -13,7 +13,7 @@ import com.bumble.appyx.navmodel.backstack.transitionhandler.BackStackFader
 import com.bumble.appyx.navmodel.backstack.transitionhandler.BackStackSlider
 
 class BackStackExampleTransitionHandler<T> :
-    ModifierTransitionHandler<T, BackStack.TransitionState>(clipToBounds = true) {
+    ModifierTransitionHandler<T, BackStack.State>(clipToBounds = true) {
 
     private val slider = BackStackSlider<T>(clipToBounds = clipToBounds)
     private val fader = BackStackFader<T>()
@@ -21,8 +21,8 @@ class BackStackExampleTransitionHandler<T> :
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<BackStack.TransitionState>,
-        descriptor: TransitionDescriptor<T, BackStack.TransitionState>
+        transition: Transition<BackStack.State>,
+        descriptor: TransitionDescriptor<T, BackStack.State>
     ): Modifier =
         when (descriptor.operation) {
             is Replace -> fader.createModifier(modifier, transition, descriptor)
@@ -32,6 +32,6 @@ class BackStackExampleTransitionHandler<T> :
 
 @Composable
 fun <T> rememberBackStackExampleTransitionHandler(
-): ModifierTransitionHandler<T, BackStack.TransitionState> = remember {
+): ModifierTransitionHandler<T, BackStack.State> = remember {
     BackStackExampleTransitionHandler()
 }

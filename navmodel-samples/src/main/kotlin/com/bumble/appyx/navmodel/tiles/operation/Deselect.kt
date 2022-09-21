@@ -18,7 +18,7 @@ data class Deselect<T : Any>(
     override fun invoke(
         elements: TilesElements<T>
     ): NavElements<T, Tiles.State> =
-        elements.transitionTo(STANDARD) {
+        elements.transitionToIndexed(STANDARD) {
             it.key == key && it.targetState == SELECTED
         }
 }

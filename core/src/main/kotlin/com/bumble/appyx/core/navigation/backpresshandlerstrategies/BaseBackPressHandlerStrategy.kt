@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-abstract class BaseBackPressHandlerStrategy<NavTarget, TransitionState>
-    : BackPressHandlerStrategy<NavTarget, TransitionState> {
+abstract class BaseBackPressHandlerStrategy<NavTarget, State>
+    : BackPressHandlerStrategy<NavTarget, State> {
 
     protected lateinit var scope: CoroutineScope
-    protected lateinit var navModel: BaseNavModel<NavTarget, TransitionState>
+    protected lateinit var navModel: BaseNavModel<NavTarget, State>
 
     override fun init(
-        navModel: BaseNavModel<NavTarget, TransitionState>,
+        navModel: BaseNavModel<NavTarget, State>,
         scope: CoroutineScope
     ) {
         this.scope = scope

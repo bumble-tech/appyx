@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.spotlight
 
-import com.bumble.appyx.navmodel.spotlight.Spotlight.TransitionState.ACTIVE
+import com.bumble.appyx.navmodel.spotlight.Spotlight.State.ACTIVE
 
 val <T> SpotlightElements<T>.current: SpotlightElement<T>?
     get() = this.lastOrNull { it.targetState == ACTIVE }

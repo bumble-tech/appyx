@@ -21,20 +21,20 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
-class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackStack.TransitionState>() {
+class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackStack.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<BackStack.TransitionState>,
-        descriptor: TransitionDescriptor<T, BackStack.TransitionState>
+        transition: Transition<BackStack.State>,
+        descriptor: TransitionDescriptor<T, BackStack.State>
     ): Modifier = modifier.composed {
         val alpha = transition.animateFloat(
             transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
             targetValueByState = {
                 when (it) {
-                    BackStack.TransitionState.STASHED_IN_BACK_STACK,
-                    BackStack.TransitionState.DESTROYED -> 0f
+                    BackStack.State.STASHED,
+                    BackStack.State.DESTROYED -> 0f
                     else -> 1f
                 }
             })
@@ -43,7 +43,7 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
             transitionSpec = { spring(stiffness = Spring.StiffnessVeryLow) },
             targetValueByState = {
                 when (it) {
-                    BackStack.TransitionState.DESTROYED -> 10f
+                    BackStack.State.DESTROYED -> 10f
                     else -> 1f
                 }
             })
@@ -53,7 +53,7 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
             targetValueByState = {
                 val width = descriptor.params.bounds.width.value
                 when (it) {
-                    BackStack.TransitionState.CREATED -> toOutsideRight(width)
+                    BackStack.State.CREATED -> toOutsideRight(width)
                     else -> toCenter()
                 }
             })
@@ -75,6 +75,6 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
 }
 
 @Composable
-fun <T> rememberCustomHandler(): ModifierTransitionHandler<T, BackStack.TransitionState> = remember {
+fun <T> rememberCustomHandler(): ModifierTransitionHandler<T, BackStack.State> = remember {
     CustomBackStackTransitionHandler()
 }

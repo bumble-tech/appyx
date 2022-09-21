@@ -20,26 +20,26 @@ import com.bumble.appyx.navmodel.toIntOffset
 
 @Suppress("TransitionPropertiesLabel")
 class SpotlightSlider<T>(
-    private val transitionSpec: TransitionSpec<Spotlight.TransitionState, Offset> = {
+    private val transitionSpec: TransitionSpec<Spotlight.State, Offset> = {
         spring(stiffness = Spring.StiffnessVeryLow)
     },
     override val clipToBounds: Boolean = false
-) : ModifierTransitionHandler<T, Spotlight.TransitionState>() {
+) : ModifierTransitionHandler<T, Spotlight.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
-        transition: Transition<Spotlight.TransitionState>,
-        descriptor: TransitionDescriptor<T, Spotlight.TransitionState>
+        transition: Transition<Spotlight.State>,
+        descriptor: TransitionDescriptor<T, Spotlight.State>
     ): Modifier = modifier.composed {
         val offset by transition.animateOffset(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 val width = descriptor.params.bounds.width.value
                 when (it) {
-                    Spotlight.TransitionState.INACTIVE_BEFORE -> toOutsideLeft(width)
-                    Spotlight.TransitionState.ACTIVE -> toCenter()
-                    Spotlight.TransitionState.INACTIVE_AFTER -> toOutsideRight(width)
+                    Spotlight.State.INACTIVE_BEFORE -> toOutsideLeft(width)
+                    Spotlight.State.ACTIVE -> toCenter()
+                    Spotlight.State.INACTIVE_AFTER -> toOutsideRight(width)
                 }
             },
         )
@@ -58,8 +58,8 @@ class SpotlightSlider<T>(
 
 @Composable
 fun <T> rememberSpotlightSlider(
-    transitionSpec: TransitionSpec<Spotlight.TransitionState, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
+    transitionSpec: TransitionSpec<Spotlight.State, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
     clipToBounds: Boolean = false
-): ModifierTransitionHandler<T, Spotlight.TransitionState> = remember {
+): ModifierTransitionHandler<T, Spotlight.State> = remember {
     SpotlightSlider(transitionSpec = transitionSpec, clipToBounds = clipToBounds)
 }
