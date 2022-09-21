@@ -8,16 +8,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.state.SavedStateMap
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
 /**
  * Composable function to host [Node].
@@ -26,6 +27,7 @@ import com.bumble.appyx.core.state.SavedStateMap
  */
 @Composable
 fun <N : Node> NodeHost(
+    modifier: Modifier = Modifier,
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
     integrationPoint: IntegrationPoint,
     factory: NodeFactory<N>
@@ -34,7 +36,7 @@ fun <N : Node> NodeHost(
     DisposableEffect(node) {
         onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
     }
-    node.Compose()
+    node.Compose(modifier = modifier)
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle) {
         node.updateLifecycleState(lifecycle.currentState)
