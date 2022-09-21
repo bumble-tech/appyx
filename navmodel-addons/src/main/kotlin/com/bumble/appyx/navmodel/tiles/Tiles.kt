@@ -5,21 +5,21 @@ import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.navmodel.tiles.backPressHandler.DeselectAllTiles
-import com.bumble.appyx.navmodel.tiles.Tiles.TransitionState
-import com.bumble.appyx.navmodel.tiles.Tiles.TransitionState.CREATED
-import com.bumble.appyx.navmodel.tiles.Tiles.TransitionState.STANDARD
+import com.bumble.appyx.navmodel.tiles.Tiles.State
+import com.bumble.appyx.navmodel.tiles.Tiles.State.CREATED
+import com.bumble.appyx.navmodel.tiles.Tiles.State.STANDARD
 
 class Tiles<T : Any>(
     initialItems: List<T>,
-    backPressHandler: BackPressHandlerStrategy<T, TransitionState> = DeselectAllTiles()
-) : BaseNavModel<T, TransitionState>(
+    backPressHandler: BackPressHandlerStrategy<T, State> = DeselectAllTiles()
+) : BaseNavModel<T, State>(
     backPressHandler = backPressHandler,
     screenResolver = TilesOnScreenResolver,
     finalState = null,
     savedStateMap = null,
 ) {
 
-    enum class TransitionState {
+    enum class State {
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 

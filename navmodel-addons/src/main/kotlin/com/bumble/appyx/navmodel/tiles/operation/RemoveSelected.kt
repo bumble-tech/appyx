@@ -2,6 +2,8 @@ package com.bumble.appyx.navmodel.tiles.operation
 
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.tiles.Tiles
+import com.bumble.appyx.navmodel.tiles.Tiles.State.DESTROYED
+import com.bumble.appyx.navmodel.tiles.Tiles.State.SELECTED
 import com.bumble.appyx.navmodel.tiles.TilesElements
 import kotlinx.parcelize.Parcelize
 
@@ -12,16 +14,9 @@ class RemoveSelected<T : Any> : TilesOperation<T> {
 
     override fun invoke(
         elements: TilesElements<T>
-    ): NavElements<T, Tiles.TransitionState> =
-        elements.map {
-            if (it.targetState == Tiles.TransitionState.SELECTED) {
-                it.transitionTo(
-                    newTargetState = Tiles.TransitionState.DESTROYED,
-                    operation = this
-                )
-            } else {
-                it
-            }
+    ): NavElements<T, Tiles.State> =
+        elements.transitionTo(DESTROYED) {
+            it.targetState == SELECTED
         }
 
     override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass

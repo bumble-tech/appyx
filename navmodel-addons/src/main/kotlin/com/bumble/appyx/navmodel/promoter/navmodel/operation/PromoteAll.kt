@@ -14,12 +14,7 @@ class PromoteAll<T : Any> : PromoterOperation<T> {
     override fun invoke(
         elements: PromoterElements<T>,
     ): NavElements<T, Promoter.TransitionState> =
-        elements.map {
-            it.transitionTo(
-                newTargetState = it.targetState.next(),
-                operation = this
-            )
-        }
+        elements.transitionTo { it.targetState.next() }
 }
 
 fun <T : Any> Promoter<T>.promoteAll() {
