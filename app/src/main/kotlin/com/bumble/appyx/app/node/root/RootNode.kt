@@ -80,6 +80,7 @@ class RootNode(
         }
 
         Children(
+            modifier = modifier,
             navModel = backStack,
             transitionHandler = rememberBackstackFader { tween(750) }
         )

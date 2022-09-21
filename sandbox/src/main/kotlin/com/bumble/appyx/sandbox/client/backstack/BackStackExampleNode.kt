@@ -30,9 +30,9 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
@@ -41,6 +41,11 @@ import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.operation.remove
 import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.navmodel.backstack.operation.singleTop
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildA
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildB
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildC
+import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildD
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.NEW_ROOT
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.POP
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.PUSH
@@ -48,11 +53,6 @@ import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.REPLACE
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.SINGLE_TOP
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.Operation.values
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildA
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildB
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildC
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode.NavTarget.ChildD
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize

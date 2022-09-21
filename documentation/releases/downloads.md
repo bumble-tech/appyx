@@ -31,17 +31,6 @@ dependencies {
 }
 ```
 
-
-## Addons
-
-```groovy
-dependencies {
-    // Additional NavModels (such as Tiles, Promoter carousel and Modal)
-    implementation "com.bumble.appyx:navmodel-addons:$version"
-}
-```
-
-
 ## Interop with other libraries
 
 ```groovy
