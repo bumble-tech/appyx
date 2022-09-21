@@ -4,6 +4,11 @@
 
 Intended only as an illustration, but it should be easy enough to tailor it to your needs if you find it useful.
 
+## Where can I find this NavModel?
+
+The `Tiles` NavModel is not currently published, however you can fork the Appyx repository and try it out yourself!
+If you feel that this functionality should be part of the main library, please let us know.
+
 ## States
 
 ```kotlin
