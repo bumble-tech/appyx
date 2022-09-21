@@ -23,11 +23,11 @@ enum class TransitionState {
 
 ## Constructing the back stack
 
-As the back stack can never be empty, it's required to define an initial routing.
+As the back stack can never be empty, it's required to define an initial target.
 
 ```kotlin
-class BackStack<Routing : Any>(
-    initialElement: Routing,
+class BackStack<NavTarget : Any>(
+    initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     // Optional parameters are omitted
 )
@@ -69,7 +69,7 @@ Adds horizontal sliding transitions so that the `ACTIVE` element is in the cente
 
 #### Push
 
-`backStack.push(routing)`
+`backStack.push(navTarget)`
 
 Effect on stack: 
 ```
@@ -82,7 +82,7 @@ Adds a new element at the end of the stack with a `CREATED` -> `ACTIVE` transiti
 
 #### Replace
 
-`backStack.replace(routing)`
+`backStack.replace(navTarget)`
 
 Effect on stack: 
 ```
@@ -95,7 +95,7 @@ Adds a new element at the end of the stack with a `CREATED` -> `ACTIVE` transiti
 
 #### Pop
 
-`backStack.pop(routing)`
+`backStack.pop(navTarget)`
 
 Effect on stack: 
 ```
@@ -108,7 +108,7 @@ Transitions the last stashed element `STASHED_IN_BACK_STACK` -> `ACTIVE`.
 
 #### Single top
 
-`backStack.singleTop(routing)`
+`backStack.singleTop(navTarget)`
 
 Effect on stack: depends on the contents of the stack:
 
@@ -124,9 +124,9 @@ Effect on stack: depends on the contents of the stack:
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class BackStack<Routing : Any>(
+class BackStack<NavTarget : Any>(
     /* ... */
-    backPressHandler: BackPressHandlerStrategy<Routing, TransitionState> = PopBackPressHandler(),
+    backPressHandler: BackPressHandlerStrategy<NavTarget, TransitionState> = PopBackPressHandler(),
     /* ... */
 ) 
 ```
@@ -145,9 +145,9 @@ Serves as a no-op.
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class BackStack<Routing : Any>(
+class BackStack<NavTarget : Any>(
     /* ... */
-    operationStrategy: OperationStrategy<Routing, TransitionState> = ExecuteImmediately(),    
+    operationStrategy: OperationStrategy<NavTarget, TransitionState> = ExecuteImmediately(),    
     /* ... */
 )
 ```

@@ -8,13 +8,13 @@ import java.util.UUID
 
 @Parcelize
 @Immutable
-class RoutingKey<Routing> private constructor(
-    val routing: @RawValue Routing,
+class NavKey<NavTarget> private constructor(
+    val navTarget: @RawValue NavTarget,
     val id: String
 ) : Parcelable {
 
-    constructor(routing: @RawValue Routing) : this(
-        routing = routing,
+    constructor(navTarget: @RawValue NavTarget) : this(
+        navTarget = navTarget,
         id = UUID.randomUUID().toString()
     )
 
@@ -22,16 +22,16 @@ class RoutingKey<Routing> private constructor(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as RoutingKey<*>
+        other as NavKey<*>
 
-        if (routing != other.routing) return false
+        if (navTarget != other.navTarget) return false
         if (id != other.id) return false
 
         return true
     }
 
     override fun hashCode(): Int {
-        var result = routing?.hashCode() ?: 0
+        var result = navTarget?.hashCode() ?: 0
         result = 31 * result + id.hashCode()
         return result
     }

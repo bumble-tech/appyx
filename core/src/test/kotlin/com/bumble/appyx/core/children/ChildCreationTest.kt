@@ -4,9 +4,9 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -40,7 +40,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode creates second child on add on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -50,7 +50,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode creates second child on add off screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.add("second", TestNavModel.State.OFF_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.OFF_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -60,8 +60,8 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode removes second child on remove`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
-        parent.routing.remove("second")
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.remove("second")
 
         assertEquals(1, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -70,7 +70,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode keeps not on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.suspend("initial")
+        parent.testNavModel.suspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -79,9 +79,9 @@ class ChildCreationTest {
     @Test
     fun `parent node with keep mode reuses same node when becomes on screen`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.KEEP)
-        parent.routing.suspend("initial")
+        parent.testNavModel.suspend("initial")
         val node = parent.child("initial")
-        parent.routing.unsuspend("initial")
+        parent.testNavModel.unsuspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertEquals(node, parent.child("initial"))
@@ -102,7 +102,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode creates second child on add on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -112,7 +112,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode does not create second child on add off screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.add("second", TestNavModel.State.OFF_SCREEN)
+        parent.testNavModel.add("second", TestNavModel.State.OFF_SCREEN)
 
         assertEquals(2, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -122,8 +122,8 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode removes second child on remove`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.add("second", TestNavModel.State.ON_SCREEN)
-        parent.routing.remove("second")
+        parent.testNavModel.add("second", TestNavModel.State.ON_SCREEN)
+        parent.testNavModel.remove("second")
 
         assertEquals(1, parent.children.value.values.size)
         assertNotNull(parent.child("initial"))
@@ -132,7 +132,7 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode suspends not on screen child`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.suspend("initial")
+        parent.testNavModel.suspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertNull(parent.child("initial"))
@@ -141,8 +141,8 @@ class ChildCreationTest {
     @Test
     fun `parent node with suspend mode restores child when becomes on screen`() {
         val parent = Parent(keepMode = ChildEntry.KeepMode.SUSPEND)
-        parent.routing.suspend("initial")
-        parent.routing.unsuspend("initial")
+        parent.testNavModel.suspend("initial")
+        parent.testNavModel.unsuspend("initial")
 
         assertEquals(1, parent.children.value.values.size)
         assertEquals(true, parent.child("initial")?.hasRestoredState)
@@ -159,19 +159,19 @@ class ChildCreationTest {
     ) {
         enum class State { ON_SCREEN, OFF_SCREEN, DESTROYED }
 
-        override val initialElements: RoutingElements<String, State> = listOf(
-            RoutingElement(
-                key = RoutingKey("initial"),
+        override val initialElements: NavElements<String, State> = listOf(
+            NavElement(
+                key = NavKey("initial"),
                 fromState = State.ON_SCREEN,
                 targetState = State.ON_SCREEN,
                 operation = Operation.Noop(),
             )
         )
 
-        fun add(routing: String, state: State) {
+        fun add(navTarget: String, state: State) {
             updateState {
-                it + RoutingElement(
-                    key = RoutingKey(routing),
+                it + NavElement(
+                    key = NavKey(navTarget),
                     fromState = state,
                     targetState = state,
                     operation = Operation.Noop(),
@@ -179,16 +179,16 @@ class ChildCreationTest {
             }
         }
 
-        fun remove(routing: String) {
+        fun remove(navTarget: String) {
             updateState {
-                it.filterNot { it.key.routing == routing }
+                it.filterNot { it.key.navTarget == navTarget }
             }
         }
 
-        fun suspend(routing: String) {
+        fun suspend(navTarget: String) {
             updateState { list ->
                 list.map {
-                    if (it.key.routing == routing) {
+                    if (it.key.navTarget == navTarget) {
                         it.transitionTo(State.OFF_SCREEN, Operation.Noop())
                     } else {
                         it
@@ -197,10 +197,10 @@ class ChildCreationTest {
             }
         }
 
-        fun unsuspend(routing: String) {
+        fun unsuspend(navTarget: String) {
             updateState { list ->
                 list.map {
-                    if (it.key.routing == routing) {
+                    if (it.key.navTarget == navTarget) {
                         it.transitionTo(State.ON_SCREEN, Operation.Noop())
                     } else {
                         it
@@ -214,10 +214,10 @@ class ChildCreationTest {
     private class Parent(
         keepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP,
         buildContext: BuildContext = BuildContext.root(null),
-        val routing: TestNavModel = TestNavModel(),
+        val testNavModel: TestNavModel = TestNavModel(),
     ) : ParentNode<String>(
         buildContext = buildContext,
-        navModel = routing,
+        navModel = testNavModel,
         childKeepMode = keepMode,
     ) {
         init {
@@ -225,14 +225,14 @@ class ChildCreationTest {
             manageTransitionsInTest()
         }
 
-        override fun resolve(routing: String, buildContext: BuildContext): Node =
-            Child(routing, buildContext)
+        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+            Child(navTarget, buildContext)
 
-        fun key(routing: String): RoutingKey<String>? =
-            children.value.keys.find { it.routing == routing }
+        fun key(navTarget: String): NavKey<String>? =
+            children.value.keys.find { it.navTarget == navTarget }
 
-        fun child(routing: String): Child? =
-            children.value.values.find { it.key.routing == routing }?.nodeOrNull as Child?
+        fun child(navTarget: String): Child? =
+            children.value.values.find { it.key.navTarget == navTarget }?.nodeOrNull as Child?
 
     }
 

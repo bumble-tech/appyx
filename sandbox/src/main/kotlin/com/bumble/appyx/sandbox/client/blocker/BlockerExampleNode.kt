@@ -46,8 +46,8 @@ class BlockerExampleNode(
     @Parcelize
     data class Child(val id: String) : Parcelable
 
-    override fun resolve(routing: Child, buildContext: BuildContext): Node =
-        ChildNode(routing.id, buildContext)
+    override fun resolve(navTarget: Child, buildContext: BuildContext): Node =
+        ChildNode(navTarget.id, buildContext)
 
     @Composable
     override fun View(modifier: Modifier) {

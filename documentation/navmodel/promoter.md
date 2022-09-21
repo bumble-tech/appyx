@@ -40,14 +40,14 @@ You can check `PromoterTransitionHandler` for implementation details.
 
 #### Add first
 
-`promoter.addFirst(routing)`
+`promoter.addFirst(navTarget)`
 
 Adds a new element at the start of the element list with a `CREATED` state.
 
 
 #### Promote all
 
-`promoter.promoteAll(routing)`
+`promoter.promoteAll()`
 
 All elements are transitioned to the next state:
 

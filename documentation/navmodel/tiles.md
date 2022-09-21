@@ -36,28 +36,28 @@ Destroying makes elements fly off the screen with rotation and downscaling.
 
 #### Add
 
-`tiles.add(routing)`
+`tiles.add(navTarget)`
 
-Adds a new element to the routing source immediately transitioning from `CREATED` -> `STANDARD`.
+Adds a new element to the NavModel immediately transitioning from `CREATED` -> `STANDARD`.
 
 
 #### Destroy
 
-`tiles.destroy(routing)`
+`tiles.destroy(navTarget)`
 
 Transitions a given element to `DESTROYED`.
 
 
 #### Select
 
-`tiles.select(routing)`
+`tiles.select(navTarget)`
 
 Transitions a given element `STANDARD` -> `SELECTED`.
 
 
 #### Deselect
 
-`tiles.deselect(routing)`
+`tiles.deselect(navTarget)`
 
 Transitions a given element `SELECTED` -> `STANDARD`.
 

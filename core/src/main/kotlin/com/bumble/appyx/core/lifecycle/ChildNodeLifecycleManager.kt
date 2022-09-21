@@ -7,7 +7,7 @@ import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -23,9 +23,9 @@ import kotlinx.coroutines.launch
  * Hosts [LifecycleRegistry] to manage the current node lifecycle
  * and updates lifecycle of children nodes when updated.
  */
-internal class ChildNodeLifecycleManager<Routing>(
-    private val navModel: NavModel<Routing, *>,
-    private val children: StateFlow<ChildEntryMap<Routing>>,
+internal class ChildNodeLifecycleManager<NavTarget>(
+    private val navModel: NavModel<NavTarget, *>,
+    private val children: StateFlow<ChildEntryMap<NavTarget>>,
     private val coroutineScope: CoroutineScope,
 ) {
 
@@ -86,7 +86,7 @@ internal class ChildNodeLifecycleManager<Routing>(
         }
     }
 
-    private fun <Routing> Flow<NavModelAdapter.ScreenState<Routing, *>>.keys() =
+    private fun <NavTarget> Flow<NavModelAdapter.ScreenState<NavTarget, *>>.keys() =
         this
             .map { screenState ->
                 ScreenState(
@@ -100,9 +100,9 @@ internal class ChildNodeLifecycleManager<Routing>(
         nodeOrNull?.updateLifecycleState(state)
     }
 
-    private data class ScreenState<Routing>(
-        val onScreen: List<RoutingKey<Routing>> = emptyList(),
-        val offScreen: List<RoutingKey<Routing>> = emptyList(),
+    private data class ScreenState<NavTarget>(
+        val onScreen: List<NavKey<NavTarget>> = emptyList(),
+        val offScreen: List<NavKey<NavTarget>> = emptyList(),
     )
 
 }

@@ -11,15 +11,15 @@ No node can be in a higher lifecycle state than any of its parents or the Androi
 `NavModel` controls which children should be rendered on the screen and which should not with `NavModel.screenState`.
 The behaviour is customisable in `BaseNavModel` via `OnScreenStateResolver`.
 
-When `RoutingElement` of the node is marked as on-screen, its lifecycle follows the parent node lifecycle.
-The rendering status does not affect it, the node might not be added to Compose view and still be in `RESUMED` state.
+When a `NavElement` of the node is marked as on-screen, its lifecycle follows the parent node's lifecycle.
+The rendering status does not affect it – the node might not be added to Compose view and still be in a `RESUMED` state.
 
-When `RoutingElement` of the node is marked as off-screen, the following might happen:
+When a `NavElement` of the node is marked as off-screen, the following might happen:
 
 - Its lifecycle is capped with `CREATED` (or `STOPPED`) in case of `ChildEntry.KeepMode.KEEP`. 
 - The node is destroyed and its state is saved in case of `ChildEntry.KeepMode.SUSPEND`.
 
-`ChildEntry.KeepMode` settings can be setup on each `ParentNode` separately or globally via `Appyx.defaultChildKeepMode`.
+`ChildEntry.KeepMode` settings can be configured for each `ParentNode` individually or globally via `Appyx.defaultChildKeepMode`.
 
 When a node is removed completely from `NavModel`, it will be in `DESTROYED` state.
 

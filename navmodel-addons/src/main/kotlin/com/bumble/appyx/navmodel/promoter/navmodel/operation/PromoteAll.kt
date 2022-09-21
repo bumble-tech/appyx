@@ -2,7 +2,7 @@ package com.bumble.appyx.navmodel.promoter.navmodel.operation
 
 import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
 import com.bumble.appyx.navmodel.promoter.navmodel.PromoterElements
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -13,7 +13,7 @@ class PromoteAll<T : Any> : PromoterOperation<T> {
 
     override fun invoke(
         elements: PromoterElements<T>,
-    ): RoutingElements<T, Promoter.TransitionState> =
+    ): NavElements<T, Promoter.TransitionState> =
         elements.map {
             it.transitionTo(
                 newTargetState = it.targetState.next(),

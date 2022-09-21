@@ -23,7 +23,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.activeRouting
+import com.bumble.appyx.navmodel.backstack.activeElement
 import com.bumble.appyx.navmodel.backstack.operation.push
 import kotlinx.parcelize.Parcelize
 import org.hamcrest.MatcherAssert.assertThat
@@ -54,7 +54,7 @@ class BackPressHandlerTest {
     }
 
     @Test
-    fun routing_handles_back_press_when_plugin_has_disabled_listener() {
+    fun navigation_handles_back_press_when_plugin_has_disabled_listener() {
         rule.start()
         pushChildB()
         disablePlugin()
@@ -63,12 +63,12 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(rule.node.backStack.activeRouting, equalTo(TestParentNode.Routing.ChildA))
+        assertThat(rule.node.backStack.activeElement, equalTo(TestParentNode.NavTarget.ChildA))
         assertThat(backHandler.onBackPressedHandled, equalTo(false))
     }
 
     @Test
-    fun custom_plugin_handles_back_press_before_routing() {
+    fun custom_plugin_handles_back_press_before_navigation() {
         rule.start()
         pushChildB()
 
@@ -76,7 +76,7 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(rule.node.backStack.activeRouting, equalTo(TestParentNode.Routing.ChildB))
+        assertThat(rule.node.backStack.activeElement, equalTo(TestParentNode.NavTarget.ChildB))
         assertThat(backHandler.onBackPressedHandled, equalTo(true))
     }
 
@@ -121,7 +121,7 @@ class BackPressHandlerTest {
     @Test
     fun child_back_handler_works_before_parent() {
         rule.start()
-        runOnMainSync { rule.node.backStack.push(TestParentNode.Routing.ChildWithPlugin) }
+        runOnMainSync { rule.node.backStack.push(TestParentNode.NavTarget.ChildWithPlugin) }
 
         Espresso.pressBack()
         Espresso.onIdle()
@@ -161,15 +161,15 @@ class BackPressHandlerTest {
     fun appyx_handles_back_press_after_activity_returns_from_background() {
         fun TestParentNode.findChildNode() =
             children.value.values.firstNotNullOf { value ->
-                value.nodeOrNull?.takeIf { value.key.routing == TestParentNode.Routing.ChildWithPlugin }
+                value.nodeOrNull?.takeIf { value.key.navTarget == TestParentNode.NavTarget.ChildWithPlugin }
             } as TestParentNode
 
         rule.start()
         runOnMainSync {
             rule.node.run {
-                backStack.push(TestParentNode.Routing.ChildWithPlugin)
+                backStack.push(TestParentNode.NavTarget.ChildWithPlugin)
                 val node = findChildNode()
-                node.backStack.push(TestParentNode.Routing.ChildB)
+                node.backStack.push(TestParentNode.NavTarget.ChildB)
             }
         }
 
@@ -190,7 +190,7 @@ class BackPressHandlerTest {
     }
 
     private fun pushChildB() {
-        runOnMainSync { rule.node.backStack.push(TestParentNode.Routing.ChildB) }
+        runOnMainSync { rule.node.backStack.push(TestParentNode.NavTarget.ChildB) }
     }
 
     private fun disablePlugin() {
@@ -199,47 +199,47 @@ class BackPressHandlerTest {
 
     class TestParentNode(
         buildContext: BuildContext,
-        val backStack: BackStack<Routing> = BackStack(
-            initialElement = Routing.ChildA,
+        val backStack: BackStack<NavTarget> = BackStack(
+            initialElement = NavTarget.ChildA,
             savedStateMap = null,
         ),
         plugin: Plugin?,
         private val childPlugin: Plugin?,
-    ) : ParentNode<TestParentNode.Routing>(
+    ) : ParentNode<TestParentNode.NavTarget>(
         buildContext = buildContext,
         navModel = backStack,
         plugins = listOfNotNull(plugin),
     ) {
 
-        sealed class Routing : Parcelable {
+        sealed class NavTarget : Parcelable {
 
             @Parcelize
-            object ChildA : Routing()
+            object ChildA : NavTarget()
 
             @Parcelize
-            object ChildB : Routing()
+            object ChildB : NavTarget()
 
             @Parcelize
-            object ChildWithPlugin : Routing()
+            object ChildWithPlugin : NavTarget()
 
         }
 
-        override fun resolve(routing: Routing, buildContext: BuildContext) = when (routing) {
-            Routing.ChildA -> node(buildContext) {
+        override fun resolve(navTarget: NavTarget, buildContext: BuildContext) = when (navTarget) {
+            NavTarget.ChildA -> node(buildContext) {
                 Spacer(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Green)
                 )
             }
-            Routing.ChildB -> node(buildContext) {
+            NavTarget.ChildB -> node(buildContext) {
                 Spacer(
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Red)
                 )
             }
-            Routing.ChildWithPlugin -> TestParentNode(
+            NavTarget.ChildWithPlugin -> TestParentNode(
                 buildContext = buildContext,
                 plugin = childPlugin,
                 childPlugin = null,

@@ -2,7 +2,7 @@ package com.bumble.appyx.navmodel.tiles
 
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.navmodel.tiles.backPressHandler.DeselectAllTiles
 import com.bumble.appyx.navmodel.tiles.Tiles.TransitionState
@@ -25,7 +25,7 @@ class Tiles<T : Any>(
 
     override val initialElements = initialItems.map {
         TilesElement(
-            key = RoutingKey(it),
+            key = NavKey(it),
             fromState = CREATED,
             targetState = STANDARD,
             operation = Noop()

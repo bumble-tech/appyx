@@ -1,6 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
@@ -29,7 +29,7 @@ data class NewRoot<T : Any>(
         val current = elements.active
         requireNotNull(current) { "No previous elements, state=$elements" }
 
-        return if (current.key.routing == element) {
+        return if (current.key.navTarget == element) {
             listOf(current)
         } else {
             listOf(
@@ -38,7 +38,7 @@ data class NewRoot<T : Any>(
                     operation = this
                 ),
                 BackStackElement(
-                    key = RoutingKey(element),
+                    key = NavKey(element),
                     fromState = CREATED,
                     targetState = ACTIVE,
                     operation = this

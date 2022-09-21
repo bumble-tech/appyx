@@ -3,7 +3,7 @@ package com.bumble.appyx.sandbox.client.mvicoreexample.leaf
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
@@ -22,7 +22,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(InstantExecutorExtension::class, CoroutinesTestExtension::class)
 class MviCoreLeafNodeJUnit5Test {
 
-    private val view = object : NodeViewStub<Event, ViewModel, Routing>(), MviCoreLeafView {}
+    private val view = object : NodeViewStub<Event, ViewModel, NavTarget>(), MviCoreLeafView {}
 
     private val stateName = "Test Initial State"
     private val feature = FeatureStub<Wish, State, News>(

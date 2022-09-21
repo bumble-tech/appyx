@@ -4,13 +4,13 @@ import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavModel
 import kotlinx.coroutines.CoroutineScope
 
-interface OperationStrategy<Routing, State> {
+interface OperationStrategy<NavTarget, State> {
 
     fun init(
-        navModel: NavModel<Routing, State>,
+        navModel: NavModel<NavTarget, State>,
         scope: CoroutineScope,
-        executeOperation: (operation: Operation<Routing, State>) -> Unit
+        executeOperation: (operation: Operation<NavTarget, State>) -> Unit
     )
 
-    fun accept(operation: Operation<Routing, State>)
+    fun accept(operation: Operation<NavTarget, State>)
 }

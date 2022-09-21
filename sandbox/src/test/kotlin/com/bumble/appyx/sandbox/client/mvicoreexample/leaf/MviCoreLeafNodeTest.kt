@@ -4,7 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.Routing
+import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.News
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature.State
@@ -27,7 +27,7 @@ class MviCoreLeafNodeTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val view = object : NodeViewStub<Event, ViewModel, Routing>(), MviCoreLeafView {}
+    private val view = object : NodeViewStub<Event, ViewModel, NavTarget>(), MviCoreLeafView {}
 
     private val stateName = "Test Initial State"
     private val feature = FeatureStub<Wish, State, News>(

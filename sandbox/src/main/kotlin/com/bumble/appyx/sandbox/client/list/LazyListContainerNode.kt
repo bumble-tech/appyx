@@ -30,32 +30,32 @@ import com.bumble.appyx.core.composable.visibleChildrenAsState
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.RoutingElement
+import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Column
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Grid
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.Row
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.ListMode.values
-import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.Routing
+import com.bumble.appyx.sandbox.client.list.LazyListContainerNode.NavTarget
 import kotlinx.parcelize.Parcelize
 
 class LazyListContainerNode constructor(
     buildContext: BuildContext,
-    navModel: PermanentNavModel<Routing> = PermanentNavModel(
-        routings = buildSet<Routing> {
+    navModel: PermanentNavModel<NavTarget> = PermanentNavModel(
+        navTargets = buildSet<NavTarget> {
             repeat(100) {
-                add(Routing(it.toString()))
+                add(NavTarget(it.toString()))
             }
         },
         savedStateMap = buildContext.savedStateMap
     )
-) : ParentNode<Routing>(navModel, buildContext) {
+) : ParentNode<NavTarget>(navModel, buildContext) {
     @Parcelize
-    data class Routing(val name: String) : Parcelable
+    data class NavTarget(val name: String) : Parcelable
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        ChildNode(routing.name, buildContext)
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        ChildNode(navTarget.name, buildContext)
 
     enum class ListMode {
         Column, Row, Grid
@@ -83,7 +83,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun ColumnExample(elements: List<RoutingElement<Routing, out Any?>>) {
+    private fun ColumnExample(elements: List<NavElement<NavTarget, out Any?>>) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -91,33 +91,33 @@ class LazyListContainerNode constructor(
 
         ) {
             items(elements, key = { element -> element.key.id }) { element ->
-                Child(routingElement = element)
+                Child(navElement = element)
             }
         }
     }
 
     @Composable
-    private fun RowExample(elements: List<RoutingElement<Routing, out Any?>>) {
+    private fun RowExample(elements: List<NavElement<NavTarget, out Any?>>) {
         LazyRow(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(elements, key = { element -> element.key.id }) { element ->
-                Child(routingElement = element)
+                Child(navElement = element)
             }
         }
     }
 
     @Composable
-    private fun GridExample(elements: List<RoutingElement<Routing, out Any?>>) {
+    private fun GridExample(elements: List<NavElement<NavTarget, out Any?>>) {
         LazyVerticalGrid(
             columns = Fixed(2),
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
         ) {
             items(elements) { element ->
-                Child(routingElement = element)
+                Child(navElement = element)
             }
         }
     }

@@ -1,10 +1,10 @@
 package com.bumble.appyx.navmodel.modal
 
 import com.bumble.appyx.navmodel.modal.Modal.TransitionState
-import com.bumble.appyx.core.navigation.RoutingElement
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation.NavElements
 
-typealias ModalElement<T> = RoutingElement<T, TransitionState>
+typealias ModalElement<T> = NavElement<T, TransitionState>
 
-typealias ModalElements<T> = RoutingElements<T, TransitionState>
+typealias ModalElements<T> = NavElements<T, TransitionState>
 

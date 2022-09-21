@@ -1,18 +1,18 @@
 package com.bumble.appyx.core.navigation.operationstrategies
 
 import com.bumble.appyx.core.navigation.Operation
-import com.bumble.appyx.core.navigation.RoutingElements
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.isTransitioning
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 
-class QueueOperations<Routing, State> : BaseOperationStrategy<Routing, State>() {
+class QueueOperations<NavTarget, State> : BaseOperationStrategy<NavTarget, State>() {
 
-    private val operationQueue = LinkedList<Operation<Routing, State>>()
+    private val operationQueue = LinkedList<Operation<NavTarget, State>>()
     private lateinit var collectJob: Job
 
-    override fun accept(operation: Operation<Routing, State>) {
+    override fun accept(operation: Operation<NavTarget, State>) {
         collectElementsIfRequired()
 
         if (hasUnfinishedOperation()) {
@@ -32,7 +32,7 @@ class QueueOperations<Routing, State> : BaseOperationStrategy<Routing, State>() 
         }
     }
 
-    private fun addToQueueIfTransitionInProgress(transitionList: RoutingElements<Routing, out State>) {
+    private fun addToQueueIfTransitionInProgress(transitionList: NavElements<NavTarget, out State>) {
         if (transitionList.none { it.isTransitioning } && operationQueue.isNotEmpty()) {
             val operation = operationQueue.removeLast()
             executeOperation(operation)

@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
-import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.Routing
+import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.NavTarget
 import com.bumble.appyx.app.node.onboarding.screen.ApplicationTree
 import com.bumble.appyx.app.node.onboarding.screen.IntroScreen
 import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode
@@ -59,46 +59,46 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalComposeUiApi
 class OnboardingContainerNode(
     buildContext: BuildContext,
-    private val spotlight: Spotlight<Routing> = Spotlight(
+    private val spotlight: Spotlight<NavTarget> = Spotlight(
         items = listOf(
-            Routing.IntroScreen,
-            Routing.ApplicationTree,
-            Routing.StatefulNode1,
-            Routing.StatefulNode2,
-            Routing.NavModelTeaser,
+            NavTarget.IntroScreen,
+            NavTarget.ApplicationTree,
+            NavTarget.StatefulNode1,
+            NavTarget.StatefulNode2,
+            NavTarget.NavModelTeaser,
         ),
         backPressHandler = GoToPrevious(),
         savedStateMap = buildContext.savedStateMap,
     ),
-) : ParentNode<Routing>(
+) : ParentNode<NavTarget>(
     navModel = spotlight,
     buildContext = buildContext
 ) {
 
-    sealed class Routing : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object IntroScreen : Routing()
+        object IntroScreen : NavTarget()
 
         @Parcelize
-        object ApplicationTree : Routing()
+        object ApplicationTree : NavTarget()
 
         @Parcelize
-        object StatefulNode1 : Routing()
+        object StatefulNode1 : NavTarget()
 
         @Parcelize
-        object StatefulNode2 : Routing()
+        object StatefulNode2 : NavTarget()
 
         @Parcelize
-        object NavModelTeaser : Routing()
+        object NavModelTeaser : NavTarget()
     }
 
-    override fun resolve(routing: Routing, buildContext: BuildContext): Node =
-        when (routing) {
-            Routing.IntroScreen -> IntroScreen(buildContext)
-            Routing.ApplicationTree -> ApplicationTree(buildContext)
-            Routing.StatefulNode1 -> StatefulNode1(buildContext)
-            Routing.StatefulNode2 -> StatefulNode2(buildContext)
-            Routing.NavModelTeaser -> NavModelTeaserNode(buildContext)
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            NavTarget.IntroScreen -> IntroScreen(buildContext)
+            NavTarget.ApplicationTree -> ApplicationTree(buildContext)
+            NavTarget.StatefulNode1 -> StatefulNode1(buildContext)
+            NavTarget.StatefulNode2 -> StatefulNode2(buildContext)
+            NavTarget.NavModelTeaser -> NavModelTeaserNode(buildContext)
         }
 
     @Composable

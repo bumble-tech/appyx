@@ -6,7 +6,7 @@ import com.bumble.appyx.navmodel.promoter.navmodel.Promoter.TransitionState.DEST
 import com.bumble.appyx.navmodel.promoter.navmodel.Promoter.TransitionState.STAGE1
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.RoutingKey
+import com.bumble.appyx.core.navigation.NavKey
 
 class Promoter<T : Any>(
     initialItems: List<T> = listOf(),
@@ -33,7 +33,7 @@ class Promoter<T : Any>(
 
     override val initialElements = initialItems.map {
         PromoterElement(
-            key = RoutingKey(it),
+            key = NavKey(it),
             fromState = CREATED,
             targetState = STAGE1,
             operation = Noop()
