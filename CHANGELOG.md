@@ -7,6 +7,7 @@
 - [#138](https://github.com/bumble-tech/appyx/pull/138) - **Fixed**: `androidx.appcompat:appcompat` from is exposed via `api` within `com.bumble.appyx:core`. This prevents potential compilation bugs.
 - [#143](https://github.com/bumble-tech/appyx/issues/143) - **Fixed**: Correctly exposed transitive dependencies that are part of the libraries ABI
 - [#145](https://github.com/bumble-tech/appyx/issues/145) - **Updated**: `SpotlightSlider` now uses offset modifier with lambda
+- [#159](https://github.com/bumble-tech/appyx/pull/159) - **Added**: `NodeHost` now takes modifier parameter to decorate the view of a root node
 
 ---
 
