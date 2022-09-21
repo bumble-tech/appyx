@@ -18,6 +18,10 @@ class DeselectAll<T : Any> : TilesOperation<T> {
         elements.transitionTo(STANDARD) {
             it.targetState == SELECTED
         }
+
+    override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
+
+    override fun hashCode(): Int = this.javaClass.hashCode()
 }
 
 fun <T : Any> Tiles<T>.deselectAll() {
