@@ -23,7 +23,7 @@ include(
     ":sandbox",
     ":interop-ribs",
     ":interop-rx2",
-    ":navmodel-addons",
+    ":navmodel-samples",
     ":samples:navigation-compose",
     ":testing-junit4",
     ":testing-junit5",
