@@ -44,7 +44,7 @@ android {
 
 dependencies {
     implementation(project(":core"))
-    implementation(project(":navmodel-addons"))
+    implementation(project(":navmodel-samples"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
