@@ -19,9 +19,9 @@ Navigation models describe navigation itself – by the states and operations th
 You can take a look at some of these examples:
 
 1. [Back stack](backstack.md)
-1. [Spotlight](spotlight.md)
-2. [Tiles](tiles.md)
-3. [Promoter carousel](promoter.md)
+2. [Spotlight](spotlight.md)
+3. [Tiles](tiles.md)
+4. [Promoter carousel](promoter.md)
 
 When you feel ready, you can try to [implement your own NavModel](custom.md).
 

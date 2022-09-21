@@ -45,6 +45,7 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCore
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.RequestPermissionsExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightAdvancedExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.TilesExample
 import com.bumble.appyx.sandbox.client.customisations.createViewCustomisationsActivityIntent
@@ -56,6 +57,7 @@ import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
+import com.bumble.appyx.sandbox.client.spotlightadvancedexample.SpotlightAdvancedExampleNode
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode
 import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
 import com.bumble.appyx.utils.customisations.NodeCustomisation
@@ -116,6 +118,9 @@ class ContainerNode internal constructor(
         object MviCoreLeafExample : NavTarget()
 
         @Parcelize
+        object SpotlightAdvancedExample : NavTarget()
+
+        @Parcelize
         object BlockerExample : NavTarget()
 
         @Parcelize
@@ -127,6 +132,7 @@ class ContainerNode internal constructor(
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
             is NavModelExamples -> node(buildContext) { modifier -> NavModelExamples(modifier) }
             is BackStackExample -> BackStackExampleNode(buildContext)
+            is SpotlightAdvancedExample -> SpotlightAdvancedExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedNavModel -> CombinedNavModelNode(buildContext)
@@ -225,6 +231,7 @@ class ContainerNode internal constructor(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                TextButton("SpotlightAdvanced example") { backStack.push(SpotlightAdvancedExample) }
                 TextButton("Backstack example") { backStack.push(BackStackExample) }
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
