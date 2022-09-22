@@ -50,6 +50,11 @@ Nodes have their own lifecycles, directly using the related classes of `androidx
 Read more in [Lifecycle](../apps/lifecycle.md)
 
 
+## ChildAware API
+
+React to dynamically added child nodes in the tree: [ChildAware API](childaware.md) 
+
+
 ## Summary
 
 A summary of Appyx's approach to structuring applications:
