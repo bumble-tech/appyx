@@ -3,6 +3,7 @@ package com.bumble.appyx.sandbox.client.mvicoreexample.leaf
 import com.bumble.appyx.core.builder.Builder
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.interop.rx2.plugin.disposeOnDestroyPlugin
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.MviCoreExampleFeature
 
 class MviCoreLeafBuilder : Builder<String>() {
@@ -18,7 +19,7 @@ class MviCoreLeafBuilder : Builder<String>() {
         return MviCoreLeafNode(
             buildContext = buildContext,
             view = view,
-            interactor = interactor
+            plugins = listOf(interactor, disposeOnDestroyPlugin(feature))
         )
     }
 }
