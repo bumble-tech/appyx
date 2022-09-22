@@ -35,17 +35,11 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
             val current = elements.active
             requireNotNull(current)
 
-            val newElements = elements.dropLast(elements.size - position - 1)
+            val newElements = elements
+                .dropLast(elements.size - position - 1)
 
-            return newElements.mapIndexed { index, element ->
-                if (index == newElements.lastIndex) {
-                    element.transitionTo(
-                        newTargetState = BackStack.State.ACTIVE,
-                        operation = this
-                    )
-                } else {
-                    element
-                }
+            return newElements.transitionToIndexed(ACTIVE) { index, _ ->
+                index == newElements.lastIndex
             } + current.transitionTo(
                 newTargetState = BackStack.State.DESTROYED,
                 operation = this

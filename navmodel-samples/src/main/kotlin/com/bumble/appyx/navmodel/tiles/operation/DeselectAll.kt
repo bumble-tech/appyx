@@ -2,6 +2,8 @@ package com.bumble.appyx.navmodel.tiles.operation
 
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.tiles.Tiles
+import com.bumble.appyx.navmodel.tiles.Tiles.State.SELECTED
+import com.bumble.appyx.navmodel.tiles.Tiles.State.STANDARD
 import com.bumble.appyx.navmodel.tiles.TilesElements
 import kotlinx.parcelize.Parcelize
 
@@ -13,15 +15,8 @@ class DeselectAll<T : Any> : TilesOperation<T> {
     override fun invoke(
         elements: TilesElements<T>
     ): NavElements<T, Tiles.State> =
-        elements.map {
-            if (it.targetState == Tiles.State.SELECTED) {
-                it.transitionTo(
-                    newTargetState = Tiles.State.STANDARD,
-                    operation = this
-                )
-            } else {
-                it
-            }
+        elements.transitionTo(STANDARD) {
+            it.targetState == SELECTED
         }
 
     override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass

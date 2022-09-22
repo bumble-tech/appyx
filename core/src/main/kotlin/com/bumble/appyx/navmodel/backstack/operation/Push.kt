@@ -6,6 +6,7 @@ import com.bumble.appyx.navmodel.backstack.BackStackElement
 import com.bumble.appyx.navmodel.backstack.BackStackElements
 import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
 import com.bumble.appyx.navmodel.backstack.BackStack.State.CREATED
+import com.bumble.appyx.navmodel.backstack.BackStack.State.STASHED
 import com.bumble.appyx.navmodel.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -23,23 +24,15 @@ data class Push<T : Any>(
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
         element != elements.activeElement
 
-    override fun invoke(elements: BackStackElements<T>): BackStackElements<T> {
-        return elements.map {
-            if (it.targetState == BackStack.State.ACTIVE) {
-                it.transitionTo(
-                    newTargetState = BackStack.State.STASHED,
-                    operation = this
-                )
-            } else {
-                it
-            }
+    override fun invoke(elements: BackStackElements<T>): BackStackElements<T> =
+        elements.transitionTo(STASHED) {
+            it.targetState == ACTIVE
         } + BackStackElement(
             key = NavKey(element),
             fromState = CREATED,
             targetState = ACTIVE,
             operation = this
         )
-    }
 }
 
 fun <T : Any> BackStack<T>.push(element: T) {

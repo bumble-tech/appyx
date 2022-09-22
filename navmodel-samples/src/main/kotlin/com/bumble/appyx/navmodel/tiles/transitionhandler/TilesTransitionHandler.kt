@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.tiles.transitionhandler
 
 import android.annotation.SuppressLint
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
@@ -62,7 +63,7 @@ class TilesTransitionHandler<T>(
 
 @Composable
 fun <T> rememberTilesTransitionHandler(
-    transitionSpec: TransitionSpec<Tiles.State, Float> = { spring() }
+    transitionSpec: TransitionSpec<Tiles.State, Float> = { spring(stiffness = Spring.StiffnessVeryLow) }
 ): ModifierTransitionHandler<T, Tiles.State> = remember {
     TilesTransitionHandler(transitionSpec)
 }

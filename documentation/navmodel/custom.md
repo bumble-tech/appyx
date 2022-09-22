@@ -64,6 +64,7 @@ class SomeOperation<NavTarget : Any> : FooOperation<NavTarget> {
     ): NavElements<NavTarget, Foo.State> =
         // TODO: Mutate elements however you please. Add, remove, change.
         //  In this example we're changing all elements to transition to BAR.
+        //  You can also use helper methods elements.transitionTo & elements.transitionToIndexed 
         elements.map {
             it.transitionTo(
                 newTargetState = BAR,
