@@ -17,7 +17,7 @@
 - [#145](https://github.com/bumble-tech/appyx/issues/145) - **Updated**: `SpotlightSlider` now uses offset modifier with lambda
 - [#159](https://github.com/bumble-tech/appyx/pull/159) - **Added**: `NodeHost` now takes modifier parameter to decorate the view of a root node
 - [#162](https://github.com/bumble-tech/appyx/pull/162) - **Added**: `disposeOnDestroyPlugin` extension has been added to interop-rx2. This will allow Rx2 code to be easily disposed when the node it belongs to is destroyed. 
-- [#161](https://github.com/bumble-tech/appyx/pull/151) - **Added**: Operations helpers
+- [#161](https://github.com/bumble-tech/appyx/pull/161) - **Added**: Operations helpers
 
 <div style="text-align: center"><small>22 Sep 2022</small></div>
 
