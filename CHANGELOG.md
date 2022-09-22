@@ -3,6 +3,10 @@
 
 ## Pending changes
 
+–
+
+## 1.0-alpha09
+
 - [#151](https://github.com/bumble-tech/appyx/issues/151) - **Breaking change**: Renamed `Routing` to `NavTarget`. All related namings are affected (`RoutingElement`, `RoutingKey`, etc.)
 - [#158](https://github.com/bumble-tech/appyx/issues/158) - **Breaking change**: Renamed `TransitionState` to `State` in all NavModel impls. Renamed `STASHED_IN_BACK_STACK` to `STASHED`.
 - [#146](https://github.com/bumble-tech/appyx/issues/146) - **Breaking change**: Removed `FragmentIntegrationPoint`. Clients should use `ActivityIntegrationPoint.getIntegrationPoint(context: Context)` to get integration point from Fragment 
@@ -14,6 +18,8 @@
 - [#159](https://github.com/bumble-tech/appyx/pull/159) - **Added**: `NodeHost` now takes modifier parameter to decorate the view of a root node
 - [#162](https://github.com/bumble-tech/appyx/pull/162) - **Added**: `disposeOnDestroyPlugin` extension has been added to interop-rx2. This will allow Rx2 code to be easily disposed when the node it belongs to is destroyed. 
 - [#161](https://github.com/bumble-tech/appyx/pull/151) - **Added**: Operations helpers
+
+<div style="text-align: center"><small>22 Sep 2022</small></div>
 
 ---
 
