@@ -5,7 +5,7 @@ import com.bumble.appyx.core.plugin.Plugin
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-private class DisposeOnDestroyPlugin(disposables: List<Disposable>) : Destroyable {
+private class DisposeOnDestroy(disposables: List<Disposable>) : Destroyable {
     private val disposable = CompositeDisposable(disposables)
 
     override fun destroy() {
@@ -14,4 +14,4 @@ private class DisposeOnDestroyPlugin(disposables: List<Disposable>) : Destroyabl
 }
 
 fun disposeOnDestroyPlugin(vararg disposables: Disposable): Plugin =
-    DisposeOnDestroyPlugin(disposables.toList())
+    DisposeOnDestroy(disposables.toList())

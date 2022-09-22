@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Assertions.assertInstanceOf
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
-internal class DisposeOnDestroyPluginTest {
+internal class DisposeOnDestroyTest {
     @Test
     fun `WHEN dispose on destroy plugin created THEN verify is destroyable type`() {
         assertInstanceOf(Destroyable::class.java, disposeOnDestroyPlugin())
