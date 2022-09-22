@@ -4,6 +4,7 @@ import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.firstChildOfType
+import com.bumble.appyx.interop.rx2.plugin.disposeOnDestroyPlugin
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
@@ -50,7 +51,7 @@ class MviCoreExampleNodeJUnit5Test {
         node = MviCoreExampleNode(
             view = view,
             buildContext = BuildContext.root(savedStateMap = null),
-            plugins = listOf(interactor),
+            plugins = listOf(interactor, disposeOnDestroyPlugin(feature)),
             backStack = backStack,
         )
 

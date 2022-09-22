@@ -4,13 +4,15 @@
 ## Pending changes
 
 - [#151](https://github.com/bumble-tech/appyx/issues/151) - **Breaking change**: Renamed `Routing` to `NavTarget`. All related namings are affected (`RoutingElement`, `RoutingKey`, etc.)
-- [#151](https://github.com/bumble-tech/appyx/issues/158) - **Breaking change**: Renamed `TransitionState` to `State` in all NavModel impls. Renamed `STASHED_IN_BACK_STACK` to `STASHED`.
+- [#158](https://github.com/bumble-tech/appyx/issues/158) - **Breaking change**: Renamed `TransitionState` to `State` in all NavModel impls. Renamed `STASHED_IN_BACK_STACK` to `STASHED`.
 - [#146](https://github.com/bumble-tech/appyx/issues/146) - **Breaking change**: Removed `FragmentIntegrationPoint`. Clients should use `ActivityIntegrationPoint.getIntegrationPoint(context: Context)` to get integration point from Fragment 
-- [#146](https://github.com/bumble-tech/appyx/issues/160) - **Breaking change**: Renamed `navmodel-addons` to `navmodel-samples` and stopped publishing the binary. If you feel we should add any of the samples to the main codebase, please let us know! 
+- [#160](https://github.com/bumble-tech/appyx/issues/160) - **Breaking change**: Renamed `navmodel-addons` to `navmodel-samples` and stopped publishing the binary. If you feel we should add any of the samples to the main codebase, please let us know! 
 - [#138](https://github.com/bumble-tech/appyx/pull/138) - **Fixed**: `androidx.appcompat:appcompat` from is exposed via `api` within `com.bumble.appyx:core`. This prevents potential compilation bugs.
 - [#143](https://github.com/bumble-tech/appyx/issues/143) - **Fixed**: Correctly exposed transitive dependencies that are part of the libraries ABI
+- [#162](https://github.com/bumble-tech/appyx/pull/162) - **Fixed**: `NodeTestHelper`'s `moveTo` function can now move to `Lifecycle.State.DESTROYED`. The node itself has safeguards to prevent moving from destroyed state, and moving to destroyed is a valid test case.
 - [#145](https://github.com/bumble-tech/appyx/issues/145) - **Updated**: `SpotlightSlider` now uses offset modifier with lambda
 - [#159](https://github.com/bumble-tech/appyx/pull/159) - **Added**: `NodeHost` now takes modifier parameter to decorate the view of a root node
+- [#162](https://github.com/bumble-tech/appyx/pull/162) - **Added**: `disposeOnDestroyPlugin` extension has been added to interop-rx2. This will allow Rx2 code to be easily disposed when the node it belongs to is destroyed. 
 
 ---
 

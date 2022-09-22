@@ -19,11 +19,6 @@ open class NodeTestHelper<N : Node>(private val node: N) {
         require(state != Lifecycle.State.INITIALIZED) {
             "Can't move to INITIALIZED state"
         }
-        require(
-            nodeLifecycle.currentState != Lifecycle.State.DESTROYED ||
-                    state == Lifecycle.State.DESTROYED
-        ) { "Can't move from DESTROYED state" }
-
         node.updateLifecycleState(state)
     }
 
