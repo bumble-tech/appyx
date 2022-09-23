@@ -24,6 +24,7 @@ include(
     ":interop-ribs",
     ":interop-rx2",
     ":navmodel-samples",
+    ":samples:common",
     ":samples:navigation-compose",
     ":testing-junit4",
     ":testing-junit5",

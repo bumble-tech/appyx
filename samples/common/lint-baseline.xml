@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.2.2" type="baseline" client="gradle" dependencies="false" name="AGP (7.2.2)" variant="all" version="7.2.2">
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/brittany41.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/brittany41.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/brittany60.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/brittany60.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/brittany8.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/brittany8.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/img_8607.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/img_8607.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/img_9113.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/img_9113.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/imogen15.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/imogen15.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/imogen57.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/imogen57.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/imogen60.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/imogen60.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/imogen75.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/imogen75.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/matt12.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/matt12.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/matt24.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/matt24.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/matt60.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/matt60.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/matt88.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/matt88.jpg"/>
+    </issue>
+
+</issues>
