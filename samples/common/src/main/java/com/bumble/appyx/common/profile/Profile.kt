@@ -2,11 +2,12 @@ package com.bumble.appyx.common.profile
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
-import com.bumble.appyx.R
+import com.bumble.appyx.common.R
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
 @Parcelize
+@Suppress("MagicNumber")
 data class Profile(
     val name: String,
     val age: Int = Random.nextInt(20, 35),
@@ -98,10 +99,6 @@ data class Profile(
         )
     }
 }
-
-private val cities = listOf(
-    "London"
-)
 
 private val drawables: List<Int> = listOf(
     R.drawable.img_8607,

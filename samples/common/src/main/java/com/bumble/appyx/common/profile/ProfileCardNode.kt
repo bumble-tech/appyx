@@ -1,4 +1,4 @@
-package com.bumble.appyx.sandbox.client.profilecard
+package com.bumble.appyx.common.profile
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.bumble.appyx.common.profile.Profile
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 

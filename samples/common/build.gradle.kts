@@ -1,44 +1,45 @@
 plugins {
     id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id("kotlin-android")
     id("kotlin-parcelize")
+    id("appyx-publish-android")
+    id("appyx-lint")
+    id("appyx-detekt")
 }
 
 android {
-    namespace = "com.bumble.appyx"
-    compileSdk = 32
+    namespace = "com.bumble.appyx.common"
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 32
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
-
-    buildTypes {
-        release {
-            isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = libs.versions.compose.get()
     }
 }
 
 dependencies {
+    api(project(":core"))
+    api(libs.ribs.base)
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("com.google.android.material:material:1.5.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.3")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.4.0")
+    implementation(libs.androidx.core)
+    implementation(libs.androidx.lifecycle.java8)
+    implementation(libs.compose.ui.ui)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.material)
+    implementation(libs.coil.compose)
 }
