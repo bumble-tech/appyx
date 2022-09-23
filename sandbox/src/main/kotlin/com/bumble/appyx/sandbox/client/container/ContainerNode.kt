@@ -31,10 +31,12 @@ import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFa
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode
 import com.bumble.appyx.sandbox.client.blocker.BlockerExampleNode
+import com.bumble.appyx.sandbox.client.cardsexample.CardsExampleNode
 import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.BackStackExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.BlockerExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.CardsExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.CombinedNavModel
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Customisations
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.InteractorExample
@@ -109,6 +111,9 @@ class ContainerNode internal constructor(
         object SpotlightExample : NavTarget()
 
         @Parcelize
+        object CardsExample : NavTarget()
+
+        @Parcelize
         object InteractorExample : NavTarget()
 
         @Parcelize
@@ -133,6 +138,7 @@ class ContainerNode internal constructor(
             is NavModelExamples -> node(buildContext) { modifier -> NavModelExamples(modifier) }
             is BackStackExample -> BackStackExampleNode(buildContext)
             is SpotlightAdvancedExample -> SpotlightAdvancedExampleNode(buildContext)
+            is CardsExample -> CardsExampleNode(buildContext)
             is ModalExample -> ModalExampleNode(buildContext)
             is TilesExample -> TilesExampleNode(buildContext)
             is CombinedNavModel -> CombinedNavModelNode(buildContext)
@@ -232,6 +238,7 @@ class ContainerNode internal constructor(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 TextButton("SpotlightAdvanced example") { backStack.push(SpotlightAdvancedExample) }
+                TextButton("Cards example") { backStack.push(CardsExample) }
                 TextButton("Backstack example") { backStack.push(BackStackExample) }
                 TextButton("Tiles example") { backStack.push(TilesExample) }
                 TextButton("Modal example") { backStack.push(ModalExample) }
