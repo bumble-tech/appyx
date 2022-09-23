@@ -194,6 +194,7 @@ class ContainerNode internal constructor(
                 label?.let {
                     Text(it, textAlign = TextAlign.Center)
                 }
+                TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("MVICore Leaf Example") { backStack.push(MviCoreLeafExample) }
@@ -207,7 +208,6 @@ class ContainerNode internal constructor(
                         Intent(this, InteropExampleActivity::class.java)
                     }
                 }
-                TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
 
                 val scope = rememberCoroutineScope()
                 TextButton("Trigger double navigation in 3 seconds") {
