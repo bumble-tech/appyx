@@ -56,6 +56,7 @@ dependencies {
     implementation(project(":interop-rx2"))
     implementation(project(":interop-ribs"))
     implementation(project(":navmodel-samples"))
+    implementation(project(":samples:common"))
     // The testing activity needs to be in the main manifest, otherwise it cannot be launched.
     debugImplementation(project(":testing-ui-activity"))
 

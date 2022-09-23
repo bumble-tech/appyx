@@ -21,6 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.common.profile.Profile
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -40,13 +41,10 @@ import kotlinx.parcelize.Parcelize
 class SpotlightAdvancedExampleNode(
     buildContext: BuildContext,
     private val spotlightAdvanced: SpotlightAdvanced<NavTarget> = SpotlightAdvanced(
-        items = listOf(
-            NavTarget.Michaelle,
-            NavTarget.Lara,
-            NavTarget.Victoria,
-            NavTarget.Jessica,
-            NavTarget.Kane
-        ),
+        items = Profile.allProfiles
+            .shuffled()
+            .take(listOf(5, 7, 9, 11).random())
+            .map { NavTarget.ProfileCard(it) },
         savedStateMap = buildContext.savedStateMap,
         backPressHandler = GoToPrevious(),
     )
@@ -55,52 +53,17 @@ class SpotlightAdvancedExampleNode(
     navModel = spotlightAdvanced
 ) {
 
-    @Parcelize
-    sealed class NavTarget(val url: String, val name: String, val age: Int) : Parcelable {
-
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Michaelle : NavTarget(
-            url = "https://images.pexels.com/photos/1572878/pexels-photo-1572878.jpeg?auto=compress&cs=tinysrgb&w=1600",
-            name = "Michaelle",
-            age = 21
-        )
-
-        @Parcelize
-        object Lara : NavTarget(
-            url = "https://images.pexels.com/photos/415829/pexels-photo-415829.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-            name = "Lara",
-            age = 19
-        )
-
-        @Parcelize
-        object Victoria : NavTarget(
-            url = "https://images.pexels.com/photos/2235071/pexels-photo-2235071.jpeg?auto=compress&cs=tinysrgb&w=1600",
-            name = "Victoria",
-            age = 25
-        )
-
-        @Parcelize
-        object Jessica : NavTarget(
-            url = "https://images.pexels.com/photos/2811089/pexels-photo-2811089.jpeg?auto=compress&cs=tinysrgb&w=1600",
-            name = "Jessica",
-            age = 24
-        )
-
-        @Parcelize
-        object Kane : NavTarget(
-            url = "https://images.pexels.com/photos/428340/pexels-photo-428340.jpeg?auto=compress&cs=tinysrgb&w=1600",
-            name = "Kane",
-            age = 27
-        )
+        class ProfileCard(val profile: Profile) : NavTarget()
     }
 
+
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        ProfileCardNode(
-            imageUrl = navTarget.url,
-            name = navTarget.name,
-            age = navTarget.age,
-            buildContext = buildContext
-        )
+        when (navTarget) {
+            is NavTarget.ProfileCard -> ProfileCardNode(buildContext, navTarget.profile)
+        }
+
 
     @Composable
     override fun View(modifier: Modifier) {
