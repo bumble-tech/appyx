@@ -8,10 +8,10 @@ internal object CardsOnScreenResolver : OnScreenStateResolver<State> {
     override fun isOnScreen(state: State): Boolean =
         when (state) {
             is State.Bottom,
-            is State.Top -> true
-            is State.Queued,
+            is State.Top,
             is State.IndicateLike,
-            is State.IndicatePass,
+            is State.IndicatePass -> true
+            is State.Queued,
             is State.VoteLike,
             is State.VotePass -> false
         }
