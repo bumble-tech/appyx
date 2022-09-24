@@ -34,11 +34,9 @@ android {
 
 dependencies {
     api(project(":core"))
-    api(libs.ribs.base)
 
-    implementation(libs.androidx.core)
+    api(libs.compose.ui.ui)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.compose.ui.ui)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.material)
     implementation(libs.coil.compose)
