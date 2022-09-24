@@ -8,7 +8,7 @@ abstract class TopCardOperation<T : Any>(
     ) : CardsOperation<T> {
 
     override fun isApplicable(elements: CardsElements<T>): Boolean =
-        true
+        elements.any { it.targetState in Cards.TOP_STATES }
 
     override fun invoke(elements: CardsElements<T>): CardsElements<T> {
         val targetIndex = elements.indexOfFirst { it.targetState in Cards.TOP_STATES }
