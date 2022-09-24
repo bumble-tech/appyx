@@ -101,13 +101,13 @@ class CardsTransitionHandler<T>(
         // If we only rotated the cards at the indicate vote states,
         // they'd just rotate around their own center.
         // We'll also want to offset the cards on an arc for a nice visual effect.
-        val angularOffset = derivedStateOf {
+        val angularOffset = remember { derivedStateOf {
             val angleRadians = Math.toRadians(angularOffsetDegrees.value.toDouble() - 90)
             // The center of rotation is at 150% screen height (below the bottom screen edge)
             val x = oneAndHalfHeightDp * cos(angleRadians)
             val y = oneAndHalfHeightDp * sin(angleRadians)
             Offset(x.toFloat(), y.toFloat())
-        }
+        }}
 
         val rotationZ = transition.animateFloat(
             transitionSpec = transitionSpec,
