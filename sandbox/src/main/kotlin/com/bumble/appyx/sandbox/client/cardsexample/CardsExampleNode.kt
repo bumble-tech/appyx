@@ -75,7 +75,7 @@ class CardsExampleNode(
                 .fillMaxSize()
                 .padding(padding),
             navModel = cards,
-            transitionHandler = rememberCardsTransitionHandler { spring(stiffness = Spring.StiffnessVeryLow) }
+            transitionHandler = rememberCardsTransitionHandler()
         ) {
             children<NavTarget> { child ->
                 child(modifier = Modifier.fillMaxSize())
