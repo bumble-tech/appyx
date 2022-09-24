@@ -2,7 +2,6 @@ plugins {
     id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("appyx-publish-android")
     id("appyx-lint")
     id("appyx-detekt")
 }
