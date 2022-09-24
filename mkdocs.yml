@@ -41,6 +41,7 @@ nav:
       - Structuring your app navigation: apps/structure.md
       - Lifecycle: apps/lifecycle.md
       - Plugins: apps/plugins.md
+      - ChildAware API: apps/childaware.md
   - FAQ: faq.md
 
 
