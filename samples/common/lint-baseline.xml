@@ -2,6 +2,83 @@
 <issues format="6" by="lint 7.2.2" type="baseline" client="gradle" dependencies="false" name="AGP (7.2.2)" variant="all" version="7.2.2">
 
     <issue
+        id="UnusedResources"
+        message="The resource `R.color.black` appears to be unused"
+        errorLine1="    &lt;color name=&quot;black&quot;>#FF000000&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="3"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.appyx_yellow1` appears to be unused"
+        errorLine1="    &lt;color name=&quot;appyx_yellow1&quot;>#FFFFC629&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="5"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.appyx_yellow2` appears to be unused"
+        errorLine1="    &lt;color name=&quot;appyx_yellow2&quot;>#FFFFE54A&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="6"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.appyx_dark` appears to be unused"
+        errorLine1="    &lt;color name=&quot;appyx_dark&quot;>#FF1F2126&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="7"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.appyx_bright` appears to be unused"
+        errorLine1="    &lt;color name=&quot;appyx_bright&quot;>#FFFFFFFF&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="8"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_Appyx` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.Appyx&quot; parent=&quot;Theme.MaterialComponents.DayNight.DarkActionBar&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="3"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Theme_Appyx_NoActionBar` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Theme.Appyx.NoActionBar&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/themes.xml"
+            line="17"
+            column="12"/>
+    </issue>
+
+    <issue
         id="IconLocation"
         message="Found bitmap drawable `res/drawable/brittany41.jpg` in densityless folder">
         <location
