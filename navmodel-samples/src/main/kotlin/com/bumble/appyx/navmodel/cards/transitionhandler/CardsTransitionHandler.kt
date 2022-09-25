@@ -38,7 +38,7 @@ class CardsTransitionHandler<T>(
     private val transitionSpec: TransitionSpec<Cards.State, Float> = { spring(stiffness = Spring.StiffnessVeryLow) }
 ) : ModifierTransitionHandler<T, Cards.State>() {
 
-    data class Props(
+    private data class Props(
         val scale: Float = 1f,
         val positionalOffsetX: Dp = 0.dp,
         val angularOffset: Float = 0f,
