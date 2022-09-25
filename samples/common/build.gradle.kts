@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.common"
+    namespace = "com.bumble.appyx.samples.common"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {

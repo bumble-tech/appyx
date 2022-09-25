@@ -21,9 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.common.profile.Profile
-import com.bumble.appyx.common.profile.ProfileCard
-import com.bumble.appyx.common.profile.ProfileCardNode
+import com.bumble.appyx.samples.common.profile.Profile
+import com.bumble.appyx.samples.common.profile.ProfileCard
+import com.bumble.appyx.samples.common.profile.ProfileCardNode
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node

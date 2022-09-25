@@ -1,4 +1,4 @@
-package com.bumble.appyx.common.profile
+package com.bumble.appyx.samples.common.profile
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
