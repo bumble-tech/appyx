@@ -2,7 +2,8 @@
 
 ## Pending changes
 
-- [#43](https://github.com/bumble-tech/appyx/pull/43) – Update Jetpack Compose to 1.2.1 and kotlin to 1.7.10.
+- [#43](https://github.com/bumble-tech/appyx/pull/43) – **Updated**: Jetpack Compose to 1.2.1 and kotlin to 1.7.10.
+- [#168](https://github.com/bumble-tech/appyx/pull/168) – **Updated**: Kotlin coroutines to 1.6.4.
 
 ## 1.0-alpha09
 
