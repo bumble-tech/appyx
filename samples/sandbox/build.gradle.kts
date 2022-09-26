@@ -33,22 +33,55 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
+    packagingOptions {
+        exclude("META-INF/AL2.0")
+        exclude("META-INF/LGPL2.1")
+    }
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
+    }
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(project(":navmodel-samples"))
+    implementation(project(":libraries:core"))
+    implementation(project(":libraries:interop-rx2"))
+    implementation(project(":libraries:interop-ribs"))
+    implementation(project(":samples:navmodel-samples"))
+    // The testing activity needs to be in the main manifest, otherwise it cannot be launched.
+    debugImplementation(project(":libraries:testing-ui-activity"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
+    implementation(libs.coil.compose)
     implementation(libs.compose.material)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
+    implementation(libs.google.accompanist.flow)
     implementation(libs.google.material)
+    implementation(libs.ribs.base)
+    implementation(libs.mvicore.base)
+    implementation(libs.mvicore.android)
+    implementation(libs.mvicore.binder)
+    implementation(libs.rxjava2)
+    implementation(libs.rxandroid)
+    implementation(libs.rxrelay)
+
+    testImplementation(libs.androidx.arch.core.testing)
+    testImplementation(libs.junit)
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
+    testRuntimeOnly(libs.junit.vintage)
+    testImplementation(project(":libraries:testing-junit4"))
+    testImplementation(project(":libraries:testing-junit5"))
+    testImplementation(libs.ribs.base.test)
+    testImplementation(libs.ribs.base.test.rx2)
 
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(project(":libraries:testing-ui"))
 }

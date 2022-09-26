@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.testing.junit4"
+    namespace = "com.bumble.appyx.testing.ui"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
@@ -25,7 +25,10 @@ android {
 }
 
 dependencies {
-    api(project(":testing-unit-common"))
-    api(libs.junit)
-    implementation(libs.kotlin.coroutines.test)
+    api(project(":libraries:core"))
+    api(project(":libraries:testing-ui-activity"))
+    api(libs.androidx.test.rules)
+    api(libs.compose.ui.test.junit4)
+
+    implementation(libs.androidx.lifecycle.java8)
 }
