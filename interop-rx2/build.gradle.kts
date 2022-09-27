@@ -28,6 +28,7 @@ dependencies {
     api(libs.rxjava2)
     api(libs.rxrelay)
 
+    implementation(libs.kotlin.coroutines.rx2)
     implementation(libs.androidx.lifecycle.java8)
 
     testImplementation(libs.junit.api)
