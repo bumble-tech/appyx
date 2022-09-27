@@ -1,13 +1,13 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
-    id("appyx-publish-android")
+    id("kotlin-parcelize")
     id("appyx-lint")
     id("appyx-detekt")
 }
 
 android {
-    namespace = "com.bumble.appyx.interop.ribs"
+    namespace = "com.bumble.appyx.navmodel"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
@@ -25,11 +25,11 @@ android {
 }
 
 dependencies {
-    api(project(":core"))
-    api(libs.ribs.base)
+    api(project(":libraries:core"))
+    api(libs.compose.ui.ui)
 
-    implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.compose.ui.ui)
-    implementation(libs.ribs.compose)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.foundation)
 }

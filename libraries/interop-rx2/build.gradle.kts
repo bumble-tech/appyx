@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.testing.unit.common"
+    namespace = "com.bumble.appyx.interop.rx2"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
@@ -16,15 +16,21 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+    testOptions {
+        unitTests.all {
+            it.useJUnitPlatform()
+        }
     }
 }
 
 dependencies {
-    api(project(":core"))
-    implementation(libs.kotlin.test)
+    api(project(":libraries:core"))
+    api(libs.rxjava2)
+    api(libs.rxrelay)
+
+    implementation(libs.kotlin.coroutines.rx2)
+    implementation(libs.androidx.lifecycle.java8)
+
+    testImplementation(libs.junit.api)
+    testRuntimeOnly(libs.junit.engine)
 }

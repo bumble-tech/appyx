@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.testing.junit5"
+    namespace = "com.bumble.appyx.testing.junit4"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
@@ -22,14 +22,10 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
-    packagingOptions {
-        exclude("META-INF/LICENSE.md")
-        exclude("META-INF/LICENSE-notice.md")
-    }
 }
 
 dependencies {
-    api(project(":testing-unit-common"))
-    api(libs.junit.api)
-    api(libs.kotlin.coroutines.test.jvm)
+    api(project(":libraries:testing-unit-common"))
+    api(libs.junit)
+    implementation(libs.kotlin.coroutines.test)
 }

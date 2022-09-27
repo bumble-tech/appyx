@@ -36,7 +36,7 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
+    implementation(project(":libraries:core"))
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.androidx.activity.compose)

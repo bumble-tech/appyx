@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    api(project(":customisations"))
+    api(project(":libraries:customisations"))
     api(libs.kotlin.coroutines.android)
     api(libs.androidx.lifecycle.common)
     api(libs.compose.animation.core)
@@ -44,7 +44,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.compose.foundation.layout)
 
-    testImplementation(project(":testing-junit4"))
+    testImplementation(project(":libraries:testing-junit4"))
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.coroutines.test)
@@ -53,5 +53,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.compose.foundation)
-    androidTestImplementation(project(":testing-ui"))
+    androidTestImplementation(project(":libraries:testing-ui"))
 }
