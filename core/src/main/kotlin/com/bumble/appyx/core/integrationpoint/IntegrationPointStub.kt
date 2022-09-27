@@ -1,5 +1,7 @@
 package com.bumble.appyx.core.integrationpoint
 
+import androidx.activity.result.ActivityResultCaller
+import androidx.activity.result.ActivityResultRegistry
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
 
@@ -16,6 +18,12 @@ class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
         get() = error(ERROR)
 
     override val permissionRequester: PermissionRequester
+        get() = error(ERROR)
+
+    override val activityResultCaller: ActivityResultCaller
+        get() = error(ERROR)
+
+    override val activityResultRegistry: ActivityResultRegistry
         get() = error(ERROR)
 
     override fun handleUpNavigation() {

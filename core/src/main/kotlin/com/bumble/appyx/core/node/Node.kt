@@ -1,6 +1,11 @@
 package com.bumble.appyx.core.node
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultCaller
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.ActivityResultRegistry
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -36,13 +41,20 @@ import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.withContext
+import java.util.UUID
+import java.util.concurrent.atomic.AtomicInteger
 
 @Stable
 abstract class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
     plugins: List<Plugin> = emptyList()
-) : NodeLifecycle, NodeView by view {
+) : NodeLifecycle, NodeView by view, ActivityResultCaller {
+
+    private val id: String =
+        buildContext.savedStateMap?.get(KEY_ID) as? String ?: UUID.randomUUID().toString()
+
+    private val nextLocalRequestCode = AtomicInteger()
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
@@ -177,7 +189,7 @@ abstract class Node(
 
     @CallSuper
     protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
-        // no-op
+        state[KEY_ID] = id
     }
 
     fun finish() {
@@ -210,7 +222,27 @@ abstract class Node(
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
+    override fun <I : Any?, O : Any?> registerForActivityResult(
+        contract: ActivityResultContract<I, O>,
+        callback: ActivityResultCallback<O>
+    ): ActivityResultLauncher<I> =
+        registerForActivityResult(contract, integrationPoint.activityResultRegistry, callback)
+
+    override fun <I : Any?, O : Any?> registerForActivityResult(
+        contract: ActivityResultContract<I, O>,
+        registry: ActivityResultRegistry,
+        callback: ActivityResultCallback<O>
+    ): ActivityResultLauncher<I> =
+        registry.register(
+            "node_${id}_rq#${nextLocalRequestCode.getAndIncrement()}",
+            this,
+            contract,
+            callback,
+        )
+
     companion object {
+
+        private const val KEY_ID = "KEY_ID"
 
         // BackPressHandler is correct when only one of its properties is implemented.
         private fun BackPressHandler.isCorrect(): Boolean {

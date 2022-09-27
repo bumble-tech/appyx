@@ -1,6 +1,8 @@
 package com.bumble.appyx.core.integrationpoint
 
 import android.os.Bundle
+import androidx.activity.result.ActivityResultCaller
+import androidx.activity.result.ActivityResultRegistry
 import androidx.compose.runtime.Stable
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
@@ -17,6 +19,10 @@ abstract class IntegrationPoint(
     abstract val activityStarter: ActivityStarter
 
     abstract val permissionRequester: PermissionRequester
+
+    abstract val activityResultCaller: ActivityResultCaller
+
+    abstract val activityResultRegistry: ActivityResultRegistry
 
     fun onSaveInstanceState(outState: Bundle) {
         requestCodeRegistry.onSaveInstanceState(outState)

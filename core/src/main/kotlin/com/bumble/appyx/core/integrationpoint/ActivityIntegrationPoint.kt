@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResultCaller
+import androidx.activity.result.ActivityResultRegistry
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityBoundary
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequestBoundary
@@ -13,7 +16,7 @@ import java.lang.ref.WeakReference
 import java.util.WeakHashMap
 
 open class ActivityIntegrationPoint private constructor(
-    private val activity: Activity,
+    private val activity: ComponentActivity,
     savedInstanceState: Bundle?,
 ) : IntegrationPoint(savedInstanceState = savedInstanceState) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
@@ -24,6 +27,12 @@ open class ActivityIntegrationPoint private constructor(
 
     override val permissionRequester: PermissionRequester
         get() = permissionRequestBoundary
+
+    override val activityResultCaller: ActivityResultCaller
+        get() = activity
+
+    override val activityResultRegistry: ActivityResultRegistry
+        get() = activity.activityResultRegistry
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         activityBoundary.onActivityResult(requestCode, resultCode, data)
@@ -53,7 +62,7 @@ open class ActivityIntegrationPoint private constructor(
         private val integrationPoints = WeakHashMap<Activity, WeakReference<IntegrationPoint>>()
 
         fun createIntegrationPoint(
-            activity: Activity,
+            activity: ComponentActivity,
             savedInstanceState: Bundle?,
         ): ActivityIntegrationPoint =
             ActivityIntegrationPoint(activity, savedInstanceState)

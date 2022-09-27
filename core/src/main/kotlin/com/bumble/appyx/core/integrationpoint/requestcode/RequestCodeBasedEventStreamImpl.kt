@@ -40,15 +40,6 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
 
         ensureSubject(id) {
             val internalRequestCode = externalRequestCode.toInternalRequestCode()
-            Appyx.reportException(
-                IllegalStateException(
-                    "There's no one listening for request code event! " +
-                            "requestCode: $externalRequestCode, " +
-                            "resolved group: $id, " +
-                            "resolved code: $internalRequestCode, " +
-                            "event: $event"
-                )
-            )
         }
 
         events.getValue(id).tryEmit(event)
