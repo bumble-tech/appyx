@@ -1,16 +1,17 @@
 package com.bumble.appyx.core.integrationpoint.requestcode
 
-import android.util.Log
+import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
-import com.bumble.appyx.core.minimal.reactive.Relay
-import com.bumble.appyx.core.minimal.reactive.Source
+import kotlinx.coroutines.channels.BufferOverflow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
 abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val requestCodeRegistry: RequestCodeRegistry
 ) : RequestCodeBasedEventStream<T> {
-    private val events = HashMap<Int, Relay<T>>()
+    private val events = HashMap<Int, MutableSharedFlow<T>>()
 
-    override fun events(client: RequestCodeClient): Source<T> {
+    override fun events(client: RequestCodeClient): Flow<T> {
         val id = requestCodeRegistry.generateGroupId(client.requestCodeClientId)
         ensureSubject(id)
 
@@ -21,7 +22,11 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         var subjectJustCreated = false
 
         if (!events.containsKey(id)) {
-            events[id] = Relay()
+            events[id] = MutableSharedFlow(
+                replay = 0,
+                extraBufferCapacity = 1,
+                onBufferOverflow = BufferOverflow.DROP_OLDEST,
+            )
             subjectJustCreated = true
         }
 
@@ -32,17 +37,21 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
 
     protected fun publish(externalRequestCode: Int, event: T) {
         val id = requestCodeRegistry.resolveGroupId(externalRequestCode)
-        val internalRequestCode = externalRequestCode.toInternalRequestCode()
 
         ensureSubject(id) {
-            Log.e( "RIBs", "There's no one listening for request code event! " +
-                    "requestCode: $externalRequestCode, " +
-                    "resolved group: $id, " +
-                    "resolved code: $internalRequestCode, " +
-                    "event: $event")
+            val internalRequestCode = externalRequestCode.toInternalRequestCode()
+            Appyx.reportException(
+                IllegalStateException(
+                    "There's no one listening for request code event! " +
+                            "requestCode: $externalRequestCode, " +
+                            "resolved group: $id, " +
+                            "resolved code: $internalRequestCode, " +
+                            "event: $event"
+                )
+            )
         }
 
-        events.getValue(id).emit(event)
+        events.getValue(id).tryEmit(event)
     }
 
     protected fun Int.toInternalRequestCode() =

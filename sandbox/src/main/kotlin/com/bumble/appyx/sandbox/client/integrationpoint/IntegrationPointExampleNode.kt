@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,36 +22,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
-import com.bumble.appyx.core.minimal.reactive.Cancellable
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.sandbox.client.integrationpoint.StartActivityExample.Companion.StringExtraKey
-import java.util.UUID
+import kotlinx.coroutines.launch
 
 class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContext = buildContext),
     RequestCodeClient {
 
     private val permissionRequester: PermissionRequester get() = integrationPoint.permissionRequester
     private val activityStarter: ActivityStarter get() = integrationPoint.activityStarter
-    private var permissionsResultCancellable: Cancellable? = null
-    private var activityResultsCancellable: Cancellable? = null
     private var permissionsResultState by mutableStateOf("Press request permissions to check permissions state")
     private var activityResultState by mutableStateOf("Launch activity for result to check result state ")
 
+    init {
+        lifecycleScope.launch { observeCameraPermissions() }
+        lifecycleScope.launch { observeActivityResult() }
+    }
+
     @Composable
     override fun View(modifier: Modifier) {
-
-        DisposableEffect(key1 = Any()) {
-            observeCameraPermissions()
-            observeActivityResult()
-            onDispose {
-                permissionsResultCancellable?.cancel()
-                activityResultsCancellable?.cancel()
-            }
-        }
 
         Box(
             modifier = modifier
@@ -111,10 +104,10 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
         )
     }
 
-    private fun observeCameraPermissions() {
-        permissionsResultCancellable = permissionRequester
-            .events(this)
-            .observe { event ->
+    private suspend fun observeCameraPermissions() {
+        permissionRequester
+            .events(this@IntegrationPointExampleNode)
+            .collect { event ->
                 if (event.requestCode == RequestCameraCode) {
                     when (event) {
                         is PermissionRequester.RequestPermissionsEvent.RequestPermissionsResult -> {
@@ -129,10 +122,10 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
             }
     }
 
-    private fun observeActivityResult() {
-        activityResultsCancellable = activityStarter
-            .events(this)
-            .observe { event ->
+    private suspend fun observeActivityResult() {
+        activityStarter
+            .events(this@IntegrationPointExampleNode)
+            .collect { event ->
                 if (event.requestCode == StartActivityForResultCode && event.resultCode == Activity.RESULT_OK && event.data != null) {
                     val result = event.data?.getStringExtra(StringExtraKey) ?: ""
                     activityResultState = "Activity result: $result"
@@ -145,7 +138,7 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
         private const val StartActivityForResultCode = 2
     }
 
-    override val requestCodeClientId: String = UUID.randomUUID().toString()
+    override val requestCodeClientId: String = IntegrationPointExampleNode::class.qualifiedName!!
 }
 
 @Preview
