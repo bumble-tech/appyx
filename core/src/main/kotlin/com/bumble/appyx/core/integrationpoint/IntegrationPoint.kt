@@ -22,5 +22,7 @@ abstract class IntegrationPoint(
         requestCodeRegistry.onSaveInstanceState(outState)
     }
 
+    abstract fun onRootCreated()
+
     abstract fun onRootFinished()
 }

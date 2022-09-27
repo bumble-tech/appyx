@@ -48,7 +48,7 @@ class ActivityBoundary(
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        publish(
+        publishSafely(
             requestCode,
             ActivityResultEvent(
                 requestCode = requestCode.toInternalRequestCode(),

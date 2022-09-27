@@ -29,6 +29,11 @@ open class ActivityIntegrationPoint private constructor(
         activityBoundary.onActivityResult(requestCode, resultCode, data)
     }
 
+    override fun onRootCreated() {
+        activityBoundary.finishSetup()
+        permissionRequestBoundary.finishSetup()
+    }
+
     fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

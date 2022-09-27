@@ -65,6 +65,7 @@ internal fun <N : Node> rememberNode(
             )
             .apply { this.integrationPoint = integrationPoint }
             .build()
+            .apply { this.integrationPoint.onRootCreated() }
 
     return rememberSaveable(
         inputs = arrayOf(),

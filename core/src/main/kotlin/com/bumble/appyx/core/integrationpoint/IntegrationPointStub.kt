@@ -25,4 +25,8 @@ class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
     override fun onRootFinished() {
         error(ERROR)
     }
+
+    override fun onRootCreated() {
+        error(ERROR)
+    }
 }

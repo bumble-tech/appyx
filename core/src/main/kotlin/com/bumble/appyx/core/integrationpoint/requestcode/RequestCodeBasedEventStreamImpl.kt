@@ -1,5 +1,7 @@
 package com.bumble.appyx.core.integrationpoint.requestcode
 
+import android.os.Handler
+import android.os.Looper
 import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
 import kotlinx.coroutines.channels.BufferOverflow
@@ -10,6 +12,20 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val requestCodeRegistry: RequestCodeRegistry
 ) : RequestCodeBasedEventStream<T> {
     private val events = HashMap<Int, MutableSharedFlow<T>>()
+
+    private var isSetupFinished = false
+    private val pendingOperations: MutableList<Runnable> = mutableListOf()
+    private val handler = Handler(Looper.getMainLooper())
+
+    fun finishSetup() {
+        if (!isSetupFinished) {
+            pendingOperations.forEach {
+                handler.post(it)
+            }
+            pendingOperations.clear()
+            isSetupFinished = true
+        }
+    }
 
     override fun events(client: RequestCodeClient): Flow<T> {
         val id = requestCodeRegistry.generateGroupId(client.requestCodeClientId)
@@ -35,7 +51,8 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         }
     }
 
-    protected fun publish(externalRequestCode: Int, event: T) {
+
+    private fun publish(externalRequestCode: Int, event: T) {
         val id = requestCodeRegistry.resolveGroupId(externalRequestCode)
 
         ensureSubject(id) {
@@ -52,6 +69,14 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         }
 
         events.getValue(id).tryEmit(event)
+    }
+
+    protected fun publishSafely(externalRequestCode: Int, event: T) {
+        if (isSetupFinished) {
+            publish(externalRequestCode, event)
+        } else {
+            pendingOperations.add { publish(externalRequestCode, event) }
+        }
     }
 
     protected fun Int.toInternalRequestCode() =

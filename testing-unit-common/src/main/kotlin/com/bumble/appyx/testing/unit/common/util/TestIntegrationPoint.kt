@@ -20,4 +20,6 @@ class TestIntegrationPoint(
     override fun onRootFinished() {
         rootFinished = true
     }
+
+    override fun onRootCreated() = Unit
 }

@@ -81,7 +81,7 @@ class PermissionRequestBoundary(
     }
 
     private fun onPermissionRequestCancelled(externalRequestCode: Int) {
-        publish(
+        publishSafely(
             externalRequestCode,
             Cancelled(
                 requestCode = externalRequestCode.toInternalRequestCode()
@@ -96,7 +96,7 @@ class PermissionRequestBoundary(
     ) {
         val (granted, denied) = sortResults(permissions, grantResults)
 
-        publish(
+        publishSafely(
             externalRequestCode,
             RequestPermissionsResult(
                 requestCode = externalRequestCode.toInternalRequestCode(),
