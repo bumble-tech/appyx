@@ -63,8 +63,8 @@ internal fun <N : Node> rememberNode(
                     customisations = customisations
                 ),
             )
-            .build()
             .apply { this.integrationPoint = integrationPoint }
+            .build()
 
     return rememberSaveable(
         inputs = arrayOf(),
