@@ -5,6 +5,7 @@
 - [#173](https://github.com/bumble-tech/appyx/pull/173) – **Breaking change**: `ActivityStarter` and `PermissionRequester` now exposes coroutine based API instead of `minimal.reactive`.
 - [#43](https://github.com/bumble-tech/appyx/pull/43) – **Updated**: Jetpack Compose to 1.2.1 and kotlin to 1.7.10.
 - [#168](https://github.com/bumble-tech/appyx/pull/168) – **Updated**: Kotlin coroutines to 1.6.4.
+- [#171](https://github.com/bumble-tech/appyx/pull/171) – **Updated**: RIBs to 0.36.1. 
 
 ## 1.0-alpha09
 
