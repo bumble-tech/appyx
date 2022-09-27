@@ -37,9 +37,9 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
 
     protected fun publish(externalRequestCode: Int, event: T) {
         val id = requestCodeRegistry.resolveGroupId(externalRequestCode)
-        val internalRequestCode = externalRequestCode.toInternalRequestCode()
 
         ensureSubject(id) {
+            val internalRequestCode = externalRequestCode.toInternalRequestCode()
             Appyx.reportException(
                 IllegalStateException(
                     "There's no one listening for request code event! " +
