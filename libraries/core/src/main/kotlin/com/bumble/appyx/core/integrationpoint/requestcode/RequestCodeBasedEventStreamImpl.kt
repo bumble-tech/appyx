@@ -41,7 +41,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         }
     }
 
-    private fun flushResultWhenHaveSubscribers(flow: MutableSharedFlow<T>, event: T) {
+    private fun flushResultWhenSubscribersAppear(flow: MutableSharedFlow<T>, event: T) {
         scope.launch {
             flow.subscriptionCount.collectLatest { subscriptionCount ->
                 if (subscriptionCount > 0) {
@@ -64,7 +64,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         // Flushing results in flow.onSubscription won't suffice as it will be called after the first
         // subscription and the other subscribers will not receive the cached event
         if (flow.subscriptionCount.value == 0) {
-            flushResultWhenHaveSubscribers(flow, event)
+            flushResultWhenSubscribersAppear(flow, event)
         } else {
             flow.tryEmit(event)
         }
