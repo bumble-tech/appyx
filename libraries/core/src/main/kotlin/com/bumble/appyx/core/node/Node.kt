@@ -40,6 +40,7 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 
 @Stable
+@Suppress("TooManyFunctions")
 abstract class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
@@ -78,9 +79,10 @@ abstract class Node(
     private val lifecycleRegistry = LifecycleRegistry(this)
     private var wasBuilt = false
 
-    override val requestCodeClientId: String =
-        buildContext.savedStateMap?.get(RequestCodeClientIdKey) as String?
-            ?: UUID.randomUUID().toString()
+    val id = buildContext.savedStateMap?.get(NODE_ID_KEY) as String?
+        ?: UUID.randomUUID().toString()
+
+    override val requestCodeClientId: String = id
 
     init {
         if (BuildConfig.DEBUG) {
@@ -182,7 +184,7 @@ abstract class Node(
 
     @CallSuper
     protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
-        state[RequestCodeClientIdKey] = requestCodeClientId
+        state[NODE_ID_KEY] = id
     }
 
     fun finish() {
@@ -216,7 +218,7 @@ abstract class Node(
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     companion object {
-        private const val RequestCodeClientIdKey = "node.requestCodeClientId"
+        private const val NODE_ID_KEY = "node.id"
 
         // BackPressHandler is correct when only one of its properties is implemented.
         private fun BackPressHandler.isCorrect(): Boolean {
