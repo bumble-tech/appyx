@@ -85,6 +85,7 @@ abstract class Node(
     override val requestCodeClientId: String = id
 
     init {
+        ensureOnSavedInstanceStateWasCalled(buildContext)
         if (BuildConfig.DEBUG) {
             lifecycle.addObserver(LifecycleLogger)
         }
@@ -93,6 +94,17 @@ abstract class Node(
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
             }
         });
+    }
+
+    private fun ensureOnSavedInstanceStateWasCalled(buildContext: BuildContext) {
+        val state = buildContext.savedStateMap ?: return
+        if (!state.containsKey(NODE_ID_KEY)) {
+            Appyx.reportException(
+                IllegalStateException(
+                    "super.onSaveInstanceState() was not called for the node: ${this::class.qualifiedName}"
+                )
+            )
+        }
     }
 
     protected suspend inline fun <reified T : Node> executeWorkflow(
