@@ -27,7 +27,6 @@ import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.sandbox.client.integrationpoint.StartActivityExample.Companion.StringExtraKey
 import kotlinx.coroutines.launch
 
@@ -119,10 +118,6 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
                     }
                 }
             }
-    }
-
-    override fun onSaveInstanceState(state: MutableSavedStateMap) {
-
     }
 
     private suspend fun observeActivityResult() {
