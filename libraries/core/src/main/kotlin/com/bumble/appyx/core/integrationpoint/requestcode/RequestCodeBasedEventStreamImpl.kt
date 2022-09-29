@@ -1,14 +1,21 @@
 package com.bumble.appyx.core.integrationpoint.requestcode
 
-import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
+import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
-    private val requestCodeRegistry: RequestCodeRegistry
+    private val requestCodeRegistry: RequestCodeRegistry,
+    protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 ) : RequestCodeBasedEventStream<T> {
+    private val cache = HashMap<Int, T>()
     private val events = HashMap<Int, MutableSharedFlow<T>>()
 
     override fun events(client: RequestCodeClient): Flow<T> {
@@ -35,23 +42,39 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         }
     }
 
+    private fun cacheResultAndFlushOnNewSubscribers(id: Int, flow: MutableSharedFlow<T>, event: T) {
+        cache[id] = event
+        var job: Job? = null
+        job = scope.launch {
+            flow.subscriptionCount.collectLatest { subscriptionCount ->
+                if (subscriptionCount > 0) {
+                    val cachedValue = cache[id]
+                    if (cachedValue != null) {
+                        flow.emit(cachedValue)
+                        cache.remove(id)
+                        job?.cancel()
+                    }
+                }
+            }
+        }
+    }
+
     protected fun publish(externalRequestCode: Int, event: T) {
         val id = requestCodeRegistry.resolveGroupId(externalRequestCode)
 
-        ensureSubject(id) {
-            val internalRequestCode = externalRequestCode.toInternalRequestCode()
-            Appyx.reportException(
-                IllegalStateException(
-                    "There's no one listening for request code event! " +
-                            "requestCode: $externalRequestCode, " +
-                            "resolved group: $id, " +
-                            "resolved code: $internalRequestCode, " +
-                            "event: $event"
-                )
-            )
-        }
+        ensureSubject(id)
 
-        events.getValue(id).tryEmit(event)
+        val flow = events.getValue(id)
+        // It's possible that publishing can happen before we have any subscriber. For instance,
+        // with don't keep activities onActivityResult can be called before the Node is ready. Cache
+        // the result and flush it when clients have subscribed.
+        // flushing results on flow.onSubscription won't suffice as it will be called after the first
+        // subscription and the other subscribers will not receive the cached event
+        if (flow.subscriptionCount.value == 0) {
+            cacheResultAndFlushOnNewSubscribers(id, flow, event)
+        } else {
+            flow.tryEmit(event)
+        }
     }
 
     protected fun Int.toInternalRequestCode() =

@@ -21,10 +21,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
@@ -42,9 +42,9 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExa
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.ModalExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreLeafExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.RequestPermissionsExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightAdvancedExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.TilesExample
@@ -196,6 +196,9 @@ class ContainerNode internal constructor(
                         Intent(this, WorkflowExampleActivity::class.java)
                     }
                 }
+                TextButton("Request permissions / start activities example") {
+                    backStack.push(RequestPermissionsExamples)
+                }
                 TextButton("Launch interop example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, InteropExampleActivity::class.java)
@@ -238,9 +241,6 @@ class ContainerNode internal constructor(
                 TextButton("Combined navModel") { backStack.push(CombinedNavModel) }
                 TextButton("Node with interactor") { backStack.push(InteractorExample) }
                 TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
-                TextButton("Request permissions / start activities example") {
-                    backStack.push(RequestPermissionsExamples)
-                }
             }
         }
     }
