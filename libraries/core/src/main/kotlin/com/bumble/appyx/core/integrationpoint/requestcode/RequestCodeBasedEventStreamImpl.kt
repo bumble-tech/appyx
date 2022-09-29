@@ -3,7 +3,7 @@ package com.bumble.appyx.core.integrationpoint.requestcode
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,7 +15,6 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val requestCodeRegistry: RequestCodeRegistry,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 ) : RequestCodeBasedEventStream<T> {
-    private val cache = HashMap<Int, T>()
     private val events = HashMap<Int, MutableSharedFlow<T>>()
 
     override fun events(client: RequestCodeClient): Flow<T> {
@@ -42,18 +41,12 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         }
     }
 
-    private fun cacheResultAndFlushOnNewSubscribers(id: Int, flow: MutableSharedFlow<T>, event: T) {
-        cache[id] = event
-        var job: Job? = null
-        job = scope.launch {
+    private fun flushResultWhenHaveSubscribers(flow: MutableSharedFlow<T>, event: T) {
+        scope.launch {
             flow.subscriptionCount.collectLatest { subscriptionCount ->
                 if (subscriptionCount > 0) {
-                    val cachedValue = cache[id]
-                    if (cachedValue != null) {
-                        flow.emit(cachedValue)
-                        cache.remove(id)
-                        job?.cancel()
-                    }
+                    flow.emit(event)
+                    this@launch.cancel()
                 }
             }
         }
@@ -71,7 +64,7 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
         // Flushing results in flow.onSubscription won't suffice as it will be called after the first
         // subscription and the other subscribers will not receive the cached event
         if (flow.subscriptionCount.value == 0) {
-            cacheResultAndFlushOnNewSubscribers(id, flow, event)
+            flushResultWhenHaveSubscribers(flow, event)
         } else {
             flow.tryEmit(event)
         }
