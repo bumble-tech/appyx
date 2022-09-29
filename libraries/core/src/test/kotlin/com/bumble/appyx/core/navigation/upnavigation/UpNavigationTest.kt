@@ -119,11 +119,11 @@ class UpNavigationTest {
     // region Setup
 
     interface NodeWithId {
-        val id: UUID
+        val uuid: UUID
     }
 
     class Parent(
-        override val id: UUID = PARENT_ID,
+        override val uuid: UUID = PARENT_ID,
         buildContext: BuildContext = BuildContext.root(null),
         val backStack: BackStack<Configuration> = BackStack(
             initialElement = Configuration(CHILD_ID),
@@ -156,7 +156,7 @@ class UpNavigationTest {
     }
 
     class Child(
-        override val id: UUID = CHILD_ID,
+        override val uuid: UUID = CHILD_ID,
         buildContext: BuildContext = BuildContext.root(null),
         upNavigationHandler: UpNavigationHandler? = null,
     ) : Node(
