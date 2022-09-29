@@ -66,9 +66,9 @@ abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
 
         val flow = events.getValue(id)
         // It's possible that publishing can happen before we have any subscriber. For instance,
-        // with don't keep activities onActivityResult can be called before the Node is ready. Cache
-        // the result and flush it when clients have subscribed.
-        // flushing results on flow.onSubscription won't suffice as it will be called after the first
+        // with don't keep activities onActivityResult can be called before the Node is ready. Here we're caching
+        // the result and flushing it when clients have subscribed.
+        // Flushing results in flow.onSubscription won't suffice as it will be called after the first
         // subscription and the other subscribers will not receive the cached event
         if (flow.subscriptionCount.value == 0) {
             cacheResultAndFlushOnNewSubscribers(id, flow, event)
