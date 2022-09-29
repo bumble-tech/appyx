@@ -3,10 +3,10 @@ package com.bumble.appyx.core.children
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
-import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
+import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -226,7 +226,7 @@ class ChildCreationTest {
         }
 
         override fun resolve(navTarget: String, buildContext: BuildContext): Node =
-            Child(navTarget, buildContext)
+            Child(buildContext)
 
         fun key(navTarget: String): NavKey<String>? =
             children.value.keys.find { it.navTarget == navTarget }
@@ -236,10 +236,7 @@ class ChildCreationTest {
 
     }
 
-    private class Child(
-        val id: String,
-        buildContext: BuildContext
-    ) : Node(buildContext) {
+    private class Child(buildContext: BuildContext) : Node(buildContext) {
         val hasRestoredState: Boolean =
             buildContext.savedStateMap?.contains("test") == true
 

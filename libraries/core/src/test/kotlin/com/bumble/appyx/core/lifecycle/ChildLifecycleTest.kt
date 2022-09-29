@@ -9,10 +9,10 @@ import androidx.lifecycle.LifecycleOwner
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
-import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
+import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -204,7 +204,7 @@ class ChildLifecycleTest {
         navModel = testNavModel,
     ) {
         override fun resolve(navTarget: String, buildContext: BuildContext): Node =
-            Child(navTarget, buildContext)
+            Child(buildContext)
 
         @Composable
         override fun View(modifier: Modifier) {
@@ -215,10 +215,7 @@ class ChildLifecycleTest {
 
     }
 
-    private class Child(
-        val id: String,
-        buildContext: BuildContext
-    ) : Node(buildContext) {
+    private class Child(buildContext: BuildContext) : Node(buildContext) {
         val lifecycleHistory = ArrayList<Lifecycle.State>()
 
         @Composable

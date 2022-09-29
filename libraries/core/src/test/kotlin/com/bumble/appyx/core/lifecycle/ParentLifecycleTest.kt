@@ -5,15 +5,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.navigation.BaseNavModel
-import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
+import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.core.node.build
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -117,17 +117,14 @@ class ParentLifecycleTest {
         navModel = navModelImpl,
     ) {
         override fun resolve(navTarget: String, buildContext: BuildContext): Node =
-            Child(navTarget, buildContext)
+            Child(buildContext)
 
         @Composable
         override fun View(modifier: Modifier) {
         }
     }
 
-    private class Child(
-        val id: String,
-        buildContext: BuildContext
-    ) : Node(buildContext) {
+    private class Child(buildContext: BuildContext) : Node(buildContext) {
         @Composable
         override fun View(modifier: Modifier) {
         }

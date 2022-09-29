@@ -19,6 +19,7 @@ import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.BuildConfig
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
+import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
 import com.bumble.appyx.core.lifecycle.LifecycleLogger
 import com.bumble.appyx.core.lifecycle.NodeLifecycle
 import com.bumble.appyx.core.lifecycle.NodeLifecycleImpl
@@ -36,13 +37,15 @@ import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 @Stable
+@Suppress("TooManyFunctions")
 abstract class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
     plugins: List<Plugin> = emptyList()
-) : NodeLifecycle, NodeView by view {
+) : NodeLifecycle, NodeView by view, RequestCodeClient {
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
@@ -74,8 +77,12 @@ abstract class Node(
         }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
-
     private var wasBuilt = false
+
+    val id = buildContext.savedStateMap?.get(NODE_ID_KEY) as String?
+        ?: UUID.randomUUID().toString()
+
+    override val requestCodeClientId: String = id
 
     init {
         if (BuildConfig.DEBUG) {
@@ -177,7 +184,7 @@ abstract class Node(
 
     @CallSuper
     protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
-        // no-op
+        state[NODE_ID_KEY] = id
     }
 
     fun finish() {
@@ -211,6 +218,7 @@ abstract class Node(
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
     companion object {
+        private const val NODE_ID_KEY = "node.id"
 
         // BackPressHandler is correct when only one of its properties is implemented.
         private fun BackPressHandler.isCorrect(): Boolean {

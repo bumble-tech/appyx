@@ -52,7 +52,6 @@ class GenericChildNode(
 ) {
 
     companion object {
-        private const val KEY_ID = "Id"
         private const val KEY_COUNTER = "Counter"
         private const val KEY_COLOR_INDEX = "ColorIndex"
     }
@@ -75,7 +74,6 @@ class GenericChildNode(
         md_blue_grey_500
     )
 
-    private val id = Random.nextInt(10000)
     private var counter by mutableStateOf(
         buildContext.savedStateMap?.get(KEY_COUNTER) as? Int ?: counterStartValue
     )
@@ -94,7 +92,6 @@ class GenericChildNode(
 
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        state[KEY_ID] = id
         state[KEY_COUNTER] = counter
         state[KEY_COLOR_INDEX] = colorIndex
     }

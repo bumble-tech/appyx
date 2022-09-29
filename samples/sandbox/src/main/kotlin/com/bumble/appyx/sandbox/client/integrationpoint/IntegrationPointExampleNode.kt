@@ -25,14 +25,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
-import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.sandbox.client.integrationpoint.StartActivityExample.Companion.StringExtraKey
 import kotlinx.coroutines.launch
 
-class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContext = buildContext),
-    RequestCodeClient {
+class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContext = buildContext) {
 
     private val permissionRequester: PermissionRequester get() = integrationPoint.permissionRequester
     private val activityStarter: ActivityStarter get() = integrationPoint.activityStarter
@@ -106,7 +104,7 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
 
     private suspend fun observeCameraPermissions() {
         permissionRequester
-            .events(this@IntegrationPointExampleNode)
+            .events(this)
             .collect { event ->
                 if (event.requestCode == RequestCameraCode) {
                     when (event) {
@@ -124,7 +122,7 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
 
     private suspend fun observeActivityResult() {
         activityStarter
-            .events(this@IntegrationPointExampleNode)
+            .events(this)
             .collect { event ->
                 if (event.requestCode == StartActivityForResultCode && event.resultCode == Activity.RESULT_OK && event.data != null) {
                     val result = event.data?.getStringExtra(StringExtraKey) ?: ""
@@ -137,8 +135,6 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
         private const val RequestCameraCode = 1
         private const val StartActivityForResultCode = 2
     }
-
-    override val requestCodeClientId: String = IntegrationPointExampleNode::class.qualifiedName!!
 }
 
 @Preview

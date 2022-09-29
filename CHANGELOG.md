@@ -6,6 +6,7 @@
 - [#43](https://github.com/bumble-tech/appyx/pull/43) – **Updated**: Jetpack Compose to 1.2.1 and kotlin to 1.7.10.
 - [#168](https://github.com/bumble-tech/appyx/pull/168) – **Updated**: Kotlin coroutines to 1.6.4.
 - [#171](https://github.com/bumble-tech/appyx/pull/171) – **Updated**: RIBs to 0.36.1. 
+- [#174](https://github.com/bumble-tech/appyx/issues/174) – **Fixed**: IntegrationPointExample does not work with "do not keep activities"
 
 ## 1.0-alpha09
 
