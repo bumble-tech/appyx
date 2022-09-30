@@ -75,7 +75,6 @@ abstract class Node(
             field = value
         }
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
     private var wasBuilt = false
 
     val id = buildContext.savedStateMap?.get(NODE_ID_KEY) as String?
