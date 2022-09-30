@@ -97,7 +97,7 @@ abstract class Node(
     private fun getNodeId(buildContext: BuildContext): String {
         val state = buildContext.savedStateMap ?: return UUID.randomUUID().toString()
 
-        return state[NODE_ID_KEY] as String? ?: throw IllegalStateException(
+        return state[NODE_ID_KEY] as String? ?: error(
             "super.onSaveInstanceState() was not called for the node: ${this::class.qualifiedName}"
         )
     }
