@@ -79,13 +79,12 @@ abstract class Node(
     private val lifecycleRegistry = LifecycleRegistry(this)
     private var wasBuilt = false
 
-    val id = buildContext.savedStateMap?.get(NODE_ID_KEY) as String?
-        ?: UUID.randomUUID().toString()
+    val id = getNodeId(buildContext)
 
     override val requestCodeClientId: String = id
 
     init {
-        ensureOnSavedInstanceStateWasCalled(buildContext)
+        getNodeId(buildContext)
         if (BuildConfig.DEBUG) {
             lifecycle.addObserver(LifecycleLogger)
         }
@@ -96,15 +95,12 @@ abstract class Node(
         });
     }
 
-    private fun ensureOnSavedInstanceStateWasCalled(buildContext: BuildContext) {
-        val state = buildContext.savedStateMap ?: return
-        if (!state.containsKey(NODE_ID_KEY)) {
-            Appyx.reportException(
-                IllegalStateException(
-                    "super.onSaveInstanceState() was not called for the node: ${this::class.qualifiedName}"
-                )
-            )
-        }
+    private fun getNodeId(buildContext: BuildContext): String {
+        val state = buildContext.savedStateMap ?: return UUID.randomUUID().toString()
+
+        return state[NODE_ID_KEY] as String? ?: throw IllegalStateException(
+            "super.onSaveInstanceState() was not called for the node: ${this::class.qualifiedName}"
+        )
     }
 
     protected suspend inline fun <reified T : Node> executeWorkflow(
