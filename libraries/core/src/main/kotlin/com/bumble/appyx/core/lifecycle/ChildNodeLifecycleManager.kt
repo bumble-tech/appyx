@@ -27,6 +27,7 @@ internal class ChildNodeLifecycleManager<NavTarget>(
     private val navModel: NavModel<NavTarget, *>,
     private val children: StateFlow<ChildEntryMap<NavTarget>>,
     private val coroutineScope: CoroutineScope,
+    private val owner: Any,
 ) {
 
     private val lifecycleState = MutableStateFlow(Lifecycle.State.INITIALIZED)
@@ -97,7 +98,7 @@ internal class ChildNodeLifecycleManager<NavTarget>(
             .distinctUntilChanged()
 
     private fun ChildEntry<*>.setState(state: Lifecycle.State) {
-        nodeOrNull?.updateLifecycleState(state)
+        nodeOrNull?.updateLifecycleState(state, owner)
     }
 
     private data class ScreenState<NavTarget>(

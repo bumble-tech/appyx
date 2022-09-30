@@ -8,7 +8,7 @@ import java.util.UUID
 
 @Parcelize
 @Immutable
-class NavKey<NavTarget> private constructor(
+class NavKey<NavTarget> internal constructor(
     val navTarget: @RawValue NavTarget,
     val id: String
 ) : Parcelable {

@@ -21,11 +21,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.model.combined.plus
+import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
+import com.bumble.appyx.core.portal.PortalClient
+import com.bumble.appyx.core.portal.PortalClientFactory
 import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.Push
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
@@ -42,9 +46,9 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExa
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.ModalExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreLeafExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.RequestPermissionsExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightAdvancedExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.TilesExample
@@ -66,13 +70,17 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode internal constructor(
+    private val portalClientFactory: PortalClientFactory,
     buildContext: BuildContext,
     private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = Picker,
         savedStateMap = buildContext.savedStateMap,
-    )
+    ),
+    private val portalClient: PortalClient<NavTarget> = portalClientFactory.createPortalClient(
+        buildContext.savedStateMap
+    ),
 ) : ParentNode<NavTarget>(
-    navModel = backStack,
+    navModel = backStack + portalClient.navModel,
     buildContext = buildContext,
 ) {
 
@@ -125,6 +133,11 @@ class ContainerNode internal constructor(
 
         @Parcelize
         object Customisations : NavTarget()
+    }
+
+    override fun onBuilt() {
+        super.onBuilt()
+        portalClient.attach(children, lifecycle)
     }
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
@@ -188,7 +201,9 @@ class ContainerNode internal constructor(
                 label?.let {
                     Text(it, textAlign = TextAlign.Center)
                 }
-                TextButton("Customisations Example") { backStack.push(Customisations) }
+                TextButton("Customisations Example") {
+                    portalClient.navModel.accept(Push(Customisations))
+                }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("MVICore Leaf Example") { backStack.push(MviCoreLeafExample) }
                 TextButton("Launch workflow example") {

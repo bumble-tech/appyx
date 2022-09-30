@@ -10,7 +10,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.portal.PortalNode
 import com.bumble.appyx.sandbox.client.container.ContainerBuilder
+import com.bumble.appyx.sandbox.client.container.ContainerNode
 import com.bumble.appyx.sandbox.ui.AppyxSandboxTheme
 
 class MainActivity : NodeActivity() {
@@ -23,7 +25,12 @@ class MainActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         NodeHost(integrationPoint = integrationPoint) {
-                            ContainerBuilder().build(buildContext = it)
+                            PortalNode(buildContext = it) { buildContext, portalClientFactory ->
+                                ContainerNode(
+                                    portalClientFactory = portalClientFactory,
+                                    buildContext = buildContext,
+                                )
+                            }
                         }
                     }
                 }

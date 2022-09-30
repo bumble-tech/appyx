@@ -15,18 +15,18 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.transition.JumpToEndTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionBounds
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionParams
+import com.bumble.appyx.core.node.ParentNodeSomething
 import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
-inline fun <reified NavTarget : Any, State> ParentNode<NavTarget>.Children(
+inline fun <reified NavTarget : Any, State> ParentNodeSomething<NavTarget>.Children(
     navModel: NavModel<NavTarget, State>,
     modifier: Modifier = Modifier,
     transitionHandler: TransitionHandler<NavTarget, State> = JumpToEndTransitionHandler(),
@@ -70,7 +70,7 @@ class ChildrenTransitionScope<T : Any, S>(
 ) {
 
     @Composable
-    inline fun <reified V : T> ParentNode<T>.children(
+    inline fun <reified V : T> ParentNodeSomething<T>.children(
         noinline block: @Composable ChildTransitionScope<S>.(
             child: ChildRenderer,
             transitionDescriptor: TransitionDescriptor<T, S>
@@ -80,14 +80,14 @@ class ChildrenTransitionScope<T : Any, S>(
     }
 
     @Composable
-    inline fun <reified V : T> ParentNode<T>.children(
+    inline fun <reified V : T> ParentNodeSomething<T>.children(
         noinline block: @Composable ChildTransitionScope<S>.(child: ChildRenderer) -> Unit,
     ) {
         children(V::class, block)
     }
 
     @Composable
-    fun ParentNode<T>.children(
+    fun ParentNodeSomething<T>.children(
         clazz: KClass<out T>,
         block: @Composable ChildTransitionScope<S>.(child: ChildRenderer) -> Unit,
     ) {
@@ -99,7 +99,7 @@ class ChildrenTransitionScope<T : Any, S>(
     }
 
     @Composable
-    fun ParentNode<T>.children(
+    fun ParentNodeSomething<T>.children(
         clazz: KClass<out T>,
         block: @Composable ChildTransitionScope<S>.(
             child: ChildRenderer,
@@ -115,7 +115,7 @@ class ChildrenTransitionScope<T : Any, S>(
     }
 
     @Composable
-    private fun ParentNode<T>._children(
+    private fun ParentNodeSomething<T>._children(
         clazz: KClass<out T>,
         block: @Composable (
             transitionScope: ChildTransitionScope<S>,

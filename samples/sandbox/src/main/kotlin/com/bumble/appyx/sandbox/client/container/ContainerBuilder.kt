@@ -7,5 +7,5 @@ import com.bumble.appyx.core.node.Node
 class ContainerBuilder : SimpleBuilder() {
 
     override fun build(buildContext: BuildContext): Node =
-        ContainerNode(buildContext = buildContext)
+        TODO()
 }

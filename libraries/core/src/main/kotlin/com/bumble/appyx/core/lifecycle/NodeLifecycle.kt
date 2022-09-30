@@ -5,6 +5,9 @@ import androidx.lifecycle.LifecycleOwner
 
 interface NodeLifecycle : LifecycleOwner {
 
-    fun updateLifecycleState(state: Lifecycle.State)
+    /** Used by Portal to take lifecycle ownership of the Node. */
+    fun lockCaller(caller: Any? = null)
+
+    fun updateLifecycleState(state: Lifecycle.State, caller: Any? = null)
 
 }

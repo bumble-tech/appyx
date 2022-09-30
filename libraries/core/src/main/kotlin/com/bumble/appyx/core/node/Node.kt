@@ -150,7 +150,7 @@ abstract class Node(
     override fun getLifecycle(): Lifecycle =
         nodeLifecycle.lifecycle
 
-    override fun updateLifecycleState(state: Lifecycle.State) {
+    override fun updateLifecycleState(state: Lifecycle.State, caller: Any?) {
         if (lifecycle.currentState == state) return
         if (lifecycle.currentState == Lifecycle.State.DESTROYED && state != Lifecycle.State.DESTROYED) {
             Appyx.reportException(
@@ -160,10 +160,14 @@ abstract class Node(
             )
             return
         }
-        nodeLifecycle.updateLifecycleState(state)
+        nodeLifecycle.updateLifecycleState(state, caller)
         if (state == Lifecycle.State.DESTROYED) {
             plugins<Destroyable>().forEach { it.destroy() }
         }
+    }
+
+    override fun lockCaller(caller: Any?) {
+        nodeLifecycle.lockCaller(caller)
     }
 
     fun saveInstanceState(scope: SaverScope): SavedStateMap {

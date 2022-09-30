@@ -27,9 +27,9 @@ import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.Resolver
-import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.isTransitioning
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
@@ -57,13 +57,14 @@ abstract class ParentNode<NavTarget : Any>(
     view = view,
     buildContext = buildContext,
     plugins = plugins + navModel + childAware + view
-), Resolver<NavTarget> {
+), Resolver<NavTarget>,
+    ParentNodeSomething<NavTarget> {
 
     private val permanentNavModel = PermanentNavModel<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
         key = KEY_PERMANENT_NAV_MODEL,
     )
-    val navModel: NavModel<NavTarget, *> = permanentNavModel + navModel
+    override val navModel: NavModel<NavTarget, *> = permanentNavModel + navModel
 
     private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
@@ -73,10 +74,12 @@ abstract class ParentNode<NavTarget : Any>(
     val children: StateFlow<ChildEntryMap<NavTarget>>
         get() = childNodeCreationManager.children
 
+    @Suppress("LeakingThis") // owner is used only as a tag
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
         navModel = this.navModel,
         children = children,
         coroutineScope = lifecycleScope,
+        owner = this,
     )
 
     private var transitionsInBackgroundJob: Job? = null
@@ -89,7 +92,7 @@ abstract class ParentNode<NavTarget : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> =
+    override fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> =
         childNodeCreationManager.childOrCreate(navKey)
 
     @Composable
@@ -116,8 +119,8 @@ abstract class ParentNode<NavTarget : Any>(
         PermanentChild(navTarget) { child -> child() }
     }
 
-    override fun updateLifecycleState(state: Lifecycle.State) {
-        super.updateLifecycleState(state)
+    override fun updateLifecycleState(state: Lifecycle.State, caller: Any?) {
+        super.updateLifecycleState(state, caller)
         childNodeLifecycleManager.propagateLifecycleToChildren(state)
     }
 

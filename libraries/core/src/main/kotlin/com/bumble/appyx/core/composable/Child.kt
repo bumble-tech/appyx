@@ -19,8 +19,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavModel
@@ -29,10 +27,12 @@ import com.bumble.appyx.core.navigation.transition.TransitionBounds
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionParams
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.ParentNodeSomething
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
+fun <NavTarget : Any, State> ParentNodeSomething<NavTarget>.Child(
     navElement: NavElement<NavTarget, out State>,
     saveableStateHolder: SaveableStateHolder,
     transitionParams: TransitionParams,
@@ -85,7 +85,7 @@ private class ChildRendererImpl(
 }
 
 @Composable
-fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
+fun <NavTarget : Any, State> ParentNodeSomething<NavTarget>.Child(
     navElement: NavElement<NavTarget, out State>,
     transitionHandler: TransitionHandler<NavTarget, State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(

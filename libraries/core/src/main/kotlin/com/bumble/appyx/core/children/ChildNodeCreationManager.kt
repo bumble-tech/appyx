@@ -177,7 +177,13 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
                 key = key,
                 node = parentNode
                     .resolve(key.navTarget, childBuildContext(savedState))
-                    .build()
+                    .also {
+                        try {
+                            it.build()
+                        } catch (ignored: IllegalArgumentException) {
+                            // no-op
+                        }
+                    }
             )
         }
 
