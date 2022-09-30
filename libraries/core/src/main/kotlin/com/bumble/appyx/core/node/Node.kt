@@ -84,7 +84,6 @@ abstract class Node(
     override val requestCodeClientId: String = id
 
     init {
-        getNodeId(buildContext)
         if (BuildConfig.DEBUG) {
             lifecycle.addObserver(LifecycleLogger)
         }
