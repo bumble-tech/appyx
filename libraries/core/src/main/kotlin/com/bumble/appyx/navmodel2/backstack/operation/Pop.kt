@@ -47,5 +47,5 @@ class Pop<T : Any> : BackStackOperation<T> {
 }
 
 fun <T : Any> BackStack<T>.pop() {
-    accept(Pop())
+    enqueue(Pop())
 }

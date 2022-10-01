@@ -62,5 +62,5 @@ data class Remove<T : Any>(
 }
 
 fun <T : Any> BackStack<T>.remove(key: NavKey<T>) {
-    accept(Remove(key))
+    enqueue(Remove(key))
 }

@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.navigation2.model
+package com.bumble.appyx.core.navigation2
 
 import android.util.Log
 import com.bumble.appyx.core.navigation.NavElements
@@ -10,10 +10,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
-open class BaseNavModel<Target, State>(
-    initialState: NavElements<Target, State>,
+abstract class BaseNavModel<Target, State>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 ) {
+    abstract val initialState: NavElements<Target, State>
+
     /**
      * A state queue that can be prefetched. Could also work as state history if we implement
      * reversing progress.
@@ -22,9 +23,9 @@ open class BaseNavModel<Target, State>(
      *  can be dropped if instead we diff between consecutive states to calculate which elements
      *  are destroyed
      */
-    private val queue: MutableList<NavElements<Target, State>> = mutableListOf(
-        initialState
-    )
+    private val queue: MutableList<NavElements<Target, State>> by lazy {
+        mutableListOf(initialState)
+    }
 
     /**
      * 0..infinity
@@ -47,7 +48,6 @@ open class BaseNavModel<Target, State>(
     private val state: MutableStateFlow<BaseNavModel.State<Target, State>> by lazy {
         MutableStateFlow(createState(internalProgress))
     }
-
 
     val elements: StateFlow<BaseNavModel.State<Target, State>> = state
 

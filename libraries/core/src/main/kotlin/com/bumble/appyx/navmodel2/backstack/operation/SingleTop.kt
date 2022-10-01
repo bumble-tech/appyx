@@ -113,5 +113,5 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 }
 
 fun <T : Any> BackStack<T>.singleTop(element: T) {
-    accept(SingleTop.init(element, elements.value))
+    enqueue(SingleTop.init(element, elements.value))
 }

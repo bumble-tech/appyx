@@ -1,6 +1,8 @@
 package com.bumble.appyx.navmodel2.backstack
 
-import com.bumble.appyx.core.navigation.BaseNavModel
+import com.bumble.appyx.core.navigation.BaseNavModel.Companion.KEY_NAV_MODEL
+import com.bumble.appyx.core.navigation.NavElement
+import com.bumble.appyx.core.navigation2.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
@@ -21,19 +23,19 @@ class BackStack<NavTarget : Any>(
     operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
     screenResolver: OnScreenStateResolver<State> = BackStackOnScreenResolver
 ) : BaseNavModel<NavTarget, State>(
-    backPressHandler = backPressHandler,
-    screenResolver = screenResolver,
-    operationStrategy = operationStrategy,
-    finalState = DESTROYED,
-    savedStateMap = savedStateMap,
-    key = key,
+//    backPressHandler = backPressHandler,
+//    screenResolver = screenResolver,
+//    operationStrategy = operationStrategy,
+//    finalState = DESTROYED,
+//    savedStateMap = savedStateMap,
+//    key = key,
 ) {
 
     enum class State {
         CREATED, ACTIVE, STASHED, DESTROYED,
     }
 
-    override val initialElements = listOf(
+    override val initialState = listOf(
         BackStackElement(
             key = NavKey(initialElement),
             fromState = ACTIVE,

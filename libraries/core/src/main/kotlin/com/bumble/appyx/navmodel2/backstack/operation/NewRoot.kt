@@ -49,5 +49,5 @@ data class NewRoot<T : Any>(
 }
 
 fun <T : Any> BackStack<T>.newRoot(element: T) {
-    accept(NewRoot(element))
+    enqueue(NewRoot(element))
 }
