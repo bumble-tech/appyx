@@ -39,7 +39,6 @@ import kotlinx.coroutines.withContext
 import java.util.UUID
 
 @Stable
-@Suppress("TooManyFunctions")
 abstract class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,

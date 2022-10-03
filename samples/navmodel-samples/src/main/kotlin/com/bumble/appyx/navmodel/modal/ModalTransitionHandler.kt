@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
@@ -31,7 +32,23 @@ class ModalTransitionHandler<T>(
         descriptor: TransitionDescriptor<T, State>
     ): Modifier = modifier.composed {
         val screenHeight = LocalConfiguration.current.screenHeightDp
-        val offset = transition.animateFloat(
+        val offset = getOffset(transition)
+        val height = getHeight(transition)
+        val width = getWidth(transition)
+        val cornerRadius = getCornerRadius(transition)
+
+        offset(x = Dp(0f), y = Dp(screenHeight * offset.value))
+            .fillMaxWidth(width.value)
+            .fillMaxHeight(height.value)
+            .background(
+                color = Color(0xFFBDC6D1),
+                shape = RoundedCornerShape(Dp(cornerRadius.value))
+            )
+    }
+
+    @Composable
+    private fun getOffset(transition: Transition<State>) =
+        transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
@@ -42,7 +59,9 @@ class ModalTransitionHandler<T>(
                 }
             })
 
-        val height = transition.animateFloat(
+    @Composable
+    private fun getHeight(transition: Transition<State>) =
+        transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
@@ -53,7 +72,9 @@ class ModalTransitionHandler<T>(
                 }
             })
 
-        val width = transition.animateFloat(
+    @Composable
+    private fun getWidth(transition: Transition<State>) =
+        transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
@@ -64,7 +85,9 @@ class ModalTransitionHandler<T>(
                 }
             })
 
-        val cornerRadius = transition.animateFloat(
+    @Composable
+    private fun getCornerRadius(transition: Transition<State>) =
+        transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = {
                 when (it) {
@@ -74,14 +97,5 @@ class ModalTransitionHandler<T>(
                     State.DESTROYED -> 0f
                 }
             })
-
-        offset(x = Dp(0f), y = Dp(screenHeight * offset.value))
-            .fillMaxWidth(width.value)
-            .fillMaxHeight(height.value)
-            .background(
-                color = Color(0xFFBDC6D1),
-                shape = RoundedCornerShape(Dp(cornerRadius.value))
-            )
-    }
 
 }

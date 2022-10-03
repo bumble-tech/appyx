@@ -2,24 +2,35 @@ config:
   warningsAsErrors: true
 
 complexity:
+  ComplexMethod:
+    threshold: 17
+  LongMethod:
+    threshold: 70
   LongParameterList:
     # It is suggested to increase this for Compose: https://detekt.dev/docs/introduction/compose/#longparameterlist
     functionThreshold: 8
     ignoreDefaultParameters: true
+  TooManyFunctions:
+    thresholdInClasses: 18
 
 naming:
   active: true
   FunctionNaming:
     active: true
-    ignoreAnnotated: ['Composable']
+    ignoreAnnotated: [ 'Composable' ]
 
 style:
+  ForbiddenComment:
+    values: [ 'FIXME:', 'STOPSHIP:' ]
+  MagicNumber:
+    ignoreNumbers: [ '-1', '0', '1', '2', '3' ]
+    excludes: [ '**/*TransitionHandler.kt', '**/*Test.kt' ]
   MaxLineLength:
-    excludes: ['**/test/**', '**/*.Test.kt', '**/*.Spec.kt']
+    excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt' ]
     excludeCommentStatements: true
   UnusedPrivateMember:
     # https://detekt.dev/docs/introduction/compose#unusedprivatemember
-    ignoreAnnotated: ['Preview']
+    ignoreAnnotated: [ 'Preview' ]
   WildcardImport:
     active: true
-    excludeImports: []
+    excludeImports: [ ]
