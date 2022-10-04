@@ -15,6 +15,7 @@ import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode.NavTarget
 import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode.NavTarget.BackStackTeaser
 import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode.NavTarget.RandomOtherTeaser
 import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode
+import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.integration.NodeHost
@@ -24,10 +25,9 @@ import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.activeElement
 import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
-import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode
-import com.bumble.appyx.navmodel.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
@@ -57,7 +57,7 @@ class NavModelTeaserNode(
         }
 
     override fun onChildFinished(child: Node) {
-        switchToNextExample()
+//        switchToNextExample()
     }
 
     private fun switchToNextExample() {

@@ -1,7 +1,6 @@
 package com.bumble.appyx.app.node.child
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -46,9 +45,11 @@ import kotlin.random.Random
 
 class GenericChildNode(
     buildContext: BuildContext,
-    counterStartValue: Int
+    counterStartValue: Int,
+    isPortal: Boolean = false,
 ) : Node(
-    buildContext = buildContext
+    buildContext = buildContext,
+    isPortal = isPortal
 ) {
 
     companion object {
@@ -107,9 +108,9 @@ class GenericChildNode(
                     color = color,
                     shape = RoundedCornerShape(6.dp)
                 )
-                .clickable {
-                    colorIndex = Random.nextInt(colors.size)
-                }
+//                .clickable {
+//                    colorIndex = Random.nextInt(colors.size)
+//                }
         ) {
             Box(
                 modifier = Modifier

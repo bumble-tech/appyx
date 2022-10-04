@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.node
 
+import android.util.Log
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
@@ -44,7 +45,8 @@ import java.util.UUID
 abstract class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
-    plugins: List<Plugin> = emptyList()
+    plugins: List<Plugin> = emptyList(),
+    val isPortal: Boolean = false,
 ) : NodeLifecycle, NodeView by view, RequestCodeClient {
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
@@ -58,7 +60,7 @@ abstract class Node(
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
-    private val parent: ParentNode<*>? =
+    protected val parent: ParentNode<*>? =
         when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
@@ -118,6 +120,17 @@ abstract class Node(
             LocalLifecycleOwner provides this,
         ) {
             HandleBackPress()
+            if (isPortal) {
+                DisposableEffect(key1 = this) {
+                    Log.e("PORTAL", "pushed ${this@Node}")
+                    parent?.onPortalPushed(this@Node)
+                    onDispose {
+                        Log.e("PORTAL", "removed ${this@Node}")
+                        parent?.onPortalRemoved(this@Node)
+                    }
+                }
+
+            }
             View(modifier)
         }
     }
