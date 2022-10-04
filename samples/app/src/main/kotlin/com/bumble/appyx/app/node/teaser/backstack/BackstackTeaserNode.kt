@@ -10,13 +10,13 @@ import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.node.child.GenericChildNode
 import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.NavTarget
 import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode.NavTarget.Child
-import com.bumble.appyx.app.node.teaser.backstack.transitionhandler.rememberCustomHandler
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
+import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
@@ -54,11 +54,13 @@ class BackstackTeaserNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            modifier = Modifier.fillMaxSize().clickable {
-                backStack.push(NavTarget.Child(400, true))
-            },
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable {
+                    backStack.push(NavTarget.Child(400, true))
+                },
             navModel = backStack,
-            transitionHandler = rememberCustomHandler()
+            transitionHandler = rememberBackstackSlider()
         )
     }
 }

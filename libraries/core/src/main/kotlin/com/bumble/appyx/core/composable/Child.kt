@@ -74,7 +74,7 @@ private class ChildRendererImpl(
     override operator fun invoke(modifier: Modifier) {
         if (node.isPortal) {
             Popup {
-                Box(modifier = transitionModifier) {
+                Box {
                     node.Compose(modifier = modifier)
                 }
             }
@@ -87,17 +87,7 @@ private class ChildRendererImpl(
 
     @Composable
     override operator fun invoke() {
-        if (node.isPortal) {
-            Popup {
-                Box(modifier = transitionModifier) {
-                    node.Compose(modifier = Modifier)
-                }
-            }
-        } else {
-            Box(modifier = transitionModifier) {
-                node.Compose(modifier = Modifier)
-            }
-        }
+        invoke(modifier = Modifier)
     }
 }
 

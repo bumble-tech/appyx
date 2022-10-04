@@ -1,6 +1,5 @@
 package com.bumble.appyx.core.node
 
-import android.util.Log
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
@@ -122,10 +121,8 @@ abstract class Node(
             HandleBackPress()
             if (isPortal) {
                 DisposableEffect(key1 = this) {
-                    Log.e("PORTAL", "pushed ${this@Node}")
                     parent?.onPortalPushed(this@Node)
                     onDispose {
-                        Log.e("PORTAL", "removed ${this@Node}")
                         parent?.onPortalRemoved(this@Node)
                     }
                 }
