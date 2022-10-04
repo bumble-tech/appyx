@@ -3,6 +3,7 @@ package com.bumble.appyx.core.composable
 import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -61,6 +62,10 @@ fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
             ),
             transitionDescriptor = descriptor,
         )
+    }
+
+    DisposableEffect(navElement.key) {
+        onDispose { navModel.onTransitionFinished(childEntry.key) }
     }
 }
 
