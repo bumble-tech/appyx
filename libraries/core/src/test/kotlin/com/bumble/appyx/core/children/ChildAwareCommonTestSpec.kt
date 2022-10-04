@@ -150,6 +150,7 @@ interface ChildAwareCommonTestSpec {
         assertEquals(setOf(children[0], children[1]), capturedNodes2)
     }
 
+    @Suppress("MagicNumber")
     @Test
     fun `whenChildrenAttached is invoked multiple times for each instance`() {
         // order within pair matters as they are different classes

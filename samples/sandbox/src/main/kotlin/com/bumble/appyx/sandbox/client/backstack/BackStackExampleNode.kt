@@ -61,6 +61,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
+@Suppress("TooManyFunctions")
 class BackStackExampleNode(
     buildContext: BuildContext,
     private val backStack: BackStack<NavTarget> = BackStack(

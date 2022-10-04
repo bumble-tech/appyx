@@ -38,6 +38,7 @@ import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
+@Suppress("TooManyFunctions")
 @Stable
 abstract class Node(
     buildContext: BuildContext,
