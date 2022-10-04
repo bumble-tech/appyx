@@ -77,8 +77,7 @@ abstract class Node(
 
     private var wasBuilt = false
 
-    val id = buildContext.savedStateMap?.get(NODE_ID_KEY) as String?
-        ?: UUID.randomUUID().toString()
+    val id = getNodeId(buildContext)
 
     override val requestCodeClientId: String = id
 
@@ -91,6 +90,14 @@ abstract class Node(
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
             }
         })
+    }
+
+    private fun getNodeId(buildContext: BuildContext): String {
+        val state = buildContext.savedStateMap ?: return UUID.randomUUID().toString()
+
+        return state[NODE_ID_KEY] as String? ?: error(
+            "super.onSaveInstanceState() was not called for the node: ${this::class.qualifiedName}"
+        )
     }
 
     protected suspend inline fun <reified T : Node> executeWorkflow(
