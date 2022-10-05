@@ -109,6 +109,7 @@ class BackStackExampleNode(
             is ChildD -> ChildNode(navTarget.name, buildContext)
         }
 
+    @Suppress("LongMethod")
     @Composable
     override fun View(modifier: Modifier) {
         val backStackState = backStack.elements.collectAsState()

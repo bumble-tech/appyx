@@ -1,7 +1,7 @@
 package com.bumble.appyx.core.children
 
-import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.navigation.NavKey
+import com.bumble.appyx.core.node.Node
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -150,7 +150,6 @@ interface ChildAwareCommonTestSpec {
         assertEquals(setOf(children[0], children[1]), capturedNodes2)
     }
 
-    @Suppress("MagicNumber")
     @Test
     fun `whenChildrenAttached is invoked multiple times for each instance`() {
         // order within pair matters as they are different classes

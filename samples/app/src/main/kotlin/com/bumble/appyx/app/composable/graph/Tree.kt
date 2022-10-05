@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.app.composable.graph.nodeimpl.TestImpl
 
+@Suppress("LongMethod")
 @Composable
 @ExperimentalComposeUiApi
 fun Tree(

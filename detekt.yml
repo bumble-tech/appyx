@@ -2,8 +2,6 @@ config:
   warningsAsErrors: true
 
 complexity:
-  LongMethod:
-    threshold: 70
   LongParameterList:
     # It is suggested to increase this for Compose: https://detekt.dev/docs/introduction/compose/#longparameterlist
     functionThreshold: 8
@@ -19,7 +17,7 @@ style:
   ForbiddenComment:
     allowedPatterns: 'https://github.com/bumble-tech/appyx/issues/*'
   MagicNumber:
-    excludes: [ '**/*Test.kt' ]
+    excludes: [ '**/test/**', '**/*Test.kt' ]
   MaxLineLength:
     excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt' ]
     excludeCommentStatements: true
