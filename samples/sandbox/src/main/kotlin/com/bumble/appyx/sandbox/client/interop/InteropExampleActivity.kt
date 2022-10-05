@@ -19,7 +19,7 @@ class InteropExampleActivity : InteropActivity() {
     override fun createRib(savedInstanceState: Bundle?): Rib {
         return RibsParentBuilder().build(
             buildContext = BuildContext.root(
-                savedInstanceState,
+                savedInstanceState= savedInstanceState,
                 customisations = ribCustomisations()
             )
         )
