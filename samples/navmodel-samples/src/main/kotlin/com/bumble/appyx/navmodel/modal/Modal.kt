@@ -1,9 +1,8 @@
 package com.bumble.appyx.navmodel.modal
 
 import com.bumble.appyx.core.navigation.BaseNavModel
-import com.bumble.appyx.core.navigation.Operation.Noop
-import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
+import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
@@ -26,6 +25,14 @@ class Modal<NavTarget : Any>(
     screenResolver = screenResolver,
     operationStrategy = operationStrategy,
     backPressHandler = backPressHandler,
+    initialElements = listOf(
+        ModalElement(
+            key = NavKey(initialElement),
+            fromState = CREATED,
+            targetState = CREATED,
+            operation = Noop()
+        )
+    ),
     key = key,
     finalState = DESTROYED
 ) {
@@ -34,12 +41,4 @@ class Modal<NavTarget : Any>(
         CREATED, MODAL, FULL_SCREEN, DESTROYED
     }
 
-    override val initialElements: NavElements<NavTarget, State> = listOf(
-        ModalElement(
-            key = NavKey(initialElement),
-            fromState = CREATED,
-            targetState = CREATED,
-            operation = Noop()
-        )
-    )
 }

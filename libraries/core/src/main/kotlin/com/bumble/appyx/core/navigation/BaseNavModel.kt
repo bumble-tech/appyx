@@ -1,14 +1,14 @@
 package com.bumble.appyx.core.navigation
 
 import androidx.activity.OnBackPressedCallback
-import com.bumble.appyx.core.plugin.BackPressHandler
-import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.onscreen.isOnScreen
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.core.navigation.operationstrategies.OperationStrategy
+import com.bumble.appyx.core.plugin.BackPressHandler
+import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.CoroutineScope
@@ -34,6 +34,7 @@ abstract class BaseNavModel<NavTarget, State>(
     private val backPressHandler: BackPressHandlerStrategy<NavTarget, State> = DontHandleBackPress(),
     private val operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
     private val screenResolver: OnScreenStateResolver<State>,
+    initialElements: NavElements<NavTarget, State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val finalStates: Set<State>,
     private val key: String = KEY_NAV_MODEL,
@@ -44,6 +45,7 @@ abstract class BaseNavModel<NavTarget, State>(
         backPressHandler: BackPressHandlerStrategy<NavTarget, State> = DontHandleBackPress(),
         operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
         screenResolver: OnScreenStateResolver<State>,
+        initialElements: NavElements<NavTarget, State>,
         scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
         finalState: State?,
         key: String = KEY_NAV_MODEL,
@@ -52,14 +54,12 @@ abstract class BaseNavModel<NavTarget, State>(
         backPressHandler = backPressHandler,
         operationStrategy = operationStrategy,
         screenResolver = screenResolver,
+        initialElements = initialElements,
         scope = scope,
         finalStates = setOfNotNull(finalState),
         key = key,
         savedStateMap = savedStateMap
     )
-
-    // TODO: think about how we can avoid keeping unnecessary object after state initialization
-    protected abstract val initialElements: NavElements<NavTarget, State>
 
     private val state: MutableStateFlow<NavElements<NavTarget, State>> by lazy {
         MutableStateFlow(savedStateMap?.restoreHistory() ?: initialElements)

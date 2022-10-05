@@ -24,6 +24,7 @@ class Spotlight<NavTarget : Any>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
+    initialElements = items.toSpotlightElements(initialActiveIndex),
     finalState = null,
     savedStateMap = savedStateMap,
     key = key,
@@ -32,7 +33,5 @@ class Spotlight<NavTarget : Any>(
     enum class State {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
-
-    override val initialElements = items.toSpotlightElements(initialActiveIndex)
 
 }

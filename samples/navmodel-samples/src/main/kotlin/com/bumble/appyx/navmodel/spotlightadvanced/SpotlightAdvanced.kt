@@ -23,6 +23,7 @@ class SpotlightAdvanced<NavTarget : Any>(
     backPressHandler = backPressHandler,
     operationStrategy = operationStrategy,
     screenResolver = screenResolver,
+    initialElements = items.toSpotlightAdvancedElements(initialActiveIndex),
     finalState = null,
     savedStateMap = savedStateMap,
     key = key,
@@ -34,7 +35,5 @@ class SpotlightAdvanced<NavTarget : Any>(
         object InactiveAfter : State()
         data class Carousel(val offset: Int, val max: Int) : State()
     }
-
-    override val initialElements = items.toSpotlightAdvancedElements(initialActiveIndex)
 
 }
