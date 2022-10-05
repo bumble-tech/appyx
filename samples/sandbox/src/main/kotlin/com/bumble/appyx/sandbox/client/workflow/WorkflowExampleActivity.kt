@@ -55,7 +55,7 @@ class WorkflowExampleActivity : NodeActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
-                        NodeHost(integrationPoint = integrationPoint) {
+                        NodeHost(integrationPoint = appyxIntegrationPoint) {
                             RootNode(
                                 buildContext = it,
                                 plugins = listOf(object : NodeAware<RootNode> {
