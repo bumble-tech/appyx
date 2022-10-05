@@ -19,7 +19,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
-// TODO: Make it BaseNavModel test
+// TODO: Make it BaseNavModel test https://github.com/bumble-tech/appyx/issues/192
 class ParentLifecycleTest {
 
     @get:Rule

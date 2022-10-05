@@ -17,7 +17,7 @@ naming:
 
 style:
   ForbiddenComment:
-    values: [ 'FIXME:', 'STOPSHIP:' ]
+    allowedPatterns: 'https://github.com/bumble-tech/appyx/issues/*'
   MagicNumber:
     excludes: [ '**/*Test.kt' ]
   MaxLineLength:
