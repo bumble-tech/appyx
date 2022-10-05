@@ -16,7 +16,7 @@ class ComposeNavigationActivity : NodeActivity() {
             // 'integrationPoint' must be provided to ensure it can be accessed from within the
             // Jetpack compose navigation graph.
             CompositionLocalProvider(
-                LocalIntegrationPoint provides integrationPoint,
+                LocalIntegrationPoint provides appyxIntegrationPoint,
             ) {
                 Surface(color = MaterialTheme.colors.background) {
                     ComposeNavigationRoot()

@@ -7,10 +7,10 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import com.bumble.appyx.sandbox.ui.AppyxSandboxTheme
+import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
 class ViewCustomisationsActivity : NodeActivity() {
 
@@ -23,7 +23,7 @@ class ViewCustomisationsActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         NodeHost(
-                            integrationPoint = integrationPoint,
+                            integrationPoint = appyxIntegrationPoint,
                             customisations = getCustomisations(hasCustomisedView)
                         ) {
                             ViewCustomisationExampleBuilder().build(buildContext = it)
