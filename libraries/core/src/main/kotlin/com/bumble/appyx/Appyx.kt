@@ -6,6 +6,8 @@ object Appyx {
 
     var exceptionHandler: ((Exception) -> Unit)? = null
     var defaultChildKeepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP
+    var defaultChildTransitionStrategy: ChildEntry.ChildTransitionStrategy =
+        ChildEntry.ChildTransitionStrategy.COMPLETE
 
     fun reportException(exception: Exception) {
         val handler = exceptionHandler
