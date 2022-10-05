@@ -10,7 +10,7 @@ abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
 
     override lateinit var appyxIntegrationPoint: ActivityIntegrationPoint
 
-    protected open fun createIntegrationPointV2(savedInstanceState: Bundle?) =
+    protected open fun createAppyxIntegrationPoint(savedInstanceState: Bundle?) =
         ActivityIntegrationPoint(
             activity = this,
             savedInstanceState = savedInstanceState
@@ -18,7 +18,7 @@ abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appyxIntegrationPoint = createIntegrationPointV2(savedInstanceState)
+        appyxIntegrationPoint = createAppyxIntegrationPoint(savedInstanceState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
