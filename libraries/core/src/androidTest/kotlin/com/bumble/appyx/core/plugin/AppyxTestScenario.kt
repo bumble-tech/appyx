@@ -29,7 +29,7 @@ class AppyxTestScenario<T : Node>(
         val awaitNode = CountDownLatch(1)
         AppyxViewActivity.composableView = { activity ->
             decorator {
-                NodeHost(integrationPoint = activity.integrationPoint, factory = { buildContext ->
+                NodeHost(integrationPoint = activity.appyxIntegrationPoint, factory = { buildContext ->
                     node = nodeFactory.create(buildContext)
                     awaitNode.countDown()
                     node
