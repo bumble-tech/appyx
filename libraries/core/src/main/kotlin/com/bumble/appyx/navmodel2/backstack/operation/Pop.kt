@@ -1,5 +1,7 @@
 package com.bumble.appyx.navmodel2.backstack.operation
 
+import com.bumble.appyx.core.navigation2.NavElements
+import com.bumble.appyx.core.navigation2.NavTransition
 import com.bumble.appyx.navmodel2.backstack.BackStack
 import com.bumble.appyx.navmodel2.backstack.BackStackElements
 import com.bumble.appyx.navmodel2.backstack.activeIndex
@@ -11,25 +13,23 @@ import kotlinx.parcelize.Parcelize
  * [A, B, C] + Pop = [A, B]
  */
 @Parcelize
-class Pop<T : Any> : BackStackOperation<T> {
+class Pop<NavTarget : Any> : BackStackOperation<NavTarget> {
 
-    override fun isApplicable(elements: BackStackElements<T>): Boolean =
-        elements.any { it.targetState == BackStack.State.ACTIVE } &&
-                elements.any { it.targetState == BackStack.State.STASHED }
+    override fun isApplicable(elements: BackStackElements<NavTarget>): Boolean =
+        elements.any { it.state == BackStack.State.ACTIVE } &&
+            elements.any { it.state == BackStack.State.STASHED }
 
-    override fun invoke(
-        elements: BackStackElements<T>
-    ): BackStackElements<T> {
 
+    override fun invoke(elements: NavElements<NavTarget, BackStack.State>): NavTransition<NavTarget, BackStack.State> {
         val destroyIndex = elements.activeIndex
         val unStashIndex =
-            elements.indexOfLast { it.targetState == BackStack.State.STASHED }
+            elements.indexOfLast { it.state == BackStack.State.STASHED }
         require(destroyIndex != -1) { "Nothing to destroy, state=$elements" }
         require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }
-        return elements.mapIndexed { index, element ->
+        val target = elements.mapIndexed { index, element ->
             when (index) {
                 destroyIndex -> element.transitionTo(
-                    newTargetState = BackStack.State.DESTROYED,
+                    newTargetState = BackStack.State.POPPED,
                     operation = this
                 )
                 unStashIndex -> element.transitionTo(
@@ -39,6 +39,11 @@ class Pop<T : Any> : BackStackOperation<T> {
                 else -> element
             }
         }
+
+        return NavTransition(
+            fromState = elements,
+            targetState = target
+        )
     }
 
     override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
@@ -46,6 +51,6 @@ class Pop<T : Any> : BackStackOperation<T> {
     override fun hashCode(): Int = this.javaClass.hashCode()
 }
 
-fun <T : Any> BackStack<T>.pop() {
+fun <NavTarget : Any> BackStack<NavTarget>.pop() {
     enqueue(Pop())
 }
