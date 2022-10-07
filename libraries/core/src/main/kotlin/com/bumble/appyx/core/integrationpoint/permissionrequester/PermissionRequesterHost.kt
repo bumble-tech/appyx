@@ -19,7 +19,7 @@ interface PermissionRequesterHost {
         override fun isGranted(permission: String): Boolean =
             ContextCompat.checkSelfPermission(
                 activity,
-                permission
+                permission,
             ) == PackageManager.PERMISSION_GRANTED
 
         override fun shouldShowRationale(permission: String): Boolean =
