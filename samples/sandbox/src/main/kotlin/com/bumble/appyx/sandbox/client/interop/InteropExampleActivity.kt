@@ -17,7 +17,7 @@ class InteropExampleActivity : InteropActivity() {
     override val rootViewGroup: ViewGroup get() = rootView
 
     override fun createRib(savedInstanceState: Bundle?): Rib {
-        return RibsParentBuilder().build(
+        return RibsParentBuilder(appyxIntegrationPoint).build(
             buildContext = BuildContext.root(
                 savedInstanceState= savedInstanceState,
                 customisations = ribCustomisations()
