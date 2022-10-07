@@ -9,7 +9,7 @@ import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp
 import com.bumble.appyx.navmodel2.backstack.BackStack
 
-class BackStackFaderProps<Target>(
+class BackStackCrossfader<Target>(
     transitionParams: TransitionParams
 ) : UiProps<Target, BackStack.State> {
     private val width = transitionParams.bounds.width

@@ -12,7 +12,7 @@ import com.bumble.appyx.navmodel2.backstack.BackStack
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.*
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class BackStackSliderProps<Target>(
+class BackStackSlider<Target>(
     transitionParams: TransitionParams
 ) : UiProps<Target, BackStack.State> {
     private val width = transitionParams.bounds.width

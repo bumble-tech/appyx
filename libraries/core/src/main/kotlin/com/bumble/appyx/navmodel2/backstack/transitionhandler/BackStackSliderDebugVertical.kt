@@ -18,7 +18,7 @@ import com.bumble.appyx.navmodel2.backstack.BackStack.State.STASHED
 import androidx.compose.ui.graphics.lerp as lerpGraphics
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class BackStackSliderPropsDebugVertical<Target>(
+class BackStackSliderDebugVertical<Target>(
     transitionParams: TransitionParams
 ) : UiProps<Target, BackStack.State> {
     private val size = 100.dp
