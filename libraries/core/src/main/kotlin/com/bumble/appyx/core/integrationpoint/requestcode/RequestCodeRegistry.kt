@@ -19,24 +19,28 @@ class RequestCodeRegistry constructor(
     initialState: Bundle?,
     private val nbLowerBitsForIds: Int = 4
 ) {
-    internal val requestCodes: HashMap<Int, String> =
+    private val requestCodes: HashMap<Int, String> =
         (initialState?.getSerializable(KEY_REQUEST_CODE_REGISTRY) as? HashMap<Int, String>)
             ?: hashMapOf()
 
     private val lowerBitsShift: Int = nbLowerBitsForIds - 0
     private val maskLowerBits = (1 shl lowerBitsShift) - 1
-    private val maskHigherBits = 0x0000FFFF - maskLowerBits
+    private val maskHigherBits = BITS_BASE - maskLowerBits
 
     init {
-        if (nbLowerBitsForIds < 1) throw IllegalArgumentException("nbLowerBitsForIds can't be less than 1")
-        if (nbLowerBitsForIds > 4) throw IllegalArgumentException("nbLowerBitsForIds can't be larger than 4")
+        if (nbLowerBitsForIds < MIN_NUMBER_OF_BITS) {
+            throw IllegalArgumentException("nbLowerBitsForIds can't be less than $MIN_NUMBER_OF_BITS")
+        }
+        if (nbLowerBitsForIds > MAX_NUMBER_OF_BITS) {
+            throw IllegalArgumentException("nbLowerBitsForIds can't be larger than $MAX_NUMBER_OF_BITS")
+        }
     }
 
     fun generateGroupId(groupName: String): Int {
         var code = generateInitialCode(groupName)
 
         while (codeCollisionWithAnotherGroup(code, groupName)) {
-            code += (1 shl lowerBitsShift) and 0x0000FFFF
+            code += (1 shl lowerBitsShift) and BITS_BASE
         }
 
         requestCodes[code] = groupName
@@ -44,8 +48,8 @@ class RequestCodeRegistry constructor(
         return code
     }
 
-    internal fun generateInitialCode(groupName: String) =
-        (groupName.hashCode() shl lowerBitsShift) and 0x0000FFFF
+    private fun generateInitialCode(groupName: String) =
+        (groupName.hashCode() shl lowerBitsShift) and BITS_BASE
 
     private fun codeCollisionWithAnotherGroup(code: Int, groupName: String) =
         requestCodes.containsKey(code) && requestCodes[code] != groupName
@@ -58,7 +62,7 @@ class RequestCodeRegistry constructor(
     private fun ensureCodeIsCorrect(code: Int) {
         if (code < 1 || code != code and maskLowerBits) {
             throw RequestCodeDoesntFitInMask(
-                "Requestcode '$code' does not fit requirements. Allowed min: 1, max: ${
+                "Request code '$code' does not fit requirements. Allowed min: 1, max: ${
                     2.0.pow(
                         nbLowerBitsForIds
                     ).toInt() - 1
@@ -79,5 +83,8 @@ class RequestCodeRegistry constructor(
 
     companion object {
         internal const val KEY_REQUEST_CODE_REGISTRY = "requestCodeRegistry"
+        private const val MIN_NUMBER_OF_BITS = 1
+        private const val MAX_NUMBER_OF_BITS = 4
+        private const val BITS_BASE = 0x0000FFFF
     }
 }

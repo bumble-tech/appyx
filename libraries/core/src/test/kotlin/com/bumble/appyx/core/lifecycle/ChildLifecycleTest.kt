@@ -208,6 +208,7 @@ class ChildLifecycleTest {
 
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
 
         fun findChild(): Child? =
@@ -220,6 +221,7 @@ class ChildLifecycleTest {
 
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
 
         override fun updateLifecycleState(state: Lifecycle.State) {

@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,6 +18,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -140,26 +141,11 @@ class OnboardingContainerNode(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     if (hasNext.value) {
-                        TextButton(
-                            modifier = Modifier.alpha(previousVisibility.value),
-                            enabled = hasPrevious.value,
-                            onClick = { spotlight.previous() }
-                        ) {
-                            Text(
-                                text = "Previous".toUpperCase(Locale.current),
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
-                        TextButton(
-                            onClick = { spotlight.next() }
-                        ) {
-                            Text(
-                                text = "Next".toUpperCase(Locale.current),
-                                fontWeight = FontWeight.Bold
-                            )
-                        }
+                        PreviousAndNextButtons(
+                            previousVisibility = previousVisibility,
+                            hasPrevious = hasPrevious,
+                        )
                     } else {
-                        Spacer(Modifier)
                         Button(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = { finish() }
@@ -169,10 +155,34 @@ class OnboardingContainerNode(
                                 color = appyx_dark,
                             )
                         }
-                        Spacer(Modifier)
                     }
                 }
             }
+        }
+    }
+
+    @Composable
+    private fun RowScope.PreviousAndNextButtons(
+        previousVisibility: State<Float>,
+        hasPrevious: State<Boolean>,
+    ) {
+        TextButton(
+            modifier = Modifier.alpha(previousVisibility.value),
+            enabled = hasPrevious.value,
+            onClick = { spotlight.previous() }
+        ) {
+            Text(
+                text = "Previous".toUpperCase(Locale.current),
+                fontWeight = FontWeight.Bold
+            )
+        }
+        TextButton(
+            onClick = { spotlight.next() }
+        ) {
+            Text(
+                text = "Next".toUpperCase(Locale.current),
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }

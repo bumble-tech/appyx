@@ -77,6 +77,7 @@ class NavElement<NavTarget, State> private constructor(
     }
 
     override fun toString(): String {
-        return "NavElement(key=$key, fromState=$fromState, targetState=$targetState, operation=$operation, transitionHistory=$transitionHistory)"
+        return "NavElement(key=$key, fromState=$fromState, targetState=$targetState," +
+                " operation=$operation, transitionHistory=$transitionHistory)"
     }
 }

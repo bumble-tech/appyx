@@ -124,7 +124,11 @@ class IntegrationPointExampleNode(buildContext: BuildContext) : Node(buildContex
         activityStarter
             .events(this)
             .collect { event ->
-                if (event.requestCode == StartActivityForResultCode && event.resultCode == Activity.RESULT_OK && event.data != null) {
+                if (
+                    event.requestCode == StartActivityForResultCode
+                    && event.resultCode == Activity.RESULT_OK
+                    && event.data != null
+                ) {
                     val result = event.data?.getStringExtra(StringExtraKey) ?: ""
                     activityResultState = "Activity result: $result"
                 }

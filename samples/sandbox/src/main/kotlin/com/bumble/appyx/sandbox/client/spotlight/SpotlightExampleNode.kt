@@ -126,6 +126,7 @@ class SpotlightExampleNode(
         }
     }
 
+    @Suppress("LongMethod")
     @Composable
     private fun LoadedState(modifier: Modifier) {
         val hasPrevious = spotlight.hasPrevious().collectAsState(initial = false)

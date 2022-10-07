@@ -26,7 +26,8 @@ class MutableSavedStateMapImpl(
     }
 
     private fun checkState() {
-        check(!lock) { "This MutableSavedStateMap has already dumped its state, it is meaningless to write anything anymore" }
+        check(!lock) { "This MutableSavedStateMap has already dumped its state, it is " +
+                "meaningless to write anything anymore" }
     }
 
     private fun checkKey(key: String, value: Any?) {

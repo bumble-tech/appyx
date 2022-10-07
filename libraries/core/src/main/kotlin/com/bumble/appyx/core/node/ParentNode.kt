@@ -45,6 +45,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.coroutines.resume
 import kotlin.reflect.KClass
 
+@Suppress("TooManyFunctions")
 @Stable
 abstract class ParentNode<NavTarget : Any>(
     navModel: NavModel<NavTarget, *>,
