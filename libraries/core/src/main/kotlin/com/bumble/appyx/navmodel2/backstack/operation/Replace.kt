@@ -5,9 +5,9 @@ import com.bumble.appyx.core.navigation2.NavElement
 import com.bumble.appyx.core.navigation2.NavElements
 import com.bumble.appyx.core.navigation2.NavTransition
 import com.bumble.appyx.navmodel2.backstack.BackStack
+import com.bumble.appyx.navmodel2.backstack.BackStack.State
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.ACTIVE
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.CREATED
-import com.bumble.appyx.navmodel2.backstack.BackStackElements
 import com.bumble.appyx.navmodel2.backstack.activeElement
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
@@ -22,10 +22,10 @@ data class Replace<NavTarget : Any>(
     private val target: @RawValue NavTarget
 ) : BackStackOperation<NavTarget> {
 
-    override fun isApplicable(elements: BackStackElements<NavTarget>): Boolean =
+    override fun isApplicable(elements: NavElements<NavTarget, State>): Boolean =
         target != elements.activeElement
 
-    override fun invoke(elements: NavElements<NavTarget, BackStack.State>): NavTransition<NavTarget, BackStack.State> {
+    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
         require(elements.any { it.state == ACTIVE }) { "No element to be replaced, state=$elements" }
 
         val fromState = elements + NavElement(
@@ -39,7 +39,7 @@ data class Replace<NavTarget : Any>(
             targetState = fromState.mapIndexed { index, element ->
                 element.transitionTo(
                     newTargetState = when (index) {
-                        fromState.lastIndex - 1 -> BackStack.State.REPLACED
+                        fromState.lastIndex - 1 -> State.REPLACED
                         fromState.lastIndex -> ACTIVE
                         else -> element.state
                     },

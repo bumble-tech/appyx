@@ -6,7 +6,6 @@ import com.bumble.appyx.core.navigation2.NavElements
 import com.bumble.appyx.core.navigation2.NavTransition
 import com.bumble.appyx.core.navigation2.Operation
 import com.bumble.appyx.navmodel2.backstack.BackStack
-import com.bumble.appyx.navmodel2.backstack.BackStackElements
 import com.bumble.appyx.navmodel2.backstack.active
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.ACTIVE
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.CREATED
@@ -23,7 +22,7 @@ data class NewRoot<NavTarget : Any>(
     private val navTarget: @RawValue NavTarget
 ) : Operation<NavTarget, BackStack.State> {
 
-    override fun isApplicable(elements: BackStackElements<NavTarget>): Boolean =
+    override fun isApplicable(elements: NavElements<NavTarget, BackStack.State>): Boolean =
         elements.size > 1 || elements.first().key != navTarget
 
     override fun invoke(elements: NavElements<NavTarget, BackStack.State>): NavTransition<NavTarget, BackStack.State> {
