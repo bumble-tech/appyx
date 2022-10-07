@@ -8,17 +8,17 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
-abstract class BaseNavModel<NavTarget, State>(
-    private val finalStates: Set<State> = setOf(),
+abstract class BaseNavModel<NavTarget, NavState>(
+    private val finalStates: Set<NavState> = setOf(),
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-) {
-    abstract val initialState: NavElements<NavTarget, State>
+) : NavModel<NavTarget, NavState> {
+    abstract val initialState: NavElements<NavTarget, NavState>
 
     /**
      * A state queue that can be prefetched. Could also work as state history if we implement
      * reversing progress.
      */
-    private val queue: MutableList<NavTransition<NavTarget, State>> by lazy {
+    private val queue: MutableList<NavTransition<NavTarget, NavState>> by lazy {
         mutableListOf(
             NavTransition(
                 fromState = initialState,
@@ -35,24 +35,18 @@ abstract class BaseNavModel<NavTarget, State>(
     /**
      * 0..infinity
      */
-    val maxProgress: Float
+    override val maxProgress: Float
         get() = (queue.lastIndex + 1).toFloat()
 
-    class State<Target, State>(
-        val segmentIndex: Int,
-        val navTransition: NavTransition<Target, State>,
-        val progress: Float
-    )
-
-    private val state: MutableStateFlow<BaseNavModel.State<NavTarget, State>> by lazy {
+    private val state: MutableStateFlow<NavModel.State<NavTarget, NavState>> by lazy {
         MutableStateFlow(createState(lastRecordedProgress))
     }
 
-    val elements: StateFlow<BaseNavModel.State<NavTarget, State>> by lazy {
+    override val elements: StateFlow<NavModel.State<NavTarget, NavState>> by lazy {
         state
     }
 
-    private fun createState(progress: Float): BaseNavModel.State<NavTarget, State> {
+    private fun createState(progress: Float): NavModel.State<NavTarget, NavState> {
         /**
          *  Normally progress on any segment is a half-open interval: [0%, 100), so that
          *  100% is interpreted as 0% of the next segment.
@@ -62,19 +56,19 @@ abstract class BaseNavModel<NavTarget, State>(
          */
         val segmentIndex = (if (progress == maxProgress) (progress - 1) else progress).toInt()
 
-        return State(
+        return NavModel.State(
             segmentIndex = segmentIndex,
             navTransition = queue[segmentIndex],
             progress = progress - segmentIndex
         )
     }
 
-    fun enqueue(operation: Operation<NavTarget, State>) {
+    override fun enqueue(operation: Operation<NavTarget, NavState>) {
         val newState = operation.invoke(queue.last().targetState)
         queue.add(newState)
     }
 
-    fun setProgress(progress: Float) {
+    override fun setProgress(progress: Float) {
         Log.d("Progress update", "$progress") // FIXME remove
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
