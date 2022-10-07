@@ -29,6 +29,7 @@ class DestroyableTest {
         val node = object : Node(BuildContext.root(null), plugins = listOf(stub)) {
             @Composable
             override fun View(modifier: Modifier) {
+                // no-op
             }
         }
         node.build()
@@ -47,6 +48,7 @@ class DestroyableTest {
         val node = object : Node(BuildContext.root(null), plugins = listOf(stub)) {
             @Composable
             override fun View(modifier: Modifier) {
+                // no-op
             }
         }
         node.build()

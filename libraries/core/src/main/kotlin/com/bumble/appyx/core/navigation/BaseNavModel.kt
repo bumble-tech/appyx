@@ -58,7 +58,7 @@ abstract class BaseNavModel<NavTarget, State>(
         savedStateMap = savedStateMap
     )
 
-    // TODO: think about how we can avoid keeping unnecessary object after state initialization
+    // TODO: think about how we can avoid keeping unnecessary object after state initialization https://github.com/bumble-tech/appyx/issues/193
     protected abstract val initialElements: NavElements<NavTarget, State>
 
     private val state: MutableStateFlow<NavElements<NavTarget, State>> by lazy {

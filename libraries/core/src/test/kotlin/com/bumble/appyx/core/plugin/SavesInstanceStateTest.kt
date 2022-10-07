@@ -56,6 +56,7 @@ class SavesInstanceStateTest {
         object : Node(BuildContext.root(null), plugins = plugins.toList()) {
             @Composable
             override fun View(modifier: Modifier) {
+                // no-op
             }
         }
 

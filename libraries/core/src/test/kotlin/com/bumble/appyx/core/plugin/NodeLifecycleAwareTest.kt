@@ -24,9 +24,13 @@ class NodeLifecycleAwareTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private var lifecycle: Lifecycle = object : Lifecycle() {
-        override fun addObserver(observer: LifecycleObserver) {}
+        override fun addObserver(observer: LifecycleObserver) {
+            // no-op
+        }
 
-        override fun removeObserver(observer: LifecycleObserver) {}
+        override fun removeObserver(observer: LifecycleObserver) {
+            // no-op
+        }
 
         override fun getCurrentState() = State.DESTROYED
     }
@@ -58,6 +62,7 @@ class NodeLifecycleAwareTest {
     ) {
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
     }
 

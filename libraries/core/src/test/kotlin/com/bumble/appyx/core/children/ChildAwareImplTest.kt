@@ -8,7 +8,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 
-// TODO: test different child lifecycle combinations (except ones MinimumCombinedLifecycle already tested)
+// TODO: test different child lifecycle combinations (except ones MinimumCombinedLifecycle already tested) https://github.com/bumble-tech/appyx/issues/191
 // Put here specific cases which should not be tested for both before/after registration
 class ChildAwareImplTest : ChildAwareTestBase() {
 

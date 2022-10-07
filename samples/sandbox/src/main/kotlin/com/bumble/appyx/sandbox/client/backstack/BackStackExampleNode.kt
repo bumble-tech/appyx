@@ -20,6 +20,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -30,6 +32,7 @@ import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -58,6 +61,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
+@Suppress("TooManyFunctions")
 class BackStackExampleNode(
     buildContext: BuildContext,
     private val backStack: BackStack<NavTarget> = BackStack(
@@ -105,6 +109,7 @@ class BackStackExampleNode(
             is ChildD -> ChildNode(navTarget.name, buildContext)
         }
 
+    @Suppress("LongMethod")
     @Composable
     override fun View(modifier: Modifier) {
         val backStackState = backStack.elements.collectAsState()
@@ -140,183 +145,250 @@ class BackStackExampleNode(
                         }
                     }
                 }
-                Spacer(modifier = Modifier.size(8.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Child: ", fontWeight = Bold)
-                    Row {
-                        listOf("A", "B", "C", "D").forEach {
-                            Row {
-                                RadioButton(
-                                    selected = it == selectedChildRadioButton.value,
-                                    enabled = isRadioButtonNeeded.value,
-                                    onClick = { selectedChildRadioButton.value = it }
-                                )
-                                Text(text = it)
-                                Spacer(modifier = Modifier.size(36.dp))
-                            }
-                        }
-                    }
+                ChildColumn(
+                    selectedChildRadioButton = selectedChildRadioButton,
+                    isRadioButtonNeeded = isRadioButtonNeeded,
+                    defaultOrRandomRadioButton = defaultOrRandomRadioButton,
+                )
+                IdColumn(
+                    selectedId = selectedId,
+                    isIdNeeded = isIdNeeded,
+                    backStackState = backStackState,
+                )
+                OperationColumn(
+                    selectedOperation = selectedOperation,
+                    selectedChildRadioButton = selectedChildRadioButton,
+                    defaultOrRandomRadioButton = defaultOrRandomRadioButton,
+                    selectedId = selectedId,
+                    isRadioButtonNeeded = isRadioButtonNeeded,
+                    isIdNeeded = isIdNeeded,
+                    areThereMissingParams = areThereMissingParams,
+                )
+                MissingParamsColumn(
+                    selectedOperation = selectedOperation,
+                    selectedChildRadioButton = selectedChildRadioButton,
+                    areThereMissingParams = areThereMissingParams,
+                    selectedId = selectedId,
+                    defaultOrRandomRadioButton = defaultOrRandomRadioButton,
+                    backStackState = backStackState,
+                )
+                BackstackColumn(backStackState = backStackState)
+                ColumnSkipRendering(skipChildRenderingByNavTarget = skipChildRenderingByNavTarget)
+            }
+        }
+    }
+
+    @Composable
+    private fun ChildColumn(
+        selectedChildRadioButton: MutableState<String>,
+        isRadioButtonNeeded: MutableState<Boolean>,
+        defaultOrRandomRadioButton: MutableState<String>
+    ) {
+        Spacer(modifier = Modifier.size(8.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Child: ", fontWeight = Bold)
+            Row {
+                listOf("A", "B", "C", "D").forEach {
                     Row {
                         RadioButton(
-                            selected = defaultOrRandomRadioButton.value == DEFAULT_LABEL,
+                            selected = it == selectedChildRadioButton.value,
                             enabled = isRadioButtonNeeded.value,
-                            onClick = { defaultOrRandomRadioButton.value = DEFAULT_LABEL }
+                            onClick = { selectedChildRadioButton.value = it }
                         )
-                        Text(text = DEFAULT_LABEL)
+                        Text(text = it)
                         Spacer(modifier = Modifier.size(36.dp))
-                        RadioButton(
-                            selected = defaultOrRandomRadioButton.value == RANDOM_LABEL,
-                            enabled = isRadioButtonNeeded.value,
-                            onClick = { defaultOrRandomRadioButton.value = RANDOM_LABEL }
+                    }
+                }
+            }
+            Row {
+                RadioButton(
+                    selected = defaultOrRandomRadioButton.value == DEFAULT_LABEL,
+                    enabled = isRadioButtonNeeded.value,
+                    onClick = { defaultOrRandomRadioButton.value = DEFAULT_LABEL }
+                )
+                Text(text = DEFAULT_LABEL)
+                Spacer(modifier = Modifier.size(36.dp))
+                RadioButton(
+                    selected = defaultOrRandomRadioButton.value == RANDOM_LABEL,
+                    enabled = isRadioButtonNeeded.value,
+                    onClick = { defaultOrRandomRadioButton.value = RANDOM_LABEL }
+                )
+                Text(text = RANDOM_LABEL)
+            }
+        }
+    }
+
+    @Composable
+    private fun IdColumn(
+        selectedId: MutableState<String>,
+        isIdNeeded: MutableState<Boolean>,
+        backStackState: State<NavElements<NavTarget, BackStack.State>>
+    ) {
+        Spacer(modifier = Modifier.size(8.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Id: ", fontWeight = Bold)
+            val expanded = rememberSaveable { mutableStateOf(false) }
+            Text(
+                text = selectedId.value.ifEmpty { "Select an id" },
+                modifier = if (isIdNeeded.value) {
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.White)
+                        .clickable { expanded.value = true }
+                } else {
+                    Modifier
+                        .fillMaxWidth()
+                        .background(Color.LightGray)
+                }
+            )
+            DropdownMenu(
+                expanded = expanded.value,
+                onDismissRequest = { expanded.value = false }
+            ) {
+                backStackState.value.forEach { element ->
+                    DropdownMenuItem(onClick = {
+                        selectedId.value = element.key.id
+                        expanded.value = false
+                    }) {
+                        Text(text = element.key.id)
+                    }
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun OperationColumn(
+        selectedOperation: MutableState<Operation?>,
+        selectedChildRadioButton: MutableState<String>,
+        defaultOrRandomRadioButton: MutableState<String>,
+        selectedId: MutableState<String>,
+        isRadioButtonNeeded: MutableState<Boolean>,
+        isIdNeeded: MutableState<Boolean>,
+        areThereMissingParams: MutableState<Boolean>
+    ) {
+        Spacer(modifier = Modifier.size(8.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Operation: ", fontWeight = Bold)
+            FlowRow {
+                values().forEach { operation ->
+                    val selected = selectedOperation.value == operation
+                    Button(
+                        onClick = {
+                            selectedOperation.value = operation
+                            selectedChildRadioButton.value = ""
+                            defaultOrRandomRadioButton.value = DEFAULT_LABEL
+                            selectedId.value = ""
+                            isRadioButtonNeeded.value = operation.radioButtonNeeded
+                            isIdNeeded.value = operation.idNeeded
+                            areThereMissingParams.value = true
+                        },
+                        modifier = Modifier.padding(4.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = if (selected) {
+                                MaterialTheme.colors.primary
+                            } else {
+                                MaterialTheme.colors.primaryVariant
+                            },
+                            contentColor = MaterialTheme.colors.onPrimary
                         )
-                        Text(text = RANDOM_LABEL)
-                    }
-                }
-                Spacer(modifier = Modifier.size(8.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Id: ", fontWeight = Bold)
-                    val expanded = rememberSaveable { mutableStateOf(false) }
-                    Text(
-                        text = if (selectedId.value.isNotEmpty()) selectedId.value else "Select an id",
-                        modifier = if (isIdNeeded.value) {
-                            Modifier
-                                .fillMaxWidth()
-                                .background(Color.White)
-                                .clickable { expanded.value = true }
-                        } else {
-                            Modifier
-                                .fillMaxWidth()
-                                .background(Color.LightGray)
-                        }
-                    )
-                    DropdownMenu(
-                        expanded = expanded.value,
-                        onDismissRequest = { expanded.value = false }
                     ) {
-                        backStackState.value.forEach { element ->
-                            DropdownMenuItem(onClick = {
-                                selectedId.value = element.key.id
-                                expanded.value = false
-                            }) {
-                                Text(text = element.key.id)
-                            }
-                        }
+                        Text(text = operation.label)
                     }
                 }
-                Spacer(modifier = Modifier.size(8.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Operation: ", fontWeight = Bold)
-                    FlowRow {
-                        values().forEach { operation ->
-                            val selected = selectedOperation.value == operation
-                            Button(
-                                onClick = {
-                                    selectedOperation.value = operation
-                                    selectedChildRadioButton.value = ""
-                                    defaultOrRandomRadioButton.value = DEFAULT_LABEL
-                                    selectedId.value = ""
-                                    isRadioButtonNeeded.value = operation.radioButtonNeeded
-                                    isIdNeeded.value = operation.idNeeded
-                                    areThereMissingParams.value = true
-                                },
-                                modifier = Modifier.padding(4.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    backgroundColor = if (selected) {
-                                        MaterialTheme.colors.primary
-                                    } else {
-                                        MaterialTheme.colors.primaryVariant
-                                    },
-                                    contentColor = MaterialTheme.colors.onPrimary
-                                )
-                            ) {
-                                Text(text = operation.label)
-                            }
-                        }
+            }
+        }
+    }
+
+    @Composable
+    private fun MissingParamsColumn(
+        selectedOperation: MutableState<Operation?>,
+        selectedChildRadioButton: MutableState<String>,
+        areThereMissingParams: MutableState<Boolean>,
+        selectedId: MutableState<String>,
+        defaultOrRandomRadioButton: MutableState<String>,
+        backStackState: State<NavElements<NavTarget, BackStack.State>>
+    ) {
+        Spacer(modifier = Modifier.size(8.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Missing params: ", fontWeight = Bold)
+            val textBuilder = mutableListOf<String>()
+            if (
+                selectedOperation.value?.radioButtonNeeded == true
+                && selectedChildRadioButton.value.isEmpty()
+            ) {
+                textBuilder.add("Child")
+                areThereMissingParams.value = true
+            }
+            if (selectedOperation.value?.idNeeded == true && selectedId.value.isEmpty()) {
+                textBuilder.add("Id")
+                areThereMissingParams.value = true
+            }
+            if (textBuilder.isEmpty()) {
+                textBuilder.add("None")
+                areThereMissingParams.value = false
+            }
+            Text(text = textBuilder.joinToString(", "))
+        }
+        Button(
+            enabled = selectedOperation.value != null && !areThereMissingParams.value,
+            onClick = {
+                val element =
+                    selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random)
+                when (selectedOperation.value) {
+                    PUSH -> backStack.push(element)
+                    POP -> backStack.pop()
+                    REPLACE -> backStack.replace(element)
+                    NEW_ROOT -> backStack.newRoot(element)
+                    SINGLE_TOP -> backStack.singleTop(element)
+                    REMOVE -> {
+                        backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
+                        selectedId.value = ""
                     }
+                    null -> Unit
                 }
-                Spacer(modifier = Modifier.size(8.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Missing params: ", fontWeight = Bold)
-                    val textBuilder = mutableListOf<String>()
-                    if (selectedOperation.value?.radioButtonNeeded == true && selectedChildRadioButton.value.isEmpty()) {
-                        textBuilder.add("Child")
-                        areThereMissingParams.value = true
-                    }
-                    if (selectedOperation.value?.idNeeded == true && selectedId.value.isEmpty()) {
-                        textBuilder.add("Id")
-                        areThereMissingParams.value = true
-                    }
-                    if (textBuilder.isEmpty()) {
-                        textBuilder.add("None")
-                        areThereMissingParams.value = false
-                    }
-                    Text(text = textBuilder.joinToString(", "))
-                }
-                Button(
-                    enabled = selectedOperation.value != null && !areThereMissingParams.value,
-                    onClick = {
-                        when (selectedOperation.value) {
-                            PUSH -> {
-                                backStack.push(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
-                            }
-                            POP -> {
-                                backStack.pop()
-                            }
-                            REPLACE -> {
-                                backStack.replace(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
-                            }
-                            REMOVE -> {
-                                backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
-                                selectedId.value = ""
-                            }
-                            NEW_ROOT -> {
-                                backStack.newRoot(selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random))
-                            }
-                            SINGLE_TOP -> {
-                                backStack.singleTop(
-                                    selectedChildRadioButton.value.toChild(
-                                        random = defaultOrRandomRadioButton.value.random
-                                    )
-                                )
-                            }
-                            null -> Unit
-                        }
-                    }
-                ) {
-                    Text(text = "Perform")
-                }
-                Spacer(modifier = Modifier.size(8.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "BackStack:", fontWeight = Bold)
-                    Text(text = "${backStackState.value.toStateString()}")
-                }
-                Spacer(modifier = Modifier.size(16.dp))
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(text = "Skip rendering of:", fontWeight = Bold)
-                    Spacer(modifier = Modifier.size(8.dp))
+            }
+        ) {
+            Text(text = "Perform")
+        }
+    }
+
+    @Composable
+    private fun BackstackColumn(backStackState: State<NavElements<NavTarget, BackStack.State>>) {
+        Spacer(modifier = Modifier.size(8.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "BackStack:", fontWeight = Bold)
+            Text(text = "${backStackState.value.toStateString()}")
+        }
+    }
+
+    @Composable
+    private fun ColumnSkipRendering(skipChildRenderingByNavTarget: MutableState<String>) {
+        Spacer(modifier = Modifier.size(16.dp))
+        Column(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(text = "Skip rendering of:", fontWeight = Bold)
+            Spacer(modifier = Modifier.size(8.dp))
+            Row {
+                listOf(NONE_VALUE, "A", "B", "C", "D").forEach {
                     Row {
-                        listOf(NONE_VALUE, "A", "B", "C", "D").forEach {
-                            Row {
-                                RadioButton(
-                                    selected = it == skipChildRenderingByNavTarget.value,
-                                    onClick = { skipChildRenderingByNavTarget.value = it }
-                                )
-                                Text(text = it)
-                                Spacer(modifier = Modifier.size(36.dp))
-                            }
-                        }
+                        RadioButton(
+                            selected = it == skipChildRenderingByNavTarget.value,
+                            onClick = { skipChildRenderingByNavTarget.value = it }
+                        )
+                        Text(text = it)
+                        Spacer(modifier = Modifier.size(36.dp))
                     }
                 }
             }

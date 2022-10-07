@@ -62,6 +62,7 @@ class MviCoreExampleViewImpl(
         this.vm = vm
     }
 
+    @Suppress("LongMethod")
     @Composable
     override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) {
         val viewModel = vm ?: return
