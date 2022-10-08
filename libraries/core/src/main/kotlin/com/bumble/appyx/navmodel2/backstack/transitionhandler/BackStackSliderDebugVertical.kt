@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
-import com.bumble.appyx.core.navigation2.BaseNavModel.State
+import com.bumble.appyx.core.navigation2.NavModel.State
 import com.bumble.appyx.core.navigation2.ui.Modifiers
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.navmodel2.backstack.BackStack
@@ -18,9 +18,9 @@ import com.bumble.appyx.navmodel2.backstack.BackStack.State.STASHED
 import androidx.compose.ui.graphics.lerp as lerpGraphics
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class BackStackSliderDebugVertical<Target>(
+class BackStackSliderDebugVertical<NavTarget>(
     transitionParams: TransitionParams
-) : UiProps<Target, BackStack.State> {
+) : UiProps<NavTarget, BackStack.State> {
     private val size = 100.dp
 
     class Props(
@@ -60,7 +60,7 @@ class BackStackSliderDebugVertical<Target>(
             )
         }
 
-    override fun map(segment: State<Target, BackStack.State>): List<Modifiers<Target, BackStack.State>> {
+    override fun map(segment: State<NavTarget, BackStack.State>): List<Modifiers<NavTarget, BackStack.State>> {
         val fromState = segment.navTransition.fromState
         val targetState = segment.navTransition.targetState
         val fromStashed = fromState.filter { it.state == STASHED }

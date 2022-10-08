@@ -12,9 +12,9 @@ import com.bumble.appyx.navmodel2.backstack.BackStack
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.*
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class BackStackSlider<Target>(
+class BackStackSlider<NavTarget>(
     transitionParams: TransitionParams
-) : UiProps<Target, BackStack.State> {
+) : UiProps<NavTarget, BackStack.State> {
     private val width = transitionParams.bounds.width
     private val height = transitionParams.bounds.height
 
@@ -50,7 +50,7 @@ class BackStackSlider<Target>(
             DROPPED -> outsideLeft.copy(offsetMultiplier = dropIndex + 1)
         }
 
-    override fun map(segment: State<Target, BackStack.State>): List<Modifiers<Target, BackStack.State>> {
+    override fun map(segment: State<NavTarget, BackStack.State>): List<Modifiers<NavTarget, BackStack.State>> {
         val (fromState, targetState) = segment.navTransition
 
         // TODO memoize per segment, as only percentage will change
