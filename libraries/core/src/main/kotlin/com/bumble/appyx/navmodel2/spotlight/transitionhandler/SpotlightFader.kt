@@ -3,7 +3,7 @@ package com.bumble.appyx.navmodel2.spotlight.transitionhandler
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.core.navigation.transition.TransitionParams
-import com.bumble.appyx.core.navigation2.BaseNavModel.State
+import com.bumble.appyx.core.navigation2.NavModel.State
 import com.bumble.appyx.core.navigation2.ui.Modifiers
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp

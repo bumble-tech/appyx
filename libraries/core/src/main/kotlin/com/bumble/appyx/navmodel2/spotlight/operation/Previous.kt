@@ -8,7 +8,6 @@ import com.bumble.appyx.navmodel2.spotlight.Spotlight.State
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.ACTIVE
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_AFTER
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_BEFORE
-import com.bumble.appyx.navmodel2.spotlight.SpotlightOperation
 import kotlinx.parcelize.Parcelize
 
 
