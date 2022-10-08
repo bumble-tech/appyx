@@ -4,6 +4,7 @@ import androidx.annotation.VisibleForTesting
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.routing.source.backstack.BackStack
+import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentRib.Customisation
 import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentChildBuilders
 import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentChildBuildersImpl
@@ -13,10 +14,12 @@ import com.bumble.appyx.sandbox.client.interop.parent.routing.RibsParentRouter.C
 
 class RibsParentBuilder @VisibleForTesting internal constructor(
     private val childBuilders: RibsParentChildBuilders?,
+    private val integrationPoint: IntegrationPoint
 ) : SimpleBuilder<RibsParentRib>() {
 
-    constructor() : this(
+    constructor(integrationPoint: IntegrationPoint) : this(
         childBuilders = null,
+        integrationPoint = integrationPoint
     )
 
     override fun build(buildParams: BuildParams<Nothing?>): RibsParentRib {
@@ -28,7 +31,8 @@ class RibsParentBuilder @VisibleForTesting internal constructor(
         val router = RibsParentRouter(
             buildParams = buildParams,
             backStack = backStack,
-            childBuilders = childBuilders ?: RibsParentChildBuildersImpl()
+            childBuilders = childBuilders ?: RibsParentChildBuildersImpl(),
+            integrationPoint = integrationPoint
         )
         val interactor = RibsParentInteractor(buildParams = buildParams, backStack = backStack)
         return node(
