@@ -24,9 +24,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.core.composable.Children
-import com.bumble.appyx.core.node.AbstractParentNodeView
-import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.core.node.ParentNodeView
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleNode.NavTarget
@@ -47,7 +47,7 @@ class MviCoreExampleViewImpl(
     private val title: String = "Title",
     private val backStack: NavModel<NavTarget, BackStack.State>,
     private val events: PublishRelay<Event> = PublishRelay.create()
-) : AbstractParentNodeView<NavTarget>(),
+) : ParentNodeView<NavTarget>,
     MviCoreExampleView,
     ObservableSource<Event> by events {
 
