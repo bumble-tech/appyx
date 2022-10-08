@@ -1,7 +1,7 @@
 # keep sorted please, use Edit -> Sort Lines
 
 [versions]
-androidCompileSdk = "32"
+androidCompileSdk = "33"
 androidMinSdk = "21"
 androidTargetSdk = "32"
 androidx-lifecycle = "2.4.1"
