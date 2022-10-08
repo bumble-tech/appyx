@@ -24,7 +24,8 @@ class UpdateElements<T : Any>(
     override fun invoke(elements: NavElements<T, State>): NavElements<T, State> {
         if (initialActiveIndex != null) {
             require(initialActiveIndex in this.elements.indices) {
-                "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"
+                "Initial active index $initialActiveIndex is out of bounds of" +
+                        " provided list of items: ${this.elements.indices}"
             }
         }
         return if (initialActiveIndex == null) {

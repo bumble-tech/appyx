@@ -127,6 +127,7 @@ class ContainerNode internal constructor(
         object Customisations : NavTarget()
     }
 
+    @Suppress("ComplexMethod")
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
