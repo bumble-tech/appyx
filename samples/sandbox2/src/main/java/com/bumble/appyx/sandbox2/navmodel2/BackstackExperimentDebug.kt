@@ -41,7 +41,7 @@ private val backStack = BackStack(
 
 @ExperimentalMaterialApi
 @Composable
-fun BackStackExperiment() {
+fun BackStackExperimentDebug() {
     val coroutineScope = rememberCoroutineScope()
     val inputSource = remember { ManualProgressInputSource(backStack, coroutineScope) }
 

@@ -33,7 +33,7 @@ private val spotlight = Spotlight(
 
 @ExperimentalMaterialApi
 @Composable
-fun SpotlightExperiment() {
+fun SpotlightExperimentDebug() {
     val coroutineScope = rememberCoroutineScope()
     val inputSource = remember { ManualProgressInputSource(spotlight, coroutineScope) }
 
