@@ -55,7 +55,7 @@ fun SpotlightExperiment() {
         navModel = spotlight,
         coroutineScope = coroutineScope,
         defaultAnimationSpec = spring(
-            stiffness = Spring.StiffnessLow
+            stiffness = Spring.StiffnessMedium
         )
     ) }
 

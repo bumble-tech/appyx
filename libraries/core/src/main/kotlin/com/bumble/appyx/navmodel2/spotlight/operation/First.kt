@@ -1,8 +1,10 @@
 package com.bumble.appyx.navmodel2.spotlight.operation
 
+import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.core.navigation2.NavElements
 import com.bumble.appyx.core.navigation2.NavTransition
 import com.bumble.appyx.core.navigation2.Operation
+import com.bumble.appyx.core.navigation2.inputsource.AnimatedInputSource
 import com.bumble.appyx.core.navigation2.inputsource.InputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.ACTIVE
@@ -35,6 +37,10 @@ class First<NavTarget : Any> : Operation<NavTarget, State> {
 
 fun <NavTarget : Any> InputSource<NavTarget, State>.first() {
     operation(First())
+}
+
+fun <NavTarget : Any> AnimatedInputSource<NavTarget, State>.first(animationSpec: AnimationSpec<Float>) {
+    operation(First(), animationSpec)
 }
 
 
