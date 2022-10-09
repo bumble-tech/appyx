@@ -2,16 +2,15 @@ package com.bumble.appyx.navmodel2.spotlight.operation
 
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation2.NavElement
-import com.bumble.appyx.core.navigation2.Operation.Noop
 import com.bumble.appyx.core.navigation2.NavElements
 import com.bumble.appyx.core.navigation2.NavTransition
 import com.bumble.appyx.core.navigation2.Operation
-import com.bumble.appyx.navmodel2.spotlight.Spotlight
+import com.bumble.appyx.core.navigation2.Operation.Noop
+import com.bumble.appyx.core.navigation2.inputsource.InputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.ACTIVE
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_AFTER
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_BEFORE
-import com.bumble.appyx.navmodel2.spotlight.SpotlightElements
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
@@ -52,13 +51,12 @@ class UpdateElements<NavTarget : Any>(
     }
 }
 
-// FIXME this needs the InputSource
-//fun <T : Any> Spotlight<T>.updateElements(
-//    items: List<T>,
-//    initialActiveItem: Int? = null
-//) {
-//    enqueue(UpdateElements(items, initialActiveItem))
-//}
+fun <NavTarget : Any> InputSource<NavTarget, State>.updateElements(
+    items: List<NavTarget>,
+    initialActiveItem: Int? = null
+) {
+    operation(UpdateElements(items, initialActiveItem))
+}
 
 internal fun <NavTarget> List<NavTarget>.toSpotlightElements(activeIndex: Int): NavElements<NavTarget, State> =
     mapIndexed { index, item ->

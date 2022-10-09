@@ -10,14 +10,19 @@ import com.bumble.appyx.core.navigation2.BaseNavModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class AnimatedInputSource<Target : Any, State>(
-    private val navModel: BaseNavModel<Target, State>,
+class AnimatedInputSource<NavTarget : Any, State>(
+    private val navModel: BaseNavModel<NavTarget, State>,
     private val coroutineScope: CoroutineScope,
-) {
+    private val defaultAnimationSpec: AnimationSpec<Float> = spring()
+) : InputSource<NavTarget, State> {
     private val animatable = Animatable(0f)
     private lateinit var result: AnimationResult<Float, AnimationVector1D>
 
-    fun operation(operation: Operation<Target, State>, animationSpec: AnimationSpec<Float> = spring()) {
+    override fun operation(operation: Operation<NavTarget, State>) {
+        operation(operation, defaultAnimationSpec)
+    }
+
+    fun operation(operation: Operation<NavTarget, State>, animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
         navModel.enqueue(operation)
 
         coroutineScope.launch {

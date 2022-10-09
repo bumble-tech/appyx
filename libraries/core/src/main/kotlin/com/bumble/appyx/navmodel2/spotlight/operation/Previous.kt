@@ -3,7 +3,7 @@ package com.bumble.appyx.navmodel2.spotlight.operation
 import com.bumble.appyx.core.navigation2.NavElements
 import com.bumble.appyx.core.navigation2.NavTransition
 import com.bumble.appyx.core.navigation2.Operation
-import com.bumble.appyx.navmodel2.spotlight.Spotlight
+import com.bumble.appyx.core.navigation2.inputsource.InputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.ACTIVE
 import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_AFTER
@@ -47,8 +47,9 @@ class Previous<NavTarget : Any> : Operation<NavTarget, State> {
     }
 }
 
-fun <T : Any> Spotlight<T>.previous() {
-    enqueue(Previous())
+fun <NavTarget : Any> InputSource<NavTarget, State>.previous() {
+    operation(Previous())
 }
+
 
 

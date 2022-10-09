@@ -30,7 +30,6 @@ import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child4
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child5
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child6
 import com.bumble.appyx.sandbox2.ui.theme.appyx_dark
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 
 
@@ -46,15 +45,13 @@ fun BackStackExperimentDebug() {
     val inputSource = remember { ManualProgressInputSource(backStack, coroutineScope) }
 
     LaunchedEffect(Unit) {
-        delay(500)
-        val stiffness = Spring.StiffnessVeryLow / 28
-        inputSource.operation(Push(Child2), spring(stiffness = stiffness))
-        inputSource.operation(Push(Child3), spring(stiffness = stiffness))
-        inputSource.operation(Push(Child4), spring(stiffness = stiffness))
-        inputSource.operation(Push(Child5), spring(stiffness = stiffness))
-        inputSource.operation(Replace(Child6), spring(stiffness = stiffness))
-        inputSource.operation(Pop(), spring(stiffness = stiffness))
-        inputSource.operation(NewRoot(Child1), spring(stiffness = stiffness))
+        inputSource.operation(Push(Child2))
+        inputSource.operation(Push(Child3))
+        inputSource.operation(Push(Child4))
+        inputSource.operation(Push(Child5))
+        inputSource.operation(Replace(Child6))
+        inputSource.operation(Pop())
+        inputSource.operation(NewRoot(Child1))
     }
 
     var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
