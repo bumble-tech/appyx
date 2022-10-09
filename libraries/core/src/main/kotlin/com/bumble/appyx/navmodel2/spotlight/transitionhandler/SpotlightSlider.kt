@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel2.spotlight.transitionhandler
 
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
@@ -13,33 +14,50 @@ import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.*
 import androidx.compose.ui.unit.lerp as lerpUnit
 
 class SpotlightSlider<Target>(
-    transitionParams: TransitionParams
+    transitionParams: TransitionParams,
+    private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : UiProps<Target, Spotlight.State> {
     private val width = transitionParams.bounds.width
+    private val height = transitionParams.bounds.height
 
     data class Props(
         val offset: DpOffset,
         val offsetMultiplier: Int = 1
     )
 
-    private val outsideLeft = Props(
+    private val top = Props(
+        offset = DpOffset(0.dp, -height)
+    )
+
+    private val bottom = Props(
+        offset = DpOffset(0.dp, height)
+    )
+
+    private val left = Props(
         offset = DpOffset(-width, 0.dp)
     )
 
-    private val outsideRight = Props(
+    private val right = Props(
         offset = DpOffset(width, 0.dp)
     )
 
-    private val noOffset = Props(
+    private val center = Props(
         offset = DpOffset(0.dp, 0.dp)
     )
 
     // FIXME single Int, based on relative position to ACTIVE element
     private fun Spotlight.State.toProps(beforeIndex: Int, afterIndex: Int): Props =
         when (this) {
-            ACTIVE -> noOffset
-            INACTIVE_BEFORE -> outsideLeft.copy(offsetMultiplier = beforeIndex)
-            INACTIVE_AFTER -> outsideRight.copy(offsetMultiplier = afterIndex + 1)
+            ACTIVE -> center
+            INACTIVE_BEFORE -> when (orientation) {
+                Orientation.Horizontal -> left.copy(offsetMultiplier = beforeIndex)
+                Orientation.Vertical -> top.copy(offsetMultiplier = beforeIndex)
+            }
+
+            INACTIVE_AFTER -> when (orientation) {
+                Orientation.Horizontal -> right.copy(offsetMultiplier = afterIndex + 1)
+                Orientation.Vertical -> bottom.copy(offsetMultiplier = afterIndex + 1)
+            }
         }
 
     override fun map(segment: State<Target, Spotlight.State>): List<Modifiers<Target, Spotlight.State>> {
@@ -73,7 +91,8 @@ class SpotlightSlider<Target>(
                 navElement = t1,
                 modifier = Modifier.offset(
                     x = offset.x,
-                    y = offset.y)
+                    y = offset.y
+                )
             )
         }
     }
