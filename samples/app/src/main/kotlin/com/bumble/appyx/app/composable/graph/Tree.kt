@@ -34,6 +34,7 @@ import com.bumble.appyx.app.composable.graph.nodeimpl.TestImpl
 @ExperimentalComposeUiApi
 fun Tree(
     graphNode: GraphNode,
+    modifier: Modifier = Modifier,
     parentChildrenTopCenters: SnapshotStateMap<Int, Offset> = mutableStateMapOf(),
     idx: Int = 0,
     gapHeight: Dp = 40.dp,
@@ -47,7 +48,7 @@ fun Tree(
     val thisChildrenTopCenters = remember { mutableStateMapOf<Int, Offset>() }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .width(IntrinsicSize.Min)
             .onGloballyPositioned {
                 wrapperOffset.value = it.positionInParent()

@@ -28,7 +28,7 @@ data class Remove<T : Any>(
         }
 
     private fun BackStackElements<T>.hasContentWithKey() =
-        find { it.key == key && it.targetState != BackStack.State.DESTROYED } != null
+        any { it.key == key && it.targetState != BackStack.State.DESTROYED }
 
     private fun updateContent(elements: BackStackElements<T>): BackStackElements<T> {
         val toRemove =

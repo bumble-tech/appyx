@@ -21,8 +21,8 @@ import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
  * This Composable demonstrates how to add Appyx into Jetpack Compose Navigation.
  */
 @Composable
-fun ComposeNavigationRoot() {
-    Column(Modifier.fillMaxSize()) {
+fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
+    Column(modifier.fillMaxSize()) {
         Text(
             text = "Navigation Compose interop example",
             modifier = Modifier
@@ -45,9 +45,9 @@ fun ComposeNavigationRoot() {
 }
 
 @Composable
-fun GoogleRoute(onAppyxNavigationClick: () -> Unit) {
+fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: () -> Unit) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Google's Jetpack Navigation screen")

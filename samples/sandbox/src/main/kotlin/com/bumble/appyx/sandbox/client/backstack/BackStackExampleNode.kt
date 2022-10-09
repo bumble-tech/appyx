@@ -61,7 +61,10 @@ import com.google.accompanist.flowlayout.FlowRow
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
-@Suppress("TooManyFunctions")
+@Suppress(
+    "TooManyFunctions",
+    "MutableParams" // We should avoid passing MutableState to Composables
+)
 class BackStackExampleNode(
     buildContext: BuildContext,
     private val backStack: BackStack<NavTarget> = BackStack(
@@ -184,10 +187,10 @@ class BackStackExampleNode(
         isRadioButtonNeeded: MutableState<Boolean>,
         defaultOrRandomRadioButton: MutableState<String>
     ) {
-        Spacer(modifier = Modifier.size(8.dp))
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
+            Spacer(modifier = Modifier.size(8.dp))
             Text(text = "Child: ", fontWeight = Bold)
             Row {
                 listOf("A", "B", "C", "D").forEach {
@@ -224,12 +227,13 @@ class BackStackExampleNode(
     private fun IdColumn(
         selectedId: MutableState<String>,
         isIdNeeded: MutableState<Boolean>,
-        backStackState: State<NavElements<NavTarget, BackStack.State>>
+        backStackState: State<NavElements<NavTarget, BackStack.State>>,
+        modifier: Modifier = Modifier
     ) {
-        Spacer(modifier = Modifier.size(8.dp))
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
+            Spacer(modifier = Modifier.size(8.dp))
             Text(text = "Id: ", fontWeight = Bold)
             val expanded = rememberSaveable { mutableStateOf(false) }
             Text(
@@ -271,10 +275,10 @@ class BackStackExampleNode(
         isIdNeeded: MutableState<Boolean>,
         areThereMissingParams: MutableState<Boolean>
     ) {
-        Spacer(modifier = Modifier.size(8.dp))
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
+            Spacer(modifier = Modifier.size(8.dp))
             Text(text = "Operation: ", fontWeight = Bold)
             FlowRow {
                 values().forEach { operation ->
@@ -313,12 +317,13 @@ class BackStackExampleNode(
         areThereMissingParams: MutableState<Boolean>,
         selectedId: MutableState<String>,
         defaultOrRandomRadioButton: MutableState<String>,
-        backStackState: State<NavElements<NavTarget, BackStack.State>>
+        backStackState: State<NavElements<NavTarget, BackStack.State>>,
+        modifier: Modifier = Modifier
     ) {
-        Spacer(modifier = Modifier.size(8.dp))
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
+            Spacer(modifier = Modifier.size(8.dp))
             Text(text = "Missing params: ", fontWeight = Bold)
             val textBuilder = mutableListOf<String>()
             if (
@@ -337,47 +342,53 @@ class BackStackExampleNode(
                 areThereMissingParams.value = false
             }
             Text(text = textBuilder.joinToString(", "))
-        }
-        Button(
-            enabled = selectedOperation.value != null && !areThereMissingParams.value,
-            onClick = {
-                val element =
-                    selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random)
-                when (selectedOperation.value) {
-                    PUSH -> backStack.push(element)
-                    POP -> backStack.pop()
-                    REPLACE -> backStack.replace(element)
-                    NEW_ROOT -> backStack.newRoot(element)
-                    SINGLE_TOP -> backStack.singleTop(element)
-                    REMOVE -> {
-                        backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
-                        selectedId.value = ""
+            Button(
+                enabled = selectedOperation.value != null && !areThereMissingParams.value,
+                onClick = {
+                    val element =
+                        selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random)
+                    when (selectedOperation.value) {
+                        PUSH -> backStack.push(element)
+                        POP -> backStack.pop()
+                        REPLACE -> backStack.replace(element)
+                        NEW_ROOT -> backStack.newRoot(element)
+                        SINGLE_TOP -> backStack.singleTop(element)
+                        REMOVE -> {
+                            backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
+                            selectedId.value = ""
+                        }
+                        null -> Unit
                     }
-                    null -> Unit
                 }
+            ) {
+                Text(text = "Perform")
             }
-        ) {
-            Text(text = "Perform")
         }
     }
 
     @Composable
-    private fun BackstackColumn(backStackState: State<NavElements<NavTarget, BackStack.State>>) {
-        Spacer(modifier = Modifier.size(8.dp))
+    private fun BackstackColumn(
+        backStackState: State<NavElements<NavTarget, BackStack.State>>,
+        modifier: Modifier = Modifier
+    ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
+            Spacer(modifier = Modifier.size(8.dp))
             Text(text = "BackStack:", fontWeight = Bold)
             Text(text = "${backStackState.value.toStateString()}")
         }
     }
 
     @Composable
-    private fun ColumnSkipRendering(skipChildRenderingByNavTarget: MutableState<String>) {
-        Spacer(modifier = Modifier.size(16.dp))
+    private fun ColumnSkipRendering(
+        skipChildRenderingByNavTarget: MutableState<String>,
+        modifier: Modifier = Modifier
+    ) {
         Column(
-            modifier = Modifier.fillMaxWidth()
+            modifier = modifier.fillMaxWidth()
         ) {
+            Spacer(modifier = Modifier.size(16.dp))
             Text(text = "Skip rendering of:", fontWeight = Bold)
             Spacer(modifier = Modifier.size(8.dp))
             Row {

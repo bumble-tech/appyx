@@ -179,10 +179,10 @@ abstract class ParentNode<NavTarget : Any>(
         val result = withTimeoutOrNull(timeout) {
             waitForChildAttached<T>()
         }
-        result ?: throw IllegalStateException(
+        checkNotNull(result) {
             "Expected child of type [${T::class.java}] was not found after executing action. " +
-                    "Check that your action actually results in the expected child. "
-        )
+                    "Check that your action actually results in the expected child."
+        }
     }
 
     /**
@@ -261,11 +261,13 @@ abstract class ParentNode<NavTarget : Any>(
 
     private class PermanentChildRender(private val node: Node) : ChildRenderer {
 
+        @Suppress("ComposableNaming")
         @Composable
         override fun invoke(modifier: Modifier) {
             node.Compose(modifier)
         }
 
+        @Suppress("ComposableNaming")
         @Composable
         override fun invoke() {
             invoke(modifier = Modifier)
