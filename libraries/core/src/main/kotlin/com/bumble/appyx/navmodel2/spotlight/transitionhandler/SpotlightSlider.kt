@@ -1,8 +1,11 @@
 package com.bumble.appyx.navmodel2.spotlight.transitionhandler
 
+import android.util.Log
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
@@ -94,6 +97,18 @@ class SpotlightSlider<Target>(
                     y = offset.y
                 )
             )
+        }
+    }
+
+    // TODO Modify TransitionParams to also contain width & height in px, not just dp
+    fun calculateProgress(delta: Offset, density: Density): Float {
+        val width = with(density) { width.toPx() }
+        val height = with(density) { height.toPx() }
+
+        Log.d("calculateProgress", "${delta.x} / ${width} = ${delta.x / width}")
+        return when (orientation) {
+            Orientation.Horizontal -> delta.x / width * -1
+            Orientation.Vertical -> delta.y / height * -1
         }
     }
 

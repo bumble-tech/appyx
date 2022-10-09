@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperiment
 import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperimentDebug
+import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperimentDrag
 import com.bumble.appyx.sandbox2.ui.theme.AppyxTheme
 
 @ExperimentalMaterialApi
@@ -33,7 +34,8 @@ class MainActivity : ComponentActivity() {
                 ) {
 //                    BackStackExperimentDebug()
 //                    SpotlightExperimentDebug()
-                    SpotlightExperiment()
+                    SpotlightExperimentDrag()
+//                    SpotlightExperiment()
                 }
             }
         }

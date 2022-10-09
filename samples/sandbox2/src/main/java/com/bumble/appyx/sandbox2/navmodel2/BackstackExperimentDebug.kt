@@ -1,7 +1,5 @@
 package com.bumble.appyx.sandbox2.navmodel2
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,7 +63,7 @@ fun BackStackExperimentDebug() {
             .background(appyx_dark)
     ) {
         KnobControl(onValueChange = {
-            inputSource.setProgress(it)
+            inputSource.setNormalisedProgress(it)
         })
 
         Children(

@@ -2,6 +2,7 @@ package com.bumble.appyx.sandbox2.navmodel2
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,10 +24,6 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation2.inputsource.AnimatedInputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
-import com.bumble.appyx.navmodel2.spotlight.operation.First
-import com.bumble.appyx.navmodel2.spotlight.operation.Last
-import com.bumble.appyx.navmodel2.spotlight.operation.Next
-import com.bumble.appyx.navmodel2.spotlight.operation.Previous
 import com.bumble.appyx.navmodel2.spotlight.operation.first
 import com.bumble.appyx.navmodel2.spotlight.operation.last
 import com.bumble.appyx.navmodel2.spotlight.operation.next
@@ -51,17 +48,22 @@ private val spotlight = Spotlight(
 @Composable
 fun SpotlightExperiment() {
     val coroutineScope = rememberCoroutineScope()
-    val inputSource = remember { AnimatedInputSource(
-        navModel = spotlight,
-        coroutineScope = coroutineScope,
-        defaultAnimationSpec = spring(
-            stiffness = Spring.StiffnessMedium
+    val inputSource = remember {
+        AnimatedInputSource(
+            navModel = spotlight,
+            coroutineScope = coroutineScope,
+            defaultAnimationSpec = spring(
+                stiffness = Spring.StiffnessMedium
+            )
         )
-    ) }
+    }
 
     var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
     val transitionParams by createTransitionParams(elementSize)
-    val uiProps = remember(transitionParams) { SpotlightSlider<NavTarget>(transitionParams) }
+    val uiProps = remember(transitionParams) { SpotlightSlider<NavTarget>(
+        transitionParams = transitionParams,
+        orientation = Orientation.Horizontal
+    ) }
     val render = remember(uiProps) { spotlight.elements.map { uiProps.map(it) } }
 
     Column(
@@ -71,17 +73,15 @@ fun SpotlightExperiment() {
             render = render.collectAsState(listOf()),
             modifier = Modifier
                 .weight(0.9f)
-                .padding(64.dp)
-            ,
-            onElementSizeChanged = { elementSize = it }
+                .padding(64.dp),
+            onElementSizeChanged = { elementSize = it },
         )
 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(0.1f)
-                .padding(4.dp)
-            ,
+                .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(onClick = { inputSource.first() }) {
