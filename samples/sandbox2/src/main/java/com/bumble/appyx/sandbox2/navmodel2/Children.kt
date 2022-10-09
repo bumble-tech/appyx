@@ -26,17 +26,16 @@ import com.bumble.appyx.core.navigation2.ui.Modifiers
 @Composable
 fun Children(
     render: State<List<Modifiers<*, *>>>,
-    padding: Dp = 60.dp,
+    modifier: Modifier = Modifier
+        .fillMaxSize()
+        .padding(60.dp),
     element: @Composable (Modifiers<*, *>) -> Unit = {
         Element(render = it)
     },
     onElementSizeChanged: (IntSize) -> Unit = {},
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(padding)
-            .onSizeChanged(onElementSizeChanged)
+        modifier = modifier.onSizeChanged(onElementSizeChanged)
     ) {
         render.value.forEach {
             element.invoke(it)
