@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.*
-import com.bumble.appyx.core.navigation2.inputsource.AnimatedInputSource2
+import com.bumble.appyx.core.navigation2.inputsource.ManualProgressInputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
 import com.bumble.appyx.navmodel2.spotlight.operation.Next
 import kotlinx.coroutines.delay
@@ -35,7 +35,7 @@ private val spotlight = Spotlight(
 @Composable
 fun SpotlightExperiment() {
     val coroutineScope = rememberCoroutineScope()
-    val inputSource = remember { AnimatedInputSource2(spotlight, coroutineScope) }
+    val inputSource = remember { ManualProgressInputSource(spotlight, coroutineScope) }
 
     LaunchedEffect(Unit) {
         delay(1500)

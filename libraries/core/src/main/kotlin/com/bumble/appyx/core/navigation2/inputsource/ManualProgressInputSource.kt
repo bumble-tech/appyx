@@ -8,9 +8,8 @@ import androidx.compose.animation.core.spring
 import com.bumble.appyx.core.navigation2.Operation
 import com.bumble.appyx.core.navigation2.BaseNavModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
-class AnimatedInputSource2<Target : Any, State>(
+class ManualProgressInputSource<Target : Any, State>(
     private val navModel: BaseNavModel<Target, State>,
     private val coroutineScope: CoroutineScope,
 ) {

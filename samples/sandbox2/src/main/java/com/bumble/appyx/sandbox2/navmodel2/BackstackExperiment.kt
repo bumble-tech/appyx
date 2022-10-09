@@ -16,7 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.core.navigation2.inputsource.AnimatedInputSource2
+import com.bumble.appyx.core.navigation2.inputsource.ManualProgressInputSource
 import com.bumble.appyx.navmodel2.backstack.BackStack
 import com.bumble.appyx.navmodel2.backstack.operation.NewRoot
 import com.bumble.appyx.navmodel2.backstack.operation.Pop
@@ -43,7 +43,7 @@ private val backStack = BackStack(
 @Composable
 fun BackStackExperiment() {
     val coroutineScope = rememberCoroutineScope()
-    val inputSource = remember { AnimatedInputSource2(backStack, coroutineScope) }
+    val inputSource = remember { ManualProgressInputSource(backStack, coroutineScope) }
 
     LaunchedEffect(Unit) {
         delay(500)
