@@ -15,7 +15,7 @@ import kotlinx.parcelize.Parcelize
 class Previous<NavTarget : Any> : Operation<NavTarget, State> {
 
     override fun isApplicable(elements: NavElements<NavTarget, State>) =
-        elements.any { it.fromState == INACTIVE_BEFORE && it.state == INACTIVE_BEFORE }
+        elements.any { it.state == INACTIVE_BEFORE }
 
     override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
         val previousKey = elements.last { it.state == INACTIVE_BEFORE }.key
