@@ -64,12 +64,18 @@ abstract class BaseNavModel<NavTarget, NavState>(
     }
 
     override fun enqueue(operation: Operation<NavTarget, NavState>) {
-        val newState = operation.invoke(queue.last().targetState)
-        queue.add(newState)
+        val baseline = queue.last().targetState
+
+        if (operation.isApplicable(baseline)) {
+            val newState = operation.invoke(baseline)
+            queue.add(newState)
+        } else {
+            Log.d("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
+        }
     }
 
     override fun setProgress(progress: Float) {
-        Log.d("Progress update", "$progress") // FIXME remove
+        Log.d("BaseNavModel", "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
             //  com.bumble.appyx.core.navigation.BaseNavModel.onTransitionFinished
