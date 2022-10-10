@@ -18,7 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import com.bumble.appyx.core.navigation2.inputsource.ManualProgressInputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
+import com.bumble.appyx.navmodel2.spotlight.operation.first
+import com.bumble.appyx.navmodel2.spotlight.operation.last
 import com.bumble.appyx.navmodel2.spotlight.operation.next
+import com.bumble.appyx.navmodel2.spotlight.operation.previous
 import com.bumble.appyx.navmodel2.spotlight.transitionhandler.SpotlightSlider
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child1
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child2
@@ -46,9 +49,9 @@ fun SpotlightExperimentDebug() {
         inputSource.next()
         inputSource.next()
         inputSource.next()
-        inputSource.next()
-        inputSource.next()
-        inputSource.next()
+        inputSource.previous()
+        inputSource.last()
+        inputSource.first()
     }
 
     var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
