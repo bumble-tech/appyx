@@ -53,7 +53,7 @@ fun SpotlightExperiment() {
             navModel = spotlight,
             coroutineScope = coroutineScope,
             defaultAnimationSpec = spring(
-                stiffness = Spring.StiffnessMedium
+                stiffness = Spring.StiffnessMediumLow
             )
         )
     }
@@ -87,10 +87,10 @@ fun SpotlightExperiment() {
             Button(onClick = { inputSource.first() }) {
                 Text("First")
             }
-            Button(onClick = { inputSource.previous() }) {
+            Button(onClick = { inputSource.previous(spring(stiffness = Spring.StiffnessLow)) }) {
                 Text("Prev")
             }
-            Button(onClick = { inputSource.next() }) {
+            Button(onClick = { inputSource.next(spring(stiffness = Spring.StiffnessMedium)) }) {
                 Text("Next")
             }
             Button(onClick = { inputSource.last() }) {
