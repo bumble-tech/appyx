@@ -4,16 +4,29 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
+import androidx.compose.ui.unit.dp
+import com.bumble.appyx.sandbox2.navmodel2.BackStackExperimentDebug
 import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperiment
 import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperimentDebug
 import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperimentDrag
@@ -32,10 +45,27 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-//                    BackStackExperimentDebug()
-//                    SpotlightExperimentDebug()
-                    SpotlightExperimentDrag()
-//                    SpotlightExperiment()
+                    var content by remember { mutableStateOf(0) }
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(4.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Button({ content = 0 }) { Text("1") }
+                            Button({ content = 1 }) { Text("2") }
+                            Button({ content = 2 }) { Text("3") }
+                            Button({ content = 3 }) { Text("4") }
+                        }
+                        when (content) {
+                            0 -> SpotlightExperiment()
+                            1 -> SpotlightExperimentDebug()
+                            2 -> SpotlightExperimentDrag()
+                            3 -> BackStackExperimentDebug()
+                            else -> SpotlightExperiment()
+                        }
+                    }
                 }
             }
         }
