@@ -69,6 +69,7 @@ private class ChildRendererImpl(
     private val transitionModifier: Modifier
 ) : ChildRenderer {
 
+    @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke(modifier: Modifier) {
         Box(modifier = transitionModifier) {
@@ -76,6 +77,7 @@ private class ChildRendererImpl(
         }
     }
 
+    @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke() {
         Box(modifier = transitionModifier) {
@@ -87,6 +89,7 @@ private class ChildRendererImpl(
 @Composable
 fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
     navElement: NavElement<NavTarget, out State>,
+    modifier: Modifier = Modifier,
     transitionHandler: TransitionHandler<NavTarget, State> = JumpToEndTransitionHandler(),
     decorator: @Composable ChildTransitionScope<State>.(
         child: ChildRenderer,
@@ -105,7 +108,7 @@ fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
             )
         }
     }
-    Box(modifier = Modifier
+    Box(modifier = modifier
         .onSizeChanged {
             transitionBounds = it
         }

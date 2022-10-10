@@ -1,7 +1,7 @@
 package com.bumble.appyx.sandbox.client.modal
 
 import android.os.Parcelable
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,8 +56,8 @@ class ModalExampleNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Text("Modal placeholder")
-        Box(Modifier.fillMaxSize()) {
+        Column(modifier.fillMaxSize()) {
+            Text("Modal placeholder")
             Row(
                 modifier = Modifier
                     .fillMaxWidth()

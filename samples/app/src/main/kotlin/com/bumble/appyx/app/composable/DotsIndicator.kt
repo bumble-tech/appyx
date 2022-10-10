@@ -33,6 +33,7 @@ import com.bumble.appyx.navmodel.spotlight.elementsCount
 fun DotsIndicator(
     totalDots: Int,
     selectedIndex: Int,
+    modifier: Modifier = Modifier,
     selectedColor: Color = appyx_yellow1,
     unSelectedColor: Color = Color.LightGray,
     selectedSize: Dp = 9.dp,
@@ -42,7 +43,7 @@ fun DotsIndicator(
     }
 ) {
     LazyRow(
-        modifier = Modifier
+        modifier = modifier
             .wrapContentWidth()
             .wrapContentHeight(),
         horizontalArrangement = Arrangement.spacedBy(unSelectedSize, Alignment.CenterHorizontally),

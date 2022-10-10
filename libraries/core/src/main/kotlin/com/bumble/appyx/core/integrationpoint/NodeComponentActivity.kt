@@ -17,7 +17,7 @@ import androidx.activity.ComponentActivity
  * Feel free to not extend this and use your own integration point - in this case,
  * don't forget to take a look here what methods needs to be forwarded to the root Node.
  */
-abstract class NodeComponentActivity : ComponentActivity(), IntegrationPointProvider {
+open class NodeComponentActivity : ComponentActivity(), IntegrationPointProvider {
 
     override lateinit var appyxIntegrationPoint: ActivityIntegrationPoint
         protected set

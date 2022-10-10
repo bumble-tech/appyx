@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 @Composable
 @ExperimentalUnitApi
 fun Page(
-    modifier: Modifier,
     title: String,
     body: String,
+    modifier: Modifier = Modifier,
     illustration: @Composable BoxScope.() -> Unit
 ) {
     Column(

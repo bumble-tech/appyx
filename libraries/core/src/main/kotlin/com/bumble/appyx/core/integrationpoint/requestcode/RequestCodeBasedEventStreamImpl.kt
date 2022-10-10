@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
-abstract class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
+open class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val requestCodeRegistry: RequestCodeRegistry,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 ) : RequestCodeBasedEventStream<T> {

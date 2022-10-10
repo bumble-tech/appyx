@@ -49,7 +49,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         children
             .withPrevious()
             .collect { value ->
-                val addedKeys = value.current.keys - (value.previous?.keys ?: emptySet())
+                val addedKeys = value.current.keys - value.previous?.keys.orEmpty()
                 if (addedKeys.isEmpty()) return@collect
                 val currentNodes = getCreatedNodes(value.current)
                 val visitedSet = HashSet<Node>()
