@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
@@ -29,40 +27,28 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
-import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode
+import com.bumble.appyx.sandbox.TextButton
 import com.bumble.appyx.sandbox.client.blocker.BlockerExampleNode
-import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.BackStackExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.BlockerExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.CombinedNavModel
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Customisations
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.IntegrationPointExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.InteractorExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.ModalExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreLeafExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.RequestPermissionsExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightAdvancedExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SpotlightExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.TilesExample
 import com.bumble.appyx.sandbox.client.customisations.createViewCustomisationsActivityIntent
 import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
-import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
-import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
-import com.bumble.appyx.sandbox.client.spotlightadvancedexample.SpotlightAdvancedExampleNode
-import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode
+import com.bumble.appyx.sandbox.client.navmodels.NavModelExamplesNode
 import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
 import com.bumble.appyx.utils.customisations.NodeCustomisation
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode internal constructor(
@@ -85,28 +71,13 @@ class ContainerNode internal constructor(
         object Picker : NavTarget()
 
         @Parcelize
-        object BackStackExample : NavTarget()
-
-        @Parcelize
-        object TilesExample : NavTarget()
-
-        @Parcelize
-        object ModalExample : NavTarget()
-
-        @Parcelize
-        object CombinedNavModel : NavTarget()
-
-        @Parcelize
         object LazyExamples : NavTarget()
 
         @Parcelize
-        object RequestPermissionsExamples : NavTarget()
+        object IntegrationPointExample : NavTarget()
 
         @Parcelize
         object NavModelExamples : NavTarget()
-
-        @Parcelize
-        object SpotlightExample : NavTarget()
 
         @Parcelize
         object InteractorExample : NavTarget()
@@ -116,9 +87,6 @@ class ContainerNode internal constructor(
 
         @Parcelize
         object MviCoreLeafExample : NavTarget()
-
-        @Parcelize
-        object SpotlightAdvancedExample : NavTarget()
 
         @Parcelize
         object BlockerExample : NavTarget()
@@ -131,16 +99,10 @@ class ContainerNode internal constructor(
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
-            is NavModelExamples -> node(buildContext) { modifier -> NavModelExamples(modifier) }
-            is BackStackExample -> BackStackExampleNode(buildContext)
-            is SpotlightAdvancedExample -> SpotlightAdvancedExampleNode(buildContext)
-            is ModalExample -> ModalExampleNode(buildContext)
-            is TilesExample -> TilesExampleNode(buildContext)
-            is CombinedNavModel -> CombinedNavModelNode(buildContext)
+            is NavModelExamples -> NavModelExamplesNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
-            is SpotlightExample -> SpotlightExampleNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
-            is RequestPermissionsExamples -> IntegrationPointExampleNode(buildContext)
+            is IntegrationPointExample -> IntegrationPointExampleNode(buildContext)
             is MviCoreExample -> MviCoreExampleBuilder().build(
                 buildContext,
                 "MVICore initial state"
@@ -156,20 +118,14 @@ class ContainerNode internal constructor(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background),
             navModel = backStack,
             transitionHandler = rememberCombinedHandler(
                 handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
             )
-        ) {
-            children<NavTarget> { child, descriptor ->
-                val color = when (descriptor.element) {
-                    is BackStackExample -> Color.LightGray
-                    else -> Color.White
-                }
-                child(modifier = Modifier.background(color))
-            }
-        }
+        )
     }
 
     @Composable
@@ -177,8 +133,8 @@ class ContainerNode internal constructor(
         val scrollState = rememberScrollState()
         Box(
             modifier = modifier
-                .verticalScroll(scrollState)
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .padding(24.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -192,56 +148,22 @@ class ContainerNode internal constructor(
                 TextButton("Customisations Example") { backStack.push(Customisations) }
                 TextButton("MVICore Example") { backStack.push(MviCoreExample) }
                 TextButton("MVICore Leaf Example") { backStack.push(MviCoreLeafExample) }
-                TextButton("Launch workflow example") {
+                TextButton("Workflow example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, WorkflowExampleActivity::class.java)
                     }
                 }
-                TextButton("Request permissions / start activities example") {
-                    backStack.push(RequestPermissionsExamples)
+                TextButton("Integration point example") {
+                    backStack.push(IntegrationPointExample)
                 }
-                TextButton("Launch interop example") {
+                TextButton("RIBs interop example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, InteropExampleActivity::class.java)
                     }
                 }
                 TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
-
-                val scope = rememberCoroutineScope()
-                TextButton("Trigger double navigation in 3 seconds") {
-                    scope.launch {
-                        delay(3_000)
-                        backStack.push(BackStackExample)
-                        backStack.push(TilesExample)
-                    }
-                }
-                TextButton("LazyList") { backStack.push(LazyExamples) }
+                TextButton("Lazy Examples") { backStack.push(LazyExamples) }
                 TextButton("Blocker") { backStack.push(BlockerExample) }
-            }
-        }
-    }
-
-    @Composable
-    fun NavModelExamples(modifier: Modifier = Modifier) {
-        val scrollState = rememberScrollState()
-        Box(
-            modifier = modifier
-                .verticalScroll(scrollState)
-                .fillMaxSize()
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                TextButton("SpotlightAdvanced example") { backStack.push(SpotlightAdvancedExample) }
-                TextButton("Backstack example") { backStack.push(BackStackExample) }
-                TextButton("Tiles example") { backStack.push(TilesExample) }
-                TextButton("Modal example") { backStack.push(ModalExample) }
-                TextButton("Combined navModel") { backStack.push(CombinedNavModel) }
-                TextButton("Node with interactor") { backStack.push(InteractorExample) }
-                TextButton("Spotlight Example") { backStack.push(SpotlightExample) }
             }
         }
     }
@@ -275,13 +197,6 @@ class ContainerNode internal constructor(
                     }
                 }
             }
-        }
-    }
-
-    @Composable
-    private fun TextButton(text: String, onClick: () -> Unit) {
-        Button(onClick = onClick) {
-            Text(textAlign = TextAlign.Center, text = text)
         }
     }
 
