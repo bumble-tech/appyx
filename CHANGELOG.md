@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-- [#197](https://github.com/bumble-tech/appyx/pull/197) – **Breaking change**: `ParentNodeView` does not implement plugin anymore. Node instance is retrieved via LocalComposition.
+- [#197](https://github.com/bumble-tech/appyx/pull/197) – **Breaking change**: `ParentNodeView` does not implement plugin anymore. Node instance is retrieved via LocalComposition. `AppyxParentViewTestRule` and `AbstractParentNodeView` have been removed. 
 - [#196](https://github.com/bumble-tech/appyx/pull/196) – **Breaking change**: `InteropBuilder` now should be supplied with Appyx `IntegrationPointProvider` to attach it at the same time Appyx Node is created 
 - [#185](https://github.com/bumble-tech/appyx/issues/185) – **Breaking change**: `Activity` must implement `IntegrationPointProvider` and create `IntegrationPoint` manually. Weak references usage has been removed.
 - [#173](https://github.com/bumble-tech/appyx/pull/173) – **Breaking change**: `ActivityStarter` and `PermissionRequester` now exposes coroutine based API instead of `minimal.reactive`.
