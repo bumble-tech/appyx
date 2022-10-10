@@ -5,9 +5,9 @@ import androidx.lifecycle.LifecycleRegistry
 import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
-import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +17,9 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.Serializable
 
 /**
  * Hosts [LifecycleRegistry] to manage the current node lifecycle
@@ -30,6 +32,24 @@ internal class ChildNodeLifecycleManager<NavTarget>(
 ) {
 
     private val lifecycleState = MutableStateFlow(Lifecycle.State.INITIALIZED)
+    private val portalKeysState = MutableStateFlow<List<NavKey<NavTarget>>>(mutableListOf())
+
+    fun pushPortal(key: NavKey<NavTarget>) {
+        portalKeysState.update { list ->
+            val newList = list.toMutableList()
+            newList.add(key)
+            newList
+        }
+    }
+
+    fun removePortal() {
+        // TODO remove by key
+        portalKeysState.update { list ->
+            val newList = list.toMutableList()
+            newList.removeLast()
+            newList
+        }
+    }
 
     /**
      * Propagates the parent lifecycle to children.
@@ -54,7 +74,8 @@ internal class ChildNodeLifecycleManager<NavTarget>(
                 lifecycleState,
                 navModel.screenState.keys(),
                 children.withPrevious(),
-                ::Triple
+                portalKeysState,
+                ::Quadruple
             )
                 .onCompletion {
                     // when scope is closed we need to destroy all existing children
@@ -64,15 +85,32 @@ internal class ChildNodeLifecycleManager<NavTarget>(
                         .values
                         .forEach { entry -> entry.setState(Lifecycle.State.DESTROYED) }
                 }
-                .collect { (parentLifecycleState, screenState, children) ->
-                    screenState.onScreen.forEach { key ->
-                        val childState = minOf(parentLifecycleState, Lifecycle.State.RESUMED)
-                        children.current[key]?.setState(childState)
-                    }
+                .collect { (parentLifecycleState, screenState, children, portals) ->
 
-                    screenState.offScreen.forEach { key ->
-                        val childState = minOf(parentLifecycleState, Lifecycle.State.CREATED)
-                        children.current[key]?.setState(childState)
+                    if (portals.isEmpty()) {
+                        screenState.onScreen.forEach { key ->
+                            val childState = minOf(parentLifecycleState, Lifecycle.State.RESUMED)
+                            children.current[key]?.setState(childState)
+                        }
+
+                        screenState.offScreen.forEach { key ->
+                            val childState = minOf(parentLifecycleState, Lifecycle.State.CREATED)
+                            children.current[key]?.setState(childState)
+                        }
+                    } else {
+                        val lastPortalKey = portals.last()
+
+                        (screenState.onScreen + screenState.offScreen - lastPortalKey).forEach { key ->
+                            val childState = minOf(parentLifecycleState, Lifecycle.State.CREATED)
+                            children.current[key]?.setState(childState)
+                        }
+
+                        children.current[lastPortalKey]?.setState(
+                            minOf(
+                                parentLifecycleState,
+                                Lifecycle.State.RESUMED
+                            )
+                        )
                     }
 
                     if (children.previous != null) {
@@ -98,6 +136,19 @@ internal class ChildNodeLifecycleManager<NavTarget>(
 
     private fun ChildEntry<*>.setState(state: Lifecycle.State) {
         nodeOrNull?.updateLifecycleState(state)
+    }
+
+    data class Quadruple<out A, out B, out C, out D>(
+        val first: A,
+        val second: B,
+        val third: C,
+        val fourth: D,
+    ) : Serializable {
+
+        /**
+         * Returns string representation of the [Triple] including its [first], [second] and [third] values.
+         */
+        override fun toString(): String = "($first, $second, $third)"
     }
 
     private data class ScreenState<NavTarget>(

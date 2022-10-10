@@ -19,8 +19,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.ParentNode
+import androidx.compose.ui.window.Popup
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavModel
@@ -29,6 +28,8 @@ import com.bumble.appyx.core.navigation.transition.TransitionBounds
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionParams
+import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.core.node.ParentNode
 import kotlinx.coroutines.flow.map
 
 @Composable
@@ -72,17 +73,23 @@ private class ChildRendererImpl(
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke(modifier: Modifier) {
-        Box(modifier = transitionModifier) {
-            node.Compose(modifier = modifier)
+        if (node.isPortal) {
+            Popup {
+                Box {
+                    node.Compose(modifier = modifier)
+                }
+            }
+        } else {
+            Box(modifier = transitionModifier) {
+                node.Compose(modifier = modifier)
+            }
         }
     }
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke() {
-        Box(modifier = transitionModifier) {
-            node.Compose(modifier = Modifier)
-        }
+        invoke(modifier = Modifier)
     }
 }
 

@@ -42,9 +42,11 @@ import kotlin.random.Random
 
 class ChildNode(
     private val name: String,
-    buildContext: BuildContext
+    buildContext: BuildContext,
+    isPortal: Boolean = true
 ) : Node(
     buildContext = buildContext,
+    isPortal = isPortal
 ) {
 
     private val colors = listOf(

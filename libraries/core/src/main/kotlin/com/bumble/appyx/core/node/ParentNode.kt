@@ -27,9 +27,9 @@ import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.Resolver
-import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.isTransitioning
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
@@ -54,10 +54,12 @@ abstract class ParentNode<NavTarget : Any>(
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
+    isPortal: Boolean = false,
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + navModel + childAware + view
+    plugins = plugins + navModel + childAware + view,
+    isPortal = isPortal
 ), Resolver<NavTarget> {
 
     private val permanentNavModel = PermanentNavModel<NavTarget>(
@@ -88,6 +90,19 @@ abstract class ParentNode<NavTarget : Any>(
         childNodeCreationManager.launch(this)
         childNodeLifecycleManager.launch()
         manageTransitions()
+    }
+
+    fun onPortalRemoved(node: Node) {
+        parent?.onPortalRemoved(this)
+        childNodeLifecycleManager.removePortal()
+    }
+
+    fun onPortalPushed(node: Node) {
+        parent?.onPortalPushed(this)
+        val key = children.value.values.find { it.nodeOrNull == node }?.key
+        if (key != null) {
+            childNodeLifecycleManager.pushPortal(key)
+        }
     }
 
     fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> =

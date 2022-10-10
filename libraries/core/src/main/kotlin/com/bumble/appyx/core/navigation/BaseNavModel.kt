@@ -1,14 +1,14 @@
 package com.bumble.appyx.core.navigation
 
 import androidx.activity.OnBackPressedCallback
-import com.bumble.appyx.core.plugin.BackPressHandler
-import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.onscreen.isOnScreen
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.core.navigation.operationstrategies.OperationStrategy
+import com.bumble.appyx.core.plugin.BackPressHandler
+import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.CoroutineScope
@@ -68,13 +68,12 @@ abstract class BaseNavModel<NavTarget, State>(
     override val elements: StateFlow<NavElements<NavTarget, State>> get() = state
 
     override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, State>> by lazy {
-        state
-            .map { elements ->
-                NavModelAdapter.ScreenState(
-                    onScreen = elements.filter { screenResolver.isOnScreen(it) },
-                    offScreen = elements.filterNot { screenResolver.isOnScreen(it) },
-                )
-            }
+        state.map { element ->
+            NavModelAdapter.ScreenState(
+                onScreen = element.filter { screenResolver.isOnScreen(it) },
+                offScreen = element.filterNot { screenResolver.isOnScreen(it) },
+            )
+        }
             .stateIn(scope, SharingStarted.Eagerly, NavModelAdapter.ScreenState())
     }
 

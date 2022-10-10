@@ -30,9 +30,9 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
@@ -54,7 +54,10 @@ class StatefulNode1(
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is NavTarget.Child -> GenericChildNode(buildContext, navTarget.counterStartValue)
+            is NavTarget.Child -> GenericChildNode(
+                buildContext,
+                navTarget.counterStartValue
+            )
         }
 
     @Composable
@@ -63,8 +66,8 @@ class StatefulNode1(
             modifier = modifier,
             title = "Stateful",
             body = "Each Node on this screen has some state:" +
-                "\n\n1. The counter represents data from a background process (e.g. server)." +
-                "\n2. You can also tap them to change their colour. Try it!"
+                    "\n\n1. The counter represents data from a background process (e.g. server)." +
+                    "\n2. You can also tap them to change their colour. Try it!"
         ) {
             Column(Modifier.fillMaxSize()) {
                 Row(

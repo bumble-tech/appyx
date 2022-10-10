@@ -52,7 +52,6 @@ import com.bumble.appyx.navmodel.spotlight.hasNext
 import com.bumble.appyx.navmodel.spotlight.hasPrevious
 import com.bumble.appyx.navmodel.spotlight.operation.next
 import com.bumble.appyx.navmodel.spotlight.operation.previous
-import com.bumble.appyx.navmodel.spotlight.transitionhandler.rememberSpotlightSlider
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
@@ -117,7 +116,7 @@ class OnboardingContainerNode(
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
-                transitionHandler = rememberSpotlightSlider(clipToBounds = true),
+//                transitionHandler = rememberSpotlightSlider(clipToBounds = true),
                 navModel = spotlight
             )
             Box(

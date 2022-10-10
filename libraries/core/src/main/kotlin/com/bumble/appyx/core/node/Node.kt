@@ -43,7 +43,8 @@ import java.util.UUID
 open class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
-    plugins: List<Plugin> = emptyList()
+    plugins: List<Plugin> = emptyList(),
+    val isPortal: Boolean = false,
 ) : NodeLifecycle, NodeView by view, RequestCodeClient {
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
@@ -57,7 +58,7 @@ open class Node(
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
-    private val parent: ParentNode<*>? =
+    protected val parent: ParentNode<*>? =
         when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
@@ -123,6 +124,15 @@ open class Node(
             LocalLifecycleOwner provides this,
         ) {
             HandleBackPress()
+            if (isPortal) {
+                DisposableEffect(key1 = this) {
+                    parent?.onPortalPushed(this@Node)
+                    onDispose {
+                        parent?.onPortalRemoved(this@Node)
+                    }
+                }
+
+            }
             View(modifier)
         }
     }
