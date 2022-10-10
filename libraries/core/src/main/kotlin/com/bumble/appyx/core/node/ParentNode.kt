@@ -261,15 +261,19 @@ abstract class ParentNode<NavTarget : Any>(
 
     private class PermanentChildRender(private val node: Node) : ChildRenderer {
 
-        @Suppress("ComposableNaming")
+        @Suppress(
+            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
+        )
         @Composable
-        override fun invoke(modifier: Modifier) {
+        override operator fun invoke(modifier: Modifier) {
             node.Compose(modifier)
         }
 
-        @Suppress("ComposableNaming")
+        @Suppress(
+            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
+        )
         @Composable
-        override fun invoke() {
+        override operator fun invoke() {
             invoke(modifier = Modifier)
         }
     }
