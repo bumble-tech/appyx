@@ -71,9 +71,7 @@ fun SpotlightExperiment() {
     ) {
         Children(
             render = render.collectAsState(listOf()),
-            modifier = Modifier
-                .weight(0.9f)
-                .padding(64.dp),
+            modifier = Modifier.weight(0.9f),
             onElementSizeChanged = { elementSize = it },
         )
 
