@@ -9,6 +9,6 @@ class InstantInputSource<NavTarget : Any, State>(
 
     override fun operation(operation: Operation<NavTarget, State>) {
         navModel.enqueue(operation)
-        navModel.setProgress(progress = 1f)
+        navModel.setProgress(progress = navModel.maxProgress)
     }
 }
