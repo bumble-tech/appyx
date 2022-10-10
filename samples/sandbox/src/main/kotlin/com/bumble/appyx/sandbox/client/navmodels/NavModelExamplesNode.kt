@@ -99,7 +99,7 @@ class NavModelExamplesNode(
     }
 
     @Composable
-    private fun NavModelPicker(modifier: Modifier) {
+    private fun NavModelPicker(modifier: Modifier = Modifier) {
         val scrollState = rememberScrollState()
         Box(
             modifier = modifier
