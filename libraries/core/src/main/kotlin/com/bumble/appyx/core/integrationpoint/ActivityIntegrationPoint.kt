@@ -50,7 +50,7 @@ open class ActivityIntegrationPoint(
     companion object {
         fun getIntegrationPoint(context: Context): IntegrationPoint {
             val activity = context.findActivity<Activity>()
-            check(activity != null) {
+            checkNotNull(activity) {
                 "Could not find an activity from the context: $context"
             }
 

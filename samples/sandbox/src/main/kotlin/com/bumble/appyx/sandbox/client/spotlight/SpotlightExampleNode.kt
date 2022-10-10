@@ -120,7 +120,7 @@ class SpotlightExampleNode(
         ) {
             when (state) {
                 is Loading -> CircularProgressIndicator()
-                is Loaded -> LoadedState(modifier = modifier)
+                is Loaded -> LoadedState()
                 else -> Unit
             }
         }
@@ -128,7 +128,7 @@ class SpotlightExampleNode(
 
     @Suppress("LongMethod")
     @Composable
-    private fun LoadedState(modifier: Modifier) {
+    private fun LoadedState(modifier: Modifier = Modifier) {
         val hasPrevious = spotlight.hasPrevious().collectAsState(initial = false)
         val hasNext = spotlight.hasNext().collectAsState(initial = false)
         Column(

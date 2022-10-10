@@ -18,8 +18,8 @@ class CombinedHandler<T, S>(
     ): Modifier =
         handlers
             .map { it.createModifier(Modifier, transition, descriptor = descriptor) }
-            .fold(modifier) { acc: Modifier, modifier: Modifier ->
-                acc.then(modifier)
+            .fold(modifier) { acc: Modifier, currentModifier: Modifier ->
+                acc.then(currentModifier)
             }
 }
 

@@ -40,7 +40,7 @@ import java.util.UUID
 
 @Suppress("TooManyFunctions")
 @Stable
-abstract class Node(
+open class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
     plugins: List<Plugin> = emptyList()

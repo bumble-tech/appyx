@@ -2,9 +2,11 @@
 
 ## Pending changes
 
-- [#197](https://github.com/bumble-tech/appyx/pull/197) – **Breaking change**: `ParentNodeView` does not implement plugin anymore. Node instance is retrieved via LocalComposition.   
+- [#197](https://github.com/bumble-tech/appyx/pull/197) – **Breaking change**: `ParentNodeView` does not implement plugin anymore. Node instance is retrieved via LocalComposition.
+- [#196](https://github.com/bumble-tech/appyx/pull/196) – **Breaking change**: `InteropBuilder` now should be supplied with Appyx `IntegrationPointProvider` to attach it at the same time Appyx Node is created 
 - [#185](https://github.com/bumble-tech/appyx/issues/185) – **Breaking change**: `Activity` must implement `IntegrationPointProvider` and create `IntegrationPoint` manually. Weak references usage has been removed.
 - [#173](https://github.com/bumble-tech/appyx/pull/173) – **Breaking change**: `ActivityStarter` and `PermissionRequester` now exposes coroutine based API instead of `minimal.reactive`.
+- [#200](https://github.com/bumble-tech/appyx/pull/200) – **Breaking change**: Reordered the parameters for `ParentNode<NavTarget>.Child` and `fun <N : Node> NodeHost` to meet Compose guidelines.
 - [#43](https://github.com/bumble-tech/appyx/pull/43) – **Updated**: Jetpack Compose to 1.2.1 and kotlin to 1.7.10.
 - [#168](https://github.com/bumble-tech/appyx/pull/168) – **Updated**: Kotlin coroutines to 1.6.4.
 - [#171](https://github.com/bumble-tech/appyx/pull/171) – **Updated**: RIBs to 0.36.1. 

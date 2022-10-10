@@ -25,11 +25,12 @@ import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
  *
  * Aligns lifecycle and manages state restoration.
  */
+@Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
 fun <N : Node> NodeHost(
+    integrationPoint: IntegrationPoint,
     modifier: Modifier = Modifier,
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
-    integrationPoint: IntegrationPoint,
     factory: NodeFactory<N>
 ) {
     val node by rememberNode(factory, customisations, integrationPoint)

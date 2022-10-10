@@ -17,8 +17,10 @@ abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        // super.onCreate() creates RIB with AppyxNode inside. It's important to have
+        // appyxIntegrationPoint ready before we create a root node
         appyxIntegrationPoint = createAppyxIntegrationPoint(savedInstanceState)
+        super.onCreate(savedInstanceState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
