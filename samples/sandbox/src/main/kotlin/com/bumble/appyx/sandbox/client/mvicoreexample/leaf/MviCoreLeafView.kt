@@ -57,7 +57,7 @@ class MviCoreLeafViewImpl(
             )
 
             when (viewModel) {
-                is ViewModel.Loading -> Box(modifier = modifier.fillMaxSize()) {
+                is ViewModel.Loading -> Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -65,8 +65,8 @@ class MviCoreLeafViewImpl(
                     )
                 }
                 is ViewModel.InitialState ->
-                    Box(modifier = modifier.fillMaxSize()) {
-                        Column(modifier = modifier.align(Alignment.Center)) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Column(modifier = Modifier.align(Alignment.Center)) {
                             Text(
                                 modifier = Modifier.testTag(MviCoreExampleViewImpl.InitialStateTextTag),
                                 color = Color.Black, text = viewModel.stateName
@@ -84,7 +84,7 @@ class MviCoreLeafViewImpl(
                         }
                     }
                 is ViewModel.Loaded ->
-                    Box(modifier = modifier.fillMaxSize()) {
+                    Box(modifier = Modifier.fillMaxSize()) {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
                             color = Color.Black,

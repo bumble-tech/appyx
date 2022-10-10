@@ -93,20 +93,22 @@ class CombinedNavModelNode(
     }
 
     @Composable
-    private fun Permanent() {
+    private fun Permanent(modifier: Modifier = Modifier) {
         var visibility by remember { mutableStateOf(true) }
-        Text(text = "Permanent")
-        Button(onClick = { visibility = !visibility }) {
-            Text(text = "Trigger visibility")
-        }
-        PermanentChild(NavTarget.Permanent.Child1) { child ->
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp)
-            ) {
-                AnimatedVisibility(visible = visibility) {
-                    child()
+        Column(modifier = modifier) {
+            Text(text = "Permanent")
+            Button(onClick = { visibility = !visibility }) {
+                Text(text = "Trigger visibility")
+            }
+            PermanentChild(NavTarget.Permanent.Child1) { child ->
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                ) {
+                    this@Column.AnimatedVisibility(visible = visibility) {
+                        child()
+                    }
                 }
             }
         }
@@ -116,29 +118,32 @@ class CombinedNavModelNode(
     private fun BackStack(
         name: String,
         backStack: BackStack<NavTarget>,
+        modifier: Modifier = Modifier
     ) {
-        Text(text = name)
-        Children(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp),
-            navModel = backStack,
-            transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
-        )
+        Column(modifier = modifier) {
+            Text(text = name)
+            Children(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                navModel = backStack,
+                transitionHandler = rememberBackstackFader(transitionSpec = { tween(300) }),
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                backStack.push(
-                    NavTarget.Dynamic.Child(
-                        UUID.randomUUID().toString()
+            Button(
+                onClick = {
+                    backStack.push(
+                        NavTarget.Dynamic.Child(
+                            UUID.randomUUID().toString()
+                        )
                     )
-                )
-            },
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Text(text = "Add", modifier = Modifier.padding(horizontal = 16.dp))
+                },
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Text(text = "Add", modifier = Modifier.padding(horizontal = 16.dp))
+            }
         }
     }
 

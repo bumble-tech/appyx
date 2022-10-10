@@ -7,7 +7,7 @@ import com.bumble.appyx.core.plugin.NodeAware
 import com.bumble.appyx.core.plugin.NodeLifecycleAware
 import com.bumble.appyx.core.plugin.SavesInstanceState
 
-abstract class Interactor<N: Node>(
+open class Interactor<N: Node>(
     private val childAwareImpl: ChildAware<N> = ChildAwareImpl()
 ) : NodeAware<N>,
     NodeLifecycleAware,

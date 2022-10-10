@@ -3,7 +3,10 @@ import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import io.gitlab.arturbosch.detekt.report.ReportMergeTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.configure
+import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.getByType
 
 class DetektPlugin : Plugin<Project> {
 
@@ -19,10 +22,11 @@ class DetektPlugin : Plugin<Project> {
 
                 val localDetektConfig = target.file("detekt.yml")
                 val rootDetektConfig = target.rootProject.file("detekt.yml")
+                val rootDetektComposeConfig = target.rootProject.file("detekt-compose.yml")
                 if (localDetektConfig.exists()) {
-                    config.from(localDetektConfig, rootDetektConfig)
+                    config.from(localDetektConfig, rootDetektConfig, rootDetektComposeConfig)
                 } else {
-                    config.from(rootDetektConfig)
+                    config.from(rootDetektConfig, rootDetektComposeConfig)
                 }
             }
 
@@ -40,6 +44,22 @@ class DetektPlugin : Plugin<Project> {
                     mustRunAfter(detektTask)
                 }
             }
+        }
+
+        target.dependencies {
+            // We add this to all modules (even ones that don't use Compose).
+            // Determining if the module uses Compose is very messy, and as this doesn't appear to
+            // cause an problem this should be okay for now.
+            add(
+                "detektPlugins",
+                target
+                    .rootProject
+                    .extensions
+                    .getByType<VersionCatalogsExtension>()
+                    .named("libs")
+                    .findLibrary("detekt-compose")
+                    .get()
+            )
         }
     }
 

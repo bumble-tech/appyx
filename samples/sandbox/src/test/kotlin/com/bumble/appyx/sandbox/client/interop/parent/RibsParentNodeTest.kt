@@ -11,6 +11,7 @@ import com.badoo.ribs.test.node.RibNodeStub
 import com.badoo.ribs.test.node.RibNodeTestHelper
 import com.badoo.ribs.test.rx2.view.RibViewStub
 import com.bumble.appyx.core.builder.SimpleBuilder
+import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.interop.ribs.InteropNode
 import com.bumble.appyx.interop.ribs.InteropView
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentView.Event
@@ -41,7 +42,8 @@ internal class RibsParentNodeTest {
             childBuilders = object : RibsParentChildBuilders {
                 override val interopNode: SimpleBuilder = interopNodeBuilder
                 override val ribsNode: Builder<Nothing?, Rib> = ribsNodeBuilder
-            }
+            },
+            integrationPoint = IntegrationPointStub()
         ).build(
             buildContext = BuildContext.root(
                 savedInstanceState = null,

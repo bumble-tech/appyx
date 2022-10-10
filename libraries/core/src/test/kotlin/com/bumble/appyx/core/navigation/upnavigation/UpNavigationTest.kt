@@ -147,6 +147,7 @@ class UpNavigationTest {
 
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
 
         @Suppress("UNCHECKED_CAST")
@@ -165,6 +166,7 @@ class UpNavigationTest {
     ), NodeWithId {
         @Composable
         override fun View(modifier: Modifier) {
+            // no-op
         }
     }
 

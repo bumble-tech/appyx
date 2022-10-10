@@ -45,6 +45,7 @@ import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.coroutines.resume
 import kotlin.reflect.KClass
 
+@Suppress("TooManyFunctions")
 @Stable
 abstract class ParentNode<NavTarget : Any>(
     navModel: NavModel<NavTarget, *>,
@@ -178,10 +179,10 @@ abstract class ParentNode<NavTarget : Any>(
         val result = withTimeoutOrNull(timeout) {
             waitForChildAttached<T>()
         }
-        result ?: throw IllegalStateException(
+        checkNotNull(result) {
             "Expected child of type [${T::class.java}] was not found after executing action. " +
-                    "Check that your action actually results in the expected child. "
-        )
+                    "Check that your action actually results in the expected child."
+        }
     }
 
     /**
@@ -260,13 +261,19 @@ abstract class ParentNode<NavTarget : Any>(
 
     private class PermanentChildRender(private val node: Node) : ChildRenderer {
 
+        @Suppress(
+            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
+        )
         @Composable
-        override fun invoke(modifier: Modifier) {
+        override operator fun invoke(modifier: Modifier) {
             node.Compose(modifier)
         }
 
+        @Suppress(
+            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
+        )
         @Composable
-        override fun invoke() {
+        override operator fun invoke() {
             invoke(modifier = Modifier)
         }
     }

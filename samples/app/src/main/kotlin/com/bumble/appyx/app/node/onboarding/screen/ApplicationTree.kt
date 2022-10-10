@@ -74,6 +74,7 @@ class ApplicationTree(
         )
     )
 
+    @Suppress("LongMethod")
     @Composable
     override fun View(modifier: Modifier) {
         Page(

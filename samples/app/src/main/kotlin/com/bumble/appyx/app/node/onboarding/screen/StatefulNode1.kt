@@ -109,7 +109,7 @@ class StatefulNode1(
     }
 
     @Composable
-    private fun ChildInABox(navTarget: NavTarget, showWithDelay: Long, modifier: Modifier) {
+    private fun ChildInABox(navTarget: NavTarget, showWithDelay: Long, modifier: Modifier = Modifier) {
         PermanentChild(navTarget) { child ->
             Box(modifier) {
                 var visible by remember { mutableStateOf(false) }

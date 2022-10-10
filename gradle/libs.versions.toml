@@ -1,7 +1,7 @@
 # keep sorted please, use Edit -> Sort Lines
 
 [versions]
-androidCompileSdk = "32"
+androidCompileSdk = "33"
 androidMinSdk = "21"
 androidTargetSdk = "32"
 androidx-lifecycle = "2.4.1"
@@ -69,6 +69,8 @@ junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-android = "com.android.tools.build:gradle:7.2.2"
+
+detekt-compose = "com.twitter.compose.rules:detekt:0.0.18"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

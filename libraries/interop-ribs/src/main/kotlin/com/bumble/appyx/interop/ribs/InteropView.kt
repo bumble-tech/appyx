@@ -8,7 +8,6 @@ import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
-import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPoint
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.interop.ribs.InteropView.Dependency
 
@@ -24,12 +23,6 @@ internal class InteropViewImpl private constructor(
     lifecycle: Lifecycle,
     private val appyxNode: Node,
 ) : InteropView, ComposeRibView(context, lifecycle) {
-
-    private val integrationPoint = ActivityIntegrationPoint.getIntegrationPoint(context)
-
-    init {
-        appyxNode.integrationPoint = integrationPoint
-    }
 
     override val composable: ComposeView
         get() = @Composable {

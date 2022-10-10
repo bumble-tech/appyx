@@ -9,10 +9,8 @@ import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityBoundary
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequestBoundary
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
-import java.lang.ref.WeakReference
-import java.util.WeakHashMap
 
-open class ActivityIntegrationPoint private constructor(
+open class ActivityIntegrationPoint(
     private val activity: Activity,
     savedInstanceState: Bundle?,
 ) : IntegrationPoint(savedInstanceState = savedInstanceState) {
@@ -50,30 +48,17 @@ open class ActivityIntegrationPoint private constructor(
     }
 
     companion object {
-        private val integrationPoints = WeakHashMap<Activity, WeakReference<IntegrationPoint>>()
-
-        fun createIntegrationPoint(
-            activity: Activity,
-            savedInstanceState: Bundle?,
-        ): ActivityIntegrationPoint =
-            ActivityIntegrationPoint(activity, savedInstanceState)
-                .also { integrationPoints[activity] = WeakReference(it) }
-
         fun getIntegrationPoint(context: Context): IntegrationPoint {
             val activity = context.findActivity<Activity>()
-            check(activity != null) {
+            checkNotNull(activity) {
                 "Could not find an activity from the context: $context"
             }
-            val integrationPoint = integrationPoints
-                .entries
-                .firstOrNull { (key, _) -> key === activity }
-                ?.value?.get()
 
-            return requireNotNull(integrationPoint) {
-                "Unable to find integration point. It was either not created " +
-                        "(using ActivityIntegrationPoint.createIntegrationPoint), " +
-                        "or the Activity was garbage collected"
-            }
+            val integrationPointProvider = activity as? IntegrationPointProvider ?: error(
+                "Activity ${activity::class.qualifiedName} does not implement IntegrationPointProvider"
+            )
+
+            return integrationPointProvider.appyxIntegrationPoint
         }
 
         @Suppress("UNCHECKED_CAST")

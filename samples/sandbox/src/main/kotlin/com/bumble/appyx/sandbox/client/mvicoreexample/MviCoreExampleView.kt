@@ -62,6 +62,7 @@ class MviCoreExampleViewImpl(
         this.vm = vm
     }
 
+    @Suppress("LongMethod")
     @Composable
     override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) {
         val viewModel = vm ?: return
@@ -80,7 +81,7 @@ class MviCoreExampleViewImpl(
             )
             Children(
                 transitionHandler = rememberBackstackSlider(),
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(200.dp),
                 navModel = backStack
@@ -94,7 +95,7 @@ class MviCoreExampleViewImpl(
                 Text(text = "Switch between children")
             }
             when (viewModel) {
-                is Loading -> Box(modifier = modifier.fillMaxSize()) {
+                is Loading -> Box(modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator(
                         modifier = Modifier
                             .align(Alignment.Center)
@@ -102,8 +103,8 @@ class MviCoreExampleViewImpl(
                     )
                 }
                 is InitialState ->
-                    Box(modifier = modifier.fillMaxSize()) {
-                        Column(modifier = modifier.align(Alignment.Center)) {
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        Column(modifier = Modifier.align(Alignment.Center)) {
                             Text(
                                 modifier = Modifier.testTag(InitialStateTextTag),
                                 color = Color.Black, text = viewModel.stateName
@@ -121,7 +122,7 @@ class MviCoreExampleViewImpl(
                         }
                     }
                 is Loaded ->
-                    Box(modifier = modifier.fillMaxSize()) {
+                    Box(modifier = Modifier.fillMaxSize()) {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
                             color = Color.Black,

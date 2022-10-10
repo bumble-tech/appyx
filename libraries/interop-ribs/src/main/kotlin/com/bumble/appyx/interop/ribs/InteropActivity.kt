@@ -4,25 +4,28 @@ import android.content.Intent
 import android.os.Bundle
 import com.badoo.ribs.android.RibActivity
 import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPoint
+import com.bumble.appyx.core.integrationpoint.IntegrationPointProvider
 
-abstract class InteropActivity : RibActivity() {
+abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
 
-    private lateinit var integrationPointAppyx: ActivityIntegrationPoint
+    override lateinit var appyxIntegrationPoint: ActivityIntegrationPoint
 
-    protected open fun createIntegrationPointV2(savedInstanceState: Bundle?): ActivityIntegrationPoint =
-        ActivityIntegrationPoint.createIntegrationPoint(
+    protected open fun createAppyxIntegrationPoint(savedInstanceState: Bundle?) =
+        ActivityIntegrationPoint(
             activity = this,
             savedInstanceState = savedInstanceState
         )
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // super.onCreate() creates RIB with AppyxNode inside. It's important to have
+        // appyxIntegrationPoint ready before we create a root node
+        appyxIntegrationPoint = createAppyxIntegrationPoint(savedInstanceState)
         super.onCreate(savedInstanceState)
-        integrationPointAppyx = createIntegrationPointV2(savedInstanceState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        integrationPointAppyx.onActivityResult(requestCode, resultCode, data)
+        appyxIntegrationPoint.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(
@@ -31,12 +34,12 @@ abstract class InteropActivity : RibActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        integrationPointAppyx.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        appyxIntegrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        integrationPointAppyx.onSaveInstanceState(outState)
+        appyxIntegrationPoint.onSaveInstanceState(outState)
     }
 
 }

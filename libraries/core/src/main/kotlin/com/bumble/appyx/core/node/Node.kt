@@ -13,7 +13,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.BuildConfig
@@ -39,9 +38,9 @@ import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
-@Stable
 @Suppress("TooManyFunctions")
-abstract class Node(
+@Stable
+open class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
     plugins: List<Plugin> = emptyList()
@@ -76,7 +75,6 @@ abstract class Node(
             field = value
         }
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
     private var wasBuilt = false
 
     val id = getNodeId(buildContext)
@@ -91,7 +89,7 @@ abstract class Node(
             override fun onCreate(owner: LifecycleOwner) {
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
             }
-        });
+        })
     }
 
     private fun getNodeId(buildContext: BuildContext): String {

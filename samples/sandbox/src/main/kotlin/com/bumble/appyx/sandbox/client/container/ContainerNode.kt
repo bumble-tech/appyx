@@ -127,6 +127,7 @@ class ContainerNode internal constructor(
         object Customisations : NavTarget()
     }
 
+    @Suppress("ComplexMethod")
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
@@ -172,7 +173,7 @@ class ContainerNode internal constructor(
     }
 
     @Composable
-    fun ExamplesList(modifier: Modifier) {
+    fun ExamplesList(modifier: Modifier = Modifier) {
         val scrollState = rememberScrollState()
         Box(
             modifier = modifier
@@ -221,7 +222,7 @@ class ContainerNode internal constructor(
     }
 
     @Composable
-    fun NavModelExamples(modifier: Modifier) {
+    fun NavModelExamples(modifier: Modifier = Modifier) {
         val scrollState = rememberScrollState()
         Box(
             modifier = modifier
@@ -246,7 +247,7 @@ class ContainerNode internal constructor(
     }
 
     @Composable
-    fun Customisations(modifier: Modifier) {
+    fun Customisations(modifier: Modifier = Modifier) {
         Box(
             modifier = modifier
                 .fillMaxSize()
