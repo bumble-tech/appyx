@@ -3,7 +3,7 @@ name: Deploy mkdocs to GitHub Pages
 on:
   push:
     branches:
-      - main
+      - 1.x
   workflow_dispatch:
 
 jobs:
