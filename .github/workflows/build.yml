@@ -10,8 +10,17 @@ on:
 
 env:
   MAIN_BRANCH: ${{ github.ref == 'refs/heads/1.x' || github.ref == 'refs/heads/2.x' }}
+  TEST: ${{ github.ref == 'snapshot-fix' }}
 
 jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ env.MAIN_BRANCH == 'true' }
+      - run: echo ${{ env.MAIN_BRANCH != 'true' }
+      - run: echo ${{ env.TEST == 'true' }
+      - run: echo ${{ env.TEST != 'true' }
   build:
     name: Build
     runs-on: ubuntu-latest
