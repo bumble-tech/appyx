@@ -29,7 +29,7 @@ internal abstract class ProjectPlugin : Plugin<Project> {
             }
 
             project.tasks.named("publishAppyxReleasePublicationToSonatypeSnapshotRepository") {
-                val fail = project.isSnapshotPublication
+                val fail = !project.isSnapshotPublication
                 doFirst {
                     if (fail) throw GradleException(
                         "Publishing to snapshot repository with disabled \"snapshot\" flag is permitted"
