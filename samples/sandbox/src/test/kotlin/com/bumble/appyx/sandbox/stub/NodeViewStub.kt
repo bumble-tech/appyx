@@ -2,8 +2,8 @@ package com.bumble.appyx.sandbox.stub
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.core.node.AbstractParentNodeView
 import com.bumble.appyx.core.node.ParentNode
+import com.bumble.appyx.core.node.ParentNodeView
 import com.jakewharton.rxrelay2.PublishRelay
 import io.reactivex.ObservableSource
 import io.reactivex.disposables.Disposable
@@ -14,7 +14,7 @@ open class NodeViewStub<Event : Any, ViewModel : Any, NavTarget : Any>(
     val eventsRelay: PublishRelay<Event> = PublishRelay.create(),
     val viewModelRelay: PublishRelay<ViewModel> = PublishRelay.create(),
     private val disposable: Disposable = Disposables.empty()
-) : AbstractParentNodeView<NavTarget>(),
+) : ParentNodeView<NavTarget>,
     ObservableSource<Event> by eventsRelay,
     Consumer<ViewModel> by viewModelRelay,
     Disposable by disposable {

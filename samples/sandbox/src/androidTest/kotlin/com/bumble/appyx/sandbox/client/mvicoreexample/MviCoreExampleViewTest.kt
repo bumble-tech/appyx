@@ -4,11 +4,11 @@ import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.performClick
-import com.bumble.appyx.testing.ui.utils.DummyNavModel
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleViewImpl.Event
 import com.bumble.appyx.sandbox.client.mvicoreexample.feature.ViewModel
-import com.bumble.appyx.sandbox.client.test.appyxParentViewRule
+import com.bumble.appyx.sandbox.client.test.appyxViewRule
 import com.bumble.appyx.sandbox.client.test.assertLastValueEqual
+import com.bumble.appyx.testing.ui.utils.DummyNavModel
 import org.junit.Rule
 import org.junit.Test
 
@@ -18,7 +18,7 @@ internal class MviCoreExampleViewTest {
     private var title = "Title"
 
     @get:Rule
-    val rule = appyxParentViewRule(launchActivity = false) {
+    val rule = appyxViewRule(launchActivity = false) {
         createView()
     }
 

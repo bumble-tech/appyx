@@ -12,14 +12,14 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-open class AppyxTestRule<T : Node>(
+open class AppyxActivityTestRule<T : Node>(
     private val launchActivity: Boolean = true,
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule(),
     /** Add decorations like custom theme or CompositionLocalProvider. Do not forget to invoke `content()`. */
     private val decorator: (@Composable (content: @Composable () -> Unit) -> Unit) = { content -> content() },
     private val nodeFactory: NodeFactory<T>,
-) : ActivityTestRule<AppyxViewActivity>(
-    /* activityClass = */ AppyxViewActivity::class.java,
+) : ActivityTestRule<AppyxTestActivity>(
+    /* activityClass = */ AppyxTestActivity::class.java,
     /* initialTouchMode = */ true,
     /* launchActivity = */ launchActivity
 ), ComposeTestRule by composeTestRule {
@@ -42,7 +42,7 @@ open class AppyxTestRule<T : Node>(
     }
 
     override fun beforeActivityLaunched() {
-        AppyxViewActivity.composableView = { activity ->
+        AppyxTestActivity.composableView = { activity ->
             decorator {
                 NodeHost(integrationPoint = activity.appyxIntegrationPoint, factory = { buildContext ->
                     node = nodeFactory.create(buildContext)
@@ -53,7 +53,7 @@ open class AppyxTestRule<T : Node>(
     }
 
     override fun afterActivityLaunched() {
-        AppyxViewActivity.composableView = null
+        AppyxTestActivity.composableView = null
     }
 
     @CallSuper
