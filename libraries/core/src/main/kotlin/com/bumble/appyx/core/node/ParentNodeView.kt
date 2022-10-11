@@ -8,6 +8,9 @@ interface ParentNodeView<NavTarget : Any> : NodeView {
     @Composable
     fun ParentNode<NavTarget>.NodeView(modifier: Modifier)
 
+    /**
+     * Do not override this function. Parent views should implement NodeView method.
+     */
     @Suppress("UNCHECKED_CAST")
     @Composable
     override fun View(modifier: Modifier) {
