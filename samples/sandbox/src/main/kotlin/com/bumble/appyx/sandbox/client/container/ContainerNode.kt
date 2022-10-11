@@ -35,8 +35,6 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Customi
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.IntegrationPointExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.InteractorExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExamples
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreLeafExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.customisations.createViewCustomisationsActivityIntent
@@ -44,8 +42,6 @@ import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleN
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
-import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
-import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
 import com.bumble.appyx.sandbox.client.navmodels.NavModelExamplesNode
 import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
 import com.bumble.appyx.utils.customisations.NodeCustomisation
@@ -83,12 +79,6 @@ class ContainerNode internal constructor(
         object InteractorExample : NavTarget()
 
         @Parcelize
-        object MviCoreExample : NavTarget()
-
-        @Parcelize
-        object MviCoreLeafExample : NavTarget()
-
-        @Parcelize
         object BlockerExample : NavTarget()
 
         @Parcelize
@@ -103,14 +93,6 @@ class ContainerNode internal constructor(
             is LazyExamples -> LazyListContainerNode(buildContext)
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
             is IntegrationPointExample -> IntegrationPointExampleNode(buildContext)
-            is MviCoreExample -> MviCoreExampleBuilder().build(
-                buildContext,
-                "MVICore initial state"
-            )
-            is MviCoreLeafExample -> MviCoreLeafBuilder().build(
-                buildContext,
-                "MVICore leaf initial state"
-            )
             is BlockerExample -> BlockerExampleNode(buildContext)
             is Customisations -> node(buildContext) { modifier -> Customisations(modifier) }
         }
@@ -146,8 +128,6 @@ class ContainerNode internal constructor(
                     Text(it, textAlign = TextAlign.Center)
                 }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
-                TextButton("MVICore Example") { backStack.push(MviCoreExample) }
-                TextButton("MVICore Leaf Example") { backStack.push(MviCoreLeafExample) }
                 TextButton("Workflow example") {
                     integrationPoint.activityStarter.startActivity {
                         Intent(this, WorkflowExampleActivity::class.java)
