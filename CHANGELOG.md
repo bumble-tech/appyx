@@ -2,6 +2,7 @@
 
 ## Pending changes
 
+- [#214](https://github.com/bumble-tech/appyx/pull/214) – **Breaking change**: `AppyxViewTestRule` stops supporting automatic launching activity. Activities should be started explicitly in tests.
 - [#197](https://github.com/bumble-tech/appyx/pull/197) – **Breaking change**: `ParentNodeView` does not implement plugin anymore. Node instance is retrieved via LocalComposition. `AppyxParentViewTestRule` and `AbstractParentNodeView` have been removed. 
 - [#196](https://github.com/bumble-tech/appyx/pull/196) – **Breaking change**: `InteropBuilder` now should be supplied with Appyx `IntegrationPointProvider` to attach it at the same time Appyx Node is created.
 - [#185](https://github.com/bumble-tech/appyx/issues/185) – **Breaking change**: `Activity` must implement `IntegrationPointProvider` and create `IntegrationPoint` manually. Weak references usage has been removed.

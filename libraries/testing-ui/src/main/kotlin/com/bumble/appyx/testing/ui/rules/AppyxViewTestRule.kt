@@ -16,12 +16,11 @@ import org.junit.runners.model.Statement
 
 open class AppyxViewTestRule<View : NodeView>(
     viewFactory: ViewFactory<View>,
-    private val launchActivity: Boolean = true,
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule()
 ) : ActivityTestRule<AppyxTestActivity>(
     /* activityClass = */ AppyxTestActivity::class.java,
     /* initialTouchMode = */ true,
-    /* launchActivity = */ launchActivity
+    /* launchActivity = */ false
 ), ComposeTestRule by composeTestRule {
 
     val view by lazy { viewFactory.invoke() }
@@ -35,9 +34,6 @@ open class AppyxViewTestRule<View : NodeView>(
 
     @Suppress("TooGenericExceptionCaught") // launchActivity does throw RuntimeException
     fun start() {
-        require(!launchActivity) {
-            "Activity will be launched automatically, launchActivity parameter was passed into constructor"
-        }
         try {
             launchActivity(null)
         } catch (e: RuntimeException) {
