@@ -37,7 +37,7 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Interac
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
-import com.bumble.appyx.sandbox.client.customisations.createViewCustomisationsActivityIntent
+import com.bumble.appyx.sandbox.client.customisations.CustomisationsNode
 import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
@@ -94,7 +94,7 @@ class ContainerNode internal constructor(
             is InteractorExample -> InteractorNodeBuilder().build(buildContext)
             is IntegrationPointExample -> IntegrationPointExampleNode(buildContext)
             is BlockerExample -> BlockerExampleNode(buildContext)
-            is Customisations -> node(buildContext) { modifier -> Customisations(modifier) }
+            is Customisations -> CustomisationsNode(buildContext)
         }
 
     @Composable
@@ -144,38 +144,6 @@ class ContainerNode internal constructor(
                 TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
                 TextButton("Lazy Examples") { backStack.push(LazyExamples) }
                 TextButton("Blocker") { backStack.push(BlockerExample) }
-            }
-        }
-    }
-
-    @Composable
-    fun Customisations(modifier: Modifier = Modifier) {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                TextButton("Push default node") {
-                    integrationPoint.activityStarter.startActivity {
-                        createViewCustomisationsActivityIntent(
-                            context = this,
-                            hasCustomisedView = false
-                        )
-                    }
-                }
-                TextButton("Push node with customised view") {
-                    integrationPoint.activityStarter.startActivity {
-                        createViewCustomisationsActivityIntent(
-                            context = this,
-                            hasCustomisedView = true
-                        )
-                    }
-                }
             }
         }
     }
