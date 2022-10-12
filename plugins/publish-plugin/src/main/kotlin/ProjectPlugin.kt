@@ -28,7 +28,7 @@ internal abstract class ProjectPlugin : Plugin<Project> {
             }
 
             project.tasks.named("publishAppyxReleasePublicationToSonatypeSnapshotRepository") {
-                val fail = project.findProperty("snapshot") != "true"
+                val fail = !project.isSnapshotPublication
                 doFirst {
                     if (fail) throw GradleException(
                         "Publishing to snapshot repository with disabled \"snapshot\" flag is permitted"
@@ -67,15 +67,14 @@ internal abstract class ProjectPlugin : Plugin<Project> {
 
     private fun PublicationContainer.setupPublications(project: Project) {
         create<MavenPublication>("appyxRelease") {
+            val definedVersion = project.findProperty("library.version")?.toString()
+                ?: throw GradleException("'library.version' has not been set")
             from(project.components[getComponentName()])
             groupId = "com.bumble.appyx"
-            version = if (project.findProperty("snapshot") == "true") {
-                "main-SNAPSHOT"
+            version = if (project.isSnapshotPublication) {
+                "v${definedVersion.split('.').first()}-SNAPSHOT"
             } else {
-                if (!project.hasProperty("library.version")) {
-                    throw GradleException("'library.version' has not been set")
-                }
-                project.property("library.version").toString()
+                definedVersion
             }
 
             pom {
@@ -116,4 +115,12 @@ internal abstract class ProjectPlugin : Plugin<Project> {
             )
         }
     }
+
+    private companion object {
+
+        val Project.isSnapshotPublication: Boolean
+            get() = findProperty("snapshot") == "true"
+
+    }
+
 }
