@@ -57,7 +57,7 @@ open class Node(
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
-    private val parent: ParentNode<*>? =
+    val parent: ParentNode<*>? =
         when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
