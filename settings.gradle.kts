@@ -17,20 +17,20 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
-    ":app",
-    ":core",
-    ":customisations",
-    ":sandbox",
-    ":interop-ribs",
-    ":interop-rx2",
-    ":navmodel-samples",
+    ":libraries:core",
+    ":libraries:customisations",
+    ":libraries:interop-ribs",
+    ":libraries:interop-rx2",
+    ":libraries:testing-junit4",
+    ":libraries:testing-junit5",
+    ":libraries:testing-ui",
+    ":libraries:testing-ui-activity",
+    ":libraries:testing-unit-common",
+    ":samples:app",
     ":samples:common",
     ":samples:navigation-compose",
-    ":testing-junit4",
-    ":testing-junit5",
-    ":testing-ui",
-    ":testing-ui-activity",
-    ":testing-unit-common",
+    ":samples:navmodel-samples",
+    ":samples:sandbox",
 )
 
 includeBuild("plugins")

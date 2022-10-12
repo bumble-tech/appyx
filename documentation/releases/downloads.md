@@ -47,7 +47,7 @@ dependencies {
 
 ## Snapshot
 
-Snapshot version is available for all modules, use the provided repository url and `main-SNAPSHOT` version.
+Snapshot version is available for all modules, use the provided repository url and `1-SNAPSHOT` version.
 
 ```groovy
 repositories {
@@ -55,6 +55,6 @@ repositories {
 }
 
 dependencies {
-    implementation "com.bumble.appyx:core:main-SNAPSHOT"
+    implementation "com.bumble.appyx:core:v1-SNAPSHOT"
 }
 ```

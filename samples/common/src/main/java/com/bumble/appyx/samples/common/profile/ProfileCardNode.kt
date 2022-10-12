@@ -58,7 +58,7 @@ fun ProfileCard(
 }
 
 @Composable
-fun ProfileImage(data: Any?) {
+fun ProfileImage(data: Any?, modifier: Modifier = Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(data)
@@ -66,7 +66,7 @@ fun ProfileImage(data: Any?) {
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .clip(RoundedCornerShape(8.dp))
     )

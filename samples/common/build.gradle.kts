@@ -27,12 +27,12 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.compose.get()
+        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 
 dependencies {
-    api(project(":core"))
+    api(project(":libraries:core"))
 
     api(libs.compose.ui.ui)
     implementation(libs.androidx.lifecycle.java8)
