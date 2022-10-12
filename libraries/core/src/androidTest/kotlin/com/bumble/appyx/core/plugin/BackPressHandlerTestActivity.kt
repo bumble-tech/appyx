@@ -3,11 +3,11 @@ package com.bumble.appyx.core.plugin
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
-import com.bumble.appyx.testing.ui.rules.AppyxViewActivity
+import com.bumble.appyx.testing.ui.rules.AppyxTestActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class BackPressHandlerTestActivity : AppyxViewActivity() {
+class BackPressHandlerTestActivity : AppyxTestActivity() {
 
     private val callback = object : OnBackPressedCallback(handleBackPress.value) {
         override fun handleOnBackPressed() {
