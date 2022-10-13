@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import com.badoo.ribs.android.RibActivity
 import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPoint
-import com.bumble.appyx.core.integrationpoint.IntegrationPointProvider
+import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPointProvider
 
-abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
+abstract class InteropActivity : RibActivity(), ActivityIntegrationPointProvider {
 
     override lateinit var appyxIntegrationPoint: ActivityIntegrationPoint
 

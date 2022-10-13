@@ -48,17 +48,17 @@ open class ActivityIntegrationPoint(
     }
 
     companion object {
-        fun getIntegrationPoint(context: Context): IntegrationPoint {
+        fun getIntegrationPoint(context: Context): ActivityIntegrationPoint {
             val activity = context.findActivity<Activity>()
             checkNotNull(activity) {
                 "Could not find an activity from the context: $context"
             }
 
-            val integrationPointProvider = activity as? IntegrationPointProvider ?: error(
+            val activityIntegrationPointProvider = activity as? ActivityIntegrationPointProvider ?: error(
                 "Activity ${activity::class.qualifiedName} does not implement IntegrationPointProvider"
             )
 
-            return integrationPointProvider.appyxIntegrationPoint
+            return activityIntegrationPointProvider.appyxIntegrationPoint
         }
 
         @Suppress("UNCHECKED_CAST")
