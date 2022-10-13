@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#215](https://github.com/bumble-tech/appyx/pull/21) – **Breaking change**: `IntegrationPointProvider` renamed to `ActivityIntegrationPointProvider` and returns `ActivityIntegrationPoint` instead of `IntegrationPoint`
 
 ---
 
