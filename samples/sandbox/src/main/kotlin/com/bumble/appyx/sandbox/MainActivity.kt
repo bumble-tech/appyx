@@ -21,10 +21,8 @@ class MainActivity : NodeActivity() {
             AppyxSandboxTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Column {
-                        NodeHost(integrationPoint = appyxIntegrationPoint) {
-                            ContainerBuilder().build(buildContext = it)
-                        }
+                    NodeHost(integrationPoint = appyxIntegrationPoint) {
+                        ContainerBuilder().build(buildContext = it)
                     }
                 }
             }
