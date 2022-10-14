@@ -12,9 +12,9 @@ import com.bumble.appyx.navmodel.cards.Cards.State.Top
 import com.bumble.appyx.navmodel.cards.Cards.State.VoteLike
 import com.bumble.appyx.navmodel.cards.Cards.State.VotePass
 
-class Cards<T : Any>(
-    initialItems: List<T> = listOf(),
-) : BaseNavModel<T, State>(
+class Cards<NavTarget : Any>(
+    initialItems: List<NavTarget> = listOf(),
+) : BaseNavModel<NavTarget, State>(
     screenResolver = CardsOnScreenResolver,
     finalStates = FINAL_STATES,
     savedStateMap = null
