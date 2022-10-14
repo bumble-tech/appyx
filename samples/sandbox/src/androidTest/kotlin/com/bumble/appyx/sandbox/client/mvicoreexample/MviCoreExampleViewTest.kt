@@ -18,7 +18,7 @@ internal class MviCoreExampleViewTest {
     private var title = "Title"
 
     @get:Rule
-    val rule = appyxViewRule(launchActivity = false) {
+    val rule = appyxViewRule {
         createView()
     }
 
@@ -33,7 +33,6 @@ internal class MviCoreExampleViewTest {
         with(screen) {
             titleText.assert(hasText(title))
             loader.assertIsDisplayed()
-
         }
     }
 

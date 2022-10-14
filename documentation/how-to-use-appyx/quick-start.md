@@ -47,7 +47,7 @@ class MainActivity : NodeActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                NodeHost(integrationPoint = integrationPoint) {
+                NodeHost(integrationPoint = appyxIntegrationPoint) {
                     RootNode(buildContext = it)
                 }
             }
