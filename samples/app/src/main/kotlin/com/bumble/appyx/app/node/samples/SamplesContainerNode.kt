@@ -12,6 +12,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -21,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.node.helper.screenNode
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode
 import com.bumble.appyx.core.composable.Children
+import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
@@ -72,7 +74,16 @@ class SamplesContainerNode(
         when (navTarget) {
             NavTarget.SamplesListScreen -> screenNode(buildContext) { SamplesSelector(backStack) }
             NavTarget.OnboardingScreen -> OnboardingContainerNode(buildContext)
-            NavTarget.ComposeNavigationScreen -> node(buildContext) { ComposeNavigationRoot() }
+            NavTarget.ComposeNavigationScreen -> {
+                node(buildContext) {
+                    // compose-navigation fetches the integration point via LocalIntegrationPoint
+                    CompositionLocalProvider(
+                        LocalIntegrationPoint provides integrationPoint,
+                    ) {
+                        ComposeNavigationRoot()
+                    }
+                }
+            }
         }
 
     @ExperimentalUnitApi
