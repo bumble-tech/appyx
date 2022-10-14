@@ -38,6 +38,7 @@ android {
 dependencies {
     implementation(project(":libraries:core"))
     implementation(project(":samples:navmodel-samples"))
+    implementation(project(":samples:navigation-compose"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

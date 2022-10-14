@@ -45,7 +45,7 @@ fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: () -> Unit) {
+internal fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: () -> Unit) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -59,7 +59,7 @@ fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: () -> Uni
 
 
 @Composable
-fun AppyxRoute(onGoogleNavigationClick: () -> Unit) {
+internal fun AppyxRoute(onGoogleNavigationClick: () -> Unit) {
     NodeHost(integrationPoint = LocalIntegrationPoint.current) {
         ComposeNavigationContainerNode(
             buildContext = it,
