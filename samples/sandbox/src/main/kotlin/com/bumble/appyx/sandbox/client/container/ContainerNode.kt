@@ -121,6 +121,7 @@ class ContainerNode internal constructor(
                 label?.let {
                     Text(it, textAlign = TextAlign.Center)
                 }
+                TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
                 TextButton("Workflow example") {
                     integrationPoint.activityStarter.startActivity {
@@ -135,7 +136,6 @@ class ContainerNode internal constructor(
                         Intent(this, InteropExampleActivity::class.java)
                     }
                 }
-                TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
                 TextButton("Lazy Examples") { backStack.push(LazyExamples) }
                 TextButton("Blocker") { backStack.push(BlockerExample) }
             }
