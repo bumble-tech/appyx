@@ -29,7 +29,7 @@ Using a model-driven approach, navigation states are yours to define – Appyx m
 
 You can create custom navigable components in no time:
 
-<img src="https://i.imgur.com/V3bks8c.gif" width="150">
+<img src="https://cdn-images-1.medium.com/max/1600/1*mEg8Ebem3Hd2knQSA0yI1A.gif" width="150">
 
 
 With Appyx you can break down screen boundaries and transform the screen itself:
