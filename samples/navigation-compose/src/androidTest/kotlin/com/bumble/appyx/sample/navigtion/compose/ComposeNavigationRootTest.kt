@@ -1,15 +1,30 @@
 package com.bumble.appyx.sample.navigtion.compose
 
 import androidx.annotation.CheckResult
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
+import com.bumble.appyx.testing.ui.rules.AppyxTestActivity
 import org.junit.Rule
 import org.junit.Test
 
-class ComposeNavigationActivityTest {
+class ComposeNavigationRootTest {
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComposeNavigationActivity>()
+    internal val composeTestRule = createAndroidComposeRule<AppyxTestActivity>()
+
+    init {
+        AppyxTestActivity.composableView = { appyxTestActivity ->
+            // 'integrationPoint' must be provided to ensure it can be accessed from within the
+            // Jetpack compose navigation graph.
+            CompositionLocalProvider(
+                LocalIntegrationPoint provides appyxTestActivity.appyxIntegrationPoint,
+            ) {
+                ComposeNavigationRoot()
+            }
+        }
+    }
 
     @Test
     fun WHEN_screen_loads_THEN_verify_initial_screen_state() {

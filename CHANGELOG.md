@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#217](https://github.com/bumble-tech/appyx/pull/217) – **Updated**: Moved `navigation-compose` sample into the main sample app.
 
 ---
 
