@@ -2,7 +2,8 @@
 
 ## Pending changes
 
-- [#217](https://github.com/bumble-tech/appyx/pull/217) – **Updated**: Moved `navigation-compose` sample into the main sample app.
+- [#217](https://github.com/bumble-tech/appyx/pull/217) – **Updated**: Moved `navigation-compose` sample into `:samples:app`.
+- [#165](https://github.com/bumble-tech/appyx/pull/165) – **Added**: A dating-cards-like `NavModel` implementation: `Cards`, along with sample in `:samples:app`
 
 ---
 
