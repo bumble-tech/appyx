@@ -16,7 +16,7 @@ import com.bumble.appyx.core.node.node
 import com.bumble.appyx.navmodel.backstack.BackStack
 import kotlinx.parcelize.Parcelize
 
-class ComposeNavigationContainerNode(
+internal class ComposeNavigationContainerNode(
     buildContext: BuildContext,
     private val onGoogleNavigationClick: () -> Unit,
     private val backStack: BackStack<NavTarget> = BackStack(
