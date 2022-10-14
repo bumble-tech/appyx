@@ -33,13 +33,11 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.BlockerExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Customisations
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.IntegrationPointExample
-import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.InteractorExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.customisations.CustomisationsNode
 import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleNode
-import com.bumble.appyx.sandbox.client.interactorusage.InteractorNodeBuilder
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.sandbox.client.navmodels.NavModelExamplesNode
@@ -76,9 +74,6 @@ class ContainerNode internal constructor(
         object NavModelExamples : NavTarget()
 
         @Parcelize
-        object InteractorExample : NavTarget()
-
-        @Parcelize
         object BlockerExample : NavTarget()
 
         @Parcelize
@@ -91,7 +86,6 @@ class ContainerNode internal constructor(
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
             is NavModelExamples -> NavModelExamplesNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
-            is InteractorExample -> InteractorNodeBuilder().build(buildContext)
             is IntegrationPointExample -> IntegrationPointExampleNode(buildContext)
             is BlockerExample -> BlockerExampleNode(buildContext)
             is Customisations -> CustomisationsNode(buildContext)
