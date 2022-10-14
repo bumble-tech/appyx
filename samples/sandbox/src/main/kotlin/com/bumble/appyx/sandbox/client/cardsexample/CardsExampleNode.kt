@@ -1,8 +1,6 @@
 package com.bumble.appyx.sandbox.client.cardsexample
 
 import android.os.Parcelable
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -10,9 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.sandbox.client.cardsexample.CardsExampleNode.NavTarget
-import com.bumble.appyx.samples.common.profile.Profile
-import com.bumble.appyx.samples.common.profile.ProfileCardNode
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -23,6 +18,9 @@ import com.bumble.appyx.navmodel.cards.operation.indicatePass
 import com.bumble.appyx.navmodel.cards.operation.voteLike
 import com.bumble.appyx.navmodel.cards.operation.votePass
 import com.bumble.appyx.navmodel.cards.transitionhandler.rememberCardsTransitionHandler
+import com.bumble.appyx.samples.common.profile.Profile
+import com.bumble.appyx.samples.common.profile.ProfileCardNode
+import com.bumble.appyx.sandbox.client.cardsexample.CardsExampleNode.NavTarget
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
