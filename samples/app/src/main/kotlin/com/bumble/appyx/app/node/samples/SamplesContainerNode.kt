@@ -65,6 +65,9 @@ class SamplesContainerNode(
 
         @Parcelize
         object ComposeNavigationScreen : NavTarget()
+
+        @Parcelize
+        object CardsExample : NavTarget()
     }
 
     @ExperimentalUnitApi
@@ -84,6 +87,7 @@ class SamplesContainerNode(
                     }
                 }
             }
+            NavTarget.CardsExample -> CardsExampleNode(buildContext)
         }
 
     @ExperimentalUnitApi
@@ -125,7 +129,10 @@ class SamplesContainerNode(
     private fun SamplesSelector(backStack: BackStack<NavTarget>) {
         Column {
             Button(onClick = { backStack.replace(NavTarget.OnboardingScreen) }) {
-                Text("Onboarding")
+                Text("What's Appyx?")
+            }
+            Button(onClick = { backStack.push(NavTarget.CardsExample) }) {
+                Text("Dating cards NavModel")
             }
             Button(onClick = { backStack.push(NavTarget.ComposeNavigationScreen) }) {
                 Text("Compose Navigation")
