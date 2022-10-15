@@ -85,7 +85,7 @@ class CardsTransitionHandler<T>(
         zIndex = 2f,
     )
 
-    @SuppressLint("UnusedTransitionTargetStateParameter")
+    @SuppressLint("UnusedTransitionTargetStateParameter", "ModifierFactoryExtensionFunction")
     override fun createModifier(
         modifier: Modifier,
         transition: Transition<Cards.State>,
