@@ -71,13 +71,28 @@ class DragProgressInputSource<NavTarget, State>(
 
                 // We go beyond the current segment, we'll need a new operation
                 if (totalTarget > startProgress + 1) {
-
-                    Log.d("input source", "beyond current segment")
                     navModel.setProgress(startProgress + 1)
-                    gesture = null // TODO this shouldn't assume that the next operation will be applicable
-                    // TODO remove consumed part
+//                    navModel.dropAfter(startProgress.toInt())
+                    val remainder = gesture!!.partial(dragAmount, totalTarget - (startProgress + 1))
+                    gesture = null
+                    Log.d("input source", "1 ------")
+                    Log.d("input source", "initial offset was: $dragAmount")
+                    Log.d("input source", "initial deltaProgress was: $deltaProgress")
+                    Log.d("input source", "initial target was: $totalTarget, beyond current segment: ${startProgress + 1}")
+                    Log.d("input source", "remainder progress: ${totalTarget - (startProgress + 1)}")
+                    Log.d("input source", "remainder offset: $remainder")
+                    Log.d("input source", "going back to start, reevaluate")
+                    Log.d("input source", "2 ------")
                     // TODO without recursion
-                    addDeltaProgress(dragAmount)
+                    addDeltaProgress(remainder)
+                    // 0.291108575843523
+
+//                    Log.d("input source", "beyond current segment")
+//                    navModel.setProgress(startProgress + 1)
+//                    gesture = null // TODO this shouldn't assume that the next operation will be applicable
+//                    // TODO remove consumed part
+//                    // TODO without recursion
+//                    addDeltaProgress(dragAmount)
 
                 // Case: standard forward progress
                 } else {
@@ -90,17 +105,18 @@ class DragProgressInputSource<NavTarget, State>(
             } else {
                 navModel.setProgress(startProgress)
                 navModel.dropAfter(startProgress.toInt())
+                val remainder = gesture!!.partial(dragAmount, totalTarget - startProgress)
                 gesture = null
-                // Go back to start. For a perfectly correct solution we'd need to remove
-                // the consumed part from the original drag (consumed = as much as it took to go back
-                // to startProgress) and use only the remainder.
-                // However, as the method takes an Offset, and here we have a single scalar value in deltaProgress,
-                // it's not easy to remove the consumed part, since we lost the info how delta was derived from
-                // x and y. It could be fixed if needed, but let's roll with this now.
-                Log.d("input source", "went back to start, reevaluate")
-                // TODO remove consumed part
+                Log.d("input source", "1 ------")
+                Log.d("input source", "initial offset was: $dragAmount")
+                Log.d("input source", "initial deltaProgress was: $deltaProgress")
+                Log.d("input source", "initial target was: $totalTarget, beyond current segment: $startProgress")
+                Log.d("input source", "remainder progress: ${totalTarget - startProgress}")
+                Log.d("input source", "remainder offset: $remainder")
+                Log.d("input source", "going back to start, reevaluate")
+                Log.d("input source", "2 ------")
                 // TODO without recursion
-                addDeltaProgress(dragAmount)
+                addDeltaProgress(remainder)
             }
         }
     }

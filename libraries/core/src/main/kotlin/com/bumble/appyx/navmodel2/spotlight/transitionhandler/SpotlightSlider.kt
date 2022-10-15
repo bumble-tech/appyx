@@ -123,14 +123,30 @@ class SpotlightSlider<NavTarget>(
 
         return when (orientation) {
             Orientation.Horizontal -> if (delta.x < 0) {
-                Gesture(Next()) { offset -> (offset.x / width) * -1 }
+                Gesture(
+                    operation = Next(),
+                    dragToProgress = { offset -> (offset.x / width) * -1 },
+                    partial = { offset, progress -> offset.copy(x = progress * width * -1) }
+                )
             } else {
-                Gesture(Previous()) { offset -> (offset.x / width) }
+                Gesture(
+                    operation = Previous(),
+                    dragToProgress = { offset -> (offset.x / width) },
+                    partial = { offset, partial -> offset.copy(x = partial * width) }
+                )
             }
             Orientation.Vertical -> if (delta.y < 0) {
-                Gesture(Next()) { offset -> (offset.y / height) * -1 }
+                Gesture(
+                    operation = Next(),
+                    dragToProgress = { offset -> (offset.y / height) * -1 },
+                    partial = { offset, partial -> offset.copy(y = partial * height * -1) }
+                )
             } else {
-                Gesture(Previous()) { offset -> (offset.y / height) }
+                Gesture(
+                    operation = Previous(),
+                    dragToProgress = { offset -> (offset.y / height) },
+                    partial = { offset, partial -> offset.copy(y = partial * height) }
+                )
             }
         }
     }
