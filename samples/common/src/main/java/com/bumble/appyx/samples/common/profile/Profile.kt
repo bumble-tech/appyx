@@ -2,12 +2,14 @@ package com.bumble.appyx.samples.common.profile
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
+import androidx.compose.runtime.Immutable
 import com.bumble.appyx.samples.common.R
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
 @Parcelize
 @Suppress("MagicNumber")
+@Immutable
 data class Profile(
     val name: String,
     val age: Int = Random.nextInt(20, 35),
