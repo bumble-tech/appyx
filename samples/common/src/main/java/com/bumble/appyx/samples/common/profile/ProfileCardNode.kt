@@ -41,9 +41,9 @@ fun ProfileCard(
 ) {
     BoxWithConstraints(modifier = modifier) {
         if (maxHeight < threshold) {
-            ProfileImage(profile.drawable)
+            ProfileImage(profile.drawableRes)
         } else {
-            ProfileImage(profile.drawable)
+            ProfileImage(profile.drawableRes)
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
