@@ -21,14 +21,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.samples.common.profile.Profile
-import com.bumble.appyx.samples.common.profile.ProfileCard
-import com.bumble.appyx.samples.common.profile.ProfileCardNode
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.node.node
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.backpresshandler.GoToPrevious
 import com.bumble.appyx.navmodel.spotlightadvanced.isCarousel
@@ -37,6 +33,8 @@ import com.bumble.appyx.navmodel.spotlightadvanced.operation.previous
 import com.bumble.appyx.navmodel.spotlightadvanced.operation.switchToCarousel
 import com.bumble.appyx.navmodel.spotlightadvanced.operation.switchToPager
 import com.bumble.appyx.navmodel.spotlightadvanced.transitionhandler.rememberSpotlightAdvancedSlider
+import com.bumble.appyx.samples.common.profile.Profile
+import com.bumble.appyx.samples.common.profile.ProfileCardNode
 import kotlinx.parcelize.Parcelize
 
 @Suppress("MaxLineLength")
@@ -63,7 +61,7 @@ class SpotlightAdvancedExampleNode(
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is NavTarget.ProfileCard -> node(buildContext) { ProfileCard(navTarget.profile) }
+            is NavTarget.ProfileCard -> ProfileCardNode(buildContext, navTarget.profile)
         }
 
 
