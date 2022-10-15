@@ -67,11 +67,10 @@ class CardsExampleNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val padding = remember { 20.dp }
         Children(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding),
+                .padding(20.dp),
             navModel = cards,
             transitionHandler = rememberCardsTransitionHandler()
         ) {
