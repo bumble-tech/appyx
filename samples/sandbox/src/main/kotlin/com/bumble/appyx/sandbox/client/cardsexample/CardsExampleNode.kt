@@ -68,7 +68,7 @@ class CardsExampleNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .padding(20.dp),
             navModel = cards,
