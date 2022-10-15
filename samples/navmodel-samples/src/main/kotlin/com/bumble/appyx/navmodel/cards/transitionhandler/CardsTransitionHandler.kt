@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
@@ -101,7 +103,7 @@ class CardsTransitionHandler<T>(
         // If we only rotated the cards at the indicate vote states,
         // they'd just rotate around their own center.
         // We'll also want to offset the cards on an arc for a nice visual effect.
-        val angularOffset = remember { derivedStateOf {
+        val angularOffset by remember { derivedStateOf {
             val angleRadians = Math.toRadians(angularOffsetDegrees.value.toDouble() - 90)
             // The center of rotation is at 150% screen height (below the bottom screen edge)
             val x = oneAndHalfHeightDp * cos(angleRadians)
@@ -128,8 +130,8 @@ class CardsTransitionHandler<T>(
         return@composed this
             .offset {
                 IntOffset(
-                    x = (this.density * (dpOffsetX.value + angularOffset.value.x)).roundToInt(),
-                    y = (this.density * (oneAndHalfHeightDp + angularOffset.value.y)).roundToInt()
+                    x = (this.density * (dpOffsetX.value + angularOffset.x)).roundToInt(),
+                    y = (this.density * (oneAndHalfHeightDp + angularOffset.y)).roundToInt()
                 )
             }
             .zIndex(zIndex.value)
