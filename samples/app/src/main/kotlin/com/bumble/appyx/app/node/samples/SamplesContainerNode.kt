@@ -132,7 +132,7 @@ class SamplesContainerNode(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Button(onClick = { backStack.replace(NavTarget.OnboardingScreen) }) {
-                Text("What's Appyx?")
+                Text("What is Appyx?")
             }
             Button(onClick = { backStack.push(NavTarget.CardsExample) }) {
                 Text("Dating cards NavModel")
