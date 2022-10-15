@@ -39,15 +39,15 @@ abstract class BaseNavModel<NavTarget, NavState>(
     override val maxProgress: Float
         get() = (queue.lastIndex + 1).toFloat()
 
-    private val state: MutableStateFlow<NavModel.State<NavTarget, NavState>> by lazy {
+    private val state: MutableStateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
         MutableStateFlow(createState(lastRecordedProgress))
     }
 
-    override val elements: StateFlow<NavModel.State<NavTarget, NavState>> by lazy {
+    override val elements: StateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
         state
     }
 
-    private fun createState(progress: Float): NavModel.State<NavTarget, NavState> {
+    private fun createState(progress: Float): NavModel.Segment<NavTarget, NavState> {
         val progress = progress.coerceAtLeast(1f)
 
         /**
@@ -59,7 +59,7 @@ abstract class BaseNavModel<NavTarget, NavState>(
          */
         val segmentIndex = (if (progress == maxProgress) (progress - 1) else progress).toInt()
 
-        return NavModel.State(
+        return NavModel.Segment(
             segmentIndex = segmentIndex,
             navTransition = queue[segmentIndex],
             progress = progress - segmentIndex

@@ -6,8 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.core.navigation.transition.TransitionParams
-import com.bumble.appyx.core.navigation2.NavModel.State
+import com.bumble.appyx.core.navigation2.NavModel.Segment
 import com.bumble.appyx.core.navigation2.ui.Modifiers
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.navmodel2.backstack.BackStack
@@ -58,7 +57,7 @@ class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.Sta
             )
         }
 
-    override fun map(segment: State<NavTarget, BackStack.State>): List<Modifiers<NavTarget, BackStack.State>> {
+    override fun map(segment: Segment<NavTarget, BackStack.State>): List<Modifiers<NavTarget, BackStack.State>> {
         val fromState = segment.navTransition.fromState
         val targetState = segment.navTransition.targetState
         val fromStashed = fromState.filter { it.state == STASHED }

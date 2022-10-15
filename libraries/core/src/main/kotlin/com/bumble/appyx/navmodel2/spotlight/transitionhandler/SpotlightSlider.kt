@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
-import com.bumble.appyx.core.navigation2.NavModel.State
+import com.bumble.appyx.core.navigation2.NavModel.Segment
 import com.bumble.appyx.core.navigation2.inputsource.Gesture
 import com.bumble.appyx.core.navigation2.ui.Modifiers
 import com.bumble.appyx.core.navigation2.ui.UiProps
@@ -68,7 +68,7 @@ class SpotlightSlider<NavTarget>(
             }
         }
 
-    override fun map(segment: State<NavTarget, Spotlight.State>): List<Modifiers<NavTarget, Spotlight.State>> {
+    override fun map(segment: Segment<NavTarget, Spotlight.State>): List<Modifiers<NavTarget, Spotlight.State>> {
         val (fromState, targetState) = segment.navTransition
 
         // TODO memoize per segment, as only percentage will change

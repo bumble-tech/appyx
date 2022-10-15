@@ -14,9 +14,9 @@ interface NavModel<NavTarget, NavState> {
     val currentProgress: Float
         get() = elements.value.segmentIndex + elements.value.progress
 
-    val elements: StateFlow<State<NavTarget, NavState>>
+    val elements: StateFlow<Segment<NavTarget, NavState>>
 
-    class State<NavTarget, NavState>(
+    class Segment<NavTarget, NavState>(
         val segmentIndex: Int,
         val navTransition: NavTransition<NavTarget, NavState>,
         /**
