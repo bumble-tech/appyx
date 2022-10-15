@@ -111,34 +111,34 @@ class CardsTransitionHandler<T>(
             Offset(x.toFloat(), y.toFloat())
         }}
 
-        val rotationZ = transition.animateFloat(
+        val rotationZ by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.toProps().rotationZ })
 
-        val scale = transition.animateFloat(
+        val scale by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.toProps().scale })
 
-        val dpOffsetX = transition.animateFloat(
+        val dpOffsetX by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.toProps().positionalOffsetX.value })
 
-        val zIndex = transition.animateFloat(
+        val zIndex by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.toProps().zIndex })
 
         return@composed this
             .offset {
                 IntOffset(
-                    x = (this.density * (dpOffsetX.value + angularOffset.x)).roundToInt(),
+                    x = (this.density * (dpOffsetX + angularOffset.x)).roundToInt(),
                     y = (this.density * (oneAndHalfHeightDp + angularOffset.y)).roundToInt()
                 )
             }
-            .zIndex(zIndex.value)
+            .zIndex(zIndex)
             .graphicsLayer(
-                rotationZ = rotationZ.value
+                rotationZ = rotationZ
             )
-            .scale(scale.value)
+            .scale(scale)
     }
 
         @Composable
