@@ -16,7 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.core.navigation2.inputsource.ManualProgressInputSource
+import com.bumble.appyx.core.navigation2.inputsource.DebuglProgressInputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
 import com.bumble.appyx.navmodel2.spotlight.operation.first
 import com.bumble.appyx.navmodel2.spotlight.operation.last
@@ -43,7 +43,7 @@ private val spotlight = Spotlight(
 @Composable
 fun SpotlightExperimentDebug() {
     val coroutineScope = rememberCoroutineScope()
-    val inputSource = remember { ManualProgressInputSource(spotlight, coroutineScope) }
+    val inputSource = remember { DebuglProgressInputSource(spotlight, coroutineScope) }
 
     LaunchedEffect(Unit) {
         inputSource.next()

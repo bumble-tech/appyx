@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-class ManualProgressInputSource<NavTarget, State>(
+class DebuglProgressInputSource<NavTarget, State>(
     private val navModel: BaseNavModel<NavTarget, State>,
     private val coroutineScope: CoroutineScope,
 ) : InputSource<NavTarget, State> {
@@ -27,11 +27,6 @@ class ManualProgressInputSource<NavTarget, State>(
         this.progress = progress.coerceIn(0f, 1f)
         // TODO enforce min 1f in NavModel as a hidden detail rather than here:
         navModel.setProgress(1f + this.progress * (navModel.maxProgress - 1f))
-    }
-
-    fun addDeltaProgress(delta: Float) {
-        // FIXME this shouldn't indirectly delta towards maxProgress, only the next segment
-        setNormalisedProgress(progress + delta)
     }
 
     fun settle() {

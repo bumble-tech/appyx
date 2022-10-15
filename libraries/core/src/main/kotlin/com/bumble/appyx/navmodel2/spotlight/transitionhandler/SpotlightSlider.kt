@@ -10,16 +10,21 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
 import com.bumble.appyx.core.navigation2.NavModel.State
+import com.bumble.appyx.core.navigation2.inputsource.Gesture
 import com.bumble.appyx.core.navigation2.ui.Modifiers
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
-import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.*
+import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.ACTIVE
+import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_AFTER
+import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_BEFORE
+import com.bumble.appyx.navmodel2.spotlight.operation.Next
+import com.bumble.appyx.navmodel2.spotlight.operation.Previous
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class SpotlightSlider<Target>(
+class SpotlightSlider<NavTarget>(
     transitionParams: TransitionParams,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : UiProps<Target, Spotlight.State> {
+) : UiProps<NavTarget, Spotlight.State> {
     private val width = transitionParams.bounds.width
     private val height = transitionParams.bounds.height
 
@@ -63,7 +68,7 @@ class SpotlightSlider<Target>(
             }
         }
 
-    override fun map(segment: State<Target, Spotlight.State>): List<Modifiers<Target, Spotlight.State>> {
+    override fun map(segment: State<NavTarget, Spotlight.State>): List<Modifiers<NavTarget, Spotlight.State>> {
         val (fromState, targetState) = segment.navTransition
 
         // TODO memoize per segment, as only percentage will change
@@ -101,14 +106,32 @@ class SpotlightSlider<Target>(
     }
 
     // TODO Modify TransitionParams to also contain width & height in px, not just dp
-    fun calculateProgress(delta: Offset, density: Density): Float {
+    fun calculateProgressForGesture(delta: Offset, density: Density): Float {
         val width = with(density) { width.toPx() }
         val height = with(density) { height.toPx() }
 
-        Log.d("calculateProgress", "${delta.x} / ${width} = ${delta.x / width}")
+        Log.d("calculateProgress", "${delta.x} / $width = ${delta.x / width}")
         return when (orientation) {
             Orientation.Horizontal -> delta.x / width * -1
             Orientation.Vertical -> delta.y / height * -1
+        }
+    }
+
+    fun createGesture(delta: Offset, density: Density): Gesture<NavTarget, Spotlight.State> {
+        val width = with(density) { width.toPx() }
+        val height = with(density) { height.toPx() }
+
+        return when (orientation) {
+            Orientation.Horizontal -> if (delta.x < 0) {
+                Gesture(Next()) { offset -> (offset.x / width) * -1 }
+            } else {
+                Gesture(Previous()) { offset -> (offset.x / width) }
+            }
+            Orientation.Vertical -> if (delta.y < 0) {
+                Gesture(Next()) { offset -> (offset.y / height) * -1 }
+            } else {
+                Gesture(Previous()) { offset -> (offset.y / height) }
+            }
         }
     }
 
@@ -116,3 +139,4 @@ class SpotlightSlider<Target>(
         DpOffset(x * multiplier, y * multiplier)
 
 }
+

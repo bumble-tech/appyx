@@ -31,7 +31,7 @@ abstract class BaseNavModel<NavTarget, NavState>(
     /**
      * 0..infinity
      */
-    private var lastRecordedProgress: Float = 0f
+    private var lastRecordedProgress: Float = 1f
 
     /**
      * 0..infinity
@@ -48,6 +48,8 @@ abstract class BaseNavModel<NavTarget, NavState>(
     }
 
     private fun createState(progress: Float): NavModel.State<NavTarget, NavState> {
+        val progress = progress.coerceAtLeast(1f)
+
         /**
          *  Normally progress on any segment is a half-open interval: [0%, 100), so that
          *  100% is interpreted as 0% of the next segment.
@@ -64,18 +66,21 @@ abstract class BaseNavModel<NavTarget, NavState>(
         )
     }
 
-    override fun enqueue(operation: Operation<NavTarget, NavState>) {
+    override fun enqueue(operation: Operation<NavTarget, NavState>): Boolean {
         val baseline = queue.last().targetState
 
-        if (operation.isApplicable(baseline)) {
+        return if (operation.isApplicable(baseline)) {
             val newState = operation.invoke(baseline)
             queue.add(newState)
+            true
         } else {
             Log.d("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
+            false
         }
     }
 
     override fun setProgress(progress: Float) {
+        val progress = progress.coerceAtLeast(1f)
         Log.d("BaseNavModel", "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
@@ -86,5 +91,11 @@ abstract class BaseNavModel<NavTarget, NavState>(
 
         lastRecordedProgress = progress
         state.update { createState(progress) }
+    }
+
+    override fun dropAfter(segmentIndex: Int) {
+        while (segmentIndex < queue.size) {
+            queue.removeLast()
+        }
     }
 }

@@ -13,7 +13,7 @@ import com.bumble.appyx.navmodel2.spotlight.Spotlight.State.INACTIVE_BEFORE
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Next<NavTarget : Any> : Operation<NavTarget, State> {
+class Next<NavTarget> : Operation<NavTarget, State> {
 
     override fun isApplicable(elements: NavElements<NavTarget, State>) =
         elements.any { it.fromState == INACTIVE_AFTER && it.state == INACTIVE_AFTER }

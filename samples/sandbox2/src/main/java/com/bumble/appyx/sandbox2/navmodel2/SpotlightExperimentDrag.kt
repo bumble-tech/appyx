@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,9 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.core.navigation2.inputsource.ManualProgressInputSource
+import com.bumble.appyx.core.navigation2.inputsource.DragProgressInputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
-import com.bumble.appyx.navmodel2.spotlight.operation.next
 import com.bumble.appyx.navmodel2.spotlight.transitionhandler.SpotlightSlider
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child1
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child2
@@ -44,12 +42,7 @@ private val spotlight = Spotlight(
 @Composable
 fun SpotlightExperimentDrag() {
     val coroutineScope = rememberCoroutineScope()
-    val inputSource = remember { ManualProgressInputSource(spotlight, coroutineScope) }
-
-    LaunchedEffect(Unit) {
-        // TODO auto-load the next operation based on gesture
-        inputSource.next()
-    }
+    val inputSource = remember { DragProgressInputSource(spotlight, coroutineScope) }
 
     val density = LocalDensity.current
     var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
@@ -67,10 +60,6 @@ fun SpotlightExperimentDrag() {
             .fillMaxWidth()
             .background(appyx_dark)
     ) {
-        KnobControl(onValueChange = {
-            inputSource.setNormalisedProgress(it)
-        })
-
         Children(
             render = render.collectAsState(listOf()),
             onElementSizeChanged = { elementSize = it },
@@ -79,7 +68,7 @@ fun SpotlightExperimentDrag() {
                     render = it,
                     modifier = Modifier
                         .fillMaxSize()
-                        .pointerInput(Unit) {
+                        .pointerInput(it.navElement.key) {
                             // TODO might be better with swipeable for its anchors,
                             //  then .settle wouldn't be needed. However, settle might be needed
                             //  anyway in other scenarios (a touch to stop a fling, followed by a
@@ -87,13 +76,16 @@ fun SpotlightExperimentDrag() {
                             detectDragGestures(
                                 onDrag = { change, dragAmount ->
                                     change.consume()
-                                    val delta = uiProps.calculateProgress(dragAmount, density)
-                                    // FIXME this moves normalised progress towards maxProgress
-                                    //  under the hood rather than to next segment!
-                                    inputSource.addDeltaProgress(delta)
+                                    if (inputSource.gestureFactory == null) {
+                                        inputSource.gestureFactory = { dragAmount ->
+                                            uiProps.createGesture(dragAmount, density)
+                                        }
+                                    }
+                                    inputSource.addDeltaProgress(dragAmount)
                                 },
                                 onDragEnd = {
                                     Log.d("drag", "end")
+                                    inputSource.gestureFactory = null
                                     inputSource.settle()
                                 }
                             )
