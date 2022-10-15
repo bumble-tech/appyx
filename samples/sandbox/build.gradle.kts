@@ -49,6 +49,7 @@ dependencies {
     implementation(project(":libraries:interop-rx2"))
     implementation(project(":libraries:interop-ribs"))
     implementation(project(":samples:navmodel-samples"))
+    implementation(project(":samples:common"))
     // The testing activity needs to be in the main manifest, otherwise it cannot be launched.
     debugImplementation(project(":libraries:testing-ui-activity"))
     implementation(libs.accompanist.systemui)
@@ -57,7 +58,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.coil.compose)
     implementation(libs.compose.material)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)

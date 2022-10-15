@@ -1,4 +1,4 @@
-package com.bumble.appyx.sandbox.client.profilecard
+package com.bumble.appyx.samples.common.profile
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -24,48 +24,44 @@ import com.bumble.appyx.core.node.Node
 
 class ProfileCardNode(
     buildContext: BuildContext,
-    private val imageUrl: String,
-    private val name: String,
-    private val age: Int
+    private val profile: Profile
 ) : Node(buildContext) {
 
     @Composable
     @Override
     override fun View(modifier: Modifier) {
-        ProfileCard(imageUrl, name, age, modifier)
+        ProfileCard(profile)
     }
 }
 
 @Composable
 fun ProfileCard(
-    imageUrl: String,
-    name: String,
-    age: Int,
+    profile: Profile,
     modifier: Modifier = Modifier
 ) {
     BoxWithConstraints(modifier = modifier) {
         if (maxHeight < threshold) {
-            ProfileImage(imageUrl)
+            ProfileImage(profile.drawableRes)
         } else {
-            ProfileImage(imageUrl = imageUrl)
+            ProfileImage(profile.drawableRes)
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
-                    .padding(start = 16.dp, bottom = 48.dp)
+                    .padding(start = 24.dp, bottom = 36.dp)
             ) {
-                Text(text = "$name, $age", color = Color.White, fontSize = 22.sp)
+                Text(text = "${profile.name}, ${profile.age}", color = Color.White, fontSize = 30.sp)
                 Spacer(modifier = Modifier.requiredHeight(4.dp))
-                Text(text = "London", color = Color.White, fontSize = 18.sp)
+                Text(text = profile.city, color = Color.White, fontSize = 20.sp)
             }
         }
     }
 }
 
 @Composable
-fun ProfileImage(imageUrl: String, modifier: Modifier = Modifier) {
+fun ProfileImage(data: Any?, modifier: Modifier = Modifier) {
     AsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
-            .data(imageUrl)
+            .data(data)
             .crossfade(true)
             .build(),
         contentDescription = null,

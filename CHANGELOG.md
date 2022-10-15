@@ -2,9 +2,10 @@
 
 ## Pending changes
 
-- [#217](https://github.com/bumble-tech/appyx/pull/217) – **Updated**: Moved `navigation-compose` sample into the main sample app.
+- [#217](https://github.com/bumble-tech/appyx/pull/217) – **Updated**: Moved `navigation-compose` sample into `:samples:app`.
 - [#218](https://github.com/bumble-tech/appyx/pull/218) – **Updated**: `androidx.core:core-ktx` to 1.9.0.
-
+- [#165](https://github.com/bumble-tech/appyx/pull/165) – **Added**: A dating-cards-like `NavModel` implementation: `Cards`, along with sample in `:samples:app`
+- 
 ---
 
 ## 1.0.0-rc01

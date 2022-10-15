@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+
+    <color name="appyx_yellow1">#FFFFC629</color>
+    <color name="appyx_yellow2">#FFFFE54A</color>
+    <color name="appyx_dark">#FF1F2126</color>
+    <color name="appyx_bright">#FFFFFFFF</color>
+</resources>

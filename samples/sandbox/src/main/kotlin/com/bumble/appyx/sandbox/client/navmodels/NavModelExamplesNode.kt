@@ -26,6 +26,7 @@ import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sandbox.TextButton
 import com.bumble.appyx.sandbox.client.backstack.BackStackExampleNode
+import com.bumble.appyx.sandbox.client.cardsexample.CardsExampleNode
 import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode
 import com.bumble.appyx.sandbox.client.modal.ModalExampleNode
 import com.bumble.appyx.sandbox.client.spotlight.SpotlightExampleNode
@@ -58,6 +59,9 @@ class NavModelExamplesNode(
         object SpotlightAdvancedExample : NavTarget()
 
         @Parcelize
+        object CardsExample : NavTarget()
+
+        @Parcelize
         object TilesExample : NavTarget()
 
         @Parcelize
@@ -71,11 +75,12 @@ class NavModelExamplesNode(
         return when (navTarget) {
             is NavTarget.Picker -> node(buildContext) { modifier -> NavModelPicker(modifier) }
             is NavTarget.BackStackExample -> BackStackExampleNode(buildContext)
+            is NavTarget.SpotlightExample -> SpotlightExampleNode(buildContext)
             is NavTarget.SpotlightAdvancedExample -> SpotlightAdvancedExampleNode(buildContext)
+            is NavTarget.CardsExample -> CardsExampleNode(buildContext)
             is NavTarget.ModalExample -> ModalExampleNode(buildContext)
             is NavTarget.TilesExample -> TilesExampleNode(buildContext)
             is NavTarget.CombinedNavModelExample -> CombinedNavModelNode(buildContext)
-            is NavTarget.SpotlightExample -> SpotlightExampleNode(buildContext)
         }
     }
 
@@ -113,12 +118,13 @@ class NavModelExamplesNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TextButton("SpotlightAdvanced example") { backStack.push(NavTarget.SpotlightAdvancedExample) }
                 TextButton("Backstack example") { backStack.push(NavTarget.BackStackExample) }
+                TextButton("Spotlight Example") { backStack.push(NavTarget.SpotlightExample) }
+                TextButton("SpotlightAdvanced example") { backStack.push(NavTarget.SpotlightAdvancedExample) }
+                TextButton("Cards example") { backStack.push(NavTarget.CardsExample) }
                 TextButton("Tiles example") { backStack.push(NavTarget.TilesExample) }
                 TextButton("Modal example") { backStack.push(NavTarget.ModalExample) }
                 TextButton("Combined navModel") { backStack.push(NavTarget.CombinedNavModelExample) }
-                TextButton("Spotlight Example") { backStack.push(NavTarget.SpotlightExample) }
             }
         }
     }

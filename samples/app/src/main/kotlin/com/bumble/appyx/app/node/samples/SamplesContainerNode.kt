@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
@@ -65,6 +66,9 @@ class SamplesContainerNode(
 
         @Parcelize
         object ComposeNavigationScreen : NavTarget()
+
+        @Parcelize
+        object CardsExample : NavTarget()
     }
 
     @ExperimentalUnitApi
@@ -84,6 +88,7 @@ class SamplesContainerNode(
                     }
                 }
             }
+            NavTarget.CardsExample -> CardsExampleNode(buildContext)
         }
 
     @ExperimentalUnitApi
@@ -123,9 +128,14 @@ class SamplesContainerNode(
 
     @Composable
     private fun SamplesSelector(backStack: BackStack<NavTarget>) {
-        Column {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Button(onClick = { backStack.replace(NavTarget.OnboardingScreen) }) {
-                Text("Onboarding")
+                Text("What is Appyx?")
+            }
+            Button(onClick = { backStack.push(NavTarget.CardsExample) }) {
+                Text("Dating cards NavModel")
             }
             Button(onClick = { backStack.push(NavTarget.ComposeNavigationScreen) }) {
                 Text("Compose Navigation")
