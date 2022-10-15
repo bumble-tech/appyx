@@ -9,7 +9,12 @@ import com.bumble.appyx.core.navigation2.NavModel.State
 import com.bumble.appyx.core.navigation2.ui.Modifiers
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.navmodel2.backstack.BackStack
-import com.bumble.appyx.navmodel2.backstack.BackStack.State.*
+import com.bumble.appyx.navmodel2.backstack.BackStack.State.ACTIVE
+import com.bumble.appyx.navmodel2.backstack.BackStack.State.CREATED
+import com.bumble.appyx.navmodel2.backstack.BackStack.State.DROPPED
+import com.bumble.appyx.navmodel2.backstack.BackStack.State.POPPED
+import com.bumble.appyx.navmodel2.backstack.BackStack.State.REPLACED
+import com.bumble.appyx.navmodel2.backstack.BackStack.State.STASHED
 import androidx.compose.ui.unit.lerp as lerpUnit
 
 class BackStackSlider<NavTarget>(

@@ -18,9 +18,7 @@ import com.bumble.appyx.navmodel2.backstack.BackStack.State.STASHED
 import androidx.compose.ui.graphics.lerp as lerpGraphics
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class BackStackSliderDebugVertical<NavTarget>(
-    transitionParams: TransitionParams
-) : UiProps<NavTarget, BackStack.State> {
+class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.State> {
     private val size = 100.dp
 
     class Props(
@@ -80,7 +78,8 @@ class BackStackSliderDebugVertical<NavTarget>(
             val targetDroppedIndex = targetDropped.size - targetDropped.indexOf(t1)
 
             val fromProps = t0.state.toProps(fromStashIndex, fromPoppedIndex, fromDroppedIndex)
-            val targetProps = t1.state.toProps(targetStashIndex, targetPoppedIndex, targetDroppedIndex)
+            val targetProps =
+                t1.state.toProps(targetStashIndex, targetPoppedIndex, targetDroppedIndex)
             val offset = lerpUnit(fromProps.offset, targetProps.offset, segment.progress)
             val color = lerpGraphics(fromProps.color, targetProps.color, segment.progress)
 

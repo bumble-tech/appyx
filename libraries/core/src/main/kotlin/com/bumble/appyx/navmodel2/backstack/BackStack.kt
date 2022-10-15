@@ -16,6 +16,7 @@ import com.bumble.appyx.navmodel2.backstack.BackStack.State.POPPED
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.REPLACED
 import com.bumble.appyx.navmodel2.backstack.backpresshandler.PopBackPressHandler
 
+@SuppressWarnings("UnusedPrivateMember")
 class BackStack<NavTarget : Any>(
     initialElement: NavTarget,
     savedStateMap: SavedStateMap?,

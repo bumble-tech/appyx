@@ -25,7 +25,8 @@ class UpdateElements<NavTarget : Any>(
     override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
         if (initialActiveIndex != null) {
             require(initialActiveIndex in this.elements.indices) {
-                "Initial active index $initialActiveIndex is out of bounds of provided list of items: ${this.elements.indices}"
+                "Initial active index $initialActiveIndex " +
+                    "is out of bounds of provided list of items: ${this.elements.indices}"
             }
         }
         val state = if (initialActiveIndex == null) {

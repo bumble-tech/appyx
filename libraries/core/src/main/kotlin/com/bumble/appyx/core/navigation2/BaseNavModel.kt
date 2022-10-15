@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
+@SuppressWarnings("UnusedPrivateMember")
 abstract class BaseNavModel<NavTarget, NavState>(
     private val finalStates: Set<NavState> = setOf(),
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
