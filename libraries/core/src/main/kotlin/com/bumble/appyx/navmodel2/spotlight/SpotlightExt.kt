@@ -17,16 +17,16 @@ val <NavTarget> SpotlightElements<NavTarget>.currentIndex: Int
 
 
 fun <NavTarget : Any> Spotlight<NavTarget>.hasNext() =
-    elements.map { value ->
+    segments.map { value ->
         value.navTransition.targetState.lastIndex !=
-        elements.value.navTransition.targetState.currentIndex
+        segments.value.navTransition.targetState.currentIndex
     }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.hasPrevious() =
-    elements.map { value -> value.navTransition.targetState.currentIndex != 0 }
+    segments.map { value -> value.navTransition.targetState.currentIndex != 0 }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.activeIndex() =
-    elements.map { value -> value.navTransition.targetState.currentIndex }
+    segments.map { value -> value.navTransition.targetState.currentIndex }
 
 fun <T : Any> Spotlight<T>.elementsCount() =
-    elements.value.navTransition.targetState.size
+    segments.value.navTransition.targetState.size

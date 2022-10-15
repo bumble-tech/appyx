@@ -55,7 +55,7 @@ fun BackStackExperimentDebug() {
     var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
     val transitionParams by createTransitionParams(elementSize)
     val uiProps = remember(transitionParams) { BackStackSlider<NavTarget>(transitionParams) }
-    val render = remember(uiProps) { backStack.elements.map { uiProps.map(it) } }
+    val render = remember(uiProps) { backStack.segments.map { uiProps.map(it) } }
 
     Column(
         Modifier

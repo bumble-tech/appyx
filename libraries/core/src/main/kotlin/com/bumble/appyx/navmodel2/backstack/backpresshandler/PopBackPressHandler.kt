@@ -11,7 +11,7 @@ class PopBackPressHandler<NavTarget : Any> :
     BaseBackPressHandlerStrategy<NavTarget, State>() {
 
     override val canHandleBackPressFlow: Flow<Boolean> by lazy {
-        navModel.elements.map {
+        navModel.segments.map {
             areThereStashedElements(
                 it.navTransition.targetState
             )

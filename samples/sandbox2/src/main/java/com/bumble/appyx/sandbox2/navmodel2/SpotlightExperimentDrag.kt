@@ -53,7 +53,7 @@ fun SpotlightExperimentDrag() {
             orientation = Orientation.Horizontal
         )
     }
-    val render = remember(uiProps) { spotlight.elements.map { uiProps.map(it) } }
+    val render = remember(uiProps) { spotlight.segments.map { uiProps.map(it) } }
 
     Column(
         Modifier

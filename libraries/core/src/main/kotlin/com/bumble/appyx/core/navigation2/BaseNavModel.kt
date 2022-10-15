@@ -43,7 +43,7 @@ abstract class BaseNavModel<NavTarget, NavState>(
         MutableStateFlow(createState(lastRecordedProgress))
     }
 
-    override val elements: StateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
+    override val segments: StateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
         state
     }
 
@@ -60,7 +60,7 @@ abstract class BaseNavModel<NavTarget, NavState>(
         val segmentIndex = (if (progress == maxProgress) (progress - 1) else progress).toInt()
 
         return NavModel.Segment(
-            segmentIndex = segmentIndex,
+            index = segmentIndex,
             navTransition = queue[segmentIndex],
             progress = progress - segmentIndex
         )

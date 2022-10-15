@@ -14,13 +14,13 @@ val <T> BackStackElements<T>.active: BackStackElement<T>?
     get() = lastOrNull { it.state == ACTIVE }
 
 val <T : Any> BackStack<T>.active: BackStackElement<T>?
-    get() = elements.value.navTransition.targetState.active
+    get() = segments.value.navTransition.targetState.active
 
 val <T> BackStackElements<T>.activeElement: T?
     get() = active?.key?.navTarget
 
 val <T : Any> BackStack<T>.activeElement: T?
-    get() = elements.value.navTransition.targetState.activeElement
+    get() = segments.value.navTransition.targetState.activeElement
 
 val <T> BackStackElements<T>.activeIndex: Int
     get() = indexOfLast { it.state == ACTIVE }
