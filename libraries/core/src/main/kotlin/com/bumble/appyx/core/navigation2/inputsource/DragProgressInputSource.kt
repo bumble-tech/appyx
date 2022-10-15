@@ -69,56 +69,43 @@ class DragProgressInputSource<NavTarget, State>(
             // Case: we go forward, it's cool
             if (totalTarget > startProgress) {
 
-                // We go beyond the current segment, we'll need a new operation
-                if (totalTarget > startProgress + 1) {
-                    navModel.setProgress(startProgress + 1)
-//                    navModel.dropAfter(startProgress.toInt())
-                    val remainder = gesture!!.partial(dragAmount, totalTarget - (startProgress + 1))
-                    gesture = null
-                    Log.d("input source", "1 ------")
-                    Log.d("input source", "initial offset was: $dragAmount")
-                    Log.d("input source", "initial deltaProgress was: $deltaProgress")
-                    Log.d("input source", "initial target was: $totalTarget, beyond current segment: ${startProgress + 1}")
-                    Log.d("input source", "remainder progress: ${totalTarget - (startProgress + 1)}")
-                    Log.d("input source", "remainder offset: $remainder")
-                    Log.d("input source", "going back to start, reevaluate")
-                    Log.d("input source", "2 ------")
-                    // TODO without recursion
-                    addDeltaProgress(remainder)
-                    // 0.291108575843523
-
-//                    Log.d("input source", "beyond current segment")
-//                    navModel.setProgress(startProgress + 1)
-//                    gesture = null // TODO this shouldn't assume that the next operation will be applicable
-//                    // TODO remove consumed part
-//                    // TODO without recursion
-//                    addDeltaProgress(dragAmount)
-
                 // Case: standard forward progress
-                } else {
+                if (totalTarget < startProgress + 1) {
                     navModel.setProgress(totalTarget)
                     Log.d("input source", "delta applied forward, new progress: ${navModel.currentProgress}")
+
+                // Case: target is beyond the current segment, we'll need a new operation
+                } else {
+                    // TODO without recursion
+                    val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
+                    addDeltaProgress(remainder)
                 }
 
             // Case: we went back to or beyond the start,
             // now we need to re-evaluate for a new operation
             } else {
-                navModel.setProgress(startProgress)
-                navModel.dropAfter(startProgress.toInt())
-                val remainder = gesture!!.partial(dragAmount, totalTarget - startProgress)
-                gesture = null
-                Log.d("input source", "1 ------")
-                Log.d("input source", "initial offset was: $dragAmount")
-                Log.d("input source", "initial deltaProgress was: $deltaProgress")
-                Log.d("input source", "initial target was: $totalTarget, beyond current segment: $startProgress")
-                Log.d("input source", "remainder progress: ${totalTarget - startProgress}")
-                Log.d("input source", "remainder offset: $remainder")
-                Log.d("input source", "going back to start, reevaluate")
-                Log.d("input source", "2 ------")
                 // TODO without recursion
+                val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
                 addDeltaProgress(remainder)
             }
         }
+    }
+
+    private fun consumePartial(dragAmount: Offset, totalTarget: Float, deltaProgress: Float, boundary: Float): Offset {
+        navModel.setProgress(boundary)
+        navModel.dropAfter(boundary.toInt())
+        val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
+        gesture = null
+        Log.d("input source", "1 ------")
+        Log.d("input source", "initial offset was: $dragAmount")
+        Log.d("input source", "initial deltaProgress was: $deltaProgress")
+        Log.d("input source", "initial target was: $totalTarget, beyond current segment: $boundary")
+        Log.d("input source", "remainder progress: ${totalTarget - boundary}")
+        Log.d("input source", "remainder offset: $remainder")
+        Log.d("input source", "going back to start, reevaluate")
+        Log.d("input source", "2 ------")
+        // TODO without recursion
+        return remainder
     }
 
     fun settle() {
