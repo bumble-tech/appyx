@@ -80,93 +80,87 @@
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/brittany41.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween3.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/brittany41.jpg"/>
+            file="src/main/res/drawable/halloween3.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/brittany60.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween4.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/brittany60.jpg"/>
+            file="src/main/res/drawable/halloween4.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/brittany8.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween6.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/brittany8.jpg"/>
+            file="src/main/res/drawable/halloween6.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/img_8607.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween7.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/img_8607.jpg"/>
+            file="src/main/res/drawable/halloween7.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/img_9113.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween8.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/img_9113.jpg"/>
+            file="src/main/res/drawable/halloween8.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/imogen15.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween9.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/imogen15.jpg"/>
+            file="src/main/res/drawable/halloween9.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/imogen57.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween10.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/imogen57.jpg"/>
+            file="src/main/res/drawable/halloween10.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/imogen60.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween11.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/imogen60.jpg"/>
+            file="src/main/res/drawable/halloween11.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/imogen75.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween12.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/imogen75.jpg"/>
+            file="src/main/res/drawable/halloween12.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/matt12.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween13.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/matt12.jpg"/>
+            file="src/main/res/drawable/halloween13.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/matt24.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween14.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/matt24.jpg"/>
+            file="src/main/res/drawable/halloween14.jpeg"/>
     </issue>
 
     <issue
         id="IconLocation"
-        message="Found bitmap drawable `res/drawable/matt60.jpg` in densityless folder">
+        message="Found bitmap drawable `res/drawable/halloween15.jpeg` in densityless folder">
         <location
-            file="src/main/res/drawable/matt60.jpg"/>
+            file="src/main/res/drawable/halloween15.jpeg"/>
     </issue>
 
-    <issue
-        id="IconLocation"
-        message="Found bitmap drawable `res/drawable/matt88.jpg` in densityless folder">
-        <location
-            file="src/main/res/drawable/matt88.jpg"/>
-    </issue>
 
 </issues>
