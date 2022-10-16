@@ -45,11 +45,6 @@ class DragProgressInputSource<NavTarget, State>(
         val currentProgress = navModel.currentProgress
         val maxProgress = navModel.maxProgress
 
-        if (deltaProgress > 1) {
-            Log.w("input source", "This case could mean a different operation halfway, " +
-                "but support for that is currently not implemented")
-        }
-
         val totalTarget = currentProgress + deltaProgress
 
         // Case: we can start a new operation
