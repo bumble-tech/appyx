@@ -24,10 +24,10 @@ import com.bumble.appyx.core.navigation2.ui.Modifiers
 
 @ExperimentalMaterialApi
 @Composable
-fun Children(
-    render: State<List<Modifiers<*, *>>>,
+fun <NavTarget, NavState> Children(
+    render: State<List<Modifiers<NavTarget, NavState>>>,
     modifier: Modifier = Modifier,
-    element: @Composable (Modifiers<*, *>) -> Unit = {
+    element: @Composable (Modifiers<NavTarget, NavState>) -> Unit = {
         Element(render = it)
     },
     onElementSizeChanged: (IntSize) -> Unit = {},
