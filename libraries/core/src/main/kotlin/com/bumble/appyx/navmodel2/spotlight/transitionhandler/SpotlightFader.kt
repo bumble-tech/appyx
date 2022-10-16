@@ -9,9 +9,9 @@ import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
 
-class SpotlightFader<MavTarget>(
+class SpotlightFader<NavTarget>(
     transitionParams: TransitionParams
-) : UiProps<MavTarget, Spotlight.State> {
+) : UiProps<NavTarget, Spotlight.State> {
     private val width = transitionParams.bounds.width
 
     class Props(
@@ -32,7 +32,7 @@ class SpotlightFader<MavTarget>(
             else -> hidden
         }
 
-    override fun map(segment: Segment<MavTarget, Spotlight.State>): List<Modifiers<MavTarget, Spotlight.State>> {
+    override fun map(segment: Segment<NavTarget, Spotlight.State>): List<Modifiers<NavTarget, Spotlight.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
