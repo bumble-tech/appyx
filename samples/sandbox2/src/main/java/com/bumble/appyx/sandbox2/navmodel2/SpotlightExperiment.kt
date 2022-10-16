@@ -81,12 +81,12 @@ fun SpotlightExperiment() {
             .background(appyx_dark)
     ) {
         Children(
-            render = render.collectAsState(listOf()),
+            renderParams = render.collectAsState(listOf()),
             modifier = Modifier.weight(0.9f),
             onElementSizeChanged = { elementSize = it },
             element = {
                 Element(
-                    render = it,
+                    renderParams = it,
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInput(it.navElement.key) {

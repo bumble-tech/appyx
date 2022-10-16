@@ -19,16 +19,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.core.navigation2.ui.Modifiers
+import com.bumble.appyx.core.navigation2.ui.RenderParams
 
 
 @ExperimentalMaterialApi
 @Composable
 fun <NavTarget, NavState> Children(
-    render: State<List<Modifiers<NavTarget, NavState>>>,
+    renderParams: State<List<RenderParams<NavTarget, NavState>>>,
     modifier: Modifier = Modifier,
-    element: @Composable (Modifiers<NavTarget, NavState>) -> Unit = {
-        Element(render = it)
+    element: @Composable (RenderParams<NavTarget, NavState>) -> Unit = {
+        Element(renderParams = it)
     },
     onElementSizeChanged: (IntSize) -> Unit = {},
 ) {
@@ -41,7 +41,7 @@ fun <NavTarget, NavState> Children(
             )
             .onSizeChanged(onElementSizeChanged)
     ) {
-        render.value.forEach {
+        renderParams.value.forEach {
             key(it.navElement.key) {
                 element.invoke(it)
             }
@@ -52,7 +52,7 @@ fun <NavTarget, NavState> Children(
 @Composable
 fun Element(
     color: Color = Color.Unspecified,
-    render: Modifiers<*, *>,
+    renderParams: RenderParams<*, *>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     val backgroundColor = remember {
@@ -61,14 +61,14 @@ fun Element(
 
     Box(
         modifier = Modifier
-            .then(render.modifier)
+            .then(renderParams.modifier)
             .clip(RoundedCornerShape(5))
             .background(backgroundColor)
             .then(modifier)
             .padding(24.dp)
     ) {
         Text(
-            text = render.navElement.key.navTarget.toString(),
+            text = renderParams.navElement.key.navTarget.toString(),
             fontSize = 21.sp,
             color = Color.Black,
             fontWeight = FontWeight.Bold

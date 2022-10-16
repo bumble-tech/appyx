@@ -67,7 +67,7 @@ fun BackStackExperimentDebug() {
         })
 
         Children(
-            render = render.collectAsState(listOf()),
+            renderParams = render.collectAsState(listOf()),
             onElementSizeChanged = { elementSize = it }
         )
     }

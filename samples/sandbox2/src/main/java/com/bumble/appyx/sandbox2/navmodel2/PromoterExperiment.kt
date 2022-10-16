@@ -2,7 +2,6 @@ package com.bumble.appyx.sandbox2.navmodel2
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,14 +25,12 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation2.inputsource.AnimatedInputSource
 import com.bumble.appyx.navmodel.promoter.navmodel2.operation.addFirst
-import com.bumble.appyx.navmodel.promoter.navmodel2.operation.promoteAll
 import com.bumble.appyx.navmodel.promoter.navmodel2.Promoter
 import com.bumble.appyx.navmodel.promoter.navmodel2.transitionhandler.PromoterProps
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child1
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child2
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child3
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child4
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
 
 
@@ -73,12 +70,12 @@ fun PromoterExperiment() {
         modifier = Modifier.fillMaxSize()
     ) {
         Children(
-            render = render.collectAsState(listOf()),
+            renderParams = render.collectAsState(listOf()),
             modifier = Modifier.weight(0.9f),
             onElementSizeChanged = { elementSize = it },
             element = {
                 Element(
-                    render = it,
+                    renderParams = it,
                     modifier = Modifier.size(100.dp)
                 )
             }

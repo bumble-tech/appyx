@@ -74,11 +74,11 @@ fun SpotlightExperimentDebug() {
         })
 
         Children(
-            render = render.collectAsState(listOf()),
+            renderParams = render.collectAsState(listOf()),
             onElementSizeChanged = { elementSize = it },
             element = {
                 Element(
-                    render = it,
+                    renderParams = it,
                     modifier = Modifier
                         .fillMaxSize()
                 )

@@ -4,7 +4,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.core.navigation.transition.TransitionParams
 import com.bumble.appyx.core.navigation2.NavModel.Segment
-import com.bumble.appyx.core.navigation2.ui.Modifiers
+import com.bumble.appyx.core.navigation2.ui.RenderParams
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp
 import com.bumble.appyx.navmodel2.backstack.BackStack
@@ -32,7 +32,7 @@ class BackStackCrossfader<NavTarget>(
             else -> hidden
         }
 
-    override fun map(segment: Segment<NavTarget, BackStack.State>): List<Modifiers<NavTarget, BackStack.State>> {
+    override fun map(segment: Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
@@ -42,7 +42,7 @@ class BackStackCrossfader<NavTarget>(
             val targetProps = t1.state.toProps()
             val alpha = lerp(fromProps.alpha, targetProps.alpha, segment.progress)
 
-            Modifiers(
+            RenderParams(
                 navElement = t1,
                 modifier = Modifier
                     .alpha(alpha)

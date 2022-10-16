@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
 import com.bumble.appyx.core.navigation2.NavModel
-import com.bumble.appyx.core.navigation2.ui.Modifiers
+import com.bumble.appyx.core.navigation2.ui.RenderParams
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp
 import com.bumble.appyx.navmodel.promoter.navmodel2.Promoter
@@ -89,7 +89,7 @@ class PromoterProps<NavTarget>(
             Promoter.State.DESTROYED -> destroyed
         }
 
-    override fun map(segment: NavModel.Segment<NavTarget, Promoter.State>): List<Modifiers<NavTarget, Promoter.State>> {
+    override fun map(segment: NavModel.Segment<NavTarget, Promoter.State>): List<RenderParams<NavTarget, Promoter.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
@@ -114,7 +114,7 @@ class PromoterProps<NavTarget>(
             val y = (effectiveRadius * sin(angleRadians))
             val arcOffsetDp = Offset(x, y)
 
-            Modifiers(
+            RenderParams(
                 navElement = t1,
                 modifier = Modifier
                     .offset {

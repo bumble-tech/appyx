@@ -6,7 +6,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
 import com.bumble.appyx.core.navigation2.NavModel.Segment
-import com.bumble.appyx.core.navigation2.ui.Modifiers
+import com.bumble.appyx.core.navigation2.ui.RenderParams
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.navmodel2.backstack.BackStack
 import com.bumble.appyx.navmodel2.backstack.BackStack.State.ACTIVE
@@ -55,7 +55,7 @@ class BackStackSlider<NavTarget>(
             DROPPED -> outsideLeft.copy(offsetMultiplier = dropIndex + 1)
         }
 
-    override fun map(segment: Segment<NavTarget, BackStack.State>): List<Modifiers<NavTarget, BackStack.State>> {
+    override fun map(segment: Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
         val (fromState, targetState) = segment.navTransition
 
         // TODO memoize per segment, as only percentage will change
@@ -84,7 +84,7 @@ class BackStackSlider<NavTarget>(
                 fraction = segment.progress
             )
 
-            Modifiers(
+            RenderParams(
                 navElement = t1,
                 modifier = Modifier.offset(
                     x = offset.x,
