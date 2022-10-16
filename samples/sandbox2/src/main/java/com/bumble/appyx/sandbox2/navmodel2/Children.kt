@@ -9,6 +9,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +42,9 @@ fun Children(
             .onSizeChanged(onElementSizeChanged)
     ) {
         render.value.forEach {
-            element.invoke(it)
+            key(it.navElement.key) {
+                element.invoke(it)
+            }
         }
     }
 }
