@@ -43,46 +43,42 @@ class DragProgressInputSource<NavTarget, State>(
         val operation = gesture!!.operation
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
         val currentProgress = navModel.currentProgress
-        val maxProgress = navModel.maxProgress
-
         val totalTarget = currentProgress + deltaProgress
 
         // Case: we can start a new operation
         if (gesture!!.startProgress == null) {
-
             if (navModel.enqueue(operation)) {
                 gesture!!.startProgress = currentProgress
-                navModel.setProgress(totalTarget)
                 Log.d("input source", "operation applied: $operation")
             } else {
                 Log.d("input source", "operation not applicable: $operation")
             }
-        // Case: we can continue the existing operation
-        } else {
-            val startProgress = gesture!!.startProgress!!
+            // Case: we can continue the existing operation
+        }
 
-            // Case: we go forward, it's cool
-            if (totalTarget > startProgress) {
+        val startProgress = gesture!!.startProgress!!
 
-                // Case: standard forward progress
-                if (totalTarget < startProgress + 1) {
-                    navModel.setProgress(totalTarget)
-                    Log.d("input source", "delta applied forward, new progress: ${navModel.currentProgress}")
+        // Case: we go forward, it's cool
+        if (totalTarget > startProgress) {
 
-                // Case: target is beyond the current segment, we'll need a new operation
-                } else {
-                    // TODO without recursion
-                    val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
-                    addDeltaProgress(remainder)
-                }
+            // Case: standard forward progress
+            if (totalTarget < startProgress + 1) {
+                navModel.setProgress(totalTarget)
+                Log.d("input source", "delta applied forward, new progress: ${navModel.currentProgress}")
 
-            // Case: we went back to or beyond the start,
-            // now we need to re-evaluate for a new operation
+            // Case: target is beyond the current segment, we'll need a new operation
             } else {
                 // TODO without recursion
-                val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
+                val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
                 addDeltaProgress(remainder)
             }
+
+        // Case: we went back to or beyond the start,
+        // now we need to re-evaluate for a new operation
+        } else {
+            // TODO without recursion
+            val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
+            addDeltaProgress(remainder)
         }
     }
 
