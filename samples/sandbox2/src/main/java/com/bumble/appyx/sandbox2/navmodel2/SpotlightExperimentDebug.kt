@@ -34,14 +34,14 @@ import com.bumble.appyx.sandbox2.ui.theme.appyx_dark
 import kotlinx.coroutines.flow.map
 
 
-private val spotlight = Spotlight(
-    items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7),
-)
-
-
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperimentDebug() {
+    val spotlight = remember {
+        Spotlight(
+            items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7),
+        )
+    }
     val coroutineScope = rememberCoroutineScope()
     val inputSource = remember { DebuglProgressInputSource(spotlight, coroutineScope) }
 

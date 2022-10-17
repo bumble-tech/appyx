@@ -31,14 +31,16 @@ import com.bumble.appyx.sandbox2.ui.theme.appyx_dark
 import kotlinx.coroutines.flow.map
 
 
-private val backStack = BackStack(
-    initialElement = Child1,
-    savedStateMap = null
-)
-
 @ExperimentalMaterialApi
 @Composable
 fun BackStackExperimentDebug() {
+    val backStack = remember {
+        BackStack(
+            initialElement = Child1,
+            savedStateMap = null
+        )
+    }
+
     val coroutineScope = rememberCoroutineScope()
     val inputSource = remember { DebuglProgressInputSource(backStack, coroutineScope) }
 

@@ -34,12 +34,10 @@ import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child4
 import kotlinx.coroutines.flow.map
 
 
-private val promoter = Promoter<NavTarget>()
-
-
 @ExperimentalMaterialApi
 @Composable
 fun PromoterExperiment() {
+    val promoter = remember { Promoter<NavTarget>() }
     val coroutineScope = rememberCoroutineScope()
     val inputSource: AnimatedInputSource<NavTarget, Promoter.State> = remember {
         AnimatedInputSource(
