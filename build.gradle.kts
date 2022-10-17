@@ -1,7 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 buildscript {
-    val compose_ui_version by extra("1.2.0")
     repositories {
         google()
         mavenCentral()
