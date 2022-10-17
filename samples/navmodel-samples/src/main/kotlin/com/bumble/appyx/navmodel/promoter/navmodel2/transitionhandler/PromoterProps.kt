@@ -11,10 +11,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
 import com.bumble.appyx.core.navigation2.NavModel
+import com.bumble.appyx.core.navigation2.NavModel.Segment
 import com.bumble.appyx.core.navigation2.ui.RenderParams
 import com.bumble.appyx.core.navigation2.ui.UiProps
 import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp
 import com.bumble.appyx.navmodel.promoter.navmodel2.Promoter
+import com.bumble.appyx.navmodel.promoter.navmodel2.Promoter.State
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -24,7 +26,7 @@ import kotlin.math.sin
 class PromoterProps<NavTarget>(
     private val childSize: Dp,
     transitionParams: TransitionParams
-) : UiProps<NavTarget, Promoter.State> {
+) : UiProps<NavTarget, State> {
     private val halfWidthDp = (transitionParams.bounds.width.value - childSize.value) / 2
     private val halfHeightDp = (transitionParams.bounds.height.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
@@ -78,18 +80,18 @@ class PromoterProps<NavTarget>(
         rotationZ = 540f,
     )
 
-    private fun Promoter.State.toProps() =
+    private fun State.toProps() =
         when (this) {
-            Promoter.State.CREATED -> created
-            Promoter.State.STAGE1 -> stage1
-            Promoter.State.STAGE2 -> stage2
-            Promoter.State.STAGE3 -> stage3
-            Promoter.State.STAGE4 -> stage4
-            Promoter.State.SELECTED -> selected
-            Promoter.State.DESTROYED -> destroyed
+            State.CREATED -> created
+            State.STAGE1 -> stage1
+            State.STAGE2 -> stage2
+            State.STAGE3 -> stage3
+            State.STAGE4 -> stage4
+            State.SELECTED -> selected
+            State.DESTROYED -> destroyed
         }
 
-    override fun map(segment: NavModel.Segment<NavTarget, Promoter.State>): List<RenderParams<NavTarget, Promoter.State>> {
+    override fun map(segment: Segment<NavTarget, State>): List<RenderParams<NavTarget, State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
