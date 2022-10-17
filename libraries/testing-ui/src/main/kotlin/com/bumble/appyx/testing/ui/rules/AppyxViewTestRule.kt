@@ -1,24 +1,26 @@
 package com.bumble.appyx.testing.ui.rules
 
 import androidx.annotation.CallSuper
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.rule.ActivityTestRule
+import com.bumble.appyx.core.node.LocalNode
 import com.bumble.appyx.core.node.NodeView
 import com.bumble.appyx.core.node.ViewFactory
+import com.bumble.appyx.testing.ui.utils.DummyParentNode
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
 open class AppyxViewTestRule<View : NodeView>(
     viewFactory: ViewFactory<View>,
-    private val launchActivity: Boolean = true,
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule()
-) : ActivityTestRule<AppyxViewActivity>(
-    /* activityClass = */ AppyxViewActivity::class.java,
+) : ActivityTestRule<AppyxTestActivity>(
+    /* activityClass = */ AppyxTestActivity::class.java,
     /* initialTouchMode = */ true,
-    /* launchActivity = */ launchActivity
+    /* launchActivity = */ false
 ), ComposeTestRule by composeTestRule {
 
     val view by lazy { viewFactory.invoke() }
@@ -32,9 +34,6 @@ open class AppyxViewTestRule<View : NodeView>(
 
     @Suppress("TooGenericExceptionCaught") // launchActivity does throw RuntimeException
     fun start() {
-        require(!launchActivity) {
-            "Activity will be launched automatically, launchActivity parameter was passed into constructor"
-        }
         try {
             launchActivity(null)
         } catch (e: RuntimeException) {
@@ -46,13 +45,17 @@ open class AppyxViewTestRule<View : NodeView>(
     }
 
     override fun beforeActivityLaunched() {
-        AppyxViewActivity.composableView = {
-            view.View(modifier = Modifier)
+        AppyxTestActivity.composableView = {
+            CompositionLocalProvider(
+                LocalNode provides DummyParentNode<Any>(),
+            ) {
+                view.View(modifier = Modifier)
+            }
         }
     }
 
     override fun afterActivityLaunched() {
-        AppyxViewActivity.composableView = null
+        AppyxTestActivity.composableView = null
     }
 
     @CallSuper

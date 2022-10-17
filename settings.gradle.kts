@@ -27,6 +27,7 @@ include(
     ":libraries:testing-ui-activity",
     ":libraries:testing-unit-common",
     ":samples:app",
+    ":samples:common",
     ":samples:navigation-compose",
     ":samples:navmodel-samples",
     ":samples:sandbox",

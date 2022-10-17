@@ -27,9 +27,9 @@ import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.Resolver
-import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.isTransitioning
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
@@ -57,7 +57,7 @@ abstract class ParentNode<NavTarget : Any>(
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + navModel + childAware + view
+    plugins = plugins + navModel + childAware
 ), Resolver<NavTarget> {
 
     private val permanentNavModel = PermanentNavModel<NavTarget>(

@@ -35,7 +35,7 @@ abstract class BaseNavModel<NavTarget, State>(
     private val operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
     private val screenResolver: OnScreenStateResolver<State>,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
-    private val finalStates: Set<State>,
+    protected val finalStates: Set<State>,
     private val key: String = KEY_NAV_MODEL,
     savedStateMap: SavedStateMap?
 ) : NavModel<NavTarget, State>, Destroyable, BackPressHandler {
