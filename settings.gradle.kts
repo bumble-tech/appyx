@@ -31,6 +31,7 @@ include(
     ":samples:navigation-compose",
     ":samples:navmodel-samples",
     ":samples:sandbox",
+    ":samples:sandbox2",
 )
 
 includeBuild("plugins")
