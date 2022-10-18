@@ -67,10 +67,10 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .pointerInput(it.navElement.key) {
                         detectDragGestures(
-                            onDragStart = {
+                            onDragStart = { position ->
                                 if (drag.gestureFactory == null) {
                                     drag.gestureFactory = { dragAmount ->
-                                        uiProps.createGesture(dragAmount, density)
+                                        uiProps.createGesture(position, dragAmount, density)
                                     }
                                 }
                             },

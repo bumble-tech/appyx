@@ -50,15 +50,17 @@ class CardsProps<NavTarget : Any>(
         zIndex = 1f,
     )
 
+    private val voteCardPositionMultiplier = 2
+
     private val votePass = top.copy(
-        positionalOffsetX = -width,
-        rotationZ = -90f,
+        positionalOffsetX = (-voteCardPositionMultiplier * width.value).dp,
+        rotationZ = -45f,
         zIndex = 2f,
     )
 
     private val voteLike = top.copy(
-        positionalOffsetX = width,
-        rotationZ = 90f,
+        positionalOffsetX = (voteCardPositionMultiplier * width.value).dp,
+        rotationZ = 45f,
         zIndex = 2f,
     )
 
@@ -125,19 +127,29 @@ class CardsProps<NavTarget : Any>(
         }
     }
 
-    fun createGesture(delta: Offset, density: Density): Gesture<NavTarget, Cards.State> {
+    fun createGesture(touchPosition: Offset, delta: Offset, density: Density): Gesture<NavTarget, Cards.State> {
         val width = with(density) { width.toPx() }
+        val height = with(density) { height.toPx() }
+        val verticalRatio = touchPosition.y / height // 0..1
+        // For a perfect solution we should keep track where the touch is currently at, at any
+        // given moment; then do the calculation in reverse, how much of a horizontal gesture
+        // at that vertical position should move the cards.
+        // For a good enough solution, now we only care for the initial touch position and
+        // a baked in factor to account for the top of the card moving with different speed than
+        // the bottom:
+        // e.g. 4 = at top of the card, 2 = at the bottom, when voteCardPositionMultiplier = 2
+        val dragToProgressFactor = voteCardPositionMultiplier * (2 - verticalRatio)
 
         return if (delta.x < 0) {
             Gesture(
                 operation = VotePass(),
-                dragToProgress = { offset -> (offset.x / width) * -1 },
+                dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) * -1 },
                 partial = { offset, progress -> offset.copy(x = progress * width * -1) }
             )
         } else {
             Gesture(
                 operation = VoteLike(),
-                dragToProgress = { offset -> (offset.x / width) },
+                dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) },
                 partial = { offset, progress -> offset.copy(x = progress * width) }
             )
         }
