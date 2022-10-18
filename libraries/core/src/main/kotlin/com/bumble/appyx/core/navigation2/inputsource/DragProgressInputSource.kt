@@ -10,7 +10,8 @@ import com.bumble.appyx.core.navigation2.NavModel
 import com.bumble.appyx.core.navigation2.Operation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
+import kotlin.math.ceil
+import kotlin.math.floor
 
 class DragProgressInputSource<NavTarget, State>(
     private val navModel: NavModel<NavTarget, State>,
@@ -64,17 +65,21 @@ class DragProgressInputSource<NavTarget, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 navModel.setProgress(totalTarget)
-                Log.d("input source", "delta applied forward, new progress: ${navModel.currentProgress}")
+                Log.d(
+                    "input source",
+                    "delta applied forward, new progress: ${navModel.currentProgress}"
+                )
 
-            // Case: target is beyond the current segment, we'll need a new operation
+                // Case: target is beyond the current segment, we'll need a new operation
             } else {
                 // TODO without recursion
-                val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
+                val remainder =
+                    consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
                 addDeltaProgress(remainder)
             }
 
-        // Case: we went back to or beyond the start,
-        // now we need to re-evaluate for a new operation
+            // Case: we went back to or beyond the start,
+            // now we need to re-evaluate for a new operation
         } else {
             // TODO without recursion
             val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
@@ -82,7 +87,12 @@ class DragProgressInputSource<NavTarget, State>(
         }
     }
 
-    private fun consumePartial(dragAmount: Offset, totalTarget: Float, deltaProgress: Float, boundary: Float): Offset {
+    private fun consumePartial(
+        dragAmount: Offset,
+        totalTarget: Float,
+        deltaProgress: Float,
+        boundary: Float
+    ): Offset {
         navModel.setProgress(boundary)
         navModel.dropAfter(boundary.toInt())
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
@@ -99,8 +109,13 @@ class DragProgressInputSource<NavTarget, State>(
         return remainder
     }
 
-    fun settle() {
-        val targetValue = navModel.currentProgress.roundToInt()
+    fun settle(roundingFactor: Float = 0.5f) {
+        val currentProgress = navModel.currentProgress
+        val targetValue = if (currentProgress % 1 < roundingFactor) {
+            floor(currentProgress).toInt()
+        } else {
+            ceil(currentProgress).toInt()
+        }
         Log.d("input source", "Settle ${navModel.currentProgress} to: $targetValue")
         coroutineScope.launch {
             animatable.snapTo(navModel.currentProgress)

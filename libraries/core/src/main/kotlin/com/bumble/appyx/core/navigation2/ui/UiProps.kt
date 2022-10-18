@@ -7,7 +7,7 @@ interface UiProps<Target, State> {
     fun map(segment: NavModel.Segment<Target, State>): List<RenderParams<Target, State>>
 
     companion object {
-        fun lerp(a: Float, b: Float, progress: Float): Float =
-            a + progress * (b - a)
+        fun lerpFloat(start: Float, stop: Float, progress: Float): Float =
+            start + progress * (stop - start)
     }
 }
