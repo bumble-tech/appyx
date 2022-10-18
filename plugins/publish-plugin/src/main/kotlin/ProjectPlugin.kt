@@ -8,7 +8,6 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
 import org.gradle.plugins.signing.SigningExtension
-import org.jetbrains.kotlin.gradle.targets.js.npm.SemVer
 
 internal abstract class ProjectPlugin : Plugin<Project> {
     override fun apply(project: Project) {
@@ -29,7 +28,7 @@ internal abstract class ProjectPlugin : Plugin<Project> {
             }
 
             project.tasks.named("publishAppyxReleasePublicationToSonatypeSnapshotRepository") {
-                val fail = project.isSnapshotPublication
+                val fail = !project.isSnapshotPublication
                 doFirst {
                     if (fail) throw GradleException(
                         "Publishing to snapshot repository with disabled \"snapshot\" flag is permitted"
@@ -73,8 +72,7 @@ internal abstract class ProjectPlugin : Plugin<Project> {
             from(project.components[getComponentName()])
             groupId = "com.bumble.appyx"
             version = if (project.isSnapshotPublication) {
-                val semVer = SemVer.from(definedVersion)
-                "v${semVer.major}-SNAPSHOT"
+                "v${definedVersion.split('.').first()}-SNAPSHOT"
             } else {
                 definedVersion
             }

@@ -29,7 +29,7 @@ Using a model-driven approach, navigation states are yours to define – Appyx m
 
 You can create custom navigable components in no time:
 
-<img src="https://i.imgur.com/V3bks8c.gif" width="150">
+<img src="https://cdn-images-1.medium.com/max/1600/1*mEg8Ebem3Hd2knQSA0yI1A.gif" width="150">
 
 
 With Appyx you can break down screen boundaries and transform the screen itself:
@@ -53,7 +53,11 @@ See the [Downloads page](releases/downloads.md).
 
 1. [Appyx is released! (1.0-alpha02)](https://medium.com/bumble-tech/appyx-is-released-1-0-alpha02-41a27ad3b0cd)
 2. [Appyx vs Jetpack Compose Navigation](https://medium.com/bumble-tech/appyx-vs-jetpack-compose-navigation-b91bd23369f2)
+3. [Modelling dating cards navigation with Appyx](https://medium.com/bumble-tech/modelling-dating-cards-navigation-with-appyx-ab68313d27f6)
 
+## Videos
+
+- [Droidcon NYC 2022 – Model-driven navigation with Jetpack Compose](https://www.droidcon.com/2022/09/29/model-driven-navigation-with-jetpack-compose-from-zero-to-hero/)
 
 ## News & announcements
 

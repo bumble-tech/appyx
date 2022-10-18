@@ -30,6 +30,7 @@ nav:
           - Overview: navmodel/index.md
           - Back stack: navmodel/backstack.md
           - Spotlight: navmodel/spotlight.md
+          - Cards: navmodel/cards.md
           - Tiles: navmodel/tiles.md
           - Promoter: navmodel/promoter.md
           - Writing your own: navmodel/custom.md

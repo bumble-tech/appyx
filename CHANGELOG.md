@@ -1,15 +1,31 @@
 # Changelog
 
 ## Pending changes
-- [#196](https://github.com/bumble-tech/appyx/pull/196) – **Breaking change**: `InteropBuilder` now should be supplied with Appyx `IntegrationPointProvider` to attach it at the same time Appyx Node is created
+
+- [#217](https://github.com/bumble-tech/appyx/pull/217) – **Updated**: Moved `navigation-compose` sample into `:samples:app`.
+- [#218](https://github.com/bumble-tech/appyx/pull/218) – **Updated**: `androidx.core:core-ktx` to 1.9.0.
+- [#165](https://github.com/bumble-tech/appyx/pull/165) – **Added**: A dating-cards-like `NavModel` implementation: `Cards`, along with sample in `:samples:app`
+- 
+---
+
+## 1.0.0-rc01
+
+- [#214](https://github.com/bumble-tech/appyx/pull/214) – **Breaking change**: `AppyxViewTestRule` stops supporting automatic launching activity. Activities should be started explicitly in tests.
+- [#197](https://github.com/bumble-tech/appyx/pull/197) – **Breaking change**: `ParentNodeView` does not implement plugin anymore. `Node` instance is retrieved via `LocalComposition`. `AppyxParentViewTestRule` and `AbstractParentNodeView` have been removed. 
+- [#196](https://github.com/bumble-tech/appyx/pull/196) – **Breaking change**: `InteropBuilder` now should be supplied with Appyx `IntegrationPointProvider` to attach it at the same time Appyx Node is created.
 - [#185](https://github.com/bumble-tech/appyx/issues/185) – **Breaking change**: `Activity` must implement `IntegrationPointProvider` and create `IntegrationPoint` manually. Weak references usage has been removed.
 - [#173](https://github.com/bumble-tech/appyx/pull/173) – **Breaking change**: `ActivityStarter` and `PermissionRequester` now exposes coroutine based API instead of `minimal.reactive`.
 - [#200](https://github.com/bumble-tech/appyx/pull/200) – **Breaking change**: Reordered the parameters for `ParentNode<NavTarget>.Child` and `fun <N : Node> NodeHost` to meet Compose guidelines.
-- [#43](https://github.com/bumble-tech/appyx/pull/43) – **Updated**: Jetpack Compose to 1.2.1 and kotlin to 1.7.10.
-- [#168](https://github.com/bumble-tech/appyx/pull/168) – **Updated**: Kotlin coroutines to 1.6.4.
-- [#171](https://github.com/bumble-tech/appyx/pull/171) – **Updated**: RIBs to 0.36.1. 
-- [#174](https://github.com/bumble-tech/appyx/issues/174) – **Fixed**: IntegrationPointExample does not work with "do not keep activities"
-- [#180](https://github.com/bumble-tech/appyx/pull/180) – **Added**: Ensure that super.onSaveInstanceState() was called to restore Node's state correctly
+- [#43](https://github.com/bumble-tech/appyx/pull/43) – **Updated**: Jetpack Compose to `1.2.1` and Kotlin to `1.7.10`.
+- [#168](https://github.com/bumble-tech/appyx/pull/168) – **Updated**: Kotlin coroutines to `1.6.4`.
+- [#171](https://github.com/bumble-tech/appyx/pull/171) – **Updated**: RIBs to `0.36.1`.
+- [#212](https://github.com/bumble-tech/appyx/pull/212) – **Updated**: `Node` parent property is now public instead of private.
+- [#174](https://github.com/bumble-tech/appyx/issues/174) – **Fixed**: `IntegrationPointExample` does not work with "do not keep activities"
+- [#180](https://github.com/bumble-tech/appyx/pull/180) – **Added**: Ensure that `super.onSaveInstanceState()` was called to restore Node's state correctly
+
+<div style="text-align: center"><small>13 Oct 2022</small></div>
+
+---
 
 ## 1.0-alpha09
 
