@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.annotation.FloatRange
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
@@ -110,18 +111,22 @@ class DragProgressInputSource<NavTarget, State>(
         return remainder
     }
 
-    fun settle(@FloatRange(from = 0.0, to = 1.0) roundingThreshold: Float = 0.5f) {
+    fun settle(
+        @FloatRange(from = 0.0, to = 1.0) roundUpThreshold: Float = 0.5f,
+        roundUpAnimationSpec: AnimationSpec<Float> = spring(),
+        roundDownAnimationSpec: AnimationSpec<Float> = spring(),
+    ) {
         val currentProgress = navModel.currentProgress
-        val targetValue = if (currentProgress % 1 < roundingThreshold) {
-            floor(currentProgress).toInt()
+        val (animationSpec, targetValue) = if (currentProgress % 1 < roundUpThreshold) {
+            roundDownAnimationSpec to floor(currentProgress).toInt()
         } else {
-            ceil(currentProgress).toInt()
+            roundUpAnimationSpec to ceil(currentProgress).toInt()
         }
         Log.d("input source", "Settle ${navModel.currentProgress} to: $targetValue")
         coroutineScope.launch {
             animatable.snapTo(navModel.currentProgress)
             // TODO animation spec similarly to AnimatedInputSource / default
-            result = animatable.animateTo(targetValue.toFloat(), spring()) {
+            result = animatable.animateTo(targetValue.toFloat(), animationSpec) {
                 navModel.setProgress(this.value)
             }
             navModel.dropAfter(targetValue)

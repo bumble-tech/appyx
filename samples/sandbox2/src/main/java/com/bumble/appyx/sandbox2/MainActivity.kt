@@ -60,11 +60,11 @@ class MainActivity : ComponentActivity() {
                             Button({ content = 4 }) { Text("5") }
                         }
                         when (content) {
-                            0 -> PromoterExperiment()
+                            0 -> DatingCards()
                             1 -> SpotlightExperiment()
                             2 -> SpotlightExperimentDebug()
                             3 -> BackStackExperimentDebug()
-                            4 -> DatingCards()
+                            4 -> PromoterExperiment()
                             else -> SpotlightExperiment()
                         }
                     }

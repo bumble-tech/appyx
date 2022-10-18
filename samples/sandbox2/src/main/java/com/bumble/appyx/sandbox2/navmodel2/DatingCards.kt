@@ -1,5 +1,7 @@
 package com.bumble.appyx.sandbox2.navmodel2
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
@@ -67,10 +69,10 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     .fillMaxSize()
                     .pointerInput(it.navElement.key) {
                         detectDragGestures(
-                            onDragStart = {
+                            onDragStart = { position ->
                                 if (drag.gestureFactory == null) {
                                     drag.gestureFactory = { dragAmount ->
-                                        uiProps.createGesture(dragAmount, density)
+                                        uiProps.createGesture(position, dragAmount, density)
                                     }
                                 }
                             },
@@ -80,7 +82,15 @@ fun DatingCards(modifier: Modifier = Modifier) {
                             },
                             onDragEnd = {
                                 drag.gestureFactory = null
-                                drag.settle(roundingThreshold = 0.2f)
+                                drag.settle(
+                                    roundUpThreshold = 0.15f,
+                                    roundUpAnimationSpec = spring(
+                                        stiffness = Spring.StiffnessLow
+                                    ),
+                                    roundDownAnimationSpec = spring(
+                                        stiffness = Spring.StiffnessMedium
+                                    )
+                                )
                             }
                         )
                     }

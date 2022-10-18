@@ -56,11 +56,10 @@ fun SpotlightExperiment() {
     }
     val coroutineScope = rememberCoroutineScope()
     val drag = remember { DragProgressInputSource(spotlight, coroutineScope) }
+    val defaultAnimationSpec = spring<Float>(stiffness = Spring.StiffnessMediumLow)
     val animated = remember {
         AnimatedInputSource(
-            spotlight, coroutineScope, spring(
-                stiffness = Spring.StiffnessMediumLow
-            )
+            spotlight, coroutineScope, defaultAnimationSpec
         )
     }
 
@@ -108,7 +107,10 @@ fun SpotlightExperiment() {
                                 onDragEnd = {
                                     Log.d("drag", "end")
                                     drag.gestureFactory = null
-                                    drag.settle()
+                                    drag.settle(
+                                        roundUpAnimationSpec = defaultAnimationSpec,
+                                        roundDownAnimationSpec = defaultAnimationSpec
+                                    )
                                 }
                             )
                         }
