@@ -11,14 +11,17 @@ abstract class TopCardOperation<NavTarget : Any>(
     override fun isApplicable(elements: CardsElements<NavTarget>): Boolean =
         elements.any { it.state in Cards.TOP_STATES }
 
-
     override fun invoke(elements: CardsElements<NavTarget>): NavTransition<NavTarget, Cards.State> {
         val targetIndex = elements.indexOfFirst { it.state in Cards.TOP_STATES }
 
         return NavTransition(
             fromState = elements,
-            targetState = elements.transitionToIndexed(newTargetState) { i, _ ->
-                i == targetIndex
+            targetState = elements.mapIndexed { index, element ->
+                if (index == targetIndex) {
+                    element.transitionTo(newTargetState = newTargetState, this)
+                } else {
+                    element.transitionTo(newTargetState = element.state.next(), this)
+                }
             }
         )
     }

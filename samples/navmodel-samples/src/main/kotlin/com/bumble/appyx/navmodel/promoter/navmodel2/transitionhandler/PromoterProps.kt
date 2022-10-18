@@ -102,13 +102,20 @@ class PromoterProps<NavTarget>(
             val angleRadians1 = Math.toRadians(props1.angleDegrees.toDouble() - 90)
 
             // Lerp block
-            val dpOffsetX = lerpFloat(props0.dpOffset.x.value, props1.dpOffset.x.value, segment.progress)
-            val dpOffsetY = lerpFloat(props0.dpOffset.y.value, props1.dpOffset.y.value, segment.progress)
+            val dpOffsetX =
+                lerpFloat(props0.dpOffset.x.value, props1.dpOffset.x.value, segment.progress)
+            val dpOffsetY =
+                lerpFloat(props0.dpOffset.y.value, props1.dpOffset.y.value, segment.progress)
             val rotationY = lerpFloat(props0.rotationY, props1.rotationY, segment.progress)
             val rotationZ = lerpFloat(props0.rotationZ, props1.rotationZ, segment.progress)
             val scale = lerpFloat(props0.scale, props1.scale, segment.progress)
-            val angleRadians = lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segment.progress)
-            val effectiveRadiusRatio = lerpFloat(props0.effectiveRadiusRatio, props1.effectiveRadiusRatio, segment.progress)
+            val angleRadians =
+                lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segment.progress)
+            val effectiveRadiusRatio = lerpFloat(
+                props0.effectiveRadiusRatio,
+                props1.effectiveRadiusRatio,
+                segment.progress
+            )
             val effectiveRadius = radiusDp * effectiveRadiusRatio
             val x = (effectiveRadius * cos(angleRadians))
             val y = (effectiveRadius * sin(angleRadians))

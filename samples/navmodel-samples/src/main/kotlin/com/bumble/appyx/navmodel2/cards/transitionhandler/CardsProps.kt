@@ -24,7 +24,7 @@ import com.bumble.appyx.navmodel2.cards.operation.VotePass
 import kotlin.math.roundToInt
 
 
-class CardsTransitionHandler<NavTarget : Any>(
+class CardsProps<NavTarget : Any>(
     transitionParams: TransitionParams
 ) : UiProps<NavTarget, Cards.State> {
     private val width = transitionParams.bounds.width
@@ -90,19 +90,19 @@ class CardsTransitionHandler<NavTarget : Any>(
 
             val rotationZ = lerpFloat(
                 start = fromProps.rotationZ,
-                stop = targetProps.rotationZ,
+                end = targetProps.rotationZ,
                 progress = segment.progress
             )
 
             val zIndex = lerpFloat(
                 start = fromProps.zIndex,
-                stop = targetProps.zIndex,
+                end = targetProps.zIndex,
                 progress = segment.progress
             )
 
             val scale = lerpFloat(
                 start = fromProps.scale,
-                stop = targetProps.scale,
+                end = targetProps.scale,
                 progress = segment.progress
             )
 

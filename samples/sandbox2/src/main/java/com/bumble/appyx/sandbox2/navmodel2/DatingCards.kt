@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation2.inputsource.DragProgressInputSource
 import com.bumble.appyx.core.navigation2.ui.RenderParams
 import com.bumble.appyx.navmodel2.cards.Cards
-import com.bumble.appyx.navmodel2.cards.transitionhandler.CardsTransitionHandler
+import com.bumble.appyx.navmodel2.cards.transitionhandler.CardsProps
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
 import com.bumble.appyx.sandbox2.ui.theme.appyx_dark
@@ -48,7 +48,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
     var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
     val transitionParams by createTransitionParams(elementSize)
     val uiProps =
-        remember(transitionParams) { CardsTransitionHandler<DatingCardsNavTarget>(transitionParams) }
+        remember(transitionParams) { CardsProps<DatingCardsNavTarget>(transitionParams) }
     val render = remember(uiProps) { cards.segments.map { uiProps.map(it) } }
 
     val density = LocalDensity.current
@@ -80,7 +80,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
                             },
                             onDragEnd = {
                                 drag.gestureFactory = null
-                                drag.settle(0.2f)
+                                drag.settle(roundingThreshold = 0.2f)
                             }
                         )
                     }
@@ -92,11 +92,11 @@ fun DatingCards(modifier: Modifier = Modifier) {
 @Composable
 fun ElementWrapper(
     renderParams: RenderParams<DatingCardsNavTarget, Cards.State>,
-    modifier: Modifier = Modifier.fillMaxSize()
+    modifier: Modifier = Modifier
 ) {
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .then(renderParams.modifier)
             .then(modifier)
     ) {

@@ -24,8 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation2.inputsource.AnimatedInputSource
-import com.bumble.appyx.navmodel.promoter.navmodel2.operation.addFirst
 import com.bumble.appyx.navmodel.promoter.navmodel2.Promoter
+import com.bumble.appyx.navmodel.promoter.navmodel2.operation.addFirst
 import com.bumble.appyx.navmodel.promoter.navmodel2.transitionhandler.PromoterProps
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child1
 import com.bumble.appyx.sandbox2.navmodel2.NavTarget.Child2
@@ -58,18 +58,26 @@ fun PromoterExperiment() {
 
     var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
     val transitionParams by createTransitionParams(elementSize)
-    val uiProps = remember(transitionParams) { PromoterProps<NavTarget>(
-        childSize = 100.dp,
-        transitionParams = transitionParams
-    ) }
+    val uiProps = remember(transitionParams) {
+        PromoterProps<NavTarget>(
+            childSize = 100.dp,
+            transitionParams = transitionParams
+        )
+    }
     val render = remember(uiProps) { promoter.segments.map { uiProps.map(it) } }
 
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         Children(
             renderParams = render.collectAsState(listOf()),
-            modifier = Modifier.weight(0.9f),
+            modifier = Modifier
+                .weight(0.9f)
+                .padding(
+                    horizontal = 64.dp,
+                    vertical = 12.dp
+                ),
             onElementSizeChanged = { elementSize = it },
             element = {
                 Element(

@@ -1,6 +1,7 @@
 package com.bumble.appyx.core.navigation2.inputsource
 
 import android.util.Log
+import androidx.annotation.FloatRange
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
@@ -109,9 +110,9 @@ class DragProgressInputSource<NavTarget, State>(
         return remainder
     }
 
-    fun settle(roundingFactor: Float = 0.5f) {
+    fun settle(@FloatRange(from = 0.0, to = 1.0) roundingThreshold: Float = 0.5f) {
         val currentProgress = navModel.currentProgress
-        val targetValue = if (currentProgress % 1 < roundingFactor) {
+        val targetValue = if (currentProgress % 1 < roundingThreshold) {
             floor(currentProgress).toInt()
         } else {
             ceil(currentProgress).toInt()

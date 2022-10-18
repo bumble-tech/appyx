@@ -3,6 +3,7 @@ package com.bumble.appyx.sandbox2.navmodel2
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -14,6 +15,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation2.inputsource.DebuglProgressInputSource
 import com.bumble.appyx.navmodel2.backstack.BackStack
 import com.bumble.appyx.navmodel2.backstack.operation.NewRoot
@@ -60,7 +62,7 @@ fun BackStackExperimentDebug() {
     val render = remember(uiProps) { backStack.segments.map { uiProps.map(it) } }
 
     Column(
-        Modifier
+        modifier = Modifier
             .fillMaxWidth()
             .background(appyx_dark)
     ) {
@@ -69,6 +71,10 @@ fun BackStackExperimentDebug() {
         })
 
         Children(
+            modifier = Modifier.padding(
+                horizontal = 64.dp,
+                vertical = 12.dp
+            ),
             renderParams = render.collectAsState(listOf()),
             onElementSizeChanged = { elementSize = it }
         )
