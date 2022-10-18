@@ -8,12 +8,12 @@ import androidx.test.core.app.ActivityScenario
 import com.bumble.appyx.core.integration.NodeFactory
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.testing.ui.rules.AppyxViewActivity
+import com.bumble.appyx.testing.ui.rules.AppyxTestActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 /**
- * [com.bumble.appyx.testing.ui.rules.AppyxTestRule] based on [ActivityScenario] to support lifecycle tests.
+ * [com.bumble.appyx.testing.ui.rules.AppyxActivityTestRule] based on [ActivityScenario] to support lifecycle tests.
  *
  * TODO: Consider merging with AppyxTestRule.
  */
@@ -27,7 +27,7 @@ class AppyxTestScenario<T : Node>(
     @get:WorkerThread
     val activityScenario: ActivityScenario<BackPressHandlerTestActivity> by lazy {
         val awaitNode = CountDownLatch(1)
-        AppyxViewActivity.composableView = { activity ->
+        AppyxTestActivity.composableView = { activity ->
             decorator {
                 NodeHost(integrationPoint = activity.appyxIntegrationPoint, factory = { buildContext ->
                     node = nodeFactory.create(buildContext)
