@@ -6,7 +6,7 @@ import com.bumble.appyx.core.navigation.transition.TransitionParams
 import com.bumble.appyx.core.navigation2.NavModel.Segment
 import com.bumble.appyx.core.navigation2.ui.RenderParams
 import com.bumble.appyx.core.navigation2.ui.UiProps
-import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp
+import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerpFloat
 import com.bumble.appyx.navmodel2.backstack.BackStack
 
 class BackStackCrossfader<NavTarget>(
@@ -40,7 +40,7 @@ class BackStackCrossfader<NavTarget>(
 
             val fromProps = t0.state.toProps()
             val targetProps = t1.state.toProps()
-            val alpha = lerp(fromProps.alpha, targetProps.alpha, segment.progress)
+            val alpha = lerpFloat(fromProps.alpha, targetProps.alpha, segment.progress)
 
             RenderParams(
                 navElement = t1,

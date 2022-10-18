@@ -48,7 +48,7 @@ abstract class BaseNavModel<NavTarget, NavState>(
     }
 
     private fun createState(progress: Float): NavModel.Segment<NavTarget, NavState> {
-        val progress = progress.coerceAtLeast(1f)
+        val progress = progress.coerceAtLeast(minimumValue = 1f)
 
         /**
          *  Normally progress on any segment is a half-open interval: [0%, 100), so that

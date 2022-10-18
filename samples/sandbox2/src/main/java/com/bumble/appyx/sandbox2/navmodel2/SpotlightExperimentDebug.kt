@@ -5,6 +5,7 @@ import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,6 +17,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation2.inputsource.DebuglProgressInputSource
 import com.bumble.appyx.navmodel2.spotlight.Spotlight
 import com.bumble.appyx.navmodel2.spotlight.operation.first
@@ -74,6 +76,10 @@ fun SpotlightExperimentDebug() {
         })
 
         Children(
+            modifier = Modifier.padding(
+                horizontal = 64.dp,
+                vertical = 12.dp
+            ),
             renderParams = render.collectAsState(listOf()),
             onElementSizeChanged = { elementSize = it },
             element = {

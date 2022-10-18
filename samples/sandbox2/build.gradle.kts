@@ -52,6 +52,7 @@ android {
 dependencies {
     implementation(project(":libraries:core"))
     implementation(project(":samples:navmodel-samples"))
+    implementation(project(":samples:common"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)

@@ -17,15 +17,16 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.sandbox2.navmodel2.BackStackExperimentDebug
+import com.bumble.appyx.sandbox2.navmodel2.DatingCards
 import com.bumble.appyx.sandbox2.navmodel2.PromoterExperiment
 import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperiment
 import com.bumble.appyx.sandbox2.navmodel2.SpotlightExperimentDebug
@@ -56,12 +57,14 @@ class MainActivity : ComponentActivity() {
                             Button({ content = 1 }) { Text("2") }
                             Button({ content = 2 }) { Text("3") }
                             Button({ content = 3 }) { Text("4") }
+                            Button({ content = 4 }) { Text("5") }
                         }
                         when (content) {
                             0 -> PromoterExperiment()
                             1 -> SpotlightExperiment()
                             2 -> SpotlightExperimentDebug()
                             3 -> BackStackExperimentDebug()
+                            4 -> DatingCards()
                             else -> SpotlightExperiment()
                         }
                     }

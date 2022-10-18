@@ -35,10 +35,6 @@ fun <NavTarget, NavState> Children(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .padding(
-                horizontal = 64.dp,
-                vertical = 12.dp
-            )
             .onSizeChanged(onElementSizeChanged)
     ) {
         renderParams.value.forEach {

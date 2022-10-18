@@ -10,12 +10,10 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.navigation.transition.TransitionParams
-import com.bumble.appyx.core.navigation2.NavModel
 import com.bumble.appyx.core.navigation2.NavModel.Segment
 import com.bumble.appyx.core.navigation2.ui.RenderParams
 import com.bumble.appyx.core.navigation2.ui.UiProps
-import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerp
-import com.bumble.appyx.navmodel.promoter.navmodel2.Promoter
+import com.bumble.appyx.core.navigation2.ui.UiProps.Companion.lerpFloat
 import com.bumble.appyx.navmodel.promoter.navmodel2.Promoter.State
 import kotlin.math.cos
 import kotlin.math.min
@@ -104,13 +102,20 @@ class PromoterProps<NavTarget>(
             val angleRadians1 = Math.toRadians(props1.angleDegrees.toDouble() - 90)
 
             // Lerp block
-            val dpOffsetX = lerp(props0.dpOffset.x.value, props1.dpOffset.x.value, segment.progress)
-            val dpOffsetY = lerp(props0.dpOffset.y.value, props1.dpOffset.y.value, segment.progress)
-            val rotationY = lerp(props0.rotationY, props1.rotationY, segment.progress)
-            val rotationZ = lerp(props0.rotationZ, props1.rotationZ, segment.progress)
-            val scale = lerp(props0.scale, props1.scale, segment.progress)
-            val angleRadians = lerp(angleRadians0.toFloat(), angleRadians1.toFloat(), segment.progress)
-            val effectiveRadiusRatio = lerp(props0.effectiveRadiusRatio, props1.effectiveRadiusRatio, segment.progress)
+            val dpOffsetX =
+                lerpFloat(props0.dpOffset.x.value, props1.dpOffset.x.value, segment.progress)
+            val dpOffsetY =
+                lerpFloat(props0.dpOffset.y.value, props1.dpOffset.y.value, segment.progress)
+            val rotationY = lerpFloat(props0.rotationY, props1.rotationY, segment.progress)
+            val rotationZ = lerpFloat(props0.rotationZ, props1.rotationZ, segment.progress)
+            val scale = lerpFloat(props0.scale, props1.scale, segment.progress)
+            val angleRadians =
+                lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segment.progress)
+            val effectiveRadiusRatio = lerpFloat(
+                props0.effectiveRadiusRatio,
+                props1.effectiveRadiusRatio,
+                segment.progress
+            )
             val effectiveRadius = radiusDp * effectiveRadiusRatio
             val x = (effectiveRadius * cos(angleRadians))
             val y = (effectiveRadius * sin(angleRadians))
