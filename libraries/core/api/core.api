@@ -1,0 +1,1572 @@
+public final class com/bumble/appyx/Appyx {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/bumble/appyx/Appyx;
+	public final fun getDefaultChildKeepMode ()Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;
+	public final fun getExceptionHandler ()Lkotlin/jvm/functions/Function1;
+	public final fun reportException (Ljava/lang/Exception;)V
+	public final fun setDefaultChildKeepMode (Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;)V
+	public final fun setExceptionHandler (Lkotlin/jvm/functions/Function1;)V
+}
+
+public abstract class com/bumble/appyx/core/builder/Builder {
+	public static final field $stable I
+	public fun <init> ()V
+	public abstract fun build (Lcom/bumble/appyx/core/modality/BuildContext;Ljava/lang/Object;)Lcom/bumble/appyx/core/node/Node;
+}
+
+public abstract class com/bumble/appyx/core/builder/SimpleBuilder {
+	public static final field $stable I
+	public fun <init> ()V
+	public abstract fun build (Lcom/bumble/appyx/core/modality/BuildContext;)Lcom/bumble/appyx/core/node/Node;
+}
+
+public abstract interface class com/bumble/appyx/core/children/ChildAware : com/bumble/appyx/core/plugin/NodeAware {
+	public abstract fun whenChildAttached (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function2;)V
+	public abstract fun whenChildrenAttached (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
+}
+
+public final class com/bumble/appyx/core/children/ChildAware$DefaultImpls {
+	public static fun init (Lcom/bumble/appyx/core/children/ChildAware;Lcom/bumble/appyx/core/node/Node;)V
+}
+
+public final class com/bumble/appyx/core/children/ChildAwareImpl : com/bumble/appyx/core/children/ChildAware {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun getNode ()Lcom/bumble/appyx/core/node/Node;
+	public fun init (Lcom/bumble/appyx/core/node/Node;)V
+	public fun whenChildAttached (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function2;)V
+	public fun whenChildrenAttached (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
+}
+
+public abstract class com/bumble/appyx/core/children/ChildEntry {
+	public static final field $stable I
+	public fun equals (Ljava/lang/Object;)Z
+	public abstract fun getKey ()Lcom/bumble/appyx/core/navigation/NavKey;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/bumble/appyx/core/children/ChildEntry$Initialized : com/bumble/appyx/core/children/ChildEntry {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/navigation/NavKey;Lcom/bumble/appyx/core/node/Node;)V
+	public fun getKey ()Lcom/bumble/appyx/core/navigation/NavKey;
+	public final fun getNode ()Lcom/bumble/appyx/core/node/Node;
+}
+
+public final class com/bumble/appyx/core/children/ChildEntry$KeepMode : java/lang/Enum {
+	public static final field KEEP Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;
+	public static final field SUSPEND Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;
+	public static fun valueOf (Ljava/lang/String;)Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;
+	public static fun values ()[Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;
+}
+
+public final class com/bumble/appyx/core/children/ChildEntry$Suspended : com/bumble/appyx/core/children/ChildEntry {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/navigation/NavKey;Ljava/util/Map;)V
+	public fun getKey ()Lcom/bumble/appyx/core/navigation/NavKey;
+	public final fun getSavedState ()Ljava/util/Map;
+}
+
+public final class com/bumble/appyx/core/children/ChildEntryExtKt {
+	public static final fun getNodeOrNull (Lcom/bumble/appyx/core/children/ChildEntry;)Lcom/bumble/appyx/core/node/Node;
+}
+
+public class com/bumble/appyx/core/clienthelper/interactor/Interactor : com/bumble/appyx/core/children/ChildAware, com/bumble/appyx/core/plugin/NodeAware, com/bumble/appyx/core/plugin/NodeLifecycleAware, com/bumble/appyx/core/plugin/SavesInstanceState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lcom/bumble/appyx/core/children/ChildAware;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/children/ChildAware;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getNode ()Lcom/bumble/appyx/core/node/Node;
+	public fun init (Lcom/bumble/appyx/core/node/Node;)V
+	public fun onCreate (Landroidx/lifecycle/Lifecycle;)V
+	public fun saveInstanceState (Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+	public fun whenChildAttached (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function2;)V
+	public fun whenChildrenAttached (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
+}
+
+public final class com/bumble/appyx/core/composable/ChildKt {
+	public static final fun Child (Lcom/bumble/appyx/core/node/ParentNode;Lcom/bumble/appyx/core/navigation/NavElement;Landroidx/compose/runtime/saveable/SaveableStateHolder;Lcom/bumble/appyx/core/navigation/transition/TransitionParams;Lcom/bumble/appyx/core/navigation/transition/TransitionHandler;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;I)V
+	public static final fun Child (Lcom/bumble/appyx/core/node/ParentNode;Lcom/bumble/appyx/core/navigation/NavElement;Landroidx/compose/ui/Modifier;Lcom/bumble/appyx/core/navigation/transition/TransitionHandler;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;II)V
+	public static final fun childrenAsState (Lcom/bumble/appyx/core/navigation/NavModel;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+	public static final fun visibleChildrenAsState (Lcom/bumble/appyx/core/navigation/NavModel;Landroidx/compose/runtime/Composer;I)Landroidx/compose/runtime/State;
+}
+
+public abstract interface class com/bumble/appyx/core/composable/ChildRenderer {
+	public abstract fun invoke (Landroidx/compose/runtime/Composer;I)V
+	public abstract fun invoke (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public abstract interface class com/bumble/appyx/core/composable/ChildTransitionScope {
+	public abstract fun getTransition ()Landroidx/compose/animation/core/Transition;
+	public abstract fun getTransitionModifier ()Landroidx/compose/ui/Modifier;
+}
+
+public final class com/bumble/appyx/core/composable/ChildrenTransitionScope {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/navigation/transition/TransitionHandler;Lcom/bumble/appyx/core/navigation/transition/TransitionParams;Lcom/bumble/appyx/core/navigation/NavModel;)V
+	public final fun children (Lcom/bumble/appyx/core/node/ParentNode;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function4;Landroidx/compose/runtime/Composer;I)V
+	public final fun children (Lcom/bumble/appyx/core/node/ParentNode;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function5;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/bumble/appyx/core/composable/ComposableSingletons$ChildKt {
+	public static final field INSTANCE Lcom/bumble/appyx/core/composable/ComposableSingletons$ChildKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function5;
+	public fun <init> ()V
+	public final fun getLambda-1$core_release ()Lkotlin/jvm/functions/Function5;
+}
+
+public final class com/bumble/appyx/core/composable/ComposableSingletons$ChildrenKt {
+	public static final field INSTANCE Lcom/bumble/appyx/core/composable/ComposableSingletons$ChildrenKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function4;
+	public fun <init> ()V
+	public final fun getLambda-1$core_release ()Lkotlin/jvm/functions/Function4;
+}
+
+public abstract interface class com/bumble/appyx/core/integration/NodeFactory {
+	public abstract fun create (Lcom/bumble/appyx/core/modality/BuildContext;)Lcom/bumble/appyx/core/node/Node;
+}
+
+public final class com/bumble/appyx/core/integration/NodeHostKt {
+	public static final fun NodeHost (Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;Landroidx/compose/ui/Modifier;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;Lcom/bumble/appyx/core/integration/NodeFactory;Landroidx/compose/runtime/Composer;II)V
+}
+
+public class com/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint : com/bumble/appyx/core/integrationpoint/IntegrationPoint {
+	public static final field $stable I
+	public static final field Companion Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint$Companion;
+	public fun <init> (Landroid/app/Activity;Landroid/os/Bundle;)V
+	public fun getActivityStarter ()Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter;
+	public fun getPermissionRequester ()Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester;
+	public fun handleUpNavigation ()V
+	public final fun onActivityResult (IILandroid/content/Intent;)V
+	public final fun onRequestPermissionsResult (I[Ljava/lang/String;[I)V
+	public fun onRootFinished ()V
+}
+
+public final class com/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint$Companion {
+	public final fun getIntegrationPoint (Landroid/content/Context;)Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;
+}
+
+public abstract class com/bumble/appyx/core/integrationpoint/IntegrationPoint : com/bumble/appyx/core/navigation/upnavigation/UpNavigationHandler {
+	public fun <init> (Landroid/os/Bundle;)V
+	public abstract fun getActivityStarter ()Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter;
+	public abstract fun getPermissionRequester ()Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester;
+	protected final fun getRequestCodeRegistry ()Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;
+	protected final fun getSavedInstanceState ()Landroid/os/Bundle;
+	public abstract fun onRootFinished ()V
+	public final fun onSaveInstanceState (Landroid/os/Bundle;)V
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/IntegrationPointProvider {
+	public abstract fun getAppyxIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;
+}
+
+public final class com/bumble/appyx/core/integrationpoint/IntegrationPointStub : com/bumble/appyx/core/integrationpoint/IntegrationPoint {
+	public static final field $stable I
+	public static final field Companion Lcom/bumble/appyx/core/integrationpoint/IntegrationPointStub$Companion;
+	public fun <init> ()V
+	public fun getActivityStarter ()Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter;
+	public fun getPermissionRequester ()Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester;
+	public fun handleUpNavigation ()V
+	public fun onRootFinished ()V
+}
+
+public final class com/bumble/appyx/core/integrationpoint/IntegrationPointStub$Companion {
+}
+
+public final class com/bumble/appyx/core/integrationpoint/LocalIntegrationPointKt {
+	public static final fun getLocalIntegrationPoint ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
+public class com/bumble/appyx/core/integrationpoint/NodeActivity : androidx/appcompat/app/AppCompatActivity, com/bumble/appyx/core/integrationpoint/IntegrationPointProvider {
+	public static final field $stable I
+	protected field appyxIntegrationPoint Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public fun <init> ()V
+	protected fun createIntegrationPoint (Landroid/os/Bundle;)Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public fun getAppyxIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public synthetic fun getAppyxIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;
+	protected fun onActivityResult (IILandroid/content/Intent;)V
+	protected fun onCreate (Landroid/os/Bundle;)V
+	public fun onRequestPermissionsResult (I[Ljava/lang/String;[I)V
+	protected fun onSaveInstanceState (Landroid/os/Bundle;)V
+	protected fun setAppyxIntegrationPoint (Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;)V
+}
+
+public class com/bumble/appyx/core/integrationpoint/NodeComponentActivity : androidx/activity/ComponentActivity, com/bumble/appyx/core/integrationpoint/IntegrationPointProvider {
+	public static final field $stable I
+	protected field appyxIntegrationPoint Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public fun <init> ()V
+	protected fun createIntegrationPoint (Landroid/os/Bundle;)Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public fun getAppyxIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public synthetic fun getAppyxIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;
+	protected fun onActivityResult (IILandroid/content/Intent;)V
+	protected fun onCreate (Landroid/os/Bundle;)V
+	public fun onRequestPermissionsResult (I[Ljava/lang/String;[I)V
+	protected fun onSaveInstanceState (Landroid/os/Bundle;)V
+	protected fun setAppyxIntegrationPoint (Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;)V
+}
+
+public final class com/bumble/appyx/core/integrationpoint/activitystarter/ActivityBoundary : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStreamImpl, com/bumble/appyx/core/integrationpoint/activitystarter/ActivityResultHandler, com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter {
+	public static final field $stable I
+	public fun <init> (Landroid/app/Activity;Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;)V
+	public fun <init> (Landroidx/fragment/app/Fragment;Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;)V
+	public fun <init> (Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarterHost;Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;)V
+	public fun onActivityResult (IILandroid/content/Intent;)V
+	public fun startActivity (Lkotlin/jvm/functions/Function1;)V
+	public fun startActivityForResult (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;ILkotlin/jvm/functions/Function1;)V
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/activitystarter/ActivityResultHandler {
+	public abstract fun onActivityResult (IILandroid/content/Intent;)V
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream {
+	public abstract fun startActivity (Lkotlin/jvm/functions/Function1;)V
+	public abstract fun startActivityForResult (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;ILkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter$ActivityResultEvent : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream$RequestCodeBasedEvent {
+	public static final field $stable I
+	public fun <init> (IILandroid/content/Intent;)V
+	public final fun component1 ()I
+	public final fun component2 ()I
+	public final fun component3 ()Landroid/content/Intent;
+	public final fun copy (IILandroid/content/Intent;)Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter$ActivityResultEvent;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter$ActivityResultEvent;IILandroid/content/Intent;ILjava/lang/Object;)Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter$ActivityResultEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getData ()Landroid/content/Intent;
+	public fun getRequestCode ()I
+	public final fun getResultCode ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarterHost {
+	public abstract fun getContext ()Landroid/content/Context;
+	public abstract fun startActivity (Landroid/content/Intent;)V
+	public abstract fun startActivityForResult (Landroid/content/Intent;I)V
+}
+
+public final class com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarterHost$ActivityHost : com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarterHost {
+	public static final field $stable I
+	public fun <init> (Landroid/app/Activity;)V
+	public fun getContext ()Landroid/content/Context;
+	public fun startActivity (Landroid/content/Intent;)V
+	public fun startActivityForResult (Landroid/content/Intent;I)V
+}
+
+public final class com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarterHost$FragmentHost : com/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarterHost {
+	public static final field $stable I
+	public fun <init> (Landroidx/fragment/app/Fragment;)V
+	public fun getContext ()Landroid/content/Context;
+	public fun startActivity (Landroid/content/Intent;)V
+	public fun startActivityForResult (Landroid/content/Intent;I)V
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/activitystarter/CanProvideActivityStarter {
+	public abstract fun getActivityStarter ()Lcom/bumble/appyx/core/integrationpoint/activitystarter/ActivityStarter;
+}
+
+public final class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequestBoundary : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStreamImpl, com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequestResultHandler, com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester {
+	public static final field $stable I
+	public fun <init> (Landroid/app/Activity;Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;)V
+	public fun <init> (Landroidx/fragment/app/Fragment;Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;)V
+	public fun <init> (Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequesterHost;Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;)V
+	public fun checkPermissions (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;[Ljava/lang/String;)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$CheckPermissionsResult;
+	public fun onRequestPermissionsResult (I[Ljava/lang/String;[I)V
+	public fun requestPermissions (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;I[Ljava/lang/String;)V
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequestResultHandler {
+	public abstract fun onRequestPermissionsResult (I[Ljava/lang/String;[I)V
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream {
+	public abstract fun checkPermissions (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;[Ljava/lang/String;)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$CheckPermissionsResult;
+	public abstract fun requestPermissions (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;I[Ljava/lang/String;)V
+}
+
+public final class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$CheckPermissionsResult {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;Ljava/util/List;Ljava/util/List;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;Ljava/util/List;)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$CheckPermissionsResult;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$CheckPermissionsResult;Ljava/util/List;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$CheckPermissionsResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAllGranted ()Z
+	public final fun getGranted ()Ljava/util/List;
+	public final fun getNotGranted ()Ljava/util/List;
+	public final fun getShouldShowRationale ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream$RequestCodeBasedEvent {
+	public static final field $stable I
+}
+
+public final class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$Cancelled : com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent {
+	public static final field $stable I
+	public fun <init> (I)V
+	public final fun component1 ()I
+	public final fun copy (I)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$Cancelled;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$Cancelled;IILjava/lang/Object;)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$Cancelled;
+	public fun equals (Ljava/lang/Object;)Z
+	public fun getRequestCode ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$RequestPermissionsResult : com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent {
+	public static final field $stable I
+	public fun <init> (ILjava/util/List;Ljava/util/List;)V
+	public final fun component1 ()I
+	public final fun component2 ()Ljava/util/List;
+	public final fun component3 ()Ljava/util/List;
+	public final fun copy (ILjava/util/List;Ljava/util/List;)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$RequestPermissionsResult;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$RequestPermissionsResult;ILjava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequester$RequestPermissionsEvent$RequestPermissionsResult;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getDenied ()Ljava/util/List;
+	public final fun getGranted ()Ljava/util/List;
+	public fun getRequestCode ()I
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequesterHost {
+	public abstract fun isGranted (Ljava/lang/String;)Z
+	public abstract fun requestPermissions (I[Ljava/lang/String;)V
+	public abstract fun shouldShowRationale (Ljava/lang/String;)Z
+}
+
+public final class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequesterHost$ActivityHost : com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequesterHost {
+	public static final field $stable I
+	public fun <init> (Landroid/app/Activity;)V
+	public fun isGranted (Ljava/lang/String;)Z
+	public fun requestPermissions (I[Ljava/lang/String;)V
+	public fun shouldShowRationale (Ljava/lang/String;)Z
+}
+
+public final class com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequesterHost$FragmentHost : com/bumble/appyx/core/integrationpoint/permissionrequester/PermissionRequesterHost {
+	public static final field $stable I
+	public fun <init> (Landroidx/fragment/app/Fragment;)V
+	public fun isGranted (Ljava/lang/String;)Z
+	public fun requestPermissions (I[Ljava/lang/String;)V
+	public fun shouldShowRationale (Ljava/lang/String;)Z
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream {
+	public abstract fun events (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream$RequestCodeBasedEvent {
+	public abstract fun getRequestCode ()I
+}
+
+public class com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStreamImpl : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;Lkotlinx/coroutines/CoroutineScope;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry;Lkotlinx/coroutines/CoroutineScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun events (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;)Lkotlinx/coroutines/flow/Flow;
+	protected final fun forgeExternalRequestCode (Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient;I)I
+	protected final fun getScope ()Lkotlinx/coroutines/CoroutineScope;
+	protected final fun publish (ILcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeBasedEventStream$RequestCodeBasedEvent;)V
+	protected final fun toInternalRequestCode (I)I
+}
+
+public abstract interface class com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient {
+	public abstract fun getRequestCodeClientId ()Ljava/lang/String;
+}
+
+public final class com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeDoesntFitInMask : java/lang/RuntimeException {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/String;)V
+	public fun getMessage ()Ljava/lang/String;
+}
+
+public final class com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry {
+	public static final field $stable I
+	public static final field Companion Lcom/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry$Companion;
+	public fun <init> (Landroid/os/Bundle;I)V
+	public synthetic fun <init> (Landroid/os/Bundle;IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun generateGroupId (Ljava/lang/String;)I
+	public final fun generateRequestCode (Ljava/lang/String;I)I
+	public final fun onSaveInstanceState (Landroid/os/Bundle;)V
+	public final fun resolveGroupId (I)I
+	public final fun resolveRequestCode (I)I
+}
+
+public final class com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeRegistry$Companion {
+}
+
+public final class com/bumble/appyx/core/lifecycle/LifecycleExtKt {
+	public static final fun asFlow (Landroidx/lifecycle/Lifecycle;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun asFlow (Landroidx/lifecycle/LifecycleOwner;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun subscribe (Landroidx/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;)V
+	public static synthetic fun subscribe$default (Landroidx/lifecycle/Lifecycle;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;Lkotlin/jvm/functions/Function0;ILjava/lang/Object;)V
+}
+
+public abstract interface class com/bumble/appyx/core/lifecycle/NodeLifecycle : androidx/lifecycle/LifecycleOwner {
+	public abstract fun updateLifecycleState (Landroidx/lifecycle/Lifecycle$State;)V
+}
+
+public abstract class com/bumble/appyx/core/modality/AncestryInfo {
+	public static final field $stable I
+}
+
+public final class com/bumble/appyx/core/modality/AncestryInfo$Child : com/bumble/appyx/core/modality/AncestryInfo {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/node/ParentNode;)V
+	public final fun component1 ()Lcom/bumble/appyx/core/node/ParentNode;
+	public final fun copy (Lcom/bumble/appyx/core/node/ParentNode;)Lcom/bumble/appyx/core/modality/AncestryInfo$Child;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/modality/AncestryInfo$Child;Lcom/bumble/appyx/core/node/ParentNode;ILjava/lang/Object;)Lcom/bumble/appyx/core/modality/AncestryInfo$Child;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAnchor ()Lcom/bumble/appyx/core/node/ParentNode;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/bumble/appyx/core/modality/AncestryInfo$Root : com/bumble/appyx/core/modality/AncestryInfo {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/bumble/appyx/core/modality/AncestryInfo$Root;
+}
+
+public final class com/bumble/appyx/core/modality/BuildContext {
+	public static final field $stable I
+	public static final field Companion Lcom/bumble/appyx/core/modality/BuildContext$Companion;
+	public fun <init> (Lcom/bumble/appyx/core/modality/AncestryInfo;Ljava/util/Map;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;)V
+	public final fun component1 ()Lcom/bumble/appyx/core/modality/AncestryInfo;
+	public final fun component2 ()Ljava/util/Map;
+	public final fun component3 ()Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+	public final fun copy (Lcom/bumble/appyx/core/modality/AncestryInfo;Ljava/util/Map;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;)Lcom/bumble/appyx/core/modality/BuildContext;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/modality/BuildContext;Lcom/bumble/appyx/core/modality/AncestryInfo;Ljava/util/Map;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;ILjava/lang/Object;)Lcom/bumble/appyx/core/modality/BuildContext;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getAncestryInfo ()Lcom/bumble/appyx/core/modality/AncestryInfo;
+	public final fun getCustomisations ()Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+	public final fun getOrDefault (Lcom/bumble/appyx/utils/customisations/NodeCustomisation;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+	public final fun getSavedStateMap ()Ljava/util/Map;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/bumble/appyx/core/modality/BuildContext$Companion {
+	public final fun root (Ljava/util/Map;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;)Lcom/bumble/appyx/core/modality/BuildContext;
+	public static synthetic fun root$default (Lcom/bumble/appyx/core/modality/BuildContext$Companion;Ljava/util/Map;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;ILjava/lang/Object;)Lcom/bumble/appyx/core/modality/BuildContext;
+}
+
+public abstract class com/bumble/appyx/core/navigation/BaseNavModel : com/bumble/appyx/core/navigation/NavModel, com/bumble/appyx/core/plugin/BackPressHandler, com/bumble/appyx/core/plugin/Destroyable {
+	public static final field $stable I
+	public static final field Companion Lcom/bumble/appyx/core/navigation/BaseNavModel$Companion;
+	public static final field KEY_NAV_MODEL Ljava/lang/String;
+	public fun <init> (Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/Object;Ljava/lang/String;Ljava/util/Map;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;Lkotlinx/coroutines/CoroutineScope;Ljava/lang/Object;Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> (Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;Lkotlinx/coroutines/CoroutineScope;Ljava/util/Set;Ljava/lang/String;Ljava/util/Map;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;Lkotlinx/coroutines/CoroutineScope;Ljava/util/Set;Ljava/lang/String;Ljava/util/Map;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+	public fun destroy ()V
+	protected fun finishTransitionOrRemove (Lcom/bumble/appyx/core/navigation/NavElement;)Lcom/bumble/appyx/core/navigation/NavElement;
+	public fun getElements ()Lkotlinx/coroutines/flow/StateFlow;
+	protected final fun getFinalStates ()Ljava/util/Set;
+	protected abstract fun getInitialElements ()Ljava/util/List;
+	public fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
+	public fun getOnBackPressedCallbackList ()Ljava/util/List;
+	protected final fun getScope ()Lkotlinx/coroutines/CoroutineScope;
+	public fun getScreenState ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun handleOnBackPressed ()Z
+	public fun handleUpNavigation ()Z
+	protected final fun isFinalState (Ljava/lang/Object;)Z
+	public fun onTransitionFinished (Lcom/bumble/appyx/core/navigation/NavKey;)V
+	public fun onTransitionFinished (Ljava/util/Collection;)V
+	protected final fun sanitizeOffScreenTransitions (Ljava/util/List;)Ljava/util/List;
+	public fun saveInstanceState (Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+	protected final fun updateState (Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/bumble/appyx/core/navigation/BaseNavModel$Companion {
+}
+
+public final class com/bumble/appyx/core/navigation/NavElement : android/os/Parcelable {
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Lcom/bumble/appyx/core/navigation/NavKey;Ljava/lang/Object;Ljava/lang/Object;Lcom/bumble/appyx/core/navigation/Operation;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/navigation/NavKey;Ljava/lang/Object;Ljava/lang/Object;Lcom/bumble/appyx/core/navigation/Operation;Ljava/util/List;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getFromState ()Ljava/lang/Object;
+	public final fun getKey ()Lcom/bumble/appyx/core/navigation/NavKey;
+	public final fun getOperation ()Lcom/bumble/appyx/core/navigation/Operation;
+	public final fun getTargetState ()Ljava/lang/Object;
+	public final fun getTransitionHistory ()Ljava/util/List;
+	public fun hashCode ()I
+	public final fun onTransitionFinished ()Lcom/bumble/appyx/core/navigation/NavElement;
+	public fun toString ()Ljava/lang/String;
+	public final fun transitionTo (Ljava/lang/Object;Lcom/bumble/appyx/core/navigation/Operation;)Lcom/bumble/appyx/core/navigation/NavElement;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/core/navigation/NavElement$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/core/navigation/NavElement;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/core/navigation/NavElement;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/core/navigation/NavElementExtKt {
+	public static final fun isTransitioning (Lcom/bumble/appyx/core/navigation/NavElement;)Z
+}
+
+public final class com/bumble/appyx/core/navigation/NavKey : android/os/Parcelable {
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/Object;)V
+	public synthetic fun <init> (Ljava/lang/Object;Ljava/lang/String;Lkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getId ()Ljava/lang/String;
+	public final fun getNavTarget ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/core/navigation/NavKey$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/core/navigation/NavKey;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/core/navigation/NavKey;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/NavModel : com/bumble/appyx/core/navigation/NavModelAdapter, com/bumble/appyx/core/plugin/BackPressHandler, com/bumble/appyx/core/plugin/SavesInstanceState, com/bumble/appyx/core/plugin/UpNavigationHandler {
+	public abstract fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+	public abstract fun getElements ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun handleUpNavigation ()Z
+	public abstract fun onTransitionFinished (Lcom/bumble/appyx/core/navigation/NavKey;)V
+	public abstract fun onTransitionFinished (Ljava/util/Collection;)V
+}
+
+public final class com/bumble/appyx/core/navigation/NavModel$DefaultImpls {
+	public static fun accept (Lcom/bumble/appyx/core/navigation/NavModel;Lcom/bumble/appyx/core/navigation/Operation;)V
+	public static fun getOnBackPressedCallback (Lcom/bumble/appyx/core/navigation/NavModel;)Landroidx/activity/OnBackPressedCallback;
+	public static fun getOnBackPressedCallbackList (Lcom/bumble/appyx/core/navigation/NavModel;)Ljava/util/List;
+	public static fun handleOnBackPressed (Lcom/bumble/appyx/core/navigation/NavModel;)Z
+	public static fun handleUpNavigation (Lcom/bumble/appyx/core/navigation/NavModel;)Z
+	public static fun onTransitionFinished (Lcom/bumble/appyx/core/navigation/NavModel;Lcom/bumble/appyx/core/navigation/NavKey;)V
+	public static fun saveInstanceState (Lcom/bumble/appyx/core/navigation/NavModel;Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/NavModelAdapter {
+	public abstract fun getScreenState ()Lkotlinx/coroutines/flow/StateFlow;
+}
+
+public final class com/bumble/appyx/core/navigation/NavModelAdapter$ScreenState {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Ljava/util/List;Ljava/util/List;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1 ()Ljava/util/List;
+	public final fun component2 ()Ljava/util/List;
+	public final fun copy (Ljava/util/List;Ljava/util/List;)Lcom/bumble/appyx/core/navigation/NavModelAdapter$ScreenState;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/navigation/NavModelAdapter$ScreenState;Ljava/util/List;Ljava/util/List;ILjava/lang/Object;)Lcom/bumble/appyx/core/navigation/NavModelAdapter$ScreenState;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getOffScreen ()Ljava/util/List;
+	public final fun getOnScreen ()Ljava/util/List;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/Operation : android/os/Parcelable, kotlin/jvm/functions/Function1 {
+	public abstract fun isApplicable (Ljava/util/List;)Z
+	public abstract fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public abstract fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public abstract fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public abstract fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+}
+
+public final class com/bumble/appyx/core/navigation/Operation$DefaultImpls {
+	public static fun transitionTo (Lcom/bumble/appyx/core/navigation/Operation;Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public static fun transitionTo (Lcom/bumble/appyx/core/navigation/Operation;Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static fun transitionTo (Lcom/bumble/appyx/core/navigation/Operation;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static fun transitionToIndexed (Lcom/bumble/appyx/core/navigation/Operation;Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+}
+
+public final class com/bumble/appyx/core/navigation/Operation$Noop : com/bumble/appyx/core/navigation/Operation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> ()V
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/core/navigation/Operation$Noop$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/core/navigation/Operation$Noop;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/core/navigation/Operation$Noop;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/Resolver {
+	public abstract fun resolve (Ljava/lang/Object;Lcom/bumble/appyx/core/modality/BuildContext;)Lcom/bumble/appyx/core/node/Node;
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy {
+	public abstract fun getCanHandleBackPress ()Lkotlinx/coroutines/flow/StateFlow;
+	public abstract fun init (Lcom/bumble/appyx/core/navigation/BaseNavModel;Lkotlinx/coroutines/CoroutineScope;)V
+	public abstract fun onBackPressed ()V
+}
+
+public abstract class com/bumble/appyx/core/navigation/backpresshandlerstrategies/BaseBackPressHandlerStrategy : com/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy {
+	public static final field $stable I
+	protected field navModel Lcom/bumble/appyx/core/navigation/BaseNavModel;
+	protected field scope Lkotlinx/coroutines/CoroutineScope;
+	public fun <init> ()V
+	public fun getCanHandleBackPress ()Lkotlinx/coroutines/flow/StateFlow;
+	protected abstract fun getCanHandleBackPressFlow ()Lkotlinx/coroutines/flow/Flow;
+	protected final fun getNavModel ()Lcom/bumble/appyx/core/navigation/BaseNavModel;
+	protected final fun getScope ()Lkotlinx/coroutines/CoroutineScope;
+	public fun init (Lcom/bumble/appyx/core/navigation/BaseNavModel;Lkotlinx/coroutines/CoroutineScope;)V
+	protected final fun setNavModel (Lcom/bumble/appyx/core/navigation/BaseNavModel;)V
+	protected final fun setScope (Lkotlinx/coroutines/CoroutineScope;)V
+}
+
+public final class com/bumble/appyx/core/navigation/backpresshandlerstrategies/DontHandleBackPress : com/bumble/appyx/core/navigation/backpresshandlerstrategies/BaseBackPressHandlerStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun onBackPressed ()V
+}
+
+public final class com/bumble/appyx/core/navigation/model/combined/CombinedNavModel : com/bumble/appyx/core/navigation/NavModel, com/bumble/appyx/core/plugin/Destroyable {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;)V
+	public fun <init> ([Lcom/bumble/appyx/core/navigation/NavModel;)V
+	public fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+	public fun destroy ()V
+	public fun getElements ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getNavModels ()Ljava/util/List;
+	public fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
+	public fun getOnBackPressedCallbackList ()Ljava/util/List;
+	public fun getScreenState ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun handleOnBackPressed ()Z
+	public fun handleUpNavigation ()Z
+	public fun onTransitionFinished (Lcom/bumble/appyx/core/navigation/NavKey;)V
+	public fun onTransitionFinished (Ljava/util/Collection;)V
+	public fun saveInstanceState (Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+}
+
+public final class com/bumble/appyx/core/navigation/model/combined/NavModelExtKt {
+	public static final fun plus (Lcom/bumble/appyx/core/navigation/NavModel;Lcom/bumble/appyx/core/navigation/NavModel;)Lcom/bumble/appyx/core/navigation/model/combined/CombinedNavModel;
+}
+
+public final class com/bumble/appyx/core/navigation/model/permanent/PermanentNavModel : com/bumble/appyx/core/navigation/NavModel {
+	public static final field $stable I
+	public fun <init> (Ljava/util/Set;Ljava/util/Map;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/util/Set;Ljava/util/Map;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun <init> ([Ljava/lang/Object;Ljava/util/Map;Ljava/lang/String;)V
+	public synthetic fun <init> ([Ljava/lang/Object;Ljava/util/Map;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+	public fun getElements ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
+	public fun getOnBackPressedCallbackList ()Ljava/util/List;
+	public fun getScreenState ()Lkotlinx/coroutines/flow/StateFlow;
+	public fun handleOnBackPressed ()Z
+	public fun handleUpNavigation ()Z
+	public fun onTransitionFinished (Lcom/bumble/appyx/core/navigation/NavKey;)V
+	public fun onTransitionFinished (Ljava/util/Collection;)V
+	public fun saveInstanceState (Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+}
+
+public final class com/bumble/appyx/core/navigation/model/permanent/operation/Add : com/bumble/appyx/core/navigation/model/permanent/operation/PermanentOperation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Lcom/bumble/appyx/core/navigation/NavKey;)V
+	public final fun copy (Lcom/bumble/appyx/core/navigation/NavKey;)Lcom/bumble/appyx/core/navigation/model/permanent/operation/Add;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/navigation/model/permanent/operation/Add;Lcom/bumble/appyx/core/navigation/NavKey;ILjava/lang/Object;)Lcom/bumble/appyx/core/navigation/model/permanent/operation/Add;
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun toString ()Ljava/lang/String;
+	public fun transitionTo (Ljava/util/List;I)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;ILkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;ILkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/core/navigation/model/permanent/operation/Add$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/core/navigation/model/permanent/operation/Add;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/core/navigation/model/permanent/operation/Add;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/core/navigation/model/permanent/operation/AddKt {
+	public static final fun add (Lcom/bumble/appyx/core/navigation/model/permanent/PermanentNavModel;Lcom/bumble/appyx/core/navigation/NavKey;)V
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/model/permanent/operation/PermanentOperation : com/bumble/appyx/core/navigation/Operation {
+}
+
+public final class com/bumble/appyx/core/navigation/model/permanent/operation/PermanentOperation$DefaultImpls {
+	public static fun transitionTo (Lcom/bumble/appyx/core/navigation/model/permanent/operation/PermanentOperation;Ljava/util/List;I)Ljava/util/List;
+	public static fun transitionTo (Lcom/bumble/appyx/core/navigation/model/permanent/operation/PermanentOperation;Ljava/util/List;ILkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static fun transitionTo (Lcom/bumble/appyx/core/navigation/model/permanent/operation/PermanentOperation;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static fun transitionToIndexed (Lcom/bumble/appyx/core/navigation/model/permanent/operation/PermanentOperation;Ljava/util/List;ILkotlin/jvm/functions/Function2;)Ljava/util/List;
+}
+
+public final class com/bumble/appyx/core/navigation/onscreen/AlwaysOnScreenResolver : com/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun isOnScreen (Ljava/lang/Object;)Z
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver {
+	public abstract fun isOnScreen (Ljava/lang/Object;)Z
+}
+
+public final class com/bumble/appyx/core/navigation/onscreen/OnScreenStateResolverExtKt {
+	public static final fun isOnScreen (Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;Lcom/bumble/appyx/core/navigation/NavElement;)Z
+}
+
+public abstract class com/bumble/appyx/core/navigation/operationstrategies/BaseOperationStrategy : com/bumble/appyx/core/navigation/operationstrategies/OperationStrategy {
+	public static final field $stable I
+	protected field executeOperation Lkotlin/jvm/functions/Function1;
+	protected field navModel Lcom/bumble/appyx/core/navigation/NavModel;
+	protected field scope Lkotlinx/coroutines/CoroutineScope;
+	public fun <init> ()V
+	protected final fun getExecuteOperation ()Lkotlin/jvm/functions/Function1;
+	protected final fun getNavModel ()Lcom/bumble/appyx/core/navigation/NavModel;
+	protected final fun getScope ()Lkotlinx/coroutines/CoroutineScope;
+	public fun init (Lcom/bumble/appyx/core/navigation/NavModel;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)V
+	protected final fun setExecuteOperation (Lkotlin/jvm/functions/Function1;)V
+	protected final fun setNavModel (Lcom/bumble/appyx/core/navigation/NavModel;)V
+	protected final fun setScope (Lkotlinx/coroutines/CoroutineScope;)V
+}
+
+public final class com/bumble/appyx/core/navigation/operationstrategies/ExecuteImmediately : com/bumble/appyx/core/navigation/operationstrategies/BaseOperationStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+}
+
+public final class com/bumble/appyx/core/navigation/operationstrategies/FinishTransitionsOnNewOperation : com/bumble/appyx/core/navigation/operationstrategies/BaseOperationStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+}
+
+public final class com/bumble/appyx/core/navigation/operationstrategies/IgnoreIfThereAreUnfinishedTransitions : com/bumble/appyx/core/navigation/operationstrategies/BaseOperationStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/operationstrategies/OperationStrategy {
+	public abstract fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+	public abstract fun init (Lcom/bumble/appyx/core/navigation/NavModel;Lkotlinx/coroutines/CoroutineScope;Lkotlin/jvm/functions/Function1;)V
+}
+
+public final class com/bumble/appyx/core/navigation/operationstrategies/QueueOperations : com/bumble/appyx/core/navigation/operationstrategies/BaseOperationStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun accept (Lcom/bumble/appyx/core/navigation/Operation;)V
+}
+
+public final class com/bumble/appyx/core/navigation/transition/CombinedHandler : com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;)Landroidx/compose/ui/Modifier;
+}
+
+public final class com/bumble/appyx/core/navigation/transition/CombinedHandlerKt {
+	public static final fun rememberCombinedHandler (Ljava/util/List;Landroidx/compose/runtime/Composer;I)Lcom/bumble/appyx/core/navigation/transition/ModifierTransitionHandler;
+}
+
+public final class com/bumble/appyx/core/navigation/transition/JumpToEndTransitionHandler : com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun createModifier (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;)Landroidx/compose/ui/Modifier;
+}
+
+public abstract class com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler : com/bumble/appyx/core/navigation/transition/TransitionHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Z)V
+	public synthetic fun <init> (ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public abstract fun createModifier (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;)Landroidx/compose/ui/Modifier;
+	public fun getClipToBounds ()Z
+	public fun handle (Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Lcom/bumble/appyx/core/composable/ChildTransitionScope;
+}
+
+public final class com/bumble/appyx/core/navigation/transition/TransitionBounds {
+	public synthetic fun <init> (FFLkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun component1-D9Ej5fM ()F
+	public final fun component2-D9Ej5fM ()F
+	public final fun copy-YgX7TsA (FF)Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;
+	public static synthetic fun copy-YgX7TsA$default (Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;FFILjava/lang/Object;)Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getHeight-D9Ej5fM ()F
+	public final fun getWidth-D9Ej5fM ()F
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/bumble/appyx/core/navigation/transition/TransitionDescriptor {
+	public fun <init> (Lcom/bumble/appyx/core/navigation/transition/TransitionParams;Lcom/bumble/appyx/core/navigation/Operation;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Lcom/bumble/appyx/core/navigation/transition/TransitionParams;
+	public final fun component2 ()Lcom/bumble/appyx/core/navigation/Operation;
+	public final fun component3 ()Ljava/lang/Object;
+	public final fun component4 ()Ljava/lang/Object;
+	public final fun component5 ()Ljava/lang/Object;
+	public final fun copy (Lcom/bumble/appyx/core/navigation/transition/TransitionParams;Lcom/bumble/appyx/core/navigation/Operation;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;Lcom/bumble/appyx/core/navigation/transition/TransitionParams;Lcom/bumble/appyx/core/navigation/Operation;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getElement ()Ljava/lang/Object;
+	public final fun getFromState ()Ljava/lang/Object;
+	public final fun getOperation ()Lcom/bumble/appyx/core/navigation/Operation;
+	public final fun getParams ()Lcom/bumble/appyx/core/navigation/transition/TransitionParams;
+	public final fun getToState ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/transition/TransitionHandler {
+	public abstract fun handle (Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;Lkotlin/jvm/functions/Function1;Landroidx/compose/runtime/Composer;I)Lcom/bumble/appyx/core/composable/ChildTransitionScope;
+}
+
+public final class com/bumble/appyx/core/navigation/transition/TransitionParams {
+	public fun <init> (Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;)V
+	public final fun component1 ()Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;
+	public final fun copy (Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;)Lcom/bumble/appyx/core/navigation/transition/TransitionParams;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/core/navigation/transition/TransitionParams;Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;ILjava/lang/Object;)Lcom/bumble/appyx/core/navigation/transition/TransitionParams;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getBounds ()Lcom/bumble/appyx/core/navigation/transition/TransitionBounds;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+
+public abstract interface class com/bumble/appyx/core/navigation/upnavigation/UpNavigationHandler {
+	public abstract fun handleUpNavigation ()V
+}
+
+public class com/bumble/appyx/core/node/ComposableNode : com/bumble/appyx/core/node/Node {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/modality/BuildContext;Lkotlin/jvm/functions/Function3;)V
+	public fun View (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/bumble/appyx/core/node/ComposableNodeKt {
+	public static final fun node (Lcom/bumble/appyx/core/modality/BuildContext;Lkotlin/jvm/functions/Function3;)Lcom/bumble/appyx/core/node/Node;
+}
+
+public final class com/bumble/appyx/core/node/ComposableSingletons$ParentNodeKt {
+	public static final field INSTANCE Lcom/bumble/appyx/core/node/ComposableSingletons$ParentNodeKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$core_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/bumble/appyx/core/node/EmptyNodeView : com/bumble/appyx/core/node/NodeView {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/bumble/appyx/core/node/EmptyNodeView;
+	public fun View (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/bumble/appyx/core/node/EmptyParentNodeView : com/bumble/appyx/core/node/ParentNodeView {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun NodeView (Lcom/bumble/appyx/core/node/ParentNode;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+	public fun View (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/bumble/appyx/core/node/LocalNodeKt {
+	public static final fun getLocalNode ()Landroidx/compose/runtime/ProvidableCompositionLocal;
+}
+
+public class com/bumble/appyx/core/node/Node : com/bumble/appyx/core/integrationpoint/requestcode/RequestCodeClient, com/bumble/appyx/core/lifecycle/NodeLifecycle, com/bumble/appyx/core/node/NodeView {
+	public static final field Companion Lcom/bumble/appyx/core/node/Node$Companion;
+	public fun <init> (Lcom/bumble/appyx/core/modality/BuildContext;Lcom/bumble/appyx/core/node/NodeView;Ljava/util/List;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/modality/BuildContext;Lcom/bumble/appyx/core/node/NodeView;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun Compose (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;II)V
+	public fun View (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+	public final fun finish ()V
+	public final fun getAncestryInfo ()Lcom/bumble/appyx/core/modality/AncestryInfo;
+	public final fun getId ()Ljava/lang/String;
+	public final fun getIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;
+	public fun getLifecycle ()Landroidx/lifecycle/Lifecycle;
+	public final fun getParent ()Lcom/bumble/appyx/core/node/ParentNode;
+	public final fun getPlugins ()Ljava/util/List;
+	public fun getRequestCodeClientId ()Ljava/lang/String;
+	public final fun getView ()Lcom/bumble/appyx/core/node/NodeView;
+	public final fun isRoot ()Z
+	public final fun navigateUp ()V
+	public fun onBuilt ()V
+	protected fun onSaveInstanceState (Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+	protected fun performUpNavigation ()Z
+	public final fun saveInstanceState (Landroidx/compose/runtime/saveable/SaverScope;)Ljava/util/Map;
+	public final fun setIntegrationPoint (Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;)V
+	public fun updateLifecycleState (Landroidx/lifecycle/Lifecycle$State;)V
+}
+
+public final class com/bumble/appyx/core/node/Node$Companion {
+}
+
+public final class com/bumble/appyx/core/node/NodeExtKt {
+	public static final fun build (Lcom/bumble/appyx/core/node/Node;)Lcom/bumble/appyx/core/node/Node;
+}
+
+public abstract interface class com/bumble/appyx/core/node/NodeView {
+	public abstract fun View (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public abstract class com/bumble/appyx/core/node/ParentNode : com/bumble/appyx/core/node/Node, com/bumble/appyx/core/navigation/Resolver {
+	public static final field ATTACH_WORKFLOW_SYNC_TIMEOUT J
+	public static final field Companion Lcom/bumble/appyx/core/node/ParentNode$Companion;
+	public static final field KEY_PERMANENT_NAV_MODEL Ljava/lang/String;
+	public fun <init> (Lcom/bumble/appyx/core/navigation/NavModel;Lcom/bumble/appyx/core/modality/BuildContext;Lcom/bumble/appyx/core/node/ParentNodeView;Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;Lcom/bumble/appyx/core/children/ChildAware;Ljava/util/List;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/navigation/NavModel;Lcom/bumble/appyx/core/modality/BuildContext;Lcom/bumble/appyx/core/node/ParentNodeView;Lcom/bumble/appyx/core/children/ChildEntry$KeepMode;Lcom/bumble/appyx/core/children/ChildAware;Ljava/util/List;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public final fun PermanentChild (Ljava/lang/Object;Landroidx/compose/runtime/Composer;I)V
+	public final fun PermanentChild (Ljava/lang/Object;Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;I)V
+	public final fun childOrCreate (Lcom/bumble/appyx/core/navigation/NavKey;)Lcom/bumble/appyx/core/children/ChildEntry$Initialized;
+	public final fun getChildren ()Lkotlinx/coroutines/flow/StateFlow;
+	public final fun getNavModel ()Lcom/bumble/appyx/core/navigation/NavModel;
+	public fun onBuilt ()V
+	public fun onChildFinished (Lcom/bumble/appyx/core/node/Node;)V
+	protected fun onSaveInstanceState (Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+	public fun updateLifecycleState (Landroidx/lifecycle/Lifecycle$State;)V
+	protected final fun whenChildAttached (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function2;)V
+	protected final fun whenChildrenAttached (Lkotlin/reflect/KClass;Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function3;)V
+}
+
+public final class com/bumble/appyx/core/node/ParentNode$Companion {
+}
+
+public final class com/bumble/appyx/core/node/ParentNodeExtKt {
+	public static final fun children (Lcom/bumble/appyx/core/node/ParentNode;)Ljava/util/List;
+}
+
+public abstract interface class com/bumble/appyx/core/node/ParentNodeView : com/bumble/appyx/core/node/NodeView {
+	public abstract fun NodeView (Lcom/bumble/appyx/core/node/ParentNode;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+	public abstract fun View (Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public final class com/bumble/appyx/core/node/ParentNodeView$DefaultImpls {
+	public static fun View (Lcom/bumble/appyx/core/node/ParentNodeView;Landroidx/compose/ui/Modifier;Landroidx/compose/runtime/Composer;I)V
+}
+
+public abstract interface class com/bumble/appyx/core/node/ViewFactory : kotlin/jvm/functions/Function0 {
+}
+
+public abstract interface class com/bumble/appyx/core/plugin/BackPressHandler : com/bumble/appyx/core/plugin/Plugin {
+	public abstract fun getOnBackPressedCallback ()Landroidx/activity/OnBackPressedCallback;
+	public abstract fun getOnBackPressedCallbackList ()Ljava/util/List;
+	public abstract fun handleOnBackPressed ()Z
+}
+
+public final class com/bumble/appyx/core/plugin/BackPressHandler$DefaultImpls {
+	public static fun getOnBackPressedCallback (Lcom/bumble/appyx/core/plugin/BackPressHandler;)Landroidx/activity/OnBackPressedCallback;
+	public static fun getOnBackPressedCallbackList (Lcom/bumble/appyx/core/plugin/BackPressHandler;)Ljava/util/List;
+	public static fun handleOnBackPressed (Lcom/bumble/appyx/core/plugin/BackPressHandler;)Z
+}
+
+public abstract interface class com/bumble/appyx/core/plugin/Destroyable : com/bumble/appyx/core/plugin/Plugin {
+	public abstract fun destroy ()V
+}
+
+public abstract interface class com/bumble/appyx/core/plugin/NodeAware : com/bumble/appyx/core/plugin/Plugin {
+	public abstract fun getNode ()Lcom/bumble/appyx/core/node/Node;
+	public abstract fun init (Lcom/bumble/appyx/core/node/Node;)V
+}
+
+public final class com/bumble/appyx/core/plugin/NodeAware$DefaultImpls {
+	public static fun init (Lcom/bumble/appyx/core/plugin/NodeAware;Lcom/bumble/appyx/core/node/Node;)V
+}
+
+public final class com/bumble/appyx/core/plugin/NodeAwareImpl : com/bumble/appyx/core/plugin/NodeAware {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun getNode ()Lcom/bumble/appyx/core/node/Node;
+	public fun init (Lcom/bumble/appyx/core/node/Node;)V
+}
+
+public abstract interface class com/bumble/appyx/core/plugin/NodeLifecycleAware : com/bumble/appyx/core/plugin/Plugin {
+	public abstract fun onCreate (Landroidx/lifecycle/Lifecycle;)V
+}
+
+public final class com/bumble/appyx/core/plugin/NodeLifecycleAware$DefaultImpls {
+	public static fun onCreate (Lcom/bumble/appyx/core/plugin/NodeLifecycleAware;Landroidx/lifecycle/Lifecycle;)V
+}
+
+public abstract interface class com/bumble/appyx/core/plugin/Plugin {
+}
+
+public abstract interface class com/bumble/appyx/core/plugin/SavesInstanceState : com/bumble/appyx/core/plugin/Plugin {
+	public abstract fun saveInstanceState (Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+}
+
+public final class com/bumble/appyx/core/plugin/SavesInstanceState$DefaultImpls {
+	public static fun saveInstanceState (Lcom/bumble/appyx/core/plugin/SavesInstanceState;Lcom/bumble/appyx/core/state/MutableSavedStateMap;)V
+}
+
+public abstract interface class com/bumble/appyx/core/plugin/UpNavigationHandler : com/bumble/appyx/core/plugin/Plugin {
+	public abstract fun handleUpNavigation ()Z
+}
+
+public final class com/bumble/appyx/core/plugin/UpNavigationHandler$DefaultImpls {
+	public static fun handleUpNavigation (Lcom/bumble/appyx/core/plugin/UpNavigationHandler;)Z
+}
+
+public abstract interface class com/bumble/appyx/core/state/MutableSavedStateMap : java/util/Map, kotlin/jvm/internal/markers/KMutableMap {
+	public abstract fun getSaverScope ()Landroidx/compose/runtime/saveable/SaverScope;
+}
+
+public final class com/bumble/appyx/core/state/MutableSavedStateMapImpl : com/bumble/appyx/core/state/MutableSavedStateMap, java/util/Map, kotlin/jvm/internal/markers/KMutableMap {
+	public static final field $stable I
+	public fun <init> (Ljava/util/Map;Landroidx/compose/runtime/saveable/SaverScope;)V
+	public synthetic fun <init> (Ljava/util/Map;Landroidx/compose/runtime/saveable/SaverScope;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun clear ()V
+	public final fun containsKey (Ljava/lang/Object;)Z
+	public fun containsKey (Ljava/lang/String;)Z
+	public fun containsValue (Ljava/lang/Object;)Z
+	public final fun entrySet ()Ljava/util/Set;
+	public final fun get (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun get (Ljava/lang/String;)Ljava/lang/Object;
+	public fun getEntries ()Ljava/util/Set;
+	public fun getKeys ()Ljava/util/Set;
+	public final fun getSavedState ()Ljava/util/Map;
+	public fun getSaverScope ()Landroidx/compose/runtime/saveable/SaverScope;
+	public fun getSize ()I
+	public fun getValues ()Ljava/util/Collection;
+	public fun isEmpty ()Z
+	public final fun keySet ()Ljava/util/Set;
+	public synthetic fun put (Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;
+	public fun put (Ljava/lang/String;Ljava/lang/Object;)Ljava/lang/Object;
+	public fun putAll (Ljava/util/Map;)V
+	public final fun remove (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun remove (Ljava/lang/String;)Ljava/lang/Object;
+	public final fun size ()I
+	public final fun values ()Ljava/util/Collection;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/BackStack : com/bumble/appyx/core/navigation/BaseNavModel {
+	public static final field $stable I
+	public fun <init> (Ljava/lang/Object;Ljava/util/Map;Ljava/lang/String;Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;)V
+	public synthetic fun <init> (Ljava/lang/Object;Ljava/util/Map;Ljava/lang/String;Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/BackStack$State : java/lang/Enum {
+	public static final field ACTIVE Lcom/bumble/appyx/navmodel/backstack/BackStack$State;
+	public static final field CREATED Lcom/bumble/appyx/navmodel/backstack/BackStack$State;
+	public static final field DESTROYED Lcom/bumble/appyx/navmodel/backstack/BackStack$State;
+	public static final field STASHED Lcom/bumble/appyx/navmodel/backstack/BackStack$State;
+	public static fun valueOf (Ljava/lang/String;)Lcom/bumble/appyx/navmodel/backstack/BackStack$State;
+	public static fun values ()[Lcom/bumble/appyx/navmodel/backstack/BackStack$State;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/BackStackExtKt {
+	public static final fun getActive (Lcom/bumble/appyx/navmodel/backstack/BackStack;)Lcom/bumble/appyx/core/navigation/NavElement;
+	public static final fun getActive (Ljava/util/List;)Lcom/bumble/appyx/core/navigation/NavElement;
+	public static final fun getActiveElement (Lcom/bumble/appyx/navmodel/backstack/BackStack;)Ljava/lang/Object;
+	public static final fun getActiveElement (Ljava/util/List;)Ljava/lang/Object;
+	public static final fun getActiveIndex (Ljava/util/List;)I
+}
+
+public final class com/bumble/appyx/navmodel/backstack/BackStackOnScreenResolver : com/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/bumble/appyx/navmodel/backstack/BackStackOnScreenResolver;
+	public fun isOnScreen (Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Z
+	public synthetic fun isOnScreen (Ljava/lang/Object;)Z
+}
+
+public final class com/bumble/appyx/navmodel/backstack/backpresshandler/PopBackPressHandler : com/bumble/appyx/core/navigation/backpresshandlerstrategies/BaseBackPressHandlerStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun onBackPressed ()V
+}
+
+public abstract interface class com/bumble/appyx/navmodel/backstack/operation/BackStackOperation : com/bumble/appyx/core/navigation/Operation {
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/BackStackOperation$DefaultImpls {
+	public static fun transitionTo (Lcom/bumble/appyx/navmodel/backstack/operation/BackStackOperation;Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Ljava/util/List;
+	public static fun transitionTo (Lcom/bumble/appyx/navmodel/backstack/operation/BackStackOperation;Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static fun transitionTo (Lcom/bumble/appyx/navmodel/backstack/operation/BackStackOperation;Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public static fun transitionToIndexed (Lcom/bumble/appyx/navmodel/backstack/operation/BackStackOperation;Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/NewRoot : com/bumble/appyx/navmodel/backstack/operation/BackStackOperation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun copy (Ljava/lang/Object;)Lcom/bumble/appyx/navmodel/backstack/operation/NewRoot;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/navmodel/backstack/operation/NewRoot;Ljava/lang/Object;ILjava/lang/Object;)Lcom/bumble/appyx/navmodel/backstack/operation/NewRoot;
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun toString ()Ljava/lang/String;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/NewRoot$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/backstack/operation/NewRoot;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/backstack/operation/NewRoot;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/NewRootKt {
+	public static final fun newRoot (Lcom/bumble/appyx/navmodel/backstack/BackStack;Ljava/lang/Object;)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Pop : com/bumble/appyx/navmodel/backstack/operation/BackStackOperation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> ()V
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Pop$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/backstack/operation/Pop;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/backstack/operation/Pop;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/PopKt {
+	public static final fun pop (Lcom/bumble/appyx/navmodel/backstack/BackStack;)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Push : com/bumble/appyx/navmodel/backstack/operation/BackStackOperation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun copy (Ljava/lang/Object;)Lcom/bumble/appyx/navmodel/backstack/operation/Push;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/navmodel/backstack/operation/Push;Ljava/lang/Object;ILjava/lang/Object;)Lcom/bumble/appyx/navmodel/backstack/operation/Push;
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun toString ()Ljava/lang/String;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Push$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/backstack/operation/Push;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/backstack/operation/Push;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/PushKt {
+	public static final fun push (Lcom/bumble/appyx/navmodel/backstack/BackStack;Ljava/lang/Object;)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Remove : com/bumble/appyx/navmodel/backstack/operation/BackStackOperation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Lcom/bumble/appyx/core/navigation/NavKey;)V
+	public final fun copy (Lcom/bumble/appyx/core/navigation/NavKey;)Lcom/bumble/appyx/navmodel/backstack/operation/Remove;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/navmodel/backstack/operation/Remove;Lcom/bumble/appyx/core/navigation/NavKey;ILjava/lang/Object;)Lcom/bumble/appyx/navmodel/backstack/operation/Remove;
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun toString ()Ljava/lang/String;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Remove$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/backstack/operation/Remove;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/backstack/operation/Remove;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/RemoveKt {
+	public static final fun remove (Lcom/bumble/appyx/navmodel/backstack/BackStack;Lcom/bumble/appyx/core/navigation/NavKey;)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Replace : com/bumble/appyx/navmodel/backstack/operation/BackStackOperation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/Object;)V
+	public final fun copy (Ljava/lang/Object;)Lcom/bumble/appyx/navmodel/backstack/operation/Replace;
+	public static synthetic fun copy$default (Lcom/bumble/appyx/navmodel/backstack/operation/Replace;Ljava/lang/Object;ILjava/lang/Object;)Lcom/bumble/appyx/navmodel/backstack/operation/Replace;
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun toString ()Ljava/lang/String;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/Replace$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/backstack/operation/Replace;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/backstack/operation/Replace;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/ReplaceKt {
+	public static final fun replace (Lcom/bumble/appyx/navmodel/backstack/BackStack;Ljava/lang/Object;)V
+}
+
+public abstract class com/bumble/appyx/navmodel/backstack/operation/SingleTop : com/bumble/appyx/navmodel/backstack/operation/BackStackOperation {
+	public static final field $stable I
+	public static final field Companion Lcom/bumble/appyx/navmodel/backstack/operation/SingleTop$Companion;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/backstack/BackStack$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/SingleTop$Companion {
+	public final fun init (Ljava/lang/Object;Ljava/util/List;)Lcom/bumble/appyx/navmodel/backstack/operation/BackStackOperation;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReactivateBackStackOperation : com/bumble/appyx/navmodel/backstack/operation/SingleTop {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/Object;I)V
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReactivateBackStackOperation$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReactivateBackStackOperation;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReactivateBackStackOperation;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReplaceBackStackOperation : com/bumble/appyx/navmodel/backstack/operation/SingleTop {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/lang/Object;I)V
+	public fun describeContents ()I
+	public fun equals (Ljava/lang/Object;)Z
+	public fun hashCode ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReplaceBackStackOperation$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReplaceBackStackOperation;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/backstack/operation/SingleTop$SingleTopReplaceBackStackOperation;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/operation/SingleTopKt {
+	public static final fun singleTop (Lcom/bumble/appyx/navmodel/backstack/BackStack;Ljava/lang/Object;)V
+}
+
+public final class com/bumble/appyx/navmodel/backstack/transitionhandler/BackStackFader : com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function3;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;)Landroidx/compose/ui/Modifier;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/transitionhandler/BackStackFaderKt {
+	public static final fun rememberBackstackFader (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)Lcom/bumble/appyx/core/navigation/transition/ModifierTransitionHandler;
+}
+
+public final class com/bumble/appyx/navmodel/backstack/transitionhandler/BackStackSlider : com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function3;Z)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function3;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;)Landroidx/compose/ui/Modifier;
+	public fun getClipToBounds ()Z
+}
+
+public final class com/bumble/appyx/navmodel/backstack/transitionhandler/BackStackSliderKt {
+	public static final fun rememberBackstackSlider (Lkotlin/jvm/functions/Function3;ZLandroidx/compose/runtime/Composer;II)Lcom/bumble/appyx/core/navigation/transition/ModifierTransitionHandler;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/Spotlight : com/bumble/appyx/core/navigation/BaseNavModel {
+	public static final field $stable I
+	public fun <init> (Ljava/util/List;ILjava/util/Map;Ljava/lang/String;Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;)V
+	public synthetic fun <init> (Ljava/util/List;ILjava/util/Map;Ljava/lang/String;Lcom/bumble/appyx/core/navigation/backpresshandlerstrategies/BackPressHandlerStrategy;Lcom/bumble/appyx/core/navigation/operationstrategies/OperationStrategy;Lcom/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/Spotlight$State : java/lang/Enum {
+	public static final field ACTIVE Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;
+	public static final field INACTIVE_AFTER Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;
+	public static final field INACTIVE_BEFORE Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;
+	public static fun valueOf (Ljava/lang/String;)Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;
+	public static fun values ()[Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/SpotlightElementExtKt {
+	public static final fun getCurrent (Ljava/util/List;)Lcom/bumble/appyx/core/navigation/NavElement;
+	public static final fun getCurrentIndex (Ljava/util/List;)I
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/SpotlightExtKt {
+	public static final fun activeIndex (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun elementsCount (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;)I
+	public static final fun hasNext (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;)Lkotlinx/coroutines/flow/Flow;
+	public static final fun hasPrevious (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;)Lkotlinx/coroutines/flow/Flow;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/SpotlightOnScreenResolver : com/bumble/appyx/core/navigation/onscreen/OnScreenStateResolver {
+	public static final field $stable I
+	public static final field INSTANCE Lcom/bumble/appyx/navmodel/spotlight/SpotlightOnScreenResolver;
+	public fun isOnScreen (Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;)Z
+	public synthetic fun isOnScreen (Ljava/lang/Object;)Z
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/backpresshandler/GoToDefault : com/bumble/appyx/core/navigation/backpresshandlerstrategies/BaseBackPressHandlerStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun onBackPressed ()V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/backpresshandler/GoToPrevious : com/bumble/appyx/core/navigation/backpresshandlerstrategies/BaseBackPressHandlerStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun onBackPressed ()V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/backpresshandler/UndoHistory : com/bumble/appyx/core/navigation/backpresshandlerstrategies/BaseBackPressHandlerStrategy {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (I)V
+	public synthetic fun <init> (IILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun onBackPressed ()V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/Activate : com/bumble/appyx/core/navigation/Operation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (I)V
+	public fun describeContents ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/Activate$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/spotlight/operation/Activate;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/spotlight/operation/Activate;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/ActivateKt {
+	public static final fun activate (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;I)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/Next : com/bumble/appyx/core/navigation/Operation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> ()V
+	public fun describeContents ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/Next$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/spotlight/operation/Next;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/spotlight/operation/Next;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/NextKt {
+	public static final fun next (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/Previous : com/bumble/appyx/core/navigation/Operation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> ()V
+	public fun describeContents ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/Previous$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/spotlight/operation/Previous;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/spotlight/operation/Previous;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/PreviousKt {
+	public static final fun previous (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/UpdateElements : com/bumble/appyx/core/navigation/Operation {
+	public static final field $stable I
+	public static final field CREATOR Landroid/os/Parcelable$Creator;
+	public fun <init> (Ljava/util/List;Ljava/lang/Integer;)V
+	public synthetic fun <init> (Ljava/util/List;Ljava/lang/Integer;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun describeContents ()I
+	public synthetic fun invoke (Ljava/lang/Object;)Ljava/lang/Object;
+	public fun invoke (Ljava/util/List;)Ljava/util/List;
+	public fun isApplicable (Ljava/util/List;)Z
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;)Ljava/util/List;
+	public synthetic fun transitionTo (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionTo (Ljava/util/List;Lkotlin/jvm/functions/Function1;)Ljava/util/List;
+	public fun transitionToIndexed (Ljava/util/List;Lcom/bumble/appyx/navmodel/spotlight/Spotlight$State;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public synthetic fun transitionToIndexed (Ljava/util/List;Ljava/lang/Object;Lkotlin/jvm/functions/Function2;)Ljava/util/List;
+	public fun writeToParcel (Landroid/os/Parcel;I)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/UpdateElements$Creator : android/os/Parcelable$Creator {
+	public fun <init> ()V
+	public final fun createFromParcel (Landroid/os/Parcel;)Lcom/bumble/appyx/navmodel/spotlight/operation/UpdateElements;
+	public synthetic fun createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object;
+	public final fun newArray (I)[Lcom/bumble/appyx/navmodel/spotlight/operation/UpdateElements;
+	public synthetic fun newArray (I)[Ljava/lang/Object;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/operation/UpdateElementsKt {
+	public static final fun updateElements (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;Ljava/util/List;Ljava/lang/Integer;)V
+	public static synthetic fun updateElements$default (Lcom/bumble/appyx/navmodel/spotlight/Spotlight;Ljava/util/List;Ljava/lang/Integer;ILjava/lang/Object;)V
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/transitionhandler/SpotlightFader : com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function3;)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function3;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;)Landroidx/compose/ui/Modifier;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/transitionhandler/SpotlightFaderKt {
+	public static final fun rememberSpotlightFader (Lkotlin/jvm/functions/Function3;Landroidx/compose/runtime/Composer;II)Lcom/bumble/appyx/core/navigation/transition/ModifierTransitionHandler;
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/transitionhandler/SpotlightSlider : com/bumble/appyx/core/navigation/transition/ModifierTransitionHandler {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun <init> (Lkotlin/jvm/functions/Function3;Z)V
+	public synthetic fun <init> (Lkotlin/jvm/functions/Function3;ZILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun createModifier (Landroidx/compose/ui/Modifier;Landroidx/compose/animation/core/Transition;Lcom/bumble/appyx/core/navigation/transition/TransitionDescriptor;)Landroidx/compose/ui/Modifier;
+	public fun getClipToBounds ()Z
+}
+
+public final class com/bumble/appyx/navmodel/spotlight/transitionhandler/SpotlightSliderKt {
+	public static final fun rememberSpotlightSlider (Lkotlin/jvm/functions/Function3;ZLandroidx/compose/runtime/Composer;II)Lcom/bumble/appyx/core/navigation/transition/ModifierTransitionHandler;
+}
+

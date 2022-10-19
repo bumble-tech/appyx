@@ -1,0 +1,12 @@
+public class com/bumble/appyx/testing/ui/rules/AppyxTestActivity : com/bumble/appyx/core/integrationpoint/NodeActivity {
+	public static final field $stable I
+	public static final field Companion Lcom/bumble/appyx/testing/ui/rules/AppyxTestActivity$Companion;
+	public fun <init> ()V
+	protected fun onCreate (Landroid/os/Bundle;)V
+}
+
+public final class com/bumble/appyx/testing/ui/rules/AppyxTestActivity$Companion {
+	public final fun getComposableView ()Lkotlin/jvm/functions/Function3;
+	public final fun setComposableView (Lkotlin/jvm/functions/Function3;)V
+}
+

@@ -75,3 +75,4 @@ detekt-compose = "com.twitter.compose.rules:detekt:0.0.18"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
+kotlin-compatibility = "org.jetbrains.kotlinx.binary-compatibility-validator:0.11.1"

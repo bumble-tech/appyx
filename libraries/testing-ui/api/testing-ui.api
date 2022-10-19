@@ -1,0 +1,73 @@
+public class com/bumble/appyx/testing/ui/rules/AppyxActivityTestRule : androidx/test/rule/ActivityTestRule, androidx/compose/ui/test/junit4/ComposeTestRule {
+	public static final field $stable I
+	public fun <init> (ZLandroidx/compose/ui/test/junit4/ComposeTestRule;Lkotlin/jvm/functions/Function3;Lcom/bumble/appyx/core/integration/NodeFactory;)V
+	public synthetic fun <init> (ZLandroidx/compose/ui/test/junit4/ComposeTestRule;Lkotlin/jvm/functions/Function3;Lcom/bumble/appyx/core/integration/NodeFactory;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun after ()V
+	protected fun afterActivityLaunched ()V
+	public fun apply (Lorg/junit/runners/model/Statement;Lorg/junit/runner/Description;)Lorg/junit/runners/model/Statement;
+	public fun awaitIdle (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun before ()V
+	protected fun beforeActivityLaunched ()V
+	public fun getDensity ()Landroidx/compose/ui/unit/Density;
+	public fun getMainClock ()Landroidx/compose/ui/test/MainTestClock;
+	public final fun getNode ()Lcom/bumble/appyx/core/node/Node;
+	public fun onAllNodes (Landroidx/compose/ui/test/SemanticsMatcher;Z)Landroidx/compose/ui/test/SemanticsNodeInteractionCollection;
+	public fun onNode (Landroidx/compose/ui/test/SemanticsMatcher;Z)Landroidx/compose/ui/test/SemanticsNodeInteraction;
+	public fun registerIdlingResource (Landroidx/compose/ui/test/IdlingResource;)V
+	public fun runOnIdle (Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public fun runOnUiThread (Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public final fun start ()V
+	public fun unregisterIdlingResource (Landroidx/compose/ui/test/IdlingResource;)V
+	public fun waitForIdle ()V
+	public fun waitUntil (JLkotlin/jvm/functions/Function0;)V
+}
+
+public class com/bumble/appyx/testing/ui/rules/AppyxViewTestRule : androidx/test/rule/ActivityTestRule, androidx/compose/ui/test/junit4/ComposeTestRule {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/node/ViewFactory;Landroidx/compose/ui/test/junit4/ComposeTestRule;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/core/node/ViewFactory;Landroidx/compose/ui/test/junit4/ComposeTestRule;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun after ()V
+	protected fun afterActivityLaunched ()V
+	public fun apply (Lorg/junit/runners/model/Statement;Lorg/junit/runner/Description;)Lorg/junit/runners/model/Statement;
+	public fun awaitIdle (Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+	public fun before ()V
+	protected fun beforeActivityLaunched ()V
+	public fun getDensity ()Landroidx/compose/ui/unit/Density;
+	public fun getMainClock ()Landroidx/compose/ui/test/MainTestClock;
+	public final fun getView ()Lcom/bumble/appyx/core/node/NodeView;
+	public fun onAllNodes (Landroidx/compose/ui/test/SemanticsMatcher;Z)Landroidx/compose/ui/test/SemanticsNodeInteractionCollection;
+	public fun onNode (Landroidx/compose/ui/test/SemanticsMatcher;Z)Landroidx/compose/ui/test/SemanticsNodeInteraction;
+	public fun registerIdlingResource (Landroidx/compose/ui/test/IdlingResource;)V
+	public fun runOnIdle (Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public fun runOnUiThread (Lkotlin/jvm/functions/Function0;)Ljava/lang/Object;
+	public final fun start ()V
+	public fun unregisterIdlingResource (Landroidx/compose/ui/test/IdlingResource;)V
+	public fun waitForIdle ()V
+	public fun waitUntil (JLkotlin/jvm/functions/Function0;)V
+}
+
+public final class com/bumble/appyx/testing/ui/rules/ComposableSingletons$AppyxActivityTestRuleKt {
+	public static final field INSTANCE Lcom/bumble/appyx/testing/ui/rules/ComposableSingletons$AppyxActivityTestRuleKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$testing_ui_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/bumble/appyx/testing/ui/utils/ComposableSingletons$DummyParentNodeKt {
+	public static final field INSTANCE Lcom/bumble/appyx/testing/ui/utils/ComposableSingletons$DummyParentNodeKt;
+	public static field lambda-1 Lkotlin/jvm/functions/Function3;
+	public fun <init> ()V
+	public final fun getLambda-1$testing_ui_release ()Lkotlin/jvm/functions/Function3;
+}
+
+public final class com/bumble/appyx/testing/ui/utils/DummyNavModel : com/bumble/appyx/core/navigation/BaseNavModel {
+	public static final field $stable I
+	public fun <init> ()V
+}
+
+public final class com/bumble/appyx/testing/ui/utils/DummyParentNode : com/bumble/appyx/core/node/ParentNode {
+	public static final field $stable I
+	public fun <init> ()V
+	public fun resolve (Ljava/lang/Object;Lcom/bumble/appyx/core/modality/BuildContext;)Lcom/bumble/appyx/core/node/Node;
+}
+

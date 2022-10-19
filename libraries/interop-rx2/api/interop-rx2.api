@@ -1,0 +1,26 @@
+public final class com/bumble/appyx/interop/rx2/adapter/Rx2Kt {
+	public static final fun rx2 (Lkotlinx/coroutines/flow/Flow;)Lio/reactivex/Observable;
+}
+
+public abstract interface class com/bumble/appyx/interop/rx2/connectable/Connectable : com/bumble/appyx/core/plugin/NodeLifecycleAware {
+	public abstract fun getInput ()Lcom/jakewharton/rxrelay2/Relay;
+	public abstract fun getOutput ()Lcom/jakewharton/rxrelay2/Relay;
+}
+
+public final class com/bumble/appyx/interop/rx2/connectable/Connectable$DefaultImpls {
+	public static fun onCreate (Lcom/bumble/appyx/interop/rx2/connectable/Connectable;Landroidx/lifecycle/Lifecycle;)V
+}
+
+public final class com/bumble/appyx/interop/rx2/connectable/NodeConnector : com/bumble/appyx/interop/rx2/connectable/Connectable {
+	public fun <init> ()V
+	public fun <init> (Lcom/jakewharton/rxrelay2/Relay;)V
+	public synthetic fun <init> (Lcom/jakewharton/rxrelay2/Relay;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun getInput ()Lcom/jakewharton/rxrelay2/Relay;
+	public fun getOutput ()Lcom/jakewharton/rxrelay2/Relay;
+	public fun onCreate (Landroidx/lifecycle/Lifecycle;)V
+}
+
+public final class com/bumble/appyx/interop/rx2/plugin/DisposeOnDestroyKt {
+	public static final fun disposeOnDestroyPlugin ([Lio/reactivex/disposables/Disposable;)Lcom/bumble/appyx/core/plugin/Plugin;
+}
+

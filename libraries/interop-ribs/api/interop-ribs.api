@@ -1,0 +1,45 @@
+public abstract class com/bumble/appyx/interop/ribs/InteropActivity : com/badoo/ribs/android/RibActivity, com/bumble/appyx/core/integrationpoint/IntegrationPointProvider {
+	public static final field $stable I
+	public field appyxIntegrationPoint Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public fun <init> ()V
+	protected fun createAppyxIntegrationPoint (Landroid/os/Bundle;)Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public fun getAppyxIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;
+	public synthetic fun getAppyxIntegrationPoint ()Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;
+	protected fun onActivityResult (IILandroid/content/Intent;)V
+	protected fun onCreate (Landroid/os/Bundle;)V
+	public fun onRequestPermissionsResult (I[Ljava/lang/String;[I)V
+	protected fun onSaveInstanceState (Landroid/os/Bundle;)V
+	public fun setAppyxIntegrationPoint (Lcom/bumble/appyx/core/integrationpoint/ActivityIntegrationPoint;)V
+}
+
+public final class com/bumble/appyx/interop/ribs/InteropBuilder : com/badoo/ribs/builder/SimpleBuilder {
+	public static final field $stable I
+	public fun <init> (Lcom/bumble/appyx/core/integration/NodeFactory;Lcom/bumble/appyx/core/integrationpoint/IntegrationPoint;)V
+	public synthetic fun build (Lcom/badoo/ribs/core/modality/BuildParams;)Lcom/badoo/ribs/core/Rib;
+}
+
+public abstract interface class com/bumble/appyx/interop/ribs/InteropNode : com/badoo/ribs/core/Rib {
+	public abstract fun getAppyxNode ()Lcom/bumble/appyx/core/node/Node;
+}
+
+public final class com/bumble/appyx/interop/ribs/InteropNode$Customisation : com/bumble/appyx/utils/customisations/NodeCustomisation {
+	public static final field $stable I
+	public fun <init> (Lcom/badoo/ribs/core/view/ViewFactory;)V
+	public final fun getViewFactory ()Lcom/badoo/ribs/core/view/ViewFactory;
+}
+
+public abstract interface class com/bumble/appyx/interop/ribs/InteropView : com/badoo/ribs/core/view/RibView {
+}
+
+public final class com/bumble/appyx/interop/ribs/InteropView$DefaultImpls {
+	public static fun attachChild (Lcom/bumble/appyx/interop/ribs/InteropView;Lcom/badoo/ribs/core/Node;)V
+	public static fun detachChild (Lcom/bumble/appyx/interop/ribs/InteropView;Lcom/badoo/ribs/core/Node;)V
+	public static fun getContext (Lcom/bumble/appyx/interop/ribs/InteropView;)Landroid/content/Context;
+	public static fun restoreInstanceState (Lcom/bumble/appyx/interop/ribs/InteropView;Landroid/os/Bundle;)V
+	public static fun saveInstanceState (Lcom/bumble/appyx/interop/ribs/InteropView;Landroid/os/Bundle;)V
+}
+
+public abstract interface class com/bumble/appyx/interop/ribs/InteropView$Dependency {
+	public abstract fun getAppyxNode ()Lcom/bumble/appyx/core/node/Node;
+}
+

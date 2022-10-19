@@ -1,0 +1,5 @@
+public final class com/bumble/appyx/testing/junit4/util/MainDispatcherRule : org/junit/rules/TestWatcher {
+	public static final field $stable I
+	public fun <init> ()V
+}
+

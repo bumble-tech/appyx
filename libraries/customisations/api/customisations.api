@@ -1,0 +1,41 @@
+public abstract interface class com/bumble/appyx/utils/customisations/MutableNodeCustomisationDirectory : com/bumble/appyx/utils/customisations/NodeCustomisationDirectory {
+	public abstract fun put (Lkotlin/reflect/KClass;Lcom/bumble/appyx/utils/customisations/NodeCustomisation;)V
+	public abstract fun putSubDirectory (Lkotlin/reflect/KClass;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;)V
+}
+
+public final class com/bumble/appyx/utils/customisations/MutableNodeCustomisationDirectory$DefaultImpls {
+	public static fun getRecursivelyOrDefault (Lcom/bumble/appyx/utils/customisations/MutableNodeCustomisationDirectory;Lcom/bumble/appyx/utils/customisations/NodeCustomisation;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+}
+
+public abstract interface class com/bumble/appyx/utils/customisations/NodeCustomisation {
+}
+
+public abstract interface class com/bumble/appyx/utils/customisations/NodeCustomisationDirectory {
+	public abstract fun get (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+	public abstract fun getParent ()Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+	public abstract fun getRecursively (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+	public abstract fun getRecursivelyOrDefault (Lcom/bumble/appyx/utils/customisations/NodeCustomisation;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+	public abstract fun getSubDirectory (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+	public abstract fun getSubDirectoryOrSelf (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+}
+
+public final class com/bumble/appyx/utils/customisations/NodeCustomisationDirectory$DefaultImpls {
+	public static fun getRecursivelyOrDefault (Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;Lcom/bumble/appyx/utils/customisations/NodeCustomisation;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+}
+
+public class com/bumble/appyx/utils/customisations/NodeCustomisationDirectoryImpl : com/bumble/appyx/utils/customisations/MutableNodeCustomisationDirectory {
+	public fun <init> ()V
+	public fun <init> (Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;)V
+	public synthetic fun <init> (Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
+	public fun get (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+	public fun getParent ()Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+	public fun getRecursively (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+	public fun getRecursivelyOrDefault (Lcom/bumble/appyx/utils/customisations/NodeCustomisation;)Lcom/bumble/appyx/utils/customisations/NodeCustomisation;
+	public fun getSubDirectory (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+	public fun getSubDirectoryOrSelf (Lkotlin/reflect/KClass;)Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;
+	public final fun invoke (Lkotlin/reflect/KClass;Lkotlin/jvm/functions/Function1;)V
+	public fun put (Lkotlin/reflect/KClass;Lcom/bumble/appyx/utils/customisations/NodeCustomisation;)V
+	public final fun put ([Ljava/lang/Object;)V
+	public fun putSubDirectory (Lkotlin/reflect/KClass;Lcom/bumble/appyx/utils/customisations/NodeCustomisationDirectory;)V
+}
+
