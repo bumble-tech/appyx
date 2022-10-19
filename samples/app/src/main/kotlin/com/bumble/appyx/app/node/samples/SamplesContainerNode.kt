@@ -1,5 +1,6 @@
 package com.bumble.appyx.app.node.samples
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.node.helper.screenNode
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode
+import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
@@ -209,7 +211,7 @@ private fun SampleItem(
             .fillMaxSize()
             .aspectRatio(16f / 9),
         shape = RoundedCornerShape(24.dp),
-        color = Color(0XFFFFEDB3),
+        elevation = 4.dp,
     ) {
         Row(
             Modifier
@@ -238,13 +240,16 @@ private fun SampleItem(
 
 }
 
+@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Preview
 @Composable
 private fun SampleItemPreview() {
-    SampleItem(
-        title = "What is Appyx?",
-        subtitle = "Launch Appyx onboarding flow to explore main ideas in a set of slides",
-        onClick = {},
-        modifier = Modifier
-    ) {}
+    AppyxSampleAppTheme {
+        SampleItem(
+            title = "What is Appyx?",
+            subtitle = "Launch Appyx onboarding flow to explore main ideas in a set of slides",
+            onClick = {},
+            modifier = Modifier
+        ) {}
+    }
 }
