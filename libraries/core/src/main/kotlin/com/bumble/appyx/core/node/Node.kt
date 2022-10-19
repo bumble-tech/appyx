@@ -15,7 +15,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.Appyx
-import com.bumble.appyx.core.BuildConfig
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
@@ -82,7 +81,7 @@ open class Node(
     override val requestCodeClientId: String = id
 
     init {
-        if (BuildConfig.DEBUG) {
+        if (false) { // enable if debugging tests
             lifecycle.addObserver(LifecycleLogger)
         }
         lifecycle.addObserver(object : DefaultLifecycleObserver {
