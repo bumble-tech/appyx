@@ -211,7 +211,7 @@ private fun SampleItem(
         modifier = modifier
             .fillMaxSize()
             .aspectRatio(16f / 9),
-        shape = RoundedCornerShape(24.dp),
+        shape = MaterialTheme.shapes.medium,
         elevation = 4.dp,
     ) {
         Row(
@@ -222,7 +222,7 @@ private fun SampleItem(
                 modifier = Modifier
                     .aspectRatio(9f / 16),
                 border = BorderStroke(2.dp, Color(0xffdcdcdc)),
-                shape = RoundedCornerShape(24.dp)
+                shape = MaterialTheme.shapes.medium
             ) {
                 content()
             }
