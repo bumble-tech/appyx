@@ -163,14 +163,14 @@ class SamplesContainerNode(
             item {
                 SampleItem(
                     title = "Dating cards NavModel",
-                    subtitle = "Swipe right on NavModel concept",
+                    subtitle = "Swipe right on the NavModel concept",
                     onClick = { backStack.push(NavTarget.CardsExample) },
                 ) { PermanentChild(navTarget = NavTarget.CardsExample, decorator = decorator) }
             }
             item {
                 SampleItem(
                     title = "What is Appyx?",
-                    subtitle = "Launch Appyx onboarding flow to explore main ideas in a set of slides",
+                    subtitle = "Launch the Appyx onboarding flow to explore some of the main ideas in a set of slides",
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(16f / 9),
