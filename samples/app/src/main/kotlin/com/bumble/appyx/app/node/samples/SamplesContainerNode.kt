@@ -135,7 +135,7 @@ class SamplesContainerNode(
     }
 
     @Composable
-    fun SamplesSelector(backStack: BackStack<NavTarget>) {
+    fun SamplesSelector(backStack: BackStack<NavTarget>, modifier: Modifier = Modifier) {
         val decorator: @Composable (child: ChildRenderer) -> Unit = remember {
             {
                 ScaledLayout() {
@@ -145,7 +145,7 @@ class SamplesContainerNode(
             }
         }
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top)
 
