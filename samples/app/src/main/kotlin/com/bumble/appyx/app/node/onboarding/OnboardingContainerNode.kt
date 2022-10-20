@@ -33,11 +33,10 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.NavTarget
-import com.bumble.appyx.app.node.onboarding.screen.ApplicationTree
-import com.bumble.appyx.app.node.onboarding.screen.IntroScreen
-import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode1
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode2
+import com.bumble.appyx.app.node.onboarding.screen.modeldriven.ComposableNavigation
+import com.bumble.appyx.app.node.onboarding.screen.modeldriven.Intro
+import com.bumble.appyx.app.node.onboarding.screen.modeldriven.ModelDrivenIntro
+import com.bumble.appyx.app.node.onboarding.screen.modeldriven.NavModelTeaserNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.app.ui.appyx_dark
 import com.bumble.appyx.core.composable.Children
@@ -63,11 +62,10 @@ class OnboardingContainerNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         items = listOf(
-            NavTarget.IntroScreen,
-            NavTarget.ApplicationTree,
-            NavTarget.StatefulNode1,
-            NavTarget.StatefulNode2,
+            NavTarget.Intro,
+            NavTarget.ModelDrivenIntro,
             NavTarget.NavModelTeaser,
+            NavTarget.ComposableNavigation,
         ),
         backPressHandler = GoToPrevious(),
         savedStateMap = buildContext.savedStateMap,
@@ -79,28 +77,23 @@ class OnboardingContainerNode(
 
     sealed class NavTarget : Parcelable {
         @Parcelize
-        object IntroScreen : NavTarget()
-
+        object Intro : NavTarget()
         @Parcelize
-        object ApplicationTree : NavTarget()
-
-        @Parcelize
-        object StatefulNode1 : NavTarget()
-
-        @Parcelize
-        object StatefulNode2 : NavTarget()
+        object ModelDrivenIntro : NavTarget()
 
         @Parcelize
         object NavModelTeaser : NavTarget()
+
+        @Parcelize
+        object ComposableNavigation : NavTarget()
     }
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            NavTarget.IntroScreen -> IntroScreen(buildContext)
-            NavTarget.ApplicationTree -> ApplicationTree(buildContext)
-            NavTarget.StatefulNode1 -> StatefulNode1(buildContext)
-            NavTarget.StatefulNode2 -> StatefulNode2(buildContext)
+            NavTarget.Intro -> Intro(buildContext)
+            NavTarget.ModelDrivenIntro -> ModelDrivenIntro(buildContext)
             NavTarget.NavModelTeaser -> NavModelTeaserNode(buildContext)
+            NavTarget.ComposableNavigation -> ComposableNavigation(buildContext)
         }
 
     @Composable
