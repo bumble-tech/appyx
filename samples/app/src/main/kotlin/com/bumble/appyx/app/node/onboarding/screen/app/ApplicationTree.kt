@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen
+package com.bumble.appyx.app.node.onboarding.screen.app
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -82,7 +82,7 @@ class ApplicationTree(
             title = "Nodes",
             body = "The app is organised into a tree of Nodes." +
                     "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, " +
-                    "and can choose which of their children to delegate the control flow to."
+                    "and have their own NavModels."
         ) {
             Column(
                 modifier = Modifier

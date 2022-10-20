@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen
+package com.bumble.appyx.app.node.onboarding.screen.app
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
