@@ -1,8 +1,12 @@
 package com.bumble.appyx.sample.navigtion.compose
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -22,7 +26,11 @@ import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
  */
 @Composable
 fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
-    Column(modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.surface),
+    ) {
         Text(
             text = "Navigation Compose interop example",
             modifier = Modifier
@@ -47,7 +55,7 @@ fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
 @Composable
 internal fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: () -> Unit) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Google's Jetpack Navigation screen")
