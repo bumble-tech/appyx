@@ -66,7 +66,7 @@ class SamplesContainerNode(
         }
 
         @Parcelize
-        object OnboardingScreen : NavTarget() {
+        data class OnboardingScreen(val autoAdvance: Boolean = false) : NavTarget() {
             override val showBackButton: Boolean
                 get() = false
         }
@@ -83,9 +83,13 @@ class SamplesContainerNode(
     @ExperimentalComposeUiApi
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            NavTarget.SamplesListScreen -> screenNode(buildContext) { SamplesSelector(backStack) }
-            NavTarget.OnboardingScreen -> OnboardingContainerNode(buildContext)
-            NavTarget.ComposeNavigationScreen -> {
+            is NavTarget.SamplesListScreen -> screenNode(buildContext) { SamplesSelector(backStack) }
+            NavTarget.CardsExample -> CardsExampleNode(buildContext)
+            is NavTarget.OnboardingScreen -> OnboardingContainerNode(
+                buildContext = buildContext,
+                autoAdvanceDelayMs = if (navTarget.autoAdvance) 2500 else null
+            )
+            is NavTarget.ComposeNavigationScreen -> {
                 node(buildContext) {
                     // compose-navigation fetches the integration point via LocalIntegrationPoint
                     CompositionLocalProvider(
@@ -95,8 +99,6 @@ class SamplesContainerNode(
                     }
                 }
             }
-
-            NavTarget.CardsExample -> CardsExampleNode(buildContext)
         }
 
     @ExperimentalUnitApi
@@ -164,8 +166,8 @@ class SamplesContainerNode(
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(16f / 9),
-                    onClick = { backStack.push(NavTarget.OnboardingScreen) },
-                ) { PermanentChild(navTarget = NavTarget.OnboardingScreen, decorator = decorator) }
+                    onClick = { backStack.push(NavTarget.OnboardingScreen(false)) },
+                ) { PermanentChild(navTarget = NavTarget.OnboardingScreen(true), decorator = decorator) }
             }
             item {
                 SampleItem(

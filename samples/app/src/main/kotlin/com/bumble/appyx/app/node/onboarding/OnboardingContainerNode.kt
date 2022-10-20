@@ -31,6 +31,7 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.NavTarget
 import com.bumble.appyx.app.node.onboarding.screen.modeldriven.ComposableNavigation
@@ -53,6 +54,8 @@ import com.bumble.appyx.navmodel.spotlight.hasPrevious
 import com.bumble.appyx.navmodel.spotlight.operation.next
 import com.bumble.appyx.navmodel.spotlight.operation.previous
 import com.bumble.appyx.navmodel.spotlight.transitionhandler.rememberSpotlightSlider
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
@@ -60,6 +63,7 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalComposeUiApi
 class OnboardingContainerNode(
     buildContext: BuildContext,
+    autoAdvanceDelayMs: Long? = null,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         items = listOf(
             NavTarget.Intro,
@@ -75,9 +79,31 @@ class OnboardingContainerNode(
     buildContext = buildContext
 ) {
 
+    init {
+        autoAdvanceDelayMs?.let { ms ->
+            lifecycle.coroutineScope.launchWhenStarted {
+                while (isActive) {
+                    spotlight.next()
+                    delay(ms)
+                    spotlight.next()
+                    delay(ms)
+                    spotlight.next()
+                    delay(ms)
+                    spotlight.previous()
+                    delay(ms)
+                    spotlight.previous()
+                    delay(ms)
+                    spotlight.previous()
+                    delay(ms)
+                }
+            }
+        }
+    }
+
     sealed class NavTarget : Parcelable {
         @Parcelize
         object Intro : NavTarget()
+
         @Parcelize
         object ModelDrivenIntro : NavTarget()
 
