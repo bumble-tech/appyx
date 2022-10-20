@@ -30,6 +30,7 @@ fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colors.surface),
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = "Navigation Compose interop example",
@@ -37,7 +38,7 @@ fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp),
             color = MaterialTheme.colors.onSurface,
-            style = MaterialTheme.typography.subtitle1
+            style = MaterialTheme.typography.h6
         )
 
         val googleNavController = rememberNavController()
