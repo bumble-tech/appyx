@@ -38,7 +38,7 @@ class CardsExampleNode(
 
     init {
         lifecycle.coroutineScope.launchWhenStarted {
-            repeat(cards.elements.value.size / 4 + 1) {
+            repeat(cards.elements.value.size / 4 - 1) {
                 delay(1500)
                 cards.indicateLike()
                 delay(1000)
