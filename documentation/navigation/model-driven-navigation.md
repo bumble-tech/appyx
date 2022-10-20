@@ -5,7 +5,7 @@
 
 Generally speaking, most navigation solutions have fixed navigation mechanisms (e.g. a back stack).
 
-Appyx gives you the freedom to define your own navigation model. For example, you can implement any of the examples you see here with with the same approach:
+Appyx gives you the freedom to define your own navigation model. For example, you can implement any of the examples you see here with the same approach:
 
 <img src="https://i.imgur.com/N8rEPrJ.gif" width="150"> <img src="https://i.imgur.com/esLXh61.gif" width="150"> <img src="https://i.imgur.com/8gy3Ghb.gif" width="150"> <img src="https://cdn-images-1.medium.com/max/1600/1*mEg8Ebem3Hd2knQSA0yI1A.gif" width="150">
 
