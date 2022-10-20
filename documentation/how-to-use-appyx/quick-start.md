@@ -41,6 +41,7 @@ class RootNode(
 Since this is the root of your tree, you'll also need to plug it in to your Activity, so that system events (Android lifecycle, back press, etc.) reach your components in the tree.
 
 ```kotlin
+//Please note we are extending from NodeActivity
 class MainActivity : NodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
