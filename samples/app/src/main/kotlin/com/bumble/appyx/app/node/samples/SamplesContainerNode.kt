@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -225,10 +226,16 @@ private fun SampleItem(
             ) {
                 content()
             }
-            Spacer(modifier = Modifier.width(8.dp))
+            Spacer(modifier = Modifier.size(12.dp))
             Column(horizontalAlignment = Alignment.Start) {
-                Text(text = title, style = MaterialTheme.typography.h4, textAlign = TextAlign.Start)
-                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.h4,
+                    textAlign = TextAlign.Start
+                )
+                Spacer(
+                    modifier = Modifier.size(8.dp)
+                )
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.caption,
