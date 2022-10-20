@@ -52,6 +52,7 @@ class DragProgressInputSource<NavTarget, State>(
                 Log.d("input source", "operation applied: $operation")
             } else {
                 Log.d("input source", "operation not applicable: $operation")
+                return
             }
             // Case: we can continue the existing operation
         }
