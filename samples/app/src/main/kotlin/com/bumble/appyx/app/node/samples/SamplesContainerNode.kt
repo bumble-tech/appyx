@@ -224,7 +224,7 @@ private fun SampleItem(
             ) {
                 content()
             }
-            Spacer(modifier = Modifier.size(12.dp))
+            Spacer(modifier = Modifier.size(16.dp))
             Column(horizontalAlignment = Alignment.Start) {
                 Text(
                     text = title,
