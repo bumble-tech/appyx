@@ -3,6 +3,7 @@ package com.bumble.appyx.app.node.onboarding
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -112,6 +113,7 @@ class OnboardingContainerNode(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colors.surface),
         ) {
             Children(
                 modifier = Modifier
