@@ -3,24 +3,15 @@ package com.bumble.appyx.app.node.samples
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -31,11 +22,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.app.node.cards.CardsExampleNode
 import com.bumble.appyx.app.node.helper.screenNode
 import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
@@ -145,7 +135,7 @@ class SamplesContainerNode(
     }
 
     @Composable
-    private fun SamplesSelector(backStack: BackStack<NavTarget>) {
+    fun SamplesSelector(backStack: BackStack<NavTarget>, modifier: Modifier = Modifier) {
         val decorator: @Composable (child: ChildRenderer) -> Unit = remember {
             {
                 ScaledLayout() {
@@ -155,7 +145,7 @@ class SamplesContainerNode(
             }
         }
         LazyColumn(
-            modifier = Modifier.fillMaxSize(),
+            modifier = modifier.fillMaxSize(),
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top)
 
@@ -163,14 +153,14 @@ class SamplesContainerNode(
             item {
                 SampleItem(
                     title = "Dating cards NavModel",
-                    subtitle = "Swipe right on NavModel concept",
+                    subtitle = "Swipe right on the NavModel concept",
                     onClick = { backStack.push(NavTarget.CardsExample) },
                 ) { PermanentChild(navTarget = NavTarget.CardsExample, decorator = decorator) }
             }
             item {
                 SampleItem(
                     title = "What is Appyx?",
-                    subtitle = "Launch Appyx onboarding flow to explore main ideas in a set of slides",
+                    subtitle = "Explore some of the main ideas of Appyx in a set of slides",
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(16f / 9),
@@ -196,60 +186,3 @@ class SamplesContainerNode(
     }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-private fun SampleItem(
-    title: String,
-    subtitle: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    content: @Composable () -> Unit
-) {
-    Surface(
-        onClick = onClick,
-        modifier = modifier
-            .fillMaxSize()
-            .aspectRatio(16f / 9),
-        shape = RoundedCornerShape(24.dp),
-        elevation = 4.dp,
-    ) {
-        Row(
-            Modifier
-                .padding(16.dp)
-        ) {
-            Surface(
-                modifier = Modifier
-                    .aspectRatio(9f / 16),
-                border = BorderStroke(2.dp, Color(0xffdcdcdc)),
-                shape = RoundedCornerShape(24.dp)
-            ) {
-                content()
-            }
-            Spacer(modifier = Modifier.width(8.dp))
-            Column(horizontalAlignment = Alignment.Start) {
-                Text(text = title, style = MaterialTheme.typography.h4, textAlign = TextAlign.Start)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.caption,
-                    textAlign = TextAlign.Start
-                )
-            }
-        }
-    }
-
-}
-
-@Preview(uiMode = UI_MODE_NIGHT_YES)
-@Preview
-@Composable
-private fun SampleItemPreview() {
-    AppyxSampleAppTheme {
-        SampleItem(
-            title = "What is Appyx?",
-            subtitle = "Launch Appyx onboarding flow to explore main ideas in a set of slides",
-            onClick = {},
-            modifier = Modifier
-        ) {}
-    }
-}
