@@ -1,14 +1,13 @@
-package com.bumble.appyx.app.node.samples
+package com.bumble.appyx.app.node.cards
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.app.node.samples.CardsExampleNode.NavTarget
+import com.bumble.appyx.app.node.cards.CardsExampleNode.NavTarget
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCardNode
 import com.bumble.appyx.core.composable.Children
