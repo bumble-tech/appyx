@@ -28,7 +28,7 @@ fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp),
-            color = Color.Black,
+            color = MaterialTheme.colors.onSurface,
             style = MaterialTheme.typography.subtitle1
         )
 
