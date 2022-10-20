@@ -170,7 +170,7 @@ class SamplesContainerNode(
             item {
                 SampleItem(
                     title = "What is Appyx?",
-                    subtitle = "Launch the Appyx onboarding flow to explore some of the main ideas in a set of slides",
+                    subtitle = "Explore some of the main ideas of Appyx in a set of slides",
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(16f / 9),
@@ -252,7 +252,7 @@ private fun SampleItemPreview() {
     AppyxSampleAppTheme {
         SampleItem(
             title = "What is Appyx?",
-            subtitle = "Launch Appyx onboarding flow to explore main ideas in a set of slides",
+            subtitle = "Explore some of the main ideas of Appyx in a set of slides",
             onClick = {},
             modifier = Modifier
         ) {}
