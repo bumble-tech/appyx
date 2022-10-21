@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen
+package com.bumble.appyx.app.node.onboarding.screen.modeldriven
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -29,7 +29,7 @@ import kotlinx.coroutines.delay
 
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
-class ApplicationTree(
+class ComposableNavigation(
     buildContext: BuildContext
 ) : Node(
     buildContext = buildContext,
@@ -74,15 +74,16 @@ class ApplicationTree(
         )
     )
 
-    @Suppress("LongMethod")
+    @SuppressWarnings("LongMethod")
     @Composable
     override fun View(modifier: Modifier) {
         Page(
             modifier = modifier,
-            title = "Nodes",
-            body = "The app is organised into a tree of Nodes." +
-                    "\n\nNodes have @Composable UI, each have their own lifecycle on and off the screen, " +
-                    "and can choose which of their children to delegate the control flow to."
+            title = "Composable",
+            body = "With Appyx, navigation itself is composable, too.\n" +
+                "\n" +
+                "You can represent your app as a hierarchy of Nodes – " +
+                "each with their own UI, lifecycle and their own NavModels."
         ) {
             Column(
                 modifier = Modifier
@@ -97,7 +98,7 @@ class ApplicationTree(
 
         LaunchedEffect(Unit) {
             val startDelay: Long = 500
-            val intervalDelay: Long = 1200
+            val intervalDelay: Long = 1600
 
             while (true) {
                 root.isActive.value = false
@@ -153,7 +154,7 @@ class ApplicationTree(
 @Composable
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
-fun ApplicationTreePreview() {
+fun ComposableNavigationPreview() {
     AppyxSampleAppTheme(darkTheme = false) {
         PreviewContent()
     }
@@ -163,7 +164,7 @@ fun ApplicationTreePreview() {
 @Composable
 @ExperimentalUnitApi
 @ExperimentalComposeUiApi
-fun ApplicationTreePreviewDark() {
+fun ComposableNavigationPreviewDark() {
     AppyxSampleAppTheme(darkTheme = true) {
         PreviewContent()
     }
@@ -176,7 +177,7 @@ private fun PreviewContent() {
     Surface(color = MaterialTheme.colors.background) {
         Box(Modifier.fillMaxSize()) {
             NodeHost(integrationPoint = IntegrationPointStub()) {
-                ApplicationTree(
+                ComposableNavigation(
                     root(null),
                 )
             }

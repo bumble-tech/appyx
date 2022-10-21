@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen
+package com.bumble.appyx.app.node.onboarding.screen.modeldriven
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -22,7 +22,7 @@ import com.bumble.appyx.core.modality.BuildContext.Companion.root
 import com.bumble.appyx.core.node.Node
 
 @ExperimentalUnitApi
-class IntroScreen(
+class Intro(
     buildContext: BuildContext,
 ) : Node(
     buildContext = buildContext
@@ -33,7 +33,7 @@ class IntroScreen(
         Page(
             modifier = modifier,
             title = "Hi there!",
-            body = "Appyx is an Android application framework built with love on top of Jetpack Compose."
+            body = "Appyx is a model-driven navigation library built with love on top of Jetpack Compose."
         ) {
             val image: Painter = painterResource(id = R.drawable.appyx)
             Image(
@@ -71,7 +71,7 @@ private fun PreviewContent() {
     Surface(color = MaterialTheme.colors.background) {
         Box(Modifier.fillMaxSize()) {
             NodeHost(integrationPoint = IntegrationPointStub()) {
-                IntroScreen(
+                Intro(
                     root(null)
                 )
             }
