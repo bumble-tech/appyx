@@ -1,19 +1,17 @@
 package com.bumble.appyx.core.navigation.model.permanent
 
-import com.bumble.appyx.core.navigation.Operation
+import com.bumble.appyx.core.mapState
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
+import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -49,14 +47,9 @@ class PermanentNavModel<NavTarget : Any>(
     override val elements: StateFlow<PermanentElements<NavTarget>>
         get() = state
 
-    override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, Int>>
-        get() = state
-            .map { NavModelAdapter.ScreenState(onScreen = it) }
-            .stateIn(
-                scope = scope,
-                started = SharingStarted.Lazily,
-                initialValue = NavModelAdapter.ScreenState(onScreen = state.value)
-            )
+    override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, Int>> by lazy {
+        state.mapState(scope) { NavModelAdapter.ScreenState(onScreen = it) }
+    }
 
     override fun onTransitionFinished(keys: Collection<NavKey<NavTarget>>) {
         // no-op

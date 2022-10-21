@@ -1,24 +1,22 @@
 package com.bumble.appyx.core.navigation
 
 import androidx.activity.OnBackPressedCallback
-import com.bumble.appyx.core.plugin.BackPressHandler
-import com.bumble.appyx.core.plugin.Destroyable
+import com.bumble.appyx.core.mapState
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.core.navigation.onscreen.isOnScreen
 import com.bumble.appyx.core.navigation.operationstrategies.ExecuteImmediately
 import com.bumble.appyx.core.navigation.operationstrategies.OperationStrategy
+import com.bumble.appyx.core.plugin.BackPressHandler
+import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.core.state.SavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
@@ -69,13 +67,12 @@ abstract class BaseNavModel<NavTarget, State>(
 
     override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, State>> by lazy {
         state
-            .map { elements ->
+            .mapState(scope) { elements ->
                 NavModelAdapter.ScreenState(
                     onScreen = elements.filter { screenResolver.isOnScreen(it) },
                     offScreen = elements.filterNot { screenResolver.isOnScreen(it) },
                 )
             }
-            .stateIn(scope, SharingStarted.Eagerly, NavModelAdapter.ScreenState())
     }
 
     override val onBackPressedCallback: OnBackPressedCallback by lazy {
