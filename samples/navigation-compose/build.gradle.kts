@@ -4,6 +4,7 @@ plugins {
     id("kotlin-parcelize")
     id("appyx-lint")
     id("appyx-detekt")
+    id("dev.chrisbanes.paparazzi") version libs.versions.paparazzi.get()
 }
 
 android {
@@ -40,6 +41,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.compose.material)
     debugImplementation(project(":libraries:testing-ui-activity"))
+
+    testImplementation(libs.junit)
+    testImplementation(project(":samples:common"))
 
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)

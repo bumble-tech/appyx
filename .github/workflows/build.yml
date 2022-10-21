@@ -29,6 +29,7 @@ jobs:
         run: >
           ./gradlew
           build
+          verifyPaparazziDebug
           projectHealth
           mergeLintSarif
           mergeDetektSarif
@@ -71,6 +72,7 @@ jobs:
           path: |
             **/build/reports/
             !**/build/reports/dependency-analysis/
+            **/out/failures/
 
   instrumentation-tests:
     name: Instrumentation tests

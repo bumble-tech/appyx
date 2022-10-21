@@ -28,8 +28,9 @@ dependencies {
     api(project(":libraries:core"))
 
     api(libs.compose.ui.ui)
+    api(libs.compose.material)
+    implementation(libs.google.material)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.material)
     implementation(libs.coil.compose)
 }
