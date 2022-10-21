@@ -1,6 +1,5 @@
 package com.bumble.appyx.app.node.root
 
-import android.content.Context
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -12,14 +11,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.R
 import com.bumble.appyx.app.composable.ScreenCenteredContent
 import com.bumble.appyx.app.node.helper.screenNode
-import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow
 import com.bumble.appyx.app.node.root.RootNode.NavTarget
 import com.bumble.appyx.app.node.samples.SamplesContainerNode
 import com.bumble.appyx.core.composable.Children
@@ -52,25 +49,14 @@ class RootNode(
         object Splash : NavTarget()
 
         @Parcelize
-        object WhatsAppyx : NavTarget()
-
-        @Parcelize
         object Samples : NavTarget()
     }
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             NavTarget.Splash -> screenNode(buildContext) { Splash() }
-            NavTarget.WhatsAppyx -> WhatsAppyxSlideShow(buildContext)
             NavTarget.Samples -> SamplesContainerNode(buildContext)
         }
-
-    override fun onChildFinished(child: Node) {
-        when (child) {
-            is WhatsAppyxSlideShow -> backStack.newRoot(NavTarget.Samples)
-            else -> super.onChildFinished(child)
-        }
-    }
 
     @Composable
     override fun View(modifier: Modifier) {
