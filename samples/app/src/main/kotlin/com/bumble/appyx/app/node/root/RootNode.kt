@@ -76,11 +76,10 @@ class RootNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val context: Context = LocalContext.current
         LaunchedEffect(backStack) {
             if (backStack.activeElement == NavTarget.Splash) {
                 delay(1000)
-                launchNewRootScreen(context)
+                backStack.newRoot(NavTarget.Samples)
             }
         }
 
@@ -89,26 +88,6 @@ class RootNode(
             navModel = backStack,
             transitionHandler = rememberBackstackFader { tween(750) }
         )
-    }
-
-    /**
-     * We only want to show onboarding once (though the user can navigate back to it manually).
-     * This will allow them to look at samples quicker on subsequent uses.
-     */
-    private fun launchNewRootScreen(context: Context) {
-        val preferences = context.getSharedPreferences(PREFERENCES_NAME, MODE_PRIVATE)
-        val onboardingShown = preferences.getBoolean(ONBOARDING_SHOWN_KEY, false)
-        if (!onboardingShown) {
-            preferences.edit { putBoolean(ONBOARDING_SHOWN_KEY, true) }
-            backStack.newRoot(NavTarget.Onboarding)
-        } else {
-            backStack.newRoot(NavTarget.Samples)
-        }
-    }
-
-    private companion object {
-        private const val PREFERENCES_NAME = "sample_preferences"
-        private const val ONBOARDING_SHOWN_KEY = "onboarding_shown"
     }
 }
 
