@@ -26,9 +26,12 @@ import kotlinx.parcelize.Parcelize
 class CardsExampleNode(
     buildContext: BuildContext,
     private val cards: Cards<NavTarget> = Cards(
-        initialItems = Profile.allProfiles.shuffled().map {
-            NavTarget.ProfileCard(it)
-        }
+        initialItems = (
+            Profile.allProfiles.shuffled() +
+                Profile.allProfiles.shuffled() +
+                Profile.allProfiles.shuffled() +
+                Profile.allProfiles.shuffled()
+            ).map { NavTarget.ProfileCard(it) }
     ),
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,

@@ -1,6 +1,5 @@
 package com.bumble.appyx.app.node.samples
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -22,13 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.node.cards.CardsExampleNode
 import com.bumble.appyx.app.node.helper.screenNode
-import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode
-import com.bumble.appyx.app.ui.AppyxSampleAppTheme
+import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
@@ -66,7 +63,7 @@ class SamplesContainerNode(
         }
 
         @Parcelize
-        object OnboardingScreen : NavTarget() {
+        data class OnboardingScreen(val autoAdvance: Boolean = false) : NavTarget() {
             override val showBackButton: Boolean
                 get() = false
         }
@@ -83,9 +80,13 @@ class SamplesContainerNode(
     @ExperimentalComposeUiApi
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            NavTarget.SamplesListScreen -> screenNode(buildContext) { SamplesSelector(backStack) }
-            NavTarget.OnboardingScreen -> OnboardingContainerNode(buildContext)
-            NavTarget.ComposeNavigationScreen -> {
+            is NavTarget.SamplesListScreen -> screenNode(buildContext) { SamplesSelector(backStack) }
+            NavTarget.CardsExample -> CardsExampleNode(buildContext)
+            is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(
+                buildContext = buildContext,
+                autoAdvanceDelayMs = if (navTarget.autoAdvance) 2500 else null
+            )
+            is NavTarget.ComposeNavigationScreen -> {
                 node(buildContext) {
                     // compose-navigation fetches the integration point via LocalIntegrationPoint
                     CompositionLocalProvider(
@@ -95,8 +96,6 @@ class SamplesContainerNode(
                     }
                 }
             }
-
-            NavTarget.CardsExample -> CardsExampleNode(buildContext)
         }
 
     @ExperimentalUnitApi
@@ -104,7 +103,7 @@ class SamplesContainerNode(
     @ExperimentalComposeUiApi
     override fun onChildFinished(child: Node) {
         when (child) {
-            is OnboardingContainerNode -> backStack.newRoot(NavTarget.SamplesListScreen)
+            is WhatsAppyxSlideShow -> backStack.newRoot(NavTarget.SamplesListScreen)
             else -> super.onChildFinished(child)
         }
     }
@@ -164,8 +163,8 @@ class SamplesContainerNode(
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(16f / 9),
-                    onClick = { backStack.push(NavTarget.OnboardingScreen) },
-                ) { PermanentChild(navTarget = NavTarget.OnboardingScreen, decorator = decorator) }
+                    onClick = { backStack.push(NavTarget.OnboardingScreen(false)) },
+                ) { PermanentChild(navTarget = NavTarget.OnboardingScreen(true), decorator = decorator) }
             }
             item {
                 SampleItem(
