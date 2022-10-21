@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen.modeldriven
+package com.bumble.appyx.app.node.slideshow.slide.modeldriven
 
 import android.os.Parcelable
 import androidx.compose.animation.core.tween
@@ -12,9 +12,9 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.app.composable.Page
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.NavModelTeaserNode.NavTarget
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.NavModelTeaserNode.NavTarget.BackStackTeaser
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.NavModelTeaserNode.NavTarget.RandomOtherTeaser
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.NavModelTeaserNode.NavTarget
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.NavModelTeaserNode.NavTarget.BackStackTeaser
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.NavModelTeaserNode.NavTarget.RandomOtherTeaser
 import com.bumble.appyx.app.node.teaser.backstack.BackstackTeaserNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.core.composable.Children

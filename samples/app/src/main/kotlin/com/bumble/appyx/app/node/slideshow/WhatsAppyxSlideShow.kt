@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding
+package com.bumble.appyx.app.node.slideshow
 
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -33,11 +33,11 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
-import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.NavTarget
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.ComposableNavigation
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.Intro
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.ModelDrivenIntro
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.NavModelTeaserNode
+import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow.NavTarget
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.ComposableNavigation
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.Intro
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.ModelDrivenIntro
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.NavModelTeaserNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.app.ui.appyx_dark
 import com.bumble.appyx.core.composable.Children
@@ -61,7 +61,7 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-class OnboardingContainerNode(
+class WhatsAppyxSlideShow(
     buildContext: BuildContext,
     autoAdvanceDelayMs: Long? = null,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
@@ -238,7 +238,7 @@ private fun PreviewContent() {
     Surface(color = MaterialTheme.colors.background) {
         Box(Modifier.fillMaxSize()) {
             NodeHost(integrationPoint = IntegrationPointStub()) {
-                OnboardingContainerNode(root(null))
+                WhatsAppyxSlideShow(root(null))
             }
         }
     }

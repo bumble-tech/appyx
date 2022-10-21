@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen.modeldriven
+package com.bumble.appyx.app.node.slideshow.slide.modeldriven
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.graph.GraphNode
-import com.bumble.appyx.app.node.onboarding.screen.modeldriven.ComposableNavigation
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.ComposableNavigation
 import com.bumble.appyx.app.ui.md_amber_300
 import com.bumble.appyx.app.ui.md_blue_300
 import com.bumble.appyx.app.ui.md_blue_grey_300

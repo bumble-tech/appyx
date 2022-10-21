@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen.app
+package com.bumble.appyx.app.node.slideshow.slide.app
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement

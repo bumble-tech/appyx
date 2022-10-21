@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen.app
+package com.bumble.appyx.app.node.slideshow.slide.app
 
 import android.os.Parcelable
 import androidx.compose.animation.AnimatedVisibility
