@@ -2,11 +2,18 @@
 
 ## Pending changes
 
-- [#218](https://github.com/bumble-tech/appyx/pull/231) – **Fixed**: Changing transition handler at runtime does not redraw children
-- [#218](https://github.com/bumble-tech/appyx/pull/239) – **Fixed**: Fixed an issue with desynchronisation between nav model and children's restoration process
-- [#217](https://github.com/bumble-tech/appyx/pull/217) – **Updated**: Moved `navigation-compose` sample into `:samples:app`.
+–
+
+---
+
+## 1.0.0-rc02
+
+- [#231](https://github.com/bumble-tech/appyx/pull/231) – **Fixed**: Changing transition handler at runtime does not redraw children
+- [#239](https://github.com/bumble-tech/appyx/pull/239) – **Fixed**: Fixed an issue with desynchronisation between NavModel and children's restoration process
 - [#218](https://github.com/bumble-tech/appyx/pull/218) – **Updated**: `androidx.core:core-ktx` to 1.9.0.
-- [#165](https://github.com/bumble-tech/appyx/pull/165) – **Added**: A dating-cards-like `NavModel` implementation: `Cards`, along with sample in `:samples:app`
+
+<div style="text-align: center"><small>21 Oct 2022</small></div>
+
 ---
 
 ## 1.0.0-rc01
