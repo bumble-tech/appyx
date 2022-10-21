@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.app.composable.Page
@@ -72,7 +73,7 @@ class NavModelTeaserNode(
     @Composable
     override fun View(modifier: Modifier) {
         Page(
-            modifier = modifier,
+            modifier = modifier.clipToBounds(),
             title = "NavModel",
             body = "From simple back stacks to any complex interaction you can think of, " +
                 "everything is possible. " +
