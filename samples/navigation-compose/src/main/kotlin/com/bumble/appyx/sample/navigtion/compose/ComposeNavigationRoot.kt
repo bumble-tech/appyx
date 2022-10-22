@@ -36,7 +36,7 @@ fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp),
             color = MaterialTheme.colors.onSurface,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.h1
         )
 
         val googleNavController = rememberNavController()
