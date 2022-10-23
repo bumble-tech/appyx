@@ -37,17 +37,19 @@ class PromoterTeaserNode(
 
     init {
         lifecycle.coroutineScope.launch {
-            repeat(4) {
-                promoter.addFirst(NavTarget.Child((it + 1) * 100))
-                promoter.promoteAll()
+            lifecycle.coroutineScope.launchWhenStarted {
+                repeat(4) {
+                    promoter.addFirst(NavTarget.Child((it + 1) * 100))
+                    promoter.promoteAll()
+                }
+                delay(500)
+                repeat(4) {
+                    delay(1500)
+                    promoter.addFirst(NavTarget.Child((it + 5) * 100))
+                    promoter.promoteAll()
+                }
+                finish()
             }
-            delay(500)
-            repeat(4) {
-                delay(1500)
-                promoter.addFirst(NavTarget.Child((it + 5) * 100))
-                promoter.promoteAll()
-            }
-            finish()
         }
     }
 

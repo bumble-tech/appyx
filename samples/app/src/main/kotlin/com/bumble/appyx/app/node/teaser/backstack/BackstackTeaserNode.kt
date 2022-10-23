@@ -36,18 +36,20 @@ class BackstackTeaserNode(
 
     init {
         lifecycle.coroutineScope.launch {
-            delay(1000)
-            repeat(4) {
-                backStack.push(NavTarget.Child((it + 2) * 100))
-                delay(400)
+            lifecycle.coroutineScope.launchWhenStarted {
+                delay(1000)
+                repeat(4) {
+                    backStack.push(NavTarget.Child((it + 2) * 100))
+                    delay(400)
+                }
+                delay(500)
+                repeat(4) {
+                    backStack.pop()
+                    delay(150)
+                }
+                delay(1000)
+                finish()
             }
-            delay(500)
-            repeat(4) {
-                backStack.pop()
-                delay(150)
-            }
-            delay(1000)
-            finish()
         }
     }
 
