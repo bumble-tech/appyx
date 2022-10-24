@@ -24,14 +24,12 @@ import com.bumble.appyx.core.navigation.EmptyNavModel
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.navmodel.backstack.BackStack
-import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
 import kotlinx.parcelize.Parcelize
 
 class SamplesSelectorNode(
     buildContext: BuildContext,
-    private val samplesContainerBackStack: BackStack<SamplesContainerNode.NavTarget>
+    private val outputFunc: (Output) -> Unit
 ) : ParentNode<SamplesSelectorNode.NavTarget>(
     navModel = EmptyNavModel<NavTarget, Unit>(),
     buildContext = buildContext
@@ -45,6 +43,12 @@ class SamplesSelectorNode(
 
         @Parcelize
         object CardsExample : NavTarget()
+    }
+
+    sealed class Output {
+        object OpenCardsExample : Output()
+        object OpenOnboarding : Output()
+        object OpenComposeNavigation : Output()
     }
 
     @ExperimentalUnitApi
@@ -88,9 +92,7 @@ class SamplesSelectorNode(
                 SampleItem(
                     title = "Dating cards NavModel",
                     subtitle = "Swipe right on the NavModel concept",
-                    onClick = {
-                        samplesContainerBackStack.push(SamplesContainerNode.NavTarget.CardsExample)
-                    },
+                    onClick = { outputFunc(Output.OpenCardsExample) },
                 ) {
                     PermanentChild(
                         navTarget = NavTarget.CardsExample,
@@ -105,11 +107,7 @@ class SamplesSelectorNode(
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(16f / 9),
-                    onClick = {
-                        samplesContainerBackStack.push(
-                            SamplesContainerNode.NavTarget.OnboardingScreen
-                        )
-                    },
+                    onClick = { outputFunc(Output.OpenOnboarding) },
                 ) {
                     PermanentChild(
                         navTarget = NavTarget.OnboardingScreen,
@@ -124,11 +122,7 @@ class SamplesSelectorNode(
                     modifier = Modifier
                         .fillMaxSize()
                         .aspectRatio(16f / 9),
-                    onClick = {
-                        samplesContainerBackStack.push(
-                            SamplesContainerNode.NavTarget.ComposeNavigationScreen
-                        )
-                    },
+                    onClick = { outputFunc(Output.OpenComposeNavigation) },
                 ) {
                     PermanentChild(
                         navTarget = NavTarget.ComposeNavigationScreen,

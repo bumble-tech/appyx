@@ -29,6 +29,7 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.activeElement
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import com.bumble.appyx.navmodel.backstack.operation.pop
+import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
 import kotlinx.parcelize.Parcelize
@@ -71,7 +72,21 @@ class SamplesContainerNode(
     @ExperimentalComposeUiApi
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is NavTarget.SamplesListScreen -> SamplesSelectorNode(buildContext, backStack)
+            is NavTarget.SamplesListScreen -> SamplesSelectorNode(buildContext) { output ->
+                backStack.push(
+                    when (output) {
+                        is SamplesSelectorNode.Output.OpenCardsExample -> {
+                            NavTarget.CardsExample
+                        }
+                        is SamplesSelectorNode.Output.OpenComposeNavigation -> {
+                            NavTarget.ComposeNavigationScreen
+                        }
+                        is SamplesSelectorNode.Output.OpenOnboarding -> {
+                            NavTarget.OnboardingScreen
+                        }
+                    }
+                )
+            }
             is NavTarget.CardsExample -> CardsExampleNode(buildContext)
             is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(buildContext)
             is NavTarget.ComposeNavigationScreen -> {
