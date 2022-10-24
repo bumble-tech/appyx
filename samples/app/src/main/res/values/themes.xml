@@ -21,7 +21,7 @@
 
     <style name="Theme.Appyx.Starting" parent="Theme.SplashScreen">
         <!-- Set the splash screen background -->
-        <item name="windowSplashScreenBackground">@color/appyx_dark</item>
+        <item name="windowSplashScreenBackground">@color/appyx_bright</item>
 
         <!-- Set the theme of the Activity that directly follows your splash screen. -->
         <!-- Required -->
