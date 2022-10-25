@@ -8,9 +8,8 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
@@ -38,7 +37,7 @@ import kotlin.math.sin
 @Suppress("TransitionPropertiesLabel", "MagicNumber")
 class CardsTransitionHandler<T>(
     private val transitionSpec: TransitionSpec<Cards.State, Float> = { spring(stiffness = Spring.StiffnessVeryLow) }
-) : ModifierTransitionHandler<T, Cards.State>() {
+) : ModifierTransitionHandler<T, Cards.State>(clipToBounds = true) {
 
     private data class Props(
         val scale: Float = 1f,
