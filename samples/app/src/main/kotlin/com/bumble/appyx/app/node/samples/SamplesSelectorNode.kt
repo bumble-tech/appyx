@@ -58,6 +58,7 @@ class SamplesSelectorNode(
         when (navTarget) {
             is NavTarget.CardsExample -> CardsExampleNode(buildContext)
             is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(
+                isInPreviewMode = true,
                 buildContext = buildContext,
                 autoAdvanceDelayMs = 2500
             )
