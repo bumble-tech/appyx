@@ -6,6 +6,10 @@
 2. Fork and check out the code locally
 3. Import the project to Android Studio
 
+You can find the pre-built sample app apks here:
+- [Latest release](https://github.com/bumble-tech/appyx/releases)
+- [Latest 1.x](https://github.com/bumble-tech/appyx/actions/runs/${POST_MERGE_RUN_ID})
+
 ## Showcase app
 
 The `:app` module showcases **Appyx** itself with multiple levels of navigation, NavModel demos, etc. See it in action, then check the related code how it works.
