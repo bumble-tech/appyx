@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#250](https://github.com/bumble-tech/appyx/pull/250) – **Updated**: Jetpack Compose to 1.3.0
 
 ---
 
