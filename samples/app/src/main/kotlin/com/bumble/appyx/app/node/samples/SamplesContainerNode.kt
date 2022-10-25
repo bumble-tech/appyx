@@ -89,7 +89,7 @@ class SamplesContainerNode(
                 )
             }
             is NavTarget.CardsExample -> CardsExampleNode(buildContext)
-            is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(buildContext)
+            is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(buildContext, isInPreviewMode = false)
             is NavTarget.ComposeNavigationScreen -> {
                 node(buildContext) {
                     // compose-navigation fetches the integration point via LocalIntegrationPoint
