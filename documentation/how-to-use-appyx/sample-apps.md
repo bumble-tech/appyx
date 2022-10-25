@@ -7,8 +7,9 @@
 3. Import the project to Android Studio
 
 You can find the pre-built sample app apks here:
+
 - [Latest release](https://github.com/bumble-tech/appyx/releases)
-- [Latest 1.x](https://github.com/bumble-tech/appyx/actions/runs/${POST_MERGE_RUN_ID})
+- [Latest 1.x](https://github.com/bumble-tech/appyx/actions/runs/${POST_MERGE_RUN_ID}#artifacts)
 
 ## Showcase app
 
