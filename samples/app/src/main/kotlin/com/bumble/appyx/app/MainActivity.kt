@@ -31,9 +31,7 @@ class MainActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         NodeHost(integrationPoint = appyxIntegrationPoint) {
-                            SamplesContainerNode(
-                                buildContext = it,
-                            )
+                            SamplesContainerNode(buildContext = it)
                         }
                     }
                 }
