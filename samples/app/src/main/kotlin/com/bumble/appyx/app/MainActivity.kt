@@ -10,7 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import com.bumble.appyx.app.node.root.RootNode
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.bumble.appyx.app.node.samples.SamplesContainerNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
@@ -22,6 +23,7 @@ import com.bumble.appyx.core.modality.BuildContext
 class MainActivity : NodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             AppyxSampleAppTheme {
@@ -29,9 +31,7 @@ class MainActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colors.background) {
                     Column {
                         NodeHost(integrationPoint = appyxIntegrationPoint) {
-                            RootNode(
-                                buildContext = it,
-                            )
+                            SamplesContainerNode(buildContext = it)
                         }
                     }
                 }
@@ -49,7 +49,7 @@ class MainActivity : NodeActivity() {
 fun DefaultPreview() {
     AppyxSampleAppTheme {
         Column {
-            RootNode(buildContext = BuildContext.root(null)).Compose()
+            SamplesContainerNode(buildContext = BuildContext.root(null)).Compose()
         }
     }
 }
