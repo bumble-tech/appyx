@@ -2,6 +2,7 @@ package com.bumble.appyx.app.node.samples
 
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -115,24 +116,26 @@ class SamplesContainerNode(
     override fun View(modifier: Modifier) {
         val elementsState by backStack.elements.collectAsState()
 
-        if (elementsState.activeElement?.showBackButton == true) {
-            IconButton(onClick = { backStack.pop() }) {
-                Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    contentDescription = "Back"
+        Box(Modifier.fillMaxSize()) {
+            if (elementsState.activeElement?.showBackButton == true) {
+                IconButton(onClick = { backStack.pop() }) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back"
+                    )
+                }
+            }
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(top = 40.dp)
+            ) {
+                Children(
+                    modifier = Modifier.fillMaxSize(),
+                    transitionHandler = rememberBackstackSlider(),
+                    navModel = backStack
                 )
             }
-        }
-        Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(top = 40.dp)
-        ) {
-            Children(
-                modifier = Modifier.fillMaxSize(),
-                transitionHandler = rememberBackstackSlider(),
-                navModel = backStack
-            )
         }
     }
 }
