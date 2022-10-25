@@ -12,19 +12,18 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.node.child.GenericChildNode
-import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
-import com.bumble.appyx.navmodel.promoter.navmodel.operation.addFirst
-import com.bumble.appyx.navmodel.promoter.navmodel.operation.promoteAll
-import com.bumble.appyx.navmodel.promoter.transitionhandler.rememberPromoterTransitionHandler
+import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode.NavTarget
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.app.node.teaser.promoter.PromoterTeaserNode.NavTarget
-import kotlin.random.Random
+import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
+import com.bumble.appyx.navmodel.promoter.navmodel.operation.addFirst
+import com.bumble.appyx.navmodel.promoter.navmodel.operation.promoteAll
+import com.bumble.appyx.navmodel.promoter.transitionhandler.rememberPromoterTransitionHandler
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
+import kotlin.random.Random
 
 @ExperimentalUnitApi
 class PromoterTeaserNode(
@@ -36,20 +35,18 @@ class PromoterTeaserNode(
 ) {
 
     init {
-        lifecycle.coroutineScope.launch {
-            lifecycle.coroutineScope.launchWhenStarted {
-                repeat(4) {
-                    promoter.addFirst(NavTarget.Child((it + 1) * 100))
-                    promoter.promoteAll()
-                }
-                delay(500)
-                repeat(4) {
-                    delay(1500)
-                    promoter.addFirst(NavTarget.Child((it + 5) * 100))
-                    promoter.promoteAll()
-                }
-                finish()
+        lifecycle.coroutineScope.launchWhenStarted {
+            repeat(4) {
+                promoter.addFirst(NavTarget.Child((it + 1) * 100))
+                promoter.promoteAll()
             }
+            delay(500)
+            repeat(4) {
+                delay(1500)
+                promoter.addFirst(NavTarget.Child((it + 5) * 100))
+                promoter.promoteAll()
+            }
+            finish()
         }
     }
 

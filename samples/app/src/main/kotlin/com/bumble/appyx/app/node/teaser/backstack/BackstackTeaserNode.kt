@@ -18,7 +18,6 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
@@ -35,21 +34,19 @@ class BackstackTeaserNode(
 ) {
 
     init {
-        lifecycle.coroutineScope.launch {
-            lifecycle.coroutineScope.launchWhenStarted {
-                delay(1000)
-                repeat(4) {
-                    backStack.push(NavTarget.Child((it + 2) * 100))
-                    delay(400)
-                }
-                delay(500)
-                repeat(4) {
-                    backStack.pop()
-                    delay(150)
-                }
-                delay(1000)
-                finish()
+        lifecycle.coroutineScope.launchWhenStarted {
+            delay(1000)
+            repeat(4) {
+                backStack.push(NavTarget.Child((it + 2) * 100))
+                delay(400)
             }
+            delay(500)
+            repeat(4) {
+                backStack.pop()
+                delay(150)
+            }
+            delay(1000)
+            finish()
         }
     }
 
