@@ -45,6 +45,7 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
+import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.spotlight.Spotlight
@@ -64,6 +65,7 @@ import kotlinx.parcelize.Parcelize
 class WhatsAppyxSlideShow(
     buildContext: BuildContext,
     autoAdvanceDelayMs: Long? = null,
+    isInPreviewMode: Boolean = false,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         items = listOf(
             NavTarget.Intro,
@@ -71,7 +73,11 @@ class WhatsAppyxSlideShow(
             NavTarget.NavModelTeaser,
             NavTarget.ComposableNavigation,
         ),
-        backPressHandler = GoToPrevious(),
+        backPressHandler = if (isInPreviewMode) {
+            DontHandleBackPress()
+        } else {
+            GoToPrevious()
+        },
         savedStateMap = buildContext.savedStateMap,
     ),
 ) : ParentNode<NavTarget>(

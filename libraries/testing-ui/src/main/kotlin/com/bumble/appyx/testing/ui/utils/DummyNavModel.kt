@@ -1,15 +1,12 @@
 package com.bumble.appyx.testing.ui.utils
 
-import com.bumble.appyx.core.navigation.BaseNavModel
-import com.bumble.appyx.core.navigation.NavElements
-import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.navigation.EmptyNavModel
 
-class DummyNavModel<NavTarget : Any, State> : BaseNavModel<NavTarget, State>(
-    savedStateMap = null,
-    finalState = null,
-    screenResolver = OnScreenStateResolver { true }
-) {
-    override val initialElements: NavElements<NavTarget, State>
-        get() = emptyList()
-
-}
+@Deprecated(
+    message = "Replaced with to EmptyNavModel",
+    replaceWith = ReplaceWith(
+        expression = "EmptyNavModel",
+        imports = ["com.bumble.appyx.core.navigation.EmptyNavModel"]
+    ),
+)
+typealias DummyNavModel<NavTarget, State> = EmptyNavModel<NavTarget, State>

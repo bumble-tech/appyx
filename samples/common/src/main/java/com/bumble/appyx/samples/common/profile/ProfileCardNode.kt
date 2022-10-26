@@ -30,7 +30,10 @@ class ProfileCardNode(
     @Composable
     @Override
     override fun View(modifier: Modifier) {
-        ProfileCard(profile)
+        ProfileCard(
+            profile = profile,
+            modifier = modifier
+        )
     }
 }
 
@@ -49,7 +52,11 @@ fun ProfileCard(
                     .align(Alignment.BottomStart)
                     .padding(start = 24.dp, bottom = 36.dp)
             ) {
-                Text(text = "${profile.name}, ${profile.age}", color = Color.White, fontSize = 30.sp)
+                Text(
+                    text = "${profile.name}, ${profile.age}",
+                    color = Color.White,
+                    fontSize = 30.sp
+                )
                 Spacer(modifier = Modifier.requiredHeight(4.dp))
                 Text(text = profile.city, color = Color.White, fontSize = 20.sp)
             }
