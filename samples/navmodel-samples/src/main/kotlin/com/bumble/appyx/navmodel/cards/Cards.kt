@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.cards
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.Operation.Noop
@@ -11,6 +12,7 @@ import com.bumble.appyx.navmodel.cards.Cards.State.Queued
 import com.bumble.appyx.navmodel.cards.Cards.State.Top
 import com.bumble.appyx.navmodel.cards.Cards.State.VoteLike
 import com.bumble.appyx.navmodel.cards.Cards.State.VotePass
+import kotlinx.parcelize.Parcelize
 
 class Cards<NavTarget : Any>(
     initialItems: List<NavTarget> = listOf(),
@@ -24,13 +26,20 @@ class Cards<NavTarget : Any>(
         internal val TOP_STATES = setOf(Top, IndicateLike, IndicatePass)
     }
 
-    sealed class State {
+    sealed class State : Parcelable {
+        @Parcelize
         data class Queued(val queueNumber: Int) : State()
+        @Parcelize
         object Bottom : State()
+        @Parcelize
         object Top : State()
+        @Parcelize
         object IndicateLike : State()
+        @Parcelize
         object IndicatePass : State()
+        @Parcelize
         object VoteLike : State()
+        @Parcelize
         object VotePass : State()
 
         fun next(): State =

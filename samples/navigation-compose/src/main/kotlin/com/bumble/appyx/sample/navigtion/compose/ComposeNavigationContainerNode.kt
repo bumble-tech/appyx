@@ -2,7 +2,7 @@ package com.bumble.appyx.sample.navigtion.compose
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -37,7 +37,7 @@ internal class ComposeNavigationContainerNode(
         when (navTarget) {
             is NavTarget.Main -> node(buildContext) {
                 Column(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text("Appyx screen")
@@ -51,7 +51,7 @@ internal class ComposeNavigationContainerNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier.fillMaxWidth(),
             navModel = backStack
         ) {
             children<NavTarget> { child ->

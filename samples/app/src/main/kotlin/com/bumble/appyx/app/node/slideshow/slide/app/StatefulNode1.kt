@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen
+package com.bumble.appyx.app.node.slideshow.slide.app
 
 import android.os.Parcelable
 import androidx.compose.animation.AnimatedVisibility
@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.Page
 import com.bumble.appyx.app.node.child.GenericChildNode
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode1.NavTarget
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
@@ -41,7 +40,7 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalComposeUiApi
 class StatefulNode1(
     buildContext: BuildContext
-) : ParentNode<NavTarget>(
+) : ParentNode<StatefulNode1.NavTarget>(
     buildContext = buildContext,
     navModel = PermanentNavModel(
         savedStateMap = buildContext.savedStateMap

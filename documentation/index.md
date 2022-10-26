@@ -34,7 +34,7 @@ You can create custom navigable components in no time:
 
 With Appyx you can break down screen boundaries and transform the screen itself:
 
-<img src="https://i.imgur.com/pbDENSc.gif" width="150">
+<img src="https://i.imgur.com/EKjwaqW.gif" width="150">
 
 See [Model-driven navigation](navigation/model-driven-navigation.md) for more details.
 

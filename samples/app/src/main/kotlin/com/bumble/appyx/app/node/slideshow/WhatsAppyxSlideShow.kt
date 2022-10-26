@@ -1,8 +1,9 @@
-package com.bumble.appyx.app.node.onboarding
+package com.bumble.appyx.app.node.slideshow
 
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,13 +31,13 @@ import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.composable.SpotlightDotsIndicator
-import com.bumble.appyx.app.node.onboarding.OnboardingContainerNode.NavTarget
-import com.bumble.appyx.app.node.onboarding.screen.ApplicationTree
-import com.bumble.appyx.app.node.onboarding.screen.IntroScreen
-import com.bumble.appyx.app.node.onboarding.screen.NavModelTeaserNode
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode1
-import com.bumble.appyx.app.node.onboarding.screen.StatefulNode2
+import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow.NavTarget
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.ComposableNavigation
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.Intro
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.ModelDrivenIntro
+import com.bumble.appyx.app.node.slideshow.slide.modeldriven.NavModelTeaserNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 import com.bumble.appyx.app.ui.appyx_dark
 import com.bumble.appyx.core.composable.Children
@@ -44,6 +45,7 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
+import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.spotlight.Spotlight
@@ -53,22 +55,29 @@ import com.bumble.appyx.navmodel.spotlight.hasPrevious
 import com.bumble.appyx.navmodel.spotlight.operation.next
 import com.bumble.appyx.navmodel.spotlight.operation.previous
 import com.bumble.appyx.navmodel.spotlight.transitionhandler.rememberSpotlightSlider
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.parcelize.Parcelize
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-class OnboardingContainerNode(
+class WhatsAppyxSlideShow(
     buildContext: BuildContext,
+    autoAdvanceDelayMs: Long? = null,
+    isInPreviewMode: Boolean = false,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         items = listOf(
-            NavTarget.IntroScreen,
-            NavTarget.ApplicationTree,
-            NavTarget.StatefulNode1,
-            NavTarget.StatefulNode2,
+            NavTarget.Intro,
+            NavTarget.ModelDrivenIntro,
             NavTarget.NavModelTeaser,
+            NavTarget.ComposableNavigation,
         ),
-        backPressHandler = GoToPrevious(),
+        backPressHandler = if (isInPreviewMode) {
+            DontHandleBackPress()
+        } else {
+            GoToPrevious()
+        },
         savedStateMap = buildContext.savedStateMap,
     ),
 ) : ParentNode<NavTarget>(
@@ -76,30 +85,47 @@ class OnboardingContainerNode(
     buildContext = buildContext
 ) {
 
+    init {
+        autoAdvanceDelayMs?.let { ms ->
+            lifecycle.coroutineScope.launchWhenStarted {
+                while (isActive) {
+                    spotlight.next()
+                    delay(ms)
+                    spotlight.next()
+                    delay(ms)
+                    spotlight.next()
+                    delay(ms)
+                    spotlight.previous()
+                    delay(ms)
+                    spotlight.previous()
+                    delay(ms)
+                    spotlight.previous()
+                    delay(ms)
+                }
+            }
+        }
+    }
+
     sealed class NavTarget : Parcelable {
         @Parcelize
-        object IntroScreen : NavTarget()
+        object Intro : NavTarget()
 
         @Parcelize
-        object ApplicationTree : NavTarget()
-
-        @Parcelize
-        object StatefulNode1 : NavTarget()
-
-        @Parcelize
-        object StatefulNode2 : NavTarget()
+        object ModelDrivenIntro : NavTarget()
 
         @Parcelize
         object NavModelTeaser : NavTarget()
+
+        @Parcelize
+        object ComposableNavigation : NavTarget()
     }
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            NavTarget.IntroScreen -> IntroScreen(buildContext)
-            NavTarget.ApplicationTree -> ApplicationTree(buildContext)
-            NavTarget.StatefulNode1 -> StatefulNode1(buildContext)
-            NavTarget.StatefulNode2 -> StatefulNode2(buildContext)
+            NavTarget.Intro -> Intro(buildContext)
+            NavTarget.ModelDrivenIntro -> ModelDrivenIntro(buildContext)
             NavTarget.NavModelTeaser -> NavModelTeaserNode(buildContext)
+            NavTarget.ComposableNavigation -> ComposableNavigation(buildContext)
         }
 
     @Composable
@@ -112,6 +138,7 @@ class OnboardingContainerNode(
         Column(
             modifier = modifier
                 .fillMaxSize()
+                .background(MaterialTheme.colors.surface),
         ) {
             Children(
                 modifier = Modifier
@@ -217,7 +244,7 @@ private fun PreviewContent() {
     Surface(color = MaterialTheme.colors.background) {
         Box(Modifier.fillMaxSize()) {
             NodeHost(integrationPoint = IntegrationPointStub()) {
-                OnboardingContainerNode(root(null))
+                WhatsAppyxSlideShow(root(null))
             }
         }
     }
