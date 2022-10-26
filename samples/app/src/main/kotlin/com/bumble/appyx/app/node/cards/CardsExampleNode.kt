@@ -8,8 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.node.cards.CardsExampleNode.NavTarget
-import com.bumble.appyx.samples.common.profile.Profile
-import com.bumble.appyx.samples.common.profile.ProfileCardNode
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -20,6 +18,8 @@ import com.bumble.appyx.navmodel.cards.operation.indicatePass
 import com.bumble.appyx.navmodel.cards.operation.voteLike
 import com.bumble.appyx.navmodel.cards.operation.votePass
 import com.bumble.appyx.navmodel.cards.transitionhandler.rememberCardsTransitionHandler
+import com.bumble.appyx.samples.common.profile.Profile
+import com.bumble.appyx.samples.common.profile.ProfileCardNode
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
@@ -27,11 +27,11 @@ class CardsExampleNode(
     buildContext: BuildContext,
     private val cards: Cards<NavTarget> = Cards(
         initialItems = (
-            Profile.allProfiles.shuffled() +
                 Profile.allProfiles.shuffled() +
-                Profile.allProfiles.shuffled() +
-                Profile.allProfiles.shuffled()
-            ).map { NavTarget.ProfileCard(it) }
+                        Profile.allProfiles.shuffled() +
+                        Profile.allProfiles.shuffled() +
+                        Profile.allProfiles.shuffled()
+                ).map { NavTarget.ProfileCard(it) }
     ),
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
@@ -71,13 +71,14 @@ class CardsExampleNode(
     override fun View(modifier: Modifier) {
         Children(
             modifier = modifier
-                .fillMaxSize()
-                .padding(20.dp),
+                .fillMaxSize(),
             navModel = cards,
             transitionHandler = rememberCardsTransitionHandler()
         ) {
             children<NavTarget> { child ->
-                child(modifier = Modifier.fillMaxSize())
+                child(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(20.dp))
             }
         }
     }
