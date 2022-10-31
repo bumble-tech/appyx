@@ -2,8 +2,15 @@
 
 ## Pending changes
 
+
+---
+
+## 1.0.0
+
 - [#247](https://github.com/bumble-tech/appyx/pull/247) – **Added**: Added `EmptyNavModel` to core for cases in which a `ParentNode` only uses `PermanentChild`. The `DummyNavModel` test class is deprecated.
 - [#250](https://github.com/bumble-tech/appyx/pull/250) – **Updated**: Jetpack Compose to 1.3.0
+
+<div style="text-align: center"><small>31 Oct 2022</small></div>
 
 ---
 
