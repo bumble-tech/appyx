@@ -1,7 +1,10 @@
 package com.bumble.appyx.sample.navigtion.compose
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -9,7 +12,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -22,14 +24,19 @@ import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
  */
 @Composable
 fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
-    Column(modifier.fillMaxSize()) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.surface),
+        verticalArrangement = Arrangement.Center
+    ) {
         Text(
             text = "Navigation Compose interop example",
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .padding(bottom = 8.dp),
-            color = Color.Black,
-            style = MaterialTheme.typography.subtitle1
+            color = MaterialTheme.colors.onSurface,
+            style = MaterialTheme.typography.h6
         )
 
         val googleNavController = rememberNavController()
@@ -47,7 +54,7 @@ fun ComposeNavigationRoot(modifier: Modifier = Modifier) {
 @Composable
 internal fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: () -> Unit) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text("Google's Jetpack Navigation screen")

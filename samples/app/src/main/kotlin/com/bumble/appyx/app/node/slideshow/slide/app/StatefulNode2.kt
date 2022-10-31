@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.onboarding.screen
+package com.bumble.appyx.app.node.slideshow.slide.app
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -48,8 +48,7 @@ class StatefulNode2(
             body = "– even when they're not visible. " +
                     "\n\nTry going back to the previous screen! " +
                     "You should see that the counters kept on working in the background, " +
-                    "and changes you made to colours are persisted." +
-                    "\n\nIf this behaviour is not desired you can destroy them by using different KeepMode."
+                    "and changes you made to colours are persisted."
         ) {
             val shape = RoundedCornerShape(16.dp)
 

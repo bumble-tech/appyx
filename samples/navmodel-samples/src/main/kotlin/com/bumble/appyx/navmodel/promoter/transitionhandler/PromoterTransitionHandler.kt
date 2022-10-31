@@ -7,6 +7,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -92,55 +93,57 @@ class PromoterTransitionHandler<T>(
         val halfHeightDp = (descriptor.params.bounds.height.value - childSize.value) / 2
         val radiusDp = min(halfWidthDp, halfHeightDp) // * 0.75f
 
-        val angleDegrees = transition.animateFloat(
+        val angleDegrees by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.target().angleDegrees }
         )
 
-        val effectiveRadiusDp = transition.animateFloat(
+        val effectiveRadiusDp by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.target().effectiveRadiusRatio * radiusDp }
         )
 
-        val arcOffsetDp = derivedStateOf {
-            val angleRadians = Math.toRadians(angleDegrees.value.toDouble() - 90)
-            val x = effectiveRadiusDp.value * cos(angleRadians)
-            val y = effectiveRadiusDp.value * sin(angleRadians)
-            Offset(x.toFloat(), y.toFloat())
+        val arcOffsetDp by remember {
+            derivedStateOf {
+                val angleRadians = Math.toRadians(angleDegrees.toDouble() - 90)
+                val x = effectiveRadiusDp * cos(angleRadians)
+                val y = effectiveRadiusDp * sin(angleRadians)
+                Offset(x.toFloat(), y.toFloat())
+            }
         }
 
-        val rotationY = transition.animateFloat(
+        val rotationY by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.target().rotationY })
 
-        val rotationZ = transition.animateFloat(
+        val rotationZ by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.target().rotationZ })
 
-        val scale = transition.animateFloat(
+        val scale by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.target().scale })
 
-        val dpOffsetX = transition.animateFloat(
+        val dpOffsetX by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.target().dpOffset.x.value })
 
-        val dpOffsetY = transition.animateFloat(
+        val dpOffsetY by transition.animateFloat(
             transitionSpec = transitionSpec,
             targetValueByState = { it.target().dpOffset.y.value })
 
         return@composed this
             .offset {
                 IntOffset(
-                    x = (this.density * (halfWidthDp + dpOffsetX.value + arcOffsetDp.value.x)).roundToInt(),
-                    y = (this.density * (halfHeightDp + dpOffsetY.value + arcOffsetDp.value.y)).roundToInt()
+                    x = (this.density * (halfWidthDp + dpOffsetX + arcOffsetDp.x)).roundToInt(),
+                    y = (this.density * (halfHeightDp + dpOffsetY + arcOffsetDp.y)).roundToInt()
                 )
             }
             .graphicsLayer(
-                rotationY = rotationY.value,
-                rotationZ = rotationZ.value
+                rotationY = rotationY,
+                rotationZ = rotationZ
             )
-            .scale(scale.value)
+            .scale(scale)
     }
 
     @Composable

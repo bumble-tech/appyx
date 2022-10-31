@@ -53,7 +53,7 @@ abstract class ModifierTransitionHandler<T, S>(open val clipToBounds: Boolean = 
     private fun rememberTransitionScope(
         transition: Transition<S>,
         descriptor: TransitionDescriptor<T, S>
-    ) = remember(transition, descriptor) {
+    ) = remember(transition, descriptor, this) {
         ChildTransitionScopeImpl(
             transition = transition,
             transitionModifier = clipToBoundsModifier

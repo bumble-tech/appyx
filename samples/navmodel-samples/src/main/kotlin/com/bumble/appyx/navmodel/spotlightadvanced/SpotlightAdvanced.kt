@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
@@ -9,6 +10,7 @@ import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State
 import com.bumble.appyx.navmodel.spotlightadvanced.backpresshandler.GoToDefault
 import com.bumble.appyx.navmodel.spotlightadvanced.operation.toSpotlightAdvancedElements
+import kotlinx.parcelize.Parcelize
 
 class SpotlightAdvanced<NavTarget : Any>(
     items: List<NavTarget>,
@@ -28,10 +30,14 @@ class SpotlightAdvanced<NavTarget : Any>(
     key = key,
 ) {
 
-    sealed class State {
+    sealed class State : Parcelable {
+        @Parcelize
         object InactiveBefore : State()
+        @Parcelize
         object Active : State()
+        @Parcelize
         object InactiveAfter : State()
+        @Parcelize
         data class Carousel(val offset: Int, val max: Int) : State()
     }
 

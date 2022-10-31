@@ -118,7 +118,7 @@ class GenericChildNode(
                     .padding(6.dp)
             ) {
                 Text(
-                    text = "Child ($id)",
+                    text = "Child (${id.substring(0, 4)})",
                     style = MaterialTheme.typography.caption
                 )
                 Text(
