@@ -49,6 +49,11 @@ Check out the project and launch the `:app` module for a quick demonstration
 See the [Downloads page](releases/downloads.md).
 
 
+## Learning Appyx
+
+Check out the [Quick start guide](how-to-use-appyx/quick-start.md), [Codelabs](how-to-use-appyx/codelabs.md), and [Sample apps](how-to-use-appyx/sample-apps.md)!
+
+
 ## Articles
 
 1. [Appyx is released! (1.0-alpha02)](https://medium.com/bumble-tech/appyx-is-released-1-0-alpha02-41a27ad3b0cd)
