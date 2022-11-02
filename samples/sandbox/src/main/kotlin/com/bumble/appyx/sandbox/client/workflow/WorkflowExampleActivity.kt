@@ -10,11 +10,12 @@ import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import com.bumble.appyx.core.plugin.NodeAware
+import com.bumble.appyx.sandbox.client.workflow.treenavigator.Navigator
 import com.bumble.appyx.sandbox.ui.AppyxSandboxTheme
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class WorkflowExampleActivity : NodeActivity() {
+class WorkflowExampleActivity : NodeActivity(), Navigator {
 
     lateinit var rootNode: RootNode
 
@@ -22,8 +23,7 @@ class WorkflowExampleActivity : NodeActivity() {
 
     fun handleDeepLink(intent: Intent) {
         if (intent.action == Intent.ACTION_VIEW) {
-            job?.cancel()
-            job = workflowFactory.invoke(intent)
+            workflowFactory.invoke(intent)
         }
     }
 
@@ -32,13 +32,17 @@ class WorkflowExampleActivity : NodeActivity() {
         job?.cancel()
     }
 
-    private val workflowFactory: (Intent) -> Job? = {
+    private val workflowFactory: (Intent) -> Unit? = {
         when {
             // adb shell am start -a "android.intent.action.VIEW" -d "appyx-sample://workflow1"
-            (it.data?.host == "workflow1") -> executeWorkflow1()
+            (it.data?.host == "workflow1") -> workflow1()
 
             // adb shell am start -a "android.intent.action.VIEW" -d "appyx-sample://workflow2"
-            (it.data?.host == "workflow2") -> executeWorkflow2()
+            (it.data?.host == "workflow2") -> workflow2()
+
+            // adb shell am start -a "android.intent.action.VIEW" -d "appyx-sample://workflow3"
+            (it.data?.host == "workflow3") -> navigateToChildOne()
+
             else -> null
         }
     }
@@ -58,6 +62,7 @@ class WorkflowExampleActivity : NodeActivity() {
                         NodeHost(integrationPoint = appyxIntegrationPoint) {
                             RootNode(
                                 buildContext = it,
+                                navigator = this@WorkflowExampleActivity,
                                 plugins = listOf(object : NodeAware<RootNode> {
                                     override fun init(node: RootNode) {
                                         rootNode = node
@@ -75,8 +80,16 @@ class WorkflowExampleActivity : NodeActivity() {
         }
     }
 
-    private fun executeWorkflow1(): Job {
-        return lifecycleScope.launch {
+    private fun executeNavigation(navigationAction: suspend () -> Unit) {
+        job?.cancel()
+        job = lifecycleScope.launch {
+            navigationAction()
+        }
+    }
+
+    // waits until user navigates to child two and immediately attached grand child two
+    private fun workflow1() {
+        executeNavigation {
             rootNode
                 .waitForChildTwoAttached()
                 .attachGrandchildTwo()
@@ -84,12 +97,20 @@ class WorkflowExampleActivity : NodeActivity() {
     }
 
 
-    private fun executeWorkflow2(): Job {
-        return lifecycleScope.launch {
+    // waits until user navigates to child two and immediately attached grand child two and prints
+    // its lifecycle state
+    private fun workflow2() {
+        executeNavigation {
             rootNode
-                .attachChildTwo()
+                .waitForChildTwoAttached()
                 .attachGrandchildTwo()
-                .printLifecycleEvent()
+                .printLifecycleState()
+        }
+    }
+
+    override fun navigateToChildOne() {
+        executeNavigation {
+            rootNode.attachChildOne()
         }
     }
 }
