@@ -21,7 +21,6 @@ import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
-import com.bumble.appyx.navmodel.backstack.operation.replace
 import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget
 import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget.ChildOne
 import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget.ChildTwo
@@ -42,14 +41,14 @@ class RootNode(
     plugins = plugins
 ) {
 
-    suspend fun waitForChildTwoAttached(): ChildNodeTwo {
-        return waitForChildAttached()
+    suspend fun waitForChildTwoAttached() = waitForChildAttached<ChildNodeTwo>()
+
+    suspend fun attachChildOne() = attachWorkflow<ChildNodeOne> {
+        backStack.push(ChildOne)
     }
 
-    suspend fun attachChildOne(): ChildNodeOne {
-        return attachWorkflow {
-            backStack.replace(ChildOne)
-        }
+    suspend fun attachChildTwo() = attachWorkflow<ChildNodeTwo> {
+        backStack.push(ChildTwo)
     }
 
     sealed class NavTarget : Parcelable {

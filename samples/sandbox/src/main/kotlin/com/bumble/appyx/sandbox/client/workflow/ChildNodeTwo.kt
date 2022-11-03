@@ -51,11 +51,11 @@ class ChildNodeTwo(
         object GrandchildTwo : NavTarget()
     }
 
-    suspend fun attachGrandchildTwo(): GrandchildNodeTwo {
-        return attachWorkflow {
-            backStack.push(GrandchildTwo)
-        }
+    suspend fun attachGrandchildTwo() = attachWorkflow<GrandchildNodeTwo> {
+        backStack.push(GrandchildTwo)
     }
+
+    suspend fun waitForGrandchildTwoAttached() =  waitForChildAttached<GrandchildNodeTwo>()
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext) =
         when (navTarget) {

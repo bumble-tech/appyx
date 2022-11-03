@@ -91,8 +91,9 @@ class WorkflowExampleActivity : NodeActivity(), Navigator {
     private fun workflow1() {
         executeNavigation {
             rootNode
-                .waitForChildTwoAttached()
-                .attachGrandchildTwo()
+                .attachChildTwo()
+                .waitForGrandchildTwoAttached()
+                .printLifecycleState()
         }
     }
 

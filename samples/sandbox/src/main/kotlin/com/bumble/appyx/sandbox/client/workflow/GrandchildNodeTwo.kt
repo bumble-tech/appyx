@@ -27,10 +27,8 @@ class GrandchildNodeTwo(
     private val navigator: Navigator
 ) : Node(buildContext) {
 
-    suspend fun printLifecycleState(): GrandchildNodeTwo {
-        return executeWorkflow {
-            Log.e("Lifecycle", lifecycle.currentState.toString())
-        }
+    suspend fun printLifecycleState() = executeWorkflow<GrandchildNodeTwo> {
+        Log.e("Lifecycle", lifecycle.currentState.toString())
     }
 
     @Composable
@@ -47,7 +45,10 @@ class GrandchildNodeTwo(
                     .wrapContentSize()
                     .align(Alignment.Center)
             ) {
-                Text(text = "Grandchild two", modifier = Modifier.align(Alignment.CenterHorizontally))
+                Text(
+                    text = "Grandchild two",
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
                 Spacer(modifier = Modifier.requiredHeight(8.dp))
                 Button(onClick = { navigator.navigateToChildOne() }) {
                     Text(text = "Navigate to child one")
