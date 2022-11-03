@@ -205,6 +205,8 @@ abstract class ParentNode<NavTarget : Any>(
                         continuation.resume(childNodeOfExpectedType)
                     }
                 }
+            }.invokeOnCompletion {
+                continuation.cancel()
             }
         }
 
