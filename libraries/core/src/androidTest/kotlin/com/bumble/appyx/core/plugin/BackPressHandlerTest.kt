@@ -17,6 +17,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumble.appyx.Appyx
+import com.bumble.appyx.core.AppyxTestScenario
+import com.bumble.appyx.core.InternalAppyxTestActivity
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
@@ -50,7 +52,7 @@ class BackPressHandlerTest {
     @After
     fun after() {
         Appyx.exceptionHandler = null
-        BackPressHandlerTestActivity.reset()
+        InternalAppyxTestActivity.reset()
     }
 
     @Test
@@ -132,7 +134,7 @@ class BackPressHandlerTest {
 
     @Test
     fun appyx_handles_back_press_before_activity_handler() {
-        BackPressHandlerTestActivity.handleBackPress.value = true
+        InternalAppyxTestActivity.handleBackPress.value = true
         rule.start()
         pushChildB()
 
@@ -145,7 +147,7 @@ class BackPressHandlerTest {
 
     @Test
     fun activity_handles_back_press_if_appyx_cant() {
-        BackPressHandlerTestActivity.handleBackPress.value = true
+        InternalAppyxTestActivity.handleBackPress.value = true
         rule.start()
         disablePlugin()
 
@@ -153,7 +155,7 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(BackPressHandlerTestActivity.onBackPressedHandled, equalTo(true))
+        assertThat(InternalAppyxTestActivity.onBackPressedHandled, equalTo(true))
     }
 
     @Test
