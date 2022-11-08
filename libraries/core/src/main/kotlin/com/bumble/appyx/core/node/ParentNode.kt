@@ -8,6 +8,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -25,6 +26,7 @@ import com.bumble.appyx.core.children.ChildrenCallback
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
+import com.bumble.appyx.core.mapState
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
@@ -36,9 +38,8 @@ import com.bumble.appyx.core.navigation.model.permanent.operation.addUnique
 import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -102,16 +103,17 @@ abstract class ParentNode<NavTarget : Any>(
         LaunchedEffect(navTarget) {
             permanentNavModel.addUnique(navTarget)
         }
+        val scope = rememberCoroutineScope()
         val child by remember(navTarget) {
             permanentNavModel
                 .elements
-                .map { navElements ->
+                // use WhileSubscribed or Lazy otherwise desynchronisation issue
+                .mapState(scope, SharingStarted.WhileSubscribed()) { navElements ->
                     navElements
                         .find { it.key.navTarget == navTarget }
                         ?.let { childOrCreate(it.key) }
                 }
-                .distinctUntilChanged()
-        }.collectAsState(initial = null)
+        }.collectAsState()
         child?.let {
             decorator(child = PermanentChildRender(it.node))
         }
