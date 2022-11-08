@@ -2,6 +2,7 @@
 
 ## Pending changes
 
+- [#268](https://github.com/bumble-tech/appyx/pull/268) – **Fixed**: `PermanentChild` now does not crash in UI tests with `ComposeTestRule`.
 
 ---
 

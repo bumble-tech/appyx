@@ -5,10 +5,9 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -33,11 +32,13 @@ import com.bumble.appyx.core.navigation.Resolver
 import com.bumble.appyx.core.navigation.isTransitioning
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
-import com.bumble.appyx.core.navigation.model.permanent.operation.add
+import com.bumble.appyx.core.navigation.model.permanent.operation.addUnique
 import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -98,15 +99,19 @@ abstract class ParentNode<NavTarget : Any>(
         navTarget: NavTarget,
         decorator: @Composable (child: ChildRenderer) -> Unit
     ) {
-        var child by remember { mutableStateOf<ChildEntry.Initialized<*>?>(null) }
         LaunchedEffect(navTarget) {
-            permanentNavModel.elements.collect { elements ->
-                val navKey = elements.find { it.key.navTarget == navTarget }?.key
-                    ?: NavKey(navTarget).also { permanentNavModel.add(it) }
-                child = childOrCreate(navKey)
-            }
+            permanentNavModel.addUnique(navTarget)
         }
-
+        val child by remember(navTarget) {
+            permanentNavModel
+                .elements
+                .map { navElements ->
+                    navElements
+                        .find { it.key.navTarget == navTarget }
+                        ?.let { childOrCreate(it.key) }
+                }
+                .distinctUntilChanged()
+        }.collectAsState(initial = null)
         child?.let {
             decorator(child = PermanentChildRender(it.node))
         }

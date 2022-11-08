@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.plugin
+package com.bumble.appyx.core
 
 import androidx.annotation.WorkerThread
 import androidx.compose.runtime.Composable
@@ -25,18 +25,21 @@ class AppyxTestScenario<T : Node>(
 ) : ComposeTestRule by composeTestRule {
 
     @get:WorkerThread
-    val activityScenario: ActivityScenario<BackPressHandlerTestActivity> by lazy {
+    val activityScenario: ActivityScenario<InternalAppyxTestActivity> by lazy {
         val awaitNode = CountDownLatch(1)
         AppyxTestActivity.composableView = { activity ->
             decorator {
-                NodeHost(integrationPoint = activity.appyxIntegrationPoint, factory = { buildContext ->
-                    node = nodeFactory.create(buildContext)
-                    awaitNode.countDown()
-                    node
-                })
+                NodeHost(
+                    integrationPoint = activity.appyxIntegrationPoint,
+                    factory = { buildContext ->
+                        node = nodeFactory.create(buildContext)
+                        awaitNode.countDown()
+                        node
+                    },
+                )
             }
         }
-        val scenario = ActivityScenario.launch(BackPressHandlerTestActivity::class.java)
+        val scenario = ActivityScenario.launch(InternalAppyxTestActivity::class.java)
         require(awaitNode.await(10, TimeUnit.SECONDS)) {
             "Timeout while waiting for node initialization"
         }
