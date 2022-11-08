@@ -7,6 +7,9 @@ import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
+/**
+ * Adds [NavTarget] into [PermanentNavModel] only if it is not there yet.
+ */
 @Parcelize
 data class AddUnique<NavTarget : Any>(
     private val navTarget: @RawValue NavTarget,
