@@ -1,6 +1,6 @@
 # Deep linking
 
-In the [explicit navigation](https://bumble-tech.github.io/appyx/navigation/explicit-navigation/) section we covered
+In the [explicit navigation](explicit-navigation.md) section we covered
 how we can implement explicit navigation. Once we've done that, implementing deep links is straightforward:
 
 ```kotlin

@@ -1,17 +1,17 @@
 # Explicit navigation
 
-[In this section](https://bumble-tech.github.io/appyx/navigation/composable-navigation/#navigation-in-the-tree) we covered how changing `NavModel` will result in manipulating
+[In this section](composable-navigation.md#navigation-in-the-tree) we covered how changing `NavModel` will result in manipulating
 the Appyx tree on the local level. 
 
 But there are use cases when instead of the local changes on any level of the Appyx tree we want to switch the navigation state globally. 
 
 For instance, user wants to navigate from `Chat`  
 
-<img src="https://imgur.com/a/nIB7qMY" width="450">
+<img src="https://i.imgur.com/jqWOHhJ.png" width="450">
 
 to onboarding `O1` node explicitly by calling a function:
 
-<img src="https://imgur.com/a/o7zEscw" width="450">
+<img src="https://i.imgur.com/MWgLOWy.png" width="450">
 
 To explicitly navigate to any given `Node`, we need to determine the path which leads from the root of the tree to that `Node`. Once we've done that,
 starting from the top of the tree we attach the next `Node` from the determined path. Repeat this step until we reach the desired `Node`.   
@@ -44,7 +44,7 @@ class RootNode(
 
 Let's break down what happens here:
 1. `attachChild` is provided with a lambda where we add `NavTarget.Onboarding` to a `BackStack`.
-2. `attachChild` internally executes this lambda and waits for the provided `OnboardingNode` node to appear in the children of `Root` node after.
+2. `attachChild` internally executes this lambda and waits for the provided `OnboardingNode` node type to appear in the children of `Root` node after.
 3. Once the desired `Node` appeared in the children list `attachChild` returns it.    
 In the case when you provide an action which will not result in appearing the desired `Node` in the children list, for instance:
 
@@ -59,7 +59,7 @@ suspend fun attachOnboarding(): OnboardingNode {
 exception will be thrown after a timeout.
 
 
-Unlike `Root`, `Onboarding` uses `Spotlight` instead of `BackStack` as a `NavModel`, so navigation to `O1` will be slightly different:  
+Unlike `Root`, `Onboarding` uses [Spotlight](../navmodel/spotlight.md) instead of [BackStack](../navmodel/backstack.md) as a `NavModel`, so navigation to `O1` will be slightly different:  
 
 ```kotlin
 class OnboardingNode(
@@ -163,7 +163,7 @@ execute logic.
 
 Let's imagine the following example:
 
-<img src="https://imgur.com/a/RIxF6Q6" width="450">
+<img src="https://i.imgur.com/jkZQJBC.png" width="450">
 
 1. User is logged in and uses the application.
 2. Once user is logged out (`LoggedOutNode` is attached to `RootNode`) we need to show a `PromoNode`.
