@@ -37,11 +37,11 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExa
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.customisations.CustomisationsNode
+import com.bumble.appyx.sandbox.client.explicitnavigation.ExplicitNavigationExampleActivity
 import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.sandbox.client.navmodels.NavModelExamplesNode
-import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
 import com.bumble.appyx.utils.customisations.NodeCustomisation
 import kotlinx.parcelize.Parcelize
 
@@ -123,9 +123,9 @@ class ContainerNode internal constructor(
                 }
                 TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
-                TextButton("Workflow example") {
+                TextButton("Explicit navigation example") {
                     integrationPoint.activityStarter.startActivity {
-                        Intent(this, WorkflowExampleActivity::class.java)
+                        Intent(this, ExplicitNavigationExampleActivity::class.java)
                     }
                 }
                 TextButton("Integration point example") {

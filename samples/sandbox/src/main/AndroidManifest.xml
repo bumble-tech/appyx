@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-            android:name="com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity"
+            android:name="com.bumble.appyx.sandbox.client.explicitnavigation.ExplicitNavigationExampleActivity"
             android:exported="true"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Appyx.NoActionBar">

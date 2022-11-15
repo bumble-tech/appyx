@@ -100,7 +100,7 @@ open class Node(
         )
     }
 
-    protected suspend inline fun <reified T : Node> executeWorkflow(
+    protected suspend inline fun <reified T : Node> executeAction(
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
         action()

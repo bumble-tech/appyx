@@ -1,81 +1,89 @@
-package com.bumble.appyx.sandbox.client.workflow
+package com.bumble.appyx.sandbox.client.explicitnavigation
 
 import android.os.Parcelable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment.Companion.CenterHorizontally
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
-import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget
-import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget.ChildOne
-import com.bumble.appyx.sandbox.client.workflow.RootNode.NavTarget.ChildTwo
-import com.bumble.appyx.sandbox.client.workflow.treenavigator.Navigator
+import com.bumble.appyx.sandbox.client.explicitnavigation.ChildNodeTwo.NavTarget
+import com.bumble.appyx.sandbox.client.explicitnavigation.ChildNodeTwo.NavTarget.GrandchildOne
+import com.bumble.appyx.sandbox.client.explicitnavigation.ChildNodeTwo.NavTarget.GrandchildTwo
+import com.bumble.appyx.sandbox.client.explicitnavigation.treenavigator.Navigator
 import kotlinx.parcelize.Parcelize
 
-class RootNode(
-    private val navigator: Navigator,
+class ChildNodeTwo(
     buildContext: BuildContext,
+    private val navigator: Navigator,
     private val backStack: BackStack<NavTarget> = BackStack(
-        initialElement = ChildOne,
+        initialElement = GrandchildOne,
         savedStateMap = buildContext.savedStateMap
     ),
-    plugins: List<Plugin> = emptyList()
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
     navModel = backStack,
-    plugins = plugins
 ) {
-
-    suspend fun waitForChildTwoAttached() = waitForChildAttached<ChildNodeTwo>()
-
-    suspend fun attachChildOne() = attachWorkflow<ChildNodeOne> {
-        backStack.push(ChildOne)
-    }
-
-    suspend fun attachChildTwo() = attachWorkflow<ChildNodeTwo> {
-        backStack.push(ChildTwo)
-    }
 
     sealed class NavTarget : Parcelable {
         @Parcelize
-        object ChildOne : NavTarget()
+        object GrandchildOne : NavTarget()
 
         @Parcelize
-        object ChildTwo : NavTarget()
+        object GrandchildTwo : NavTarget()
     }
+
+    suspend fun attachGrandchildTwo() = attachChild<GrandchildNodeTwo> {
+        backStack.push(GrandchildTwo)
+    }
+
+    suspend fun waitForGrandchildTwoAttached() =  waitForChildAttached<GrandchildNodeTwo>()
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext) =
         when (navTarget) {
-            is ChildOne -> ChildNodeOne(buildContext)
-            is ChildTwo -> ChildNodeTwo(buildContext, navigator)
+            is GrandchildOne -> GrandchildNodeOne(buildContext, navigator)
+            is GrandchildTwo -> GrandchildNodeTwo(buildContext, navigator)
         }
+
 
     @Composable
     override fun View(modifier: Modifier) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .clip(RoundedCornerShape(8.dp))
+                .background(color = Color.DarkGray)
+        ) {
+            Text(text = "Child two")
+            Spacer(modifier = Modifier.requiredHeight(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = { backStack.push(ChildOne) }) {
+                Button(onClick = { backStack.push(GrandchildOne) }) {
                     Text(text = "Push one")
                 }
-                Button(onClick = { backStack.push(ChildTwo) }) {
+                Button(onClick = { backStack.push(GrandchildTwo) }) {
                     Text(text = "Push two")
                 }
                 Button(onClick = { backStack.pop() }) {
@@ -83,9 +91,8 @@ class RootNode(
                 }
             }
             Spacer(modifier = Modifier.requiredHeight(8.dp))
-            Text(text = "Root", modifier = Modifier.align(CenterHorizontally))
-            Spacer(modifier = Modifier.requiredHeight(8.dp))
             Children(navModel = backStack)
         }
     }
+
 }
