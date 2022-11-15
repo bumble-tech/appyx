@@ -100,6 +100,11 @@ open class Node(
         )
     }
 
+    @Deprecated("Will be removed in 1.1. Use executeAction instead")
+    protected suspend inline fun <reified T : Node> executeWorkflow(
+        crossinline action: () -> Unit
+    ): T = executeAction(action)
+
     protected suspend inline fun <reified T : Node> executeAction(
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
