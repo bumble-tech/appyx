@@ -43,9 +43,11 @@ class RootNode(
 ```
 
 Let's break down what happens here:
+
 1. `attachChild` is provided with a lambda where we add `NavTarget.Onboarding` to a `BackStack`.
 2. `attachChild` internally executes this lambda and waits for the provided `OnboardingNode` node type to appear in the children of `Root` node after.
-3. Once the desired `Node` appeared in the children list `attachChild` returns it.    
+3. Once the desired `Node` appeared in the children list `attachChild` returns it.
+
 In the case when you provide an action which will not result in appearing the desired `Node` in the children list, for instance:
 
 ```kotlin
