@@ -1,4 +1,4 @@
-package com.bumble.appyx.sandbox.client.workflow
+package com.bumble.appyx.sandbox.client.explicitnavigation
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,13 +9,13 @@ import androidx.compose.material.Surface
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
-import com.bumble.appyx.core.plugin.NodeAware
-import com.bumble.appyx.sandbox.client.workflow.treenavigator.Navigator
+import com.bumble.appyx.core.plugin.NodeReadyObserver
+import com.bumble.appyx.sandbox.client.explicitnavigation.treenavigator.Navigator
 import com.bumble.appyx.sandbox.ui.AppyxSandboxTheme
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class WorkflowExampleActivity : NodeActivity(), Navigator {
+class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
 
     lateinit var rootNode: RootNode
 
@@ -62,15 +62,12 @@ class WorkflowExampleActivity : NodeActivity(), Navigator {
                         NodeHost(integrationPoint = appyxIntegrationPoint) {
                             RootNode(
                                 buildContext = it,
-                                navigator = this@WorkflowExampleActivity,
-                                plugins = listOf(object : NodeAware<RootNode> {
+                                navigator = this@ExplicitNavigationExampleActivity,
+                                plugins = listOf(object : NodeReadyObserver<RootNode> {
                                     override fun init(node: RootNode) {
                                         rootNode = node
                                         handleDeepLink(intent = intent)
                                     }
-
-                                    override val node: RootNode
-                                        get() = rootNode
                                 })
                             )
                         }

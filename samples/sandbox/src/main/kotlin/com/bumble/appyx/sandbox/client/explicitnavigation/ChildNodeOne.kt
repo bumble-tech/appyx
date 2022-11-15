@@ -1,4 +1,4 @@
-package com.bumble.appyx.sandbox.client.workflow
+package com.bumble.appyx.sandbox.client.explicitnavigation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
