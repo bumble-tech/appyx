@@ -100,7 +100,10 @@ open class Node(
         )
     }
 
-    @Deprecated("Will be removed in 1.1. Use executeAction instead")
+    @Deprecated(
+        replaceWith = ReplaceWith("executeAction(action)"),
+        message = "Will be removed in 1.1"
+    )
     protected suspend inline fun <reified T : Node> executeWorkflow(
         crossinline action: () -> Unit
     ): T = executeAction(action)

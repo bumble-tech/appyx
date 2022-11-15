@@ -168,7 +168,10 @@ abstract class ParentNode<NavTarget : Any>(
         }
     }
 
-    @Deprecated("Will be removed in 1.1. Use attachChild instead")
+    @Deprecated(
+        replaceWith = ReplaceWith("attachChild(action"),
+        message = "Will be removed in 1.1"
+    )
     protected suspend inline fun <reified T : Node> attachWorkflow(
         timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
         crossinline action: () -> Unit
