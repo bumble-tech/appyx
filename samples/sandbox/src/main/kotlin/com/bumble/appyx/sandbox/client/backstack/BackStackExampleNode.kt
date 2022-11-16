@@ -311,6 +311,7 @@ class BackStackExampleNode(
     }
 
     @Composable
+    @Suppress("ComplexMethod")
     private fun MissingParamsColumn(
         selectedOperation: MutableState<Operation?>,
         selectedChildRadioButton: MutableState<String>,
@@ -345,20 +346,23 @@ class BackStackExampleNode(
             Button(
                 enabled = selectedOperation.value != null && !areThereMissingParams.value,
                 onClick = {
-                    val element =
+
+                    fun getElement() =
                         selectedChildRadioButton.value.toChild(random = defaultOrRandomRadioButton.value.random)
+
                     when (selectedOperation.value) {
-                        PUSH -> backStack.push(element)
+                        PUSH -> backStack.push(getElement())
                         POP -> backStack.pop()
-                        REPLACE -> backStack.replace(element)
-                        NEW_ROOT -> backStack.newRoot(element)
-                        SINGLE_TOP -> backStack.singleTop(element)
+                        REPLACE -> backStack.replace(getElement())
+                        NEW_ROOT -> backStack.newRoot(getElement())
+                        SINGLE_TOP -> backStack.singleTop(getElement())
                         REMOVE -> {
                             backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
                             selectedId.value = ""
                         }
-                        null -> Unit
+                        else -> Unit
                     }
+
                 }
             ) {
                 Text(text = "Perform")
