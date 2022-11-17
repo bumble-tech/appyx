@@ -1,5 +1,5 @@
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("kotlin-android")
     id("kotlin-parcelize")
     id("appyx-lint")
@@ -7,14 +7,12 @@ plugins {
 }
 
 android {
+    namespace = "com.bumble.appyx.sample.navigtion.compose"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.bumble.appyx.sample.navigtion.compose"
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -36,12 +34,12 @@ android {
 }
 
 dependencies {
-    implementation(project(":core"))
-    implementation(libs.androidx.navigation.compose)
+    api(project(":libraries:core"))
+    api(libs.compose.ui.ui)
 
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.compose.material)
-    implementation(libs.compose.ui.ui)
+    debugImplementation(project(":libraries:testing-ui-activity"))
 
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)

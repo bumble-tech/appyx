@@ -30,10 +30,13 @@ nav:
           - Overview: navmodel/index.md
           - Back stack: navmodel/backstack.md
           - Spotlight: navmodel/spotlight.md
+          - Cards: navmodel/cards.md
           - Tiles: navmodel/tiles.md
           - Promoter: navmodel/promoter.md
           - Writing your own: navmodel/custom.md
       - Composable navigation: navigation/composable-navigation.md
+      - Explicit navigation: navigation/explicit-navigation.md
+      - Deep linking: navigation/deep-linking.md
   - UI:
       - Children: ui/children-view.md
       - Transitions: ui/transitions.md

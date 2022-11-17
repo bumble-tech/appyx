@@ -41,13 +41,14 @@ class RootNode(
 Since this is the root of your tree, you'll also need to plug it in to your Activity, so that system events (Android lifecycle, back press, etc.) reach your components in the tree.
 
 ```kotlin
+// Please note we are extending NodeActivity
 class MainActivity : NodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             AppTheme {
-                NodeHost(integrationPoint = integrationPoint) {
+                NodeHost(integrationPoint = appyxIntegrationPoint) {
                     RootNode(buildContext = it)
                 }
             }
