@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import kotlin.coroutines.EmptyCoroutineContext
 
+@Deprecated("Use AndroidX API")
 open class RequestCodeBasedEventStreamImpl<T : RequestCodeBasedEvent>(
     private val requestCodeRegistry: RequestCodeRegistry,
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)

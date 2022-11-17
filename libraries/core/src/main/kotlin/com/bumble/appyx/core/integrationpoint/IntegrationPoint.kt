@@ -16,8 +16,10 @@ abstract class IntegrationPoint(
 
     protected val requestCodeRegistry = RequestCodeRegistry(savedInstanceState)
 
+    @Deprecated("Use AndroidX API")
     abstract val activityStarter: ActivityStarter
 
+    @Deprecated("Use AndroidX API")
     abstract val permissionRequester: PermissionRequester
 
     abstract val activityResultCaller: ActivityResultCaller

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
 
+@Deprecated("Use AndroidX API")
 interface ActivityStarterHost {
 
     val context: Context

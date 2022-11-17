@@ -4,6 +4,7 @@ import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventS
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventStream.RequestCodeBasedEvent
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
 
+@Deprecated("Use AndroidX API")
 interface PermissionRequester :
     RequestCodeBasedEventStream<PermissionRequester.RequestPermissionsEvent> {
 

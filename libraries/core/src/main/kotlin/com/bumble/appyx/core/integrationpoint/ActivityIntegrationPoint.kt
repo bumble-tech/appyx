@@ -20,9 +20,11 @@ open class ActivityIntegrationPoint(
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
     private val permissionRequestBoundary = PermissionRequestBoundary(activity, requestCodeRegistry)
 
+    @Deprecated("Use AndroidX API")
     override val activityStarter: ActivityStarter
         get() = activityBoundary
 
+    @Deprecated("Use AndroidX API")
     override val permissionRequester: PermissionRequester
         get() = permissionRequestBoundary
 
@@ -32,10 +34,12 @@ open class ActivityIntegrationPoint(
     override val activityResultRegistry: ActivityResultRegistry
         get() = activity.activityResultRegistry
 
+    @Deprecated("Is required only for old ActivityStarter API")
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         activityBoundary.onActivityResult(requestCode, resultCode, data)
     }
 
+    @Deprecated("Is required only for old PermissionRequester API")
     fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

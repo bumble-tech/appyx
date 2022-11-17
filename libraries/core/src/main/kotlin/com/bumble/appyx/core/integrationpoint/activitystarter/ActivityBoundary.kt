@@ -9,6 +9,7 @@ import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventS
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeRegistry
 
+@Deprecated("Use AndroidX API")
 class ActivityBoundary(
     private val activityStarterHost: ActivityStarterHost,
     requestCodeRegistry: RequestCodeRegistry

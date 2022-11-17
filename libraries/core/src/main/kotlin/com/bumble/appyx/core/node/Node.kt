@@ -85,7 +85,7 @@ open class Node(
 
     val id = getNodeId(buildContext)
 
-    override val requestCodeClientId: String = id
+    override val requestCodeClientId: String get() = id
 
     private val nextLocalRequestCode = AtomicInteger()
 
@@ -248,13 +248,17 @@ open class Node(
         contract: ActivityResultContract<I, O>,
         registry: ActivityResultRegistry,
         callback: ActivityResultCallback<O>
-    ): ActivityResultLauncher<I> =
-        registry.register(
+    ): ActivityResultLauncher<I> {
+        require(lifecycle.currentState <= Lifecycle.State.CREATED) {
+            "Node $this is attempting to registerForActivityResult() after being created."
+        }
+        return registry.register(
             "node_${id}_rq#${nextLocalRequestCode.getAndIncrement()}",
             this,
             contract,
             callback,
         )
+    }
 
     companion object {
         private const val NODE_ID_KEY = "node.id"

@@ -6,6 +6,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 
+@Deprecated("Use AndroidX API")
 interface PermissionRequesterHost {
 
     fun isGranted(permission: String): Boolean

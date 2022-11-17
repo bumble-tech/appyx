@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.integrationpoint.permissionrequester
 
+@Deprecated("Use AndroidX API")
 interface PermissionRequestResultHandler {
 
     fun onRequestPermissionsResult(

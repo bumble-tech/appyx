@@ -14,6 +14,7 @@ import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
  *
  * @see [com.badoo.ribs.android.requestcode.RequestCodeRegistry] for requirements of The requestcode
  */
+@Deprecated("Use AndroidX API")
 interface ActivityStarter : RequestCodeBasedEventStream<ActivityResultEvent> {
 
     fun startActivity(createIntent: Context.() -> Intent)

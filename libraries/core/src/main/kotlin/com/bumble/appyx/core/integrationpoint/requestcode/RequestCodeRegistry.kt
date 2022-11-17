@@ -15,6 +15,7 @@ import kotlin.math.pow
  * components. Instead, use sensible numbers starting from 1, only unique locally to your component,
  * and let this class do the rest to ensure global uniqueness.
  */
+@Deprecated("Use AndroidX API")
 class RequestCodeRegistry constructor(
     initialState: Bundle?,
     private val nbLowerBitsForIds: Int = 4

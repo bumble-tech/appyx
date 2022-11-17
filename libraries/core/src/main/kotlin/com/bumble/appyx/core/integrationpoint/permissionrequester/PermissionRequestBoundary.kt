@@ -10,6 +10,7 @@ import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeBasedEventS
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeRegistry
 
+@Deprecated("Use AndroidX API")
 class PermissionRequestBoundary(
     private val permissionRequesterHost: PermissionRequesterHost,
     requestCodeRegistry: RequestCodeRegistry
