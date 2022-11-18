@@ -1,6 +1,7 @@
 package com.bumble.appyx.interop.ribs
 
 import android.os.Bundle
+import androidx.activity.OnBackPressedDispatcherOwner
 import androidx.core.os.bundleOf
 import androidx.lifecycle.LifecycleEventObserver
 import com.badoo.ribs.core.Rib
@@ -22,6 +23,7 @@ interface InteropNode<N : Node> : Rib {
 internal class InteropNodeImpl<N : Node>(
     buildParams: BuildParams<*>,
     override val appyxNode: N,
+    private val backPressHandler: InteropBackPressHandler = InteropBackPressHandler(),
 ) : com.badoo.ribs.core.Node<InteropView>(
     buildParams = buildParams,
     viewFactory = buildParams.getOrDefault(
@@ -29,10 +31,13 @@ internal class InteropNodeImpl<N : Node>(
             viewFactory = Factory<N>().invoke(
                 object : InteropView.Dependency<N> {
                     override val appyxNode: N = appyxNode
+                    override val onBackPressedDispatcherOwner: OnBackPressedDispatcherOwner =
+                        backPressHandler
                 }
             )
         ),
-    ).viewFactory
+    ).viewFactory,
+    plugins = listOf(backPressHandler),
 ), InteropNode<N> {
 
     private val observer = LifecycleEventObserver { source, _ ->
