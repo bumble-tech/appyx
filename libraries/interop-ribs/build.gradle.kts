@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("kotlin-android")
+    id("kotlin-parcelize")
     id("appyx-publish-android")
     id("appyx-lint")
     id("appyx-detekt")
@@ -33,4 +34,11 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.ui.ui)
     implementation(libs.ribs.compose)
+
+    androidTestImplementation(libs.androidx.activity.compose)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.junit)
+    androidTestImplementation(libs.compose.foundation.layout)
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.ribs.base.test.activity)
 }
