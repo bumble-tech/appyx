@@ -1,7 +1,6 @@
 # Deep linking
 
-In the [explicit navigation](explicit-navigation.md) section we covered
-how we can implement explicit navigation. Once we've done that, implementing deep links is straightforward:
+Building on top of [explicit navigation](explicit-navigation.md), implementing deep links is straightforward:
 
 ```kotlin
 class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
