@@ -32,5 +32,4 @@ class InteropNodeImplTest {
         rule.onNodeWithTag(oldChild).assertExists()
     }
 
-
 }
