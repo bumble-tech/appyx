@@ -13,6 +13,8 @@
 - [#272](https://github.com/bumble-tech/appyx/pull/272) – **Changed**: `attachWorkflow` renamed to `attachChild`. `executeWorkflow` renamed to `executeAction`.
 - [#272](https://github.com/bumble-tech/appyx/pull/272) – **Added**: `NodeReadyObserver` plugin to observe when the `Node` is ready
 
+<div style="text-align: center"><small>22 Nov 2022</small></div>
+
 ---
 
 ## 1.0.0
