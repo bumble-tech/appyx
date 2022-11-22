@@ -9,7 +9,7 @@
 ## 1.0.1
 
 - [#268](https://github.com/bumble-tech/appyx/pull/268) – **Fixed**: `PermanentChild` now does not crash in UI tests with `ComposeTestRule`.
-- [#268](https://github.com/bumble-tech/appyx/pull/276) – **Fixed**: Back press handlers order is fixed for RIBs-Appyx integration.
+- [#276](https://github.com/bumble-tech/appyx/pull/276) – **Fixed**: Back press handlers order is fixed for RIBs-Appyx integration.
 - [#272](https://github.com/bumble-tech/appyx/pull/272) – **Changed**: `attachWorkflow` renamed to `attachChild`. `executeWorkflow` renamed to `executeAction`.
 - [#272](https://github.com/bumble-tech/appyx/pull/272) – **Added**: `NodeReadyObserver` plugin to observe when the `Node` is ready
 
