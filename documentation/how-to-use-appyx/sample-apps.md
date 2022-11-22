@@ -23,3 +23,8 @@ This example may be useful if you need to migrate to Appyx gradually.
 ## Appyx + Hilt example
 
 Coming soon!
+
+Meanwhile:
+
+- Our draft PR: [#115](https://github.com/bumble-tech/appyx/pull/115) (Feel free to provide feedback!)
+- [https://github.com/jbreitfeller-sfix/appyx-playground](https://github.com/jbreitfeller-sfix/appyx-playground) another approach on this topic

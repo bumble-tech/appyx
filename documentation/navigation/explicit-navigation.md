@@ -1,27 +1,37 @@
 # Explicit navigation
 
-[In this section](composable-navigation.md#navigation-in-the-tree) we covered how changing `NavModel` will result in manipulating
-the Appyx tree on the local level. 
+When [Implicit navigation](implicit-navigation.md) doesn't fit your use case, you can try an explicit approach.
 
-But there are use cases when instead of the local changes on any level of the Appyx tree we want to switch the navigation state globally. 
+!!! info "Relevant methods"
 
-For instance, user wants to navigate from `Chat`  
+    - ParentNode.attachChild()
+    - ParentNode.waitForChildAttached()
+
+Using these methods we can chain together a path which leads from the root of the tree to a specific `Node`.
+
+## Use case
+
+We want to navigate from `Chat`
 
 <img src="https://i.imgur.com/jqWOHhJ.png" width="450">
 
-to onboarding `O1` node explicitly by calling a function:
+to onboarding's first screen `O1`:
 
 <img src="https://i.imgur.com/MWgLOWy.png" width="450">
 
-To explicitly navigate to any given `Node`, we need to determine the path which leads from the root of the tree to that `Node`. Once we've done that,
-starting from the top of the tree we attach the next `Node` from the determined path. Repeat this step until we reach the desired `Node`.   
+This time we'll want to do this explicitly by calling a function.
 
-In our example, we start from the `Root` node, attach `Onboarding` Node to `Root`, and then we attach `O1` to `Onboarding`.
-To iteratively perform `Node` attachment Appyx provides `attachChild` API.
 
-## Attach child API
+## The plan 
 
-Let's take a look at our example and implement navigation to `O1` using `attachChild` API.
+1. Create a public method on `Root` that attaches `Onboarding`
+2. Create a public method on `Onboarding` that attaches the first onboarding screen
+3. Create a `Navigator`, that starting from an instance of `Root`, can chain these public methods together into a single action: `navigateToO1()`
+4. Capture an instance of `Root` to use with `Navigator`
+5. Call `navigateToO1()` on our `Navigator` instance
+
+
+## Step 1 – `Root` → `Onboarding`
 
 First, we need to define how to programmatically attach `Onboarding` to the `Root`:
 
@@ -44,24 +54,32 @@ class RootNode(
 
 Let's break down what happens here:
 
-1. `attachChild` is provided with a lambda where we add `NavTarget.Onboarding` to a `BackStack`.
-2. `attachChild` internally executes this lambda and waits for the provided `OnboardingNode` node type to appear in the children of `Root` node after.
-3. Once the desired `Node` appeared in the children list `attachChild` returns it.
+1. Since `attachChild` has a generic `<T>` return type, it will conform to the defined `OnboardingNode` type 
+2. However, `attachChild` doesn't know how to create navigation to `OnboardingNode` – that's something only we can do with the provided lambda
+3. We replace `NavTarget.Onboarding` into the back stack
+4. Doing this _should_ result in `OnboardingNode` being created and added to `RootNode` as a child 
+5. `attachChild` expects an instance of `OnboardingNode` to appear as a child of `Root` as a consequence of executing our lambda
+6. Once it appears, `attachChild` returns it
 
-In the case when you provide an action which will not result in appearing the desired `Node` in the children list, for instance:
 
-```kotlin
-suspend fun attachOnboarding(): OnboardingNode {
-    return attachChild {
-        backStack.replace(NavTarget.Main)
+!!! info "Important"
+
+    It's our responsibility to make sure that the provided lambda actually results in the expected child being added. If we accidentally do something else instead, for example:
+
+    ```kotlin
+    suspend fun attachOnboarding(): OnboardingNode {
+        return attachChild {
+            backStack.replace(NavTarget.Main) // Wrong NavTarget
+        }
     }
-}
-```
+    ```
+    
+    Then an exception will be thrown after a timeout.
 
-exception will be thrown after a timeout.
 
+## Step 2 – `Onboarding` → `O1`
 
-Unlike `Root`, `Onboarding` uses [Spotlight](../navmodel/spotlight.md) instead of [BackStack](../navmodel/backstack.md) as a `NavModel`, so navigation to `O1` will be slightly different:  
+Unlike `Root`, `Onboarding` uses [Spotlight](../navmodel/spotlight.md) instead of [BackStack](../navmodel/backstack.md) as a `NavModel`, so navigation to the first screen is slightly different:  
 
 ```kotlin
 class OnboardingNode(
@@ -80,39 +98,23 @@ class OnboardingNode(
 }
 ```
 
-The next step is to obtain the reference to a root of the Appyx tree in the hosting `Actvity` using `NodeReadyObserver` plugin:
 
+## Step 3 – Our `Navigator`
 
 ```kotlin
-class ExplicitNavigationExampleActivity : NodeActivity() {
-
-    lateinit var rootNode: RootNode
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            NodeHost(integrationPoint = appyxIntegrationPoint) {
-                RootNode(
-                    buildContext = it,
-                    plugins = listOf(object : NodeReadyObserver<RootNode> {
-                        override fun init(node: RootNode) {
-                            rootNode = node
-                        }
-                    })
-                )
-            }
-        }
-    }
+interface Navigator {
+     fun navigateToO1()
 }
 ```
 
-Once we implemented navigation to `OnboardingNode` and `O1`, and grabbed the reference to the root of a tree, 
-we can execute the chain of actions which will result in navigation to `O1`:
+In this case we'll implement it directly with our activity:
 
 ```kotlin
-class ExplicitNavigationExampleActivity : NodeActivity() {
+class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
 
-     fun navigateToO1() {
+    lateinit var rootNode: RootNode // See the next step
+
+     override fun navigateToO1() {
          lifecycleScope.launch {
              rootNode
                  .attachOnboarding()
@@ -122,17 +124,17 @@ class ExplicitNavigationExampleActivity : NodeActivity() {
 }
 ```
 
-As the last step, we can define our navigation method in the interface `Navigator`, let the `Activity` implement it,
-and provide the instance of a `Navigator` down the Appyx tree:
+## Step 4 – An instance of `RootNode`
 
-```kotlin
-interface Navigator {
-     fun navigateToO1()
-}
-```
+As the last piece of the puzzle, we'll also need to capture the instance of `RootNode` to make it all work. We can do that by a `NodeReadyObserver` plugin when setting up our tree:
+
 
 ```kotlin
 class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
+
+    lateinit var rootNode: RootNode
+
+    override fun navigateToO1() { /*...*/ }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -153,24 +155,26 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
 }
 ```
 
+## Step 5 – Using the `Navigator`
 
-Calling `Navigator` methods explicitly from inside of the Appyx tree will change the global navigation state.
+See how in the previous snippet `RootNode` receives a `navigator` dependency. 
 
-## Wait for child attached API
+It can pass it further down the tree as a dependency to other nodes. Those nodes can call the methods of the `Navigator`, which will change the global navigation state directly.
 
-In the example above we learned how to navigate explicitly in Appyx.
 
-But there are cases when we want to wait for a certain action to be performed by a user, and only then
-execute logic.
+---
 
-Let's imagine the following example:
+## Bonus: Wait for a child to be attached
 
-<img src="https://i.imgur.com/jkZQJBC.png" width="450">
+There might be cases when we want to wait for a certain action to be _performed by the user_, rather than us, to result in a child being attached.
 
-1. User is logged in and uses the application.
-2. Once user is logged out (`LoggedOutNode` is attached to `RootNode`) we need to show a `PromoNode`.
+In these cases we can use `ParentNode.waitForChildAttached()` instead.
 
-To implement that behaviour we need to use `waitForChildAttached` API: 
+
+### Use case – Wait for login
+
+A typical case building an explicit navigation chain that relies on `Logged in` being attached. Most probably `Logged in` has a dependency on some kind of a `User` object. Here we want to wait for the user to authenticate themselves, rather than creating a dummy user object ourselves.
+
 
 ```kotlin
 class RootNode(
@@ -179,26 +183,27 @@ class RootNode(
     buildContext = buildContext
 ) {
     
-    suspend fun waitForLoggedOutAttached() =  waitForChildAttached<LoggedOutNode>()
+    suspend fun waitForLoggedIn(): LoggedInNode = 
+        waitForChildAttached<LoggedInNode>()
 }
 ```
 
-This method will wait for `LoggedOutNode` to appear in the child list of `RootNode` and return `LoggedOutNode`.
-In the section above we covered how we can explicitly navigate to `PromoNode` from `LoggedOutNode`,
-so the final solution to implement the desired behaviour could look like:
+This method will wait for `LoggedInNode` to appear in the child list of `RootNode` and return with it. If it's already there, it returns immediately.
+
+A navigation chain using it could look like:
 
 ```kotlin
-class Activity : NodeActivity() {
+class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
 
-     fun showPromoWhenLoggedOut() {
+     override fun navigateToProfile() {
          lifecycleScope.launch {
              rootNode
-                 .waitForLoggedOutAttached()
-                 .attachPromo()
+                 .waitForLoggedIn()
+                 .attachMain()
+                 .attachProfile()
          }
      }
 }
 ```
 
-
-To check the actual code please visit `ExplicitNavigationExampleActivity` in our samples.
+You can find related code examples in `ExplicitNavigationExampleActivity` in our samples.
