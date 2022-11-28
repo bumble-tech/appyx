@@ -62,7 +62,9 @@ Check out the [Quick start guide](how-to-use-appyx/quick-start.md), [Codelabs](h
 
 ## Videos
 
-- [Droidcon NYC 2022 – Model-driven navigation with Jetpack Compose](https://www.droidcon.com/2022/09/29/model-driven-navigation-with-jetpack-compose-from-zero-to-hero/)
+<img style="vertical-align:middle" src="https://i.imgur.com/NocSZPu.png" width="75" /> [Model-driven navigation with Jetpack Compose](https://www.droidcon.com/2022/09/29/model-driven-navigation-with-jetpack-compose-from-zero-to-hero/) 
+
+<img style="vertical-align:middle" src="https://i.imgur.com/bgNLFnD.png" width="75" /> [Model-driven navigation with Appyx](https://www.droidcon.com/2022/11/15/model-driven-navigation-with-appyx-from-zero-to-hero/)
 
 ## News & announcements
 
