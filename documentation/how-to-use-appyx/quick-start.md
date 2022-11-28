@@ -22,6 +22,8 @@ Tutorials & codelabs on more advanced topics & the full power of Appyx to follow
 
 ## 1. Add Appyx to your project
 
+You can find the related Gradle dependencies in [Downloads](../releases/downloads.md).
+
 
 ## 2. Create a root Node
 
