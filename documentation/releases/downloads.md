@@ -1,13 +1,16 @@
 # Downloads
 
-You need to specify the following repositories in your Gradle files:
+## Latest version
+
+![Maven Central](https://img.shields.io/maven-central/v/com.bumble.appyx/core)
+
+## Repository
 
 ```groovy
 repositories {
     mavenCentral()
 }
 ```
-
 
 ## Core dependencies
 
