@@ -23,6 +23,7 @@ nav:
   - Using Appyx:
       - Quick start guide: how-to-use-appyx/quick-start.md
       - Codelabs: how-to-use-appyx/codelabs.md
+      - Coding challenges: how-to-use-appyx/coding-challenges.md
       - Sample apps: how-to-use-appyx/sample-apps.md
   - Navigation:
       - Model-driven navigation: navigation/model-driven-navigation.md
