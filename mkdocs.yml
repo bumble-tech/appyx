@@ -17,6 +17,7 @@ docs_dir: documentation
 
 nav:
   - Overview: index.md
+  - News & updates: news.md
   - Releases:
       - Downloads: releases/downloads.md
       - Changelog: releases/changelog.md
