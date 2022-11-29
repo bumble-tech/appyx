@@ -12,7 +12,7 @@ This section contains noteworthy updates related to the project and the project 
 
 ---
 
-## 28 Nov 2022
+## 21 Nov 2022
 
 [FAQ](faq.md) received a major update
 
