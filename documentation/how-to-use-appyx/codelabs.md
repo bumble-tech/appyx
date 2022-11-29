@@ -1,5 +1,8 @@
 # Appyx codelabs
 
+When you feel ready, try our [Coding challenges](coding-challenges.md) too!
+
+
 ## 1. Hello World with Appyx
 
 [Learn the basics of Appyx](https://bumble-tech.github.io/appyx-codelabs/appyx-hello-world)
