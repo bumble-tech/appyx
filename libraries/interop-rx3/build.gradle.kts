@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.interop.rx2"
+    namespace = "com.bumble.appyx.interop.rx3"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
@@ -25,10 +25,9 @@ android {
 
 dependencies {
     api(project(":libraries:core"))
-    api(libs.rxjava2)
-    api(libs.rxrelay2)
+    api(libs.rxjava3)
+    api(libs.rxrelay3)
 
-    implementation(libs.kotlin.coroutines.rx2)
     implementation(libs.androidx.lifecycle.java8)
 
     testImplementation(libs.junit.api)
