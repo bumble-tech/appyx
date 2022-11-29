@@ -1,5 +1,14 @@
 # Quick start guide
 
+!!! info
+
+    - You can check out [App structure](../apps/structure.md), which explains the concepts you'll encounter in this guide.
+    - You can check out the project and launch the `:app` module for a quick demonstration
+
+!!! tip
+
+    Once you're familiar with Appyx, you can also clone the [https://github.com/bumble-tech/appyx-starter-kit](https://github.com/bumble-tech/appyx-starter-kit) when starting a new project, instead of following this guide below.
+
 ## Scope of this guide
 
 The steps below will cover:
@@ -14,10 +23,7 @@ This should be enough to get you started as a rudimentary application structure.
 Tutorials & codelabs on more advanced topics & the full power of Appyx to follow soon.
 
 
-## Suggestions
 
-- Check out the project and launch the `:app` module for a quick demonstration
-- Check out [App structure](../apps/structure.md), which explains the concepts you'll encounter in this guide.
 
 
 ## 1. Add Appyx to your project
