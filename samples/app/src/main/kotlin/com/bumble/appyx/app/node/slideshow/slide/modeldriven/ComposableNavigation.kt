@@ -74,6 +74,41 @@ class ComposableNavigation(
         )
     )
 
+    private fun deselect(node: GraphNode) {
+        node.isActive.value = false
+        for (child in node.children()) {
+            deselect(child)
+        }
+    }
+
+    private fun deselectAllNodes() {
+        deselect(root)
+    }
+
+    private fun selectNode(
+        currentNode: GraphNode,
+        targetNode: GraphNode,
+        pathToNode: List<GraphNode>
+    ) {
+        if (currentNode == targetNode) {
+            currentNode.isActive.value = true
+            pathToNode.forEach {
+                it.isActive.value = true
+            }
+            return
+        } else {
+            for (child in currentNode.children()) {
+                selectNode(child, targetNode, pathToNode + child)
+            }
+        }
+
+    }
+
+    private fun selectNode(nodeToSelect: GraphNode) {
+        deselectAllNodes()
+        selectNode(root, nodeToSelect, emptyList())
+    }
+
     @SuppressWarnings("LongMethod")
     @Composable
     override fun View(modifier: Modifier) {
@@ -81,9 +116,9 @@ class ComposableNavigation(
             modifier = modifier,
             title = "Composable",
             body = "With Appyx, navigation itself is composable, too.\n" +
-                "\n" +
-                "You can represent your app as a hierarchy of Nodes – " +
-                "each with their own UI, lifecycle and their own NavModels."
+                    "\n" +
+                    "You can represent your app as a hierarchy of Nodes – " +
+                    "each with their own UI, lifecycle and their own NavModels."
         ) {
             Column(
                 modifier = Modifier
@@ -101,48 +136,27 @@ class ComposableNavigation(
             val intervalDelay: Long = 1600
 
             while (true) {
-                root.isActive.value = false
-                onboarding.isActive.value = false
-                o1.isActive.value = false
-                o2.isActive.value = false
-                o3.isActive.value = false
-                main.isActive.value = false
-                settings.isActive.value = false
-                profile.isActive.value = false
-                messages.isActive.value = false
-                people.isActive.value = false
-                chat.isActive.value = false
 
                 delay(startDelay)
-                root.isActive.value = true
-                onboarding.isActive.value = true
-                o1.isActive.value = true
-                delay(intervalDelay)
-                o1.isActive.value = false
-                o2.isActive.value = true
-                delay(intervalDelay)
-                o2.isActive.value = false
-                o3.isActive.value = true
+                selectNode(o1)
 
                 delay(intervalDelay)
-                o3.isActive.value = false
-                onboarding.isActive.value = false
-                main.isActive.value = true
-                profile.isActive.value = true
+                selectNode(o2)
 
                 delay(intervalDelay)
-                profile.isActive.value = false
-                messages.isActive.value = true
-                people.isActive.value = true
+                selectNode(o3)
 
                 delay(intervalDelay)
-                people.isActive.value = false
-                chat.isActive.value = true
+                selectNode(profile)
 
                 delay(intervalDelay)
-                messages.isActive.value = false
-                chat.isActive.value = false
-                settings.isActive.value = true
+                selectNode(people)
+
+                delay(intervalDelay)
+                selectNode(chat)
+
+                delay(intervalDelay)
+                selectNode(settings)
 
                 delay(intervalDelay * 2)
             }
