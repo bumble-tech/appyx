@@ -19,6 +19,7 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.sandbox.client.explicitnavigation.RootNode.NavTarget
@@ -44,7 +45,7 @@ class RootNode(
     suspend fun waitForChildTwoAttached() = waitForChildAttached<ChildNodeTwo>()
 
     suspend fun attachChildOne() = attachChild<ChildNodeOne> {
-        backStack.push(ChildOne)
+        backStack.newRoot(ChildOne)
     }
 
     suspend fun attachChildTwo() = attachChild<ChildNodeTwo> {
