@@ -5,6 +5,7 @@ import com.bumble.appyx.core.lifecycle.subscribe
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 
 class NodeConnector<Input, Output>(
     override val input: Relay<Input> = PublishRelay.create(),
@@ -15,6 +16,7 @@ class NodeConnector<Input, Output>(
     private val exhaust: Relay<Output> = PublishRelay.create()
     private var isFlushed = false
     private val outputCache = mutableListOf<Output>()
+    private var intakeDisposable: Disposable? = null
 
     override val output: Relay<Output> = object : Relay<Output>() {
 
@@ -31,7 +33,7 @@ class NodeConnector<Input, Output>(
     }
 
     override fun onCreate(lifecycle: Lifecycle) {
-        lifecycle.subscribe(onCreate = { flushOutputCache() })
+        lifecycle.subscribe(onCreate = { flushOutputCache() }, onDestroy = { intakeDisposable?.dispose() })
     }
 
     private val cacheSubscription = intake.subscribe {
@@ -55,7 +57,7 @@ class NodeConnector<Input, Output>(
     }
 
     private fun switchToExhaust() {
-        intake.subscribe { exhaust.accept(it) }
+        intakeDisposable = intake.subscribe { exhaust.accept(it) }
         cacheSubscription.dispose()
     }
 }
