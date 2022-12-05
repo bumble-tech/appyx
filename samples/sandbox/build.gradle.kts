@@ -68,8 +68,8 @@ dependencies {
     implementation(libs.mvicore.android)
     implementation(libs.mvicore.binder)
     implementation(libs.rxjava2)
-    implementation(libs.rxandroid)
-    implementation(libs.rxrelay)
+    implementation(libs.rxandroid2)
+    implementation(libs.rxrelay2)
 
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.junit)

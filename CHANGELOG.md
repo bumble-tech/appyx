@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#289](https://github.com/bumble-tech/appyx/issues/289) – **Added**: Introduced `interop-rx3` for RxJava 3 support. This has identical functionality to `interop-rx2`. 
 
 ---
 

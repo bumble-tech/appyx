@@ -13,8 +13,6 @@ ribs = "0.36.1"
 mvicore = "1.2.6"
 coroutines = "1.6.4"
 kotlin = "1.7.10"
-rxjava2 = "2.2.21"
-rxandroid = "2.1.1"
 junit5 = "5.8.2"
 detekt = "1.21.0"
 dependencyAnalysis = "1.13.1"
@@ -57,11 +55,13 @@ ribs-base-test = { module = "com.github.badoo.RIBs:rib-base-test", version.ref =
 ribs-base-test-activity = { module = "com.github.badoo.RIBs:rib-base-test-activity", version.ref = "ribs" }
 ribs-base-test-rx2 = { module = "com.github.badoo.RIBs:rib-base-test-rx2", version.ref = "ribs" }
 ribs-compose = { module = "com.github.badoo.RIBs:rib-compose", version.ref = "ribs" }
-ribs-rx = { module = "com.github.badoo.RIBs:rib-rx2", version.ref = "ribs" }
 
-rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava2" }
-rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
-rxrelay = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
+rxjava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
+rxjava3 = "io.reactivex.rxjava3:rxjava:3.1.5"
+rxandroid2 = "io.reactivex.rxjava2:rxandroid:2.1.1"
+rxandroid3 = "io.reactivex.rxjava3:rxandroid:3.0.2"
+rxrelay2 = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
+rxrelay3 = "com.jakewharton.rxrelay3:rxrelay:3.0.1"
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
