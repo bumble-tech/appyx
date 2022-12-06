@@ -73,7 +73,7 @@ plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-android = "com.android.tools.build:gradle:7.3.1"
 
-detekt-compose = "com.twitter.compose.rules:detekt:0.0.18"
+detekt-compose = "com.twitter.compose.rules:detekt:0.0.26"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

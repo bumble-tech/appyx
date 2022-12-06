@@ -53,7 +53,7 @@ class StatefulNode2(
             val shape = RoundedCornerShape(16.dp)
 
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .size(200.dp)
                     .align(Alignment.Center)
                     .background(
