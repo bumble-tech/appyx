@@ -25,6 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.core.collections.ImmutableList
+import com.bumble.appyx.core.collections.toImmutableList
 import com.bumble.appyx.core.composable.Child
 import com.bumble.appyx.core.composable.visibleChildrenAsState
 import com.bumble.appyx.core.modality.BuildContext
@@ -73,7 +75,7 @@ class LazyListContainerNode constructor(
                 }
             }
 
-            val children by navModel.visibleChildrenAsState()
+            val children = navModel.visibleChildrenAsState().value.toImmutableList()
             when (selectedMode) {
                 Column -> ColumnExample(children)
                 Row -> RowExample(children)
@@ -83,7 +85,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun ColumnExample(elements: List<NavElement<NavTarget, out Any?>>) {
+    private fun ColumnExample(elements: ImmutableList<NavElement<NavTarget, out Any?>>) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -97,7 +99,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun RowExample(elements: List<NavElement<NavTarget, out Any?>>) {
+    private fun RowExample(elements: ImmutableList<NavElement<NavTarget, out Any?>>) {
         LazyRow(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
@@ -110,7 +112,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun GridExample(elements: List<NavElement<NavTarget, out Any?>>) {
+    private fun GridExample(elements: ImmutableList<NavElement<NavTarget, out Any?>>) {
         LazyVerticalGrid(
             columns = Fixed(2),
             modifier = Modifier.fillMaxSize(),

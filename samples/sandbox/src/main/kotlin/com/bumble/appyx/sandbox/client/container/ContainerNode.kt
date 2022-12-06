@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.core.collections.immutableListOf
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
@@ -99,7 +100,7 @@ class ContainerNode internal constructor(
                 .background(MaterialTheme.colors.background),
             navModel = backStack,
             transitionHandler = rememberCombinedHandler(
-                handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
+                handlers = immutableListOf(rememberBackstackSlider(), rememberBackstackFader())
             )
         )
     }
