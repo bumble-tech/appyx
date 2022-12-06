@@ -52,7 +52,7 @@ dependencies {
     implementation(project(":samples:common"))
     // The testing activity needs to be in the main manifest, otherwise it cannot be launched.
     debugImplementation(project(":libraries:testing-ui-activity"))
-    implementation(libs.accompanist.systemui)
+    implementation(libs.google.accompanist.systemui)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
