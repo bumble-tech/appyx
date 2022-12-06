@@ -1,6 +1,5 @@
 package com.bumble.appyx.core.plugin
 
-import android.app.Activity
 import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import androidx.compose.foundation.background
@@ -14,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.State
 import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumble.appyx.Appyx
@@ -91,7 +91,7 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(rule.activityScenario.result.resultCode, equalTo(Activity.RESULT_CANCELED))
+        assertThat(rule.activityScenario.state, equalTo(State.DESTROYED))
     }
 
     @Test
