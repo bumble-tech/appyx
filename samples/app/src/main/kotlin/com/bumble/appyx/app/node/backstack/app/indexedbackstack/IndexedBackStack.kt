@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.backstack.app.custombackstack
+package com.bumble.appyx.app.node.backstack.app.indexedbackstack
 
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.NavElements
@@ -6,11 +6,11 @@ import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.state.SavedStateMap
 
-class CustomBackStack<NavTarget : Any>(
+class IndexedBackStack<NavTarget : Any>(
     savedState: SavedStateMap?,
     initialElement: NavTarget
-) : BaseNavModel<NavTarget, CustomBackStack.State>(
-    screenResolver = CustomBackStackOnScreenResolver,
+) : BaseNavModel<NavTarget, IndexedBackStack.State>(
+    screenResolver = IndexedBackStackOnScreenResolver,
     finalStates = setOf(State.Destroyed),
     savedStateMap = savedState
 ) {
@@ -28,7 +28,7 @@ class CustomBackStack<NavTarget : Any>(
 
     override val initialElements: NavElements<NavTarget, State> =
         listOf(
-            CustomBackStackElement(
+            IndexedBackStackElement(
                 key = NavKey(initialElement),
                 fromState = State.Active,
                 targetState = State.Active,

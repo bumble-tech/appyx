@@ -23,11 +23,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Active
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Created
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Destroyed
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Stashed
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Active
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Created
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Destroyed
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Stashed
 import com.bumble.appyx.app.ui.appyx_yellow2
 import com.bumble.appyx.app.ui.atomic_tangerine
 import com.bumble.appyx.app.ui.imperial_red
@@ -36,7 +36,7 @@ import java.util.Locale
 
 @Composable
 fun <T : Any> PeekInsideBackStack(
-    backStack: CustomBackStack<T>,
+    backStack: IndexedBackStack<T>,
     modifier: Modifier = Modifier
 ) {
     val elements = backStack.elements.collectAsState()
@@ -64,7 +64,7 @@ fun <T : Any> PeekInsideBackStack(
 
 @Composable
 private fun <T> BackStackElement(
-    element: NavElement<T, CustomBackStack.State>,
+    element: NavElement<T, IndexedBackStack.State>,
 ) {
     Column(
         modifier = Modifier
@@ -92,7 +92,7 @@ private fun <T> BackStackElement(
     }
 }
 
-private fun CustomBackStack.State.toColor(): Color =
+private fun IndexedBackStack.State.toColor(): Color =
     when (this) {
         is Created -> appyx_yellow2
         is Active -> appyx_yellow2

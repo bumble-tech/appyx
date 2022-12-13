@@ -1,4 +1,4 @@
-package com.bumble.appyx.app.node.backstack.app.custombackstack.transition
+package com.bumble.appyx.app.node.backstack.app.indexedbackstack.transition
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
@@ -19,11 +19,10 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStackOnScreenResolver.MAX_ON_SCREEN
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStackOnScreenResolver.MAX_ON_SCREEN
 import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionSpec
@@ -31,7 +30,6 @@ import kotlin.math.roundToInt
 
 class RecentsTransitionHandler<NavTarget>(
     private val specFloat: TransitionSpec<State, Float> = { spring() },
-    private val specDp: TransitionSpec<State, Dp> = { spring() },
     private val specOffset: TransitionSpec<State, Offset> = { spring() },
 ) : ModifierTransitionHandler<NavTarget, State>() {
 
@@ -174,9 +172,8 @@ class RecentsTransitionHandler<NavTarget>(
 @Composable
 fun <R> rememberRecentsTransitionHandler(
     specFloat: TransitionSpec<State, Float> = { spring(stiffness = Spring.StiffnessMediumLow) },
-    specDp: TransitionSpec<State, Dp> = { spring(stiffness = Spring.StiffnessMediumLow) },
     specOffset: TransitionSpec<State, Offset> = { spring(stiffness = Spring.StiffnessMediumLow) },
 ): ModifierTransitionHandler<R, State> =
     remember {
-        RecentsTransitionHandler(specFloat, specDp, specOffset)
+        RecentsTransitionHandler(specFloat, specOffset)
     }

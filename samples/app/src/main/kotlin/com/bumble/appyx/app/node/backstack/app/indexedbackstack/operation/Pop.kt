@@ -1,15 +1,15 @@
-package com.bumble.appyx.app.node.backstack.app.custombackstack.operation
+package com.bumble.appyx.app.node.backstack.app.indexedbackstack.operation
 
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Active
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Stashed
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Destroyed
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Active
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Stashed
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Destroyed
 import com.bumble.appyx.core.navigation.NavElements
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Pop<T : Any> : CustomBackStackOperation<T> {
+class Pop<T : Any> : IndexedBackStackOperation<T> {
 
     override fun isApplicable(elements: NavElements<T, State>): Boolean =
         elements.any { it.targetState is Active } &&
@@ -25,7 +25,7 @@ class Pop<T : Any> : CustomBackStackOperation<T> {
     }
 }
 
-fun <T : Any> CustomBackStack<T>.pop() {
+fun <T : Any> IndexedBackStack<T>.pop() {
     accept(Pop())
     accept(UpdateSize())
 }

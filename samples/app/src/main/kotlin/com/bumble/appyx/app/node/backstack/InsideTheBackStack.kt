@@ -20,10 +20,10 @@ import com.bumble.appyx.app.node.backstack.InsideTheBackStack.NavTarget
 import com.bumble.appyx.app.node.backstack.app.ChildNode
 import com.bumble.appyx.app.node.backstack.app.composable.CustomButton
 import com.bumble.appyx.app.node.backstack.app.composable.PeekInsideBackStack
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack
-import com.bumble.appyx.app.node.backstack.app.custombackstack.operation.pop
-import com.bumble.appyx.app.node.backstack.app.custombackstack.operation.push
-import com.bumble.appyx.app.node.backstack.app.custombackstack.transition.rememberRecentsTransitionHandler
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.operation.pop
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.operation.push
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.transition.rememberRecentsTransitionHandler
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -34,7 +34,7 @@ import kotlinx.coroutines.isActive
 class InsideTheBackStack(
     buildContext: BuildContext,
     autoAdvanceDelayMs: Long? = null,
-    private val backStack: CustomBackStack<NavTarget> = CustomBackStack(
+    private val backStack: IndexedBackStack<NavTarget> = IndexedBackStack(
         savedState = buildContext.savedStateMap,
         initialElement = NavTarget.Child(0)
     )
