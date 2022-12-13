@@ -99,62 +99,82 @@ class SamplesSelectorNode(
 
         ) {
             item {
-                SampleItem(
-                    title = "Dating cards NavModel",
-                    subtitle = "Swipe right on the NavModel concept",
-                    onClick = { outputFunc(Output.OpenCardsExample) },
-                ) {
-                    PermanentChild(
-                        navTarget = NavTarget.CardsExample,
-                        decorator = decorator
-                    )
-                }
+                CardItem(decorator)
             }
             item {
-                SampleItem(
-                    title = "What is Appyx?",
-                    subtitle = "Explore some of the main ideas of Appyx in a set of slides",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(16f / 9),
-                    onClick = { outputFunc(Output.OpenOnboarding) },
-                ) {
-                    PermanentChild(
-                        navTarget = NavTarget.OnboardingScreen,
-                        decorator = decorator
-                    )
-                }
+                WhatIsAppyxItem(decorator)
             }
             item {
-                SampleItem(
-                    title = "Compose Navigation",
-                    subtitle = "See Appyx nodes interact with Jetpack Compose Navigation library",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(16f / 9),
-                    onClick = { outputFunc(Output.OpenComposeNavigation) },
-                ) {
-                    PermanentChild(
-                        navTarget = NavTarget.ComposeNavigationScreen,
-                        decorator = decorator
-                    )
-                }
+                ComposeNavigationItem(decorator)
             }
             item {
-                SampleItem(
-                    title = "Inside the backstack",
-                    subtitle = "See how the backstack behaves when operations are performed",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .aspectRatio(16f / 9),
-                    onClick = { outputFunc(Output.OpenInsideTheBackStack) },
-                ) {
-                    PermanentChild(
-                        navTarget = NavTarget.InsideTheBackStack,
-                        decorator = decorator
-                    )
-                }
+                InsideTheBackStackItem(decorator)
             }
+        }
+    }
+
+    @Composable
+    private fun InsideTheBackStackItem(decorator: @Composable (child: ChildRenderer) -> Unit) {
+        SampleItem(
+            title = "Inside the backstack",
+            subtitle = "See how the backstack behaves when operations are performed",
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(16f / 9),
+            onClick = { outputFunc(Output.OpenInsideTheBackStack) },
+        ) {
+            PermanentChild(
+                navTarget = NavTarget.InsideTheBackStack,
+                decorator = decorator
+            )
+        }
+    }
+
+    @Composable
+    private fun ComposeNavigationItem(decorator: @Composable (child: ChildRenderer) -> Unit) {
+        SampleItem(
+            title = "Compose Navigation",
+            subtitle = "See Appyx nodes interact with Jetpack Compose Navigation library",
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(16f / 9),
+            onClick = { outputFunc(Output.OpenComposeNavigation) },
+        ) {
+            PermanentChild(
+                navTarget = NavTarget.ComposeNavigationScreen,
+                decorator = decorator
+            )
+        }
+    }
+
+    @Composable
+    private fun WhatIsAppyxItem(decorator: @Composable (child: ChildRenderer) -> Unit) {
+        SampleItem(
+            title = "What is Appyx?",
+            subtitle = "Explore some of the main ideas of Appyx in a set of slides",
+            modifier = Modifier
+                .fillMaxSize()
+                .aspectRatio(16f / 9),
+            onClick = { outputFunc(Output.OpenOnboarding) },
+        ) {
+            PermanentChild(
+                navTarget = NavTarget.OnboardingScreen,
+                decorator = decorator
+            )
+        }
+    }
+
+    @Composable
+    private fun CardItem(decorator: @Composable (child: ChildRenderer) -> Unit) {
+        SampleItem(
+            title = "Dating cards NavModel",
+            subtitle = "Swipe right on the NavModel concept",
+            onClick = { outputFunc(Output.OpenCardsExample) },
+        ) {
+            PermanentChild(
+                navTarget = NavTarget.CardsExample,
+                decorator = decorator
+            )
         }
     }
 }

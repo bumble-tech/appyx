@@ -11,8 +11,8 @@ import com.bumble.appyx.app.ui.appyx_yellow1
 
 @Composable
 fun CustomButton(
-    modifier: Modifier = Modifier,
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
     Button(

@@ -3,7 +3,11 @@ package com.bumble.appyx.app.node.backstack.app.composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -20,12 +24,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.*
+import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Active
+import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Created
+import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Destroyed
+import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Stashed
 import com.bumble.appyx.app.ui.appyx_yellow2
 import com.bumble.appyx.app.ui.atomic_tangerine
 import com.bumble.appyx.app.ui.imperial_red
 import com.bumble.appyx.core.navigation.NavElement
-import java.util.*
+import java.util.Locale
 
 @Composable
 fun <T : Any> PeekInsideBackStack(

@@ -1,7 +1,9 @@
 package com.bumble.appyx.app.node.backstack.app.custombackstack.operation
 
 import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack
-import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.*
+import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Created
+import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Active
+import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack.State.Stashed
 import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStackElement
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey

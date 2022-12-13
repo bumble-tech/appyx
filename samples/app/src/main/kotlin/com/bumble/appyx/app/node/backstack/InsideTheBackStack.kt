@@ -1,10 +1,17 @@
 package com.bumble.appyx.app.node.backstack
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -12,7 +19,6 @@ import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.app.node.backstack.InsideTheBackStack.NavTarget
 import com.bumble.appyx.app.node.backstack.app.ChildNode
 import com.bumble.appyx.app.node.backstack.app.composable.CustomButton
-import com.bumble.appyx.app.node.backstack.app.composable.LogoHeader
 import com.bumble.appyx.app.node.backstack.app.composable.PeekInsideBackStack
 import com.bumble.appyx.app.node.backstack.app.custombackstack.CustomBackStack
 import com.bumble.appyx.app.node.backstack.app.custombackstack.operation.pop
@@ -22,8 +28,6 @@ import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.navmodel.spotlight.operation.next
-import com.bumble.appyx.navmodel.spotlight.operation.previous
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 
@@ -79,12 +83,7 @@ class InsideTheBackStack(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.fillMaxSize()
             ) {
-                var isFader by remember { mutableStateOf(false) }
-
-                LogoHeader(Modifier.weight(0.1f)) {
-                    isFader = !isFader
-                }
-                PeekInsideBackStack(backStack, Modifier.weight(0.1f))
+                PeekInsideBackStack(backStack, Modifier.weight(0.2f))
                 Spacer(Modifier.weight(0.1f))
                 BackStackContent(
                     modifier = Modifier.weight(0.7f)
@@ -93,7 +92,6 @@ class InsideTheBackStack(
 
             Controls(Modifier.align(Alignment.BottomCenter))
         }
-
     }
 
     @Composable
@@ -108,7 +106,7 @@ class InsideTheBackStack(
     }
 
     @Composable
-    fun Controls(modifier: Modifier) {
+    fun Controls(modifier: Modifier = Modifier) {
         Row(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
@@ -125,4 +123,3 @@ class InsideTheBackStack(
         }
     }
 }
-

@@ -1,14 +1,20 @@
 package com.bumble.appyx.app.node.backstack.app.custombackstack.transition
 
 import android.annotation.SuppressLint
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.Transition
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateOffset
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.draw.*
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
