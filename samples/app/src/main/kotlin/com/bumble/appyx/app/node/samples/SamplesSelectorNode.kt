@@ -15,6 +15,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.app.node.backstack.InsideTheBackStack
 import com.bumble.appyx.app.node.cards.CardsExampleNode
 import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow
 import com.bumble.appyx.core.composable.ChildRenderer
@@ -43,12 +44,16 @@ class SamplesSelectorNode(
 
         @Parcelize
         object CardsExample : NavTarget()
+
+        @Parcelize
+        object InsideTheBackStack : NavTarget()
     }
 
     sealed class Output {
         object OpenCardsExample : Output()
         object OpenOnboarding : Output()
         object OpenComposeNavigation : Output()
+        object OpenInsideTheBackStack: Output()
     }
 
     @ExperimentalUnitApi
@@ -72,6 +77,10 @@ class SamplesSelectorNode(
                     }
                 }
             }
+            is NavTarget.InsideTheBackStack -> InsideTheBackStack(
+                buildContext = buildContext,
+                autoAdvanceDelayMs = 1000
+            )
         }
 
     @Composable
@@ -127,6 +136,21 @@ class SamplesSelectorNode(
                 ) {
                     PermanentChild(
                         navTarget = NavTarget.ComposeNavigationScreen,
+                        decorator = decorator
+                    )
+                }
+            }
+            item {
+                SampleItem(
+                    title = "Inside the backstack",
+                    subtitle = "See how the backstack behaves when operations are performed",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .aspectRatio(16f / 9),
+                    onClick = { outputFunc(Output.OpenInsideTheBackStack) },
+                ) {
+                    PermanentChild(
+                        navTarget = NavTarget.InsideTheBackStack,
                         decorator = decorator
                     )
                 }
