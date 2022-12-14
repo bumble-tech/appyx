@@ -18,6 +18,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.app.node.backstack.InsideTheBackStack
 import com.bumble.appyx.app.node.cards.CardsExampleNode
 import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow
 import com.bumble.appyx.core.composable.Children
@@ -66,6 +67,9 @@ class SamplesContainerNode(
 
         @Parcelize
         object CardsExample : NavTarget()
+
+        @Parcelize
+        object InsideTheBackStack: NavTarget()
     }
 
     @ExperimentalUnitApi
@@ -85,6 +89,9 @@ class SamplesContainerNode(
                         is SamplesSelectorNode.Output.OpenOnboarding -> {
                             NavTarget.OnboardingScreen
                         }
+                        is SamplesSelectorNode.Output.OpenInsideTheBackStack -> {
+                            NavTarget.InsideTheBackStack
+                        }
                     }
                 )
             }
@@ -100,6 +107,7 @@ class SamplesContainerNode(
                     }
                 }
             }
+            is NavTarget.InsideTheBackStack -> InsideTheBackStack(buildContext)
         }
 
     @ExperimentalUnitApi
