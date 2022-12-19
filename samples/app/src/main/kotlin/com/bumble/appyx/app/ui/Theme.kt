@@ -1,15 +1,14 @@
 package com.bumble.appyx.app.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
-import androidx.compose.material.lightColors
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 
 
-private val DarkColorPalette = darkColors(
+private val DarkColorPalette = darkColorScheme(
     primary = appyx_yellow1,
-    primaryVariant = appyx_yellow2,
     secondary = appyx_yellow2,
     background = appyx_dark,
     surface = appyx_dark,
@@ -19,9 +18,8 @@ private val DarkColorPalette = darkColors(
     onSurface = appyx_bright,
 )
 
-private val LightColorPalette = lightColors(
+private val LightColorPalette = lightColorScheme(
     primary = appyx_yellow1,
-    primaryVariant = appyx_yellow2,
     secondary = appyx_yellow2,
     background = appyx_bright,
     surface = appyx_bright,
@@ -40,7 +38,7 @@ fun AppyxSampleAppTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Co
     }
 
     MaterialTheme(
-        colors = colors,
+        colorScheme = colors,
         typography = typography,
         shapes = shapes,
         content = content
