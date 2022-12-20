@@ -13,11 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.Button
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -138,7 +138,7 @@ class WhatsAppyxSlideShow(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.surface),
+                .background(MaterialTheme.colorScheme.surface),
         ) {
             Children(
                 modifier = Modifier
@@ -241,7 +241,7 @@ fun OnboardingContainerNodePreviewDark() {
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 private fun PreviewContent() {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface(color = MaterialTheme.colorScheme.background) {
         Box(Modifier.fillMaxSize()) {
             NodeHost(integrationPoint = IntegrationPointStub()) {
                 WhatsAppyxSlideShow(root(null))

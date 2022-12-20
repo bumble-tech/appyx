@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,7 +86,7 @@ class NavModelExamplesNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Surface(color = MaterialTheme.colors.background) {
+        Surface(color = MaterialTheme.colorScheme.background) {
             Children(
                 modifier = modifier.fillMaxSize(),
                 navModel = backStack,
@@ -95,7 +95,7 @@ class NavModelExamplesNode(
                 children<NavTarget> { child, descriptor ->
                     val color = when (descriptor.element) {
                         is NavTarget.BackStackExample -> Color.LightGray
-                        else -> MaterialTheme.colors.background
+                        else -> MaterialTheme.colorScheme.background
                     }
                     child(modifier = Modifier.background(color))
                 }

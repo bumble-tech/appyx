@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
 
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SampleItem(
     title: String,
@@ -35,7 +35,7 @@ fun SampleItem(
             .fillMaxSize()
             .aspectRatio(16f / 9),
         shape = MaterialTheme.shapes.medium,
-        elevation = 4.dp,
+        shadowElevation = 4.dp,
     ) {
         Row(
             Modifier
@@ -52,7 +52,7 @@ fun SampleItem(
             Column(horizontalAlignment = Alignment.Start) {
                 Text(
                     text = title,
-                    style = MaterialTheme.typography.h4,
+                    style = MaterialTheme.typography.headlineMedium,
                     textAlign = TextAlign.Start
                 )
                 Spacer(
@@ -60,7 +60,7 @@ fun SampleItem(
                 )
                 Text(
                     text = subtitle,
-                    style = MaterialTheme.typography.caption,
+                    style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Start
                 )
             }
