@@ -19,7 +19,7 @@ import com.bumble.appyx.navmodel.spotlight.Spotlight
  * Fade through transition from material design
  * [Specification](https://m2.material.io/design/motion/the-motion-system.html#fade-through)
  */
-class SpotlightFaderThrough<T>() : ModifierTransitionHandler<T, Spotlight.State>() {
+class SpotlightFaderThrough<T> : ModifierTransitionHandler<T, Spotlight.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
