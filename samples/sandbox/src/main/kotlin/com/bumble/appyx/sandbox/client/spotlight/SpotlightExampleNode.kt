@@ -84,7 +84,7 @@ class SpotlightExampleNode(
             screenState.value = Loading
             lifecycle.coroutineScope.launch {
                 delay(1000)
-                spotlight.updateElements(items = Item.getItemList())
+                spotlight.updateElements(items = Tab.getTabList())
                 screenState.value = Loaded
             }
         } else {
@@ -105,13 +105,13 @@ class SpotlightExampleNode(
     }
 
     @Parcelize
-    private enum class Item(val navTarget: NavTarget) : Parcelable {
+    private enum class Tab(val navTarget: NavTarget) : Parcelable {
         C1(Child1),
         C2(Child2),
         C3(Child3);
 
         companion object {
-            fun getItemList() = values().map { it.navTarget }
+            fun getTabList() = values().map { it.navTarget }
         }
     }
 
@@ -149,7 +149,7 @@ class SpotlightExampleNode(
         Scaffold(
             modifier = modifier.fillMaxSize(),
             floatingActionButtonPosition = FabPosition.Center,
-            floatingActionButton = { PageButtons(hasPrevious, hasNext) },
+            floatingActionButton = { PageButtons(hasPrevious.value, hasNext.value) },
             bottomBar = {
                 BottomTabs(currentTab)
             }
@@ -166,8 +166,8 @@ class SpotlightExampleNode(
     @Composable
     private fun BottomTabs(currentTab: State<NavTarget?>) {
         NavigationBar {
-            Item.values().forEach {
-                val selected = currentTab.value == it.navTarget
+            Tab.values().forEach { tab ->
+                val selected = currentTab.value == tab.navTarget
                 NavigationBarItem(
                     icon = {
                         Icon(
@@ -175,12 +175,12 @@ class SpotlightExampleNode(
                                 Icons.Filled.Favorite
                             else
                                 Icons.Outlined.FavoriteBorder,
-                            contentDescription = it.toString()
+                            contentDescription = tab.toString()
                         )
                     },
-                    label = { Text(it.toString()) },
+                    label = { Text(tab.toString()) },
                     selected = selected,
-                    onClick = { spotlight.activate(it) }
+                    onClick = { spotlight.activate(tab) }
                 )
             }
         }
@@ -188,8 +188,8 @@ class SpotlightExampleNode(
 
     @Composable
     private fun PageButtons(
-        hasPrevious: State<Boolean>,
-        hasNext: State<Boolean>
+        hasPrevious: Boolean,
+        hasNext: Boolean
     ) {
         Row(
             modifier = Modifier
@@ -200,11 +200,11 @@ class SpotlightExampleNode(
         ) {
             FilledIconButton(
                 onClick = { spotlight.previous() },
-                modifier = if (hasPrevious.value) Modifier.shadow(
+                modifier = if (hasPrevious) Modifier.shadow(
                     4.dp,
                     IconButtonDefaults.filledShape
                 ) else Modifier,
-                enabled = hasPrevious.value,
+                enabled = hasPrevious,
             ) {
                 Icon(
                     Icons.Filled.ArrowBack,
@@ -213,11 +213,11 @@ class SpotlightExampleNode(
             }
             FilledIconButton(
                 onClick = { spotlight.next() },
-                modifier = if (hasNext.value) Modifier.shadow(
+                modifier = if (hasNext) Modifier.shadow(
                     4.dp,
                     IconButtonDefaults.filledShape
                 ) else Modifier,
-                enabled = hasNext.value,
+                enabled = hasNext,
             ) {
                 Icon(
                     Icons.Filled.ArrowForward,
@@ -227,7 +227,7 @@ class SpotlightExampleNode(
         }
     }
 
-    private fun Spotlight<*>.activate(item: Item) {
+    private fun Spotlight<*>.activate(item: Tab) {
         activate(item.ordinal)
     }
 }

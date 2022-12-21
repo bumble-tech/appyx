@@ -15,6 +15,10 @@ import com.bumble.appyx.core.navigation.transition.ModifierTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.navmodel.spotlight.Spotlight
 
+/**
+ * Fade through transition from material design
+ * [Specification](https://m2.material.io/design/motion/the-motion-system.html#fade-through)
+ */
 class SpotlightFaderThrough<T>() : ModifierTransitionHandler<T, Spotlight.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
@@ -27,15 +31,14 @@ class SpotlightFaderThrough<T>() : ModifierTransitionHandler<T, Spotlight.State>
             transitionSpec = {
                 when (targetState) {
                     Spotlight.State.ACTIVE -> tween(
-                        durationMillis = 210,
-                        delayMillis = 10,
+                        durationMillis = enterDuration,
+                        delayMillis = exitDuration,
                         easing = FastOutSlowInEasing
                     )
 
                     Spotlight.State.INACTIVE_BEFORE,
                     Spotlight.State.INACTIVE_AFTER -> tween(
-                        durationMillis = 90,
-                        delayMillis = 0,
+                        durationMillis = exitDuration,
                         easing = FastOutSlowInEasing
                     )
                 }
@@ -52,15 +55,14 @@ class SpotlightFaderThrough<T>() : ModifierTransitionHandler<T, Spotlight.State>
             transitionSpec = {
                 when (targetState) {
                     Spotlight.State.ACTIVE -> tween(
-                        durationMillis = 210,
-                        delayMillis = 10,
+                        durationMillis = enterDuration,
+                        delayMillis = exitDuration,
                         easing = FastOutSlowInEasing
                     )
 
                     Spotlight.State.INACTIVE_BEFORE,
                     Spotlight.State.INACTIVE_AFTER -> tween(
-                        durationMillis = 90,
-                        delayMillis = 0,
+                        durationMillis = exitDuration,
                         easing = FastOutSlowInEasing
                     )
                 }
@@ -81,9 +83,13 @@ class SpotlightFaderThrough<T>() : ModifierTransitionHandler<T, Spotlight.State>
         }
 
     }
+
+    companion object {
+        private const val enterDuration = 210
+        private const val exitDuration = 90
+    }
 }
 
 @Composable
-fun <T> rememberSpotlightFaderThrough(): ModifierTransitionHandler<T, Spotlight.State> = remember {
-    SpotlightFaderThrough()
-}
+fun <T> rememberSpotlightFaderThrough(): ModifierTransitionHandler<T, Spotlight.State> =
+    remember { SpotlightFaderThrough() }
