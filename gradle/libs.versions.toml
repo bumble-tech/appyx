@@ -17,10 +17,14 @@ kotlin = "1.7.10"
 junit5 = "5.8.2"
 detekt = "1.21.0"
 dependencyAnalysis = "1.13.1"
+dagger = "2.44.2"
+ksp = "1.7.10-1.0.6"
+javapoet = "1.13.0"
+kotlinpoet = "1.12.0"
 
 [libraries]
-androidx-activity-compose = "androidx.activity:activity-compose:1.3.1"
-androidx-appcompat = "androidx.appcompat:appcompat:1.3.1"
+androidx-activity-compose = "androidx.activity:activity-compose:1.5.1"
+androidx-appcompat = "androidx.appcompat:appcompat:1.5.0"
 androidx-arch-core-testing = "androidx.arch.core:core-testing:2.1.0"
 androidx-core = "androidx.core:core-ktx:1.9.0"
 androidx-core-splashscreen = "androidx.core:core-splashscreen:1.0.0"
@@ -42,12 +46,16 @@ compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = 
 compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 google-accompanist-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-accompanist-flow = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
-google-material = "com.google.android.material:material:1.4.0"
+google-material = "com.google.android.material:material:1.6.1"
+dagger-hilt-core = { module = "com.google.dagger:hilt-core", version.ref = "dagger" }
+dagger-hilt-runtime = { module = "com.google.dagger:hilt-android", version.ref = "dagger" }
+dagger-hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "dagger" }
 junit = "junit:junit:4.13.2"
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlin-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "coroutines" }
 kotlin-coroutines-rx2 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "coroutines" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 mvicore-base = { module = "com.github.badoo.mvicore:mvicore", version.ref = "mvicore" }
 mvicore-android = { module = "com.github.badoo.mvicore:mvicore-android", version.ref = "mvicore" }
 mvicore-binder = { module = "com.github.badoo.mvicore:binder", version.ref = "mvicore" }
@@ -69,6 +77,12 @@ junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "jun
 junit-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
 junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }
+
+ksp-processor = { module = "com.google.devtools.ksp:symbol-processing-api", version.ref = "ksp" }
+ksp-testing = "com.github.tschuchortdev:kotlin-compile-testing-ksp:1.4.9"
+javapoet = { module = "com.squareup:javapoet", version.ref = "javapoet" }
+kotlinpoet-core = { module = "com.squareup:kotlinpoet", version.ref = "kotlinpoet" }
+kotlinpoet-ksp = { module = "com.squareup:kotlinpoet-ksp", version.ref = "kotlinpoet" }
 
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }

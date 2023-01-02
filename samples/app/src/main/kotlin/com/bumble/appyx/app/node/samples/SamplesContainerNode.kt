@@ -27,17 +27,21 @@ import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
+import com.bumble.appyx.dagger.hilt.NodeFactoryProvider
+import com.bumble.appyx.dagger.hilt.NodeFactoryProviderAware
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.activeElement
 import com.bumble.appyx.navmodel.backstack.operation.newRoot
 import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
+import com.bumble.appyx.sample.hilt.app.DaggerAppNode
 import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
 import kotlinx.parcelize.Parcelize
 
 class SamplesContainerNode(
     buildContext: BuildContext,
+    override val nodeFactoryProvider: NodeFactoryProvider,
     private val backStack: BackStack<NavTarget> = BackStack(
         initialElement = NavTarget.SamplesListScreen,
         savedStateMap = buildContext.savedStateMap,
@@ -45,7 +49,7 @@ class SamplesContainerNode(
 ) : ParentNode<SamplesContainerNode.NavTarget>(
     navModel = backStack,
     buildContext = buildContext
-) {
+), NodeFactoryProviderAware {
 
     sealed class NavTarget : Parcelable {
         open val showBackButton: Boolean = true
@@ -66,10 +70,13 @@ class SamplesContainerNode(
         object ComposeNavigationScreen : NavTarget()
 
         @Parcelize
+        object DaggerHiltScreen : NavTarget()
+
+        @Parcelize
         object CardsExample : NavTarget()
 
         @Parcelize
-        object InsideTheBackStack: NavTarget()
+        object InsideTheBackStack : NavTarget()
     }
 
     @ExperimentalUnitApi
@@ -83,18 +90,26 @@ class SamplesContainerNode(
                         is SamplesSelectorNode.Output.OpenCardsExample -> {
                             NavTarget.CardsExample
                         }
+
                         is SamplesSelectorNode.Output.OpenComposeNavigation -> {
                             NavTarget.ComposeNavigationScreen
                         }
+
                         is SamplesSelectorNode.Output.OpenOnboarding -> {
                             NavTarget.OnboardingScreen
                         }
+
                         is SamplesSelectorNode.Output.OpenInsideTheBackStack -> {
                             NavTarget.InsideTheBackStack
+                        }
+
+                        is SamplesSelectorNode.Output.DaggerHilt -> {
+                            NavTarget.DaggerHiltScreen
                         }
                     }
                 )
             }
+
             is NavTarget.CardsExample -> CardsExampleNode(buildContext)
             is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(buildContext, isInPreviewMode = false)
             is NavTarget.ComposeNavigationScreen -> {
@@ -107,6 +122,14 @@ class SamplesContainerNode(
                     }
                 }
             }
+
+            is NavTarget.DaggerHiltScreen -> {
+                // Building an internal node with external dependencies
+                // Note that we need a reference to the node's factory (which we references as an interface)
+                // to pass in the required arguments.
+                DaggerAppNode(buildContext)
+            }
+
             is NavTarget.InsideTheBackStack -> InsideTheBackStack(buildContext)
         }
 

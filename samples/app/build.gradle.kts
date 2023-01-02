@@ -2,6 +2,8 @@ plugins {
     id("com.android.application")
     id("kotlin-android")
     id("kotlin-parcelize")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android") version libs.versions.dagger // only required if using the dagger-hilt library
     id("appyx-lint")
     id("appyx-detekt")
 }
@@ -53,7 +55,9 @@ android {
 
 dependencies {
     implementation(project(":libraries:core"))
+    implementation(project(":libraries:dagger-hilt:runtime")) // only required if using the dagger-hilt library
     implementation(project(":samples:common"))
+    implementation(project(":samples:dagger-hilt:app"))
     implementation(project(":samples:navmodel-samples"))
     implementation(project(":samples:navigation-compose"))
 
@@ -66,6 +70,8 @@ dependencies {
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.google.material)
+    implementation(libs.dagger.hilt.runtime) // only required if using the dagger-hilt library
+    kapt(libs.dagger.hilt.compiler) // only required if using the dagger-hilt library
 
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)

@@ -9,6 +9,9 @@ buildscript {
     dependencies {
         classpath(libs.plugin.android)
         classpath(libs.plugin.kotlin)
+        // Required when using dagger hilt in a sub-project:
+        // https://github.com/google/dagger/issues/3068#issuecomment-979433129
+        classpath(libs.javapoet)
     }
 }
 
