@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
-internal class HiltCustomNodeFactoryProcessorTest {
+internal class CustomNodeFactoryProcessorTest {
 
     @field:TempDir
     lateinit var temporaryFolder: File
 
     @Test
-    fun `generate hilt appyx custom node factory without inheritance`() {
+    fun `generate hilt custom node factory without inheritance`() {
         val sampleCustomNodeFactorySource = SourceFile.kotlin(
             "SampleCustomNodeNodeFactory.kt", """
                 import com.bumble.appyx.core.modality.BuildContext
@@ -70,8 +70,9 @@ internal class HiltCustomNodeFactoryProcessorTest {
         )
     }
 
+    @Suppress("LongMethod")
     @Test
-    fun `generate hilt appyx custom node factory with inheritance`() {
+    fun `generate hilt custom node factory with inheritance`() {
         val sampleCustomNodeFactorySource = SourceFile.kotlin(
             "SampleCustomNodeNodeFactory.kt", """
                 import com.bumble.appyx.core.modality.BuildContext

@@ -5,13 +5,13 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
-internal class HiltNodeFactoryProcessorTest {
+internal class NodeFactoryProcessorTest {
 
     @field:TempDir
     lateinit var temporaryFolder: File
 
     @Test
-    fun `generate hilt node factory`() {
+    fun `generate node factory`() {
         val sampleNodeFactorySource = SourceFile.kotlin(
             "SampleNodeFactory.kt", """
                 import com.bumble.appyx.core.integration.NodeFactory

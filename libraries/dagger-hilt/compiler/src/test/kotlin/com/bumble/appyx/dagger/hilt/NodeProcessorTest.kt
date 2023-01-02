@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.io.File
 
-internal class HiltNodeProcessorTest {
+internal class NodeProcessorTest {
 
     @field:TempDir
     lateinit var temporaryFolder: File

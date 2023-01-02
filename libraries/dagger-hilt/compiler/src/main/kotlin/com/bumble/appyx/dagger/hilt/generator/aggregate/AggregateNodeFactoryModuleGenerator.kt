@@ -34,7 +34,7 @@ import dagger.Provides
  * class ExampleParentNode {
  *   @HiltAggregateNodeFactory
  *   interface AggregateNodeFactory {
- *     val exampleNodeFactory: NodeFactory<ExampleNodeFactory>
+ *     val exampleNodeFactory: NodeFactory<ExampleNode>
  *     val exampleCustomNodeFactory: ExampleCustomNodeFactory
  *   }
  * }
@@ -53,8 +53,8 @@ import dagger.Provides
  *   internal class DaggerAggregateNodeFactory(
  *     public override val nodeFactoryProvider: NodeFactoryProvider,
  *   ) : ExampleParentNode.AggregateNodeFactory, com.bumble.appyx.dagger.hilt.internal.AggregateNodeFactory {
- *     public override val exampleNodeFactory: NodeFactory<ExampleNodeFactory>
- *         by nodeFactory<ExampleNodeFactory>()
+ *     public override val exampleNodeFactory: NodeFactory<ExampleNode>
+ *         by nodeFactory<ExampleNode>()
  *
  *     public override val exampleCustomNodeFactory: ExampleCustomNodeFactory by
  *         customNodeFactory<ExampleCustomNodeFactory>()
