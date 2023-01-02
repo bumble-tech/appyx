@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation.backpresshandlerstrategies
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -7,7 +8,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 
-abstract class BaseBackPressHandlerStrategy<NavTarget, State>
+abstract class BaseBackPressHandlerStrategy<NavTarget : Parcelable, State : Parcelable>
     : BackPressHandlerStrategy<NavTarget, State> {
 
     protected lateinit var scope: CoroutineScope

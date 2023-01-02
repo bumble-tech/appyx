@@ -16,7 +16,8 @@ The back stack also supports different back press and operation strategies (see 
 ## States
 
 ```kotlin
-enum class State {
+@Parcelize
+enum class State : Parcelable {
     CREATED, ACTIVE, STASHED, DESTROYED,
 }
 ```
@@ -33,7 +34,7 @@ Check out the apps in our [Coding challenges](../how-to-use-appyx/coding-challen
 As the back stack can never be empty, it's required to define an initial target.
 
 ```kotlin
-class BackStack<NavTarget : Any>(
+class BackStack<NavTarget : Parcelable>(
     initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     // Optional parameters are omitted
@@ -131,7 +132,7 @@ Effect on stack: depends on the contents of the stack:
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class BackStack<NavTarget : Any>(
+class BackStack<NavTarget : Parcelable>(
     /* ... */
     backPressHandler: BackPressHandlerStrategy<NavTarget, State> = PopBackPressHandler(),
     /* ... */
@@ -152,7 +153,7 @@ Serves as a no-op.
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class BackStack<NavTarget : Any>(
+class BackStack<NavTarget : Parcelable>(
     /* ... */
     operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),    
     /* ... */

@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.tiles.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.tiles.Tiles
@@ -8,7 +9,7 @@ import com.bumble.appyx.navmodel.tiles.TilesElements
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Destroy<T : Any>(
+data class Destroy<T : Parcelable>(
     private val key: NavKey<T>
 ) : TilesOperation<T> {
 
@@ -22,6 +23,6 @@ data class Destroy<T : Any>(
         }
 }
 
-fun <T : Any> Tiles<T>.destroy(key: NavKey<T>) {
+fun <T : Parcelable> Tiles<T>.destroy(key: NavKey<T>) {
     accept(Destroy(key))
 }

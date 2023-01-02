@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.spotlight.transitionhandler
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
@@ -19,7 +20,7 @@ import com.bumble.appyx.navmodel.spotlight.Spotlight
 import com.bumble.appyx.navmodel.toIntOffset
 
 @Suppress("TransitionPropertiesLabel")
-class SpotlightSlider<T>(
+class SpotlightSlider<T : Parcelable>(
     private val transitionSpec: TransitionSpec<Spotlight.State, Offset> = {
         spring(stiffness = Spring.StiffnessVeryLow)
     },
@@ -57,7 +58,7 @@ class SpotlightSlider<T>(
 }
 
 @Composable
-fun <T> rememberSpotlightSlider(
+fun <T : Parcelable> rememberSpotlightSlider(
     transitionSpec: TransitionSpec<Spotlight.State, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
     clipToBounds: Boolean = false
 ): ModifierTransitionHandler<T, Spotlight.State> = remember {

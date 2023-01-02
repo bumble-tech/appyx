@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.children
 
+import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
@@ -13,6 +14,7 @@ import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
+import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
@@ -152,16 +154,17 @@ class ChildCreationTest {
 
     // region Setup
 
-    private class TestNavModel : BaseNavModel<String, TestNavModel.State>(
+    private class TestNavModel : BaseNavModel<StringNavTarget, TestNavModel.State>(
         screenResolver = OnScreenStateResolver { it == State.ON_SCREEN },
         finalState = State.DESTROYED,
         savedStateMap = null,
     ) {
-        enum class State { ON_SCREEN, OFF_SCREEN, DESTROYED }
+        @Parcelize
+        enum class State: Parcelable { ON_SCREEN, OFF_SCREEN, DESTROYED }
 
-        override val initialElements: NavElements<String, State> = listOf(
+        override val initialElements: NavElements<StringNavTarget, State> = listOf(
             NavElement(
-                key = NavKey("initial"),
+                key = NavKey(StringNavTarget("initial")),
                 fromState = State.ON_SCREEN,
                 targetState = State.ON_SCREEN,
                 operation = Operation.Noop(),
@@ -171,7 +174,7 @@ class ChildCreationTest {
         fun add(navTarget: String, state: State) {
             updateState {
                 it + NavElement(
-                    key = NavKey(navTarget),
+                    key = NavKey(StringNavTarget(navTarget)),
                     fromState = state,
                     targetState = state,
                     operation = Operation.Noop(),
@@ -180,15 +183,17 @@ class ChildCreationTest {
         }
 
         fun remove(navTarget: String) {
+            val stringNavTarget = StringNavTarget(navTarget)
             updateState {
-                it.filterNot { it.key.navTarget == navTarget }
+                it.filterNot { it.key.navTarget == stringNavTarget }
             }
         }
 
         fun suspend(navTarget: String) {
+            val stringNavTarget = StringNavTarget(navTarget)
             updateState { list ->
                 list.map {
-                    if (it.key.navTarget == navTarget) {
+                    if (it.key.navTarget == stringNavTarget) {
                         it.transitionTo(State.OFF_SCREEN, Operation.Noop())
                     } else {
                         it
@@ -198,9 +203,10 @@ class ChildCreationTest {
         }
 
         fun unsuspend(navTarget: String) {
+            val stringNavTarget = StringNavTarget(navTarget)
             updateState { list ->
                 list.map {
-                    if (it.key.navTarget == navTarget) {
+                    if (it.key.navTarget == stringNavTarget) {
                         it.transitionTo(State.ON_SCREEN, Operation.Noop())
                     } else {
                         it
@@ -215,7 +221,7 @@ class ChildCreationTest {
         keepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP,
         buildContext: BuildContext = BuildContext.root(null),
         val testNavModel: TestNavModel = TestNavModel(),
-    ) : ParentNode<String>(
+    ) : ParentNode<StringNavTarget>(
         buildContext = buildContext,
         navModel = testNavModel,
         childKeepMode = keepMode,
@@ -225,14 +231,16 @@ class ChildCreationTest {
             manageTransitionsInTest()
         }
 
-        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+        override fun resolve(navTarget: StringNavTarget, buildContext: BuildContext): Node =
             Child(buildContext)
 
-        fun key(navTarget: String): NavKey<String>? =
+        fun key(navTarget: StringNavTarget): NavKey<StringNavTarget>? =
             children.value.keys.find { it.navTarget == navTarget }
 
-        fun child(navTarget: String): Child? =
-            children.value.values.find { it.key.navTarget == navTarget }?.nodeOrNull as Child?
+        fun child(navTarget: String): Child? {
+            val stringNavTarget = StringNavTarget(navTarget)
+            return children.value.values.find { it.key.navTarget == stringNavTarget }?.nodeOrNull as Child?
+        }
 
     }
 
@@ -245,6 +253,9 @@ class ChildCreationTest {
             state["test"] = true
         }
     }
+
+    @Parcelize
+    data class StringNavTarget(val value: String) : Parcelable
 
     // endregion
 

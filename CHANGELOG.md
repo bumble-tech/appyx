@@ -2,6 +2,7 @@
 
 ## Pending changes
 
+- [#311](https://github.com/bumble-tech/appyx/pull/311) – **Breaking change**: `NavTarget` and `State` are now explicitly `Parcelable`. Please see this PR to see approaches to resolve any compilation issues you may notice.
 - [#287](https://github.com/bumble-tech/appyx/pull/287) – **Added**: Introduced a new `rememberCombinedHandler` implementation that takes an immutable list to avoid non-skippable compositions. The previous implementation is now deprecated.
 - [#287](https://github.com/bumble-tech/appyx/pull/287) – **Added**: `ImmutableList` has been added to avoid non-skippable compositions. 
 - [#289](https://github.com/bumble-tech/appyx/issues/289) – **Added**: Introduced `interop-rx3` for RxJava 3 support. This has identical functionality to `interop-rx2`.

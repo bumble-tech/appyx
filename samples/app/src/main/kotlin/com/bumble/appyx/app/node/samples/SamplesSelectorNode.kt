@@ -22,6 +22,7 @@ import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.EmptyNavModel
+import com.bumble.appyx.core.navigation.EmptyState
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
@@ -32,7 +33,7 @@ class SamplesSelectorNode(
     buildContext: BuildContext,
     private val outputFunc: (Output) -> Unit
 ) : ParentNode<SamplesSelectorNode.NavTarget>(
-    navModel = EmptyNavModel<NavTarget, Unit>(),
+    navModel = EmptyNavModel<NavTarget, EmptyState>(),
     buildContext = buildContext
 ) {
     sealed class NavTarget : Parcelable {
@@ -53,7 +54,7 @@ class SamplesSelectorNode(
         object OpenCardsExample : Output()
         object OpenOnboarding : Output()
         object OpenComposeNavigation : Output()
-        object OpenInsideTheBackStack: Output()
+        object OpenInsideTheBackStack : Output()
     }
 
     @ExperimentalUnitApi

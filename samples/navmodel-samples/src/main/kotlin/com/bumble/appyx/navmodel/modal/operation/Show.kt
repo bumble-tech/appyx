@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.modal.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.navmodel.modal.Modal
 import com.bumble.appyx.navmodel.modal.Modal.State.MODAL
 import com.bumble.appyx.navmodel.modal.ModalElements
@@ -7,7 +8,7 @@ import com.bumble.appyx.core.navigation.NavKey
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Show<T : Any>(
+data class Show<T : Parcelable>(
     private val key: NavKey<T>
 ) : ModalOperation<T> {
 
@@ -27,6 +28,6 @@ data class Show<T : Any>(
     }
 }
 
-fun <T : Any> Modal<T>.show(key: NavKey<T>) {
+fun <T : Parcelable> Modal<T>.show(key: NavKey<T>) {
     accept(Show(key))
 }

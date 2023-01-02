@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.children
 
+import android.os.Parcelable
 import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
@@ -21,7 +22,7 @@ import kotlinx.coroutines.launch
  *
  * Lifecycle of these nodes is managed in [com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager].
  */
-internal class ChildNodeCreationManager<NavTarget : Any>(
+internal class ChildNodeCreationManager<NavTarget : Parcelable>(
     private var savedStateMap: SavedStateMap?,
     private val customisations: NodeCustomisationDirectory,
     private val keepMode: ChildEntry.KeepMode,

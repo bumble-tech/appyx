@@ -1,6 +1,7 @@
 package com.bumble.appyx.app.node.backstack.app.indexedbackstack.transition
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -28,7 +29,7 @@ import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionSpec
 import kotlin.math.roundToInt
 
-class RecentsTransitionHandler<NavTarget>(
+class RecentsTransitionHandler<NavTarget : Parcelable>(
     private val specFloat: TransitionSpec<State, Float> = { spring() },
     private val specOffset: TransitionSpec<State, Offset> = { spring() },
 ) : ModifierTransitionHandler<NavTarget, State>() {
@@ -170,7 +171,7 @@ class RecentsTransitionHandler<NavTarget>(
 }
 
 @Composable
-fun <R> rememberRecentsTransitionHandler(
+fun <R : Parcelable> rememberRecentsTransitionHandler(
     specFloat: TransitionSpec<State, Float> = { spring(stiffness = Spring.StiffnessMediumLow) },
     specOffset: TransitionSpec<State, Offset> = { spring(stiffness = Spring.StiffnessMediumLow) },
 ): ModifierTransitionHandler<R, State> =

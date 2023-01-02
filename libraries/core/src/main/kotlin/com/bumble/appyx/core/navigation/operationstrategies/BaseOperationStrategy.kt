@@ -1,10 +1,11 @@
 package com.bumble.appyx.core.navigation.operationstrategies
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavModel
 import kotlinx.coroutines.CoroutineScope
 
-abstract class BaseOperationStrategy<NavTarget, State> : OperationStrategy<NavTarget, State> {
+abstract class BaseOperationStrategy<NavTarget : Parcelable, State : Parcelable> : OperationStrategy<NavTarget, State> {
 
     protected lateinit var scope: CoroutineScope
     protected lateinit var navModel: NavModel<NavTarget, State>

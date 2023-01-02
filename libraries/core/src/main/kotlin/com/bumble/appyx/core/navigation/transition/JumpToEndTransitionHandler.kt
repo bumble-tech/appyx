@@ -1,11 +1,12 @@
 package com.bumble.appyx.core.navigation.transition
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Transition
 import androidx.compose.ui.Modifier
 
 @Suppress("TransitionPropertiesLabel")
-class JumpToEndTransitionHandler<T, S> : ModifierTransitionHandler<T, S>() {
+class JumpToEndTransitionHandler<T : Parcelable, S : Parcelable> : ModifierTransitionHandler<T, S>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(

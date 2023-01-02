@@ -1,5 +1,6 @@
 package com.bumble.appyx.app.node.backstack.app.indexedbackstack.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Active
@@ -9,7 +10,7 @@ import com.bumble.appyx.core.navigation.NavElements
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Pop<T : Any> : IndexedBackStackOperation<T> {
+class Pop<T : Parcelable> : IndexedBackStackOperation<T> {
 
     override fun isApplicable(elements: NavElements<T, State>): Boolean =
         elements.any { it.targetState is Active } &&
@@ -25,7 +26,7 @@ class Pop<T : Any> : IndexedBackStackOperation<T> {
     }
 }
 
-fun <T : Any> IndexedBackStack<T>.pop() {
+fun <T : Parcelable> IndexedBackStack<T>.pop() {
     accept(Pop())
     accept(UpdateSize())
 }

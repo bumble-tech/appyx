@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.tiles.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.tiles.Tiles
@@ -11,8 +12,8 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-data class Add<T : Any>(
-    private val element: @RawValue T
+data class Add<T : Parcelable>(
+    private val element: T
 ) : TilesOperation<T> {
 
     override fun isApplicable(elements: TilesElements<T>): Boolean = true
@@ -28,6 +29,6 @@ data class Add<T : Any>(
         )
 }
 
-fun <T : Any> Tiles<T>.add(element: T) {
+fun <T : Parcelable> Tiles<T>.add(element: T) {
     accept(Add(element))
 }

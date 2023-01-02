@@ -1,9 +1,11 @@
 package com.bumble.appyx.core.children
 
+import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.EmptyState
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
 import com.bumble.appyx.core.navigation.Operation
@@ -22,6 +24,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.parcelize.Parcelize
 import org.junit.Before
 import org.junit.Rule
 import kotlin.coroutines.EmptyCoroutineContext
@@ -53,11 +56,16 @@ open class ChildAwareTestBase {
             .mapNotNull { it.nodeOrNull }
     }
 
-    sealed class Configuration : Comparable<Configuration> {
+    sealed class Configuration : Comparable<Configuration>, Parcelable {
         abstract val id: Int
 
+        @Parcelize
         data class Child1(override val id: Int = 0) : Configuration()
+
+        @Parcelize
         data class Child2(override val id: Int = 0) : Configuration()
+
+        @Parcelize
         data class Child3(override val id: Int = 0) : Configuration()
 
         override fun compareTo(other: Configuration): Int {
@@ -118,13 +126,13 @@ open class ChildAwareTestBase {
         }
     }
 
-    class TestNavModel<Key> : NavModel<Key, Int> {
+    class TestNavModel<Key: Parcelable> : NavModel<Key, EmptyState> {
 
         private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-        private val state = MutableStateFlow(emptyList<NavElement<Key, Int>>())
-        override val elements: StateFlow<NavElements<Key, Int>>
+        private val state = MutableStateFlow(emptyList<NavElement<Key, EmptyState>>())
+        override val elements: StateFlow<NavElements<Key, EmptyState>>
             get() = state
-        override val screenState: StateFlow<NavModelAdapter.ScreenState<Key, out Int>>
+        override val screenState: StateFlow<NavModelAdapter.ScreenState<Key, out EmptyState>>
             get() = state.map { NavModelAdapter.ScreenState(onScreen = it) }
                 .stateIn(scope, SharingStarted.Eagerly, NavModelAdapter.ScreenState())
 
@@ -146,8 +154,8 @@ open class ChildAwareTestBase {
                 list + key.map {
                     NavElement(
                         key = it,
-                        fromState = 0,
-                        targetState = 0,
+                        fromState = EmptyState.INSTANCE,
+                        targetState = EmptyState.INSTANCE,
                         operation = Operation.Noop(),
                     )
                 }

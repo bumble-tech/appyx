@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State
@@ -10,7 +11,7 @@ import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.Inact
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Next<T : Any> : SpotlightAdvancedOperation<T> {
+class Next<T : Parcelable> : SpotlightAdvancedOperation<T> {
 
     override fun isApplicable(elements: NavElements<T, State>) =
         elements.any { (it.fromState == InactiveAfter && it.targetState == InactiveAfter) || it.fromState is Carousel }
@@ -61,7 +62,7 @@ class Next<T : Any> : SpotlightAdvancedOperation<T> {
     }
 }
 
-fun <T : Any> SpotlightAdvanced<T>.next() {
+fun <T : Parcelable> SpotlightAdvanced<T>.next() {
     accept(Next())
 }
 

@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlight.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
@@ -14,8 +15,8 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-class UpdateElements<T : Any>(
-    private val elements: @RawValue List<T>,
+class UpdateElements<T : Parcelable>(
+    private val elements: List<T>,
     private val initialActiveIndex: Int? = null,
 ) : SpotlightOperation<T> {
 
@@ -46,14 +47,14 @@ class UpdateElements<T : Any>(
     }
 }
 
-fun <T : Any> Spotlight<T>.updateElements(
+fun <T : Parcelable> Spotlight<T>.updateElements(
     items: List<T>,
     initialActiveItem: Int? = null
 ) {
     accept(UpdateElements(items, initialActiveItem))
 }
 
-internal fun <T> List<T>.toSpotlightElements(activeIndex: Int): SpotlightElements<T> =
+internal fun <T : Parcelable> List<T>.toSpotlightElements(activeIndex: Int): SpotlightElements<T> =
     mapIndexed { index, item ->
         val state = when {
             index < activeIndex -> INACTIVE_BEFORE

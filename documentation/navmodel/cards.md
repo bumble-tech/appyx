@@ -15,13 +15,20 @@ The `Cards` NavModel is not currently published, however you can try it in `:sam
 ## States
 
 ```kotlin
-sealed class State {
+sealed class State: Parcelable {
+    @Parcelize
     data class Queued(val queueNumber: Int) : State()
+    @Parcelize
     object Bottom : State()
+    @Parcelize
     object Top : State()
+    @Parcelize
     object IndicateLike : State()
+    @Parcelize
     object IndicatePass : State()
+    @Parcelize
     object VoteLike : State()
+    @Parcelize
     object VotePass : State()
 }
 ```
@@ -35,7 +42,7 @@ sealed class State {
 Requires defining items that will be converted to profile cards. The first one in the list will become a `Top` card, the second one a `Bottom` card, the rest will be `Queued`. 
 
 ```kotlin
-class Cards<NavTarget : Any>(
+class Cards<NavTarget : Parcelable>(
     initialItems: List<NavTarget> = listOf(),
 ) : BaseNavModel<NavTarget, State>(
     screenResolver = CardsOnScreenResolver,

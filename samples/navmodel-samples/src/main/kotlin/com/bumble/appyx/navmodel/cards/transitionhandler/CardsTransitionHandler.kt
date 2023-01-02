@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.cards.transitionhandler
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -35,7 +36,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel", "MagicNumber")
-class CardsTransitionHandler<T>(
+class CardsTransitionHandler<T : Parcelable>(
     private val transitionSpec: TransitionSpec<Cards.State, Float> = { spring(stiffness = Spring.StiffnessVeryLow) }
 ) : ModifierTransitionHandler<T, Cards.State>(clipToBounds = true) {
 
@@ -154,7 +155,7 @@ class CardsTransitionHandler<T>(
     }
 
 @Composable
-fun <T> rememberCardsTransitionHandler(
+fun <T : Parcelable> rememberCardsTransitionHandler(
     transitionSpec: TransitionSpec<Cards.State, Float> = { spring(stiffness = Spring.StiffnessVeryLow) }
 ): ModifierTransitionHandler<T, Cards.State> = remember {
     CardsTransitionHandler(transitionSpec)

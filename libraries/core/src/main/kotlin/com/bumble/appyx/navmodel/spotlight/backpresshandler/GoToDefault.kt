@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlight.backpresshandler
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.navmodel.spotlight.Spotlight
 import com.bumble.appyx.navmodel.spotlight.Spotlight.State.ACTIVE
@@ -8,7 +9,7 @@ import com.bumble.appyx.navmodel.spotlight.operation.Activate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class GoToDefault<NavTarget : Any>(
+class GoToDefault<NavTarget : Parcelable>(
     private val defaultElementIndex: Int = 0
 ) : BaseBackPressHandlerStrategy<NavTarget, Spotlight.State>() {
 

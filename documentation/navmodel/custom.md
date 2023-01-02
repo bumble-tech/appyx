@@ -7,7 +7,7 @@ A step-by-step guide. You can also take a look at other existing examples to see
 Create the class; define your possible states; define your initial state. 
 
 ```kotlin
-class Foo<NavTarget : Any>(
+class Foo<NavTarget : Parcelable>(
     initialItems: List<NavTarget> = listOf(),
     savedStateMap: SavedStateMap?
 ) : BaseNavModel<NavTarget, Foo.State>(
@@ -17,7 +17,8 @@ class Foo<NavTarget : Any>(
 ) {
 
     // Your possible states for any single navigation target
-    enum class State {
+    @Parcelize
+    enum class State : Parcelable {
         CREATED, FOO, BAR, BAZ, DESTROYED;
     }
 
@@ -54,7 +55,7 @@ Define one or more operations.
 
 ```kotlin
 @Parcelize
-class SomeOperation<NavTarget : Any> : FooOperation<NavTarget> {
+class SomeOperation<NavTarget : Parcelable> : FooOperation<NavTarget> {
 
     override fun isApplicable(elements: FooElements<NavTarget>): Boolean =
         TODO("Define whether this operation is applicable given the current state")
@@ -74,7 +75,7 @@ class SomeOperation<NavTarget : Any> : FooOperation<NavTarget> {
 }
 
 // You can add an extension method for a leaner API
-fun <NavTarget : Any> Foo<NavTarget>.someOperation() {
+fun <NavTarget : Parcelable> Foo<NavTarget>.someOperation() {
     accept(FooOperation())
 }
 ```

@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation.operationstrategies
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.isTransitioning
@@ -7,7 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.LinkedList
 
-class QueueOperations<NavTarget, State> : BaseOperationStrategy<NavTarget, State>() {
+class QueueOperations<NavTarget : Parcelable, State : Parcelable> : BaseOperationStrategy<NavTarget, State>() {
 
     private val operationQueue = LinkedList<Operation<NavTarget, State>>()
     private lateinit var collectJob: Job

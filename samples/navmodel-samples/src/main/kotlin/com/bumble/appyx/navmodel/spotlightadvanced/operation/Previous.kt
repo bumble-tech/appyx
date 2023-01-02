@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State
@@ -11,7 +12,7 @@ import kotlinx.parcelize.Parcelize
 
 
 @Parcelize
-class Previous<T : Any> : SpotlightAdvancedOperation<T> {
+class Previous<T : Parcelable> : SpotlightAdvancedOperation<T> {
 
     override fun isApplicable(elements: NavElements<T, State>) =
         elements.any {
@@ -72,6 +73,6 @@ class Previous<T : Any> : SpotlightAdvancedOperation<T> {
     }
 }
 
-fun <T : Any> SpotlightAdvanced<T>.previous() {
+fun <T : Parcelable> SpotlightAdvanced<T>.previous() {
     accept(Previous())
 }

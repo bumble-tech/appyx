@@ -84,7 +84,7 @@ override fun View(modifier: Modifier) {
 }
 
 @Composable
-private fun GridExample(elements: List<NavElement<NavTarget, out Any?>>) {
+private fun GridExample(elements: List<NavElement<NavTarget, out Parcelable?>>) {
     LazyVerticalGrid(
         columns = Fixed(2),
         modifier = Modifier.fillMaxSize(),

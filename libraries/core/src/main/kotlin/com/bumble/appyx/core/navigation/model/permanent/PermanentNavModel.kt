@@ -1,6 +1,8 @@
 package com.bumble.appyx.core.navigation.model.permanent
 
+import android.os.Parcelable
 import com.bumble.appyx.core.mapState
+import com.bumble.appyx.core.navigation.EmptyState
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
@@ -15,11 +17,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
-class PermanentNavModel<NavTarget : Any>(
+class PermanentNavModel<NavTarget : Parcelable>(
     navTargets: Set<NavTarget> = emptySet(),
     savedStateMap: SavedStateMap?,
     private val key: String = requireNotNull(PermanentNavModel::class.qualifiedName),
-) : NavModel<NavTarget, Int> {
+) : NavModel<NavTarget, EmptyState> {
     private val scope: CoroutineScope =
         CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
@@ -37,8 +39,8 @@ class PermanentNavModel<NavTarget : Any>(
         savedStateMap.restore() ?: navTargets.map { key ->
             PermanentElement(
                 key = NavKey(navTarget = key),
-                fromState = 0,
-                targetState = 0,
+                fromState = EmptyState.INSTANCE,
+                targetState = EmptyState.INSTANCE,
                 operation = Operation.Noop()
             )
         }
@@ -47,7 +49,7 @@ class PermanentNavModel<NavTarget : Any>(
     override val elements: StateFlow<PermanentElements<NavTarget>>
         get() = state
 
-    override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, Int>> by lazy {
+    override val screenState: StateFlow<NavModelAdapter.ScreenState<NavTarget, EmptyState>> by lazy {
         state.mapState(scope) { NavModelAdapter.ScreenState(onScreen = it) }
     }
 
@@ -55,7 +57,7 @@ class PermanentNavModel<NavTarget : Any>(
         // no-op
     }
 
-    override fun accept(operation: Operation<NavTarget, Int>) {
+    override fun accept(operation: Operation<NavTarget, EmptyState>) {
         if (operation.isApplicable(state.value)) {
             state.update { operation(it) }
         }
@@ -65,7 +67,7 @@ class PermanentNavModel<NavTarget : Any>(
         state[key] = this.state.value
     }
 
-    private fun SavedStateMap?.restore(): List<NavElement<NavTarget, Int>>? =
+    private fun SavedStateMap?.restore(): List<NavElement<NavTarget, EmptyState>>? =
         (this?.get(key) as? PermanentElements<NavTarget>)
 
 }

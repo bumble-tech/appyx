@@ -1,6 +1,7 @@
 package com.bumble.appyx.app.node.teaser.backstack.transitionhandler
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -21,7 +22,7 @@ import com.bumble.appyx.navmodel.backstack.BackStack
 import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
-class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackStack.State>() {
+class CustomBackStackTransitionHandler<T : Parcelable> : ModifierTransitionHandler<T, BackStack.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
@@ -75,6 +76,6 @@ class CustomBackStackTransitionHandler<T> : ModifierTransitionHandler<T, BackSta
 }
 
 @Composable
-fun <T> rememberCustomHandler(): ModifierTransitionHandler<T, BackStack.State> = remember {
+fun <T : Parcelable> rememberCustomHandler(): ModifierTransitionHandler<T, BackStack.State> = remember {
     CustomBackStackTransitionHandler()
 }

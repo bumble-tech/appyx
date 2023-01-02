@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 
 /**
@@ -7,7 +8,7 @@ import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
  * This is potentially useful if your ParentNode only uses
  * [com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel]
  */
-class EmptyNavModel<NavTarget, State> : BaseNavModel<NavTarget, State>(
+class EmptyNavModel<NavTarget: Parcelable, State: Parcelable> : BaseNavModel<NavTarget, State>(
     savedStateMap = null,
     finalState = null,
     screenResolver = OnScreenStateResolver { true }

@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.backstack.transitionhandler
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateOffset
@@ -27,7 +28,7 @@ import com.bumble.appyx.navmodel.backstack.operation.SingleTop.SingleTopReplaceB
 import com.bumble.appyx.navmodel.toIntOffset
 
 @Suppress("TransitionPropertiesLabel")
-class BackStackSlider<T>(
+class BackStackSlider<T : Parcelable>(
     private val transitionSpec: TransitionSpec<BackStack.State, Offset> = {
         spring(stiffness = Spring.StiffnessVeryLow)
     },
@@ -77,7 +78,7 @@ class BackStackSlider<T>(
 }
 
 @Composable
-fun <T> rememberBackstackSlider(
+fun <T : Parcelable> rememberBackstackSlider(
     transitionSpec: TransitionSpec<BackStack.State, Offset> = { spring(stiffness = Spring.StiffnessVeryLow) },
     clipToBounds: Boolean = false
 ): ModifierTransitionHandler<T, BackStack.State> = remember {

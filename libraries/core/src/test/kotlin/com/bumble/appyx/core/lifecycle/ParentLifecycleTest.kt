@@ -1,9 +1,11 @@
 package com.bumble.appyx.core.lifecycle
 
+import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.core.lifecycle.ParentLifecycleTest.Parent.StringNavTarget
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.NavElement
@@ -15,6 +17,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
+import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -32,7 +35,7 @@ class ParentLifecycleTest {
     fun `parent node finishes transitions for off screen elements when lifecycle is not stopped`() {
         val parent = Parent(BuildContext.root(null)).build()
         val navModel = parent.navModelImpl
-        val navTarget = "0"
+        val navTarget = StringNavTarget("0")
         parent.updateLifecycleState(Lifecycle.State.STARTED)
         navModel.add(navTarget = navTarget, defaultState = NavModelImpl.State.StateOne)
 
@@ -46,7 +49,7 @@ class ParentLifecycleTest {
         )
     }
 
-    private class NavModelImpl : BaseNavModel<String, NavModelImpl.State>(
+    private class NavModelImpl : BaseNavModel<StringNavTarget, NavModelImpl.State>(
         screenResolver = object : OnScreenStateResolver<State> {
             override fun isOnScreen(state: State): Boolean =
                 when (state) {
@@ -60,16 +63,17 @@ class ParentLifecycleTest {
         savedStateMap = null,
     ) {
 
-        enum class State {
+        @Parcelize
+        enum class State: Parcelable {
             StateOne,
             StateTwo,
             StateThree,
             StateFour,
         }
 
-        override val initialElements: NavElements<String, State> = emptyList()
+        override val initialElements: NavElements<StringNavTarget, State> = emptyList()
 
-        fun add(navTarget: String, defaultState: State) {
+        fun add(navTarget: StringNavTarget, defaultState: State) {
             updateState { list ->
                 list + NavElement(
                     key = NavKey(navTarget),
@@ -80,18 +84,18 @@ class ParentLifecycleTest {
             }
         }
 
-        fun get(navTarget: String): NavElement<String, State> {
+        fun get(navTarget: StringNavTarget): NavElement<StringNavTarget, State> {
             return requireNotNull(
                 value = elements.value.find { it.key.navTarget == navTarget },
                 lazyMessage = { "element with navTarget $navTarget is not found" },
             )
         }
 
-        fun remove(navTarget: String) {
+        fun remove(navTarget: StringNavTarget) {
             updateState { list -> list.filter { it.key.navTarget != navTarget } }
         }
 
-        fun changeState(navTarget: String, defaultState: State) {
+        fun changeState(navTarget: StringNavTarget, defaultState: State) {
             updateState { list ->
                 list
                     .map {
@@ -112,11 +116,14 @@ class ParentLifecycleTest {
     private class Parent(
         buildContext: BuildContext,
         val navModelImpl: NavModelImpl = NavModelImpl(),
-    ) : ParentNode<String>(
+    ) : ParentNode<StringNavTarget>(
         buildContext = buildContext,
         navModel = navModelImpl,
     ) {
-        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+        @Parcelize
+        data class StringNavTarget(val value: String) : Parcelable
+
+        override fun resolve(navTarget: StringNavTarget, buildContext: BuildContext): Node =
             Child(buildContext)
 
         @Composable

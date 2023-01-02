@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.backstack.transitionhandler
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.spring
@@ -15,7 +16,7 @@ import com.bumble.appyx.core.navigation.transition.TransitionSpec
 import com.bumble.appyx.navmodel.backstack.BackStack
 
 @Suppress("TransitionPropertiesLabel")
-class BackStackFader<T>(
+class BackStackFader<T : Parcelable>(
     private val transitionSpec: TransitionSpec<BackStack.State, Float> = { spring() }
 ) : ModifierTransitionHandler<T, BackStack.State>() {
 
@@ -39,7 +40,7 @@ class BackStackFader<T>(
 }
 
 @Composable
-fun <T> rememberBackstackFader(
+fun <T : Parcelable> rememberBackstackFader(
     transitionSpec: TransitionSpec<BackStack.State, Float> = { spring() }
 ): ModifierTransitionHandler<T, BackStack.State> = remember {
     BackStackFader(transitionSpec = transitionSpec)

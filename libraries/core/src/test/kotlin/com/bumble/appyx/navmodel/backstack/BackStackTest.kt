@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.backstack
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel.Companion.KEY_NAV_MODEL
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavKey
@@ -524,7 +525,7 @@ internal class BackStackTest {
         actual.assertNavTargetElementsEqual(expectedElements)
     }
 
-    private fun <T : Any> push(element: T) = Push(
+    private fun <T : Parcelable> push(element: T) = Push(
         element = element
     )
 

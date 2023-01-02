@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State
@@ -7,7 +8,7 @@ import com.bumble.appyx.navmodel.spotlightadvanced.currentIndex
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Activate<T : Any>(
+class Activate<T : Parcelable>(
     private val index: Int
 ) : SpotlightAdvancedOperation<T> {
 
@@ -42,6 +43,6 @@ class Activate<T : Any>(
     }
 }
 
-fun <T : Any> SpotlightAdvanced<T>.activate(index: Int) {
+fun <T : Parcelable> SpotlightAdvanced<T>.activate(index: Int) {
     accept(Activate(index))
 }

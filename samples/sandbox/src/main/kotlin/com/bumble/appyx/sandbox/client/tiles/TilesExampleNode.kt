@@ -1,5 +1,6 @@
 package com.bumble.appyx.sandbox.client.tiles
 
+import android.os.Parcelable
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -36,6 +37,7 @@ import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child1
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child2
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child3
 import com.bumble.appyx.sandbox.client.tiles.TilesExampleNode.NavTarget.Child4
+import kotlinx.parcelize.Parcelize
 
 class TilesExampleNode(
     buildContext: BuildContext,
@@ -49,7 +51,8 @@ class TilesExampleNode(
     buildContext = buildContext,
 ) {
 
-    enum class NavTarget {
+    @Parcelize
+    enum class NavTarget : Parcelable {
         Child1, Child2, Child3, Child4,
     }
 

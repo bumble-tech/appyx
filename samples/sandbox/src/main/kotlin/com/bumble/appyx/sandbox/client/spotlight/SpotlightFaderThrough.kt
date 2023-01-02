@@ -1,6 +1,7 @@
 package com.bumble.appyx.sandbox.client.spotlight
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -19,7 +20,7 @@ import com.bumble.appyx.navmodel.spotlight.Spotlight
  * Fade through transition from material design
  * [Specification](https://m2.material.io/design/motion/the-motion-system.html#fade-through)
  */
-class SpotlightFaderThrough<T> : ModifierTransitionHandler<T, Spotlight.State>() {
+class SpotlightFaderThrough<T : Parcelable> : ModifierTransitionHandler<T, Spotlight.State>() {
 
     @SuppressLint("ModifierFactoryExtensionFunction")
     override fun createModifier(
@@ -91,5 +92,5 @@ class SpotlightFaderThrough<T> : ModifierTransitionHandler<T, Spotlight.State>()
 }
 
 @Composable
-fun <T> rememberSpotlightFaderThrough(): ModifierTransitionHandler<T, Spotlight.State> =
+fun <T : Parcelable> rememberSpotlightFaderThrough(): ModifierTransitionHandler<T, Spotlight.State> =
     remember { SpotlightFaderThrough() }

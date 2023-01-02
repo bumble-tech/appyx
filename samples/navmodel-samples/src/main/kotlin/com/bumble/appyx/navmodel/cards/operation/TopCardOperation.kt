@@ -1,11 +1,12 @@
 package com.bumble.appyx.navmodel.cards.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.navmodel.cards.Cards
 import com.bumble.appyx.navmodel.cards.CardsElements
 
-abstract class TopCardOperation<T : Any>(
+abstract class TopCardOperation<T : Parcelable>(
     private val newTargetState: Cards.State
-    ) : CardsOperation<T> {
+) : CardsOperation<T> {
 
     override fun isApplicable(elements: CardsElements<T>): Boolean =
         elements.any { it.targetState in Cards.TOP_STATES }

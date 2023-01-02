@@ -1,10 +1,11 @@
 package com.bumble.appyx.core.navigation.operationstrategies
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.Operation
 import com.bumble.appyx.core.navigation.NavModel
 import kotlinx.coroutines.CoroutineScope
 
-interface OperationStrategy<NavTarget, State> {
+interface OperationStrategy<NavTarget : Parcelable, State : Parcelable> {
 
     fun init(
         navModel: NavModel<NavTarget, State>,

@@ -1,9 +1,10 @@
 package com.bumble.appyx.core.node
 
+import android.os.Parcelable
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-interface ParentNodeView<NavTarget : Any> : NodeView {
+interface ParentNodeView<NavTarget : Parcelable> : NodeView {
 
     @Composable
     fun ParentNode<NavTarget>.NodeView(modifier: Modifier)

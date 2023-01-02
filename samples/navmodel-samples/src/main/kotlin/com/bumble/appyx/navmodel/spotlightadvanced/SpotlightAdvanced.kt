@@ -12,7 +12,7 @@ import com.bumble.appyx.navmodel.spotlightadvanced.backpresshandler.GoToDefault
 import com.bumble.appyx.navmodel.spotlightadvanced.operation.toSpotlightAdvancedElements
 import kotlinx.parcelize.Parcelize
 
-class SpotlightAdvanced<NavTarget : Any>(
+class SpotlightAdvanced<NavTarget : Parcelable>(
     items: List<NavTarget>,
     initialActiveIndex: Int = 0,
     savedStateMap: SavedStateMap?,

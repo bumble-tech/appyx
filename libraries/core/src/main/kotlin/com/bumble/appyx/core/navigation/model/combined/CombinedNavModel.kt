@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation.model.combined
 
+import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import com.bumble.appyx.core.combineState
 import com.bumble.appyx.core.navigation.NavElements
@@ -14,9 +15,9 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.coroutines.EmptyCoroutineContext
 
-class CombinedNavModel<NavTarget>(
+class CombinedNavModel<NavTarget : Parcelable>(
     val navModels: List<NavModel<NavTarget, *>>,
-) : NavModel<NavTarget, Any?>, Destroyable {
+) : NavModel<NavTarget, Parcelable>, Destroyable {
 
     constructor(vararg navModels: NavModel<NavTarget, *>) : this(navModels.toList())
 

@@ -47,7 +47,7 @@ open class AppyxViewTestRule<View : NodeView>(
     override fun beforeActivityLaunched() {
         AppyxTestActivity.composableView = {
             CompositionLocalProvider(
-                LocalNode provides DummyParentNode<Any>(),
+                LocalNode provides DummyParentNode(),
             ) {
                 view.View(modifier = Modifier)
             }
