@@ -2,6 +2,10 @@ package com.bumble.appyx.dagger.hilt
 
 import com.tschuchort.compiletesting.SourceFile
 
+/**
+ * As the core appyx library is an Android library, we must define our own versions of these files.
+ * These could easily get out of date, so we will need integration tests elsewhere to handle this possibility.
+ */
 val buildContextSourceFile = SourceFile.kotlin(
     "BuildContext.kt",
     """
