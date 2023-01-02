@@ -13,6 +13,7 @@ import com.bumble.appyx.core.AppyxTestScenario
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.EmptyNavModel
+import com.bumble.appyx.core.navigation.EmptyState
 import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -50,7 +51,7 @@ class PermanentChildTest {
         buildContext: BuildContext,
     ) : ParentNode<TestParentNode.NavTarget>(
         buildContext = buildContext,
-        navModel = EmptyNavModel<NavTarget, Any>(),
+        navModel = EmptyNavModel<NavTarget, EmptyState>(),
     ) {
 
         @Parcelize

@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.modal.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.navmodel.modal.Modal
 import com.bumble.appyx.navmodel.modal.Modal.State.CREATED
 import com.bumble.appyx.navmodel.modal.ModalElement
@@ -9,8 +10,8 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-data class Add<T : Any>(
-    private val element: @RawValue T
+data class Add<T : Parcelable>(
+    private val element: T
 ) : ModalOperation<T> {
 
     override fun isApplicable(elements: ModalElements<T>) = true
@@ -25,6 +26,6 @@ data class Add<T : Any>(
     }
 }
 
-fun <T : Any> Modal<T>.add(element: T) {
+fun <T : Parcelable> Modal<T>.add(element: T) {
     accept(Add(element))
 }

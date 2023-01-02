@@ -1,18 +1,19 @@
 package com.bumble.appyx.navmodel.backstack
 
+import android.os.Parcelable
 import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
 
-val <T> BackStackElements<T>.active: BackStackElement<T>?
+val <T : Parcelable> BackStackElements<T>.active: BackStackElement<T>?
     get() = lastOrNull { it.targetState == ACTIVE }
 
-val <T : Any> BackStack<T>.active: BackStackElement<T>?
+val <T : Parcelable> BackStack<T>.active: BackStackElement<T>?
     get() = elements.value.active
 
-val <T> BackStackElements<T>.activeElement: T?
+val <T : Parcelable> BackStackElements<T>.activeElement: T?
     get() = active?.key?.navTarget
 
-val <T : Any> BackStack<T>.activeElement: T?
+val <T : Parcelable> BackStack<T>.activeElement: T?
     get() = elements.value.activeElement
 
-val <T> BackStackElements<T>.activeIndex: Int
+val <T : Parcelable> BackStackElements<T>.activeIndex: Int
     get() = indexOfLast { it.targetState == ACTIVE }

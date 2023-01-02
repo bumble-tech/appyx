@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.promoter.transitionhandler
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
@@ -28,7 +29,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
-class PromoterTransitionHandler<T>(
+class PromoterTransitionHandler<T : Parcelable>(
     private val childSize: Dp,
     private val transitionSpec: TransitionSpec<Promoter.State, Float> = { tween(500) }
 ) : ModifierTransitionHandler<T, Promoter.State>() {
@@ -160,7 +161,7 @@ class PromoterTransitionHandler<T>(
 }
 
 @Composable
-fun <T> rememberPromoterTransitionHandler(
+fun <T : Parcelable> rememberPromoterTransitionHandler(
     childSize: Dp,
     transitionSpec: TransitionSpec<Promoter.State, Float> = { tween(500) }
 ): ModifierTransitionHandler<T, Promoter.State> = remember {

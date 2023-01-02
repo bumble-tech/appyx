@@ -1,12 +1,13 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class SwitchToCarousel<T : Any>: SpotlightAdvancedOperation<T> {
+class SwitchToCarousel<T : Parcelable> : SpotlightAdvancedOperation<T> {
 
     override fun isApplicable(elements: NavElements<T, State>) =
         elements.all { it.fromState !is State.Carousel }
@@ -26,6 +27,6 @@ class SwitchToCarousel<T : Any>: SpotlightAdvancedOperation<T> {
     }
 }
 
-fun <T : Any> SpotlightAdvanced<T>.switchToCarousel() {
+fun <T : Parcelable> SpotlightAdvanced<T>.switchToCarousel() {
     accept(SwitchToCarousel())
 }

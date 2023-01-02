@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.tiles.transitionhandler
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -20,7 +21,7 @@ import com.bumble.appyx.navmodel.tiles.Tiles
 import kotlin.math.roundToInt
 
 @Suppress("TransitionPropertiesLabel")
-class TilesTransitionHandler<T>(
+class TilesTransitionHandler<T : Parcelable>(
     private val transitionSpec: TransitionSpec<Tiles.State, Float> = { spring() }
 ) : ModifierTransitionHandler<T, Tiles.State>() {
 
@@ -62,7 +63,7 @@ class TilesTransitionHandler<T>(
 }
 
 @Composable
-fun <T> rememberTilesTransitionHandler(
+fun <T : Parcelable> rememberTilesTransitionHandler(
     transitionSpec: TransitionSpec<Tiles.State, Float> = { spring(stiffness = Spring.StiffnessVeryLow) }
 ): ModifierTransitionHandler<T, Tiles.State> = remember {
     TilesTransitionHandler(transitionSpec)

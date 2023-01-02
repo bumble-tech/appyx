@@ -1,6 +1,7 @@
 package com.bumble.appyx.navmodel.modal
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.tween
@@ -21,7 +22,7 @@ import com.bumble.appyx.core.navigation.transition.TransitionSpec
 import com.bumble.appyx.navmodel.modal.Modal.State
 
 @Suppress("TransitionPropertiesLabel")
-class ModalTransitionHandler<T>(
+class ModalTransitionHandler<T : Parcelable>(
     private val transitionSpec: TransitionSpec<State, Float> = { tween(500) }
 ) : ModifierTransitionHandler<T, State>() {
 

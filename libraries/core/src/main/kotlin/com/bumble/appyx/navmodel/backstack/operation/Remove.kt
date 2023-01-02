@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElements
@@ -12,7 +13,7 @@ import kotlinx.parcelize.Parcelize
  * [A, B, C] + Remove(id of B) = [A, C]
  */
 @Parcelize
-data class Remove<T : Any>(
+data class Remove<T : Parcelable>(
     private val key: NavKey<T>
 ) : BackStackOperation<T> {
 
@@ -61,6 +62,6 @@ data class Remove<T : Any>(
     }
 }
 
-fun <T : Any> BackStack<T>.remove(key: NavKey<T>) {
+fun <T : Parcelable> BackStack<T>.remove(key: NavKey<T>) {
     accept(Remove(key))
 }

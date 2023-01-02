@@ -1,8 +1,9 @@
 package com.bumble.appyx.core.navigation.model.combined
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavModel
 
-operator fun <NavTarget> NavModel<NavTarget, *>.plus(
+operator fun <NavTarget : Parcelable> NavModel<NavTarget, *>.plus(
     other: NavModel<NavTarget, *>,
 ): CombinedNavModel<NavTarget> {
     val currentModels = if (this is CombinedNavModel<NavTarget>) navModels else listOf(this)

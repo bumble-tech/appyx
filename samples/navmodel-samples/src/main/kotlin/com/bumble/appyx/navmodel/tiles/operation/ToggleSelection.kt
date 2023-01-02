@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.tiles.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.tiles.Tiles
@@ -7,7 +8,7 @@ import com.bumble.appyx.navmodel.tiles.TilesElements
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class ToggleSelection<T : Any>(
+data class ToggleSelection<T : Parcelable>(
     private val key: NavKey<T>
 ) : TilesOperation<T> {
 
@@ -35,6 +36,6 @@ data class ToggleSelection<T : Any>(
         }
 }
 
-fun <T : Any> Tiles<T>.toggleSelection(key: NavKey<T>) {
+fun <T : Parcelable> Tiles<T>.toggleSelection(key: NavKey<T>) {
     accept(ToggleSelection(key))
 }

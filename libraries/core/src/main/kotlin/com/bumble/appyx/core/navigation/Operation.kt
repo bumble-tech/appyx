@@ -3,7 +3,7 @@ package com.bumble.appyx.core.navigation
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-interface Operation<NavTarget, State> :
+interface Operation<NavTarget : Parcelable, State : Parcelable> :
         (NavElements<NavTarget, State>) -> NavElements<NavTarget, State>, Parcelable {
 
     fun isApplicable(elements: NavElements<NavTarget, State>): Boolean
@@ -67,7 +67,7 @@ interface Operation<NavTarget, State> :
     }
 
     @Parcelize
-    class Noop<NavTarget, State> : Operation<NavTarget, State> {
+    class Noop<NavTarget : Parcelable, State : Parcelable> : Operation<NavTarget, State> {
 
         override fun isApplicable(elements: NavElements<NavTarget, State>) = false
 

@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.node
 
+import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.ParentNodeTest.NodeB.Companion.StatusExecuted
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
+import kotlinx.parcelize.Parcelize
 import org.junit.Rule
 import org.junit.Test
 
@@ -88,8 +90,10 @@ class ParentNodeTest {
         navModel = backStack
     ) {
 
-        sealed class NavTarget {
+        sealed class NavTarget: Parcelable {
+            @Parcelize
             object ChildA : NavTarget()
+            @Parcelize
             object ChildB : NavTarget()
         }
 

@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
@@ -18,11 +19,11 @@ import kotlinx.parcelize.RawValue
  * [A, B, C, D] + SingleTop(B') = [A, B']        // of same type but not equals, acts as n * Pop + Replace
  * [A, B, C, D] + SingleTop(E) = [A, B, C, D, E] // not found, acts as Push
  */
-sealed class SingleTop<T : Any> : BackStackOperation<T> {
+sealed class SingleTop<T : Parcelable> : BackStackOperation<T> {
 
     @Parcelize
-    class SingleTopReactivateBackStackOperation<T : Any>(
-        private val element: @RawValue T,
+    class SingleTopReactivateBackStackOperation<T : Parcelable>(
+        private val element: T,
         private val position: Int
     ) : SingleTop<T>() {
 
@@ -52,8 +53,8 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
     }
 
     @Parcelize
-    class SingleTopReplaceBackStackOperation<T : Any>(
-        private val element: @RawValue T,
+    class SingleTopReplaceBackStackOperation<T : Parcelable>(
+        private val element: T,
         private val position: Int,
     ) : SingleTop<T>() {
 
@@ -85,7 +86,7 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
 
     companion object {
 
-        fun <T : Any> init(
+        fun <T : Parcelable> init(
             element: T,
             elements: BackStackElements<T>
         ): BackStackOperation<T> {
@@ -112,6 +113,6 @@ sealed class SingleTop<T : Any> : BackStackOperation<T> {
     }
 }
 
-fun <T : Any> BackStack<T>.singleTop(element: T) {
+fun <T : Parcelable> BackStack<T>.singleTop(element: T) {
     accept(SingleTop.init(element, elements.value))
 }

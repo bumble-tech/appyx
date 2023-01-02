@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.lifecycle
 
+import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -7,6 +8,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.bumble.appyx.core.children.nodeOrNull
+import com.bumble.appyx.core.lifecycle.ChildLifecycleTest.TestNavModel.OnScreenState
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.NavElement
@@ -18,6 +20,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
+import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -153,38 +156,44 @@ class ChildLifecycleTest {
 
     // region Setup
 
-    private class TestNavModel : BaseNavModel<String, Boolean>(
-        screenResolver = object : OnScreenStateResolver<Boolean> {
-            override fun isOnScreen(state: Boolean): Boolean = state
+    private class TestNavModel : BaseNavModel<StringNavTarget, OnScreenState>(
+        screenResolver = object : OnScreenStateResolver<OnScreenState> {
+            override fun isOnScreen(state: OnScreenState): Boolean = state.value
         },
         finalState = null,
         savedStateMap = null,
     ) {
-        override val initialElements: NavElements<String, Boolean> = emptyList()
+        @Parcelize
+        data class OnScreenState(val value: Boolean) : Parcelable
+
+        override val initialElements: NavElements<StringNavTarget, OnScreenState> = emptyList()
 
         fun add(key: String, onScreen: Boolean) {
             updateState { list ->
                 list + NavElement(
-                    key = NavKey(key),
-                    targetState = onScreen,
-                    fromState = onScreen,
+                    key = NavKey(StringNavTarget(key)),
+                    targetState = OnScreenState(onScreen),
+                    fromState = OnScreenState(onScreen),
                     operation = Operation.Noop(),
                 )
             }
         }
 
         fun remove(key: String) {
-            updateState { list -> list.filter { it.key.navTarget != key } }
+            val stringNavTarget = StringNavTarget(key)
+            updateState { list -> list.filter { it.key.navTarget != stringNavTarget } }
         }
 
         fun changeState(key: String, onScreen: Boolean) {
+            val stringNavTarget = StringNavTarget(key)
+            val onScreenState = OnScreenState(onScreen)
             updateState { list ->
                 list
                     .map {
-                        if (it.key.navTarget == key) {
+                        if (it.key.navTarget == stringNavTarget) {
                             it
                                 .transitionTo(
-                                    newTargetState = onScreen,
+                                    newTargetState = onScreenState,
                                     operation = Operation.Noop()
                                 )
                                 .onTransitionFinished()
@@ -199,11 +208,11 @@ class ChildLifecycleTest {
     private class Parent(
         buildContext: BuildContext,
         val testNavModel: TestNavModel = TestNavModel(),
-    ) : ParentNode<String>(
+    ) : ParentNode<StringNavTarget>(
         buildContext = buildContext,
         navModel = testNavModel,
     ) {
-        override fun resolve(navTarget: String, buildContext: BuildContext): Node =
+        override fun resolve(navTarget: StringNavTarget, buildContext: BuildContext): Node =
             Child(buildContext)
 
         @Composable
@@ -231,6 +240,9 @@ class ChildLifecycleTest {
             super.updateLifecycleState(state)
         }
     }
+
+    @Parcelize
+    data class StringNavTarget(val value: String) : Parcelable
 
     // endregion
 

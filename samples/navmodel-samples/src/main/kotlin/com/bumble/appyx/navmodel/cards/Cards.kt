@@ -14,7 +14,7 @@ import com.bumble.appyx.navmodel.cards.Cards.State.VoteLike
 import com.bumble.appyx.navmodel.cards.Cards.State.VotePass
 import kotlinx.parcelize.Parcelize
 
-class Cards<NavTarget : Any>(
+class Cards<NavTarget : Parcelable>(
     initialItems: List<NavTarget> = listOf(),
 ) : BaseNavModel<NavTarget, State>(
     screenResolver = CardsOnScreenResolver,

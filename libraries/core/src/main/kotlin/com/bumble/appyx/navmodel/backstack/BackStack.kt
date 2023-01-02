@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.backstack
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavKey
@@ -12,8 +13,9 @@ import com.bumble.appyx.navmodel.backstack.BackStack.State.DESTROYED
 import com.bumble.appyx.navmodel.backstack.backpresshandler.PopBackPressHandler
 import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
+import kotlinx.parcelize.Parcelize
 
-class BackStack<NavTarget : Any>(
+class BackStack<NavTarget : Parcelable>(
     initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
@@ -29,7 +31,8 @@ class BackStack<NavTarget : Any>(
     key = key,
 ) {
 
-    enum class State {
+    @Parcelize
+    enum class State : Parcelable {
         CREATED, ACTIVE, STASHED, DESTROYED,
     }
 

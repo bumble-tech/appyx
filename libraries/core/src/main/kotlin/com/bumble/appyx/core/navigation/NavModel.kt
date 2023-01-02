@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation
 
+import android.os.Parcelable
 import androidx.compose.runtime.Stable
 import com.bumble.appyx.core.plugin.BackPressHandler
 import com.bumble.appyx.core.plugin.SavesInstanceState
@@ -7,7 +8,7 @@ import com.bumble.appyx.core.plugin.UpNavigationHandler
 import kotlinx.coroutines.flow.StateFlow
 
 @Stable
-interface NavModel<NavTarget, State> : NavModelAdapter<NavTarget, State>,
+interface NavModel<NavTarget : Parcelable, State : Parcelable> : NavModelAdapter<NavTarget, State>,
     UpNavigationHandler,
     SavesInstanceState,
     BackPressHandler {

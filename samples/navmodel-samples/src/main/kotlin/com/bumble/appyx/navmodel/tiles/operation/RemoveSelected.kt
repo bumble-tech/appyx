@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.tiles.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.tiles.Tiles
 import com.bumble.appyx.navmodel.tiles.Tiles.State.DESTROYED
@@ -8,7 +9,7 @@ import com.bumble.appyx.navmodel.tiles.TilesElements
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class RemoveSelected<T : Any> : TilesOperation<T> {
+class RemoveSelected<T : Parcelable> : TilesOperation<T> {
 
     override fun isApplicable(elements: TilesElements<T>): Boolean = true
 
@@ -24,6 +25,6 @@ class RemoveSelected<T : Any> : TilesOperation<T> {
     override fun hashCode(): Int = this.javaClass.hashCode()
 }
 
-fun <T : Any> Tiles<T>.removeSelected() {
+fun <T : Parcelable> Tiles<T>.removeSelected() {
     accept(RemoveSelected())
 }

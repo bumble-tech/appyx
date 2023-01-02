@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.modal
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavElements
@@ -13,8 +14,9 @@ import com.bumble.appyx.navmodel.modal.Modal.State
 import com.bumble.appyx.navmodel.modal.Modal.State.CREATED
 import com.bumble.appyx.navmodel.modal.Modal.State.DESTROYED
 import com.bumble.appyx.navmodel.modal.backpresshandler.RevertBackPressHandler
+import kotlinx.parcelize.Parcelize
 
-class Modal<NavTarget : Any>(
+class Modal<NavTarget : Parcelable>(
     initialElement: NavTarget,
     savedStateMap: SavedStateMap?,
     key: String = KEY_NAV_MODEL,
@@ -30,7 +32,8 @@ class Modal<NavTarget : Any>(
     finalState = DESTROYED
 ) {
 
-    enum class State {
+    @Parcelize
+    enum class State : Parcelable {
         CREATED, MODAL, FULL_SCREEN, DESTROYED
     }
 

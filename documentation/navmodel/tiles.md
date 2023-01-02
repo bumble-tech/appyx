@@ -12,7 +12,8 @@ If you feel that this functionality should be part of the main library, please l
 ## States
 
 ```kotlin
-enum class State {
+@Parcelize
+enum class State : Parcelable {
     CREATED, STANDARD, SELECTED, DESTROYED
 }
 ```

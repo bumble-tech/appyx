@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.composable
 
+import android.os.Parcelable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +27,7 @@ import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
-inline fun <reified NavTarget : Any, State> ParentNode<NavTarget>.Children(
+inline fun <reified NavTarget : Parcelable, State : Parcelable> ParentNode<NavTarget>.Children(
     navModel: NavModel<NavTarget, State>,
     modifier: Modifier = Modifier,
     transitionHandler: TransitionHandler<NavTarget, State> = JumpToEndTransitionHandler(),
@@ -63,7 +64,7 @@ inline fun <reified NavTarget : Any, State> ParentNode<NavTarget>.Children(
     }
 }
 
-class ChildrenTransitionScope<T : Any, S>(
+class ChildrenTransitionScope<T : Parcelable, S : Parcelable>(
     private val transitionHandler: TransitionHandler<T, S>,
     private val transitionParams: TransitionParams,
     private val navModel: NavModel<T, S>

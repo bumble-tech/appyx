@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.promoter.navmodel.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.navmodel.promoter.navmodel.Promoter
 import com.bumble.appyx.navmodel.promoter.navmodel.Promoter.State.CREATED
 import com.bumble.appyx.navmodel.promoter.navmodel.PromoterElement
@@ -10,8 +11,8 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
-data class AddFirst<T : Any>(
-    private val element: @RawValue T
+data class AddFirst<T : Parcelable>(
+    private val element: T
 ) : PromoterOperation<T> {
 
     override fun isApplicable(elements: PromoterElements<T>): Boolean =
@@ -31,6 +32,6 @@ data class AddFirst<T : Any>(
     }
 }
 
-fun <T : Any> Promoter<T>.addFirst(element: T) {
+fun <T : Parcelable> Promoter<T>.addFirst(element: T) {
     accept(AddFirst(element))
 }

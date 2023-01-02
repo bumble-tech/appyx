@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation
 
+import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import com.bumble.appyx.core.mapState
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
@@ -28,7 +29,7 @@ import kotlin.coroutines.EmptyCoroutineContext
  *
  * If more granular configuration is required, you should inherit NavModel interface instead.
  */
-abstract class BaseNavModel<NavTarget, State>(
+abstract class BaseNavModel<NavTarget : Parcelable, State : Parcelable>(
     private val backPressHandler: BackPressHandlerStrategy<NavTarget, State> = DontHandleBackPress(),
     private val operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
     private val screenResolver: OnScreenStateResolver<State>,

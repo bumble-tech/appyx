@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.navigation.upnavigation
 
+import android.os.Parcelable
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -15,6 +16,7 @@ import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import com.bumble.appyx.testing.unit.common.util.TestIntegrationPoint
 import com.bumble.appyx.testing.unit.common.util.TestUpNavigationHandler
+import kotlinx.parcelize.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -136,7 +138,8 @@ class UpNavigationTest {
         navModel = backStack,
         plugins = upNavigationHandler?.let { listOf(it) } ?: emptyList(),
     ), NodeWithId {
-        data class Configuration(val id: UUID)
+        @Parcelize
+        data class Configuration(val id: UUID): Parcelable
 
         init {
             manageTransitionsInTest()

@@ -7,18 +7,18 @@ import kotlinx.parcelize.RawValue
 
 @Parcelize
 @Immutable
-class NavElement<NavTarget, State> private constructor(
-    val key: @RawValue NavKey<NavTarget>,
-    val fromState: @RawValue State,
-    val targetState: @RawValue State,
-    val operation: @RawValue Operation<NavTarget, State>,
+class NavElement<NavTarget : Parcelable, State : Parcelable> private constructor(
+    val key: NavKey<NavTarget>,
+    val fromState: State,
+    val targetState: State,
+    val operation: Operation<NavTarget, State>,
     val transitionHistory: List<Pair<State, State>>
 ) : Parcelable {
     constructor(
-        key: @RawValue NavKey<NavTarget>,
-        fromState: @RawValue State,
-        targetState: @RawValue State,
-        operation: @RawValue Operation<NavTarget, State>,
+        key: NavKey<NavTarget>,
+        fromState: State,
+        targetState: State,
+        operation: Operation<NavTarget, State>,
     ) : this(
         key,
         fromState,

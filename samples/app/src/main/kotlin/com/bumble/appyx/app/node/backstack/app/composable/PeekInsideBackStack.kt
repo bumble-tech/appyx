@@ -1,5 +1,6 @@
 package com.bumble.appyx.app.node.backstack.app.composable
 
+import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -35,7 +36,7 @@ import com.bumble.appyx.core.navigation.NavElement
 import java.util.Locale
 
 @Composable
-fun <T : Any> PeekInsideBackStack(
+fun <T : Parcelable> PeekInsideBackStack(
     backStack: IndexedBackStack<T>,
     modifier: Modifier = Modifier
 ) {
@@ -63,7 +64,7 @@ fun <T : Any> PeekInsideBackStack(
 }
 
 @Composable
-private fun <T> BackStackElement(
+private fun <T : Parcelable> BackStackElement(
     element: NavElement<T, IndexedBackStack.State>,
 ) {
     Column(

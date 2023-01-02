@@ -1,13 +1,14 @@
 package com.bumble.appyx.core.navigation.transition
 
 import android.annotation.SuppressLint
+import android.os.Parcelable
 import androidx.compose.animation.core.Transition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.core.collections.ImmutableList
 
-class CombinedHandler<T, S>(
+class CombinedHandler<T : Parcelable, S : Parcelable>(
     private val handlers: List<ModifierTransitionHandler<T, S>>
 ) : ModifierTransitionHandler<T, S>() {
 
@@ -33,11 +34,13 @@ class CombinedHandler<T, S>(
     )
 )
 @Composable
-fun <T, S> rememberCombinedHandler(handlers: List<ModifierTransitionHandler<T, S>>): ModifierTransitionHandler<T, S> =
+fun <T : Parcelable, S : Parcelable> rememberCombinedHandler(
+    handlers: List<ModifierTransitionHandler<T, S>>
+): ModifierTransitionHandler<T, S> =
     remember { CombinedHandler(handlers = handlers) }
 
 @Composable
-fun <T, S> rememberCombinedHandler(
+fun <T : Parcelable, S : Parcelable> rememberCombinedHandler(
     handlers: ImmutableList<ModifierTransitionHandler<T, S>>
 ): ModifierTransitionHandler<T, S> =
     remember(handlers) { CombinedHandler(handlers = handlers) }

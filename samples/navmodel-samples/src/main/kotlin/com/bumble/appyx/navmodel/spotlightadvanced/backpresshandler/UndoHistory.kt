@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.backpresshandler
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced
 import com.bumble.appyx.navmodel.spotlightadvanced.SpotlightAdvanced.State.Active
@@ -8,7 +9,7 @@ import com.bumble.appyx.navmodel.spotlightadvanced.operation.Activate
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UndoHistory<NavTarget : Any>(
+class UndoHistory<NavTarget : Parcelable>(
     private val historyLimit: Int = 10
 ) : BaseBackPressHandlerStrategy<NavTarget, SpotlightAdvanced.State>() {
 

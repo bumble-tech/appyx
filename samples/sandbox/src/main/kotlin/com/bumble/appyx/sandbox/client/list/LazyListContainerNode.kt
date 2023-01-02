@@ -85,7 +85,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun ColumnExample(elements: ImmutableList<NavElement<NavTarget, out Any?>>) {
+    private fun ColumnExample(elements: ImmutableList<NavElement<NavTarget, out Parcelable>>) {
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(horizontal = 16.dp),
@@ -99,7 +99,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun RowExample(elements: ImmutableList<NavElement<NavTarget, out Any?>>) {
+    private fun RowExample(elements: ImmutableList<NavElement<NavTarget, out Parcelable>>) {
         LazyRow(
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(vertical = 16.dp),
@@ -112,7 +112,7 @@ class LazyListContainerNode constructor(
     }
 
     @Composable
-    private fun GridExample(elements: ImmutableList<NavElement<NavTarget, out Any?>>) {
+    private fun GridExample(elements: ImmutableList<NavElement<NavTarget, out Parcelable>>) {
         LazyVerticalGrid(
             columns = Fixed(2),
             modifier = Modifier.fillMaxSize(),

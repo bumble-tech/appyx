@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.node
 
+import android.os.Parcelable
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
@@ -49,7 +50,7 @@ import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
-abstract class ParentNode<NavTarget : Any>(
+abstract class ParentNode<NavTarget : Parcelable>(
     navModel: NavModel<NavTarget, *>,
     buildContext: BuildContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),

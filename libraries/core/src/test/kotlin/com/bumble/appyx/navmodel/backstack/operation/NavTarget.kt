@@ -1,6 +1,10 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
-internal sealed class NavTarget {
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
+internal sealed class NavTarget: Parcelable {
     object NavTarget1 : NavTarget()
     object NavTarget2 : NavTarget()
     object NavTarget3 : NavTarget()

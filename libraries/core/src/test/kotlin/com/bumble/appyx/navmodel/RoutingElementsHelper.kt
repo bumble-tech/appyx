@@ -1,10 +1,11 @@
 package com.bumble.appyx.navmodel
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import org.junit.Assert.assertEquals
 
 
-internal fun <NavTarget, State> NavElements<NavTarget, State>.assertNavTargetElementsEqual(
+internal fun <NavTarget: Parcelable, State: Parcelable> NavElements<NavTarget, State>.assertNavTargetElementsEqual(
     elements: NavElements<NavTarget, State>
 ) {
     assertEquals(size, elements.size)

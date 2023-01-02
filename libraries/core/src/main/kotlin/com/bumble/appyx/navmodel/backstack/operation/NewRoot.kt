@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStackElement
@@ -16,8 +17,8 @@ import kotlinx.parcelize.RawValue
  * [A, B, C] + NewRoot(D) = [ D ]
  */
 @Parcelize
-data class NewRoot<T : Any>(
-    private val element: @RawValue T
+data class NewRoot<T : Parcelable>(
+    private val element: T
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean = true
@@ -48,6 +49,6 @@ data class NewRoot<T : Any>(
     }
 }
 
-fun <T : Any> BackStack<T>.newRoot(element: T) {
+fun <T : Parcelable> BackStack<T>.newRoot(element: T) {
     accept(NewRoot(element))
 }

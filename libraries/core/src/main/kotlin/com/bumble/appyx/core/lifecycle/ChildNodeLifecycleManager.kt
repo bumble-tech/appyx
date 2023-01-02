@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.lifecycle
 
+import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
 import com.bumble.appyx.core.children.ChildEntry
@@ -23,7 +24,7 @@ import kotlinx.coroutines.launch
  * Hosts [LifecycleRegistry] to manage the current node lifecycle
  * and updates lifecycle of children nodes when updated.
  */
-internal class ChildNodeLifecycleManager<NavTarget>(
+internal class ChildNodeLifecycleManager<NavTarget : Parcelable>(
     private val navModel: NavModel<NavTarget, *>,
     private val children: StateFlow<ChildEntryMap<NavTarget>>,
     private val coroutineScope: CoroutineScope,
@@ -86,7 +87,7 @@ internal class ChildNodeLifecycleManager<NavTarget>(
         }
     }
 
-    private fun <NavTarget> Flow<NavModelAdapter.ScreenState<NavTarget, *>>.keys() =
+    private fun <NavTarget : Parcelable> Flow<NavModelAdapter.ScreenState<NavTarget, *>>.keys() =
         this
             .map { screenState ->
                 ScreenState(
@@ -100,7 +101,7 @@ internal class ChildNodeLifecycleManager<NavTarget>(
         nodeOrNull?.updateLifecycleState(state)
     }
 
-    private data class ScreenState<NavTarget>(
+    private data class ScreenState<NavTarget : Parcelable>(
         val onScreen: List<NavKey<NavTarget>> = emptyList(),
         val offScreen: List<NavKey<NavTarget>> = emptyList(),
     )

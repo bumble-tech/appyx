@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlightadvanced.transitionhandler
 
+import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.Transition
 import androidx.compose.animation.core.animateFloat
@@ -33,7 +34,7 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
-class SpotlightAdvancedSlider<T>(
+class SpotlightAdvancedSlider<T : Parcelable>(
     private val transitionSpec: TransitionSpec<SpotlightAdvanced.State, Offset> = {
         spring(stiffness = Spring.StiffnessLow)
     }
@@ -140,7 +141,7 @@ class SpotlightAdvancedSlider<T>(
 }
 
 @Composable
-fun <T> rememberSpotlightAdvancedSlider(
+fun <T : Parcelable> rememberSpotlightAdvancedSlider(
     transitionSpec: TransitionSpec<SpotlightAdvanced.State, Offset> = { spring(stiffness = Spring.StiffnessLow) }
 ): ModifierTransitionHandler<T, SpotlightAdvanced.State> = remember {
     SpotlightAdvancedSlider(

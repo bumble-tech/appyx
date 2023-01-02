@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlight
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
@@ -9,8 +10,9 @@ import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.navmodel.spotlight.Spotlight.State
 import com.bumble.appyx.navmodel.spotlight.backpresshandler.GoToDefault
 import com.bumble.appyx.navmodel.spotlight.operation.toSpotlightElements
+import kotlinx.parcelize.Parcelize
 
-class Spotlight<NavTarget : Any>(
+class Spotlight<NavTarget : Parcelable>(
     items: List<NavTarget>,
     initialActiveIndex: Int = 0,
     savedStateMap: SavedStateMap?,
@@ -29,7 +31,8 @@ class Spotlight<NavTarget : Any>(
     key = key,
 ) {
 
-    enum class State {
+    @Parcelize
+    enum class State : Parcelable {
         INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
     }
 

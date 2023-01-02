@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.spotlight.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.navmodel.spotlight.Spotlight
 import com.bumble.appyx.navmodel.spotlight.Spotlight.State
@@ -9,7 +10,7 @@ import com.bumble.appyx.navmodel.spotlight.Spotlight.State.INACTIVE_BEFORE
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-class Next<T : Any> : SpotlightOperation<T> {
+class Next<T : Parcelable> : SpotlightOperation<T> {
 
     override fun isApplicable(elements: NavElements<T, State>) =
         elements.any { it.fromState == INACTIVE_AFTER && it.targetState == INACTIVE_AFTER }
@@ -40,7 +41,7 @@ class Next<T : Any> : SpotlightOperation<T> {
     }
 }
 
-fun <T : Any> Spotlight<T>.next() {
+fun <T : Parcelable> Spotlight<T>.next() {
     accept(Next())
 }
 

@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.tiles
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.Operation.Noop
 import com.bumble.appyx.core.navigation.NavKey
@@ -8,8 +9,9 @@ import com.bumble.appyx.navmodel.tiles.backPressHandler.DeselectAllTiles
 import com.bumble.appyx.navmodel.tiles.Tiles.State
 import com.bumble.appyx.navmodel.tiles.Tiles.State.CREATED
 import com.bumble.appyx.navmodel.tiles.Tiles.State.STANDARD
+import kotlinx.parcelize.Parcelize
 
-class Tiles<T : Any>(
+class Tiles<T : Parcelable>(
     initialItems: List<T>,
     backPressHandler: BackPressHandlerStrategy<T, State> = DeselectAllTiles()
 ) : BaseNavModel<T, State>(
@@ -19,7 +21,8 @@ class Tiles<T : Any>(
     savedStateMap = null,
 ) {
 
-    enum class State {
+    @Parcelize
+    enum class State : Parcelable {
         CREATED, STANDARD, SELECTED, DESTROYED
     }
 

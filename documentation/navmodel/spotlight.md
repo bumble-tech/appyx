@@ -9,7 +9,8 @@ It's great for flows or tabbed containers.
 ## States
 
 ```kotlin
-enum class State {
+@Parcelize
+enum class State : Parcelable {
     INACTIVE_BEFORE, ACTIVE, INACTIVE_AFTER;
 }
 ```
@@ -19,7 +20,7 @@ enum class State {
 Requires defining items and an active index.
 
 ```kotlin
-class Spotlight<NavTarget : Any>(
+class Spotlight<NavTarget : Parcelable>(
     items: List<NavTarget>,
     initialActiveIndex: Int = 0,
     savedStateMap: SavedStateMap?,
@@ -95,7 +96,7 @@ Replaces elements held by the spotlight instance with a new list. Transitions ne
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class Spotlight<NavTarget : Any>(
+class Spotlight<NavTarget : Parcelable>(
     /* ... */
     backPressHandler: BackPressHandlerStrategy<NavTarget, State> = GoToDefault(
         initialActiveIndex
@@ -118,7 +119,7 @@ Runs a `Previous` operation.
 You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
-class Spotlight<NavTarget : Any>(
+class Spotlight<NavTarget : Parcelable>(
     /* ... */
     operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),    
     /* ... */

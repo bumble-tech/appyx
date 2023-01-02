@@ -1,5 +1,6 @@
 package com.bumble.appyx.core.composable
 
+import android.os.Parcelable
 import androidx.compose.animation.core.Transition
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
@@ -32,7 +33,7 @@ import com.bumble.appyx.core.navigation.transition.TransitionParams
 import kotlinx.coroutines.flow.map
 
 @Composable
-fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
+fun <NavTarget : Parcelable, State : Parcelable> ParentNode<NavTarget>.Child(
     navElement: NavElement<NavTarget, out State>,
     saveableStateHolder: SaveableStateHolder,
     transitionParams: TransitionParams,
@@ -87,7 +88,7 @@ private class ChildRendererImpl(
 }
 
 @Composable
-fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
+fun <NavTarget : Parcelable, State : Parcelable> ParentNode<NavTarget>.Child(
     navElement: NavElement<NavTarget, out State>,
     modifier: Modifier = Modifier,
     transitionHandler: TransitionHandler<NavTarget, State> = JumpToEndTransitionHandler(),
@@ -125,7 +126,7 @@ fun <NavTarget : Any, State> ParentNode<NavTarget>.Child(
     }
 }
 
-private fun <NavTarget : Any, State> NavElement<NavTarget, State>.createDescriptor(
+private fun <NavTarget : Parcelable, State : Parcelable> NavElement<NavTarget, State>.createDescriptor(
     transitionParams: TransitionParams
 ) =
     TransitionDescriptor(
@@ -137,7 +138,7 @@ private fun <NavTarget : Any, State> NavElement<NavTarget, State>.createDescript
     )
 
 @Composable
-fun <R, S> NavModel<R, S>?.childrenAsState(): State<NavElements<R, out S>> =
+fun <R : Parcelable, S : Parcelable> NavModel<R, S>?.childrenAsState(): State<NavElements<R, out S>> =
     if (this != null) {
         elements.collectAsState()
     } else {
@@ -145,7 +146,7 @@ fun <R, S> NavModel<R, S>?.childrenAsState(): State<NavElements<R, out S>> =
     }
 
 @Composable
-fun <R, S> NavModel<R, S>?.visibleChildrenAsState(): State<NavElements<R, out S>> =
+fun <R : Parcelable, S : Parcelable> NavModel<R, S>?.visibleChildrenAsState(): State<NavElements<R, out S>> =
     if (this != null) {
         val visibleElementsFlow = remember { screenState.map { it.onScreen } }
         visibleElementsFlow.collectAsState(emptyList())

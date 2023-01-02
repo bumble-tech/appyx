@@ -1,5 +1,6 @@
 package com.bumble.appyx.navmodel.backstack.operation
 
+import android.os.Parcelable
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.BackStack.State.ACTIVE
@@ -18,8 +19,8 @@ import kotlinx.parcelize.RawValue
  * [A, B, C] + Replace(D) = [A, B, D]
  */
 @Parcelize
-data class Replace<T : Any>(
-    private val element: @RawValue T
+data class Replace<T : Parcelable>(
+    private val element: T
 ) : BackStackOperation<T> {
 
     override fun isApplicable(elements: BackStackElements<T>): Boolean =
@@ -41,6 +42,6 @@ data class Replace<T : Any>(
     }
 }
 
-fun <T : Any> BackStack<T>.replace(element: T) {
+fun <T : Parcelable> BackStack<T>.replace(element: T) {
     accept(Replace(element))
 }
