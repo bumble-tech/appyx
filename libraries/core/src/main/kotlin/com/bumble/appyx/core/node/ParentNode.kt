@@ -79,6 +79,7 @@ abstract class ParentNode<NavTarget : Any>(
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
         navModel = this.navModel,
         children = children,
+        keepMode = childKeepMode,
         coroutineScope = lifecycleScope,
     )
 

@@ -5,9 +5,9 @@ import androidx.lifecycle.LifecycleRegistry
 import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.nodeOrNull
+import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
-import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -26,6 +26,7 @@ import kotlinx.coroutines.launch
 internal class ChildNodeLifecycleManager<NavTarget>(
     private val navModel: NavModel<NavTarget, *>,
     private val children: StateFlow<ChildEntryMap<NavTarget>>,
+    private val keepMode: ChildEntry.KeepMode,
     private val coroutineScope: CoroutineScope,
 ) {
 
@@ -71,8 +72,14 @@ internal class ChildNodeLifecycleManager<NavTarget>(
                     }
 
                     screenState.offScreen.forEach { key ->
-                        val childState = minOf(parentLifecycleState, Lifecycle.State.CREATED)
-                        children.current[key]?.setState(childState)
+                        if (keepMode == ChildEntry.KeepMode.KEEP) {
+                            val childState = minOf(parentLifecycleState, Lifecycle.State.CREATED)
+                            children.current[key]?.setState(childState)
+                        } else {
+                            // Look up in the previous because in the current it is already suspended
+                            // and does not have a reference to the node
+                            children.previous?.get(key)?.setState(Lifecycle.State.DESTROYED)
+                        }
                     }
 
                     if (children.previous != null) {
