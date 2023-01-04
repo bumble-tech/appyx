@@ -8,6 +8,7 @@ plugins {
 
 android {
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
+    namespace = "com.bumble.appyx"
 
     defaultConfig {
         applicationId = "com.bumble.appyx.sandbox"
