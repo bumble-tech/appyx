@@ -144,10 +144,10 @@ class ChildLifecycleTest {
         ).build()
         parent.testNavModel.add(key = "0", onScreen = true)
         parent.updateLifecycleState(Lifecycle.State.RESUMED)
-        val lifecycle = parent.findChild()?.lifecycle?.currentState
+        val lifecycle = parent.findChild()?.lifecycle
 
         parent.testNavModel.changeState(key = "0", onScreen = false)
-        assertEquals(Lifecycle.State.DESTROYED, lifecycle)
+        assertEquals(Lifecycle.State.DESTROYED, lifecycle?.currentState)
     }
 
     @Test
