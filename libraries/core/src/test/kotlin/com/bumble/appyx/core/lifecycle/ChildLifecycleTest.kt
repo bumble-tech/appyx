@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import com.bumble.appyx.core.children.ChildEntry
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.BaseNavModel
@@ -136,6 +137,20 @@ class ChildLifecycleTest {
     }
 
     @Test
+    fun `child is destroyed when suspended`() {
+        val parent = Parent(
+            buildContext = BuildContext.root(null),
+            keepMode = ChildEntry.KeepMode.SUSPEND,
+        ).build()
+        parent.testNavModel.add(key = "0", onScreen = true)
+        parent.updateLifecycleState(Lifecycle.State.RESUMED)
+        val lifecycle = parent.findChild()?.lifecycle?.currentState
+
+        parent.testNavModel.changeState(key = "0", onScreen = false)
+        assertEquals(Lifecycle.State.DESTROYED, lifecycle)
+    }
+
+    @Test
     fun `child is destroyed when parent is destroyed`() {
         val parent = Parent(BuildContext.root(null)).build()
         parent.testNavModel.add(key = "0", onScreen = true)
@@ -199,9 +214,11 @@ class ChildLifecycleTest {
     private class Parent(
         buildContext: BuildContext,
         val testNavModel: TestNavModel = TestNavModel(),
+        keepMode: ChildEntry.KeepMode = ChildEntry.KeepMode.KEEP,
     ) : ParentNode<String>(
         buildContext = buildContext,
         navModel = testNavModel,
+        childKeepMode = keepMode,
     ) {
         override fun resolve(navTarget: String, buildContext: BuildContext): Node =
             Child(buildContext)

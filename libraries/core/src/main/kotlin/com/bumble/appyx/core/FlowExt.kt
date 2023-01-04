@@ -64,4 +64,8 @@ internal class CompareValues<T>(
     fun combine(new: T): CompareValues<T> =
         CompareValues(currentNullable, new)
 
+    operator fun component1(): T? = previous
+
+    operator fun component2(): T = current
+
 }

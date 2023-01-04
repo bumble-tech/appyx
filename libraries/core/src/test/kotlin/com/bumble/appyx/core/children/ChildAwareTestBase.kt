@@ -3,28 +3,20 @@ package com.bumble.appyx.core.children
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.navigation.NavModel
-import com.bumble.appyx.core.navigation.NavModelAdapter
-import com.bumble.appyx.core.navigation.Operation
+import com.bumble.appyx.core.navigation.BaseNavModel
 import com.bumble.appyx.core.navigation.NavElement
 import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
+import com.bumble.appyx.core.navigation.Operation
+import com.bumble.appyx.core.navigation.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.build
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Rule
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.reflect.KClass
 
 open class ChildAwareTestBase {
@@ -42,8 +34,16 @@ open class ChildAwareTestBase {
         root = Root().build()
     }
 
-    fun add(vararg key: NavKey<Configuration>): List<Node> {
-        root.testNavModel.add(*key)
+    fun add(vararg key: NavKey<Configuration>): List<Node> =
+        add(visible = true, key = key)
+
+    fun add(visible: Boolean, vararg key: NavKey<Configuration>): List<Node> {
+        root.testNavModel.add(visible = visible, key = key)
+        return root.children(key = key)
+    }
+
+    fun move(visible: Boolean, vararg key: NavKey<Configuration>): List<Node> {
+        root.testNavModel.changeState(visible = visible, *key)
         return root
             .children
             .value
@@ -51,6 +51,10 @@ open class ChildAwareTestBase {
             .filter { entry -> entry.key in key }
             .sortedBy { it.key.navTarget }
             .mapNotNull { it.nodeOrNull }
+    }
+
+    fun destroy(vararg key: NavKey<Configuration>) {
+        root.testNavModel.destroy(*key)
     }
 
     sealed class Configuration : Comparable<Configuration> {
@@ -75,9 +79,11 @@ open class ChildAwareTestBase {
     }
 
     class Root(
-        val testNavModel: TestNavModel<Configuration> = TestNavModel(),
+        val testNavModel: Pool<Configuration> = Pool(),
+        val mode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     ) : ParentNode<Configuration>(
         buildContext = BuildContext.root(null),
+        childKeepMode = mode,
         navModel = testNavModel,
     ) {
         override fun resolve(navTarget: Configuration, buildContext: BuildContext): Node =
@@ -103,6 +109,15 @@ open class ChildAwareTestBase {
         ) {
             super.whenChildrenAttached(child1, child2, callback)
         }
+
+        fun children(vararg key: NavKey<Configuration>): List<Node> =
+            children
+                .value
+                .values
+                .filter { entry -> entry.key in key }
+                .sortedBy { it.key.navTarget }
+                .mapNotNull { it.nodeOrNull }
+
     }
 
     class Child1(buildContext: BuildContext) : EmptyLeafNode(buildContext)
@@ -114,25 +129,38 @@ open class ChildAwareTestBase {
     ) : Node(buildContext = buildContext) {
         @Composable
         override fun View(modifier: Modifier) {
-            // Deliberately empty
+            // no-op
         }
     }
 
-    class TestNavModel<Key> : NavModel<Key, Int> {
+    class Pool<NavTarget : Any> : BaseNavModel<NavTarget, Pool.State>(
+        backPressHandler = DontHandleBackPress(),
+        screenResolver = { state -> state == State.VISIBLE },
+        finalState = State.DESTROYED,
+        savedStateMap = null,
+    ) {
+        override val initialElements: NavElements<NavTarget, State> get() = emptyList()
 
-        private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-        private val state = MutableStateFlow(emptyList<NavElement<Key, Int>>())
-        override val elements: StateFlow<NavElements<Key, Int>>
-            get() = state
-        override val screenState: StateFlow<NavModelAdapter.ScreenState<Key, out Int>>
-            get() = state.map { NavModelAdapter.ScreenState(onScreen = it) }
-                .stateIn(scope, SharingStarted.Eagerly, NavModelAdapter.ScreenState())
+        fun add(visible: Boolean, vararg key: NavKey<NavTarget>) {
+            val state = if (visible) State.VISIBLE else State.STASHED
+            updateState { elements ->
+                elements + key.map {
+                    NavElement(
+                        key = it,
+                        fromState = state,
+                        targetState = state,
+                        operation = Operation.Noop(),
+                    )
+                }
+            }
+        }
 
-        override fun onTransitionFinished(keys: Collection<NavKey<Key>>) {
-            state.update { list ->
-                list.map {
-                    if (it.key in keys) {
-                        it.onTransitionFinished()
+        fun changeState(visible: Boolean, vararg key: NavKey<NavTarget>) {
+            val state = if (visible) State.VISIBLE else State.STASHED
+            updateState { elements ->
+                elements.map {
+                    if (it.key in key && it.targetState != state) {
+                        it.transitionTo(state, Operation.Noop()).onTransitionFinished()
                     } else {
                         it
                     }
@@ -140,20 +168,21 @@ open class ChildAwareTestBase {
             }
         }
 
-        fun add(vararg key: NavKey<Key>) {
-            state.update { list ->
-                require(list.none { it.key.navTarget in key.map { navKey -> navKey.navTarget } })
-                list + key.map {
-                    NavElement(
-                        key = it,
-                        fromState = 0,
-                        targetState = 0,
-                        operation = Operation.Noop(),
-                    )
+        fun destroy(vararg key: NavKey<NavTarget>) {
+            updateState { elements ->
+                elements.map {
+                    if (it.key in key && it.targetState != State.DESTROYED) {
+                        it.transitionTo(State.DESTROYED, Operation.Noop()).onTransitionFinished()
+                    } else {
+                        it
+                    }
                 }
             }
         }
 
+        enum class State {
+            VISIBLE, STASHED, DESTROYED
+        }
     }
 
 }
