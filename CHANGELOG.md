@@ -6,6 +6,7 @@
 - [#287](https://github.com/bumble-tech/appyx/pull/287) – **Added**: `ImmutableList` has been added to avoid non-skippable compositions. 
 - [#289](https://github.com/bumble-tech/appyx/issues/289) – **Added**: Introduced `interop-rx3` for RxJava 3 support. This has identical functionality to `interop-rx2`.
 - [#298](https://github.com/bumble-tech/appyx/pulls/298) – **Updated**: ChildView documentation. `TransitionDescriptor` generics has been renamed to `NavTarget` and `State`
+- [#314](https://github.com/bumble-tech/appyx/pull/314) – **Fixed**: Lifecycle is properly destroyed for suspended nodes.
 
 ---
 
