@@ -12,13 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.DropdownMenu
-import androidx.compose.material.DropdownMenuItem
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.RadioButton
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
@@ -254,12 +254,12 @@ class BackStackExampleNode(
                 onDismissRequest = { expanded.value = false }
             ) {
                 backStackState.value.forEach { element ->
-                    DropdownMenuItem(onClick = {
-                        selectedId.value = element.key.id
-                        expanded.value = false
-                    }) {
-                        Text(text = element.key.id)
-                    }
+                    DropdownMenuItem(
+                        text = { Text(text = element.key.id) },
+                        onClick = {
+                            selectedId.value = element.key.id
+                            expanded.value = false
+                        })
                 }
             }
         }
@@ -295,12 +295,12 @@ class BackStackExampleNode(
                         },
                         modifier = Modifier.padding(4.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (selected) {
-                                MaterialTheme.colors.primary
+                            containerColor = if (selected) {
+                                MaterialTheme.colorScheme.primary
                             } else {
-                                MaterialTheme.colors.primaryVariant
+                                MaterialTheme.colorScheme.secondary
                             },
-                            contentColor = MaterialTheme.colors.onPrimary
+                            contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
                         Text(text = operation.label)
@@ -360,6 +360,7 @@ class BackStackExampleNode(
                             backStack.remove(backStackState.value.first { it.key.id == selectedId.value }.key)
                             selectedId.value = ""
                         }
+
                         else -> Unit
                     }
 

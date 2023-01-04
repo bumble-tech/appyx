@@ -11,5 +11,8 @@ fun <T : Any> Spotlight<T>.hasPrevious() =
 fun <T : Any> Spotlight<T>.activeIndex() =
     elements.map { value -> value.currentIndex }
 
+fun <T : Any> Spotlight<T>.current() =
+    elements.map { value -> value.current?.key?.navTarget }
+
 fun <T : Any> Spotlight<T>.elementsCount() =
     elements.value.size
