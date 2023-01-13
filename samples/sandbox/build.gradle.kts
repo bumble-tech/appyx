@@ -46,6 +46,9 @@ android {
 }
 
 dependencies {
+    val composeBom = platform(libs.compose.bom)
+
+    implementation(composeBom)
     implementation(project(":libraries:core"))
     implementation(project(":libraries:interop-rx2"))
     implementation(project(":libraries:interop-ribs"))
@@ -82,6 +85,7 @@ dependencies {
     testImplementation(libs.ribs.base.test)
     testImplementation(libs.ribs.base.test.rx2)
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)

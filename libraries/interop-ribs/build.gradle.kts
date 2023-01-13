@@ -29,12 +29,16 @@ dependencies {
     api(project(":libraries:core"))
     api(libs.ribs.base)
 
+    val composeBom = platform(libs.compose.bom)
+
+    implementation(composeBom)
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.activity.compose)
     implementation(libs.compose.ui.ui)
     implementation(libs.ribs.compose)
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.activity.compose)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)

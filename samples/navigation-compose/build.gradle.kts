@@ -34,13 +34,18 @@ android {
 }
 
 dependencies {
+    val composeBom = platform(libs.compose.bom)
+
+    api(composeBom)
     api(project(":libraries:core"))
     api(libs.compose.ui.ui)
 
+    implementation(composeBom)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.compose.material)
     debugImplementation(project(":libraries:testing-ui-activity"))
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
