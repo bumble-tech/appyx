@@ -35,23 +35,27 @@ dependencies {
     api(project(":libraries:customisations"))
     api(libs.kotlin.coroutines.android)
     api(libs.androidx.lifecycle.common)
-    api(libs.compose.animation.core)
-    api(libs.compose.runtime)
+    api("androidx.compose.animation:animation-core")
+    api("androidx.compose.runtime:runtime")
     api(libs.androidx.appcompat)
 
+    val composeBom = platform(libs.compose.bom)
+
+    implementation(composeBom)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.compose.foundation.layout)
+    implementation("androidx.compose.foundation:foundation-layout")
 
     testImplementation(project(":libraries:testing-junit4"))
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.coroutines.test)
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
-    androidTestImplementation(libs.compose.ui.test.junit4)
-    androidTestImplementation(libs.compose.foundation)
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation("androidx.compose.foundation:foundation")
     androidTestImplementation(project(":libraries:testing-ui"))
 }

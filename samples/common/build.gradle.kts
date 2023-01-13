@@ -25,11 +25,15 @@ android {
 }
 
 dependencies {
-    api(project(":libraries:core"))
+    val composeBom = platform(libs.compose.bom)
 
-    api(libs.compose.ui.ui)
+    api(composeBom)
+    api(project(":libraries:core"))
+    api("androidx.compose.ui:ui")
+
+    implementation(composeBom)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.material)
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling")
     implementation(libs.coil.compose)
 }
