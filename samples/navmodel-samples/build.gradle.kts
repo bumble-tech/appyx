@@ -29,11 +29,11 @@ dependencies {
 
     api(composeBom)
     api(project(":libraries:core"))
-    api("androidx.compose.ui:ui")
+    api(libs.compose.ui.ui)
 
     implementation(composeBom)
     implementation(libs.androidx.lifecycle.java8)
-    implementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.foundation:foundation-layout")
-    implementation("androidx.compose.foundation:foundation")
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.foundation.layout)
+    implementation(libs.compose.foundation)
 }

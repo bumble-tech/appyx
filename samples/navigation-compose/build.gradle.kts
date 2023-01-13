@@ -38,15 +38,15 @@ dependencies {
 
     api(composeBom)
     api(project(":libraries:core"))
-    api("androidx.compose.ui:ui")
+    api(libs.compose.ui.ui)
 
     implementation(composeBom)
     implementation(libs.androidx.navigation.compose)
-    implementation("androidx.compose.material3:material3")
+    implementation(libs.compose.material)
     debugImplementation(project(":libraries:testing-ui-activity"))
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation(libs.compose.ui.test.junit4)
 }

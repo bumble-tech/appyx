@@ -66,13 +66,13 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.ui:ui")
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.ui)
     implementation(libs.google.material)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation(libs.compose.ui.test.junit4)
 }

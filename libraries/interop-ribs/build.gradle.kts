@@ -35,14 +35,14 @@ dependencies {
     implementation(libs.androidx.core)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.activity.compose)
-    implementation("androidx.compose.ui:ui")
+    implementation(libs.compose.ui.ui)
     implementation(libs.ribs.compose)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.activity.compose)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
-    androidTestImplementation("androidx.compose.foundation:foundation-layout")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation(libs.compose.foundation.layout)
+    androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.ribs.base.test.activity)
 }

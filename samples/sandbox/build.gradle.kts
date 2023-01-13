@@ -62,9 +62,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-tooling")
-    implementation("androidx.compose.ui:ui")
+    implementation(libs.compose.material)
+    implementation(libs.compose.ui.tooling)
+    implementation(libs.compose.ui.ui)
     implementation(libs.google.accompanist.flow)
     implementation(libs.google.material)
     implementation(libs.ribs.base)
@@ -85,8 +85,9 @@ dependencies {
     testImplementation(libs.ribs.base.test)
     testImplementation(libs.ribs.base.test.rx2)
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(project(":libraries:testing-ui"))
 }

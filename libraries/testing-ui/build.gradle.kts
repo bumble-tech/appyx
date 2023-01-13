@@ -31,7 +31,7 @@ dependencies {
     api(project(":libraries:core"))
     api(project(":libraries:testing-ui-activity"))
     api(libs.androidx.test.rules)
-    api("androidx.compose.ui:ui-test-junit4")
+    api(libs.compose.ui.test.junit4)
 
     implementation(libs.androidx.lifecycle.java8)
 }
