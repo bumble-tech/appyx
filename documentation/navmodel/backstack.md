@@ -21,6 +21,13 @@ enum class State {
 }
 ```
 
+## Visualisation of states
+
+<img src="https://camo.githubusercontent.com/aa0c9accaaf6aadc2ab0cfac4c43b194e31a6571f90d381ee7f7fd7f6acc8bcd/68747470733a2f2f692e696d6775722e636f6d2f777844716747652e676966" width="200">
+
+Check out the apps in our [Coding challenges](../how-to-use-appyx/coding-challenges.md) – they have an embedded visualisation of what happens to all the elements inside the back stack (look at the row of orange boxes below the logo). 
+
+
 ## Constructing the back stack
 
 As the back stack can never be empty, it's required to define an initial target.

@@ -32,6 +32,9 @@ android {
 }
 
 dependencies {
+    val composeBom = platform(libs.compose.bom)
+
+    api(composeBom)
     api(project(":libraries:customisations"))
     api(libs.kotlin.coroutines.android)
     api(libs.androidx.lifecycle.common)
@@ -42,6 +45,7 @@ dependencies {
     api(libs.compose.ui.ui)
     api(libs.androidx.appcompat)
 
+    implementation(composeBom)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
@@ -52,6 +56,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.coroutines.test)
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)

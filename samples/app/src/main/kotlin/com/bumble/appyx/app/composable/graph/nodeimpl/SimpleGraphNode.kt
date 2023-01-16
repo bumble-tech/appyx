@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -77,7 +77,7 @@ class SimpleGraphNode(
                 .wrapContentSize()
                 .padding(start = horizontalPadding, end = horizontalPadding)
                 .background(
-                    color = MaterialTheme.colors.surface,
+                    color = MaterialTheme.colorScheme.surface,
                     shape = RoundedCornerShape(cornerRadius)
                 )
                 .alpha(alpha)
@@ -91,7 +91,7 @@ class SimpleGraphNode(
                 text = label,
                 modifier = Modifier.align(Alignment.Center),
                 color = Color.Black,
-                style = MaterialTheme.typography.caption
+                style = MaterialTheme.typography.bodySmall
             )
         }
     }

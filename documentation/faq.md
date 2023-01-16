@@ -26,6 +26,15 @@ See [Model-driven navigation](navigation/model-driven-navigation.md) for more de
 ---
 
 
+#### **Q: How can I navigate to a specific part of my Appyx tree?**
+
+In most cases [Implicit navigation](navigation/implicit-navigation.md) can be your primary choice, and you don't need to explicitly specify a remote point in the tree. This is helpful to avoid coupling.
+
+For those cases when you can't avoid it, [Explicit navigation](navigation/explicit-navigation.md) and [Deep linking](navigation/deep-linking.md) covers you.
+
+---
+
+
 #### **Q: What about dialogs & bottom sheets?**
 
 You can use Appyx in conjunction with Accompanist or any other Compose mechanism.
@@ -34,8 +43,23 @@ If you wish, you can model your own Modal with Appyx too. We'll add an example s
 
 ---
 
+#### **Q: Can I have a bottom sheet conditionally?**
+
+You could use a similar approach as we do with back buttons in `SamplesContainerNode` you can find in the `:app` module: store a flag in the `NavTarget` that can be different per instance.
+
+---
+
 ## Using Appyx in an app
 
+
+#### **Q: Is it an all or nothing approach?**
+
+No, you can adopt Appyx gradually:
+
+- Plug it in to one screen and just utilise its screen transformation capabilities (e.g. [Cards](navmodel/cards.md))
+- Plug it in to a few screens and substitute another navigation mechanism with it, such as [Jetpack Compose Navigation](how-to-use-appyx/sample-apps.md#appyx-jetpack-compose-navigation-example)
+
+---
 
 #### **Q: What architectural patterns can I use?**
 
@@ -52,7 +76,22 @@ Yes, we'll add an example soon.
 
 #### **Q: Can I use it with Hilt?**
 
-Yes, we'll add an example soon.
+- Our draft PR: [#115](https://github.com/bumble-tech/appyx/pull/115) (Feel free to provide feedback!)
+- [https://github.com/jbreitfeller-sfix/appyx-playground](https://github.com/jbreitfeller-sfix/appyx-playground) another approach on this topic
+
+---
+
+## Performance-related
+
+#### **Q: Are `Nodes` kept alive?**
+
+In short: you can decide whether a `Node`:
+
+- is on-screen
+- is off-screen but kept alive
+- is off-screen and becomes destroyed
+
+Check the [Lifecycle](apps/lifecycle.md#on-screen-off-screen) for more details.
 
 ---
 
@@ -61,9 +100,7 @@ Yes, we'll add an example soon.
 
 #### **Q: Is it production ready?**
 
-We do use it at Bumble in production, and as such, we're committed to maintaining and improving it.
-
-The project is currently in an alpha stage only to allow API changes for now. However, we commit ourselves to communicating all such changes in the [Changelog](releases/changelog.md).
+Yes, Appyx matured to its stable version. We also use it at Bumble in production, and as such, we're committed to maintaining and improving it.
 
 ---
 

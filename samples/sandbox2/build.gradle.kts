@@ -43,6 +43,9 @@ android {
 }
 
 dependencies {
+    val composeBom = platform(libs.compose.bom)
+
+    implementation(composeBom)
     implementation(project(":libraries:core"))
     implementation(project(":samples:navmodel-samples"))
     implementation(project(":samples:common"))
@@ -53,6 +56,7 @@ dependencies {
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)

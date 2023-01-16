@@ -26,7 +26,7 @@ android {
 dependencies {
     api(project(":libraries:core"))
     api(libs.rxjava2)
-    api(libs.rxrelay)
+    api(libs.rxrelay2)
 
     implementation(libs.kotlin.coroutines.rx2)
     implementation(libs.androidx.lifecycle.java8)
