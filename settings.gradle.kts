@@ -17,6 +17,7 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
+    ":appyx-interactions",
     ":libraries:core",
     ":libraries:customisations",
     ":libraries:interop-ribs",
