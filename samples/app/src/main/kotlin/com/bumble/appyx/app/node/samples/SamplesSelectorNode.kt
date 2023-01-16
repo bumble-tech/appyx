@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.node.backstack.InsideTheBackStack
 import com.bumble.appyx.app.node.cards.CardsExampleNode
+import com.bumble.appyx.app.node.helper.screenNode
 import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow
 import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
@@ -26,6 +27,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
+import com.bumble.appyx.interactions.App
 import kotlinx.parcelize.Parcelize
 
 class SamplesSelectorNode(
@@ -47,13 +49,17 @@ class SamplesSelectorNode(
 
         @Parcelize
         object InsideTheBackStack : NavTarget()
+
+        @Parcelize
+        object InteractionsMpp : NavTarget()
     }
 
     sealed class Output {
         object OpenCardsExample : Output()
         object OpenOnboarding : Output()
         object OpenComposeNavigation : Output()
-        object OpenInsideTheBackStack: Output()
+        object OpenInsideTheBackStack : Output()
+        object OpenInteractions : Output()
     }
 
     @ExperimentalUnitApi
@@ -67,6 +73,7 @@ class SamplesSelectorNode(
                 buildContext = buildContext,
                 autoAdvanceDelayMs = 2500
             )
+
             is NavTarget.ComposeNavigationScreen -> {
                 node(buildContext) {
                     // compose-navigation fetches the integration point via LocalIntegrationPoint
@@ -77,10 +84,15 @@ class SamplesSelectorNode(
                     }
                 }
             }
+
             is NavTarget.InsideTheBackStack -> InsideTheBackStack(
                 buildContext = buildContext,
                 autoAdvanceDelayMs = 1000
             )
+
+            is NavTarget.InteractionsMpp -> screenNode(buildContext) {
+                App()
+            }
         }
 
     @Composable
@@ -109,6 +121,9 @@ class SamplesSelectorNode(
             }
             item {
                 InsideTheBackStackItem(decorator)
+            }
+            item {
+                InteractionsItem(decorator)
             }
         }
     }
@@ -173,6 +188,20 @@ class SamplesSelectorNode(
         ) {
             PermanentChild(
                 navTarget = NavTarget.CardsExample,
+                decorator = decorator
+            )
+        }
+    }
+
+    @Composable
+    private fun InteractionsItem(decorator: @Composable (child: ChildRenderer) -> Unit) {
+        SampleItem(
+            title = "This function came from MPP world",
+            subtitle = "Whoah thats crazy!",
+            onClick = { outputFunc(Output.OpenInteractions) },
+        ) {
+            PermanentChild(
+                navTarget = NavTarget.InteractionsMpp,
                 decorator = decorator
             )
         }

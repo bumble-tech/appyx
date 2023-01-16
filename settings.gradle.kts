@@ -2,6 +2,13 @@ pluginManagement {
     repositories {
         google()
         gradlePluginPortal()
+        mavenCentral()
+        maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+        jcenter()
+    }
+    plugins {
+        kotlin("multiplatform").version("1.7.10")
+        id("org.jetbrains.compose").version("1.2.0")
     }
 }
 
@@ -33,6 +40,7 @@ include(
     ":samples:navmodel-samples",
     ":samples:sandbox",
     ":samples:sandbox2",
+    ":appyx-interactions:android", ":appyx-interactions:desktop", ":appyx-interactions:common"
 )
 
 includeBuild("plugins")
