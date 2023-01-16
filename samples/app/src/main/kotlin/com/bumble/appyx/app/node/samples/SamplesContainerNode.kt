@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.node.backstack.InsideTheBackStack
 import com.bumble.appyx.app.node.cards.CardsExampleNode
+import com.bumble.appyx.app.node.helper.screenNode
 import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
@@ -34,6 +35,7 @@ import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
+import com.example.common.App
 import kotlinx.parcelize.Parcelize
 
 class SamplesContainerNode(
@@ -69,7 +71,10 @@ class SamplesContainerNode(
         object CardsExample : NavTarget()
 
         @Parcelize
-        object InsideTheBackStack: NavTarget()
+        object InsideTheBackStack : NavTarget()
+
+        @Parcelize
+        object InteractionsMpp : NavTarget()
     }
 
     @ExperimentalUnitApi
@@ -83,20 +88,30 @@ class SamplesContainerNode(
                         is SamplesSelectorNode.Output.OpenCardsExample -> {
                             NavTarget.CardsExample
                         }
+
                         is SamplesSelectorNode.Output.OpenComposeNavigation -> {
                             NavTarget.ComposeNavigationScreen
                         }
+
                         is SamplesSelectorNode.Output.OpenOnboarding -> {
                             NavTarget.OnboardingScreen
                         }
+
                         is SamplesSelectorNode.Output.OpenInsideTheBackStack -> {
                             NavTarget.InsideTheBackStack
                         }
+
+                        is SamplesSelectorNode.Output.OpenInteractions -> NavTarget.InteractionsMpp
                     }
                 )
             }
+
             is NavTarget.CardsExample -> CardsExampleNode(buildContext)
-            is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(buildContext, isInPreviewMode = false)
+            is NavTarget.OnboardingScreen -> WhatsAppyxSlideShow(
+                buildContext,
+                isInPreviewMode = false
+            )
+
             is NavTarget.ComposeNavigationScreen -> {
                 node(buildContext) {
                     // compose-navigation fetches the integration point via LocalIntegrationPoint
@@ -107,7 +122,11 @@ class SamplesContainerNode(
                     }
                 }
             }
+
             is NavTarget.InsideTheBackStack -> InsideTheBackStack(buildContext)
+            is NavTarget.InteractionsMpp -> screenNode(buildContext) {
+                App()
+            }
         }
 
     @ExperimentalUnitApi

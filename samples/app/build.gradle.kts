@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":samples:common"))
     implementation(project(":samples:navmodel-samples"))
     implementation(project(":samples:navigation-compose"))
+    implementation(project(":appyx-interactions:common"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

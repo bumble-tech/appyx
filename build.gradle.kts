@@ -17,8 +17,10 @@ plugins {
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
     id("release-dependencies-diff-compare")
     id("release-dependencies-diff-create") apply false
-    id("com.android.application") version "7.2.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.7.0" apply false
+    id("com.android.application") version "7.3.0" apply false
+    id("org.jetbrains.kotlin.android") version "1.7.10" apply false
+    kotlin("multiplatform") apply false
+    id("org.jetbrains.compose") apply false
 }
 
 dependencyAnalysis {
