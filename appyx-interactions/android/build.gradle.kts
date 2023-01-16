@@ -4,30 +4,18 @@ plugins {
     kotlin("android")
 }
 
-group "com.example"
-version "1.0-SNAPSHOT"
+
+android {
+    namespace = "com.bumble.appyx.interactions"
+    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+    defaultConfig {
+        applicationId = "com.example.android"
+        minSdk = libs.versions.androidMinSdk.get().toInt()
+        targetSdk = libs.versions.androidTargetSdk.get().toInt()
+    }
+}
 
 dependencies {
     implementation(project(":appyx-interactions:common"))
-    implementation("androidx.activity:activity-compose:1.5.0")
-}
-
-android {
-    compileSdkVersion(33)
-    defaultConfig {
-        applicationId = "com.example.android"
-        minSdkVersion(24)
-        targetSdkVersion(33)
-        versionCode = 1
-        versionName = "1.0-SNAPSHOT"
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    buildTypes {
-        getByName("release") {
-            isMinifyEnabled = false
-        }
-    }
+    implementation(libs.androidx.activity.compose)
 }

@@ -35,7 +35,7 @@ import com.bumble.appyx.navmodel.backstack.operation.pop
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackSlider
 import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
-import com.example.common.App
+import com.bumble.appyx.interactions.App
 import kotlinx.parcelize.Parcelize
 
 class SamplesContainerNode(

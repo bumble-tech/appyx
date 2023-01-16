@@ -27,7 +27,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
 import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
-import com.example.common.App
+import com.bumble.appyx.interactions.App
 import kotlinx.parcelize.Parcelize
 
 class SamplesSelectorNode(

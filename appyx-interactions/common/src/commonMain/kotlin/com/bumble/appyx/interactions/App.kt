@@ -1,7 +1,7 @@
-package com.example.common
+package com.bumble.appyx.interactions
 
-import androidx.compose.material.Text
 import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
