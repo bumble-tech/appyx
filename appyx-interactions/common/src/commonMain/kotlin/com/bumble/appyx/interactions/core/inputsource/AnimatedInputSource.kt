@@ -1,12 +1,12 @@
-package com.bumble.appyx.core.navigation2.inputsource
+package com.bumble.appyx.interactions.core.inputsource
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.spring
-import com.bumble.appyx.core.navigation2.Operation
-import com.bumble.appyx.core.navigation2.BaseNavModel
+import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.BaseNavModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

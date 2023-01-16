@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.navigation2.backpresshandlerstrategies
+package com.bumble.appyx.interactions.core.backpresshandlerstrategies
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf

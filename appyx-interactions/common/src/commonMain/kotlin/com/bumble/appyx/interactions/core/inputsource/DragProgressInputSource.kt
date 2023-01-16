@@ -1,15 +1,13 @@
-package com.bumble.appyx.core.navigation2.inputsource
+package com.bumble.appyx.interactions.core.inputsource
 
-import android.util.Log
-import androidx.annotation.FloatRange
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
-import com.bumble.appyx.core.navigation2.NavModel
-import com.bumble.appyx.core.navigation2.Operation
+import com.bumble.appyx.interactions.core.NavModel
+import com.bumble.appyx.interactions.core.Operation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.ceil
@@ -52,9 +50,9 @@ class DragProgressInputSource<NavTarget, State>(
         if (gesture!!.startProgress == null) {
             if (navModel.enqueue(operation)) {
                 gesture!!.startProgress = currentProgress
-                Log.d("input source", "operation applied: $operation")
+                // FIXME Log.d("input source", "operation applied: $operation")
             } else {
-                Log.d("input source", "operation not applicable: $operation")
+                // FIXME Log.d("input source", "operation not applicable: $operation")
                 return
             }
             // Case: we can continue the existing operation
@@ -68,10 +66,10 @@ class DragProgressInputSource<NavTarget, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 navModel.setProgress(totalTarget)
-                Log.d(
-                    "input source",
-                    "delta applied forward, new progress: ${navModel.currentProgress}"
-                )
+                // FIXME Log.d(
+                    //"input source",
+                    //"delta applied forward, new progress: ${navModel.currentProgress}"
+                // )
 
                 // Case: target is beyond the current segment, we'll need a new operation
             } else {
@@ -100,20 +98,21 @@ class DragProgressInputSource<NavTarget, State>(
         navModel.dropAfter(boundary.toInt())
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
         gesture = null
-        Log.d("input source", "1 ------")
-        Log.d("input source", "initial offset was: $dragAmount")
-        Log.d("input source", "initial deltaProgress was: $deltaProgress")
-        Log.d("input source", "initial target was: $totalTarget, beyond current segment: $boundary")
-        Log.d("input source", "remainder progress: ${totalTarget - boundary}")
-        Log.d("input source", "remainder offset: $remainder")
-        Log.d("input source", "going back to start, reevaluate")
-        Log.d("input source", "2 ------")
+        // FIXME Log.d("input source", "1 ------")
+        // FIXME Log.d("input source", "initial offset was: $dragAmount")
+        // FIXME Log.d("input source", "initial deltaProgress was: $deltaProgress")
+        // FIXME Log.d("input source", "initial target was: $totalTarget, beyond current segment: $boundary")
+        // FIXME Log.d("input source", "remainder progress: ${totalTarget - boundary}")
+        // FIXME Log.d("input source", "remainder offset: $remainder")
+        // FIXME Log.d("input source", "going back to start, reevaluate")
+        // FIXME Log.d("input source", "2 ------")
         // TODO without recursion
         return remainder
     }
 
     fun settle(
-        @FloatRange(from = 0.0, to = 1.0) roundUpThreshold: Float = 0.5f,
+        // FIXME @FloatRange(from = 0.0, to = 1.0)
+        roundUpThreshold: Float = 0.5f,
         roundUpAnimationSpec: AnimationSpec<Float> = spring(),
         roundDownAnimationSpec: AnimationSpec<Float> = spring(),
     ) {
@@ -123,7 +122,7 @@ class DragProgressInputSource<NavTarget, State>(
         } else {
             roundUpAnimationSpec to ceil(currentProgress).toInt()
         }
-        Log.d("input source", "Settle ${navModel.currentProgress} to: $targetValue")
+        // FIXME Log.d("input source", "Settle ${navModel.currentProgress} to: $targetValue")
         coroutineScope.launch {
             animatable.snapTo(navModel.currentProgress)
             // TODO animation spec similarly to AnimatedInputSource / default

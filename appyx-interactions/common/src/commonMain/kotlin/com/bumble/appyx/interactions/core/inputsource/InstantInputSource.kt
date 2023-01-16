@@ -1,7 +1,7 @@
-package com.bumble.appyx.core.navigation2.inputsource
+package com.bumble.appyx.interactions.core.inputsource
 
-import com.bumble.appyx.core.navigation2.Operation
-import com.bumble.appyx.core.navigation2.BaseNavModel
+import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.BaseNavModel
 
 class InstantInputSource<NavTarget : Any, State>(
     private val navModel: BaseNavModel<NavTarget, State>,

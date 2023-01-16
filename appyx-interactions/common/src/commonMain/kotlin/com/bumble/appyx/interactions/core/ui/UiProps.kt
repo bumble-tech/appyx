@@ -1,6 +1,6 @@
-package com.bumble.appyx.core.navigation2.ui
+package com.bumble.appyx.interactions.core.ui
 
-import com.bumble.appyx.core.navigation2.NavModel
+import com.bumble.appyx.interactions.core.NavModel
 
 interface UiProps<Target, State> {
 

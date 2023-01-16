@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.navigation2
+package com.bumble.appyx.interactions.core
 
 import kotlinx.coroutines.flow.StateFlow
 

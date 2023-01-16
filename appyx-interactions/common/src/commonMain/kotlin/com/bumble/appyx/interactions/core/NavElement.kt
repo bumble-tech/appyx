@@ -1,25 +1,21 @@
-package com.bumble.appyx.core.navigation2
+package com.bumble.appyx.interactions.core
 
-import android.os.Parcelable
 import androidx.compose.runtime.Immutable
-import com.bumble.appyx.core.navigation.NavKey
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
-@Parcelize
+// FIXME @Parcelize
 @Immutable
 class NavElement<NavTarget, State> private constructor(
-    val key: @RawValue NavKey<NavTarget>,
-    val fromState: @RawValue State,
-    val state: @RawValue State,
-    val operation: @RawValue Operation<NavTarget, State>,
+    val key: NavKey<NavTarget>, // FIXME @RawValue
+    val fromState: State, // FIXME @RawValue
+    val state: State, // FIXME @RawValue
+    val operation: Operation<NavTarget, State>, // FIXME @RawValue
     val transitionHistory: List<Pair<State, State>>
-) : Parcelable {
+) { // FIXME : Parcelable {
     constructor(
-        key: @RawValue NavKey<NavTarget>,
-        fromState: @RawValue State,
-        targetState: @RawValue State,
-        operation: @RawValue Operation<NavTarget, State>,
+        key: NavKey<NavTarget>, // FIXME @RawValue
+        fromState: State, // FIXME @RawValue
+        targetState: State, // FIXME @RawValue
+        operation: Operation<NavTarget, State>, // FIXME @RawValue
     ) : this(
         key,
         fromState,
@@ -29,8 +25,8 @@ class NavElement<NavTarget, State> private constructor(
     )
 
     fun transitionTo(
-        newTargetState: @RawValue State,
-        operation: @RawValue Operation<NavTarget, State>
+        newTargetState: State, // FIXME @RawValue
+        operation: Operation<NavTarget, State> // FIXME @RawValue
     ): NavElement<NavTarget, State> =
         NavElement(
             key = key,

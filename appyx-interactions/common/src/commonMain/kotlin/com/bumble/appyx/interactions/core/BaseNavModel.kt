@@ -1,6 +1,5 @@
-package com.bumble.appyx.core.navigation2
+package com.bumble.appyx.interactions.core
 
-import android.util.Log
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,19 +73,19 @@ abstract class BaseNavModel<NavTarget, NavState>(
             queue.add(newState)
             true
         } else {
-            Log.d("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
+            // FIXME Log.d("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
             false
         }
     }
 
     override fun setProgress(progress: Float) {
         val progress = progress.coerceAtLeast(1f)
-        Log.d("BaseNavModel", "Progress update: $progress")
+        // FIXME Log.d("BaseNavModel", "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
-            //  com.bumble.appyx.core.navigation.BaseNavModel.onTransitionFinished
+            //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
             // onTransitionFinished(state.value.fromState.map { it.key })
-            Log.d("Transition finished", "onTransitionFinished()")
+            // FIXME Log.d("Transition finished", "onTransitionFinished()")
         }
 
         lastRecordedProgress = progress
