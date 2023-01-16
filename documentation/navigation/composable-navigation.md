@@ -21,9 +21,12 @@ Read more in [Structuring your app navigation](../apps/structure.md)
 Once you've structured your navigation in a composable way, you can add `NavModels` to `Node` of this tree and make it dynamic:
 
 - Some parts in this tree are active while others ore not
-- The activate parts define what state the application is in, and what the user sees on the screen
+- The active parts define what state the application is in, and what the user sees on the screen
 - We can change what's active by using `NavModels` on each level of the tree
 - Changes will feel like navigation to the user
+
+See [Implicit navigation](implicit-navigation.md) and [Explicit navigation](explicit-navigation.md) for building complex navigation behaviours with this approach.
+
 
 
 ## How NavModels affect Nodes

@@ -21,6 +21,7 @@ include(
     ":libraries:customisations",
     ":libraries:interop-ribs",
     ":libraries:interop-rx2",
+    ":libraries:interop-rx3",
     ":libraries:testing-junit4",
     ":libraries:testing-junit5",
     ":libraries:testing-ui",

@@ -5,22 +5,21 @@ androidCompileSdk = "33"
 androidMinSdk = "21"
 androidTargetSdk = "32"
 androidx-lifecycle = "2.5.1"
+accompanist = "0.28.0"
 androidx-navigation-compose = "2.5.1"
 coil = "2.2.1"
 compose = "1.3.0"
+composeBom = "2023.01.00"
 composeCompiler = "1.3.1"
 ribs = "0.36.1"
 mvicore = "1.2.6"
 coroutines = "1.6.4"
 kotlin = "1.7.10"
-rxjava2 = "2.2.21"
-rxandroid = "2.1.1"
 junit5 = "5.8.2"
 detekt = "1.21.0"
 dependencyAnalysis = "1.13.1"
 
 [libraries]
-accompanist-systemui = "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
 androidx-activity-compose = "androidx.activity:activity-compose:1.3.1"
 androidx-appcompat = "androidx.appcompat:appcompat:1.3.1"
 androidx-arch-core-testing = "androidx.arch.core:core-testing:2.1.0"
@@ -30,19 +29,23 @@ androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", ve
 androidx-lifecycle-java8 = { module = "androidx.lifecycle:lifecycle-common-java8", version.ref = "androidx-lifecycle" }
 androidx-lifecycle-runtime = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "androidx-navigation-compose" }
-androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
+androidx-test-espresso-core = "androidx.test.espresso:espresso-core:3.5.0"
 androidx-test-junit = "androidx.test.ext:junit:1.1.3"
 androidx-test-rules = "androidx.test:rules:1.4.0"
 coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
-compose-animation-core = { module = "androidx.compose.animation:animation-core", version.ref = "compose" }
-compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout", version.ref = "compose" }
-compose-foundation = { module = "androidx.compose.foundation:foundation", version.ref = "compose" }
-compose-material = { module = "androidx.compose.material:material", version.ref = "compose" }
-compose-runtime = { module = "androidx.compose.runtime:runtime", version.ref = "compose" }
-compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4", version.ref = "compose" }
-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
-compose-ui-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
-google-accompanist-flow = "com.google.accompanist:accompanist-flowlayout:0.25.1"
+compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+# compose versions are resolved by BOM
+compose-animation-core = { module = "androidx.compose.animation:animation-core" }
+compose-foundation-layout = { module = "androidx.compose.foundation:foundation-layout" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-material = { module = "androidx.compose.material:material" }
+compose-material3 = { module = "androidx.compose.material3:material3" }
+compose-runtime = { module = "androidx.compose.runtime:runtime" }
+compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
+compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+compose-ui-ui = { module = "androidx.compose.ui:ui" }
+google-accompanist-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+google-accompanist-flow = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 google-material = "com.google.android.material:material:1.4.0"
 junit = "junit:junit:4.13.2"
 kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
@@ -54,13 +57,16 @@ mvicore-android = { module = "com.github.badoo.mvicore:mvicore-android", version
 mvicore-binder = { module = "com.github.badoo.mvicore:binder", version.ref = "mvicore" }
 ribs-base = { module = "com.github.badoo.RIBs:rib-base", version.ref = "ribs" }
 ribs-base-test = { module = "com.github.badoo.RIBs:rib-base-test", version.ref = "ribs" }
+ribs-base-test-activity = { module = "com.github.badoo.RIBs:rib-base-test-activity", version.ref = "ribs" }
 ribs-base-test-rx2 = { module = "com.github.badoo.RIBs:rib-base-test-rx2", version.ref = "ribs" }
 ribs-compose = { module = "com.github.badoo.RIBs:rib-compose", version.ref = "ribs" }
-ribs-rx = { module = "com.github.badoo.RIBs:rib-rx2", version.ref = "ribs" }
 
-rxjava2 = { module = "io.reactivex.rxjava2:rxjava", version.ref = "rxjava2" }
-rxandroid = { module = "io.reactivex.rxjava2:rxandroid", version.ref = "rxandroid" }
-rxrelay = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
+rxjava2 = "io.reactivex.rxjava2:rxjava:2.2.21"
+rxjava3 = "io.reactivex.rxjava3:rxjava:3.1.5"
+rxandroid2 = "io.reactivex.rxjava2:rxandroid:2.1.1"
+rxandroid3 = "io.reactivex.rxjava3:rxandroid:3.0.2"
+rxrelay2 = "com.jakewharton.rxrelay2:rxrelay:2.1.1"
+rxrelay3 = "com.jakewharton.rxrelay3:rxrelay:3.0.1"
 
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 junit-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
@@ -72,7 +78,7 @@ plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-android = "com.android.tools.build:gradle:7.3.1"
 
-detekt-compose = "com.twitter.compose.rules:detekt:0.0.18"
+detekt-compose = "com.twitter.compose.rules:detekt:0.0.26"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }

@@ -1,13 +1,16 @@
 # Downloads
 
-You need to specify the following repositories in your Gradle files:
+## Latest version
+
+![Maven Central](https://img.shields.io/maven-central/v/com.bumble.appyx/core)
+
+## Repository
 
 ```groovy
 repositories {
     mavenCentral()
 }
 ```
-
 
 ## Core dependencies
 
@@ -35,8 +38,9 @@ dependencies {
 
 ```groovy
 dependencies {
-    // Optional support for RxJava 2
+    // Optional support for RxJava 2/3
     implementation "com.bumble.appyx:interop-rx2:$version"
+    implementation "com.bumble.appyx:interop-rx3:$version"
 
     // Optional interoperability layer between Appyx and badoo/RIBs
     // You have to add https://jitpack.io repository to use it because badoo/RIBs is hosted there

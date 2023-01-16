@@ -4,7 +4,7 @@
     <application>
 
         <activity
-            android:name="com.bumble.appyx.core.plugin.BackPressHandlerTestActivity"
+            android:name="com.bumble.appyx.core.InternalAppyxTestActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
     </application>

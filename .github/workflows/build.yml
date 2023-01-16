@@ -68,7 +68,9 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: reports
-          path: '**/build/reports'
+          path: |
+            **/build/reports/
+            !**/build/reports/dependency-analysis/
 
   instrumentation-tests:
     name: Instrumentation tests

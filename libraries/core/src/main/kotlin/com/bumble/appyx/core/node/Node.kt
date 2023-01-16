@@ -26,8 +26,8 @@ import com.bumble.appyx.core.modality.AncestryInfo
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.plugin.BackPressHandler
 import com.bumble.appyx.core.plugin.Destroyable
-import com.bumble.appyx.core.plugin.NodeAware
 import com.bumble.appyx.core.plugin.NodeLifecycleAware
+import com.bumble.appyx.core.plugin.NodeReadyObserver
 import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.core.plugin.SavesInstanceState
 import com.bumble.appyx.core.plugin.UpNavigationHandler
@@ -100,7 +100,15 @@ open class Node(
         )
     }
 
+    @Deprecated(
+        replaceWith = ReplaceWith("executeAction(action)"),
+        message = "Will be removed in 1.1"
+    )
     protected suspend inline fun <reified T : Node> executeWorkflow(
+        crossinline action: () -> Unit
+    ): T = executeAction(action)
+
+    protected suspend inline fun <reified T : Node> executeAction(
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
         action()
@@ -112,7 +120,7 @@ open class Node(
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
         updateLifecycleState(Lifecycle.State.CREATED)
-        plugins<NodeAware<Node>>().forEach { it.init(this) }
+        plugins<NodeReadyObserver<Node>>().forEach { it.init(this) }
         plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
     }
 

@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +39,7 @@ fun Tree(
     idx: Int = 0,
     gapHeight: Dp = 40.dp,
     lineColor: Color = if (isSystemInDarkTheme()) Color.Black else Color(0xFFDDDDDD),
-    activeLineColor: Color = MaterialTheme.colors.primary,
+    activeLineColor: Color = MaterialTheme.colorScheme.primary,
     strokeWidth: Float = 7f,
 ) {
     val children = graphNode.children()

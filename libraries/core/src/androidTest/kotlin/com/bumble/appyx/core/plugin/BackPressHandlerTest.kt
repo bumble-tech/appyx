@@ -1,6 +1,5 @@
 package com.bumble.appyx.core.plugin
 
-import android.app.Activity
 import android.os.Parcelable
 import androidx.activity.OnBackPressedCallback
 import androidx.compose.foundation.background
@@ -14,9 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Lifecycle.State
 import androidx.test.espresso.Espresso
 import androidx.test.platform.app.InstrumentationRegistry
 import com.bumble.appyx.Appyx
+import com.bumble.appyx.core.AppyxTestScenario
+import com.bumble.appyx.core.InternalAppyxTestActivity
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
@@ -50,7 +52,7 @@ class BackPressHandlerTest {
     @After
     fun after() {
         Appyx.exceptionHandler = null
-        BackPressHandlerTestActivity.reset()
+        InternalAppyxTestActivity.reset()
     }
 
     @Test
@@ -89,7 +91,7 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(rule.activityScenario.result.resultCode, equalTo(Activity.RESULT_CANCELED))
+        assertThat(rule.activityScenario.state, equalTo(State.DESTROYED))
     }
 
     @Test
@@ -132,7 +134,7 @@ class BackPressHandlerTest {
 
     @Test
     fun appyx_handles_back_press_before_activity_handler() {
-        BackPressHandlerTestActivity.handleBackPress.value = true
+        InternalAppyxTestActivity.handleBackPress.value = true
         rule.start()
         pushChildB()
 
@@ -145,7 +147,7 @@ class BackPressHandlerTest {
 
     @Test
     fun activity_handles_back_press_if_appyx_cant() {
-        BackPressHandlerTestActivity.handleBackPress.value = true
+        InternalAppyxTestActivity.handleBackPress.value = true
         rule.start()
         disablePlugin()
 
@@ -153,7 +155,7 @@ class BackPressHandlerTest {
         Espresso.onIdle()
         rule.waitForIdle()
 
-        assertThat(BackPressHandlerTestActivity.onBackPressedHandled, equalTo(true))
+        assertThat(InternalAppyxTestActivity.onBackPressedHandled, equalTo(true))
     }
 
     @Test

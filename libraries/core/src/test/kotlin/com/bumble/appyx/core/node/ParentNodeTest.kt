@@ -9,7 +9,6 @@ import com.bumble.appyx.core.node.ParentNodeTest.TestParentNode.NavTarget.ChildB
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
-import java.lang.IllegalStateException
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNull
 import junit.framework.TestCase.assertTrue
@@ -99,13 +98,13 @@ class ParentNodeTest {
         }
 
         suspend fun attachChildB(): NodeB {
-            return attachWorkflow {
+            return attachChild {
                 backStack.push(ChildB)
             }
         }
 
         suspend fun incorrectlyAttachChildB(): NodeB {
-            return attachWorkflow {
+            return attachChild {
                 backStack.push(ChildA)
             }
         }
@@ -122,7 +121,7 @@ class ParentNodeTest {
             private set
 
         suspend fun changeStatus(): NodeB {
-            return executeWorkflow {
+            return executeAction {
                 status = StatusExecuted
             }
         }

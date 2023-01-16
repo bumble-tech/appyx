@@ -10,13 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.core.collections.immutableListOf
 import com.bumble.appyx.core.composable.Children
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.transition.rememberCombinedHandler
@@ -37,11 +38,11 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.LazyExa
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.customisations.CustomisationsNode
+import com.bumble.appyx.sandbox.client.explicitnavigation.ExplicitNavigationExampleActivity
 import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleNode
 import com.bumble.appyx.sandbox.client.interop.InteropExampleActivity
 import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.sandbox.client.navmodels.NavModelExamplesNode
-import com.bumble.appyx.sandbox.client.workflow.WorkflowExampleActivity
 import com.bumble.appyx.utils.customisations.NodeCustomisation
 import kotlinx.parcelize.Parcelize
 
@@ -96,10 +97,10 @@ class ContainerNode internal constructor(
         Children(
             modifier = modifier
                 .fillMaxSize()
-                .background(MaterialTheme.colors.background),
+                .background(MaterialTheme.colorScheme.background),
             navModel = backStack,
             transitionHandler = rememberCombinedHandler(
-                handlers = listOf(rememberBackstackSlider(), rememberBackstackFader())
+                handlers = immutableListOf(rememberBackstackSlider(), rememberBackstackFader())
             )
         )
     }
@@ -123,9 +124,9 @@ class ContainerNode internal constructor(
                 }
                 TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
-                TextButton("Workflow example") {
+                TextButton("Explicit navigation example") {
                     integrationPoint.activityStarter.startActivity {
-                        Intent(this, WorkflowExampleActivity::class.java)
+                        Intent(this, ExplicitNavigationExampleActivity::class.java)
                     }
                 }
                 TextButton("Integration point example") {

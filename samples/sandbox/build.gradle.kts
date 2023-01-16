@@ -8,9 +8,10 @@ plugins {
 
 android {
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
+    namespace = "com.bumble.appyx"
 
     defaultConfig {
-        applicationId = "com.bumble.appyx"
+        applicationId = "com.bumble.appyx.sandbox"
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
         versionCode = 1
@@ -45,6 +46,9 @@ android {
 }
 
 dependencies {
+    val composeBom = platform(libs.compose.bom)
+
+    implementation(composeBom)
     implementation(project(":libraries:core"))
     implementation(project(":libraries:interop-rx2"))
     implementation(project(":libraries:interop-ribs"))
@@ -52,13 +56,13 @@ dependencies {
     implementation(project(":samples:common"))
     // The testing activity needs to be in the main manifest, otherwise it cannot be launched.
     debugImplementation(project(":libraries:testing-ui-activity"))
-    implementation(libs.accompanist.systemui)
+    implementation(libs.google.accompanist.systemui)
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.compose.material)
+    implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.google.accompanist.flow)
@@ -68,8 +72,8 @@ dependencies {
     implementation(libs.mvicore.android)
     implementation(libs.mvicore.binder)
     implementation(libs.rxjava2)
-    implementation(libs.rxandroid)
-    implementation(libs.rxrelay)
+    implementation(libs.rxandroid2)
+    implementation(libs.rxrelay2)
 
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.junit)
@@ -81,6 +85,7 @@ dependencies {
     testImplementation(libs.ribs.base.test)
     testImplementation(libs.ribs.base.test.rx2)
 
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)

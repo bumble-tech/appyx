@@ -20,6 +20,42 @@ override fun View(modifier: Modifier) {
 }
 ```
 
+When rendering children you can have access to `TransitionDescriptor` which provides the following information:
+
+```kotlin
+@Immutable
+data class TransitionDescriptor<NavTarget, out State>(
+    val params: TransitionParams,
+    val operation: Operation<NavTarget, out State>,
+    val element: NavTarget,
+    val fromState: State,
+    val toState: State
+)
+```
+
+Additionally, you can supply custom modifier to a child `Node`. In this example, we're supplying different `Modifier`
+to a child `Node` depending on the `NavTarget`: 
+
+```kotlin
+@Composable
+override fun View(modifier: Modifier) {
+    Children(
+        modifier = Modifier, // optional
+        navModel = TODO(),
+        transitionHandler = TODO() // optional
+    ) {
+        children<NavTarget> { child, descriptor ->
+            child(
+                modifier = Modifier
+                    .background(
+                        color = getBackgroundColor(descriptor.element)
+                    )
+            )
+        }
+    }
+}
+```
+
 ## Child
 
 Renders a single child associated to a `NavElement`. Useful if you want to define different child placements in the layout individually. 

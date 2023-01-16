@@ -42,7 +42,7 @@ class NodeTest {
             private set
 
         suspend fun changeStatus(): TestNode {
-            return executeWorkflow {
+            return executeAction {
                 status = StatusExecuted
             }
         }

@@ -12,6 +12,7 @@ import com.bumble.appyx.core.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
@@ -32,52 +33,22 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         coroutineScope = lifecycle.coroutineScope
         if (node is ParentNode<*>) {
             children = node.children
-            initialize()
+            coroutineScope.launch { observeChanges() }
         } else {
             children = MutableStateFlow(emptyMap())
         }
     }
 
-    private fun initialize() {
-        coroutineScope.apply {
-            launch { findNewKeys() }
-            launch { findPromotedChildren() }
-        }
-    }
-
-    private suspend fun findNewKeys() {
+    private suspend fun observeChanges() {
         children
+            .map { it.values.mapNotNullTo(HashSet()) { it.nodeOrNull } }
             .withPrevious()
-            .collect { value ->
-                val addedKeys = value.current.keys - value.previous?.keys.orEmpty()
-                if (addedKeys.isEmpty()) return@collect
-                val currentNodes = getCreatedNodes(value.current)
+            .collect { (previous, current) ->
+                val newNodes = current - previous.orEmpty()
                 val visitedSet = HashSet<Node>()
-                addedKeys.forEach { key ->
-                    val node = value.current[key]?.nodeOrNull
-                    if (node != null) {
-                        notifyWhenChanged(node, currentNodes, visitedSet)
-                        visitedSet.add(node)
-                    }
-                }
-            }
-    }
-
-    private suspend fun findPromotedChildren() {
-        children
-            .withPrevious()
-            .collect { value ->
-                if (value.previous == null) return@collect
-                val commonKeys = value.current.keys.intersect(value.previous.keys)
-                if (commonKeys.isEmpty()) return@collect
-                val nodes = getCreatedNodes(value.current)
-                val visitedSet = HashSet<Node>()
-                commonKeys.forEach { key ->
-                    val current = value.current[key]
-                    if (current != value.previous[key] && current is ChildEntry.Initialized) {
-                        notifyWhenChanged(current.node, nodes, visitedSet)
-                        visitedSet.add(current.node)
-                    }
+                newNodes.forEach { node ->
+                    notifyWhenChanged(node, current, visitedSet)
+                    visitedSet.add(node)
                 }
             }
     }
@@ -109,7 +80,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         callback.onRegistered(getCreatedNodes(children.value))
     }
 
-    private fun notifyWhenChanged(child: Node, nodes: List<Node>, ignore: Set<Node>) {
+    private fun notifyWhenChanged(child: Node, nodes: Collection<Node>, ignore: Set<Node>) {
         for (callback in callbacks) {
             when (callback) {
                 is ChildAwareCallbackInfo.Double<*, *> -> callback.onNewNodeAppeared(
