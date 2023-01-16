@@ -19,12 +19,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
-    testOptions {
-        unitTests.all {
-            // interface method default implementation
-            it.exclude("**/*\$DefaultImpls.class")
-        }
-    }
 }
 
 dependencies {
