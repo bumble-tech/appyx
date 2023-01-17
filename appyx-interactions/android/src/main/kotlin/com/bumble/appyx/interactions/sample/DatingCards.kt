@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
-import com.bumble.appyx.interactions.core.ui.RenderParams
+import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
@@ -60,11 +60,11 @@ fun DatingCards(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(appyx_dark)
             .padding(16.dp),
-        renderParams = render.collectAsState(listOf()),
+        frameModel = render.collectAsState(listOf()),
         onElementSizeChanged = { elementSize = it },
         element = {
             ElementWrapper(
-                renderParams = it,
+                frameModel = it,
                 modifier = Modifier
                     .fillMaxSize()
                     .pointerInput(it.navElement.key) {
@@ -101,15 +101,15 @@ fun DatingCards(modifier: Modifier = Modifier) {
 
 @Composable
 fun ElementWrapper(
-    renderParams: RenderParams<DatingCardsNavTarget, Cards.State>,
+    frameModel: FrameModel<DatingCardsNavTarget, Cards.State>,
     modifier: Modifier = Modifier
 ) {
 
     Box(
         modifier = modifier
-            .then(renderParams.modifier)
+            .then(frameModel.modifier)
             .then(modifier)
     ) {
-        ProfileCard(profile = (renderParams.navElement.key.navTarget as DatingCardsNavTarget.ProfileCard).profile)
+        ProfileCard(profile = (frameModel.navElement.key.navTarget as DatingCardsNavTarget.ProfileCard).profile)
     }
 }

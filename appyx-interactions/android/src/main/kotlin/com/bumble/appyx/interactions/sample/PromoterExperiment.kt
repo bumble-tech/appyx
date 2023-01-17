@@ -71,7 +71,7 @@ fun PromoterExperiment() {
             .fillMaxSize()
     ) {
         Children(
-            renderParams = render.collectAsState(listOf()),
+            frameModel = render.collectAsState(listOf()),
             modifier = Modifier
                 .weight(0.9f)
                 .padding(
@@ -81,7 +81,7 @@ fun PromoterExperiment() {
             onElementSizeChanged = { elementSize = it },
             element = {
                 Element(
-                    renderParams = it,
+                    frameModel = it,
                     modifier = Modifier.size(100.dp)
                 )
             }

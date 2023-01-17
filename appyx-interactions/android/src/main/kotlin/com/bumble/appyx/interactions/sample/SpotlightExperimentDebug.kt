@@ -80,11 +80,11 @@ fun SpotlightExperimentDebug() {
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
-            renderParams = render.collectAsState(listOf()),
+            frameModel = render.collectAsState(listOf()),
             onElementSizeChanged = { elementSize = it },
             element = {
                 Element(
-                    renderParams = it,
+                    frameModel = it,
                     modifier = Modifier
                         .fillMaxSize()
                 )

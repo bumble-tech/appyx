@@ -80,7 +80,7 @@ fun SpotlightExperiment() {
             .background(appyx_dark)
     ) {
         Children(
-            renderParams = render.collectAsState(listOf()),
+            frameModel = render.collectAsState(listOf()),
             modifier = Modifier
                 .weight(0.9f)
                 .padding(
@@ -90,7 +90,7 @@ fun SpotlightExperiment() {
             onElementSizeChanged = { elementSize = it },
             element = {
                 Element(
-                    renderParams = it,
+                    frameModel = it,
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInput(it.navElement.key) {

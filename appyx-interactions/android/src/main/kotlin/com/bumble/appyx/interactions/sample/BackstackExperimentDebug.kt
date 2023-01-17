@@ -79,7 +79,7 @@ fun BackStackExperimentDebug() {
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
-            renderParams = render.collectAsState(listOf()),
+            frameModel = render.collectAsState(listOf()),
             onElementSizeChanged = { elementSize = it }
         )
     }

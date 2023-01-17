@@ -3,7 +3,7 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.ui.RenderParams
+import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.UiProps
 import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
@@ -32,7 +32,7 @@ class BackStackCrossfader<NavTarget>(
             else -> hidden
         }
 
-    override fun map(segment: TransitionModel.Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, BackStack.State>): List<FrameModel<NavTarget, BackStack.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
@@ -42,7 +42,7 @@ class BackStackCrossfader<NavTarget>(
             val targetProps = t1.state.toProps()
             val alpha = lerpFloat(fromProps.alpha, targetProps.alpha, segment.progress)
 
-            RenderParams(
+            FrameModel(
                 navElement = t1,
                 modifier = Modifier
                     .alpha(alpha)

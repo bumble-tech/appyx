@@ -7,7 +7,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel.Segment
-import com.bumble.appyx.interactions.core.ui.RenderParams
+import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.UiProps
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State.DROPPED
@@ -57,7 +57,7 @@ class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.Sta
             )
         }
 
-    override fun map(segment: Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
+    override fun map(segment: Segment<NavTarget, BackStack.State>): List<FrameModel<NavTarget, BackStack.State>> {
         val fromState = segment.navTransition.fromState
         val targetState = segment.navTransition.targetState
         val fromStashed = fromState.filter { it.state == STASHED }
@@ -82,7 +82,7 @@ class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.Sta
             val offset = lerpUnit(fromProps.offset, targetProps.offset, segment.progress)
             val color = lerpGraphics(fromProps.color, targetProps.color, segment.progress)
 
-            RenderParams(
+            FrameModel(
                 navElement = t1,
                 modifier = Modifier
                     .offset(x = offset.x, y = offset.y)
