@@ -1,9 +1,10 @@
 package com.bumble.appyx.interactions.core
 
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
 
 interface Operation<NavTarget, State> :
-        (NavElements<NavTarget, State>) -> NavTransition<NavTarget, State> {
-    // FIXME, Parcelable {
+        (NavElements<NavTarget, State>) -> NavTransition<NavTarget, State>, Parcelable {
 
     fun isApplicable(elements: NavElements<NavTarget, State>): Boolean
 
@@ -65,7 +66,7 @@ interface Operation<NavTarget, State> :
         }
     }
 
-    // FIXME @Parcelize
+    @Parcelize
     class Noop<NavTarget, State> : Operation<NavTarget, State> {
 
         override fun isApplicable(elements: NavElements<NavTarget, State>) = false

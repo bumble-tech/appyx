@@ -1,10 +1,11 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.active
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State.ACTIVE
@@ -15,10 +16,10 @@ import com.bumble.appyx.transitionmodel.backstack.BackStack.State.CREATED
  *
  * [A, B, C] + NewRoot(D) = [ D ]
  */
-// FIXME @Parcelize
+@Parcelize
 data class NewRoot<NavTarget : Any>(
-    private val navTarget: NavTarget // FIXME @RawValue
-) : Operation<NavTarget, BackStack.State> {
+    private val navTarget: @RawValue NavTarget
+) :  BackStackOperation<NavTarget> {
 
     override fun isApplicable(elements: NavElements<NavTarget, BackStack.State>): Boolean =
         elements.size > 1 || elements.first().key != navTarget

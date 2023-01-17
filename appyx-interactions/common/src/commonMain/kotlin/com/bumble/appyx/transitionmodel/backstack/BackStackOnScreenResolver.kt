@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.backstack
 
-import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
+import com.bumble.appyx.interactions.core.ui.onscreen.OnScreenStateResolver
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State
 
 object BackStackOnScreenResolver : OnScreenStateResolver<State> {
