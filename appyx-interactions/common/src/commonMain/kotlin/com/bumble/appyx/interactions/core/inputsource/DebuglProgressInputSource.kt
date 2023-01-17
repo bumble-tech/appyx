@@ -5,14 +5,14 @@ import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.BaseNavModel
+import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Operation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 class DebuglProgressInputSource<NavTarget, State>(
-    private val navModel: BaseNavModel<NavTarget, State>,
+    private val navModel: BaseTransitionModel<NavTarget, State>,
     private val coroutineScope: CoroutineScope,
 ) : InputSource<NavTarget, State> {
     private val animatable = Animatable(0f)

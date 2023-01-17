@@ -3,7 +3,7 @@ package com.bumble.appyx.transitionmodel.promoter
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State.CREATED
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State.STAGE1
-import com.bumble.appyx.interactions.core.BaseNavModel
+import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavKey
@@ -11,7 +11,7 @@ import com.bumble.appyx.interactions.core.Operation
 
 class Promoter<NavTarget : Any>(
     initialItems: List<NavTarget> = listOf(),
-) : BaseNavModel<NavTarget, State>(
+) : BaseTransitionModel<NavTarget, State>(
 //    screenResolver = PromoterOnScreenResolver,
 //    finalState = DESTROYED,
 //    savedStateMap = null

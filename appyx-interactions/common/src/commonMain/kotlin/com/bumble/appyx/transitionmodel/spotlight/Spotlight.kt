@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.spotlight
 
-import com.bumble.appyx.interactions.core.BaseNavModel
+import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State
 import com.bumble.appyx.transitionmodel.spotlight.operation.toSpotlightElements
@@ -15,7 +15,7 @@ class Spotlight<NavTarget : Any>(
 //    ),
 //    operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
 //    screenResolver: OnScreenStateResolver<State> = SpotlightOnScreenResolver
-) : BaseNavModel<NavTarget, State>(
+) : BaseTransitionModel<NavTarget, State>(
 //    backPressHandler = backPressHandler,
 //    operationStrategy = operationStrategy,
 //    screenResolver = screenResolver,

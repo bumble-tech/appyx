@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.NavModel.Segment
+import com.bumble.appyx.interactions.core.TransitionModel.Segment
 import com.bumble.appyx.interactions.core.ui.RenderParams
 import com.bumble.appyx.interactions.core.ui.UiProps
 import com.bumble.appyx.transitionmodel.backstack.BackStack

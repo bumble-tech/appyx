@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.NavModel.Segment
+import com.bumble.appyx.interactions.core.TransitionModel.Segment
 import com.bumble.appyx.interactions.core.ui.RenderParams
 import com.bumble.appyx.interactions.core.ui.UiProps
 import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat

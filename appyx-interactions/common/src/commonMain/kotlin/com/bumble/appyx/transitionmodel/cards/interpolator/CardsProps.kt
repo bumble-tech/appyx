@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.interactions.core.NavModel
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.RenderParams
 import com.bumble.appyx.interactions.core.ui.TransitionParams
@@ -73,7 +73,7 @@ class CardsProps<NavTarget : Any>(
             is Cards.State.VotePass -> votePass
         }
 
-    override fun map(segment: NavModel.Segment<NavTarget, Cards.State>): List<RenderParams<NavTarget, Cards.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, Cards.State>): List<RenderParams<NavTarget, Cards.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.mapIndexed { index, t1 ->

@@ -1,7 +1,7 @@
 package com.bumble.appyx.transitionmodel.backstack
 
 import com.bumble.appyx.interactions.core.NavKey
-import com.bumble.appyx.interactions.core.BaseNavModel
+import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State
@@ -18,7 +18,7 @@ class BackStack<NavTarget : Any>(
     // backPressHandler: BackPressHandlerStrategy<NavTarget, State> = PopBackPressHandler(),
     // operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
     // screenResolver: OnScreenStateResolver<State> = BackStackOnScreenResolver
-) : BaseNavModel<NavTarget, State>(
+) : BaseTransitionModel<NavTarget, State>(
 //    backPressHandler = backPressHandler,
 //    screenResolver = screenResolver,
 //    operationStrategy = operationStrategy,

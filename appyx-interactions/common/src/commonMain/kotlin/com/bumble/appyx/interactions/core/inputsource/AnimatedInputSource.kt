@@ -6,12 +6,12 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.core.BaseNavModel
+import com.bumble.appyx.interactions.core.BaseTransitionModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class AnimatedInputSource<NavTarget : Any, State>(
-    private val navModel: BaseNavModel<NavTarget, State>,
+    private val navModel: BaseTransitionModel<NavTarget, State>,
     private val coroutineScope: CoroutineScope,
     private val defaultAnimationSpec: AnimationSpec<Float> = spring()
 ) : InputSource<NavTarget, State> {

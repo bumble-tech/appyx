@@ -2,7 +2,7 @@ package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.NavModel
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.RenderParams
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.UiProps
@@ -32,7 +32,7 @@ class SpotlightFader<NavTarget>(
             else -> hidden
         }
 
-    override fun map(segment: NavModel.Segment<NavTarget, Spotlight.State>): List<RenderParams<NavTarget, Spotlight.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, Spotlight.State>): List<RenderParams<NavTarget, Spotlight.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->

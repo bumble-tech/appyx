@@ -1,12 +1,12 @@
 package com.bumble.appyx.transitionmodel.cards
 
-import com.bumble.appyx.interactions.core.BaseNavModel
+import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.Operation
 
 class Cards<NavTarget : Any>(
     initialItems: List<NavTarget> = listOf(),
-) : BaseNavModel<NavTarget, Cards.State>(
+) : BaseTransitionModel<NavTarget, Cards.State>(
     finalStates = FINAL_STATES,
 ) {
     companion object {

@@ -3,7 +3,7 @@ package com.bumble.appyx.interactions.core.inputsource
 import androidx.compose.animation.core.*
 import androidx.compose.ui.geometry.Offset
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.NavModel
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Operation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 class DragProgressInputSource<NavTarget, State>(
-    private val navModel: NavModel<NavTarget, State>,
+    private val transitionModel: TransitionModel<NavTarget, State>,
     private val coroutineScope: CoroutineScope,
 ) : InputSource<NavTarget, State> {
     private val animatable = Animatable(0f)
@@ -28,7 +28,7 @@ class DragProgressInputSource<NavTarget, State>(
     private var gesture: Gesture<NavTarget, State>? = null
 
     override fun operation(operation: Operation<NavTarget, State>) {
-        navModel.enqueue(operation)
+        transitionModel.enqueue(operation)
     }
 
     fun addDeltaProgress(dragAmount: Offset) {
@@ -40,12 +40,12 @@ class DragProgressInputSource<NavTarget, State>(
         requireNotNull(gesture)
         val operation = gesture!!.operation
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
-        val currentProgress = navModel.currentProgress
+        val currentProgress = transitionModel.currentProgress
         val totalTarget = currentProgress + deltaProgress
 
         // Case: we can start a new operation
         if (gesture!!.startProgress == null) {
-            if (navModel.enqueue(operation)) {
+            if (transitionModel.enqueue(operation)) {
                 gesture!!.startProgress = currentProgress
                 Logger.log("input source", "operation applied: $operation")
             } else {
@@ -62,10 +62,10 @@ class DragProgressInputSource<NavTarget, State>(
 
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
-                navModel.setProgress(totalTarget)
+                transitionModel.setProgress(totalTarget)
                 Logger.log(
                     "input source",
-                    "delta applied forward, new progress: ${navModel.currentProgress}"
+                    "delta applied forward, new progress: ${transitionModel.currentProgress}"
                 )
 
                 // Case: target is beyond the current segment, we'll need a new operation
@@ -91,8 +91,8 @@ class DragProgressInputSource<NavTarget, State>(
         deltaProgress: Float,
         boundary: Float
     ): Offset {
-        navModel.setProgress(boundary)
-        navModel.dropAfter(boundary.toInt())
+        transitionModel.setProgress(boundary)
+        transitionModel.dropAfter(boundary.toInt())
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
         gesture = null
         Logger.log("input source", "1 ------")
@@ -116,20 +116,20 @@ class DragProgressInputSource<NavTarget, State>(
         roundUpAnimationSpec: AnimationSpec<Float> = spring(),
         roundDownAnimationSpec: AnimationSpec<Float> = spring(),
     ) {
-        val currentProgress = navModel.currentProgress
+        val currentProgress = transitionModel.currentProgress
         val (animationSpec, targetValue) = if (currentProgress % 1 < roundUpThreshold) {
             roundDownAnimationSpec to floor(currentProgress).toInt()
         } else {
             roundUpAnimationSpec to ceil(currentProgress).toInt()
         }
-        Logger.log("input source", "Settle ${navModel.currentProgress} to: $targetValue")
+        Logger.log("input source", "Settle ${transitionModel.currentProgress} to: $targetValue")
         coroutineScope.launch {
-            animatable.snapTo(navModel.currentProgress)
+            animatable.snapTo(transitionModel.currentProgress)
             // TODO animation spec similarly to AnimatedInputSource / default
             result = animatable.animateTo(targetValue.toFloat(), animationSpec) {
-                navModel.setProgress(this.value)
+                transitionModel.setProgress(this.value)
             }
-            navModel.dropAfter(targetValue)
+            transitionModel.dropAfter(targetValue)
         }
     }
 }

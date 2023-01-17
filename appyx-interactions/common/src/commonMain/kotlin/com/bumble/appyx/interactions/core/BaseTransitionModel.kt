@@ -9,10 +9,10 @@ import kotlin.coroutines.EmptyCoroutineContext
 import com.bumble.appyx.interactions.Logger
 
 @SuppressWarnings("UnusedPrivateMember")
-abstract class BaseNavModel<NavTarget, NavState>(
+abstract class BaseTransitionModel<NavTarget, NavState>(
     private val finalStates: Set<NavState> = setOf(),
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-) : NavModel<NavTarget, NavState> {
+) : TransitionModel<NavTarget, NavState> {
     abstract val initialState: NavElements<NavTarget, NavState>
 
     /**
@@ -39,15 +39,15 @@ abstract class BaseNavModel<NavTarget, NavState>(
     override val maxProgress: Float
         get() = (queue.lastIndex + 1).toFloat()
 
-    private val state: MutableStateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
+    private val state: MutableStateFlow<TransitionModel.Segment<NavTarget, NavState>> by lazy {
         MutableStateFlow(createState(lastRecordedProgress))
     }
 
-    override val segments: StateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
+    override val segments: StateFlow<TransitionModel.Segment<NavTarget, NavState>> by lazy {
         state
     }
 
-    private fun createState(progress: Float): NavModel.Segment<NavTarget, NavState> {
+    private fun createState(progress: Float): TransitionModel.Segment<NavTarget, NavState> {
         val progress = progress.coerceAtLeast(minimumValue = 1f)
 
         /**
@@ -59,7 +59,7 @@ abstract class BaseNavModel<NavTarget, NavState>(
          */
         val segmentIndex = (if (progress == maxProgress) (progress - 1) else progress).toInt()
 
-        return NavModel.Segment(
+        return TransitionModel.Segment(
             index = segmentIndex,
             navTransition = queue[segmentIndex],
             progress = progress - segmentIndex
