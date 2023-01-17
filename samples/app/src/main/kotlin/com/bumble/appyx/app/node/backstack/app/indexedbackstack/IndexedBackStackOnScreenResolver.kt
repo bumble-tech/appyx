@@ -1,11 +1,11 @@
 package com.bumble.appyx.app.node.backstack.app.indexedbackstack
 
-import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State
-import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Created
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Active
-import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Stashed
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Created
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Destroyed
+import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Stashed
+import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 
 object IndexedBackStackOnScreenResolver : OnScreenStateResolver<State> {
 
