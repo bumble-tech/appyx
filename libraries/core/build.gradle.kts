@@ -40,7 +40,6 @@ dependencies {
     api(libs.androidx.lifecycle.common)
     api(libs.compose.animation.core)
     api(libs.compose.runtime)
-    api(libs.compose.foundation)
     api(libs.compose.ui.tooling)
     api(libs.compose.ui.ui)
     api(libs.androidx.appcompat)
