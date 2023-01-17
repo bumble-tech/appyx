@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.spring
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.BaseNavModel
 import com.bumble.appyx.interactions.core.Operation
 import kotlinx.coroutines.CoroutineScope
@@ -29,7 +30,7 @@ class DebuglProgressInputSource<NavTarget, State>(
     }
 
     fun settle() {
-        // FIXME Log.d("input source", "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
+        Logger.log("input source", "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
         coroutineScope.launch {
             animatable.snapTo(progress)
             result = animatable.animateTo(progress.roundToInt().toFloat(), spring()) {

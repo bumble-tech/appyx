@@ -1,11 +1,8 @@
 package com.bumble.appyx.interactions.core.inputsource
 
-import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationResult
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.*
 import androidx.compose.ui.geometry.Offset
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.NavModel
 import com.bumble.appyx.interactions.core.Operation
 import kotlinx.coroutines.CoroutineScope
@@ -50,9 +47,9 @@ class DragProgressInputSource<NavTarget, State>(
         if (gesture!!.startProgress == null) {
             if (navModel.enqueue(operation)) {
                 gesture!!.startProgress = currentProgress
-                // FIXME Log.d("input source", "operation applied: $operation")
+                Logger.log("input source", "operation applied: $operation")
             } else {
-                // FIXME Log.d("input source", "operation not applicable: $operation")
+                Logger.log("input source", "operation not applicable: $operation")
                 return
             }
             // Case: we can continue the existing operation
@@ -66,10 +63,10 @@ class DragProgressInputSource<NavTarget, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 navModel.setProgress(totalTarget)
-                // FIXME Log.d(
-                    //"input source",
-                    //"delta applied forward, new progress: ${navModel.currentProgress}"
-                // )
+                Logger.log(
+                    "input source",
+                    "delta applied forward, new progress: ${navModel.currentProgress}"
+                )
 
                 // Case: target is beyond the current segment, we'll need a new operation
             } else {
@@ -98,14 +95,17 @@ class DragProgressInputSource<NavTarget, State>(
         navModel.dropAfter(boundary.toInt())
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
         gesture = null
-        // FIXME Log.d("input source", "1 ------")
-        // FIXME Log.d("input source", "initial offset was: $dragAmount")
-        // FIXME Log.d("input source", "initial deltaProgress was: $deltaProgress")
-        // FIXME Log.d("input source", "initial target was: $totalTarget, beyond current segment: $boundary")
-        // FIXME Log.d("input source", "remainder progress: ${totalTarget - boundary}")
-        // FIXME Log.d("input source", "remainder offset: $remainder")
-        // FIXME Log.d("input source", "going back to start, reevaluate")
-        // FIXME Log.d("input source", "2 ------")
+        Logger.log("input source", "1 ------")
+        Logger.log("input source", "initial offset was: $dragAmount")
+        Logger.log("input source", "initial deltaProgress was: $deltaProgress")
+        Logger.log(
+            "input source",
+            "initial target was: $totalTarget, beyond current segment: $boundary"
+        )
+        Logger.log("input source", "remainder progress: ${totalTarget - boundary}")
+        Logger.log("input source", "remainder offset: $remainder")
+        Logger.log("input source", "going back to start, reevaluate")
+        Logger.log("input source", "2 ------")
         // TODO without recursion
         return remainder
     }
@@ -122,7 +122,7 @@ class DragProgressInputSource<NavTarget, State>(
         } else {
             roundUpAnimationSpec to ceil(currentProgress).toInt()
         }
-        // FIXME Log.d("input source", "Settle ${navModel.currentProgress} to: $targetValue")
+        Logger.log("input source", "Settle ${navModel.currentProgress} to: $targetValue")
         coroutineScope.launch {
             animatable.snapTo(navModel.currentProgress)
             // TODO animation spec similarly to AnimatedInputSource / default

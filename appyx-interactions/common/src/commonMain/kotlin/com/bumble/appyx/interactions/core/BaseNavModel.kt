@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
+import com.bumble.appyx.interactions.Logger
 
 @SuppressWarnings("UnusedPrivateMember")
 abstract class BaseNavModel<NavTarget, NavState>(
@@ -73,19 +74,19 @@ abstract class BaseNavModel<NavTarget, NavState>(
             queue.add(newState)
             true
         } else {
-            // FIXME Log.d("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
+            Logger.log("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
             false
         }
     }
 
     override fun setProgress(progress: Float) {
         val progress = progress.coerceAtLeast(1f)
-        // FIXME Log.d("BaseNavModel", "Progress update: $progress")
+        Logger.log("BaseNavModel", "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
             //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
             // onTransitionFinished(state.value.fromState.map { it.key })
-            // FIXME Log.d("Transition finished", "onTransitionFinished()")
+            Logger.log("Transition finished", "onTransitionFinished()")
         }
 
         lastRecordedProgress = progress
