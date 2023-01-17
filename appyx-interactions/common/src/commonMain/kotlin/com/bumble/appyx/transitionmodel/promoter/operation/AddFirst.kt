@@ -10,10 +10,11 @@ import com.bumble.appyx.transitionmodel.promoter.Promoter.State.CREATED
 import com.bumble.appyx.transitionmodel.promoter.PromoterElement
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State
 import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 
 @Parcelize
 data class AddFirst<NavTarget>(
-    private val element: NavTarget // FIXME @RawValue
+    private val element: @RawValue NavTarget
 ) : PromoterOperation<NavTarget> {
 
     override fun isApplicable(elements: NavElements<NavTarget, State>): Boolean =

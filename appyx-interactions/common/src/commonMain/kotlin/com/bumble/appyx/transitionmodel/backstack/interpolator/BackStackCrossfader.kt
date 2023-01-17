@@ -2,6 +2,7 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import com.bumble.appyx.interactions.core.NavModel
 import com.bumble.appyx.interactions.core.ui.RenderParams
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.UiProps
@@ -31,7 +32,7 @@ class BackStackCrossfader<NavTarget>(
             else -> hidden
         }
 
-    override fun map(segment: Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
+    override fun map(segment: NavModel.Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
