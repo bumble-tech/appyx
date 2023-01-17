@@ -5,7 +5,7 @@ import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Created
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Destroyed
 import com.bumble.appyx.app.node.backstack.app.indexedbackstack.IndexedBackStack.State.Stashed
-import com.bumble.appyx.interactions.core.ui.onscreen.OnScreenStateResolver
+import com.bumble.appyx.core.navigation.onscreen.OnScreenStateResolver
 
 object IndexedBackStackOnScreenResolver : OnScreenStateResolver<State> {
 
