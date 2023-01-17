@@ -1,18 +1,17 @@
 package com.bumble.appyx.transitionmodel.spotlight.operation
 
-import com.bumble.appyx.interactions.core.navigation.NavKey
-import com.bumble.appyx.interactions.core.navigation2.NavElement
-import com.bumble.appyx.interactions.core.navigation2.NavElements
-import com.bumble.appyx.interactions.core.navigation2.NavTransition
-import com.bumble.appyx.interactions.core.navigation2.Operation
-import com.bumble.appyx.interactions.core.navigation2.Operation.Noop
-import com.bumble.appyx.interactions.core.navigation2.inputsource.InputSource
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
+import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.NavElements
+import com.bumble.appyx.interactions.core.NavKey
+import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.inputsource.InputSource
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.ACTIVE
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.INACTIVE_AFTER
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.INACTIVE_BEFORE
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 @Parcelize
 class UpdateElements<NavTarget : Any>(
@@ -71,6 +70,6 @@ internal fun <NavTarget> List<NavTarget>.toSpotlightElements(activeIndex: Int): 
             key = NavKey(item),
             fromState = state,
             targetState = state,
-            operation = Noop()
+            operation = Operation.Noop()
         )
     }

@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
-import com.bumble.appyx.interactions.core.navigation2.NavTransition
+import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.transitionmodel.cards.Cards
 import com.bumble.appyx.transitionmodel.cards.CardsElements
 

@@ -1,5 +1,6 @@
 package com.bumble.appyx.transitionmodel.spotlight.operation
 
+import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.interactions.core.Operation

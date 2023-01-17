@@ -1,7 +1,7 @@
 package com.bumble.appyx.transitionmodel.backstack.backpresshandler
 
-import com.bumble.appyx.core.navigation2.NavElements
-import com.bumble.appyx.core.navigation2.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.interactions.core.NavElements
+import com.bumble.appyx.interactions.core.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State
 import com.bumble.appyx.transitionmodel.backstack.operation.Pop
 import kotlinx.coroutines.flow.Flow

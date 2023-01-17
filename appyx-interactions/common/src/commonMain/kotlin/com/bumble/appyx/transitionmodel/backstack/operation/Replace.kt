@@ -1,16 +1,17 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
-import com.bumble.appyx.interactions.core.navigation.NavKey
-import com.bumble.appyx.interactions.core.navigation2.NavElement
-import com.bumble.appyx.interactions.core.navigation2.NavElements
-import com.bumble.appyx.interactions.core.navigation2.NavTransition
+import com.bumble.appyx.interactions.core.NavKey
+import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.NavElements
+import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State.ACTIVE
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State.CREATED
 import com.bumble.appyx.transitionmodel.backstack.activeElement
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
+
 
 /**
  * Operation:

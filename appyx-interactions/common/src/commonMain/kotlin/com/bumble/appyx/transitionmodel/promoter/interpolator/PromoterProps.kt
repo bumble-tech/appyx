@@ -9,11 +9,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.navigation.transition.TransitionParams
-import com.bumble.appyx.interactions.core.navigation2.NavModel.Segment
-import com.bumble.appyx.interactions.core.navigation2.ui.RenderParams
-import com.bumble.appyx.interactions.core.navigation2.ui.UiProps
-import com.bumble.appyx.interactions.core.navigation2.ui.UiProps.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.TransitionParams
+import com.bumble.appyx.interactions.core.NavModel.Segment
+import com.bumble.appyx.interactions.core.ui.RenderParams
+import com.bumble.appyx.interactions.core.ui.UiProps
+import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State
 import kotlin.math.cos
 import kotlin.math.min

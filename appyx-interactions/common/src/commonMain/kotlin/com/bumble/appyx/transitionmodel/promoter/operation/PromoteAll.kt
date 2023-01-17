@@ -1,14 +1,13 @@
-package com.bumble.appyx.navmodel.promoter.navmodel2.operation
+package com.bumble.appyx.transitionmodel.promoter.operation
 
 import androidx.compose.animation.core.AnimationSpec
-import com.bumble.appyx.interactions.core.navigation2.NavElements
-import com.bumble.appyx.interactions.core.navigation2.NavTransition
-import com.bumble.appyx.interactions.core.navigation2.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.navigation2.inputsource.InputSource
+import com.bumble.appyx.interactions.core.NavElements
+import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
+import com.bumble.appyx.interactions.core.inputsource.InputSource
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State
 import com.bumble.appyx.transitionmodel.promoter.PromoterElements
-import com.bumble.appyx.transitionmodel.promoter.operation.PromoterOperation
-import kotlinx.parcelize.Parcelize
+import com.bumble.appyx.interactions.Parcelize
 
 @Parcelize
 class PromoteAll<NavTarget> : PromoterOperation<NavTarget> {

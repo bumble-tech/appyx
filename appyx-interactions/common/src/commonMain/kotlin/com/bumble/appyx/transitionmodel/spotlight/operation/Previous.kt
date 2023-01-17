@@ -1,16 +1,16 @@
 package com.bumble.appyx.transitionmodel.spotlight.operation
 
 import androidx.compose.animation.core.AnimationSpec
-import com.bumble.appyx.interactions.core.navigation2.NavElements
-import com.bumble.appyx.interactions.core.navigation2.NavTransition
-import com.bumble.appyx.interactions.core.navigation2.Operation
-import com.bumble.appyx.interactions.core.navigation2.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.navigation2.inputsource.InputSource
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.core.NavElements
+import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
+import com.bumble.appyx.interactions.core.inputsource.InputSource
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.ACTIVE
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.INACTIVE_AFTER
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.INACTIVE_BEFORE
-import kotlinx.parcelize.Parcelize
 
 
 @Parcelize

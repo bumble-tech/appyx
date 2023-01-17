@@ -1,4 +1,4 @@
-package com.bumble.appyx.navmodel.promoter.navmodel2
+package com.bumble.appyx.transitionmodel.promoter
 
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State
 import com.bumble.appyx.interactions.core.navigation.onscreen.OnScreenStateResolver

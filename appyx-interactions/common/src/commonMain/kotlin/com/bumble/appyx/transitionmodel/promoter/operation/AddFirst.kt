@@ -9,8 +9,9 @@ import com.bumble.appyx.interactions.core.inputsource.InputSource
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State.CREATED
 import com.bumble.appyx.transitionmodel.promoter.PromoterElement
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State
+import com.bumble.appyx.interactions.Parcelize
 
-// FIXME @Parcelize
+@Parcelize
 data class AddFirst<NavTarget>(
     private val element: NavTarget // FIXME @RawValue
 ) : PromoterOperation<NavTarget> {

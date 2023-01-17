@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
-import android.util.Log
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
@@ -8,11 +7,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.navigation.transition.TransitionParams
-import com.bumble.appyx.interactions.core.navigation2.NavModel.Segment
-import com.bumble.appyx.interactions.core.navigation2.inputsource.Gesture
-import com.bumble.appyx.interactions.core.navigation2.ui.RenderParams
-import com.bumble.appyx.interactions.core.navigation2.ui.UiProps
+import com.bumble.appyx.interactions.core.NavModel
+import com.bumble.appyx.interactions.core.inputsource.Gesture
+import com.bumble.appyx.interactions.core.ui.RenderParams
+import com.bumble.appyx.interactions.core.ui.TransitionParams
+import com.bumble.appyx.interactions.core.ui.UiProps
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.ACTIVE
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.INACTIVE_AFTER
@@ -68,7 +67,7 @@ class SpotlightSlider<NavTarget>(
             }
         }
 
-    override fun map(segment: Segment<NavTarget, Spotlight.State>): List<RenderParams<NavTarget, Spotlight.State>> {
+    override fun map(segment: NavModel.Segment<NavTarget, Spotlight.State>): List<RenderParams<NavTarget, Spotlight.State>> {
         val (fromState, targetState) = segment.navTransition
 
         // TODO memoize per segment, as only percentage will change
@@ -110,7 +109,7 @@ class SpotlightSlider<NavTarget>(
         val width = with(density) { width.toPx() }
         val height = with(density) { height.toPx() }
 
-        Log.d("calculateProgress", "${delta.x} / $width = ${delta.x / width}")
+        // FIXME Log.d("calculateProgress", "${delta.x} / $width = ${delta.x / width}")
         return when (orientation) {
             Orientation.Horizontal -> delta.x / width * -1
             Orientation.Vertical -> delta.y / height * -1

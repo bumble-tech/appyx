@@ -2,11 +2,10 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.navigation.transition.TransitionParams
-import com.bumble.appyx.interactions.core.navigation2.NavModel.Segment
-import com.bumble.appyx.interactions.core.navigation2.ui.RenderParams
-import com.bumble.appyx.interactions.core.navigation2.ui.UiProps
-import com.bumble.appyx.interactions.core.navigation2.ui.UiProps.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.RenderParams
+import com.bumble.appyx.interactions.core.ui.TransitionParams
+import com.bumble.appyx.interactions.core.ui.UiProps
+import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 
 class BackStackCrossfader<NavTarget>(
