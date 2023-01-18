@@ -52,9 +52,9 @@ class DragProgressInputSource<NavTarget : Any, State>(
         if (gesture!!.startProgress == null) {
             if (model.enqueue(operation)) {
                 gesture!!.startProgress = currentProgress
-                /* FIXME Logger */ println("operation applied: $operation")
+                Logger.log(TAG, "operation applied: $operation")
             } else {
-                /* FIXME Logger */ println("operation not applicable: $operation")
+                Logger.log(TAG, "operation not applicable: $operation")
                 return
             }
             // Case: we can continue the existing operation
@@ -68,7 +68,8 @@ class DragProgressInputSource<NavTarget : Any, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 model.setProgress(totalTarget)
-                /* FIXME Logger */ println(
+                Logger.log(
+                    TAG,
                     "delta applied forward, new progress: ${model.currentProgress}"
                 )
 
