@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.UiProps
+import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State.ACTIVE
 import com.bumble.appyx.transitionmodel.backstack.BackStack.State.CREATED
@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.lerp as lerpUnit
 
 class BackStackSlider<NavTarget>(
     transitionParams: TransitionParams
-) : UiProps<NavTarget, BackStack.State> {
+) : Interpolator<NavTarget, BackStack.State> {
     private val width = transitionParams.bounds.width
     private val height = transitionParams.bounds.height
 
@@ -88,7 +88,8 @@ class BackStackSlider<NavTarget>(
                 navElement = t1,
                 modifier = Modifier.offset(
                     x = offset.x,
-                    y = offset.y)
+                    y = offset.y),
+                progress = segment.progress
             )
         }
     }

@@ -1,9 +1,10 @@
 package com.bumble.appyx.interactions.core.ui
 
-import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.NavElement
+import androidx.compose.ui.Modifier
 
-class FrameModel<Target, State>(
-    val navElement: NavElement<Target, State>,
-    val modifier: Modifier
+data class FrameModel<Target, NavState>(
+    val navElement: NavElement<Target, NavState>,
+    val modifier: Modifier,
+    val progress: Float,
 )

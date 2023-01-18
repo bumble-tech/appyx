@@ -35,11 +35,11 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child5
 import com.bumble.appyx.interactions.sample.NavTarget.Child6
 import com.bumble.appyx.interactions.sample.NavTarget.Child7
 import com.bumble.appyx.interactions.theme.appyx_yellow1
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import kotlin.math.roundToInt
 
 
-private val spotlight = Spotlight(
+private val spotlight = SpotlightModel(
     items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7),
 )
 

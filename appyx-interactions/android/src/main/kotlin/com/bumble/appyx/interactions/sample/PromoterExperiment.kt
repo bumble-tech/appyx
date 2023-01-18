@@ -28,7 +28,7 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.sample.NavTarget.Child2
 import com.bumble.appyx.interactions.sample.NavTarget.Child3
 import com.bumble.appyx.interactions.sample.NavTarget.Child4
-import com.bumble.appyx.navmodel.promoter.navmodel2.transitionhandler.PromoterProps
+import com.bumble.appyx.transitionmodel.promoter.interpolator.PromoterProps
 import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.operation.addFirst
 import kotlinx.coroutines.flow.map
@@ -37,68 +37,70 @@ import kotlinx.coroutines.flow.map
 @ExperimentalMaterialApi
 @Composable
 fun PromoterExperiment() {
-    val promoter = remember { Promoter<NavTarget>() }
-    val coroutineScope = rememberCoroutineScope()
-    val inputSource: AnimatedInputSource<NavTarget, Promoter.State> = remember {
-        AnimatedInputSource(
-            navModel = promoter,
-            coroutineScope = coroutineScope,
-            defaultAnimationSpec = spring(
-                stiffness = Spring.StiffnessVeryLow / 20
-            )
-        )
-    }
+    // FIXME
 
-    LaunchedEffect(Unit) {
-        inputSource.addFirst(Child1)
-        inputSource.addFirst(Child2)
-        inputSource.addFirst(Child3)
-        inputSource.addFirst(Child4)
-    }
-
-    var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by createTransitionParams(elementSize)
-    val uiProps = remember(transitionParams) {
-        PromoterProps<NavTarget>(
-            childSize = 100.dp,
-            transitionParams = transitionParams
-        )
-    }
-    val render = remember(uiProps) { promoter.segments.map { uiProps.map(it) } }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        Children(
-            frameModel = render.collectAsState(listOf()),
-            modifier = Modifier
-                .weight(0.9f)
-                .padding(
-                    horizontal = 64.dp,
-                    vertical = 12.dp
-                ),
-            onElementSizeChanged = { elementSize = it },
-            element = {
-                Element(
-                    frameModel = it,
-                    modifier = Modifier.size(100.dp)
-                )
-            }
-        )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.1f)
-                .padding(4.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Button(
-                onClick = { inputSource.addFirst(NavTarget.values().random()) }
-            ) {
-                Text("Add")
-            }
-        }
-    }
+//    val promoter = remember { Promoter<NavTarget>() }
+//    val coroutineScope = rememberCoroutineScope()
+//    val inputSource: AnimatedInputSource<NavTarget, Promoter.State> = remember {
+//        AnimatedInputSource(
+//            navModel = promoter,
+//            coroutineScope = coroutineScope,
+//            defaultAnimationSpec = spring(
+//                stiffness = Spring.StiffnessVeryLow / 20
+//            )
+//        )
+//    }
+//
+//    LaunchedEffect(Unit) {
+//        inputSource.addFirst(Child1)
+//        inputSource.addFirst(Child2)
+//        inputSource.addFirst(Child3)
+//        inputSource.addFirst(Child4)
+//    }
+//
+//    var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
+//    val transitionParams by createTransitionParams(elementSize)
+//    val uiProps = remember(transitionParams) {
+//        PromoterProps<NavTarget>(
+//            childSize = 100.dp,
+//            transitionParams = transitionParams
+//        )
+//    }
+//    val render = remember(uiProps) { promoter.segments.map { uiProps.map(it) } }
+//
+//    Column(
+//        modifier = Modifier
+//            .fillMaxSize()
+//    ) {
+//        Children(
+//            frameModel = render.collectAsState(listOf()),
+//            modifier = Modifier
+//                .weight(0.9f)
+//                .padding(
+//                    horizontal = 64.dp,
+//                    vertical = 12.dp
+//                ),
+//            onElementSizeChanged = { elementSize = it },
+//            element = {
+//                Element(
+//                    frameModel = it,
+//                    modifier = Modifier.size(100.dp)
+//                )
+//            }
+//        )
+//
+//        Row(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .weight(0.1f)
+//                .padding(4.dp),
+//            horizontalArrangement = Arrangement.SpaceEvenly
+//        ) {
+//            Button(
+//                onClick = { inputSource.addFirst(NavTarget.values().random()) }
+//            ) {
+//                Text("Add")
+//            }
+//        }
+//    }
 }

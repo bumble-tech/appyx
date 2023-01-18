@@ -36,67 +36,69 @@ sealed class DatingCardsNavTarget {
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
-    val cards = remember {
-        Cards<DatingCardsNavTarget>(
-            initialItems = Profile.allProfiles.shuffled().map {
-                DatingCardsNavTarget.ProfileCard(it)
-            }
-        )
-    }
+    // FIXME
 
-    val coroutineScope = rememberCoroutineScope()
-    val drag = remember { DragProgressInputSource(cards, coroutineScope) }
-
-    var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by createTransitionParams(elementSize)
-    val uiProps =
-        remember(transitionParams) { CardsProps<DatingCardsNavTarget>(transitionParams) }
-    val render = remember(uiProps) { cards.segments.map { uiProps.map(it) } }
-
-    val density = LocalDensity.current
-
-    Children(
-        modifier = modifier
-            .fillMaxSize()
-            .background(appyx_dark)
-            .padding(16.dp),
-        frameModel = render.collectAsState(listOf()),
-        onElementSizeChanged = { elementSize = it },
-        element = {
-            ElementWrapper(
-                frameModel = it,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(it.navElement.key) {
-                        detectDragGestures(
-                            onDragStart = { position ->
-                                if (drag.gestureFactory == null) {
-                                    drag.gestureFactory = { dragAmount ->
-                                        uiProps.createGesture(position, dragAmount, density)
-                                    }
-                                }
-                            },
-                            onDrag = { change, dragAmount ->
-                                change.consume()
-                                drag.addDeltaProgress(dragAmount)
-                            },
-                            onDragEnd = {
-                                drag.gestureFactory = null
-                                drag.settle(
-                                    roundUpThreshold = 0.15f,
-                                    roundUpAnimationSpec = spring(
-                                        stiffness = Spring.StiffnessLow
-                                    ),
-                                    roundDownAnimationSpec = spring(
-                                        stiffness = Spring.StiffnessMedium
-                                    )
-                                )
-                            }
-                        )
-                    }
-            )
-        }
-    )
+//    val cards = remember {
+//        Cards<DatingCardsNavTarget>(
+//            initialItems = Profile.allProfiles.shuffled().map {
+//                DatingCardsNavTarget.ProfileCard(it)
+//            }
+//        )
+//    }
+//
+//    val coroutineScope = rememberCoroutineScope()
+//    val drag = remember { DragProgressInputSource(cards, coroutineScope) }
+//
+//    var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
+//    val transitionParams by createTransitionParams(elementSize)
+//    val uiProps =
+//        remember(transitionParams) { CardsProps<DatingCardsNavTarget>(transitionParams) }
+//    val render = remember(uiProps) { cards.segments.map { uiProps.map(it) } }
+//
+//    val density = LocalDensity.current
+//
+//    Children(
+//        modifier = modifier
+//            .fillMaxSize()
+//            .background(appyx_dark)
+//            .padding(16.dp),
+//        frameModel = render.collectAsState(listOf()),
+//        onElementSizeChanged = { elementSize = it },
+//        element = {
+//            ElementWrapper(
+//                frameModel = it,
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .pointerInput(it.navElement.key) {
+//                        detectDragGestures(
+//                            onDragStart = { position ->
+//                                if (drag.gestureFactory == null) {
+//                                    drag.gestureFactory = { dragAmount ->
+//                                        uiProps.createGesture(position, dragAmount, density)
+//                                    }
+//                                }
+//                            },
+//                            onDrag = { change, dragAmount ->
+//                                change.consume()
+//                                drag.addDeltaProgress(dragAmount)
+//                            },
+//                            onDragEnd = {
+//                                drag.gestureFactory = null
+//                                drag.settle(
+//                                    roundUpThreshold = 0.15f,
+//                                    roundUpAnimationSpec = spring(
+//                                        stiffness = Spring.StiffnessLow
+//                                    ),
+//                                    roundDownAnimationSpec = spring(
+//                                        stiffness = Spring.StiffnessMedium
+//                                    )
+//                                )
+//                            }
+//                        )
+//                    }
+//            )
+//        }
+//    )
 }
 
 @Composable

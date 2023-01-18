@@ -5,13 +5,13 @@ import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 class SpotlightFader<NavTarget>(
     transitionParams: TransitionParams
-) : UiProps<NavTarget, Spotlight.State> {
+) : Interpolator<NavTarget, SpotlightModel.State> {
     private val width = transitionParams.bounds.width
 
     class Props(
@@ -26,13 +26,13 @@ class SpotlightFader<NavTarget>(
         alpha = 0f
     )
 
-    private fun Spotlight.State.toProps(): Props =
+    private fun SpotlightModel.State.toProps(): Props =
         when (this) {
-            Spotlight.State.ACTIVE -> visible
+            SpotlightModel.State.ACTIVE -> visible
             else -> hidden
         }
 
-    override fun map(segment: TransitionModel.Segment<NavTarget, Spotlight.State>): List<FrameModel<NavTarget, Spotlight.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, SpotlightModel.State>): List<FrameModel<NavTarget, SpotlightModel.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
@@ -45,7 +45,8 @@ class SpotlightFader<NavTarget>(
             FrameModel(
                 navElement = t1,
                 modifier = Modifier
-                    .alpha(alpha)
+                    .alpha(alpha),
+                progress = segment.progress
             )
         }
     }

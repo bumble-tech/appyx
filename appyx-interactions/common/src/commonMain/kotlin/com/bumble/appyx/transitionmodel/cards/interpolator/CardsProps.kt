@@ -16,8 +16,8 @@ import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.transitionmodel.cards.Cards
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
@@ -26,7 +26,7 @@ import kotlin.math.roundToInt
 
 class CardsProps<NavTarget : Any>(
     transitionParams: TransitionParams
-) : UiProps<NavTarget, Cards.State> {
+) : Interpolator<NavTarget, Cards.State> {
     private val width = transitionParams.bounds.width
     private val height = transitionParams.bounds.height
 
@@ -122,7 +122,8 @@ class CardsProps<NavTarget : Any>(
                         rotationZ = rotationZ,
                         transformOrigin = TransformOrigin(0.5f, 1f)
                     )
-                    .scale(scale)
+                    .scale(scale),
+                progress = segment.progress
             )
         }
     }

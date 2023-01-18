@@ -1,4 +1,4 @@
-package com.bumble.appyx.navmodel.promoter.navmodel2.transitionhandler
+package com.bumble.appyx.transitionmodel.promoter.interpolator
 
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
@@ -9,11 +9,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.TransitionModel.Segment
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.transitionmodel.promoter.Promoter.State
 import kotlin.math.cos
 import kotlin.math.min
@@ -24,7 +24,7 @@ import kotlin.math.sin
 class PromoterProps<NavTarget>(
     private val childSize: Dp,
     transitionParams: TransitionParams
-) : UiProps<NavTarget, State> {
+) : Interpolator<NavTarget, State> {
     private val halfWidthDp = (transitionParams.bounds.width.value - childSize.value) / 2
     private val halfHeightDp = (transitionParams.bounds.height.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
@@ -134,7 +134,8 @@ class PromoterProps<NavTarget>(
                         rotationY = rotationY,
                         rotationZ = rotationZ
                     )
-                    .scale(scale)
+                    .scale(scale),
+                progress = segment.progress
             )
         }
     }

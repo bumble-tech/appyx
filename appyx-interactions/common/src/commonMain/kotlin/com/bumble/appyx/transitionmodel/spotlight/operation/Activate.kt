@@ -4,8 +4,8 @@ import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
 import com.bumble.appyx.transitionmodel.spotlight.currentIndex
 
 @Parcelize
@@ -47,6 +47,6 @@ class Activate<NavTarget : Any>(private val index: Int) : Operation<NavTarget, S
 }
 
 
-fun <T : Any> Spotlight<T>.activate(index: Int) {
+fun <T : Any> SpotlightModel<T>.activate(index: Int) {
     enqueue(Activate(index))
 }

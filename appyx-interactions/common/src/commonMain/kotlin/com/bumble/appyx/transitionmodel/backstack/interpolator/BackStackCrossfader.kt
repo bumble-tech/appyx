@@ -5,13 +5,13 @@ import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 
 class BackStackCrossfader<NavTarget>(
     transitionParams: TransitionParams
-) : UiProps<NavTarget, BackStack.State> {
+) : Interpolator<NavTarget, BackStack.State> {
     private val width = transitionParams.bounds.width
 
     class Props(
@@ -45,7 +45,8 @@ class BackStackCrossfader<NavTarget>(
             FrameModel(
                 navElement = t1,
                 modifier = Modifier
-                    .alpha(alpha)
+                    .alpha(alpha),
+                progress = segment.progress
             )
         }
     }
