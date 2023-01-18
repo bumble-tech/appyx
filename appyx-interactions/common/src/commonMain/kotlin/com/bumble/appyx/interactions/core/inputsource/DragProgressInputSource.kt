@@ -1,5 +1,6 @@
 package com.bumble.appyx.interactions.core.inputsource
 
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
@@ -36,7 +37,11 @@ class DragProgressInputSource<NavTarget : Any, State>(
         consumeDrag(dragAmount)
     }
 
-    override fun onDragEnd() {
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
         _gestureFactory = null
     }
 

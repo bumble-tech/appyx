@@ -39,15 +39,15 @@ class AnimatedInputSource<NavTarget : Any, State>(
 
     fun settle(
         // FIXME @FloatRange(from = 0.0, to = 1.0)
-        roundUpThreshold: Float = 0.5f,
-        roundUpAnimationSpec: AnimationSpec<Float> = spring(),
-        roundDownAnimationSpec: AnimationSpec<Float> = spring(),
+        completionThreshold: Float = 0.5f,
+        completeGestureSpec: AnimationSpec<Float> = spring(),
+        revertGestureSpec: AnimationSpec<Float> = spring(),
     ) {
         val currentProgress = model.currentProgress
-        val (targetValue, animationSpec) = if (currentProgress % 1 < roundUpThreshold) {
-            floor(currentProgress).toInt() to roundDownAnimationSpec
+        val (targetValue, animationSpec) = if (currentProgress % 1 < completionThreshold) {
+            floor(currentProgress).toInt() to revertGestureSpec
         } else {
-            ceil(currentProgress).toInt() to roundUpAnimationSpec
+            ceil(currentProgress).toInt() to completeGestureSpec
         }
 
         Logger.log(TAG, "Settle ${model.currentProgress} to: $targetValue")

@@ -67,7 +67,11 @@ fun DatingCards(modifier: Modifier = Modifier) {
                                 cards.onDrag(dragAmount, density)
                             },
                             onDragEnd = {
-                                cards.onDragEnd()
+                                cards.onDragEnd(
+                                    completionThreshold = 0.15f,
+                                    completeGestureSpec = spring(stiffness = Spring.StiffnessLow),
+                                    revertGestureSpec = spring(stiffness = Spring.StiffnessMedium)
+                                )
                             }
                         )
                     }

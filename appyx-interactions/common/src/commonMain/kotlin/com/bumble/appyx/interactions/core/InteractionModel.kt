@@ -1,8 +1,11 @@
 package com.bumble.appyx.interactions.core
 
 import DisableAnimations
+import androidx.annotation.FloatRange
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.Draggable
@@ -15,8 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Density
 
 
 open class InteractionModel<NavTarget : Any, NavState : Any>(
@@ -71,19 +72,21 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
         drag.onDrag(dragAmount, density)
     }
 
-    override fun onDragEnd() {
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
         drag.onDragEnd()
-        settle()
+        settle(completionThreshold, revertGestureSpec, completeGestureSpec)
     }
 
-    // TODO: figure out a way of changing the params here
-    fun settle(
-        // FIXME @FloatRange(from = 0.0, to = 1.0)
-        roundUpThreshold: Float = 0.5f,
-        roundUpAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-        roundDownAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    private fun settle(
+        @FloatRange(from = 0.0, to = 1.0) completionThreshold: Float = 0.5f,
+        completeGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+        revertGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     ) {
-        animated.settle(roundUpThreshold, roundUpAnimationSpec, roundDownAnimationSpec)
+        animated.settle(completionThreshold, completeGestureSpec, revertGestureSpec)
     }
 
     fun settleDefault() {
