@@ -12,7 +12,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 class SpotlightFader<NavTarget>(
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, SpotlightModel.State> {
-    private val width = transitionParams.bounds.width
+    private val width = transitionParams.bounds.widthPx
 
     class Props(
         val alpha: Float

@@ -27,8 +27,8 @@ import kotlin.math.roundToInt
 class CardsProps<NavTarget : Any>(
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, Cards.State> {
-    private val width = transitionParams.bounds.width
-    private val height = transitionParams.bounds.height
+    private val width = transitionParams.bounds.widthDp
+    private val height = transitionParams.bounds.heightDp
 
     private data class Props(
         val scale: Float = 1f,

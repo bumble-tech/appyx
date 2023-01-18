@@ -60,9 +60,7 @@ fun BackStackExperimentDebug() {
         inputSource.operation(NewRoot(Child1))
     }
 
-    var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by createTransitionParams(elementSize)
-    val uiProps = remember(transitionParams) { BackStackSlider<NavTarget>(transitionParams) }
+    val uiProps = remember { BackStackSlider<NavTarget>() }
     val render = remember(uiProps) { backStack.segments.map { uiProps.map(it) } }
 
     Column(
@@ -74,13 +72,14 @@ fun BackStackExperimentDebug() {
             inputSource.setNormalisedProgress(it)
         })
 
-        Children(
-            modifier = Modifier.padding(
-                horizontal = 64.dp,
-                vertical = 12.dp
-            ),
-            frameModel = render.collectAsState(listOf()),
-            onElementSizeChanged = { elementSize = it }
-        )
+        // FIXME
+//        Children(
+//            modifier = Modifier.padding(
+//                horizontal = 64.dp,
+//                vertical = 12.dp
+//            ),
+//            frameModel = render.collectAsState(listOf()),
+//            onElementSizeChanged = { elementSize = it }
+//        )
     }
 }

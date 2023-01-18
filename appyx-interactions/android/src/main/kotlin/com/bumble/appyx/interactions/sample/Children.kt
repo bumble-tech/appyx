@@ -8,38 +8,47 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 
 
 @ExperimentalMaterialApi
 @Composable
-fun <NavTarget, NavState> Children(
-    frameModel: State<List<FrameModel<NavTarget, NavState>>>,
+fun <NavTarget : Any, NavState : Any> Children(
+    interactionModel: InteractionModel<NavTarget, NavState>,
     modifier: Modifier = Modifier,
     element: @Composable (FrameModel<NavTarget, NavState>) -> Unit = {
         Element(frameModel = it)
     },
-    onElementSizeChanged: (IntSize) -> Unit = {},
 ) {
+    val density = LocalDensity.current
+    val frames = interactionModel.frames.collectAsState(listOf())
+
     Box(
         modifier = modifier
             .fillMaxSize()
-            .onSizeChanged(onElementSizeChanged)
+            .onSizeChanged {
+                interactionModel.updateBounds(
+                    TransitionBounds(density, it.width, it.height)
+                )
+            }
     ) {
-        frameModel.value.forEach {
-            key(it.navElement.key) {
-                element.invoke(it)
+        frames.value.forEach { frameModel ->
+            key(frameModel.navElement.key) {
+                element.invoke(frameModel)
             }
         }
     }

@@ -37,7 +37,9 @@ class DragProgressInputSource<NavTarget : Any, State>(
     }
 
     private fun consumeDrag(dragAmount: Offset) {
-        requireNotNull(_gestureFactory)
+        require(dragAmount.isValid()) { "dragAmount is NaN" }
+        require(dragAmount.getDistance() > 0f) { "dragAmount distance is 0" }
+        requireNotNull(_gestureFactory) { "This should have been set already in this class" }
         if (gesture == null) {
             gesture = _gestureFactory!!.invoke(dragAmount)
         }
@@ -45,6 +47,7 @@ class DragProgressInputSource<NavTarget : Any, State>(
         requireNotNull(gesture)
         val operation = gesture!!.operation
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
+        require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
         val currentProgress = model.currentProgress
         val totalTarget = currentProgress + deltaProgress
 

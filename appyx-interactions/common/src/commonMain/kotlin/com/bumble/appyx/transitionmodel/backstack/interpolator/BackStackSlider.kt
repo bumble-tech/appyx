@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.lerp as lerpUnit
 class BackStackSlider<NavTarget>(
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, BackStack.State> {
-    private val width = transitionParams.bounds.width
-    private val height = transitionParams.bounds.height
+    private val width = transitionParams.bounds.widthDp
+    private val height = transitionParams.bounds.heightDp
 
     data class Props(
         val offset: DpOffset,

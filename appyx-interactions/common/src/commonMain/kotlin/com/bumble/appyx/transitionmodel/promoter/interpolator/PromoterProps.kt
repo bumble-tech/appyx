@@ -25,8 +25,8 @@ class PromoterProps<NavTarget>(
     private val childSize: Dp,
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, State> {
-    private val halfWidthDp = (transitionParams.bounds.width.value - childSize.value) / 2
-    private val halfHeightDp = (transitionParams.bounds.height.value - childSize.value) / 2
+    private val halfWidthDp = (transitionParams.bounds.widthDp.value - childSize.value) / 2
+    private val halfHeightDp = (transitionParams.bounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
     data class Props(
