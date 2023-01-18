@@ -31,7 +31,7 @@ class AnimatedInputSource<NavTarget : Any, State>(
     ) {
         model.enqueue(operation)
         animateModel(
-            target = model.currentProgress,
+            target = model.maxProgress,
             animationSpec = animationSpec,
             cancelVelocity = false,
         )
