@@ -14,7 +14,7 @@ import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -22,7 +22,7 @@ import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
 class PromoterProps<NavTarget>(
-    private val childSize: Dp,
+    childSize: Dp,
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, State> {
     private val halfWidthDp = (transitionParams.bounds.width.value - childSize.value) / 2

@@ -1,16 +1,15 @@
 package com.bumble.appyx.transitionmodel.promoter.operation
 
 import androidx.compose.animation.core.AnimationSpec
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.inputsource.InputSource
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State.CREATED
+import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterElement
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.CREATED
 
 @Parcelize
 data class AddFirst<NavTarget>(
@@ -37,15 +36,9 @@ data class AddFirst<NavTarget>(
     }
 }
 
-fun <NavTarget : Any> InputSource<NavTarget, State>.addFirst(
-    navTarget: NavTarget
-) {
-    operation(AddFirst(navTarget))
-}
-
-fun <NavTarget : Any> AnimatedInputSource<NavTarget, State>.addFirst(
+fun <NavTarget : Any> Promoter<NavTarget>.addFirst(
     navTarget: NavTarget,
-    animationSpec: AnimationSpec<Float>
+    animationSpec: AnimationSpec<Float> = defaultAnimationSpec
 ) {
     operation(AddFirst(navTarget), animationSpec)
 }

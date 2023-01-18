@@ -21,6 +21,4 @@ open class Spotlight<NavTarget : Any>(
     interpolator = propsMapper,
     gestureFactory = gestureFactory,
     defaultAnimationSpec = animationSpec
-) {
-
-}
+)

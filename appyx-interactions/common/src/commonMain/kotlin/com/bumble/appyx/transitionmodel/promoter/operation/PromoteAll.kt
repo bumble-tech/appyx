@@ -1,13 +1,12 @@
 package com.bumble.appyx.transitionmodel.promoter.operation
 
 import androidx.compose.animation.core.AnimationSpec
+import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.inputsource.InputSource
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State
+import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterElements
-import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State
 
 @Parcelize
 class PromoteAll<NavTarget> : PromoterOperation<NavTarget> {
@@ -23,12 +22,7 @@ class PromoteAll<NavTarget> : PromoterOperation<NavTarget> {
     }
 }
 
-
-fun <NavTarget : Any> InputSource<NavTarget, State>.promoteAll() {
-    operation(PromoteAll())
-}
-
-fun <NavTarget : Any> AnimatedInputSource<NavTarget, State>.promoteAll(
+fun <NavTarget : Any> Promoter<NavTarget>.promoteAll(
     animationSpec: AnimationSpec<Float>
 ) {
     operation(PromoteAll(), animationSpec)
