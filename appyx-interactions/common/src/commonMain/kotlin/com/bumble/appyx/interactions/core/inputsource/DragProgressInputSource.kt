@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.core.inputsource
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 
@@ -98,15 +99,19 @@ class DragProgressInputSource<NavTarget : Any, State>(
         model.dropAfter(boundary.toInt())
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
         gesture = null
-        /* FIXME Logger */ println("1 ------")
-        /* FIXME Logger */ println("initial offset was: $dragAmount")
-        /* FIXME Logger */ println("initial deltaProgress was: $deltaProgress")
-        /* FIXME Logger */ println("initial target was: $totalTarget, beyond current segment: $boundary")
-        /* FIXME Logger */ println("remainder progress: ${totalTarget - boundary}")
-        /* FIXME Logger */ println("remainder offset: $remainder")
-        /* FIXME Logger */ println("going back to start, reevaluate")
-        /* FIXME Logger */ println("2 ------")
+        Logger.log(TAG, "1 ------")
+        Logger.log(TAG, "initial offset was: $dragAmount")
+        Logger.log(TAG, "initial deltaProgress was: $deltaProgress")
+        Logger.log(TAG, "initial target was: $totalTarget, beyond current segment: $boundary")
+        Logger.log(TAG, "remainder progress: ${totalTarget - boundary}")
+        Logger.log(TAG, "remainder offset: $remainder")
+        Logger.log(TAG, "going back to start, reevaluate")
+        Logger.log(TAG, "2 ------")
         // TODO without recursion
         return remainder
+    }
+
+    private companion object {
+        private val TAG = DragProgressInputSource::class.java.name
     }
 }

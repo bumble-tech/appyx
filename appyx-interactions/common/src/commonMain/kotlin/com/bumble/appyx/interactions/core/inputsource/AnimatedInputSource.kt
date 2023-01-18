@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.core.inputsource
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
 import kotlinx.coroutines.CoroutineScope
@@ -35,6 +36,7 @@ class AnimatedInputSource<NavTarget : Any, State>(
             cancelVelocity = false,
         )
     }
+
     fun settle(
         // FIXME @FloatRange(from = 0.0, to = 1.0)
         roundUpThreshold: Float = 0.5f,
@@ -48,7 +50,7 @@ class AnimatedInputSource<NavTarget : Any, State>(
             ceil(currentProgress).toInt() to roundUpAnimationSpec
         }
 
-        /* FIXME Logger */ println("Settle ${model.currentProgress} to: $targetValue")
+        Logger.log(TAG, "Settle ${model.currentProgress} to: $targetValue")
         animateModel(
             target = targetValue.toFloat(),
             animationSpec = animationSpec,
@@ -83,5 +85,9 @@ class AnimatedInputSource<NavTarget : Any, State>(
         coroutineScope.launch(Dispatchers.Main) {
             animatable.snapTo(model.currentProgress)
         }
+    }
+
+    private companion object {
+        private val TAG = AnimatedInputSource::class.java.name
     }
 }

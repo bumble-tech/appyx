@@ -11,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
-class DebuglProgressInputSource<NavTarget, State>(
+class DebugProgressInputSource<NavTarget, State>(
     private val navModel: BaseTransitionModel<NavTarget, State>,
     private val coroutineScope: CoroutineScope,
 ) : InputSource<NavTarget, State> {
@@ -30,12 +30,16 @@ class DebuglProgressInputSource<NavTarget, State>(
     }
 
     fun settle() {
-        Logger.log("input source", "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
+        Logger.log(TAG, "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
         coroutineScope.launch {
             animatable.snapTo(progress)
             result = animatable.animateTo(progress.roundToInt().toFloat(), spring()) {
                 setNormalisedProgress(this.value)
             }
         }
+    }
+
+    private companion object {
+        private val TAG = DebugProgressInputSource::class.java.name
     }
 }

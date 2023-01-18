@@ -74,19 +74,19 @@ abstract class BaseTransitionModel<NavTarget, NavState>(
             queue.add(newState)
             true
         } else {
-            Logger.log("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
+            Logger.log(TAG, "Operation $operation is not applicable on state: $baseline")
             false
         }
     }
 
     override fun setProgress(progress: Float) {
         val progress = progress.coerceAtLeast(1f)
-        Logger.log("BaseNavModel", "Progress update: $progress")
+        Logger.log(TAG, "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
             //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
             // onTransitionFinished(state.value.fromState.map { it.key })
-            Logger.log("Transition finished", "onTransitionFinished()")
+            Logger.log(TAG, "onTransitionFinished()")
         }
 
         lastRecordedProgress = progress
@@ -97,5 +97,9 @@ abstract class BaseTransitionModel<NavTarget, NavState>(
         while (segmentIndex < queue.size) {
             queue.removeLast()
         }
+    }
+
+    private companion object {
+        private val TAG = BaseTransitionModel::class.java.name
     }
 }
