@@ -23,13 +23,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.sample.BackStackExperimentDebug
 import com.bumble.appyx.interactions.sample.DatingCards
 import com.bumble.appyx.interactions.sample.PromoterExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperimentDebug
 import com.bumble.appyx.interactions.theme.AppyxTheme
 import com.bumble.appyx.interactions.theme.appyx_dark
-import com.bumble.appyx.sandbox2.navmodel2.BackStackExperimentDebug
 
 @ExperimentalMaterialApi
 @ExperimentalUnitApi

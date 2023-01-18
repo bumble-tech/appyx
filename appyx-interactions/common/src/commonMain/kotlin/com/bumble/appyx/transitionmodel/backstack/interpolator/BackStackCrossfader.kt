@@ -7,11 +7,11 @@ import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
-import com.bumble.appyx.transitionmodel.backstack.BackStack
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
 class BackStackCrossfader<NavTarget>(
     transitionParams: TransitionParams
-) : Interpolator<NavTarget, BackStack.State> {
+) : Interpolator<NavTarget, BackStackModel.State> {
     private val width = transitionParams.bounds.width
 
     class Props(
@@ -26,13 +26,13 @@ class BackStackCrossfader<NavTarget>(
         alpha = 0f
     )
 
-    private fun BackStack.State.toProps(): Props =
+    private fun BackStackModel.State.toProps(): Props =
         when (this) {
-            BackStack.State.ACTIVE -> visible
+            BackStackModel.State.ACTIVE -> visible
             else -> hidden
         }
 
-    override fun map(segment: TransitionModel.Segment<NavTarget, BackStack.State>): List<FrameModel<NavTarget, BackStack.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, BackStackModel.State>): List<FrameModel<NavTarget, BackStackModel.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->

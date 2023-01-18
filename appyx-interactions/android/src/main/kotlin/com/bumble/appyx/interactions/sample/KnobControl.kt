@@ -27,21 +27,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.sample.NavTarget.Child1
-import com.bumble.appyx.interactions.sample.NavTarget.Child2
-import com.bumble.appyx.interactions.sample.NavTarget.Child3
-import com.bumble.appyx.interactions.sample.NavTarget.Child4
-import com.bumble.appyx.interactions.sample.NavTarget.Child5
-import com.bumble.appyx.interactions.sample.NavTarget.Child6
-import com.bumble.appyx.interactions.sample.NavTarget.Child7
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.theme.appyx_yellow1
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import kotlin.math.roundToInt
-
-
-private val spotlight = SpotlightModel(
-    items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7),
-)
 
 
 @ExperimentalMaterialApi
@@ -62,8 +50,8 @@ fun KnobControl(
     LaunchedEffect(swipeableState.progress) {
         val progress = swipeableState.progress
         val normalisedProgress = progress.from + (progress.to - progress.from) * progress.fraction
-//        Log.d("swipeable", swipeableState.progress.toString())
-//        Log.d("swipeable", normalisedProgress.toString())
+        Logger.log("swipeable", swipeableState.progress.toString())
+        Logger.log("swipeable", normalisedProgress.toString())
 
         onValueChange(normalisedProgress)
     }

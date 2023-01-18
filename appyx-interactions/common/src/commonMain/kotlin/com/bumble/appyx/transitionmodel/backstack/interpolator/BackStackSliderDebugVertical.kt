@@ -9,15 +9,15 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel.Segment
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.transitionmodel.backstack.BackStack
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.DROPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.POPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.REPLACED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.STASHED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.DROPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.POPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.REPLACED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.STASHED
 import androidx.compose.ui.graphics.lerp as lerpGraphics
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class BackStackSliderDebugVertical<NavTarget> : Interpolator<NavTarget, BackStack.State> {
+class BackStackSliderDebugVertical<NavTarget> : Interpolator<NavTarget, BackStackModel.State> {
     private val size = 100.dp
 
     class Props(
@@ -35,10 +35,10 @@ class BackStackSliderDebugVertical<NavTarget> : Interpolator<NavTarget, BackStac
         color = Color.Blue, // (0x550000FF),
     )
 
-    private fun BackStack.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
+    private fun BackStackModel.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
         when (this) {
-            BackStack.State.CREATED -> created
-            BackStack.State.ACTIVE -> active
+            BackStackModel.State.CREATED -> created
+            BackStackModel.State.ACTIVE -> active
             POPPED -> Props(
                 offset = DpOffset(0.dp, ((popIndex) * -size.value).dp),
                 color = Color.Red,
@@ -57,7 +57,7 @@ class BackStackSliderDebugVertical<NavTarget> : Interpolator<NavTarget, BackStac
             )
         }
 
-    override fun map(segment: Segment<NavTarget, BackStack.State>): List<FrameModel<NavTarget, BackStack.State>> {
+    override fun map(segment: Segment<NavTarget, BackStackModel.State>): List<FrameModel<NavTarget, BackStackModel.State>> {
         val fromState = segment.navTransition.fromState
         val targetState = segment.navTransition.targetState
         val fromStashed = fromState.filter { it.state == STASHED }

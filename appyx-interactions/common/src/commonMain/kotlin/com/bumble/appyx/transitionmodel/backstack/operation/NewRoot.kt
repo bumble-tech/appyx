@@ -7,9 +7,10 @@ import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.transitionmodel.backstack.BackStack
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.active
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.ACTIVE
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.CREATED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
 
 /**
  * Operation:
@@ -21,10 +22,10 @@ data class NewRoot<NavTarget : Any>(
     private val navTarget: @RawValue NavTarget
 ) :  BackStackOperation<NavTarget> {
 
-    override fun isApplicable(elements: NavElements<NavTarget, BackStack.State>): Boolean =
+    override fun isApplicable(elements: NavElements<NavTarget, BackStackModel.State>): Boolean =
         elements.size > 1 || elements.first().key != navTarget
 
-    override fun invoke(elements: NavElements<NavTarget, BackStack.State>): NavTransition<NavTarget, BackStack.State> {
+    override fun invoke(elements: NavElements<NavTarget, BackStackModel.State>): NavTransition<NavTarget, BackStackModel.State> {
         val current = elements.active
         requireNotNull(current) { "No previous elements, state=$elements" }
 
@@ -40,7 +41,7 @@ data class NewRoot<NavTarget : Any>(
                 element.transitionTo(
                     newTargetState = when (index) {
                         fromState.lastIndex -> ACTIVE
-                        else -> BackStack.State.DROPPED
+                        else -> BackStackModel.State.DROPPED
                     },
                     operation = this
                 )
@@ -50,5 +51,5 @@ data class NewRoot<NavTarget : Any>(
 }
 
 fun <NavTarget : Any> BackStack<NavTarget>.newRoot(navTarget: NavTarget) {
-    enqueue(NewRoot(navTarget))
+    operation(NewRoot(navTarget))
 }

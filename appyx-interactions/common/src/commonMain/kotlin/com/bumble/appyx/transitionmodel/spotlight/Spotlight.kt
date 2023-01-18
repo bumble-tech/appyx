@@ -15,10 +15,12 @@ open class Spotlight<NavTarget : Any>(
     propsMapper: Interpolator<NavTarget, SpotlightModel.State>,
     gestureFactory: GestureFactory<NavTarget, SpotlightModel.State> = GestureFactory.Noop(),
     animationSpec: AnimationSpec<Float> = spring(),
+    isDebug: Boolean = false
 ) : InteractionModel<NavTarget, SpotlightModel.State>(
     scope = scope,
     model = model,
     interpolator = propsMapper,
     gestureFactory = gestureFactory,
-    defaultAnimationSpec = animationSpec
+    defaultAnimationSpec = animationSpec,
+    isDebug = isDebug
 )

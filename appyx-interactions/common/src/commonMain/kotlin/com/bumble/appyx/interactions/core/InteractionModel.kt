@@ -7,6 +7,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
+import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
@@ -26,7 +27,8 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
     interpolator: Interpolator<NavTarget, NavState>,
     gestureFactory: GestureFactory<NavTarget, NavState> = GestureFactory.Noop(),
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    private val disableAnimations: Boolean = false
+    private val disableAnimations: Boolean = false,
+    private val isDebug: Boolean = false
 ) : Draggable {
 
     companion object {
@@ -53,14 +55,19 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
         gestureFactory = gestureFactory
     )
 
+    private val debug = DebugProgressInputSource(
+        navModel = model,
+        coroutineScope = scope
+    )
+
     fun operation(
         operation: Operation<NavTarget, NavState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
-        if (DisableAnimations || disableAnimations) {
-            instant.operation(operation)
-        } else {
-            animated.operation(operation, animationSpec)
+        when {
+            isDebug -> debug.operation(operation)
+            DisableAnimations || disableAnimations -> instant.operation(operation)
+            else -> animated.operation(operation, animationSpec)
         }
     }
 
@@ -86,10 +93,19 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
         completeGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
         revertGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     ) {
-        animated.settle(completionThreshold, completeGestureSpec, revertGestureSpec)
+        if (isDebug) {
+            debug.settle()
+        } else {
+            animated.settle(completionThreshold, completeGestureSpec, revertGestureSpec)
+        }
+
     }
 
     fun settleDefault() {
         settle()
+    }
+
+    fun setNormalisedProgress(progress: Float) {
+        debug.setNormalisedProgress(progress)
     }
 }

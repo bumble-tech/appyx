@@ -8,18 +8,18 @@ import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.transitionmodel.backstack.BackStack
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.ACTIVE
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.CREATED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.DROPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.POPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.REPLACED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.STASHED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.DROPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.POPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.REPLACED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.STASHED
 import androidx.compose.ui.unit.lerp as lerpUnit
 
 class BackStackSlider<NavTarget>(
     transitionParams: TransitionParams
-) : Interpolator<NavTarget, BackStack.State> {
+) : Interpolator<NavTarget, BackStackModel.State> {
     private val width = transitionParams.bounds.width
     private val height = transitionParams.bounds.height
 
@@ -45,7 +45,7 @@ class BackStackSlider<NavTarget>(
     )
 
     // FIXME single Int, based on relative position to ACTIVE element
-    private fun BackStack.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
+    private fun BackStackModel.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
         when (this) {
             ACTIVE -> noOffset
             CREATED -> outsideRight
@@ -55,7 +55,7 @@ class BackStackSlider<NavTarget>(
             DROPPED -> outsideLeft.copy(offsetMultiplier = dropIndex + 1)
         }
 
-    override fun map(segment: TransitionModel.Segment<NavTarget, BackStack.State>): List<FrameModel<NavTarget, BackStack.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, BackStackModel.State>): List<FrameModel<NavTarget, BackStackModel.State>> {
         val (fromState, targetState) = segment.navTransition
 
         // TODO memoize per segment, as only percentage will change
