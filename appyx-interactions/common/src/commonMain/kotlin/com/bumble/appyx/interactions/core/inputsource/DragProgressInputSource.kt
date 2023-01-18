@@ -8,7 +8,7 @@ import com.bumble.appyx.interactions.core.ui.GestureFactory
 
 class DragProgressInputSource<NavTarget : Any, State>(
     private val model: TransitionModel<NavTarget, State>,
-    private val gestureFactory: GestureFactory<NavTarget, State>
+    private val gestureFactory: () -> GestureFactory<NavTarget, State>
 ) : Draggable {
 
     // TODO get rid of this
@@ -23,10 +23,10 @@ class DragProgressInputSource<NavTarget : Any, State>(
     private var gesture: Gesture<NavTarget, State>? = null
 
     override fun onDrag(dragAmount: Offset, density: Density) {
-        gestureFactory.createGesture(dragAmount, density)
+        gestureFactory().createGesture(dragAmount, density)
         if (_gestureFactory == null) {
             _gestureFactory = { dragAmount ->
-                gestureFactory.createGesture(dragAmount, density)
+                gestureFactory().createGesture(dragAmount, density)
             }
         }
         consumeDrag(dragAmount)

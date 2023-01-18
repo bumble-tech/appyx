@@ -61,7 +61,7 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
 
     private val drag = DragProgressInputSource(
         model = model,
-        gestureFactory = _gestureFactory
+        gestureFactory = { _gestureFactory }
     )
 
     override fun updateBounds(transitionBounds: TransitionBounds) {
