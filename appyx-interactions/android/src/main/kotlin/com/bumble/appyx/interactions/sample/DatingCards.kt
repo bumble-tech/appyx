@@ -12,7 +12,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.theme.appyx_dark
@@ -30,8 +29,6 @@ sealed class DatingCardsNavTarget {
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
-    var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by createTransitionParams(elementSize)
     val coroutineScope = rememberCoroutineScope()
 
     val cards = remember {
@@ -42,8 +39,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     DatingCardsNavTarget.ProfileCard(it)
                 }
             ),
-            propsMapper = CardsProps(transitionParams),
-            gestureFactory = CardsProps.Gestures(transitionParams),
+            interpolator = { CardsProps(it) },
+            gestureFactory = { CardsProps.Gestures(it) },
         )
     }
 
@@ -52,8 +49,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
             .fillMaxSize()
             .background(appyx_dark)
             .padding(16.dp),
-        frameModel = cards.frames.collectAsState(listOf()),
-        onElementSizeChanged = { elementSize = it },
+        interactionModel = cards,
         element = {
             ElementWrapper(
                 frameModel = it,

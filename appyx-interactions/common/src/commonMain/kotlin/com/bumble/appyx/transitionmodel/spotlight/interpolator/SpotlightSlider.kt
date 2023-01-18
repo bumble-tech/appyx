@@ -23,8 +23,8 @@ class SpotlightSlider<NavTarget>(
     transitionBounds: TransitionBounds,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : Interpolator<NavTarget, SpotlightModel.State> {
-    private val width = transitionBounds.width
-    private val height = transitionBounds.height
+    private val width = transitionBounds.widthDp
+    private val height = transitionBounds.heightDp
 
     data class Props(
         val offset: DpOffset,

@@ -16,9 +16,9 @@ import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
@@ -26,9 +26,9 @@ import kotlin.math.roundToInt
 
 
 class CardsProps<NavTarget : Any>(
-    transitionParams: TransitionParams
+    transitionBounds: TransitionBounds
 ) : Interpolator<NavTarget, CardsModel.State> {
-    private val width = transitionParams.bounds.width
+    private val width = transitionBounds.widthDp.value
 
     private data class Props(
         val scale: Float = 1f,
@@ -51,13 +51,13 @@ class CardsProps<NavTarget : Any>(
     )
 
     private val votePass = top.copy(
-        positionalOffsetX = (-voteCardPositionMultiplier * width.value).dp,
+        positionalOffsetX = (-voteCardPositionMultiplier * width).dp,
         rotationZ = -45f,
         zIndex = 2f,
     )
 
     private val voteLike = top.copy(
-        positionalOffsetX = (voteCardPositionMultiplier * width.value).dp,
+        positionalOffsetX = (voteCardPositionMultiplier * width).dp,
         rotationZ = 45f,
         zIndex = 2f,
     )
@@ -127,11 +127,11 @@ class CardsProps<NavTarget : Any>(
     }
 
     class Gestures<NavTarget>(
-        transitionParams: TransitionParams,
+        transitionBounds: TransitionBounds
     ) : GestureFactory<NavTarget, CardsModel.State> {
 
-        private val width = transitionParams.bounds.width
-        private val height = transitionParams.bounds.height
+        private val width = transitionBounds.widthPx
+        private val height = transitionBounds.widthPx
 
         private var touchPosition: Offset? = null
 
@@ -143,8 +143,6 @@ class CardsProps<NavTarget : Any>(
             delta: Offset,
             density: Density
         ): Gesture<NavTarget, CardsModel.State> {
-            val width = with(density) { width.toPx() }
-            val height = with(density) { height.toPx() }
             val verticalRatio = (touchPosition?.y ?: 0f) / height // 0..1
             // For a perfect solution we should keep track where the touch is currently at, at any
             // given moment; then do the calculation in reverse, how much of a horizontal gesture

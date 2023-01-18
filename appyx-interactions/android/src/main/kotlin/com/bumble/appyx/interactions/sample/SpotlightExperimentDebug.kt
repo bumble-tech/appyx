@@ -1,7 +1,6 @@
 package com.bumble.appyx.interactions.sample
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -9,14 +8,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.sample.NavTarget.Child2
@@ -38,21 +32,16 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.previous
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperimentDebug() {
-    var elementSize by remember { mutableStateOf(IntSize(0, 0)) }
-    val transitionParams by createTransitionParams(elementSize)
     val coroutineScope = rememberCoroutineScope()
 
     val spotlight = remember {
         Spotlight(
             scope = coroutineScope,
             model = SpotlightModel(
-                items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7),
+                items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)
             ),
-            propsMapper = SpotlightSlider(
-                transitionParams = transitionParams,
-                orientation = Orientation.Horizontal
-            ),
-            gestureFactory = SpotlightSlider.Gestures(transitionParams),
+            interpolator = { SpotlightSlider(it) },
+            gestureFactory = { SpotlightSlider.Gestures(it) },
             isDebug = true
         )
     }
@@ -82,8 +71,7 @@ fun SpotlightExperimentDebug() {
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
-            frameModel = spotlight.frames.collectAsState(listOf()),
-            onElementSizeChanged = { elementSize = it },
+            interactionModel = spotlight,
             element = {
                 Element(
                     frameModel = it,

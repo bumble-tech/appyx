@@ -6,8 +6,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
@@ -18,10 +18,10 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.STASHED
 import androidx.compose.ui.unit.lerp as lerpUnit
 
 class BackStackSlider<NavTarget>(
-    transitionParams: TransitionParams
+    transitionBounds: TransitionBounds
 ) : Interpolator<NavTarget, BackStackModel.State> {
-    private val width = transitionParams.bounds.width
-    private val height = transitionParams.bounds.height
+    private val width = transitionBounds.widthDp
+    private val height = transitionBounds.heightDp
 
     data class Props(
         val offset: DpOffset,
@@ -45,7 +45,11 @@ class BackStackSlider<NavTarget>(
     )
 
     // FIXME single Int, based on relative position to ACTIVE element
-    private fun BackStackModel.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
+    private fun BackStackModel.State.toProps(
+        stashIndex: Int,
+        popIndex: Int,
+        dropIndex: Int
+    ): Props =
         when (this) {
             ACTIVE -> noOffset
             CREATED -> outsideRight
@@ -77,7 +81,8 @@ class BackStackSlider<NavTarget>(
             val targetDroppedIndex = targetDropped.size - targetDropped.indexOf(t1)
 
             val fromProps = t0.state.toProps(fromStashIndex, fromPoppedIndex, fromDroppedIndex)
-            val targetProps = t1.state.toProps(targetStashIndex, targetPoppedIndex, targetDroppedIndex)
+            val targetProps =
+                t1.state.toProps(targetStashIndex, targetPoppedIndex, targetDroppedIndex)
             val offset = lerpUnit(
                 start = fromProps.offset * fromProps.offsetMultiplier,
                 stop = targetProps.offset * targetProps.offsetMultiplier,
@@ -88,7 +93,8 @@ class BackStackSlider<NavTarget>(
                 navElement = t1,
                 modifier = Modifier.offset(
                     x = offset.x,
-                    y = offset.y),
+                    y = offset.y
+                ),
                 progress = segment.progress
             )
         }

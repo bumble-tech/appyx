@@ -11,19 +11,16 @@ import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
+import com.bumble.appyx.interactions.core.ui.FlexibleBounds
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.FlexibleBounds
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
 
 
 open class InteractionModel<NavTarget : Any, NavState : Any>(
@@ -36,8 +33,10 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
     private val isDebug: Boolean = false
 ) : Draggable, FlexibleBounds {
 
-    private var _interpolator: Interpolator<NavTarget, NavState> = interpolator(TransitionBounds(Density(0f), 0, 0))
-    private var _gestureFactory: GestureFactory<NavTarget, NavState> = gestureFactory(TransitionBounds(Density(0f), 0, 0))
+    private var _interpolator: Interpolator<NavTarget, NavState> =
+        interpolator(TransitionBounds(Density(0f), 0, 0))
+    private var _gestureFactory: GestureFactory<NavTarget, NavState> =
+        gestureFactory(TransitionBounds(Density(0f), 0, 0))
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
             field = value
