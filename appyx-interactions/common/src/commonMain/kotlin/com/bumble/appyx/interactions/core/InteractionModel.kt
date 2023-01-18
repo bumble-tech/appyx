@@ -63,6 +63,10 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
         }
     }
 
+    override fun onStartDrag(position: Offset) {
+        drag.onStartDrag(position)
+    }
+
     override fun onDrag(dragAmount: Offset, density: Density) {
         drag.onDrag(dragAmount, density)
     }
@@ -72,6 +76,7 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
         settle()
     }
 
+    // TODO: figure out a way of changing the params here
     fun settle(
         // FIXME @FloatRange(from = 0.0, to = 1.0)
         roundUpThreshold: Float = 0.5f,

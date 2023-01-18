@@ -22,6 +22,10 @@ class DragProgressInputSource<NavTarget : Any, State>(
 
     private var gesture: Gesture<NavTarget, State>? = null
 
+    override fun onStartDrag(position: Offset) {
+        gestureFactory.onStartDrag(position)
+    }
+
     override fun onDrag(dragAmount: Offset, density: Density) {
         gestureFactory.createGesture(dragAmount, density)
         if (_gestureFactory == null) {

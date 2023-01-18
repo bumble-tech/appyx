@@ -1,6 +1,5 @@
 package com.bumble.appyx.interactions.sample
 
-import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -26,6 +25,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.sample.NavTarget.Child2
 import com.bumble.appyx.interactions.sample.NavTarget.Child3
@@ -87,7 +87,7 @@ fun SpotlightExperiment() {
                                     spotlight.onDrag(dragAmount, density)
                                 },
                                 onDragEnd = {
-                                    Log.d("drag", "end")
+                                    Logger.log("drag", "end")
                                     spotlight.onDragEnd()
                                 }
                             )

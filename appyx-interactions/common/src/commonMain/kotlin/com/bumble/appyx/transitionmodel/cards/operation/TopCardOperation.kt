@@ -1,18 +1,18 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
 import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.transitionmodel.cards.Cards
+import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsElements
 
-abstract class TopCardOperation<NavTarget : Any>(
-    private val newTargetState: Cards.State
+abstract class TopCardOperation<NavTarget>(
+    private val newTargetState: CardsModel.State
 ) : CardsOperation<NavTarget> {
 
     override fun isApplicable(elements: CardsElements<NavTarget>): Boolean =
-        elements.any { it.state in Cards.TOP_STATES }
+        elements.any { it.state in CardsModel.TOP_STATES }
 
-    override fun invoke(elements: CardsElements<NavTarget>): NavTransition<NavTarget, Cards.State> {
-        val targetIndex = elements.indexOfFirst { it.state in Cards.TOP_STATES }
+    override fun invoke(elements: CardsElements<NavTarget>): NavTransition<NavTarget, CardsModel.State> {
+        val targetIndex = elements.indexOfFirst { it.state in CardsModel.TOP_STATES }
 
         return NavTransition(
             fromState = elements,

@@ -6,6 +6,8 @@ import com.bumble.appyx.interactions.core.inputsource.Gesture
 
 interface GestureFactory<NavTarget, State> {
 
+    fun onStartDrag(position: Offset) {}
+
     fun createGesture(delta: Offset, density: Density): Gesture<NavTarget, State>
 
     class Noop<NavTarget, State> : GestureFactory<NavTarget, State> {

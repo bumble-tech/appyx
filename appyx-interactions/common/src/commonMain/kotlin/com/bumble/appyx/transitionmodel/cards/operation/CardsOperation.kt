@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.transitionmodel.cards.Cards
+import com.bumble.appyx.transitionmodel.cards.CardsModel
 
-interface CardsOperation<NavTarget> : Operation<NavTarget, Cards.State>
+interface CardsOperation<NavTarget> : Operation<NavTarget, CardsModel.State>
