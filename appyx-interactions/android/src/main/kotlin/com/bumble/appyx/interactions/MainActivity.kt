@@ -44,7 +44,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = appyx_dark
                 ) {
-                    var content by remember { mutableStateOf(0) }
+                    var content by remember { mutableStateOf(1) }
                     Column {
                         Row(
                             modifier = Modifier

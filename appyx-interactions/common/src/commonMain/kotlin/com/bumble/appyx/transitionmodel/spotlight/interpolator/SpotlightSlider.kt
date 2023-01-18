@@ -7,13 +7,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.TransitionParams
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.*
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
@@ -21,11 +20,11 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import androidx.compose.ui.unit.lerp as lerpUnit
 
 class SpotlightSlider<NavTarget>(
-    transitionParams: TransitionParams,
+    transitionBounds: TransitionBounds,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : Interpolator<NavTarget, SpotlightModel.State> {
-    private val width = transitionParams.bounds.width
-    private val height = transitionParams.bounds.height
+    private val width = transitionBounds.width
+    private val height = transitionBounds.height
 
     data class Props(
         val offset: DpOffset,
@@ -105,32 +104,25 @@ class SpotlightSlider<NavTarget>(
         }
     }
 
-    // TODO Modify TransitionParams to also contain width & height in px, not just dp
-    fun calculateProgressForGesture(delta: Offset, density: Density): Float {
-        val width = with(density) { width.toPx() }
-        val height = with(density) { height.toPx() }
-
-        Logger.log("calculateProgress", "${delta.x} / $width = ${delta.x / width}")
-        return when (orientation) {
-            Orientation.Horizontal -> delta.x / width * -1
-            Orientation.Vertical -> delta.y / height * -1
-        }
-    }
+//    fun calculateProgressForGesture(delta: Offset, density: Density): Float {
+//        // FIXME Log.d("calculateProgress", "${delta.x} / $width = ${delta.x / width}")
+//        return when (orientation) {
+//            Orientation.Horizontal -> delta.x / width * -1
+//            Orientation.Vertical -> delta.y / height * -1
+//        }
+//    }
 
     class Gestures<NavTarget>(
-        transitionParams: TransitionParams,
+        transitionBounds: TransitionBounds,
         private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
     ) : GestureFactory<NavTarget, SpotlightModel.State> {
-        private val width = transitionParams.bounds.width
-        private val height = transitionParams.bounds.height
+        private val width = transitionBounds.widthPx
+        private val height = transitionBounds.heightPx
 
         override fun createGesture(
             delta: Offset,
             density: Density
         ): Gesture<NavTarget, SpotlightModel.State> {
-            val width = with(density) { width.toPx() }
-            val height = with(density) { height.toPx() }
-
             return when (orientation) {
                 Orientation.Horizontal -> if (delta.x < 0) {
                     Gesture(

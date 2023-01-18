@@ -19,17 +19,31 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.ui.FlexibleBounds
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 
 
 open class InteractionModel<NavTarget : Any, NavState : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: TransitionModel<NavTarget, NavState>,
-    interpolator: Interpolator<NavTarget, NavState>,
-    gestureFactory: GestureFactory<NavTarget, NavState> = GestureFactory.Noop(),
+    private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, NavState>,
+    private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, NavState> = { GestureFactory.Noop() },
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : Draggable {
+) : Draggable, FlexibleBounds {
+
+    private var _interpolator: Interpolator<NavTarget, NavState> = interpolator(TransitionBounds(Density(0f), 0, 0))
+    private var _gestureFactory: GestureFactory<NavTarget, NavState> = gestureFactory(TransitionBounds(Density(0f), 0, 0))
+    private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
+        set(value) {
+            field = value
+            _interpolator = interpolator(transitionBounds)
+            _gestureFactory = gestureFactory(transitionBounds)
+        }
 
     companion object {
         val DefaultAnimationSpec: AnimationSpec<Float> = spring()
@@ -38,7 +52,7 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
     val frames: Flow<List<FrameModel<NavTarget, NavState>>> =
         model
             .segments
-            .map { interpolator.map(it) }
+            .map { _interpolator.map(it) }
 
     private val instant = InstantInputSource(
         model = model
@@ -52,8 +66,12 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
 
     private val drag = DragProgressInputSource(
         model = model,
-        gestureFactory = gestureFactory
+        gestureFactory = _gestureFactory
     )
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        this.transitionBounds = transitionBounds
+    }
 
     private val debug = DebugProgressInputSource(
         navModel = model,

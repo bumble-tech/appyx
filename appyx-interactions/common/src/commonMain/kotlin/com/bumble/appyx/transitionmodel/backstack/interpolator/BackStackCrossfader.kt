@@ -12,7 +12,6 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 class BackStackCrossfader<NavTarget>(
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, BackStackModel.State> {
-    private val width = transitionParams.bounds.width
 
     class Props(
         val alpha: Float
