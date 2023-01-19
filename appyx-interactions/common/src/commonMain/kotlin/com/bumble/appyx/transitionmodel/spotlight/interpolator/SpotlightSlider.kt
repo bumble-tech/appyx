@@ -14,7 +14,9 @@ import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.*
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ACTIVE
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_AFTER
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_BEFORE
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import androidx.compose.ui.unit.lerp as lerpUnit
