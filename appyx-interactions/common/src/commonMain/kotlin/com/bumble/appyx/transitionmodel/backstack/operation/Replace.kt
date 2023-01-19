@@ -2,7 +2,7 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
-import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.BaseOperation
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
@@ -16,25 +16,21 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 @Parcelize
 data class Replace<NavTarget : Any>(
     private val navTarget: @RawValue NavTarget
-) : BackStackOperation<NavTarget> {
+) : BaseOperation<State<NavTarget>>() {
     override fun isApplicable(state: State<NavTarget>): Boolean =
         navTarget != state.active.navTarget
 
-    override fun invoke(baseLineState: State<NavTarget>): NavTransition<State<NavTarget>> {
-        val fromState = baseLineState.copy(
+    override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
+        baseLineState.copy(
             created = baseLineState.created + navTarget.asElement()
         )
-        val targetState = fromState.copy(
+
+    override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
+        fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),
             destroyed = fromState.destroyed + fromState.active
         )
-
-        return NavTransition(
-            fromState = fromState,
-            targetState = targetState
-        )
-    }
 }
 
 fun <NavTarget : Any> BackStack<NavTarget>.replace(target: NavTarget) {
