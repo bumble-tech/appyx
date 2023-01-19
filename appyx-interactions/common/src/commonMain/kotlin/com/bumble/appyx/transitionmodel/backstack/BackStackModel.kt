@@ -21,7 +21,7 @@ class BackStackModel<NavTarget : Any>(
 //    savedStateMap = savedStateMap,
 //    key = key,
 ) {
-    data class State<NavTarget : Any>(
+    data class State<NavTarget>(
         /**
          * Elements that have been created, but not yet moved to an active state
          */

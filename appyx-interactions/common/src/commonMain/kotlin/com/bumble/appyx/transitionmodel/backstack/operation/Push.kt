@@ -17,16 +17,16 @@ data class Push<NavTarget : Any>(
     private val navTarget: @RawValue NavTarget
 ) : BackStackOperation<NavTarget> {
     override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
-        navTarget != state.active
+        navTarget != state.active.navTarget
 
     override fun invoke(baseLineState: BackStackModel.State<NavTarget>): NavTransition<BackStackModel.State<NavTarget>> {
         val fromState = baseLineState.copy(
             created = baseLineState.created + navTarget.asElement()
         )
         val targetState = fromState.copy(
-            created = fromState.created.drop(1),
-            active = fromState.created.first(),
-            stashed = fromState.stashed + fromState.active,
+            active = fromState.created.last(),
+            created = fromState.created.dropLast(1),
+            stashed = listOf(fromState.active) + fromState.stashed,
         )
         return NavTransition(
             fromState = fromState,

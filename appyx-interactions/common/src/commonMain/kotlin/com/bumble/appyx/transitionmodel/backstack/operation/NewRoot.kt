@@ -2,15 +2,10 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
-import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.active
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
 
 /**
  * Operation:
@@ -20,32 +15,23 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
 @Parcelize
 data class NewRoot<NavTarget : Any>(
     private val navTarget: @RawValue NavTarget
-) :  BackStackOperation<NavTarget> {
+) : BackStackOperation<NavTarget> {
+    override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
+        state.stashed.size + 1 > 1 || state.active.navTarget != navTarget
 
-    override fun isApplicable(elements: NavElements<NavTarget, BackStackModel.State>): Boolean =
-        elements.size > 1 || elements.first().key != navTarget
-
-    override fun invoke(elements: NavElements<NavTarget, BackStackModel.State>): NavTransition<NavTarget, BackStackModel.State> {
-        val current = elements.active
-        requireNotNull(current) { "No previous elements, state=$elements" }
-
-        val fromState = elements + NavElement(
-            key = NavKey(navTarget),
-            fromState = CREATED,
-            targetState = CREATED,
-            operation = this
+    override fun invoke(baseLineState: BackStackModel.State<NavTarget>): NavTransition<BackStackModel.State<NavTarget>> {
+        val fromState = baseLineState.copy(
+            created = baseLineState.created + navTarget.asElement()
+        )
+        val targetState = fromState.copy(
+            active = fromState.created.last(),
+            created = fromState.created.dropLast(1),
+            destroyed = fromState.destroyed + fromState.stashed,
+            stashed = emptyList()
         )
         return NavTransition(
             fromState = fromState,
-            targetState = fromState.mapIndexed { index, element ->
-                element.transitionTo(
-                    newTargetState = when (index) {
-                        fromState.lastIndex -> ACTIVE
-                        else -> BackStackModel.State.DROPPED
-                    },
-                    operation = this
-                )
-            }
+            targetState = targetState
         )
     }
 }
