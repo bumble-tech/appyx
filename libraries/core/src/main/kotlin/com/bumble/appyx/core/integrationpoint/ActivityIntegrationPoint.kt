@@ -5,13 +5,15 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityBoundary
 import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequestBoundary
 import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
+import com.bumble.appyx.viewmodel.IntegrationPointViewModel
 
 open class ActivityIntegrationPoint(
-    private val activity: Activity,
+    private val activity: ComponentActivity,
     savedInstanceState: Bundle?,
 ) : IntegrationPoint(savedInstanceState = savedInstanceState) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
@@ -22,6 +24,10 @@ open class ActivityIntegrationPoint(
 
     override val permissionRequester: PermissionRequester
         get() = permissionRequestBoundary
+
+    val viewModel = IntegrationPointViewModel.getInstance(activity)
+
+    fun isChangingConfigurations(): Boolean = activity.isChangingConfigurations
 
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         activityBoundary.onActivityResult(requestCode, resultCode, data)

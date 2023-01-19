@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.compose.foundation.layout)
+    api("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
 
     testImplementation(project(":libraries:testing-junit4"))
     testImplementation(libs.androidx.arch.core.testing)

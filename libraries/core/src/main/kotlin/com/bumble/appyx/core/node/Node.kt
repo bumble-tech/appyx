@@ -13,9 +13,13 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import com.bumble.appyx.Appyx
 import com.bumble.appyx.core.BuildConfig
+import com.bumble.appyx.core.integrationpoint.ActivityIntegrationPoint
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.integrationpoint.requestcode.RequestCodeClient
@@ -44,7 +48,7 @@ open class Node(
     buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
     plugins: List<Plugin> = emptyList()
-) : NodeLifecycle, NodeView by view, RequestCodeClient {
+) : NodeLifecycle, NodeView by view, RequestCodeClient, ViewModelStoreOwner {
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
@@ -74,10 +78,14 @@ open class Node(
             check(isRoot) { "Only a root Node can have an integration point" }
             field = value
         }
-
     private var wasBuilt = false
 
     val id = getNodeId(buildContext)
+    private val nodeViewModelStore by lazy {
+        (integrationPoint as ActivityIntegrationPoint).viewModel.getViewModelStoreForNode(
+            id
+        )
+    }
 
     override val requestCodeClientId: String = id
 
@@ -88,6 +96,14 @@ open class Node(
         lifecycle.addObserver(object : DefaultLifecycleObserver {
             override fun onCreate(owner: LifecycleOwner) {
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
+            }
+        })
+
+        lifecycle.addObserver(object : DefaultLifecycleObserver {
+            override fun onDestroy(owner: LifecycleOwner) {
+                if (!(integrationPoint as ActivityIntegrationPoint).isChangingConfigurations()) {
+                    (integrationPoint as ActivityIntegrationPoint).viewModel.clear(id)
+                }
             }
         })
     }
@@ -129,6 +145,7 @@ open class Node(
         CompositionLocalProvider(
             LocalNode provides this,
             LocalLifecycleOwner provides this,
+            LocalViewModelStoreOwner provides this
         ) {
             HandleBackPress()
             View(modifier)
@@ -243,4 +260,6 @@ open class Node(
         }
 
     }
+
+    override fun getViewModelStore(): ViewModelStore = nodeViewModelStore
 }
