@@ -9,22 +9,23 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.TransitionModel.Segment
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
-class PromoterProps<NavTarget>(
+class PromoterInterpolator<NavTarget : Any>(
     childSize: Dp,
     transitionBounds: TransitionBounds
-) : Interpolator<NavTarget, State> {
+) : Interpolator<NavTarget, PromoterModel.State<NavTarget>> {
     private val halfWidthDp = (transitionBounds.widthDp.value - childSize.value) / 2
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
@@ -66,54 +67,56 @@ class PromoterProps<NavTarget>(
         angleDegrees = 270f,
     )
 
-    private val selected = stage4.copy(
+    private val stage5 = stage4.copy(
         scale = 1f,
         effectiveRadiusRatio = 0f,
         rotationY = 360f,
     )
 
-    private val destroyed = selected.copy(
+    private val destroyed = stage5.copy(
         dpOffset = DpOffset(500.dp, (-200).dp),
         scale = 0f,
         rotationZ = 540f,
     )
 
-    private fun State.toProps() =
-        when (this) {
-            State.CREATED -> created
-            State.STAGE1 -> stage1
-            State.STAGE2 -> stage2
-            State.STAGE3 -> stage3
-            State.STAGE4 -> stage4
-            State.SELECTED -> selected
-            State.DESTROYED -> destroyed
+    private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+        elements.take(activeStartAtIndex).map { MatchedProps(it, created) } +
+        elements.drop(activeStartAtIndex).mapIndexed { index, element ->
+            MatchedProps(element, when(index) {
+                0 -> stage1
+                1 -> stage2
+                2 -> stage3
+                3 -> stage4
+                4 -> stage5
+                else -> destroyed
+            })
         }
 
-    override fun map(segment: Segment<NavTarget, State>): List<FrameModel<NavTarget, State>> {
+    override fun map(segment: TransitionModel.Segment<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
+        val fromProps = fromState.toProps()
+        val targetProps = targetState.toProps()
 
-        return targetState.map { t1 ->
-            val t0 = fromState.find { it.key == t1.key }!!
-            val props0 = t0.state.toProps()
-            val props1 = t1.state.toProps()
+        return targetProps.map { t1 ->
+            val t0 = fromProps.find { it.element.id == t1.element.id }!!
 
             // TODO memoize
-            val angleRadians0 = Math.toRadians(props0.angleDegrees.toDouble() - 90)
-            val angleRadians1 = Math.toRadians(props1.angleDegrees.toDouble() - 90)
+            val angleRadians0 = Math.toRadians(t0.props.angleDegrees.toDouble() - 90)
+            val angleRadians1 = Math.toRadians(t1.props.angleDegrees.toDouble() - 90)
 
             // Lerp block
             val dpOffsetX =
-                lerpFloat(props0.dpOffset.x.value, props1.dpOffset.x.value, segment.progress)
+                lerpFloat(t0.props.dpOffset.x.value, t1.props.dpOffset.x.value, segment.progress)
             val dpOffsetY =
-                lerpFloat(props0.dpOffset.y.value, props1.dpOffset.y.value, segment.progress)
-            val rotationY = lerpFloat(props0.rotationY, props1.rotationY, segment.progress)
-            val rotationZ = lerpFloat(props0.rotationZ, props1.rotationZ, segment.progress)
-            val scale = lerpFloat(props0.scale, props1.scale, segment.progress)
+                lerpFloat(t0.props.dpOffset.y.value, t1.props.dpOffset.y.value, segment.progress)
+            val rotationY = lerpFloat(t0.props.rotationY, t1.props.rotationY, segment.progress)
+            val rotationZ = lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segment.progress)
+            val scale = lerpFloat(t0.props.scale, t1.props.scale, segment.progress)
             val angleRadians =
                 lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segment.progress)
             val effectiveRadiusRatio = lerpFloat(
-                props0.effectiveRadiusRatio,
-                props1.effectiveRadiusRatio,
+                t0.props.effectiveRadiusRatio,
+                t1.props.effectiveRadiusRatio,
                 segment.progress
             )
             val effectiveRadius = radiusDp * effectiveRadiusRatio
@@ -122,7 +125,7 @@ class PromoterProps<NavTarget>(
             val arcOffsetDp = Offset(x, y)
 
             FrameModel(
-                navElement = t1,
+                navElement = t1.element,
                 modifier = Modifier
                     .offset {
                         IntOffset(
