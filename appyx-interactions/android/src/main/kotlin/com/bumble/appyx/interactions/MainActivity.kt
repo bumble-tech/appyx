@@ -24,7 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.sample.BackStackExperimentDebug
-import com.bumble.appyx.interactions.sample.DatingCards
 import com.bumble.appyx.interactions.sample.PromoterExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperimentDebug
@@ -59,7 +58,7 @@ class MainActivity : ComponentActivity() {
                             Button({ content = 4 }) { Text("5") }
                         }
                         when (content) {
-                            0 -> DatingCards()
+                            0 -> SpotlightExperiment()
                             1 -> SpotlightExperiment()
                             2 -> SpotlightExperimentDebug()
                             3 -> BackStackExperimentDebug()

@@ -17,7 +17,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.InteractionModel
@@ -30,7 +29,7 @@ import com.bumble.appyx.interactions.core.ui.TransitionBounds
 fun <NavTarget : Any, NavState : Any> Children(
     interactionModel: InteractionModel<NavTarget, NavState>,
     modifier: Modifier = Modifier,
-    element: @Composable (FrameModel<NavTarget, NavState>) -> Unit = {
+    element: @Composable (FrameModel<NavTarget>) -> Unit = {
         Element(frameModel = it)
     },
 ) {
@@ -47,7 +46,7 @@ fun <NavTarget : Any, NavState : Any> Children(
             }
     ) {
         frames.value.forEach { frameModel ->
-            key(frameModel.navElement.key) {
+            key(frameModel.navElement.id) {
                 element.invoke(frameModel)
             }
         }
@@ -57,7 +56,7 @@ fun <NavTarget : Any, NavState : Any> Children(
 @Composable
 fun Element(
     color: Color = Color.Unspecified,
-    frameModel: FrameModel<*, *>,
+    frameModel: FrameModel<*>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     val backgroundColor = remember {
@@ -73,7 +72,7 @@ fun Element(
             .padding(24.dp)
     ) {
         Text(
-            text = frameModel.navElement.key.navTarget.toString(),
+            text = frameModel.navElement.navTarget.toString(),
             fontSize = 21.sp,
             color = Color.Black,
             fontWeight = FontWeight.Bold
