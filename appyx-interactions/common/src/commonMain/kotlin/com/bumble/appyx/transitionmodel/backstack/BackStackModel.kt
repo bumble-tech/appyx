@@ -4,6 +4,7 @@ import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.ui.NavElements
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
 @SuppressWarnings("UnusedPrivateMember")
@@ -25,7 +26,7 @@ class BackStackModel<NavTarget : Any>(
         /**
          * Elements that have been created, but not yet moved to an active state
          */
-        val created: List<NavElement<NavTarget>> = listOf(),
+        val created: NavElements<NavTarget> = listOf(),
 
         /**
          * The currently active element.
@@ -36,12 +37,12 @@ class BackStackModel<NavTarget : Any>(
         /**
          * Elements stashed in the back stack (history).
          */
-        val stashed: List<NavElement<NavTarget>> = listOf(),
+        val stashed: NavElements<NavTarget> = listOf(),
 
         /**
          * Elements that will be destroyed after reaching this state.
          */
-        val destroyed: List<NavElement<NavTarget>> = listOf(),
+        val destroyed: NavElements<NavTarget> = listOf(),
     )
 
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =

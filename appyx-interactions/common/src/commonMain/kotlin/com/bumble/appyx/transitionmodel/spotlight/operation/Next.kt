@@ -2,51 +2,30 @@ package com.bumble.appyx.transitionmodel.spotlight.operation
 
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ACTIVE
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_AFTER
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_BEFORE
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 @Parcelize
-class Next<NavTarget> : Operation<NavTarget, State> {
+class Next<NavTarget : Any> : Operation<SpotlightModel.State<NavTarget>> {
 
-    override fun isApplicable(elements: NavElements<NavTarget, State>) =
-        elements.any { it.fromState == INACTIVE_AFTER && it.state == INACTIVE_AFTER }
+    override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
+        state.hasNext()
 
-    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
-        val nextKey = elements.first { it.state == INACTIVE_AFTER }.key
-
-        val targetState = elements.map {
-            when {
-                it.state == ACTIVE -> {
-                    it.transitionTo(
-                        newTargetState = INACTIVE_BEFORE,
-                        operation = this
-                    )
-                }
-                it.key == nextKey -> {
-                    it.transitionTo(
-                        newTargetState = ACTIVE,
-                        operation = this
-                    )
-                }
-                else -> {
-                    it
-                }
-            }
-        }
+    override fun invoke(baselineState: SpotlightModel.State<NavTarget>): NavTransition<SpotlightModel.State<NavTarget>> {
+        val fromState = baselineState
+        val targetState = fromState.copy(
+            activeIndex = fromState.activeIndex + 1f,
+        )
 
         return NavTransition(
-            fromState = elements,
+            fromState = fromState,
             targetState = targetState
         )
     }
 }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.next(animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
-    operation(Next(), animationSpec)
+    operation(Next<NavTarget>(), animationSpec)
 }

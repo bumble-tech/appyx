@@ -2,38 +2,31 @@ package com.bumble.appyx.transitionmodel.spotlight.operation
 
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ACTIVE
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_AFTER
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_BEFORE
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 
 @Parcelize
-class First<NavTarget : Any> : Operation<NavTarget, State> {
+class First<NavTarget : Any> : Operation<SpotlightModel.State<NavTarget>> {
 
-    override fun isApplicable(elements: NavElements<NavTarget, State>) =
-        elements.any { it.state == INACTIVE_BEFORE }
+    override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
+        true
 
-    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
+    override fun invoke(baselineState: SpotlightModel.State<NavTarget>): NavTransition<SpotlightModel.State<NavTarget>> {
+        val fromState = baselineState
+        val targetState = fromState.copy(
+            activeIndex = 0f,
+        )
+
         return NavTransition(
-            fromState = elements,
-            targetState = elements.mapIndexed { index, element ->
-                element.transitionTo(
-                    newTargetState = when (index) {
-                        0 -> ACTIVE
-                        else -> INACTIVE_AFTER
-                    },
-                    operation = this
-                )
-            }
+            fromState = fromState,
+            targetState = targetState
         )
     }
 }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.first(animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
-    operation(First(), animationSpec)
+    operation(First<NavTarget>(), animationSpec)
 }
