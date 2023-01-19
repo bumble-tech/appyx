@@ -53,3 +53,6 @@ android {
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }
+dependencies {
+    implementation("androidx.compose.ui:ui-unit:1.1.1")
+}

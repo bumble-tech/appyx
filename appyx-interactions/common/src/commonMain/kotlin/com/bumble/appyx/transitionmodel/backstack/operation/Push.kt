@@ -3,8 +3,6 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.BaseOperation
-import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -20,7 +18,7 @@ data class Push<NavTarget : Any>(
 ) : BaseOperation<BackStackModel.State<NavTarget>>() {
 
     override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
-        navTarget != state.active
+        navTarget != state.active.navTarget
 
     override fun createFromState(baseLineState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
         baseLineState.copy(
@@ -29,9 +27,9 @@ data class Push<NavTarget : Any>(
 
     override fun createTargetState(fromState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
         fromState.copy(
-            created = fromState.created.drop(1),
-            active = fromState.created.first(),
-            stashed = fromState.stashed + fromState.active,
+            active = fromState.created.last(),
+            created = fromState.created.dropLast(1),
+            stashed = listOf(fromState.active) + fromState.stashed,
         )
 }
 
