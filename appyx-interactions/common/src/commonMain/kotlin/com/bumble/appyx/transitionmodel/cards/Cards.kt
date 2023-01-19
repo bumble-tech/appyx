@@ -1,45 +1,25 @@
 package com.bumble.appyx.transitionmodel.cards
 
-import com.bumble.appyx.interactions.core.BaseNavModel
-import com.bumble.appyx.interactions.core.NavKey
-import com.bumble.appyx.interactions.core.Operation
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.spring
+import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
-class Cards<NavTarget : Any>(
-    initialItems: List<NavTarget> = listOf(),
-) : BaseNavModel<NavTarget, Cards.State>(
-    finalStates = FINAL_STATES,
-) {
-    companion object {
-        internal val FINAL_STATES = setOf(State.VoteLike, State.VotePass)
-        internal val TOP_STATES = setOf(State.Top)
-    }
-
-    sealed class State {
-        data class Queued(val queueNumber: Int) : State()
-        object Bottom : State()
-        object Top : State()
-        object VoteLike : State()
-        object VotePass : State()
-
-        fun next(): State =
-            when (this) {
-                is Queued -> if (queueNumber == 0) Bottom else Queued(queueNumber - 1)
-                is Bottom -> Top
-                else -> this
-            }
-    }
-
-    override val initialState = initialItems.mapIndexed { index, element ->
-        val state = when (index) {
-            0 -> State.Top
-            1 -> State.Bottom
-            else -> State.Queued(index - 2)
-        }
-        CardsElement(
-            key = NavKey(element),
-            fromState = if (state == State.Top) State.Bottom else state,
-            targetState = state,
-            operation = Operation.Noop()
-        )
-    }
-}
+open class Cards<NavTarget : Any>(
+    scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
+    model: CardsModel<NavTarget>,
+    interpolator: (TransitionBounds) -> Interpolator<NavTarget, CardsModel.State>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, CardsModel.State> = { GestureFactory.Noop() },
+    animationSpec: AnimationSpec<Float> = spring()
+) : InteractionModel<NavTarget, CardsModel.State>(
+    scope = scope,
+    model = model,
+    interpolator = interpolator,
+    gestureFactory = gestureFactory,
+    defaultAnimationSpec = animationSpec,
+)

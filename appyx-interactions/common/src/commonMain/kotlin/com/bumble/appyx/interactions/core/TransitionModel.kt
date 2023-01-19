@@ -2,7 +2,7 @@ package com.bumble.appyx.interactions.core
 
 import kotlinx.coroutines.flow.StateFlow
 
-interface NavModel<NavTarget, NavState> {
+interface TransitionModel<NavTarget, NavState> {
     /**
      * 0..infinity
      */

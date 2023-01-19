@@ -2,17 +2,17 @@ package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.NavModel
-import com.bumble.appyx.interactions.core.ui.RenderParams
+import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 class SpotlightFader<NavTarget>(
     transitionParams: TransitionParams
-) : UiProps<NavTarget, Spotlight.State> {
-    private val width = transitionParams.bounds.width
+) : Interpolator<NavTarget, SpotlightModel.State> {
+    private val width = transitionParams.bounds.widthPx
 
     class Props(
         val alpha: Float
@@ -26,13 +26,13 @@ class SpotlightFader<NavTarget>(
         alpha = 0f
     )
 
-    private fun Spotlight.State.toProps(): Props =
+    private fun SpotlightModel.State.toProps(): Props =
         when (this) {
-            Spotlight.State.ACTIVE -> visible
+            SpotlightModel.State.ACTIVE -> visible
             else -> hidden
         }
 
-    override fun map(segment: NavModel.Segment<NavTarget, Spotlight.State>): List<RenderParams<NavTarget, Spotlight.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, SpotlightModel.State>): List<FrameModel<NavTarget, SpotlightModel.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
@@ -42,10 +42,11 @@ class SpotlightFader<NavTarget>(
             val targetProps = t1.state.toProps()
             val alpha = lerpFloat(fromProps.alpha, targetProps.alpha, segment.progress)
 
-            RenderParams(
+            FrameModel(
                 navElement = t1,
                 modifier = Modifier
-                    .alpha(alpha)
+                    .alpha(alpha),
+                progress = segment.progress
             )
         }
     }

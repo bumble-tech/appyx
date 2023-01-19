@@ -1,23 +1,19 @@
 package com.bumble.appyx.interactions.core.inputsource
 
-import androidx.compose.animation.core.*
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.NavModel
-import com.bumble.appyx.interactions.core.Operation
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import kotlin.math.ceil
-import kotlin.math.floor
+import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.GestureFactory
 
-class DragProgressInputSource<NavTarget, State>(
-    private val navModel: NavModel<NavTarget, State>,
-    private val coroutineScope: CoroutineScope,
-) : InputSource<NavTarget, State> {
-    private val animatable = Animatable(0f)
-    private lateinit var result: AnimationResult<Float, AnimationVector1D>
+class DragProgressInputSource<NavTarget : Any, State>(
+    private val model: TransitionModel<NavTarget, State>,
+    private val gestureFactory: () -> GestureFactory<NavTarget, State>
+) : Draggable {
 
-    var gestureFactory: ((Offset) -> Gesture<NavTarget, State>)? = null
+    // TODO get rid of this
+    private var _gestureFactory: ((Offset) -> Gesture<NavTarget, State>)? = null
         set(value) {
             field = value
             if (value == null) {
@@ -27,29 +23,50 @@ class DragProgressInputSource<NavTarget, State>(
 
     private var gesture: Gesture<NavTarget, State>? = null
 
-    override fun operation(operation: Operation<NavTarget, State>) {
-        navModel.enqueue(operation)
+    override fun onStartDrag(position: Offset) {
+        gestureFactory().onStartDrag(position)
     }
 
-    fun addDeltaProgress(dragAmount: Offset) {
-        requireNotNull(gestureFactory)
+    override fun onDrag(dragAmount: Offset, density: Density) {
+        gestureFactory().createGesture(dragAmount, density)
+        if (_gestureFactory == null) {
+            _gestureFactory = { dragAmount ->
+                gestureFactory().createGesture(dragAmount, density)
+            }
+        }
+        consumeDrag(dragAmount)
+    }
+
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
+        _gestureFactory = null
+    }
+
+    private fun consumeDrag(dragAmount: Offset) {
+        require(dragAmount.isValid()) { "dragAmount is NaN" }
+        require(dragAmount.getDistance() > 0f) { "dragAmount distance is 0" }
+        requireNotNull(_gestureFactory) { "This should have been set already in this class" }
         if (gesture == null) {
-            gesture = gestureFactory!!.invoke(dragAmount)
+            gesture = _gestureFactory!!.invoke(dragAmount)
         }
 
         requireNotNull(gesture)
         val operation = gesture!!.operation
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
-        val currentProgress = navModel.currentProgress
+        require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
+        val currentProgress = model.currentProgress
         val totalTarget = currentProgress + deltaProgress
 
         // Case: we can start a new operation
         if (gesture!!.startProgress == null) {
-            if (navModel.enqueue(operation)) {
+            if (model.enqueue(operation)) {
                 gesture!!.startProgress = currentProgress
-                Logger.log("input source", "operation applied: $operation")
+                Logger.log(TAG, "operation applied: $operation")
             } else {
-                Logger.log("input source", "operation not applicable: $operation")
+                Logger.log(TAG, "operation not applicable: $operation")
                 return
             }
             // Case: we can continue the existing operation
@@ -62,10 +79,10 @@ class DragProgressInputSource<NavTarget, State>(
 
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
-                navModel.setProgress(totalTarget)
+                model.setProgress(totalTarget)
                 Logger.log(
-                    "input source",
-                    "delta applied forward, new progress: ${navModel.currentProgress}"
+                    TAG,
+                    "delta applied forward, new progress: ${model.currentProgress}"
                 )
 
                 // Case: target is beyond the current segment, we'll need a new operation
@@ -73,7 +90,7 @@ class DragProgressInputSource<NavTarget, State>(
                 // TODO without recursion
                 val remainder =
                     consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
-                addDeltaProgress(remainder)
+                consumeDrag(remainder)
             }
 
             // Case: we went back to or beyond the start,
@@ -81,7 +98,7 @@ class DragProgressInputSource<NavTarget, State>(
         } else {
             // TODO without recursion
             val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
-            addDeltaProgress(remainder)
+            consumeDrag(remainder)
         }
     }
 
@@ -91,45 +108,23 @@ class DragProgressInputSource<NavTarget, State>(
         deltaProgress: Float,
         boundary: Float
     ): Offset {
-        navModel.setProgress(boundary)
-        navModel.dropAfter(boundary.toInt())
+        model.setProgress(boundary)
+        model.dropAfter(boundary.toInt())
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
         gesture = null
-        Logger.log("input source", "1 ------")
-        Logger.log("input source", "initial offset was: $dragAmount")
-        Logger.log("input source", "initial deltaProgress was: $deltaProgress")
-        Logger.log(
-            "input source",
-            "initial target was: $totalTarget, beyond current segment: $boundary"
-        )
-        Logger.log("input source", "remainder progress: ${totalTarget - boundary}")
-        Logger.log("input source", "remainder offset: $remainder")
-        Logger.log("input source", "going back to start, reevaluate")
-        Logger.log("input source", "2 ------")
+        Logger.log(TAG, "1 ------")
+        Logger.log(TAG, "initial offset was: $dragAmount")
+        Logger.log(TAG, "initial deltaProgress was: $deltaProgress")
+        Logger.log(TAG, "initial target was: $totalTarget, beyond current segment: $boundary")
+        Logger.log(TAG, "remainder progress: ${totalTarget - boundary}")
+        Logger.log(TAG, "remainder offset: $remainder")
+        Logger.log(TAG, "going back to start, reevaluate")
+        Logger.log(TAG, "2 ------")
         // TODO without recursion
         return remainder
     }
 
-    fun settle(
-        // FIXME @FloatRange(from = 0.0, to = 1.0)
-        roundUpThreshold: Float = 0.5f,
-        roundUpAnimationSpec: AnimationSpec<Float> = spring(),
-        roundDownAnimationSpec: AnimationSpec<Float> = spring(),
-    ) {
-        val currentProgress = navModel.currentProgress
-        val (animationSpec, targetValue) = if (currentProgress % 1 < roundUpThreshold) {
-            roundDownAnimationSpec to floor(currentProgress).toInt()
-        } else {
-            roundUpAnimationSpec to ceil(currentProgress).toInt()
-        }
-        Logger.log("input source", "Settle ${navModel.currentProgress} to: $targetValue")
-        coroutineScope.launch {
-            animatable.snapTo(navModel.currentProgress)
-            // TODO animation spec similarly to AnimatedInputSource / default
-            result = animatable.animateTo(targetValue.toFloat(), animationSpec) {
-                navModel.setProgress(this.value)
-            }
-            navModel.dropAfter(targetValue)
-        }
+    private companion object {
+        private val TAG = DragProgressInputSource::class.java.name
     }
 }

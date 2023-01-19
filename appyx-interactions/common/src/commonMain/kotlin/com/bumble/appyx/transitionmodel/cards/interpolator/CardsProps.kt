@@ -12,23 +12,23 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.interactions.core.NavModel
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
-import com.bumble.appyx.interactions.core.ui.RenderParams
-import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
-import com.bumble.appyx.transitionmodel.cards.Cards
+import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlin.math.roundToInt
 
 
 class CardsProps<NavTarget : Any>(
-    transitionParams: TransitionParams
-) : UiProps<NavTarget, Cards.State> {
-    private val width = transitionParams.bounds.width
-    private val height = transitionParams.bounds.height
+    transitionBounds: TransitionBounds
+) : Interpolator<NavTarget, CardsModel.State> {
+    private val width = transitionBounds.widthDp.value
 
     private data class Props(
         val scale: Float = 1f,
@@ -50,30 +50,28 @@ class CardsProps<NavTarget : Any>(
         zIndex = 1f,
     )
 
-    private val voteCardPositionMultiplier = 2
-
     private val votePass = top.copy(
-        positionalOffsetX = (-voteCardPositionMultiplier * width.value).dp,
+        positionalOffsetX = (-voteCardPositionMultiplier * width).dp,
         rotationZ = -45f,
         zIndex = 2f,
     )
 
     private val voteLike = top.copy(
-        positionalOffsetX = (voteCardPositionMultiplier * width.value).dp,
+        positionalOffsetX = (voteCardPositionMultiplier * width).dp,
         rotationZ = 45f,
         zIndex = 2f,
     )
 
-    private fun Cards.State.toProps(): Props =
+    private fun CardsModel.State.toProps(): Props =
         when (this) {
-            is Cards.State.Queued -> queued
-            is Cards.State.Bottom -> bottom
-            is Cards.State.Top -> top
-            is Cards.State.VoteLike -> voteLike
-            is Cards.State.VotePass -> votePass
+            is CardsModel.State.Queued -> queued
+            is CardsModel.State.Bottom -> bottom
+            is CardsModel.State.Top -> top
+            is CardsModel.State.VoteLike -> voteLike
+            is CardsModel.State.VotePass -> votePass
         }
 
-    override fun map(segment: NavModel.Segment<NavTarget, Cards.State>): List<RenderParams<NavTarget, Cards.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, CardsModel.State>): List<FrameModel<NavTarget, CardsModel.State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.mapIndexed { index, t1 ->
@@ -108,7 +106,7 @@ class CardsProps<NavTarget : Any>(
                 progress = segment.progress
             )
 
-            RenderParams(
+            FrameModel(
                 navElement = t1,
                 modifier = Modifier
                     .offset {
@@ -122,37 +120,57 @@ class CardsProps<NavTarget : Any>(
                         rotationZ = rotationZ,
                         transformOrigin = TransformOrigin(0.5f, 1f)
                     )
-                    .scale(scale)
+                    .scale(scale),
+                progress = segment.progress
             )
         }
     }
 
-    fun createGesture(touchPosition: Offset, delta: Offset, density: Density): Gesture<NavTarget, Cards.State> {
-        val width = with(density) { width.toPx() }
-        val height = with(density) { height.toPx() }
-        val verticalRatio = touchPosition.y / height // 0..1
-        // For a perfect solution we should keep track where the touch is currently at, at any
-        // given moment; then do the calculation in reverse, how much of a horizontal gesture
-        // at that vertical position should move the cards.
-        // For a good enough solution, now we only care for the initial touch position and
-        // a baked in factor to account for the top of the card moving with different speed than
-        // the bottom:
-        // e.g. 4 = at top of the card, 2 = at the bottom, when voteCardPositionMultiplier = 2
-        val dragToProgressFactor = voteCardPositionMultiplier * (2 - verticalRatio)
+    class Gestures<NavTarget>(
+        transitionBounds: TransitionBounds
+    ) : GestureFactory<NavTarget, CardsModel.State> {
 
-        return if (delta.x < 0) {
-            Gesture(
-                operation = VotePass(),
-                dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) * -1 },
-                partial = { offset, progress -> offset.copy(x = progress * width * -1) }
-            )
-        } else {
-            Gesture(
-                operation = VoteLike(),
-                dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) },
-                partial = { offset, progress -> offset.copy(x = progress * width) }
-            )
+        private val width = transitionBounds.widthPx
+        private val height = transitionBounds.widthPx
+
+        private var touchPosition: Offset? = null
+
+        override fun onStartDrag(position: Offset) {
+            touchPosition = position
         }
+
+        override fun createGesture(
+            delta: Offset,
+            density: Density
+        ): Gesture<NavTarget, CardsModel.State> {
+            val verticalRatio = (touchPosition?.y ?: 0f) / height // 0..1
+            // For a perfect solution we should keep track where the touch is currently at, at any
+            // given moment; then do the calculation in reverse, how much of a horizontal gesture
+            // at that vertical position should move the cards.
+            // For a good enough solution, now we only care for the initial touch position and
+            // a baked in factor to account for the top of the card moving with different speed than
+            // the bottom:
+            // e.g. 4 = at top of the card, 2 = at the bottom, when voteCardPositionMultiplier = 2
+            val dragToProgressFactor = voteCardPositionMultiplier * (2 - verticalRatio)
+
+            return if (delta.x < 0) {
+                Gesture(
+                    operation = VotePass(),
+                    dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) * -1 },
+                    partial = { offset, progress -> offset.copy(x = progress * width * -1) }
+                )
+            } else {
+                Gesture(
+                    operation = VoteLike(),
+                    dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) },
+                    partial = { offset, progress -> offset.copy(x = progress * width) }
+                )
+            }
+        }
+
     }
 
+    private companion object {
+        private const val voteCardPositionMultiplier = 2
+    }
 }

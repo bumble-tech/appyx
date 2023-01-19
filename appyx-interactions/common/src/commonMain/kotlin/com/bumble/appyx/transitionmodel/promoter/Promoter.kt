@@ -1,43 +1,25 @@
 package com.bumble.appyx.transitionmodel.promoter
 
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State.CREATED
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State.STAGE1
-import com.bumble.appyx.interactions.core.BaseNavModel
-import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavKey
-import com.bumble.appyx.interactions.core.Operation
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.spring
+import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 
-class Promoter<NavTarget : Any>(
-    initialItems: List<NavTarget> = listOf(),
-) : BaseNavModel<NavTarget, State>(
-//    screenResolver = PromoterOnScreenResolver,
-//    finalState = DESTROYED,
-//    savedStateMap = null
-) {
-
-    enum class State {
-        CREATED, STAGE1, STAGE2, STAGE3, STAGE4, SELECTED, DESTROYED;
-
-        fun next(): State =
-            when (this) {
-                CREATED -> STAGE1
-                STAGE1 -> STAGE2
-                STAGE2 -> STAGE3
-                STAGE3 -> STAGE4
-                STAGE4 -> SELECTED
-                SELECTED -> DESTROYED
-                DESTROYED -> DESTROYED
-            }
-    }
-
-    override val initialState: NavElements<NavTarget, State> = initialItems.map {
-        NavElement(
-            key = NavKey(it),
-            fromState = CREATED,
-            targetState = STAGE1,
-            operation = Operation.Noop()
-        )
-    }
-}
+open class Promoter<NavTarget : Any>(
+    scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
+    model: PromoterModel<NavTarget>,
+    interpolator: (TransitionBounds) -> Interpolator<NavTarget, PromoterModel.State>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, PromoterModel.State> = { GestureFactory.Noop() },
+    animationSpec: AnimationSpec<Float> = spring(),
+) : InteractionModel<NavTarget, PromoterModel.State>(
+    scope = scope,
+    model = model,
+    interpolator = interpolator,
+    gestureFactory = gestureFactory,
+    defaultAnimationSpec = animationSpec
+)

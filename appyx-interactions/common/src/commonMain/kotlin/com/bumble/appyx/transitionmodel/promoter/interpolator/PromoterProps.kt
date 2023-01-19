@@ -1,4 +1,4 @@
-package com.bumble.appyx.navmodel.promoter.navmodel2.transitionhandler
+package com.bumble.appyx.transitionmodel.promoter.interpolator
 
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
@@ -9,12 +9,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.NavModel.Segment
-import com.bumble.appyx.interactions.core.ui.RenderParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.interactions.core.ui.UiProps.Companion.lerpFloat
-import com.bumble.appyx.transitionmodel.promoter.Promoter.State
+import com.bumble.appyx.interactions.core.TransitionModel.Segment
+import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -22,11 +22,11 @@ import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
 class PromoterProps<NavTarget>(
-    private val childSize: Dp,
-    transitionParams: TransitionParams
-) : UiProps<NavTarget, State> {
-    private val halfWidthDp = (transitionParams.bounds.width.value - childSize.value) / 2
-    private val halfHeightDp = (transitionParams.bounds.height.value - childSize.value) / 2
+    childSize: Dp,
+    transitionBounds: TransitionBounds
+) : Interpolator<NavTarget, State> {
+    private val halfWidthDp = (transitionBounds.widthDp.value - childSize.value) / 2
+    private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
     data class Props(
@@ -89,7 +89,7 @@ class PromoterProps<NavTarget>(
             State.DESTROYED -> destroyed
         }
 
-    override fun map(segment: Segment<NavTarget, State>): List<RenderParams<NavTarget, State>> {
+    override fun map(segment: Segment<NavTarget, State>): List<FrameModel<NavTarget, State>> {
         val (fromState, targetState) = segment.navTransition
 
         return targetState.map { t1 ->
@@ -121,7 +121,7 @@ class PromoterProps<NavTarget>(
             val y = (effectiveRadius * sin(angleRadians))
             val arcOffsetDp = Offset(x, y)
 
-            RenderParams(
+            FrameModel(
                 navElement = t1,
                 modifier = Modifier
                     .offset {
@@ -134,7 +134,8 @@ class PromoterProps<NavTarget>(
                         rotationY = rotationY,
                         rotationZ = rotationZ
                     )
-                    .scale(scale)
+                    .scale(scale),
+                progress = segment.progress
             )
         }
     }

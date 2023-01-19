@@ -8,10 +8,10 @@ import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.inputsource.InputSource
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.ACTIVE
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.INACTIVE_AFTER
-import com.bumble.appyx.transitionmodel.spotlight.Spotlight.State.INACTIVE_BEFORE
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ACTIVE
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_AFTER
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_BEFORE
 
 @Parcelize
 class UpdateElements<NavTarget : Any>(

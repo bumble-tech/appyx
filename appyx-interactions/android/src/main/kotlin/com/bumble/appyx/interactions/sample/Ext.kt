@@ -1,14 +1,5 @@
 package com.bumble.appyx.interactions.sample
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.theme.atomic_tangerine
 import com.bumble.appyx.interactions.theme.manatee
 import com.bumble.appyx.interactions.theme.md_amber_500
@@ -47,20 +38,3 @@ val colors = listOf(
     md_blue_grey_500
 )
 
-@Composable
-fun createTransitionParams(
-    elementSize: IntSize,
-): State<TransitionParams> {
-    val density = LocalDensity.current.density
-
-    return remember(elementSize) {
-        derivedStateOf {
-            TransitionParams(
-                bounds = TransitionBounds(
-                    width = Dp(elementSize.width / density),
-                    height = Dp(elementSize.height / density)
-                )
-            )
-        }
-    }
-}

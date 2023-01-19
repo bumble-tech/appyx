@@ -4,24 +4,24 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.NavModel
-import com.bumble.appyx.interactions.core.ui.RenderParams
-import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.transitionmodel.backstack.BackStack
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.ACTIVE
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.CREATED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.DROPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.POPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.REPLACED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.STASHED
+import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.DROPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.POPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.REPLACED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.STASHED
 import androidx.compose.ui.unit.lerp as lerpUnit
 
 class BackStackSlider<NavTarget>(
-    transitionParams: TransitionParams
-) : UiProps<NavTarget, BackStack.State> {
-    private val width = transitionParams.bounds.width
-    private val height = transitionParams.bounds.height
+    transitionBounds: TransitionBounds
+) : Interpolator<NavTarget, BackStackModel.State> {
+    private val width = transitionBounds.widthDp
+    private val height = transitionBounds.heightDp
 
     data class Props(
         val offset: DpOffset,
@@ -45,7 +45,11 @@ class BackStackSlider<NavTarget>(
     )
 
     // FIXME single Int, based on relative position to ACTIVE element
-    private fun BackStack.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
+    private fun BackStackModel.State.toProps(
+        stashIndex: Int,
+        popIndex: Int,
+        dropIndex: Int
+    ): Props =
         when (this) {
             ACTIVE -> noOffset
             CREATED -> outsideRight
@@ -55,7 +59,7 @@ class BackStackSlider<NavTarget>(
             DROPPED -> outsideLeft.copy(offsetMultiplier = dropIndex + 1)
         }
 
-    override fun map(segment: NavModel.Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
+    override fun map(segment: TransitionModel.Segment<NavTarget, BackStackModel.State>): List<FrameModel<NavTarget, BackStackModel.State>> {
         val (fromState, targetState) = segment.navTransition
 
         // TODO memoize per segment, as only percentage will change
@@ -77,18 +81,21 @@ class BackStackSlider<NavTarget>(
             val targetDroppedIndex = targetDropped.size - targetDropped.indexOf(t1)
 
             val fromProps = t0.state.toProps(fromStashIndex, fromPoppedIndex, fromDroppedIndex)
-            val targetProps = t1.state.toProps(targetStashIndex, targetPoppedIndex, targetDroppedIndex)
+            val targetProps =
+                t1.state.toProps(targetStashIndex, targetPoppedIndex, targetDroppedIndex)
             val offset = lerpUnit(
                 start = fromProps.offset * fromProps.offsetMultiplier,
                 stop = targetProps.offset * targetProps.offsetMultiplier,
                 fraction = segment.progress
             )
 
-            RenderParams(
+            FrameModel(
                 navElement = t1,
                 modifier = Modifier.offset(
                     x = offset.x,
-                    y = offset.y)
+                    y = offset.y
+                ),
+                progress = segment.progress
             )
         }
     }

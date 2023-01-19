@@ -4,14 +4,15 @@ import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.transitionmodel.backstack.BackStack
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.ACTIVE
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.CREATED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.STASHED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.STASHED
 import com.bumble.appyx.transitionmodel.backstack.activeElement
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
+import com.bumble.appyx.transitionmodel.backstack.BackStack
 
 /**
  * Operation:
@@ -51,5 +52,5 @@ data class Push<NavTarget : Any>(
 }
 
 fun <NavTarget : Any> BackStack<NavTarget>.push(navTarget: NavTarget) {
-    enqueue(Push(navTarget))
+    operation(Push(navTarget))
 }

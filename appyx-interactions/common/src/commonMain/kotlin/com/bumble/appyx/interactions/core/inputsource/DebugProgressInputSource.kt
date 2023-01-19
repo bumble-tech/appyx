@@ -5,14 +5,14 @@ import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.BaseNavModel
 import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.TransitionModel
+import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
-class DebuglProgressInputSource<NavTarget, State>(
-    private val navModel: BaseNavModel<NavTarget, State>,
+class DebugProgressInputSource<NavTarget, State>(
+    private val navModel: TransitionModel<NavTarget, State>,
     private val coroutineScope: CoroutineScope,
 ) : InputSource<NavTarget, State> {
     private val animatable = Animatable(0f)
@@ -30,12 +30,16 @@ class DebuglProgressInputSource<NavTarget, State>(
     }
 
     fun settle() {
-        Logger.log("input source", "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
+        Logger.log(TAG, "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
         coroutineScope.launch {
             animatable.snapTo(progress)
             result = animatable.animateTo(progress.roundToInt().toFloat(), spring()) {
                 setNormalisedProgress(this.value)
             }
         }
+    }
+
+    private companion object {
+        private val TAG = DebugProgressInputSource::class.java.name
     }
 }

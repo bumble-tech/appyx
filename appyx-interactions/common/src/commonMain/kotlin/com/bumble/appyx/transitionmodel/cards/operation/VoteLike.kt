@@ -1,7 +1,7 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
-import com.bumble.appyx.transitionmodel.cards.Cards
+import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.interactions.Parcelize
 
 @Parcelize
-class VoteLike<NavTarget : Any> : TopCardOperation<NavTarget>(Cards.State.VoteLike)
+class VoteLike<NavTarget> : TopCardOperation<NavTarget>(CardsModel.State.VoteLike)

@@ -6,18 +6,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.NavModel.Segment
-import com.bumble.appyx.interactions.core.ui.RenderParams
-import com.bumble.appyx.interactions.core.ui.UiProps
-import com.bumble.appyx.transitionmodel.backstack.BackStack
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.DROPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.POPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.REPLACED
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State.STASHED
+import com.bumble.appyx.interactions.core.TransitionModel.Segment
+import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.DROPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.POPPED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.REPLACED
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.STASHED
 import androidx.compose.ui.graphics.lerp as lerpGraphics
 import androidx.compose.ui.unit.lerp as lerpUnit
 
-class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.State> {
+class BackStackSliderDebugVertical<NavTarget> : Interpolator<NavTarget, BackStackModel.State> {
     private val size = 100.dp
 
     class Props(
@@ -35,10 +35,10 @@ class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.Sta
         color = Color.Blue, // (0x550000FF),
     )
 
-    private fun BackStack.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
+    private fun BackStackModel.State.toProps(stashIndex: Int, popIndex: Int, dropIndex: Int): Props =
         when (this) {
-            BackStack.State.CREATED -> created
-            BackStack.State.ACTIVE -> active
+            BackStackModel.State.CREATED -> created
+            BackStackModel.State.ACTIVE -> active
             POPPED -> Props(
                 offset = DpOffset(0.dp, ((popIndex) * -size.value).dp),
                 color = Color.Red,
@@ -57,7 +57,7 @@ class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.Sta
             )
         }
 
-    override fun map(segment: Segment<NavTarget, BackStack.State>): List<RenderParams<NavTarget, BackStack.State>> {
+    override fun map(segment: Segment<NavTarget, BackStackModel.State>): List<FrameModel<NavTarget, BackStackModel.State>> {
         val fromState = segment.navTransition.fromState
         val targetState = segment.navTransition.targetState
         val fromStashed = fromState.filter { it.state == STASHED }
@@ -82,11 +82,12 @@ class BackStackSliderDebugVertical<NavTarget> : UiProps<NavTarget, BackStack.Sta
             val offset = lerpUnit(fromProps.offset, targetProps.offset, segment.progress)
             val color = lerpGraphics(fromProps.color, targetProps.color, segment.progress)
 
-            RenderParams(
+            FrameModel(
                 navElement = t1,
                 modifier = Modifier
                     .offset(x = offset.x, y = offset.y)
-                    .background(color)
+                    .background(color),
+                progress = segment.progress
             )
         }
     }

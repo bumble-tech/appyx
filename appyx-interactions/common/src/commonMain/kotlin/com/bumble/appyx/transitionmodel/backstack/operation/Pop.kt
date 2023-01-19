@@ -2,10 +2,11 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 
 import com.bumble.appyx.interactions.core.NavElements
 import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.transitionmodel.backstack.BackStack
-import com.bumble.appyx.transitionmodel.backstack.BackStack.State
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 import com.bumble.appyx.transitionmodel.backstack.activeIndex
 import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.transitionmodel.backstack.BackStack
 
 /**
  * Operation:
@@ -52,5 +53,5 @@ class Pop<NavTarget : Any> : BackStackOperation<NavTarget> {
 }
 
 fun <NavTarget : Any> BackStack<NavTarget>.pop() {
-    enqueue(Pop())
+    operation(Pop())
 }

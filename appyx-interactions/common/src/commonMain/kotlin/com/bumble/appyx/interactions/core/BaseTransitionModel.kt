@@ -9,10 +9,10 @@ import kotlin.coroutines.EmptyCoroutineContext
 import com.bumble.appyx.interactions.Logger
 
 @SuppressWarnings("UnusedPrivateMember")
-abstract class BaseNavModel<NavTarget, NavState>(
+abstract class BaseTransitionModel<NavTarget, NavState>(
     private val finalStates: Set<NavState> = setOf(),
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-) : NavModel<NavTarget, NavState> {
+) : TransitionModel<NavTarget, NavState> {
     abstract val initialState: NavElements<NavTarget, NavState>
 
     /**
@@ -39,15 +39,15 @@ abstract class BaseNavModel<NavTarget, NavState>(
     override val maxProgress: Float
         get() = (queue.lastIndex + 1).toFloat()
 
-    private val state: MutableStateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
+    private val state: MutableStateFlow<TransitionModel.Segment<NavTarget, NavState>> by lazy {
         MutableStateFlow(createState(lastRecordedProgress))
     }
 
-    override val segments: StateFlow<NavModel.Segment<NavTarget, NavState>> by lazy {
+    override val segments: StateFlow<TransitionModel.Segment<NavTarget, NavState>> by lazy {
         state
     }
 
-    private fun createState(progress: Float): NavModel.Segment<NavTarget, NavState> {
+    private fun createState(progress: Float): TransitionModel.Segment<NavTarget, NavState> {
         val progress = progress.coerceAtLeast(minimumValue = 1f)
 
         /**
@@ -59,7 +59,7 @@ abstract class BaseNavModel<NavTarget, NavState>(
          */
         val segmentIndex = (if (progress == maxProgress) (progress - 1) else progress).toInt()
 
-        return NavModel.Segment(
+        return TransitionModel.Segment(
             index = segmentIndex,
             navTransition = queue[segmentIndex],
             progress = progress - segmentIndex
@@ -74,19 +74,19 @@ abstract class BaseNavModel<NavTarget, NavState>(
             queue.add(newState)
             true
         } else {
-            Logger.log("BaseNavModel", "Operation $operation is not applicable on state: $baseline")
+            Logger.log(TAG, "Operation $operation is not applicable on state: $baseline")
             false
         }
     }
 
     override fun setProgress(progress: Float) {
         val progress = progress.coerceAtLeast(1f)
-        Logger.log("BaseNavModel", "Progress update: $progress")
+        Logger.log(TAG, "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
             //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
             // onTransitionFinished(state.value.fromState.map { it.key })
-            Logger.log("Transition finished", "onTransitionFinished()")
+            Logger.log(TAG, "onTransitionFinished()")
         }
 
         lastRecordedProgress = progress
@@ -97,5 +97,9 @@ abstract class BaseNavModel<NavTarget, NavState>(
         while (segmentIndex < queue.size) {
             queue.removeLast()
         }
+    }
+
+    private companion object {
+        private val TAG = BaseTransitionModel::class.java.name
     }
 }
