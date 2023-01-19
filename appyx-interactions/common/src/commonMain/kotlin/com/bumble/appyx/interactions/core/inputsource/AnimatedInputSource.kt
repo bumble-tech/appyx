@@ -12,21 +12,21 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class AnimatedInputSource<NavTarget : Any, State>(
-    private val model: TransitionModel<NavTarget, State>,
+class AnimatedInputSource<NavTarget : Any, ModelState>(
+    private val model: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
     private val defaultAnimationSpec: AnimationSpec<Float> = spring()
-) : InputSource<NavTarget, State> {
+) : InputSource<NavTarget, ModelState> {
 
     private val animatable = Animatable(0f)
     // FIXME private lateinit var result: AnimationResult<Float, AnimationVector1D>
 
-    override fun operation(operation: Operation<NavTarget, State>) {
+    override fun operation(operation: Operation<ModelState>) {
         operation(operation, defaultAnimationSpec)
     }
 
     fun operation(
-        operation: Operation<NavTarget, State>,
+        operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float>
     ) {
         model.enqueue(operation)

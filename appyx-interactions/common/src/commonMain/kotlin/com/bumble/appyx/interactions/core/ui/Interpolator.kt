@@ -2,11 +2,11 @@ package com.bumble.appyx.interactions.core.ui
 
 import com.bumble.appyx.interactions.core.TransitionModel
 
-interface Interpolator<Target, State> {
+interface Interpolator<Target, ModelState> {
 
     fun map(
-        segment: TransitionModel.Segment<Target, State>
-    ): List<FrameModel<Target, State>>
+        segment: TransitionModel.Segment<ModelState>
+    ): List<FrameModel<Target>>
 
     // TODO extract along with other interpolation helpers
     companion object {

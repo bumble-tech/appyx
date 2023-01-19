@@ -36,7 +36,7 @@ fun BackStackExperimentDebug() {
         BackStack(
             scope = coroutineScope,
             model = BackStackModel(
-                initialElement = Child1,
+                initialTarget = Child1,
                 savedStateMap = null
             ),
             interpolator = { BackStackSlider(it) },
