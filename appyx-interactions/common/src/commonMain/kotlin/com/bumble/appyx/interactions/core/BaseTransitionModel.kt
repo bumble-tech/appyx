@@ -22,10 +22,14 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
      */
     private val queue: MutableList<NavTransition<ModelState>> by lazy {
         mutableListOf(
-            NavTransition(
-                fromState = initialState,
-                targetState = initialState,
-            )
+            initialTransition
+        )
+    }
+
+    open protected val initialTransition: NavTransition<ModelState> by lazy {
+        NavTransition(
+            fromState = initialState,
+            targetState = initialState,
         )
     }
 

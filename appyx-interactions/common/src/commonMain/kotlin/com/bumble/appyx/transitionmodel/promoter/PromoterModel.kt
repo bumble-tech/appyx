@@ -1,43 +1,41 @@
 package com.bumble.appyx.transitionmodel.promoter
 
-import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State
-import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.CREATED
-import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.STAGE1
 import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavKey
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.asElements
+import com.bumble.appyx.interactions.core.ui.NavElements
 
 class PromoterModel<NavTarget : Any>(
     initialItems: List<NavTarget> = listOf(),
-) : BaseTransitionModel<NavTarget, State>(
+    val activeElementCount: Int = 6,
+) : BaseTransitionModel<NavTarget, PromoterModel.State<NavTarget>>(
 //    screenResolver = PromoterOnScreenResolver,
 //    finalState = DESTROYED,
 //    savedStateMap = null
 ) {
+    data class State<NavTarget>(
+        val activeStartAtIndex: Int,
+        val activeElementCount: Int,
+        val elements: NavElements<NavTarget>,
+    )
 
-    enum class State {
-        CREATED, STAGE1, STAGE2, STAGE3, STAGE4, SELECTED, DESTROYED;
+    override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
+        elements.drop(activeStartAtIndex).drop(activeElementCount).toSet()
 
-        fun next(): State =
-            when (this) {
-                CREATED -> STAGE1
-                STAGE1 -> STAGE2
-                STAGE2 -> STAGE3
-                STAGE3 -> STAGE4
-                STAGE4 -> SELECTED
-                SELECTED -> DESTROYED
-                DESTROYED -> DESTROYED
-            }
-    }
+    override val initialState: State<NavTarget> =
+        State(
+            activeStartAtIndex = initialItems.lastIndex,
+            activeElementCount = activeElementCount,
+            elements = initialItems.asElements(),
+        )
 
-    override val initialState: NavElements<NavTarget, State> = initialItems.map {
-        NavElement(
-            key = NavKey(it),
-            fromState = CREATED,
-            targetState = STAGE1,
-            operation = Operation.Noop()
+    override val initialTransition: NavTransition<State<NavTarget>> by lazy {
+        NavTransition(
+            fromState = initialState,
+            targetState = initialState.copy(
+                activeStartAtIndex = 0
+            ),
         )
     }
 }
