@@ -8,7 +8,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 
 @Parcelize
-class Previous<NavTarget : Any> : BaseOperation<SpotlightModel.State<NavTarget>>() {
+class Previous<NavTarget> : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
         state.hasPrevious()
@@ -23,5 +23,5 @@ class Previous<NavTarget : Any> : BaseOperation<SpotlightModel.State<NavTarget>>
 }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.previous(animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
-    operation(Previous<NavTarget>(), animationSpec)
+    operation(Previous(), animationSpec)
 }

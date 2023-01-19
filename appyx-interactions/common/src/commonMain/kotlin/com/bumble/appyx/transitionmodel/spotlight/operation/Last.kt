@@ -23,5 +23,5 @@ class Last<NavTarget : Any> : BaseOperation<SpotlightModel.State<NavTarget>>() {
 }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.last(animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
-    operation(Last<NavTarget>(), animationSpec)
+    operation(Last(), animationSpec)
 }

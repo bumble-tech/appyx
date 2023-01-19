@@ -24,5 +24,5 @@ class Activate<NavTarget : Any>(
 }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.activate(index: Float, animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
-    operation(Activate<NavTarget>(index), animationSpec)
+    operation(Activate(index), animationSpec)
 }
