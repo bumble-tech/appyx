@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumble.appyx.core.integrationpoint.IntegrationPoint
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
@@ -19,6 +21,7 @@ import com.bumble.appyx.core.node.build
 import com.bumble.appyx.core.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
+import com.bumble.appyx.viewmodel.IntegrationPointViewModel
 
 /**
  * Composable function to host [Node].
@@ -39,6 +42,8 @@ fun <N : Node> NodeHost(
     }
     node.Compose(modifier = modifier)
     val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val viewmodelStoreOwner = LocalViewModelStoreOwner.current
+    val viewModel = IntegrationPointViewModel.getInstance(viewmodelStoreOwner!!)
     DisposableEffect(lifecycle) {
         node.updateLifecycleState(lifecycle.currentState)
         val observer = LifecycleEventObserver { source, _ ->

@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bumble.appyx.app.node.backstack.InsideTheBackStack
 import com.bumble.appyx.app.node.cards.CardsExampleNode
 import com.bumble.appyx.app.node.helper.screenNode
@@ -26,8 +29,8 @@ import com.bumble.appyx.core.navigation.EmptyNavModel
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
-import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
 import com.bumble.appyx.interactions.App
+import com.bumble.appyx.sample.navigtion.compose.ComposeNavigationRoot
 import kotlinx.parcelize.Parcelize
 
 class SamplesSelectorNode(
@@ -97,6 +100,8 @@ class SamplesSelectorNode(
 
     @Composable
     override fun View(modifier: Modifier) {
+        val viewModel = viewModel<MyViewModel>()
+        val counter = viewModel.flow.collectAsState(initial = 0)
         val decorator: @Composable (child: ChildRenderer) -> Unit = remember {
             { childRenderer ->
                 ScaledLayout {
@@ -110,6 +115,9 @@ class SamplesSelectorNode(
             verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top)
 
         ) {
+            item {
+                Text(text = "Counter: ${counter.value}")
+            }
             item {
                 CardItem(decorator)
             }
