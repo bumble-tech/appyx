@@ -80,7 +80,7 @@ fun Modifier.dashedBorder(width: Dp, color: Color, shape: Shape = RectangleShape
  * @param brush brush to paint the border with
  * @param shape shape of the border
  */
-@Suppress("LongMethod", "ComplexMethod")
+@Suppress("LongMethod", "ComplexMethod", "UnnecessaryComposedModifier")
 fun Modifier.dashedBorder(width: Dp, brush: Brush, shape: Shape, on: Dp, off: Dp): Modifier =
     composed(
         factory = {
