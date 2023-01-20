@@ -1,16 +1,19 @@
 package com.bumble.appyx.interactions.core
 
 import androidx.compose.runtime.Immutable
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 import java.util.UUID
 
-// FIXME @Parcelize
+@Parcelize
 @Immutable
 class NavKey<NavTarget> private constructor(
-    val navTarget: NavTarget, // FIXME @RawValue
+    val navTarget: @RawValue NavTarget,
     val id: String
-) { // FIXME : Parcelable {
+) : Parcelable {
 
-    constructor(navTarget: NavTarget) : this( // FIXME @RawValue
+    constructor(navTarget: @RawValue NavTarget) : this(
         navTarget = navTarget,
         id = UUID.randomUUID().toString()
     )
