@@ -21,9 +21,9 @@ class Pop<NavTarget : Any> : BaseOperation<State<NavTarget>>() {
 
     override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
         fromState.copy(
-            active = fromState.stashed.first(),
+            active = fromState.stashed.last(),
             destroyed = fromState.destroyed + fromState.active,
-            stashed = fromState.stashed.subList(1, fromState.stashed.size)
+            stashed = fromState.stashed.dropLast(1)
         )
 
     override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass

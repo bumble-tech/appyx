@@ -29,7 +29,7 @@ data class Push<NavTarget : Any>(
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),
-            stashed = listOf(fromState.active) + fromState.stashed,
+            stashed = fromState.stashed + fromState.active,
         )
 }
 
