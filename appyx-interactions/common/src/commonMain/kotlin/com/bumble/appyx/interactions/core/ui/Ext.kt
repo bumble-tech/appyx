@@ -13,6 +13,7 @@ var DisableAnimations = false
 
 
 @Composable
+@Suppress("UnnecessaryComposedModifier")
 fun <NavTarget : Any, NavState : Any> Modifier.gestureModifier(
     interactionModel: InteractionModel<NavTarget, NavState>,
     key: Any,
