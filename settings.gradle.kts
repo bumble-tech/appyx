@@ -25,6 +25,7 @@ enableFeaturePreview("VERSION_CATALOGS")
 
 include(
     ":libraries:core",
+    ":libraries:appyx-navigation",
     ":libraries:customisations",
     ":libraries:interop-ribs",
     ":libraries:interop-rx2",
@@ -35,6 +36,7 @@ include(
     ":libraries:testing-ui-activity",
     ":libraries:testing-unit-common",
     ":samples:app",
+    ":samples:appyx-navigation",
     ":samples:common",
     ":samples:navigation-compose",
     ":samples:navmodel-samples",
