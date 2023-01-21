@@ -101,7 +101,6 @@ abstract class ParentNode<NavTarget : Any>(
         navTarget: NavTarget,
         decorator: @Composable (child: ChildRenderer) -> Unit
     ) {
-        ensureNodeWasBuilt()
         LaunchedEffect(navTarget) {
             permanentNavModel.addUnique(navTarget)
         }

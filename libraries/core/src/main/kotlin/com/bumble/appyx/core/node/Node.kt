@@ -75,7 +75,7 @@ open class Node(
             field = value
         }
 
-    protected var wasBuilt = false
+    private var wasBuilt = false
 
     val id = getNodeId(buildContext)
 
@@ -229,10 +229,6 @@ open class Node(
 
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
-
-    protected fun ensureNodeWasBuilt() {
-        require(wasBuilt) { "Node hasn't been built yet" }
-    }
 
     companion object {
         private const val NODE_ID_KEY = "node.id"
