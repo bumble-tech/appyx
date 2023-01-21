@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#325](https://github.com/bumble-tech/appyx/pull/325) – **Fixes**: Crash when using PermanentChild API in View testing
 
 ---
 
