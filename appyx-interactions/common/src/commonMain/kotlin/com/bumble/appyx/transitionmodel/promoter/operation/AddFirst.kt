@@ -4,6 +4,7 @@ import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.asElements
 import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
@@ -18,13 +19,12 @@ data class AddFirst<NavTarget>(
 
     override fun createFromState(baseLineState: PromoterModel.State<NavTarget>): PromoterModel.State<NavTarget> =
         baseLineState.copy(
-            elements = listOf(element).asElements() + baseLineState.elements,
-            activeStartAtIndex = baseLineState.activeStartAtIndex + 1
+            elements = listOf(element.asElement() to PromoterModel.State.ElementState.CREATED) + baseLineState.elements,
         )
 
     override fun createTargetState(fromState: PromoterModel.State<NavTarget>): PromoterModel.State<NavTarget> =
         fromState.copy(
-            activeStartAtIndex = fromState.activeStartAtIndex -1
+            elements = fromState.elements.map { it.first to it.second.next() }
         )
 }
 

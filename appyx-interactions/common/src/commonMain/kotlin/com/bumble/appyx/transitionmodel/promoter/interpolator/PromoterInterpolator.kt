@@ -16,6 +16,7 @@ import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -80,14 +81,14 @@ class PromoterInterpolator<NavTarget : Any>(
     )
 
     private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
-        elements.take(activeStartAtIndex).map { MatchedProps(it, created) } +
-        elements.drop(activeStartAtIndex).mapIndexed { index, element ->
-            MatchedProps(element, when(index) {
-                0 -> stage1
-                1 -> stage2
-                2 -> stage3
-                3 -> stage4
-                4 -> stage5
+        elements.map {
+            MatchedProps(it.first, when(it.second) {
+                ElementState.CREATED -> created
+                ElementState.STAGE1 -> stage1
+                ElementState.STAGE2 -> stage2
+                ElementState.STAGE3 -> stage3
+                ElementState.STAGE4 -> stage4
+                ElementState.STAGE5 -> stage5
                 else -> destroyed
             })
         }
