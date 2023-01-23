@@ -1,8 +1,15 @@
 # Changelog
 
 ## Pending changes
+–
+
+---
+
+## 1.0.3
 
 - [#325](https://github.com/bumble-tech/appyx/pull/325) – **Fixed**: Crash when using PermanentChild API in View testing
+
+<div style="text-align: center"><small>23 Jan 2023</small></div>
 
 ---
 
