@@ -7,23 +7,40 @@ import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.property.HasModifier
+import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class SpotlightFader<NavTarget>(
-    transitionParams: TransitionParams
+    private val scope: CoroutineScope
 ) : Interpolator<NavTarget, SpotlightModel.State> {
-    private val width = transitionParams.bounds.widthPx
 
     class Props(
-        val alpha: Float
-    )
+        var alpha: Alpha
+    ) : Interpolatable<Props>, HasModifier {
+
+        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
+            alpha.lerpTo(start.alpha, end.alpha, fraction)
+        }
+
+        override val modifier: Modifier
+            get() = Modifier
+                .then(alpha.modifier)
+    }
 
     private val visible = Props(
-        alpha = 1f
+        alpha = Alpha(1f)
     )
 
     private val hidden = Props(
-        alpha = 0f
+        alpha = Alpha(0f)
+    )
+
+    private val interpolated = Props(
+        alpha = Alpha(0f)
     )
 
     private fun SpotlightModel.State.toProps(): Props =
@@ -40,12 +57,15 @@ class SpotlightFader<NavTarget>(
 
             val fromProps = t0.state.toProps()
             val targetProps = t1.state.toProps()
-            val alpha = lerpFloat(fromProps.alpha, targetProps.alpha, segment.progress)
+
+            // TODO
+            scope.launch {
+                interpolated.lerpTo(fromProps, targetProps, segment.progress)
+            }
 
             FrameModel(
                 navElement = t1,
-                modifier = Modifier
-                    .alpha(alpha),
+                modifier = interpolated.modifier,
                 progress = segment.progress
             )
         }
