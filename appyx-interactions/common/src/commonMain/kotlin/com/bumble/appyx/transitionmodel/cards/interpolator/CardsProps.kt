@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -24,7 +25,6 @@ import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlin.math.roundToInt
-import com.bumble.appyx.interactions.Logger
 
 
 class CardsProps<NavTarget : Any>(
@@ -64,29 +64,23 @@ class CardsProps<NavTarget : Any>(
         zIndex = 2f,
     )
 
-    private fun <NavTarget> CardsModel.State<NavTarget>.likedList(): List<MatchedProps<NavTarget, Props>> =
-        liked.lastOrNull()?.let {
-            listOf(MatchedProps(it, voteLike))
-        } ?: listOf()
-
-    private fun <NavTarget> CardsModel.State<NavTarget>.passedList(): List<MatchedProps<NavTarget, Props>> =
-        passed.lastOrNull()?.let {
-            listOf(MatchedProps(it, votePass))
-        } ?: listOf()
-
-    private fun <NavTarget> CardsModel.State<NavTarget>.others(): List<MatchedProps<NavTarget, Props>> =
-        queued.mapIndexed { index, navElement ->
-            val props = when (index) {
-                0 -> top
-                1 -> bottom
-                else -> hidden
-            }
-
-            MatchedProps(navElement, props)
-        }
 
     private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
-        likedList() + passedList() + others()
+        (liked.lastOrNull()?.let {
+            listOf(MatchedProps(it, voteLike))
+        } ?: listOf()) +
+                (passed.lastOrNull()?.let {
+                    listOf(MatchedProps(it, votePass))
+                } ?: listOf()) +
+                queued.mapIndexed { index, navElement ->
+                    val props = when (index) {
+                        0 -> top
+                        1 -> bottom
+                        else -> hidden
+                    }
+
+                    MatchedProps(navElement, props)
+                }
 
     override fun map(segment: TransitionModel.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
@@ -119,8 +113,6 @@ class CardsProps<NavTarget : Any>(
                 end = t1.props.positionalOffsetX,
                 progress = segment.progress
             )
-
-            Logger.log("offsetx", "offsetx ${t0.props.positionalOffsetX} ${t1.props.positionalOffsetX} offset: $offsetX")
 
             FrameModel(
                 navElement = t1.element,
