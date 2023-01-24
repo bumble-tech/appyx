@@ -1,7 +1,6 @@
 package com.bumble.appyx.navigation.children
 
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
