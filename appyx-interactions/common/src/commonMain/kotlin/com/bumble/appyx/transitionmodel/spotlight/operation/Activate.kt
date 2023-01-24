@@ -1,52 +1,28 @@
 package com.bumble.appyx.transitionmodel.spotlight.operation
 
+import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
-import com.bumble.appyx.transitionmodel.spotlight.currentIndex
 
 @Parcelize
-class Activate<NavTarget : Any>(private val index: Int) : Operation<NavTarget, State> {
+class Activate<NavTarget : Any>(
+    private val index: Float
+) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
-    override fun isApplicable(elements: NavElements<NavTarget, State>) =
-        index != elements.currentIndex && index <= elements.lastIndex && index >= 0
+    override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
+        index != state.activeIndex && 0 <= index && index <= state.standard.lastIndex
 
-    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
-        val toActivateIndex = this.index
-        val targetState = elements.mapIndexed { index, element ->
-            when {
-                index < toActivateIndex -> {
-                    element.transitionTo(
-                        newTargetState = State.INACTIVE_BEFORE,
-                        operation = this
-                    )
-                }
-                index == toActivateIndex -> {
-                    element.transitionTo(
-                        newTargetState = State.ACTIVE,
-                        operation = this
-                    )
-                }
-                else -> {
-                    element.transitionTo(
-                        newTargetState = State.INACTIVE_AFTER,
-                        operation = this
-                    )
-                }
-            }
-        }
+    override fun createFromState(baseLineState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
+        baseLineState
 
-        return NavTransition(
-            fromState = elements,
-            targetState = targetState
+    override fun createTargetState(fromState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
+        fromState.copy(
+            activeIndex = fromState.standard.lastIndex.toFloat(),
         )
-    }
 }
 
-
-fun <T : Any> SpotlightModel<T>.activate(index: Int) {
-    enqueue(Activate(index))
+fun <NavTarget : Any> Spotlight<NavTarget>.activate(index: Float, animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
+    operation(Activate(index), animationSpec)
 }

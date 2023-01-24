@@ -10,14 +10,16 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import androidx.compose.ui.zIndex
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDp
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
@@ -27,7 +29,7 @@ import kotlin.math.roundToInt
 
 class CardsProps<NavTarget : Any>(
     transitionBounds: TransitionBounds
-) : Interpolator<NavTarget, CardsModel.State> {
+) : Interpolator<NavTarget, CardsModel.State<NavTarget>> {
     private val width = transitionBounds.widthDp.value
 
     private data class Props(
@@ -37,7 +39,7 @@ class CardsProps<NavTarget : Any>(
         val zIndex: Float = 0f,
     )
 
-    private val queued = Props(
+    private val hidden = Props(
         scale = 0f
     )
 
@@ -62,64 +64,70 @@ class CardsProps<NavTarget : Any>(
         zIndex = 2f,
     )
 
-    private fun CardsModel.State.toProps(): Props =
-        when (this) {
-            is CardsModel.State.Queued -> queued
-            is CardsModel.State.Bottom -> bottom
-            is CardsModel.State.Top -> top
-            is CardsModel.State.VoteLike -> voteLike
-            is CardsModel.State.VotePass -> votePass
-        }
 
-    override fun map(segment: TransitionModel.Segment<NavTarget, CardsModel.State>): List<FrameModel<NavTarget, CardsModel.State>> {
+    private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+        (liked.lastOrNull()?.let {
+            listOf(MatchedProps(it, voteLike))
+        } ?: listOf()) +
+                (passed.lastOrNull()?.let {
+                    listOf(MatchedProps(it, votePass))
+                } ?: listOf()) +
+                queued.mapIndexed { index, navElement ->
+                    val props = when (index) {
+                        0 -> top
+                        1 -> bottom
+                        else -> hidden
+                    }
+
+                    MatchedProps(navElement, props)
+                }
+
+    override fun map(segment: TransitionModel.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
+        val fromProps = fromState.toProps()
+        val targetProps = targetState.toProps()
 
-        return targetState.mapIndexed { index, t1 ->
-            // TODO memoize per segment, as only percentage will change
-            val t0 = fromState.find { it.key == t1.key }
-            require(t0 != null)
+        return targetProps.map { t1 ->
+            val t0 = fromProps.find { it.element.id == t1.element.id }!!
 
-            val fromProps = t0.state.toProps()
-            val targetProps = t1.state.toProps()
-
-            val dpOffsetX = lerp(
-                start = fromProps.positionalOffsetX,
-                stop = targetProps.positionalOffsetX,
-                fraction = segment.progress
-            )
-
-            val rotationZ = lerpFloat(
-                start = fromProps.rotationZ,
-                end = targetProps.rotationZ,
+            val scale = lerpFloat(
+                start = t0.props.scale,
+                end = t1.props.scale,
                 progress = segment.progress
             )
 
             val zIndex = lerpFloat(
-                start = fromProps.zIndex,
-                end = targetProps.zIndex,
+                start = t0.props.zIndex,
+                end = t1.props.zIndex,
                 progress = segment.progress
             )
 
-            val scale = lerpFloat(
-                start = fromProps.scale,
-                end = targetProps.scale,
+            val rotationZ = lerpFloat(
+                start = t0.props.rotationZ,
+                end = t1.props.rotationZ,
+                progress = segment.progress
+            )
+
+            val offsetX = lerpDp(
+                start = t0.props.positionalOffsetX,
+                end = t1.props.positionalOffsetX,
                 progress = segment.progress
             )
 
             FrameModel(
-                navElement = t1,
+                navElement = t1.element,
                 modifier = Modifier
                     .offset {
                         IntOffset(
-                            x = (this.density * (dpOffsetX.value)).roundToInt(),
+                            x = (this.density * (offsetX.value)).roundToInt(),
                             y = 0
                         )
                     }
                     .zIndex(zIndex)
-                    .graphicsLayer(
-                        rotationZ = rotationZ,
+                    .graphicsLayer {
+                        this.rotationZ = rotationZ
                         transformOrigin = TransformOrigin(0.5f, 1f)
-                    )
+                    }
                     .scale(scale),
                 progress = segment.progress
             )
@@ -128,7 +136,7 @@ class CardsProps<NavTarget : Any>(
 
     class Gestures<NavTarget>(
         transitionBounds: TransitionBounds
-    ) : GestureFactory<NavTarget, CardsModel.State> {
+    ) : GestureFactory<NavTarget, CardsModel.State<NavTarget>> {
 
         private val width = transitionBounds.widthPx
         private val height = transitionBounds.widthPx
@@ -142,7 +150,7 @@ class CardsProps<NavTarget : Any>(
         override fun createGesture(
             delta: Offset,
             density: Density
-        ): Gesture<NavTarget, CardsModel.State> {
+        ): Gesture<NavTarget, CardsModel.State<NavTarget>> {
             val verticalRatio = (touchPosition?.y ?: 0f) / height // 0..1
             // For a perfect solution we should keep track where the touch is currently at, at any
             // given moment; then do the calculation in reverse, how much of a horizontal gesture
@@ -152,6 +160,7 @@ class CardsProps<NavTarget : Any>(
             // the bottom:
             // e.g. 4 = at top of the card, 2 = at the bottom, when voteCardPositionMultiplier = 2
             val dragToProgressFactor = voteCardPositionMultiplier * (2 - verticalRatio)
+            Logger.log("Cards", "delta ${delta.x}")
 
             return if (delta.x < 0) {
                 Gesture(

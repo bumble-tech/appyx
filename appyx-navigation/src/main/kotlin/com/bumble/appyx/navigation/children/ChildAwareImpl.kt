@@ -4,23 +4,23 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.interactions.core.NavKey
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.withPrevious
+import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlin.reflect.KClass
 
 class ChildAwareImpl<N : Node> : ChildAware<N> {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
-    private lateinit var children: StateFlow<Map<out NavKey<*>, ChildEntry<*>>>
+    private lateinit var children: StateFlow<Map<out NavElement<*>, ChildEntry<*>>>
     private lateinit var lifecycle: Lifecycle
     private lateinit var coroutineScope: CoroutineScope
 
@@ -101,7 +101,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         })
     }
 
-    private fun getCreatedNodes(childEntryMap: Map<out NavKey<*>, ChildEntry<*>>) =
+    private fun getCreatedNodes(childEntryMap: Map<out NavElement<*>, ChildEntry<*>>) =
         childEntryMap.values.mapNotNull { entry -> entry.nodeOrNull }
 
 }

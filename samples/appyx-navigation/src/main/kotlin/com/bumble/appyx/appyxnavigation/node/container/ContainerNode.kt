@@ -12,8 +12,8 @@ import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
     buildContext: BuildContext,
-    private val backStackModel: BackStackModel<NavTarget> = BackStackModel(
-        initialElement = NavTarget.DatingCards,
+    backStackModel: BackStackModel<NavTarget> = BackStackModel(
+        initialTarget = NavTarget.DatingCards,
         savedStateMap = buildContext.savedStateMap
     )
 ) : ParentNode<ContainerNode.NavTarget>(

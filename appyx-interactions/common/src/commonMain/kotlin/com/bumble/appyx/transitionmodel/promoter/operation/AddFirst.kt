@@ -3,37 +3,29 @@ package com.bumble.appyx.transitionmodel.promoter.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavKey
-import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.asElements
 import com.bumble.appyx.transitionmodel.promoter.Promoter
-import com.bumble.appyx.transitionmodel.promoter.PromoterElement
-import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State
-import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.CREATED
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 
 @Parcelize
 data class AddFirst<NavTarget>(
     private val element: @RawValue NavTarget
-) : PromoterOperation<NavTarget> {
+) : BaseOperation<PromoterModel.State<NavTarget>>() {
 
-    override fun isApplicable(elements: NavElements<NavTarget, State>): Boolean =
+    override fun isApplicable(state: PromoterModel.State<NavTarget>): Boolean =
         true
 
-    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
-        val new = PromoterElement(
-            key = NavKey(element),
-            fromState = CREATED,
-            targetState = CREATED,
-            operation = this
+    override fun createFromState(baseLineState: PromoterModel.State<NavTarget>): PromoterModel.State<NavTarget> =
+        baseLineState.copy(
+            elements = listOf(element.asElement() to PromoterModel.State.ElementState.CREATED) + baseLineState.elements,
         )
 
-        val newElements = listOf(new) + elements
-
-        return NavTransition(
-            fromState = newElements,
-            targetState = newElements.transitionTo { it.state.next() },
+    override fun createTargetState(fromState: PromoterModel.State<NavTarget>): PromoterModel.State<NavTarget> =
+        fromState.copy(
+            elements = fromState.elements.map { it.first to it.second.next() }
         )
-    }
 }
 
 fun <NavTarget : Any> Promoter<NavTarget>.addFirst(

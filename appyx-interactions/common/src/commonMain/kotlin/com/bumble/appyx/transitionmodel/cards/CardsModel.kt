@@ -1,45 +1,26 @@
 package com.bumble.appyx.transitionmodel.cards
 
 import com.bumble.appyx.interactions.core.BaseTransitionModel
-import com.bumble.appyx.interactions.core.NavKey
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.ui.NavElements
 
 class CardsModel<NavTarget : Any>(
     initialItems: List<NavTarget> = listOf(),
-) : BaseTransitionModel<NavTarget, CardsModel.State>(
-    finalStates = FINAL_STATES,
-) {
-    companion object {
-        internal val FINAL_STATES = setOf(State.VoteLike, State.VotePass)
-        internal val TOP_STATES = setOf(State.Top)
-    }
+) : BaseTransitionModel<NavTarget, CardsModel.State<NavTarget>>() {
 
-    sealed class State {
-        data class Queued(val queueNumber: Int) : State()
-        object Bottom : State()
-        object Top : State()
-        object VoteLike : State()
-        object VotePass : State()
+    data class State<NavTarget>(
+        val queued: NavElements<NavTarget> = listOf(),
+        val liked: NavElements<NavTarget> = listOf(),
+        val passed: NavElements<NavTarget> = listOf()
+    )
 
-        fun next(): State =
-            when (this) {
-                is Queued -> if (queueNumber == 0) Bottom else Queued(queueNumber - 1)
-                is Bottom -> Top
-                else -> this
-            }
-    }
+    override val initialState: State<NavTarget> =
+        State(queued = initialItems.map { it.asElement() })
 
-    override val initialState = initialItems.mapIndexed { index, element ->
-        val state = when (index) {
-            0 -> State.Top
-            1 -> State.Bottom
-            else -> State.Queued(index - 2)
-        }
-        CardsElement(
-            key = NavKey(element),
-            fromState = if (state == State.Top) State.Bottom else state,
-            targetState = state,
-            operation = Operation.Noop()
-        )
-    }
+    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
+        (queued + liked + passed).toSet()
+
+    override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> = setOf()
 }
+

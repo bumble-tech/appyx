@@ -7,7 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.bumble.appyx.interactions.core.NavKey
+import com.bumble.appyx.interactions.core.BaseTransitionModel
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -29,7 +30,7 @@ import kotlin.reflect.KClass
 @Suppress("TooManyFunctions")
 @Stable
 abstract class ParentNode<NavTarget : Any>(
-    val transitionModel: TransitionModel<NavTarget, *>,
+    val transitionModel: BaseTransitionModel<NavTarget, *>,
     buildContext: BuildContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
@@ -74,8 +75,8 @@ abstract class ParentNode<NavTarget : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> =
-        childNodeCreationManager.childOrCreate(navKey)
+    fun childOrCreate(navElement: NavElement<NavTarget>): ChildEntry.Initialized<NavTarget> =
+        childNodeCreationManager.childOrCreate(navElement)
 
 //    @Composable
 //    fun PermanentChild(

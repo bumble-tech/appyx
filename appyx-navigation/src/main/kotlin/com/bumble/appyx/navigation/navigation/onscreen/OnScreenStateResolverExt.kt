@@ -1,6 +1,6 @@
-package com.bumble.appyx.interactions.core.ui.onscreen
+package com.bumble.appyx.navigation.navigation.onscreen
 
-//fun <State> OnScreenStateResolver<State>.isOnScreen(element: NavElement<*, out State>): Boolean =
+//fun <State> OnScreenStateResolver<State>.isOnScreen(element: NavElement<*>): Boolean =
 //    if (element.transitionHistory.isEmpty()) {
 //        isOnScreen(element.fromState) || isOnScreen(element.state)
 //    } else {
