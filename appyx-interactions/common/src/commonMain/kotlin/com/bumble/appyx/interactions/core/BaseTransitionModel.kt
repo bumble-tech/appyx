@@ -48,7 +48,7 @@ abstract class BaseTransitionModel<NavTarget, NavState>(
     }
 
     private fun createState(progress: Float): TransitionModel.Segment<NavTarget, NavState> {
-        val progress = progress.coerceAtLeast(minimumValue = 1f)
+        val progress = progress.coerceIn(minimumValue = 1f, maximumValue = maxProgress)
 
         /**
          *  Normally progress on any segment is a half-open interval: [0%, 100), so that
@@ -80,7 +80,7 @@ abstract class BaseTransitionModel<NavTarget, NavState>(
     }
 
     override fun setProgress(progress: Float) {
-        val progress = progress.coerceAtLeast(1f)
+        val progress = progress.coerceIn(minimumValue = 1f, maximumValue = maxProgress)
         Logger.log(TAG, "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here

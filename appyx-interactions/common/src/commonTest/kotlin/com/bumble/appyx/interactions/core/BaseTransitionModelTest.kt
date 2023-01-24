@@ -67,6 +67,20 @@ class BaseTransitionModelTest {
         assertEquals(2, backStack.segments.value.index)
     }
 
+    @Test
+    fun `Given progress is update beyond max progress Then it should reach the end`() {
+        val backStack = BackStackModel(
+            initialElement = Child1,
+            savedStateMap = null
+        )
+        backStack.enqueue(Push(Child2))
+        backStack.enqueue(Push(Child3))
+
+        backStack.setProgress(100f)
+
+        assertEquals(2, backStack.segments.value.index)
+    }
+
     private companion object {
         enum class NavTarget {
             Child1, Child2, Child3
