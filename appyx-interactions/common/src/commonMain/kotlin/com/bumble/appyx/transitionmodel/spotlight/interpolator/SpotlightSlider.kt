@@ -3,6 +3,8 @@ package com.bumble.appyx.transitionmodel.spotlight.interpolator
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
@@ -12,119 +14,107 @@ import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ACTIVE
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_AFTER
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_BEFORE
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
-import androidx.compose.ui.unit.lerp as lerpUnit
 
 class SpotlightSlider<NavTarget>(
     transitionBounds: TransitionBounds,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : Interpolator<NavTarget, SpotlightModel.State> {
+) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
     data class Props(
         val offset: DpOffset,
-        val offsetMultiplier: Int = 1
+        val scale: Float = 1f,
+        val alpha: Float = 1f
     )
 
-    private val top = Props(
-        offset = DpOffset(0.dp, -height)
-    )
+//    private val horizontal = Props(
+//        offset = DpOffset(width, 0.dp)
+//    )
+//
+//    private val vertical = Props(
+//        offset = DpOffset(0.dp, height)
+//    )
 
-    private val bottom = Props(
-        offset = DpOffset(0.dp, height)
-    )
-
-    private val left = Props(
-        offset = DpOffset(-width, 0.dp)
-    )
-
-    private val right = Props(
-        offset = DpOffset(width, 0.dp)
-    )
-
-    private val center = Props(
-        offset = DpOffset(0.dp, 0.dp)
-    )
-
-    // FIXME single Int, based on relative position to ACTIVE element
-    private fun SpotlightModel.State.toProps(beforeIndex: Int, afterIndex: Int): Props =
-        when (this) {
-            ACTIVE -> center
-            INACTIVE_BEFORE -> when (orientation) {
-                Orientation.Horizontal -> left.copy(offsetMultiplier = beforeIndex)
-                Orientation.Vertical -> top.copy(offsetMultiplier = beforeIndex)
-            }
-
-            INACTIVE_AFTER -> when (orientation) {
-                Orientation.Horizontal -> right.copy(offsetMultiplier = afterIndex + 1)
-                Orientation.Vertical -> bottom.copy(offsetMultiplier = afterIndex + 1)
-            }
-        }
-
-    override fun map(segment: TransitionModel.Segment<NavTarget, SpotlightModel.State>): List<FrameModel<NavTarget, SpotlightModel.State>> {
-        val (fromState, targetState) = segment.navTransition
-
-        // TODO memoize per segment, as only percentage will change
-        val fromBefore = fromState.filter { it.state == INACTIVE_BEFORE }
-        val targetBefore = targetState.filter { it.state == INACTIVE_BEFORE }
-        val fromAfter = fromState.filter { it.state == INACTIVE_AFTER }
-        val targetAfter = targetState.filter { it.state == INACTIVE_AFTER }
-
-        return targetState.mapIndexed { index, t1 ->
-            // TODO memoize per segment, as only percentage will change
-            val t0 = fromState.find { it.key == t1.key }
-            require(t0 != null)
-            val fromBeforeIndex = fromBefore.size - fromBefore.indexOf(t0)
-            val targetBeforeIndex = targetBefore.size - targetBefore.indexOf(t1)
-            val fromAfterIndex = fromAfter.indexOf(t0)
-            val targetAfterIndex = targetAfter.indexOf(t1)
-
-
-            val fromProps = t0.state.toProps(fromBeforeIndex, fromAfterIndex)
-            val targetProps = t1.state.toProps(targetBeforeIndex, targetAfterIndex)
-            val offset = lerpUnit(
-                start = fromProps.offset * fromProps.offsetMultiplier,
-                stop = targetProps.offset * targetProps.offsetMultiplier,
-                fraction = segment.progress
+    private fun <NavTarget> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+        created.mapIndexed { index, navElement ->
+            MatchedProps(
+                navElement, Props(
+                    offset = dpOffset(index),
+                    scale = 0f,
+                    alpha = 1f
+                )
             )
+        } +
+                standard.mapIndexed { index, navElement ->
+                    MatchedProps(
+                        navElement, Props(
+                            offset = dpOffset(index),
+                            scale = 1f
+                        )
+                    )
+                } +
+                destroyed.mapIndexed { index, navElement ->
+                    MatchedProps(
+                        navElement, Props(
+                            offset = dpOffset(index),
+                            scale = 2f,
+                            alpha = 0f
+                        )
+                    )
+                }
+
+    private fun <NavTarget> SpotlightModel.State<NavTarget>.dpOffset(
+        index: Int
+    ) = DpOffset(
+        x = ((index - this.activeIndex) * width.value).dp,
+        y = 0.dp
+    )
+
+    override fun map(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        val (fromState, targetState) = segment.navTransition
+        val fromProps = fromState.toProps()
+        val targetProps = targetState.toProps()
+
+        return targetProps.map { t1 ->
+            val t0 = fromProps.find { it.element.id == t1.element.id }!!
+
+            val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress)
+            val scale = lerpFloat(t0.props.scale, t1.props.scale, segment.progress)
+            val offset = lerpDpOffset(t0.props.offset, t1.props.offset, segment.progress)
 
             FrameModel(
-                navElement = t1,
-                modifier = Modifier.offset(
-                    x = offset.x,
-                    y = offset.y
-                ),
+                navElement = t1.element,
+                modifier = Modifier
+                    .alpha(alpha)
+                    .scale(scale)
+                    .offset(
+                        x = offset.x,
+                        y = offset.y
+                    ),
                 progress = segment.progress
             )
         }
     }
 
-//    fun calculateProgressForGesture(delta: Offset, density: Density): Float {
-//        // FIXME Log.d("calculateProgress", "${delta.x} / $width = ${delta.x / width}")
-//        return when (orientation) {
-//            Orientation.Horizontal -> delta.x / width * -1
-//            Orientation.Vertical -> delta.y / height * -1
-//        }
-//    }
-
     class Gestures<NavTarget>(
         transitionBounds: TransitionBounds,
         private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-    ) : GestureFactory<NavTarget, SpotlightModel.State> {
+    ) : GestureFactory<NavTarget, SpotlightModel.State<NavTarget>> {
         private val width = transitionBounds.widthPx
         private val height = transitionBounds.heightPx
 
         override fun createGesture(
             delta: Offset,
             density: Density
-        ): Gesture<NavTarget, SpotlightModel.State> {
+        ): Gesture<NavTarget, SpotlightModel.State<NavTarget>> {
             return when (orientation) {
                 Orientation.Horizontal -> if (delta.x < 0) {
                     Gesture(

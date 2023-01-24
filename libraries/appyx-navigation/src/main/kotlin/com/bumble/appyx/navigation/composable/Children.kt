@@ -28,7 +28,7 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
-                    key = frameModel.navElement.key,
+                    key = frameModel.navElement,
                     gestureSpec = gestureSpec
                 )
             )
@@ -62,7 +62,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
 
     @Composable
     inline fun <reified V : NavTarget> ParentNode<NavTarget>.children(
-        noinline block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget, NavState>) -> Unit
+        noinline block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
     ) {
         children(V::class, block)
     }
@@ -71,7 +71,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
     @Composable
     fun ParentNode<NavTarget>.children(
         clazz: KClass<out NavTarget>,
-        block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget, NavState>) -> Unit,
+        block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit,
     ) {
         _children(clazz) { child, frameModel ->
             block(child, frameModel)
@@ -82,7 +82,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
     @Composable
     private fun ParentNode<NavTarget>._children(
         clazz: KClass<out NavTarget>,
-        block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget, NavState>) -> Unit
+        block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
     ) {
 
         val frames = interactionModel.frames.collectAsState(listOf())
@@ -90,9 +90,9 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
 
         // TODO apply on/off screen logic
         frames.value
-            .filter { clazz.isInstance(it.navElement.key.navTarget) }
+            .filter { clazz.isInstance(it.navElement.navTarget) }
             .forEach { frameModel ->
-                val navKey = frameModel.navElement.key
+                val navKey = frameModel.navElement
                 key(navKey.id) {
                     Child(
                         frameModel,

@@ -1,7 +1,8 @@
 package com.bumble.appyx.navigation.children
 
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.interactions.core.NavKey
+import com.bumble.appyx.interactions.core.BaseTransitionModel
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.ParentNode
@@ -28,7 +29,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
 ) {
     private lateinit var parentNode: ParentNode<NavTarget>
     private val _children =
-        MutableStateFlow<Map<NavKey<NavTarget>, ChildEntry<NavTarget>>>(emptyMap())
+        MutableStateFlow<Map<NavElement<NavTarget>, ChildEntry<NavTarget>>>(emptyMap())
     val children: StateFlow<ChildEntryMap<NavTarget>> = _children.asStateFlow()
 
     fun launch(parentNode: ParentNode<NavTarget>) {
@@ -42,11 +43,18 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
 
     private fun syncNavModelWithChildren(parentNode: ParentNode<NavTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
-            parentNode.transitionModel.segments.collect { state ->
+
+            val navModelKeepElements: Set<NavElement<NavTarget>> =
+                parentNode.transitionModel.availableElements()
+
+            val navModelElements: Set<NavElement<NavTarget>> = navModelKeepElements
+
+            updateChildren(navModelElements, navModelKeepElements, emptySet())
+
 //                val navModelKeepKeys = state.navTransition.targetState.map { navElement -> navElement.key }.toSet()
-                val navModelKeepKeys: Set<NavKey<NavTarget>> = state.navTransition.targetState.map { navElement -> navElement.key }.toSet()
+
 //                val navModelSuspendKeys: Set<NavKey<NavTarget>>
-                val navModelKeys: Set<NavKey<NavTarget>>  = navModelKeepKeys
+
 //                when (keepMode) {
 //                    ChildEntry.KeepMode.KEEP -> {
 //                        navModelKeepKeys =
@@ -62,37 +70,36 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
 //                        navModelKeys = navModelKeepKeys + navModelSuspendKeys
 //                    }
 //                }
-                updateChildren(navModelKeys, navModelKeepKeys, emptySet())
-            }
+
         }
     }
 
     private fun updateChildren(
-        navModelKeys: Set<NavKey<NavTarget>>,
-        navModelKeepKeys: Set<NavKey<NavTarget>>,
-        navModelSuspendKeys: Set<NavKey<NavTarget>>,
+        navModelElements: Set<NavElement<NavTarget>>,
+        navModelKeepElements: Set<NavElement<NavTarget>>,
+        navModelSuspendElements: Set<NavElement<NavTarget>>,
     ) {
         _children.update { map ->
-            val localKeys = map.keys
-            val localKeptKeys = map.entries.mapNotNullToSet { entry ->
+            val localElements = map.keys
+            val localKeptElements = map.entries.mapNotNullToSet { entry ->
                 entry.key.takeIf { entry.value is ChildEntry.Initialized }
             }
             val localSuspendedKeys = map.entries.mapNotNullToSet { entry ->
                 entry.key.takeIf { entry.value is ChildEntry.Suspended }
             }
-            val newKeys = navModelKeys - localKeys
-            val removedKeys = localKeys - navModelKeys
-            val keepKeys = localSuspendedKeys.intersect(navModelKeepKeys)
-            val suspendKeys = localKeptKeys.intersect(navModelSuspendKeys)
-            val noKeysChanges = newKeys.isEmpty() && removedKeys.isEmpty()
-            val noSuspendChanges = keepKeys.isEmpty() && suspendKeys.isEmpty()
+            val newElements = navModelElements - localElements
+            val removedElements = localElements - navModelElements
+            val keepElements = localSuspendedKeys.intersect(navModelKeepElements)
+            val suspendElements = localKeptElements.intersect(navModelSuspendElements)
+            val noKeysChanges = newElements.isEmpty() && removedElements.isEmpty()
+            val noSuspendChanges = keepElements.isEmpty() && suspendElements.isEmpty()
             if (noKeysChanges && noSuspendChanges) {
                 return@update map
             }
             val mutableMap = map.toMutableMap()
-            newKeys.forEach { key ->
+            newElements.forEach { key ->
                 val shouldSuspend =
-                    keepMode == ChildEntry.KeepMode.SUSPEND && navModelSuspendKeys.contains(key)
+                    keepMode == ChildEntry.KeepMode.SUSPEND && navModelSuspendElements.contains(key)
                 mutableMap[key] =
                     childEntry(
                         key = key,
@@ -100,13 +107,13 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
                         suspended = shouldSuspend,
                     )
             }
-            removedKeys.forEach { key ->
+            removedElements.forEach { key ->
                 mutableMap.remove(key)
             }
-            keepKeys.forEach { key ->
+            keepElements.forEach { key ->
                 mutableMap[key] = requireNotNull(mutableMap[key]).initialize()
             }
-            suspendKeys.forEach { key ->
+            suspendElements.forEach { key ->
                 mutableMap[key] = requireNotNull(mutableMap[key]).suspend()
             }
             mutableMap
@@ -114,30 +121,30 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
     }
 
     @Suppress("ForbiddenComment")
-    fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> {
+    fun childOrCreate(navElement: NavElement<NavTarget>): ChildEntry.Initialized<NavTarget> {
         // TODO: Should not allow child creation and throw exception instead to avoid desynchronisation
         val value = _children.value
-        val child = value[navKey] ?: error(
-            "Rendering and children management is out of sync: requested $navKey but have only ${value.keys}"
+        val child = value[navElement] ?: error(
+            "Rendering and children management is out of sync: requested $navElement but have only ${value.keys}"
         )
         return when (child) {
             is ChildEntry.Initialized ->
                 child
             is ChildEntry.Suspended ->
                 _children.updateAndGet { map ->
-                    val updateChild = map[navKey]
-                        ?: error("Requested child $navKey disappeared")
+                    val updateChild = map[navElement]
+                        ?: error("Requested child $navElement disappeared")
                     when (updateChild) {
                         is ChildEntry.Initialized -> map
                         is ChildEntry.Suspended ->
-                            map.plus(navKey to updateChild.initialize())
+                            map.plus(navElement to updateChild.initialize())
                     }
-                }[navKey] as ChildEntry.Initialized
+                }[navElement] as ChildEntry.Initialized
         }
     }
 
     private fun SavedStateMap?.restoreChildren(): ChildEntryMap<NavTarget>? =
-        (this?.get(KEY_CHILDREN_STATE) as? Map<NavKey<NavTarget>, SavedStateMap>)?.mapValues {
+        (this?.get(KEY_CHILDREN_STATE) as? Map<NavElement<NavTarget>, SavedStateMap>)?.mapValues {
             // Always restore in suspended mode, they will be unsuspended or destroyed on the first sync cycle
             childEntry(it.key, it.value, true)
         }
@@ -167,7 +174,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
         )
 
     private fun childEntry(
-        key: NavKey<NavTarget>,
+        key: NavElement<NavTarget>,
         savedState: SavedStateMap?,
         suspended: Boolean,
     ): ChildEntry<NavTarget> =
