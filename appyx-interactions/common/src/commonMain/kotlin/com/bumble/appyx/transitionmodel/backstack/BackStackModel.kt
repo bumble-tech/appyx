@@ -45,6 +45,9 @@ class BackStackModel<NavTarget : Any>(
         val destroyed: NavElements<NavTarget> = listOf(),
     )
 
+    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
+        (created + active + stashed + destroyed).toSet()
+
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
         destroyed.toSet()
 

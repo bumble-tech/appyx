@@ -18,6 +18,9 @@ class CardsModel<NavTarget : Any>(
     override val initialState: State<NavTarget> =
         State(queued = initialItems.map { it.asElement() })
 
+    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
+        (queued + liked + passed).toSet()
+
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> = setOf()
 }
 
