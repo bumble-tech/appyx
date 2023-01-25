@@ -80,13 +80,12 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     fun operation(
         operation: Operation<ModelState>,
-        animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-        mode: Mode = KEYFRAME,
+        animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
         when {
             isDebug -> debug.operation(operation)
             DisableAnimations || disableAnimations -> instant.operation(operation)
-            else -> animated.operation(operation, mode, animationSpec)
+            else -> animated.operation(operation, animationSpec)
         }
     }
 

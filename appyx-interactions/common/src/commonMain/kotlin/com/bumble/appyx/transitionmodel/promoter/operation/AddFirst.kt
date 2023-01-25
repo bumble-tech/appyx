@@ -4,6 +4,7 @@ import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.asElements
 import com.bumble.appyx.transitionmodel.promoter.Promoter
@@ -11,7 +12,8 @@ import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 
 @Parcelize
 data class AddFirst<NavTarget>(
-    private val element: @RawValue NavTarget
+    private val element: @RawValue NavTarget,
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<PromoterModel.State<NavTarget>>() {
 
     override fun isApplicable(state: PromoterModel.State<NavTarget>): Boolean =
@@ -30,7 +32,8 @@ data class AddFirst<NavTarget>(
 
 fun <NavTarget : Any> Promoter<NavTarget>.addFirst(
     navTarget: NavTarget,
+    mode: Operation.Mode = Operation.Mode.KEYFRAME,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec
 ) {
-    operation(AddFirst(navTarget), animationSpec)
+    operation(AddFirst(navTarget, mode), animationSpec)
 }

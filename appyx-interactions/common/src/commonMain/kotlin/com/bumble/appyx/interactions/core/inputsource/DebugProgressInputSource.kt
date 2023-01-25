@@ -19,8 +19,8 @@ class DebugProgressInputSource<NavTarget, ModelState>(
     private lateinit var result: AnimationResult<Float, AnimationVector1D>
     private var progress: Float = 1f
 
-    override fun operation(operation: Operation<ModelState>, mode: Operation.Mode) {
-        // Regardless of mode, only enqueue makes sense – consider if API could better reflect that
+    override fun operation(operation: Operation<ModelState>) {
+        // Regardless of operation.mode, only enqueue makes sense
         navModel.enqueue(operation)
     }
 

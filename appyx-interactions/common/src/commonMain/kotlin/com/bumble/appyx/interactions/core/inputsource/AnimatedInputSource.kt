@@ -6,7 +6,6 @@ import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.Operation.Mode
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
 import kotlinx.coroutines.CoroutineScope
@@ -24,17 +23,16 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
     private val animatable = Animatable(0f)
     // FIXME private lateinit var result: AnimationResult<Float, AnimationVector1D>
 
-    override fun operation(operation: Operation<ModelState>, mode: Mode) {
-        operation(operation, mode, defaultAnimationSpec)
+    override fun operation(operation: Operation<ModelState>) {
+        operation(operation, defaultAnimationSpec)
     }
 
     fun operation(
         operation: Operation<ModelState>,
-        mode: Mode = KEYFRAME,
         animationSpec: AnimationSpec<Float>
     ) {
         Logger.log("AnimatedInputSource", "New operation: $operation")
-        when (mode) {
+        when (operation.mode) {
             IMMEDIATE -> model.updateState(operation)
             KEYFRAME -> {
                 model.enqueue(operation)

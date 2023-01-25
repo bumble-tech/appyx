@@ -6,14 +6,19 @@ import com.bumble.appyx.interactions.Parcelize
 interface Operation<ModelState> : (ModelState) -> NavTransition<ModelState>, Parcelable {
 
     enum class Mode {
-        KEYFRAME, IMMEDIATE
+        IMMEDIATE, KEYFRAME
     }
+
+    val mode: Mode
 
     fun isApplicable(state: ModelState): Boolean
 
 
     @Parcelize
     class Noop<ModelState> : Operation<ModelState> {
+
+        override val mode: Mode
+            get() = Mode.IMMEDIATE
 
         override fun isApplicable(state: ModelState): Boolean =
             false

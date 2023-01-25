@@ -3,6 +3,7 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -14,7 +15,8 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
  */
 @Parcelize
 data class Push<NavTarget : Any>(
-    private val navTarget: @RawValue NavTarget
+    private val navTarget: @RawValue NavTarget,
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<BackStackModel.State<NavTarget>>() {
 
     override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
@@ -33,6 +35,9 @@ data class Push<NavTarget : Any>(
         )
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.push(navTarget: NavTarget) {
-    operation(Push(navTarget))
+fun <NavTarget : Any> BackStack<NavTarget>.push(
+    navTarget: NavTarget,
+    mode: Operation.Mode = Operation.Mode.KEYFRAME
+) {
+    operation(Push(navTarget, mode))
 }
