@@ -3,12 +3,15 @@ package com.bumble.appyx.transitionmodel.spotlight.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 
 @Parcelize
-class First<NavTarget : Any> : BaseOperation<SpotlightModel.State<NavTarget>>() {
+class First<NavTarget : Any>(
+    override val mode: Operation.Mode = Operation.Mode.IMMEDIATE
+) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
         true
@@ -22,6 +25,9 @@ class First<NavTarget : Any> : BaseOperation<SpotlightModel.State<NavTarget>>() 
         )
 }
 
-fun <NavTarget : Any> Spotlight<NavTarget>.first(animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
-    operation(First(), animationSpec)
+fun <NavTarget : Any> Spotlight<NavTarget>.first(
+    animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
+    mode: Operation.Mode = Operation.Mode.IMMEDIATE
+) {
+    operation(First(mode), animationSpec)
 }

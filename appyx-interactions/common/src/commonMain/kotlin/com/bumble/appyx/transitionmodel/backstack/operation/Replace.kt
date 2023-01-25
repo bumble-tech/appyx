@@ -3,6 +3,7 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
@@ -15,7 +16,8 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
  */
 @Parcelize
 data class Replace<NavTarget : Any>(
-    private val navTarget: @RawValue NavTarget
+    private val navTarget: @RawValue NavTarget,
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<State<NavTarget>>() {
     override fun isApplicable(state: State<NavTarget>): Boolean =
         navTarget != state.active.navTarget
@@ -33,6 +35,9 @@ data class Replace<NavTarget : Any>(
         )
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.replace(target: NavTarget) {
-    operation(Replace(target))
+fun <NavTarget : Any> BackStack<NavTarget>.replace(
+    target: NavTarget,
+    mode: Operation.Mode = Operation.Mode.KEYFRAME
+) {
+    operation(Replace(target, mode))
 }

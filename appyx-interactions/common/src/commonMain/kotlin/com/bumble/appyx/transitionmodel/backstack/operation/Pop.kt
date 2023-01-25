@@ -2,6 +2,7 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
@@ -11,7 +12,9 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
  * [A, B, C] + Pop = [A, B]
  */
 @Parcelize
-class Pop<NavTarget : Any> : BaseOperation<State<NavTarget>>() {
+class Pop<NavTarget : Any>(
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+) : BaseOperation<State<NavTarget>>() {
     override fun isApplicable(state: State<NavTarget>): Boolean =
         state.stashed.isNotEmpty()
 
@@ -31,6 +34,8 @@ class Pop<NavTarget : Any> : BaseOperation<State<NavTarget>>() {
     override fun hashCode(): Int = this.javaClass.hashCode()
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.pop() {
-    operation(Pop())
+fun <NavTarget : Any> BackStack<NavTarget>.pop(
+    mode: Operation.Mode = Operation.Mode.KEYFRAME
+) {
+    operation(Pop(mode))
 }
