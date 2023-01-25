@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface TransitionModel<NavTarget, ModelState> {
 
     enum class OperationMode {
-        ENQUEUE, UPDATE
+        KEYFRAME, IMMEDIATE
     }
 
     /**

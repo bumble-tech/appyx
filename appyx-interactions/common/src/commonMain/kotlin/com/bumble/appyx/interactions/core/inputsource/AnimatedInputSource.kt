@@ -7,8 +7,8 @@ import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.TransitionModel.OperationMode
-import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.ENQUEUE
-import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.UPDATE
+import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.KEYFRAME
+import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.IMMEDIATE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,13 +30,13 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
 
     fun operation(
         operation: Operation<ModelState>,
-        mode: OperationMode = ENQUEUE,
+        mode: OperationMode = KEYFRAME,
         animationSpec: AnimationSpec<Float>
     ) {
         Logger.log("AnimatedInputSource", "New operation: $operation")
         when (mode) {
-            UPDATE -> model.updateState(operation)
-            ENQUEUE -> {
+            IMMEDIATE -> model.updateState(operation)
+            KEYFRAME -> {
                 model.enqueue(operation)
                 animateModel(
                     target = model.maxProgress,

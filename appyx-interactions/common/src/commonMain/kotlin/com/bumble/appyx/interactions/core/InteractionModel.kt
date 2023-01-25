@@ -1,13 +1,12 @@
 package com.bumble.appyx.interactions.core
 
 import DisableAnimations
-import com.bumble.appyx.interactions.Logger
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.core.TransitionModel.OperationMode
-import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.ENQUEUE
+import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.KEYFRAME
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
@@ -22,16 +21,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.flatMapMerge
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.merge
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
@@ -91,7 +81,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     fun operation(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-        mode: OperationMode = ENQUEUE,
+        mode: OperationMode = KEYFRAME,
     ) {
         when {
             isDebug -> debug.operation(operation)
