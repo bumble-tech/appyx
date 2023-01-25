@@ -4,10 +4,6 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface TransitionModel<NavTarget, ModelState> {
 
-    enum class OperationMode {
-        KEYFRAME, IMMEDIATE
-    }
-
     /**
      * 0..infinity
      */

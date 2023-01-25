@@ -8,13 +8,13 @@ class InstantInputSource<NavTarget : Any, ModelState>(
 ) : InputSource<NavTarget, ModelState> {
 
 
-    override fun operation(operation: Operation<ModelState>, mode: TransitionModel.OperationMode) {
+    override fun operation(operation: Operation<ModelState>, mode: Operation.Mode) {
         when (mode) {
-            TransitionModel.OperationMode.KEYFRAME -> {
+            Operation.Mode.KEYFRAME -> {
                 model.enqueue(operation)
                 model.setProgress(progress = model.maxProgress)
             }
-            TransitionModel.OperationMode.IMMEDIATE -> {
+            Operation.Mode.IMMEDIATE -> {
                 model.updateState(operation)
             }
         }
