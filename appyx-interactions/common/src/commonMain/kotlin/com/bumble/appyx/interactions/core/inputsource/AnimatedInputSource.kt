@@ -6,6 +6,9 @@ import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.TransitionModel.OperationMode
+import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.ENQUEUE
+import com.bumble.appyx.interactions.core.TransitionModel.OperationMode.UPDATE
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,20 +24,27 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
     private val animatable = Animatable(0f)
     // FIXME private lateinit var result: AnimationResult<Float, AnimationVector1D>
 
-    override fun operation(operation: Operation<ModelState>) {
-        operation(operation, defaultAnimationSpec)
+    override fun operation(operation: Operation<ModelState>, mode: OperationMode) {
+        operation(operation, mode, defaultAnimationSpec)
     }
 
     fun operation(
         operation: Operation<ModelState>,
+        mode: OperationMode = ENQUEUE,
         animationSpec: AnimationSpec<Float>
     ) {
-        model.enqueue(operation)
-        animateModel(
-            target = model.maxProgress,
-            animationSpec = animationSpec,
-            cancelVelocity = false,
-        )
+        Logger.log("AnimatedInputSource", "New operation: $operation")
+        when (mode) {
+            UPDATE -> model.updateState(operation)
+            ENQUEUE -> {
+                model.enqueue(operation)
+                animateModel(
+                    target = model.maxProgress,
+                    animationSpec = animationSpec,
+                    cancelVelocity = false,
+                )
+            }
+        }
     }
 
     fun settle(

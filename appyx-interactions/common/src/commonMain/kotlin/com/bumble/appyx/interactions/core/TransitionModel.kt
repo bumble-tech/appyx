@@ -3,6 +3,11 @@ package com.bumble.appyx.interactions.core
 import kotlinx.coroutines.flow.StateFlow
 
 interface TransitionModel<NavTarget, ModelState> {
+
+    enum class OperationMode {
+        ENQUEUE, UPDATE
+    }
+
     /**
      * 0..infinity
      */
@@ -26,6 +31,8 @@ interface TransitionModel<NavTarget, ModelState> {
     )
 
     fun enqueue(operation: Operation<ModelState>): Boolean
+
+    fun updateState(operation: Operation<ModelState>): Boolean
 
     fun setProgress(progress: Float)
 

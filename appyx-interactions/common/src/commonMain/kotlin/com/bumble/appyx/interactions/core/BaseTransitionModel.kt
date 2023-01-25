@@ -84,6 +84,23 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         }
     }
 
+    override fun updateState(operation: Operation<ModelState>): Boolean {
+        val latestState = queue.last()
+
+        return if (operation.isApplicable(latestState.targetState)) {
+            val newState = operation.invoke(latestState.targetState)
+            queue[queue.lastIndex] = NavTransition(
+                fromState = latestState.fromState,
+                targetState = newState.targetState
+            )
+            state.update { createState(currentProgress) }
+            true
+        } else {
+            Logger.log(TAG, "Operation $operation is not applicable on state: $latestState")
+            false
+        }
+    }
+
     override fun setProgress(progress: Float) {
         val progress = progress.coerceAtLeast(1f)
         Logger.log(TAG, "Progress update: $progress")
