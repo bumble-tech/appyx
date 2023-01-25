@@ -38,6 +38,7 @@ class SpotlightFader<NavTarget : Any>(
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 
+        // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress)

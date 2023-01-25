@@ -2,12 +2,14 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -19,7 +21,8 @@ class BackStackSlider<NavTarget>(
 
     data class Props(
         val offset: DpOffset,
-        val offsetMultiplier: Int = 1
+        val offsetMultiplier: Int = 1,
+        val alpha: Float = 1f
     )
 
     private val outsideLeft = Props(
@@ -43,10 +46,10 @@ class BackStackSlider<NavTarget>(
                         outsideLeft.copy(offsetMultiplier = index + 1)
                     )
                 } +
-                destroyed.mapIndexed { index, navElement ->
+                destroyed.map { navElement ->
                     MatchedProps(
                         navElement,
-                        outsideLeft.copy(offsetMultiplier = index + 1)
+                        outsideRight.copy(alpha = 0f)
                     )
                 }
 
@@ -64,12 +67,20 @@ class BackStackSlider<NavTarget>(
                 progress = segment.progress
             )
 
+            val alpha = lerpFloat(
+                start = t0.props.alpha,
+                end = t1.props.alpha,
+                progress = segment.progress
+            )
+
             FrameModel(
                 navElement = t1.element,
-                modifier = Modifier.offset(
-                    x = offset.x,
-                    y = offset.y
-                ),
+                modifier = Modifier
+                    .alpha(alpha)
+                    .offset(
+                        x = offset.x,
+                        y = offset.y
+                    ),
                 progress = segment.progress
             )
         }

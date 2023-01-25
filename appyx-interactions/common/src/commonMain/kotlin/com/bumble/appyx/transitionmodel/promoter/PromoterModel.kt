@@ -28,6 +28,13 @@ class PromoterModel<NavTarget : Any>(
         }
     }
 
+    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
+        elements
+            .filter { it.second != State.ElementState.DESTROYED }
+            .map { it.first }
+            .toSet()
+
+
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
         elements
             .filter { it.second == State.ElementState.DESTROYED }

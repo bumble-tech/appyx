@@ -15,6 +15,10 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     abstract val initialState: ModelState
 
     abstract fun ModelState.destroyedElements(): Set<NavElement<NavTarget>>
+    abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
+
+    fun availableElements(): Set<NavElement<NavTarget>> =
+        state.value.navTransition.targetState.availableElements()
 
     /**
      * A state queue that can be prefetched. Could also work as state history if we implement

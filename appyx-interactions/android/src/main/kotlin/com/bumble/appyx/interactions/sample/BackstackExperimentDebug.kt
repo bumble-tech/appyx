@@ -40,7 +40,7 @@ fun BackStackExperimentDebug() {
                 savedStateMap = null
             ),
             interpolator = { BackStackSlider(it) },
-            isDebug = true
+            isDebug = false
         )
     }
 
@@ -50,6 +50,7 @@ fun BackStackExperimentDebug() {
         backStack.push(Child4)
         backStack.push(Child5)
         backStack.replace(Child6)
+        backStack.pop()
         backStack.pop()
         backStack.newRoot(Child1)
     }
@@ -64,10 +65,11 @@ fun BackStackExperimentDebug() {
         })
 
         Children(
-            modifier = Modifier.padding(
-                horizontal = 64.dp,
-                vertical = 12.dp
-            ),
+            modifier = Modifier
+                .padding(
+                    horizontal = 64.dp,
+                    vertical = 12.dp
+                ),
             interactionModel = backStack,
         )
     }

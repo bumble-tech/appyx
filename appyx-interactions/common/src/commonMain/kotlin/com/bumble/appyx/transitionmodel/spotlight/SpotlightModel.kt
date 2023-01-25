@@ -2,7 +2,6 @@ package com.bumble.appyx.transitionmodel.spotlight
 
 import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.asElements
 import com.bumble.appyx.interactions.core.ui.NavElements
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
@@ -36,6 +35,7 @@ class SpotlightModel<NavTarget : Any>(
     ) {
         fun hasPrevious(): Boolean =
             activeIndex >= 1
+
         fun hasNext(): Boolean =
             activeIndex <= standard.lastIndex - 1
     }
@@ -46,6 +46,9 @@ class SpotlightModel<NavTarget : Any>(
             activeIndex = initialActiveIndex,
             activeWindow = initialActiveWindow
         )
+
+    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
+        (created + standard).toSet()
 
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
         destroyed.toSet()
