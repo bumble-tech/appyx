@@ -40,37 +40,44 @@ class CardsProps<NavTarget : Any>(
         val positionalOffsetX: Dp = 0.dp,
         val rotationZ: Float = 0f,
         val zIndex: Float = 0f,
+        // indicates if any given set of properties is visible on the screen
+        val isVisible: Boolean = true
     )
 
     private val hidden = Props(
-        scale = 0f
+        scale = 0f,
+        isVisible = false
     )
 
     private val bottom = Props(
         scale = 0.85f,
+        isVisible = true
     )
 
     private val top = Props(
         scale = 1f,
         zIndex = 1f,
+        isVisible = true
     )
 
     private val votePass = top.copy(
         positionalOffsetX = (-voteCardPositionMultiplier * width).dp,
         rotationZ = -45f,
         zIndex = 2f,
+        isVisible = false
     )
 
     private val voteLike = top.copy(
         positionalOffsetX = (voteCardPositionMultiplier * width).dp,
         rotationZ = 45f,
         zIndex = 2f,
+        isVisible = true
     )
 
 
     private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
         val result = mutableListOf<MatchedProps<NavTarget, Props>>()
-        (votedCards + visibleCards).map {
+        (votedCards + visibleCards + queued).map {
             when (it) {
                 is CardsModel.State.Card.InvisibleCard.VotedCard -> {
                     result.add(
@@ -87,15 +94,9 @@ class CardsProps<NavTarget : Any>(
                 is CardsModel.State.Card.VisibleCard.BottomCard -> {
                     result.add(MatchedProps(it.navElement, bottom))
                 }
-                else -> Unit
-            }
-        }
-        queued.map {
-            when (it) {
                 is CardsModel.State.Card.InvisibleCard.Queued -> {
                     result.add(MatchedProps(it.navElement, hidden))
                 }
-                else -> Unit
             }
         }
 
@@ -107,51 +108,60 @@ class CardsProps<NavTarget : Any>(
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 
-        return targetProps.map { t1 ->
-            val t0 = fromProps.find { it.element.id == t1.element.id }!!
+        val result = mutableListOf<FrameModel<NavTarget>>()
 
-            val scale = lerpFloat(
-                start = t0.props.scale,
-                end = t1.props.scale,
-                progress = segment.progress
-            )
+        targetProps
+            .map { t1 ->
+                val t0 = fromProps.find { it.element.id == t1.element.id }!!
 
-            val zIndex = lerpFloat(
-                start = t0.props.zIndex,
-                end = t1.props.zIndex,
-                progress = segment.progress
-            )
+                if (!t0.props.isVisible && !t1.props.isVisible) return@map
 
-            val rotationZ = lerpFloat(
-                start = t0.props.rotationZ,
-                end = t1.props.rotationZ,
-                progress = segment.progress
-            )
+                val scale = lerpFloat(
+                    start = t0.props.scale,
+                    end = t1.props.scale,
+                    progress = segment.progress
+                )
 
-            val offsetX = lerpDp(
-                start = t0.props.positionalOffsetX,
-                end = t1.props.positionalOffsetX,
-                progress = segment.progress
-            )
+                val zIndex = lerpFloat(
+                    start = t0.props.zIndex,
+                    end = t1.props.zIndex,
+                    progress = segment.progress
+                )
 
-            FrameModel(
-                navElement = t1.element,
-                modifier = Modifier
-                    .offset {
-                        IntOffset(
-                            x = (this.density * (offsetX.value)).roundToInt(),
-                            y = 0
-                        )
-                    }
-                    .zIndex(zIndex)
-                    .graphicsLayer {
-                        this.rotationZ = rotationZ
-                        transformOrigin = TransformOrigin(0.5f, 1f)
-                    }
-                    .scale(scale),
-                progress = segment.progress
-            )
-        }
+                val rotationZ = lerpFloat(
+                    start = t0.props.rotationZ,
+                    end = t1.props.rotationZ,
+                    progress = segment.progress
+                )
+
+                val offsetX = lerpDp(
+                    start = t0.props.positionalOffsetX,
+                    end = t1.props.positionalOffsetX,
+                    progress = segment.progress
+                )
+
+                result.add(
+                    FrameModel(
+                        navElement = t1.element,
+                        modifier = Modifier
+                            .offset {
+                                IntOffset(
+                                    x = (this.density * (offsetX.value)).roundToInt(),
+                                    y = 0
+                                )
+                            }
+                            .zIndex(zIndex)
+                            .graphicsLayer {
+                                this.rotationZ = rotationZ
+                                transformOrigin = TransformOrigin(0.5f, 1f)
+                            }
+                            .scale(scale),
+                        progress = segment.progress
+                    )
+                )
+            }
+
+        return result
     }
 
     class Gestures<NavTarget>(
