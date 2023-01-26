@@ -22,7 +22,7 @@ class DebugProgressInputSource<NavTarget, ModelState>(
 
     override fun operation(operation: Operation<ModelState>) {
         // Regardless of operation.mode, only enqueue makes sense
-        transitionModel.enqueue(operation)
+        transitionModel.operation(operation, Operation.Mode.KEYFRAME)
     }
 
     fun setNormalisedProgress(progress: Float) {

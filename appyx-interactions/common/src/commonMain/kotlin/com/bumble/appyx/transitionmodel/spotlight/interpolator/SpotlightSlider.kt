@@ -85,11 +85,14 @@ class SpotlightSlider<NavTarget>(
         val targetProps = targetState.toProps()
 
         return targetProps.map { t1 ->
-            val t0 = fromProps.find { it.element.id == t1.element.id }!!
+            val t0 = fromProps.find { it.element.id == t1.element.id }
 
-            val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress)
-            val scale = lerpFloat(t0.props.scale, t1.props.scale, segment.progress)
-            val offset = lerpDpOffset(t0.props.offset, t1.props.offset, segment.progress)
+            // TODO check [segment.animate] to start animation rather than lerp
+            // TODO call [InteractionModel.onAnimationsFinished()] when finished
+
+            val alpha = if (t0 != null) lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress) else t1.props.alpha
+            val scale = if (t0 != null) lerpFloat(t0.props.scale, t1.props.scale, segment.progress) else t1.props.scale
+            val offset = if (t0 != null) lerpDpOffset(t0.props.offset, t1.props.offset, segment.progress) else t1.props.offset
 
             FrameModel(
                 navElement = t1.element,
