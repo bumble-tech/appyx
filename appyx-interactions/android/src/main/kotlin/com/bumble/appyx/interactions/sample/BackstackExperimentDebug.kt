@@ -11,16 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.sample.NavTarget.Child1
-import com.bumble.appyx.interactions.sample.NavTarget.Child2
-import com.bumble.appyx.interactions.sample.NavTarget.Child3
-import com.bumble.appyx.interactions.sample.NavTarget.Child4
-import com.bumble.appyx.interactions.sample.NavTarget.Child5
-import com.bumble.appyx.interactions.sample.NavTarget.Child6
+import com.bumble.appyx.interactions.sample.NavTarget.*
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
+import com.bumble.appyx.transitionmodel.backstack.BackstackFader
 import com.bumble.appyx.transitionmodel.backstack.operation.newRoot
 import com.bumble.appyx.transitionmodel.backstack.operation.pop
 import com.bumble.appyx.transitionmodel.backstack.operation.push
@@ -39,7 +34,7 @@ fun BackStackExperimentDebug() {
                 initialTarget = Child1,
                 savedStateMap = null
             ),
-            interpolator = { BackStackSlider(it) },
+            interpolator = { BackstackFader(coroutineScope) },
             isDebug = false
         )
     }

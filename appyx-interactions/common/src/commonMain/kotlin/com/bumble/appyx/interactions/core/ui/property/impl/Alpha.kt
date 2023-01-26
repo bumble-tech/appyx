@@ -5,8 +5,8 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
-import com.bumble.appyx.interactions.core.ui.property.Property
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.Property
 
 class Alpha(
     value: Float
@@ -18,7 +18,7 @@ class Alpha(
         get() = animatable.value
 
     override val modifier: Modifier
-        get() = Modifier.alpha(value)
+        get() = Modifier.alpha(animatable.asState().value)
 
     override suspend fun lerpTo(start: Alpha, end: Alpha, fraction: Float) {
         snapTo(lerpFloat(start.value, end.value, fraction))

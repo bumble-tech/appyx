@@ -1,4 +1,4 @@
-package com.bumble.appyx.transitionmodel.spotlight.interpolator
+package com.bumble.appyx.transitionmodel.backstack
 
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.TransitionModel
@@ -8,13 +8,13 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class SpotlightFader<NavTarget : Any>(
+class BackstackFader<NavTarget : Any>(
     private val scope: CoroutineScope
-) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
+) : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
 
     class Props(
         var alpha: Alpha
@@ -39,14 +39,12 @@ class SpotlightFader<NavTarget : Any>(
 
     private val interpolated: MutableMap<String, Props> = mutableMapOf()
 
-    private fun <NavTarget : Any> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
-        standard.map {
-            MatchedProps(it, visible)
-        } + (created + destroyed).map {
+    private fun <NavTarget : Any> BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+        listOf(MatchedProps(active, visible)) + (created + destroyed + stashed).map {
             MatchedProps(it, hidden)
         }
 
-    override fun map(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun map(segment: TransitionModel.Segment<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -56,7 +54,7 @@ class SpotlightFader<NavTarget : Any>(
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = interpolated.getOrPut(t0.element.id) { t0.props }
             // TODO
-            scope.launch {
+            runBlocking {
                 elementProps.lerpTo(t0.props, t1.props, segment.progress)
             }
 
