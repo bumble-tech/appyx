@@ -2,9 +2,7 @@ package com.bumble.appyx.navigation.node
 
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
@@ -12,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
@@ -154,13 +153,7 @@ abstract class ParentNode<NavTarget : Any>(
 
     @Composable
     override fun DerivedSetup() {
-        val coroutineScope = rememberCoroutineScope()
-        DisposableEffect(key1 = this) {
-            interactionModel.startAnimation(coroutineScope)
-            onDispose {
-                interactionModel.stopAnimation()
-            }
-        }
+        InteractionModelSetup(interactionModel = interactionModel)
     }
 
     private fun manageTransitionsInForeground() {

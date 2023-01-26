@@ -9,9 +9,9 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.sample.NavTarget.Child2
 import com.bumble.appyx.interactions.sample.NavTarget.Child3
@@ -32,11 +32,8 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.previous
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperimentDebug() {
-    val coroutineScope = rememberCoroutineScope()
-
     val spotlight = remember {
         Spotlight(
-            scope = coroutineScope,
             model = SpotlightModel(
                 items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)
             ),
@@ -46,6 +43,7 @@ fun SpotlightExperimentDebug() {
         )
     }
 
+    InteractionModelSetup(spotlight)
 
 
     LaunchedEffect(Unit) {
