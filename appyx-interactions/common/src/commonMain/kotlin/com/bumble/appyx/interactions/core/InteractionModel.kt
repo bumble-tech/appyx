@@ -21,7 +21,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 
 
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
@@ -40,9 +39,12 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
-            field = value
-            _interpolator = interpolator(transitionBounds)
-            _gestureFactory = gestureFactory(transitionBounds)
+            if (value != field) {
+                Logger.log("InteractionModel", "TransitionBounds changed: $value")
+                field = value
+                _interpolator = interpolator(transitionBounds)
+                _gestureFactory = gestureFactory(transitionBounds)
+            }
         }
 
     companion object {
@@ -50,9 +52,9 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     val frames: Flow<List<FrameModel<NavTarget>>> =
-        model
-            .segments
-            .map { _interpolator.map(it) }
+            model
+                .segments
+                .flatMapLatest { _interpolator.map(it) }
 
     private val instant = InstantInputSource(
         model = model
