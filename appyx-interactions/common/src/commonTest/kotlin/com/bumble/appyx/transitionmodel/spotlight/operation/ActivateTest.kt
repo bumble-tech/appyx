@@ -13,7 +13,7 @@ import kotlin.test.assertFalse
 class ActivateTest {
 
     @Test
-    fun `When new index is the same Then operation isn't applicable`() {
+    fun WHEN_new_index_is_the_same_THEN_operation_is_not_applicable() {
         val state = SpotlightModel.State(
             standard = listOf<NavElement<NavTarget>>(),
             activeIndex = 0f,
@@ -26,7 +26,7 @@ class ActivateTest {
     }
 
     @Test
-    fun `When new index is different And out of range Then operation isn't applicable`() {
+    fun WHEN_new_index_is_different_AND_out_of_range_THEN_operation_is_not_applicable() {
         val state = SpotlightModel.State(
             standard = listOf(Child1, Child2).map { it.asElement() },
             activeIndex = 0f,
@@ -39,7 +39,7 @@ class ActivateTest {
     }
 
     @Test
-    fun `When new index is different And is withing range Then active index is updated`() {
+    fun WHEN_new_index_is_different_AND_is_withing_range_THEN_active_index_is_updated() {
         val state = SpotlightModel.State(
             standard = listOf(Child1, Child2).map { it.asElement() },
             activeIndex = 0f,

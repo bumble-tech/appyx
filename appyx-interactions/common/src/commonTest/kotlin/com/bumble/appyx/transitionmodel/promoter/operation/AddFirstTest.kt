@@ -22,7 +22,7 @@ import kotlin.test.assertEquals
 class AddFirstTest {
 
     @Test
-    fun `Given created When add first Then moves to stage1`() {
+    fun GIVEN_created_WHEN_add_first_THEN_moves_to_stage1() {
         val state = PromoterModel.State(
             elements = listOf<Pair<NavElement<NavTarget>, ElementState>>()
         )
@@ -38,7 +38,7 @@ class AddFirstTest {
     }
 
     @Test
-    fun `Given stage1 When add first Then moves to stage2`() {
+    fun GIVEN_stage1_WHEN_add_first_THEN_moves_to_stage2() {
         val state = PromoterModel.State(
             elements = listOf(NavElement(Child1) to STAGE1)
         )
@@ -62,7 +62,7 @@ class AddFirstTest {
     }
 
     @Test
-    fun `Given stage2 When add first Then moves to stage3`() {
+    fun GIVEN_stage2_WHEN_add_first_THEN_moves_to_stage3() {
         val state = PromoterModel.State(
             elements = listOf(
                 NavElement(Child2) to STAGE1,
@@ -95,7 +95,7 @@ class AddFirstTest {
     }
 
     @Test
-    fun `Given stage3 When add first Then moves to stage4`() {
+    fun GIVEN_stage3_WHEN_add_first_THEN_moves_to_stage4() {
         val state = PromoterModel.State(
             elements = listOf(
                 NavElement(Child3) to STAGE1,
@@ -135,7 +135,7 @@ class AddFirstTest {
     }
 
     @Test
-    fun `Given stage4 When add first Then moves to stage5`() {
+    fun GIVEN_stage4_WHEN_add_first_THEN_moves_to_stage5() {
         val state = PromoterModel.State(
             elements = listOf(
                 NavElement(Child4) to STAGE1,
@@ -182,7 +182,7 @@ class AddFirstTest {
     }
 
     @Test
-    fun `Given stage5 When add first Then moves to destroyed`() {
+    fun GIVEN_stage5_WHEN_add_first_THEN_moves_to_destroyed() {
         val state = PromoterModel.State(
             elements = listOf(
                 NavElement(Child5) to STAGE1,

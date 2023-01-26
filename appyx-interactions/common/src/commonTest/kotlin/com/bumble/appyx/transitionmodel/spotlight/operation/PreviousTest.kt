@@ -10,7 +10,7 @@ import kotlin.test.assertFalse
 class PreviousTest {
 
     @Test
-    fun `Given on first position When previous is invoked Then operation isn't applicable`() {
+    fun GIVEN_on_first_position_WHEN_previous_is_invoked_THEN_operation_is_not_applicable() {
         val state = SpotlightModel.State(
             standard = listOf(NavTarget.Child1, NavTarget.Child2, NavTarget.Child3).map { it.asElement() },
             activeIndex = 0f,
@@ -23,7 +23,7 @@ class PreviousTest {
     }
 
     @Test
-    fun `Given on last position And has previous When previous invoked Then it will decrement the active index`() {
+    fun GIVEN_on_last_position_AND_has_previous_WHEN_previous_invoked_THEN_it_will_decrement_the_active_index() {
         val state = SpotlightModel.State(
             standard = listOf(NavTarget.Child1, NavTarget.Child2, NavTarget.Child3).map { it.asElement() },
             activeIndex = 2f,

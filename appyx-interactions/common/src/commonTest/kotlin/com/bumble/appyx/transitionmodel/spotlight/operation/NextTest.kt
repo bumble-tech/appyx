@@ -13,7 +13,7 @@ import kotlin.test.assertFalse
 class NextTest {
 
     @Test
-    fun `Given on last position When next is invoked Then operation isn't applicable`() {
+    fun GIVEN_on_last_position_WHEN_next_is_invoked_THEN_operation_is_not_applicable() {
         val state = SpotlightModel.State(
             standard = listOf(Child1, Child2, Child3).map { it.asElement() },
             activeIndex = 2f,
@@ -26,7 +26,7 @@ class NextTest {
     }
 
     @Test
-    fun `Given on first position And has next When next invoked Then it will increment the active index`() {
+    fun GIVEN_on_first_position_AND_has_next_WHEN_next_invoked_THEN_it_will_increment_the_active_index() {
         val state = SpotlightModel.State(
             standard = listOf(Child1, Child2, Child3).map { it.asElement() },
             activeIndex = 0f,

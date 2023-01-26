@@ -12,7 +12,7 @@ import kotlin.test.assertFalse
 class VoteTest {
 
     @Test
-    fun `When queue is empty Then Like operation is not applicable`() {
+    fun WHEN_queue_is_empty_THEN_Like_operation_is_not_applicable() {
         val state = CardsModel.State<NavTarget>()
 
         val voteLike = VoteLike<NavTarget>()
@@ -21,7 +21,7 @@ class VoteTest {
     }
 
     @Test
-    fun `When queue is empty Then Pass operation is not applicable`() {
+    fun WHEN_queue_is_empty_THEN_Pass_operation_is_not_applicable() {
         val state = CardsModel.State<NavTarget>()
 
         val votePass = VotePass<NavTarget>()
@@ -30,7 +30,7 @@ class VoteTest {
     }
 
     @Test
-    fun `Given queue contains more elements When vote like Then element moved to liked`() {
+    fun GIVEN_queue_contains_more_elements_WHEN_vote_like_Then_element_moved_to_liked() {
         val state = CardsModel.State(
             queued = listOf(Child1, Child2).map { it.asElement() }
         )
@@ -57,7 +57,7 @@ class VoteTest {
     }
 
     @Test
-    fun `Given queue contains more elements When vote pass Then element moved to passed`() {
+    fun GIVEN_queue_contains_more_elements_WHEN_vote_pass_THEN_element_moved_to_passed() {
         val state = CardsModel.State(
             queued = listOf(Child1, Child2).map { it.asElement() }
         )

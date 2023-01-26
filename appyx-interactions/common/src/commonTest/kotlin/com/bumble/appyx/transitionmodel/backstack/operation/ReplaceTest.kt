@@ -13,7 +13,7 @@ import kotlin.test.assertFalse
 class ReplaceTest {
 
     @Test
-    fun `When replace same nav target Then operation not applicable`() {
+    fun WHEN_replace_same_nav_target_THEN_operation_not_applicable() {
         val state = BackStackModel.State(active = Child1.asElement())
 
         val replace = Replace(Child1)
@@ -22,7 +22,7 @@ class ReplaceTest {
     }
 
     @Test
-    fun `When replace then active is replaced`() {
+    fun WHEN_replace_THEN_active_is_replaced() {
         val state = BackStackModel.State(
             active = Child1.asElement(),
             stashed = listOf(Child2, Child3).map { it.asElement() }

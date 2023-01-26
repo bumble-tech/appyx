@@ -12,7 +12,7 @@ import kotlin.test.assertEquals
 class FirstTest {
 
     @Test
-    fun `Given active index is last When First is invoked Then active index is 0`() {
+    fun GIVEN_active_index_is_last_WHEN_First_is_invoked_THEN_active_index_is_0() {
         val state = SpotlightModel.State(
             standard = listOf(Child1, Child2, Child3).map { it.asElement() },
             activeIndex = 2f,

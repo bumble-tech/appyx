@@ -12,7 +12,7 @@ import kotlin.test.assertFalse
 class PopTest {
 
     @Test
-    fun `Given no stashed elements Then it's not applicable`() {
+    fun GIVEN_no_stashed_elements_THEN_it_is_not_applicable() {
         val state = BackStackModel.State(active = NavElement(Child1))
 
         val pop = Pop<NavTarget>()
@@ -21,7 +21,7 @@ class PopTest {
     }
 
     @Test
-    fun `Given active and stashed elements Then destroys active and makes stashed active`() {
+    fun GIVEN_active_and_stashed_elements_THEN_destroys_active_and_makes_stashed_active() {
         val state = BackStackModel.State(
             active = NavElement(Child1),
             stashed = listOf(NavElement(Child2))

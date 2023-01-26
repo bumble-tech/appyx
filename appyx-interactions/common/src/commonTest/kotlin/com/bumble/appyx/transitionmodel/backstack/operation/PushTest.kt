@@ -11,7 +11,7 @@ import kotlin.test.assertFalse
 class PushTest {
 
     @Test
-    fun `Given Child1 on screen When Child1 is pushed again Then operation isn't applicable`() {
+    fun GIVEN_Child1_on_screen_WHEN_Child1_is_pushed_again_THEN_operation_is_not_applicable() {
         val state = BackStackModel.State(active = Child1.asElement())
 
         val push = Push(Child1)
@@ -20,7 +20,7 @@ class PushTest {
     }
 
     @Test
-    fun `Given Child 1 on screen When Child2 is pushed Then Child1 will be stashed and Child2 active`() {
+    fun GIVEN_Child_1_on_screen_WHEN_Child2_is_pushed_THEN_Child1_will_be_stashed_and_Child2_active() {
         val state = BackStackModel.State(active = Child1.asElement())
 
         val push = Push(Child2)

@@ -14,7 +14,7 @@ import kotlin.test.assertEquals
 class UpdateElementsTest {
 
     @Test
-    fun `When new elements are provided Then the new ones are standard`() {
+    fun WHEN_new_elements_are_provided_THEN_the_new_ones_are_standard() {
         val old = listOf(Child1, Child2, Child3)
         val state = SpotlightModel.State(
             standard = old.map { it.asElement() },
@@ -31,7 +31,7 @@ class UpdateElementsTest {
     }
 
     @Test
-    fun `When new elements are provided Then the old ones are destroyed`() {
+    fun WHEN_new_elements_are_provided_THEN_the_old_ones_are_destroyed() {
         val old = listOf(Child1, Child2, Child3)
         val state = SpotlightModel.State(
             standard = old.map { it.asElement() },
@@ -49,7 +49,7 @@ class UpdateElementsTest {
     }
 
     @Test
-    fun `When new elements are provided Then the index and window size are preserved`() {
+    fun WHEN_new_elements_are_provided_THEN_the_index_and_window_size_are_preserved() {
         val old = listOf(Child1, Child2, Child3)
         val state = SpotlightModel.State(
             standard = old.map { it.asElement() },

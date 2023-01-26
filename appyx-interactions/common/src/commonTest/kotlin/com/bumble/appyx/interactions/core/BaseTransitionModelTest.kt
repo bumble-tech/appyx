@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 class BaseTransitionModelTest {
 
     @Test
-    fun `When I enqueue an element Then max progress should be increase`() {
+    fun WHEN_I_enqueue_an_element_THEN_max_progress_should_be_increase() {
         val backStack = BackStackModel(
             initialTarget = Child1,
             savedStateMap = null
@@ -25,7 +25,7 @@ class BaseTransitionModelTest {
     }
 
     @Test
-    fun `When I remove an element Then max progress should decrease`() {
+    fun WHEN_I_remove_an_element_THEN_max_progress_should_decrease() {
         val backStack = BackStackModel(
             initialTarget = Child1,
             savedStateMap = null
@@ -40,7 +40,7 @@ class BaseTransitionModelTest {
     }
 
     @Test
-    fun `Given progress is update When it's smaller than it's max Then it should have the same segment`() {
+    fun GIVEN_progress_is_update_WHEN_it_is_smaller_than_its_max_THEN_it_should_have_the_same_segment() {
         val backStack = BackStackModel(
             initialTarget = Child1,
             savedStateMap = null
@@ -54,7 +54,7 @@ class BaseTransitionModelTest {
     }
 
     @Test
-    fun `Given progress is update When it's equal to it's max Then it should have the next segment`() {
+    fun GIVEN_progress_is_update_WHEN_it_is_equal_to_its_max_THEN_it_should_have_the_next_segment() {
         val backStack = BackStackModel(
             initialTarget = Child1,
             savedStateMap = null
@@ -68,7 +68,7 @@ class BaseTransitionModelTest {
     }
 
     @Test
-    fun `Given progress is update beyond max progress Then it should reach the end`() {
+    fun GIVEN_progress_is_update_beyond_max_progress_THEN_it_should_reach_the_end() {
         val backStack = BackStackModel(
             initialTarget = Child1,
             savedStateMap = null

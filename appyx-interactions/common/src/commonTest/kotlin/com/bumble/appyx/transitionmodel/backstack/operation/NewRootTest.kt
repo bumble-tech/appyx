@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 class NewRootTest {
 
     @Test
-    fun `Given new root Then everything else is destroyed`() {
+    fun GIVEN_new_root_THEN_everything_else_is_destroyed() {
         val state = BackStackModel.State(
             active = Child1.asElement(),
             stashed = listOf(Child2, Child3, Child4).map { it.asElement() }
