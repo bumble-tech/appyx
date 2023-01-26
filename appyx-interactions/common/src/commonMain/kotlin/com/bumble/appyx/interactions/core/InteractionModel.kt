@@ -5,6 +5,8 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
+import com.bumble.appyx.interactions.core.Operation.Mode
+import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource

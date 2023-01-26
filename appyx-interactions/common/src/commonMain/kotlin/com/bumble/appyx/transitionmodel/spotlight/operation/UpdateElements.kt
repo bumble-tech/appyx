@@ -15,6 +15,7 @@ class UpdateElements<NavTarget : Any>(
     private val items: @RawValue List<NavTarget>,
     private val initialActiveIndex: Float? = null,
     private val initialActiveWindow: Float? = null,
+    override val mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
@@ -40,14 +41,16 @@ fun <NavTarget : Any> Spotlight<NavTarget>.updateElements(
     items: List<NavTarget>,
     initialActiveIndex: Float? = null,
     initialActiveWindow: Float? = null,
-    animationSpec: AnimationSpec<Float> = defaultAnimationSpec
+    animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
+    mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) {
     operation(
         operation = UpdateElements(
             items = items,
             initialActiveIndex = initialActiveIndex,
-            initialActiveWindow = initialActiveWindow
+            initialActiveWindow = initialActiveWindow,
+            mode = mode
         ),
-        animationSpec = animationSpec
+        animationSpec = animationSpec,
     )
 }
