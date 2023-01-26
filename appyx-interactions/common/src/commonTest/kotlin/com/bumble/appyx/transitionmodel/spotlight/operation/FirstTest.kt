@@ -19,14 +19,14 @@ class FirstTest {
                 Position(elements = mapOf(Child1.asElement() to STANDARD)),
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
-            activeIndex = 0f,
+            activeIndex = 1f,
             activeWindow = 1f
         )
         val first = First<NavTarget>()
 
         assertEquals(
             actual = first.invoke(state).targetState.activeIndex,
-            expected = 1f
+            expected = 0f
         )
     }
 }

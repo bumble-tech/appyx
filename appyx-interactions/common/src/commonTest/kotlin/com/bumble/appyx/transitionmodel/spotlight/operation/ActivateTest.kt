@@ -19,18 +19,8 @@ class ActivateTest {
     fun WHEN_new_index_is_the_same_THEN_operation_is_not_applicable() {
         val state = SpotlightModel.State(
             positions = listOf(
-                Position(
-                    mapOf(
-                        Child1.asElement() to STANDARD,
-                        Child2.asElement() to STANDARD,
-                    )
-                ),
-                Position(
-                    mapOf(
-                        Child3.asElement() to STANDARD,
-                        Child4.asElement() to STANDARD,
-                    )
-                )
+                Position(elements = mapOf(Child1.asElement() to STANDARD)),
+                Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
             activeWindow = 1f
@@ -45,18 +35,8 @@ class ActivateTest {
     fun WHEN_new_index_is_different_AND_out_of_range_THEN_operation_is_not_applicable() {
         val state = SpotlightModel.State(
             positions = listOf(
-                Position(
-                    mapOf(
-                        Child1.asElement() to STANDARD,
-                        Child2.asElement() to STANDARD,
-                    )
-                ),
-                Position(
-                    mapOf(
-                        Child3.asElement() to STANDARD,
-                        Child4.asElement() to STANDARD,
-                    )
-                )
+                Position(elements = mapOf(Child1.asElement() to STANDARD)),
+                Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
             activeWindow = 1f
@@ -71,18 +51,9 @@ class ActivateTest {
     fun WHEN_new_index_is_different_AND_is_withing_range_THEN_active_index_is_updated() {
         val state = SpotlightModel.State(
             positions = listOf(
-                Position(
-                    mapOf(
-                        Child1.asElement() to STANDARD,
-                        Child2.asElement() to STANDARD,
-                    )
-                ),
-                Position(
-                    mapOf(
-                        Child3.asElement() to STANDARD,
-                        Child4.asElement() to STANDARD,
-                    )
-                )
+                Position(elements = mapOf(Child1.asElement() to STANDARD)),
+                Position(elements = mapOf(Child2.asElement() to STANDARD)),
+                Position(elements = mapOf(Child3.asElement() to STANDARD)),
             ),
             activeIndex = 0f,
             activeWindow = 1f
