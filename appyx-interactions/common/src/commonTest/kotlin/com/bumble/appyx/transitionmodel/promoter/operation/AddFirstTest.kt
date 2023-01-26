@@ -1,13 +1,13 @@
 package com.bumble.appyx.transitionmodel.promoter.operation
 
 import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.transitionmodel.NavTarget
-import com.bumble.appyx.transitionmodel.NavTarget.Child1
-import com.bumble.appyx.transitionmodel.NavTarget.Child2
-import com.bumble.appyx.transitionmodel.NavTarget.Child3
-import com.bumble.appyx.transitionmodel.NavTarget.Child4
-import com.bumble.appyx.transitionmodel.NavTarget.Child5
-import com.bumble.appyx.transitionmodel.NavTarget.Child6
+import com.bumble.appyx.NavTarget
+import com.bumble.appyx.NavTarget.Child1
+import com.bumble.appyx.NavTarget.Child2
+import com.bumble.appyx.NavTarget.Child3
+import com.bumble.appyx.NavTarget.Child4
+import com.bumble.appyx.NavTarget.Child5
+import com.bumble.appyx.NavTarget.Child6
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState.DESTROYED

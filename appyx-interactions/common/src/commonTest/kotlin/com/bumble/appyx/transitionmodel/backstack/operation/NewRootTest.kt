@@ -2,11 +2,11 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.NavTarget.Child1
-import com.bumble.appyx.transitionmodel.NavTarget.Child2
-import com.bumble.appyx.transitionmodel.NavTarget.Child3
-import com.bumble.appyx.transitionmodel.NavTarget.Child4
-import com.bumble.appyx.transitionmodel.NavTarget.Child5
+import com.bumble.appyx.NavTarget.Child1
+import com.bumble.appyx.NavTarget.Child2
+import com.bumble.appyx.NavTarget.Child3
+import com.bumble.appyx.NavTarget.Child4
+import com.bumble.appyx.NavTarget.Child5
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

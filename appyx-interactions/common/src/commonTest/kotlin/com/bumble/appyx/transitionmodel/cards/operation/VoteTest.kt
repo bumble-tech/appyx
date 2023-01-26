@@ -1,9 +1,9 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
 import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.transitionmodel.NavTarget
-import com.bumble.appyx.transitionmodel.NavTarget.Child1
-import com.bumble.appyx.transitionmodel.NavTarget.Child2
+import com.bumble.appyx.NavTarget
+import com.bumble.appyx.NavTarget.Child1
+import com.bumble.appyx.NavTarget.Child2
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
