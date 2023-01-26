@@ -20,8 +20,10 @@ import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDp
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.cards.CardsModel
+import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlin.math.roundToInt
@@ -65,22 +67,39 @@ class CardsProps<NavTarget : Any>(
     )
 
 
-    private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
-        (liked.lastOrNull()?.let {
-            listOf(MatchedProps(it, voteLike))
-        } ?: listOf()) +
-                (passed.lastOrNull()?.let {
-                    listOf(MatchedProps(it, votePass))
-                } ?: listOf()) +
-                queued.mapIndexed { index, navElement ->
-                    val props = when (index) {
-                        0 -> top
-                        1 -> bottom
-                        else -> hidden
-                    }
-
-                    MatchedProps(navElement, props)
+    private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
+        val result = mutableListOf<MatchedProps<NavTarget, Props>>()
+        (votedCards + visibleCards).map {
+            when (it) {
+                is CardsModel.State.Card.InvisibleCard.VotedCard -> {
+                    result.add(
+                        if (it.votedCardState == LIKED) {
+                            MatchedProps(it.navElement, voteLike)
+                        } else {
+                            MatchedProps(it.navElement, votePass)
+                        }
+                    )
                 }
+                is CardsModel.State.Card.VisibleCard.TopCard -> {
+                    result.add(MatchedProps(it.navElement, top))
+                }
+                is CardsModel.State.Card.VisibleCard.BottomCard -> {
+                    result.add(MatchedProps(it.navElement, bottom))
+                }
+                else -> Unit
+            }
+        }
+        queued.map {
+            when (it) {
+                is CardsModel.State.Card.InvisibleCard.Queued -> {
+                    result.add(MatchedProps(it.navElement, hidden))
+                }
+                else -> Unit
+            }
+        }
+
+        return result
+    }
 
     override fun map(segment: TransitionModel.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
@@ -181,5 +200,19 @@ class CardsProps<NavTarget : Any>(
 
     private companion object {
         private const val voteCardPositionMultiplier = 2
+    }
+
+    override fun mapVisibility(segment: TransitionModel.Segment<CardsModel.State<NavTarget>>): ScreenState<NavTarget> {
+        val fromState = segment.navTransition.fromState
+
+        val allElements =
+            (fromState.visibleCards + fromState.queued + fromState.votedCards).map { it.navElement }
+                .toSet()
+        val onScreen = fromState.visibleCards.map { it.navElement }.toSet()
+
+        return ScreenState(
+            onScreen = onScreen,
+            offScreen = allElements - onScreen
+        )
     }
 }

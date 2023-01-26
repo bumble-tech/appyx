@@ -11,10 +11,12 @@ import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.VisibilityInterpolator
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
 class BackStackSliderDebugVertical<NavTarget>
-    : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
+    : Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
+    VisibilityInterpolator<NavTarget, BackStackModel.State<NavTarget>> by BackStackVisibilityInterpolator() {
     private val size = 100.dp
 
 

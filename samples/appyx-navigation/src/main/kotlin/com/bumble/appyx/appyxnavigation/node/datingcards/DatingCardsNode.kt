@@ -5,10 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode.NavTarget
 import com.bumble.appyx.appyxnavigation.node.profilecard.ProfileCardNode
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
 import com.bumble.appyx.interactions.core.ui.GestureSpec
@@ -22,17 +21,21 @@ import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps
 import kotlinx.parcelize.Parcelize
 
-
 class DatingCardsNode(
     buildContext: BuildContext,
-    private val cardsModel: CardsModel<NavTarget> = CardsModel(
-        initialItems = Profile.allProfiles.shuffled().map {
-            NavTarget.ProfileCard(it)
-        }
-    )
-) : ParentNode<DatingCardsNode.NavTarget>(
+    private val cards: Cards<NavTarget> =
+        Cards(
+            model = CardsModel(
+                initialItems = Profile.allProfiles.shuffled().map {
+                    NavTarget.ProfileCard(it)
+                }),
+            interpolator = { CardsProps(it) },
+            gestureFactory = { CardsProps.Gestures(it) },
+        )
+
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    transitionModel = cardsModel
+    interactionModel = cards
 ) {
 
     sealed class NavTarget : Parcelable {
@@ -45,15 +48,6 @@ class DatingCardsNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val coroutineScope = rememberCoroutineScope()
-        val cards = remember {
-            Cards(
-                scope = coroutineScope,
-                model = cardsModel,
-                interpolator = { CardsProps(it) },
-                gestureFactory = { CardsProps.Gestures(it) },
-            )
-        }
 
         Children(
             modifier = modifier

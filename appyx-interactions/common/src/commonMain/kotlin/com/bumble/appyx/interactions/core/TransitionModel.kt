@@ -25,6 +25,8 @@ interface TransitionModel<NavTarget, ModelState> {
         val progress: Float
     )
 
+    fun availableElements(): Set<NavElement<NavTarget>>
+
     fun enqueue(operation: Operation<ModelState>): Boolean
 
     fun setProgress(progress: Float)

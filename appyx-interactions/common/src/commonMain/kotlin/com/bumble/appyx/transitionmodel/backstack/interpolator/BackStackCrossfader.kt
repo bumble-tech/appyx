@@ -2,18 +2,19 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.TransitionParams
+import com.bumble.appyx.interactions.core.ui.VisibilityInterpolator
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
 class BackStackCrossfader<NavTarget : Any>(
     transitionParams: TransitionParams
-) : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
+) : Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
+    VisibilityInterpolator<NavTarget, BackStackModel.State<NavTarget>> by BackStackVisibilityInterpolator() {
 
     class Props(
         val alpha: Float

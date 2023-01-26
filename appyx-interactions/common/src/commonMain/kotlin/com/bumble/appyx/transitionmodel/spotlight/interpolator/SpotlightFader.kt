@@ -4,10 +4,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.TransitionParams
+import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 class SpotlightFader<NavTarget : Any>(
@@ -50,5 +51,9 @@ class SpotlightFader<NavTarget : Any>(
                 progress = segment.progress
             )
         }
+    }
+
+    override fun mapVisibility(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): ScreenState<NavTarget> {
+        TODO("Not yet implemented")
     }
 }

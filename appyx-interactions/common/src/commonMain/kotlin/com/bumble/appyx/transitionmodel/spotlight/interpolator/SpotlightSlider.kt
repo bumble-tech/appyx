@@ -18,6 +18,7 @@ import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
@@ -149,6 +150,10 @@ class SpotlightSlider<NavTarget>(
 
     operator fun DpOffset.times(multiplier: Int) =
         DpOffset(x * multiplier, y * multiplier)
+
+    override fun mapVisibility(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): ScreenState<NavTarget> {
+        TODO("Not yet implemented")
+    }
 
 }
 

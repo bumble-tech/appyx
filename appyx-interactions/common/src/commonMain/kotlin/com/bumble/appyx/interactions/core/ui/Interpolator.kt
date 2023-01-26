@@ -5,8 +5,10 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.lerp
 import com.bumble.appyx.interactions.core.TransitionModel
 
-interface Interpolator<Target, ModelState> {
+interface Interpolator<Target, ModelState> : VisibilityInterpolator<Target, ModelState> {
 
+
+    // TODO produce only visible frames?!
     fun map(
         segment: TransitionModel.Segment<ModelState>
     ): List<FrameModel<Target>>

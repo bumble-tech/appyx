@@ -1,12 +1,12 @@
 package com.bumble.appyx.interactions.core
 
+import com.bumble.appyx.interactions.Logger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
-import com.bumble.appyx.interactions.Logger
 
 @SuppressWarnings("UnusedPrivateMember")
 abstract class BaseTransitionModel<NavTarget, ModelState>(
@@ -17,7 +17,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     abstract fun ModelState.destroyedElements(): Set<NavElement<NavTarget>>
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
-    fun availableElements(): Set<NavElement<NavTarget>> =
+    override fun availableElements(): Set<NavElement<NavTarget>> =
         state.value.navTransition.targetState.availableElements()
 
     /**
@@ -30,7 +30,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         )
     }
 
-    open protected val initialTransition: NavTransition<ModelState> by lazy {
+    protected open val initialTransition: NavTransition<ModelState> by lazy {
         NavTransition(
             fromState = initialState,
             targetState = initialState,
