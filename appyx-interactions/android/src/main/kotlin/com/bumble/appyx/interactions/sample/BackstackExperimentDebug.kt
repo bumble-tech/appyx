@@ -13,21 +13,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.sample.NavTarget.Child1
-import com.bumble.appyx.interactions.sample.NavTarget.Child2
-import com.bumble.appyx.interactions.sample.NavTarget.Child3
-import com.bumble.appyx.interactions.sample.NavTarget.Child4
-import com.bumble.appyx.interactions.sample.NavTarget.Child5
-import com.bumble.appyx.interactions.sample.NavTarget.Child6
+import com.bumble.appyx.interactions.sample.NavTarget.*
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.BackstackFader
-import com.bumble.appyx.transitionmodel.backstack.operation.newRoot
 import com.bumble.appyx.transitionmodel.backstack.operation.pop
-import com.bumble.appyx.transitionmodel.backstack.operation.push
-import com.bumble.appyx.transitionmodel.backstack.operation.replace
 
 
 @ExperimentalMaterialApi
@@ -39,7 +30,7 @@ fun BackStackExperimentDebug() {
         BackStack(
             scope = coroutineScope,
             model = BackStackModel(
-                initialTarget = Child1,
+                initialTargets = listOf(Child1, Child2, Child3, Child4, Child5),
                 savedStateMap = null
             ),
             interpolator = { BackstackFader(coroutineScope) },
@@ -48,10 +39,7 @@ fun BackStackExperimentDebug() {
     }
 
     LaunchedEffect(Unit) {
-        backStack.push(Child2)
-        backStack.push(Child3)
-        backStack.push(Child4)
-        backStack.push(Child5)
+//        backStack.push(Child2)
 //        backStack.replace(Child6)
 //        backStack.pop()
 //        backStack.pop()
@@ -67,7 +55,7 @@ fun BackStackExperimentDebug() {
 //            backStack.setNormalisedProgress(it)
 //        })
         Button(onClick = {
-            backStack.pop(Operation.Mode.IMMEDIATE)
+            backStack.pop()
         }
         ) {
             Text("POP")
