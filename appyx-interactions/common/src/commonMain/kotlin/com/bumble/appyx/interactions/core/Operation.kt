@@ -6,7 +6,23 @@ import com.bumble.appyx.interactions.Parcelize
 interface Operation<ModelState> : (ModelState) -> NavTransition<ModelState>, Parcelable {
 
     enum class Mode {
-        IMMEDIATE, KEYFRAME
+        /**
+         * Operation should be executed without a queue, and should trigger
+         * animation mode.
+         */
+        IMMEDIATE,
+
+        /**
+         * Operation should be executed without a queue just as IMMEDIATE,
+         * but shouldn't trigger animation mode. It's intended for state changes
+         * that should affect geometry only.
+         */
+        GEOMETRY,
+
+        /**
+         * Operation should be enqueued and treated as a keyframe.
+         */
+        KEYFRAME
     }
 
     val mode: Mode
