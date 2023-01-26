@@ -62,7 +62,7 @@ class DragProgressInputSource<NavTarget : Any, State>(
 
         // Case: we can start a new operation
         if (gesture!!.startProgress == null) {
-            if (model.enqueue(operation)) {
+            if (model.operation(operation)) {
                 gesture!!.startProgress = currentProgress
                 Logger.log(TAG, "operation applied: $operation")
             } else {
