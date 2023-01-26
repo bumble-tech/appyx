@@ -5,6 +5,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
@@ -23,7 +24,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flatMapLatest
 
 
 // TODO move to navigation
@@ -44,9 +45,12 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
-            field = value
-            _interpolator = interpolator(transitionBounds)
-            _gestureFactory = gestureFactory(transitionBounds)
+            if (value != field) {
+                Logger.log("InteractionModel", "TransitionBounds changed: $value")
+                field = value
+                _interpolator = interpolator(transitionBounds)
+                _gestureFactory = gestureFactory(transitionBounds)
+            }
         }
 
     companion object {
@@ -54,9 +58,9 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     val frames: Flow<List<FrameModel<NavTarget>>> =
-        model
-            .segments
-            .map { _interpolator.map(it) }
+            model
+                .segments
+                .flatMapLatest { _interpolator.map(it) }
 
     private val instant = InstantInputSource(
         model = model

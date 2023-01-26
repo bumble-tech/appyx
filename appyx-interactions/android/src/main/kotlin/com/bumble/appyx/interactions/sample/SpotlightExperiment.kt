@@ -14,6 +14,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
@@ -34,16 +35,19 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.first
 import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import com.bumble.appyx.transitionmodel.spotlight.operation.next
 import com.bumble.appyx.transitionmodel.spotlight.operation.previous
+import com.bumble.appyx.transitionmodel.spotlight.operation.updateElements
 
 
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperiment() {
+    val scope = rememberCoroutineScope()
+    val items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7)
     val spotlight = Spotlight(
-        model = SpotlightModel(items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)),
-        interpolator = { SpotlightSlider(it) },
+        model = SpotlightModel(items = items),
+        interpolator = { SpotlightSlider(it, scope) },
         gestureFactory = { SpotlightSlider.Gestures(it) },
-        animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
+        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )
 
     InteractionModelSetup(spotlight)
@@ -89,6 +93,10 @@ fun SpotlightExperiment() {
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+            Button(onClick = { spotlight.updateElements(items, animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20))
+            }) {
+                Text("New")
+            }
             Button(onClick = { spotlight.first() }) {
                 Text("First")
             }

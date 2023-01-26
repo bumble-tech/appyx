@@ -10,6 +10,9 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 
 class SpotlightFader<NavTarget : Any>(
     transitionParams: TransitionParams
@@ -27,14 +30,29 @@ class SpotlightFader<NavTarget : Any>(
         alpha = 0f
     )
 
-    private fun <NavTarget : Any> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
-        standard.map {
-            MatchedProps(it, visible)
-        } + (created + destroyed).map {
-            MatchedProps(it, hidden)
+    fun SpotlightModel.State.ElementState.isVisible() =
+        when (this) {
+            CREATED -> false
+            STANDARD -> true
+            DESTROYED -> false
         }
 
-    override fun map(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    private fun <NavTarget> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, SpotlightSlider.Props>> {
+        return positions.flatMapIndexed { index, position ->
+            position.elements.map {
+                val isVisible = it.value.isVisible() && (activeIndex - activeWindow / 2 <= index && index <= activeIndex + activeWindow / 2)
+                val target = if (isVisible) visible else hidden
+                MatchedProps(
+                    element = it.key,
+                    props = SpotlightSlider.Props(
+                        alpha = target.alpha
+                    )
+                )
+            }
+        }
+    }
+
+    override fun mapFrame(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()

@@ -20,7 +20,7 @@ class Next<NavTarget>(
 
     override fun createTargetState(fromState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
         fromState.copy(
-            activeIndex = fromState.activeIndex + 1f,
+            activeIndex = fromState.activeIndex + 1f
         )
 }
 
