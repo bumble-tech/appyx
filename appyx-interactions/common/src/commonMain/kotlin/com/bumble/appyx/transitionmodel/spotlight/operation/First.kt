@@ -2,38 +2,32 @@ package com.bumble.appyx.transitionmodel.spotlight.operation
 
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavTransition
+import com.bumble.appyx.interactions.core.BaseOperation
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ACTIVE
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_AFTER
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.INACTIVE_BEFORE
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 
 @Parcelize
-class First<NavTarget : Any> : Operation<NavTarget, State> {
+class First<NavTarget : Any>(
+    override val mode: Operation.Mode = Operation.Mode.IMMEDIATE
+) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
-    override fun isApplicable(elements: NavElements<NavTarget, State>) =
-        elements.any { it.state == INACTIVE_BEFORE }
+    override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
+        true
 
-    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
-        return NavTransition(
-            fromState = elements,
-            targetState = elements.mapIndexed { index, element ->
-                element.transitionTo(
-                    newTargetState = when (index) {
-                        0 -> ACTIVE
-                        else -> INACTIVE_AFTER
-                    },
-                    operation = this
-                )
-            }
+    override fun createFromState(baseLineState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
+        baseLineState
+
+    override fun createTargetState(fromState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
+        fromState.copy(
+            activeIndex = 0f,
         )
-    }
 }
 
-fun <NavTarget : Any> Spotlight<NavTarget>.first(animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
-    operation(First(), animationSpec)
+fun <NavTarget : Any> Spotlight<NavTarget>.first(
+    animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
+    mode: Operation.Mode = Operation.Mode.IMMEDIATE
+) {
+    operation(First(mode), animationSpec)
 }

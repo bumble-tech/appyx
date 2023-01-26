@@ -1,12 +1,10 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
-import com.bumble.appyx.transitionmodel.backstack.activeIndex
 import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.backstack.BackStack
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
 /**
  * Operation:
@@ -14,44 +12,30 @@ import com.bumble.appyx.transitionmodel.backstack.BackStack
  * [A, B, C] + Pop = [A, B]
  */
 @Parcelize
-class Pop<NavTarget : Any> : BackStackOperation<NavTarget> {
+class Pop<NavTarget : Any>(
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+) : BaseOperation<State<NavTarget>>() {
+    override fun isApplicable(state: State<NavTarget>): Boolean =
+        state.stashed.isNotEmpty()
 
-    override fun isApplicable(elements: NavElements<NavTarget, State>): Boolean =
-        elements.any { it.state == State.ACTIVE } &&
-            elements.any { it.state == State.STASHED }
+    override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
+        baseLineState
 
 
-    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
-        val destroyIndex = elements.activeIndex
-        val unStashIndex =
-            elements.indexOfLast { it.state == State.STASHED }
-        require(destroyIndex != -1) { "Nothing to destroy, state=$elements" }
-        require(unStashIndex != -1) { "Nothing to remove from stash, state=$elements" }
-        val target = elements.mapIndexed { index, element ->
-            when (index) {
-                destroyIndex -> element.transitionTo(
-                    newTargetState = State.POPPED,
-                    operation = this
-                )
-                unStashIndex -> element.transitionTo(
-                    newTargetState = State.ACTIVE,
-                    operation = this
-                )
-                else -> element
-            }
-        }
-
-        return NavTransition(
-            fromState = elements,
-            targetState = target
+    override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
+        fromState.copy(
+            active = fromState.stashed.last(),
+            destroyed = fromState.destroyed + fromState.active,
+            stashed = fromState.stashed.dropLast(1)
         )
-    }
 
     override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
 
     override fun hashCode(): Int = this.javaClass.hashCode()
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.pop() {
-    operation(Pop())
+fun <NavTarget : Any> BackStack<NavTarget>.pop(
+    mode: Operation.Mode = Operation.Mode.KEYFRAME
+) {
+    operation(Pop(mode))
 }

@@ -1,18 +1,12 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
-import com.bumble.appyx.interactions.core.NavKey
-import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.NavElements
-import com.bumble.appyx.interactions.core.NavTransition
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.CREATED
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.STASHED
-import com.bumble.appyx.transitionmodel.backstack.activeElement
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
+import com.bumble.appyx.interactions.core.BaseOperation
+import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
 /**
  * Operation:
@@ -21,36 +15,29 @@ import com.bumble.appyx.transitionmodel.backstack.BackStack
  */
 @Parcelize
 data class Push<NavTarget : Any>(
-    private val navTarget: @RawValue NavTarget
-) : BackStackOperation<NavTarget> {
+    private val navTarget: @RawValue NavTarget,
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+) : BaseOperation<BackStackModel.State<NavTarget>>() {
 
-    override fun isApplicable(elements: NavElements<NavTarget, State>): Boolean =
-        navTarget != elements.activeElement
+    override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
+        navTarget != state.active.navTarget
 
-    override fun invoke(elements: NavElements<NavTarget, State>): NavTransition<NavTarget, State> {
-        val fromState = elements + NavElement(
-            key = NavKey(navTarget),
-            fromState = CREATED,
-            targetState = CREATED,
-            operation = this
+    override fun createFromState(baseLineState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
+        baseLineState.copy(
+            created = baseLineState.created + navTarget.asElement()
         )
-        return NavTransition(
-            fromState = fromState,
-            targetState = fromState.mapIndexed { index, element ->
-                element.transitionTo(
-                    newTargetState = when (index) {
-                        fromState.lastIndex - 1 -> STASHED
-                        fromState.lastIndex -> ACTIVE
-                        else -> element.state
-                    },
-                    operation = this
-                )
-            }
-        )
-    }
 
+    override fun createTargetState(fromState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
+        fromState.copy(
+            active = fromState.created.last(),
+            created = fromState.created.dropLast(1),
+            stashed = fromState.stashed + fromState.active,
+        )
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.push(navTarget: NavTarget) {
-    operation(Push(navTarget))
+fun <NavTarget : Any> BackStack<NavTarget>.push(
+    navTarget: NavTarget,
+    mode: Operation.Mode = Operation.Mode.KEYFRAME
+) {
+    operation(Push(navTarget, mode))
 }

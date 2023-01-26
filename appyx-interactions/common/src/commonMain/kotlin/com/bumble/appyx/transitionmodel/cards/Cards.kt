@@ -13,10 +13,10 @@ import kotlinx.coroutines.SupervisorJob
 open class Cards<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: CardsModel<NavTarget>,
-    interpolator: (TransitionBounds) -> Interpolator<NavTarget, CardsModel.State>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, CardsModel.State> = { GestureFactory.Noop() },
+    interpolator: (TransitionBounds) -> Interpolator<NavTarget, CardsModel.State<NavTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, CardsModel.State<NavTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring()
-) : InteractionModel<NavTarget, CardsModel.State>(
+) : InteractionModel<NavTarget, CardsModel.State<NavTarget>>(
     scope = scope,
     model = model,
     interpolator = interpolator,

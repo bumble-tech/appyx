@@ -10,13 +10,15 @@ import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class SpotlightFader<NavTarget>(
+class SpotlightFader<NavTarget : Any>(
+    transitionParams: TransitionParams,
     private val scope: CoroutineScope
-) : Interpolator<NavTarget, SpotlightModel.State> {
+) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
 
     class Props(
         var alpha: Alpha
@@ -43,28 +45,29 @@ class SpotlightFader<NavTarget>(
         alpha = Alpha(0f)
     )
 
-    private fun SpotlightModel.State.toProps(): Props =
-        when (this) {
-            SpotlightModel.State.ACTIVE -> visible
-            else -> hidden
+    private fun <NavTarget : Any> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+        standard.map {
+            MatchedProps(it, visible)
+        } + (created + destroyed).map {
+            MatchedProps(it, hidden)
         }
 
-    override fun map(segment: TransitionModel.Segment<NavTarget, SpotlightModel.State>): List<FrameModel<NavTarget, SpotlightModel.State>> {
+    override fun map(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
+        val fromProps = fromState.toProps()
+        val targetProps = targetState.toProps()
 
-        return targetState.map { t1 ->
-            val t0 = fromState.find { it.key == t1.key }!!
-
-            val fromProps = t0.state.toProps()
-            val targetProps = t1.state.toProps()
-
+        // TODO: use a map instead of find
+        return targetProps.map { t1 ->
+            val t0 = fromProps.find { it.element.id == t1.element.id }!!
+            val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress)
             // TODO
             scope.launch {
                 interpolated.lerpTo(fromProps, targetProps, segment.progress)
             }
 
             FrameModel(
-                navElement = t1,
+                navElement = t1.element,
                 modifier = interpolated.modifier,
                 progress = segment.progress
             )

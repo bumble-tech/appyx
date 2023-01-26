@@ -1,75 +1,58 @@
 package com.bumble.appyx.transitionmodel.backstack
 
-import com.bumble.appyx.interactions.core.NavKey
 import com.bumble.appyx.interactions.core.BaseTransitionModel
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.SavedStateMap
+import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.ui.NavElements
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.ACTIVE
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.DROPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.POPPED
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State.REPLACED
 
 @SuppressWarnings("UnusedPrivateMember")
 class BackStackModel<NavTarget : Any>(
-    initialElement: NavTarget,
+    initialTarget: NavTarget,
     savedStateMap: SavedStateMap?,
     // key: String = KEY_NAV_MODEL,
     // backPressHandler: BackPressHandlerStrategy<NavTarget, State> = PopBackPressHandler(),
     // operationStrategy: OperationStrategy<NavTarget, State> = ExecuteImmediately(),
     // screenResolver: OnScreenStateResolver<State> = BackStackOnScreenResolver
-) : BaseTransitionModel<NavTarget, State>(
+) : BaseTransitionModel<NavTarget, State<NavTarget>>(
 //    backPressHandler = backPressHandler,
 //    screenResolver = screenResolver,
 //    operationStrategy = operationStrategy,
-    finalStates = FINAL_STATES,
 //    savedStateMap = savedStateMap,
 //    key = key,
 ) {
-
-    enum class State {
+    data class State<NavTarget>(
         /**
-         * Represents an element that's just been created.
+         * Elements that have been created, but not yet moved to an active state
          */
-        CREATED,
+        val created: NavElements<NavTarget> = listOf(),
 
         /**
-         * Represents the currently active element.
+         * The currently active element.
          * There should be only one such element in the stack.
          */
-        ACTIVE,
+        val active: NavElement<NavTarget>,
 
         /**
-         * Represents an element stashed in the back stack (history).
+         * Elements stashed in the back stack (history).
          */
-        STASHED,
+        val stashed: NavElements<NavTarget> = listOf(),
 
         /**
-         * Represents an element destroyed from an ACTIVE state by Pop.
+         * Elements that will be destroyed after reaching this state.
          */
-        POPPED,
+        val destroyed: NavElements<NavTarget> = listOf(),
+    )
 
-        /**
-         * Represents an element destroyed from an ACTIVE state by Replace.
-         */
-        REPLACED,
+    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
+        (created + active + stashed + destroyed).toSet()
 
-        /**
-         * Represents an element destroyed from a STASHED state.
-         */
-        DROPPED
-    }
+    override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
+        destroyed.toSet()
 
-    companion object {
-        val FINAL_STATES = setOf(POPPED, REPLACED, DROPPED)
-    }
 
-    override val initialState = listOf(
-        BackStackElement(
-            key = NavKey(initialElement),
-            fromState = ACTIVE,
-            targetState = ACTIVE,
-            operation = Operation.Noop()
-        )
+    override val initialState = State(
+        active = initialTarget.asElement(),
     )
 }

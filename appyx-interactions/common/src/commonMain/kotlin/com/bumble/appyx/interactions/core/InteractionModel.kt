@@ -5,6 +5,8 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
+import com.bumble.appyx.interactions.core.Operation.Mode
+import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
@@ -22,19 +24,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 
-open class InteractionModel<NavTarget : Any, NavState : Any>(
+open class InteractionModel<NavTarget : Any, ModelState : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    model: TransitionModel<NavTarget, NavState>,
-    private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, NavState>,
-    private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, NavState> = { GestureFactory.Noop() },
+    model: TransitionModel<NavTarget, ModelState>,
+    private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, ModelState>,
+    private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
 ) : Draggable, FlexibleBounds {
 
-    private var _interpolator: Interpolator<NavTarget, NavState> =
+    private var _interpolator: Interpolator<NavTarget, ModelState> =
         interpolator(TransitionBounds(Density(0f), 0, 0))
-    private var _gestureFactory: GestureFactory<NavTarget, NavState> =
+    private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
@@ -47,7 +49,7 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
         val DefaultAnimationSpec: AnimationSpec<Float> = spring()
     }
 
-    val frames: Flow<List<FrameModel<NavTarget, NavState>>> =
+    val frames: Flow<List<FrameModel<NavTarget>>> =
         model
             .segments
             .map { _interpolator.map(it) }
@@ -77,7 +79,7 @@ open class InteractionModel<NavTarget : Any, NavState : Any>(
     )
 
     fun operation(
-        operation: Operation<NavTarget, NavState>,
+        operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
         when {

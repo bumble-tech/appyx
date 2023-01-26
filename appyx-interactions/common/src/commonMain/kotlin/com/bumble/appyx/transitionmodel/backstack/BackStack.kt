@@ -13,11 +13,11 @@ import kotlinx.coroutines.SupervisorJob
 class BackStack<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: BackStackModel<NavTarget>,
-    interpolator: (TransitionBounds) -> Interpolator<NavTarget, BackStackModel.State>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, BackStackModel.State> = { GestureFactory.Noop() },
+    interpolator: (TransitionBounds) -> Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, BackStackModel.State<NavTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
     isDebug: Boolean = false
-) : InteractionModel<NavTarget, BackStackModel.State>(
+) : InteractionModel<NavTarget, BackStackModel.State<NavTarget>>(
     scope = scope,
     model = model,
     interpolator = interpolator,

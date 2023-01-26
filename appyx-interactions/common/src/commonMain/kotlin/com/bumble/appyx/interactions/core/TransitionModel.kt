@@ -2,7 +2,8 @@ package com.bumble.appyx.interactions.core
 
 import kotlinx.coroutines.flow.StateFlow
 
-interface TransitionModel<NavTarget, NavState> {
+interface TransitionModel<NavTarget, ModelState> {
+
     /**
      * 0..infinity
      */
@@ -14,18 +15,20 @@ interface TransitionModel<NavTarget, NavState> {
     val currentProgress: Float
         get() = with(segments.value) { index + progress }
 
-    val segments: StateFlow<Segment<NavTarget, NavState>>
+    val segments: StateFlow<Segment<ModelState>>
 
-    class Segment<NavTarget, NavState>(
+    class Segment<ModelState>(
         val index: Int,
-        val navTransition: NavTransition<NavTarget, NavState>,
+        val navTransition: NavTransition<ModelState>,
         /**
          * 0..1
          */
         val progress: Float
     )
 
-    fun enqueue(operation: Operation<NavTarget, NavState>): Boolean
+    fun enqueue(operation: Operation<ModelState>): Boolean
+
+    fun updateState(operation: Operation<ModelState>): Boolean
 
     fun setProgress(progress: Float)
 

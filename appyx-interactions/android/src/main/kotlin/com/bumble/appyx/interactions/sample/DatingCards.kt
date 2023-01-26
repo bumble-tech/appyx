@@ -57,7 +57,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
                 frameModel = it,
                 modifier = Modifier
                     .fillMaxSize()
-                    .pointerInput(it.navElement.key) {
+                    .pointerInput(it.navElement.id) {
                         detectDragGestures(
                             onDragStart = { position -> cards.onStartDrag(position) },
                             onDrag = { change, dragAmount ->
@@ -80,7 +80,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
 
 @Composable
 fun ElementWrapper(
-    frameModel: FrameModel<DatingCardsNavTarget.ProfileCard, CardsModel.State>,
+    frameModel: FrameModel<DatingCardsNavTarget.ProfileCard>,
     modifier: Modifier = Modifier
 ) {
 
@@ -89,6 +89,6 @@ fun ElementWrapper(
             .then(frameModel.modifier)
             .then(modifier)
     ) {
-        ProfileCard(profile = frameModel.navElement.key.navTarget.profile)
+        ProfileCard(profile = frameModel.navElement.navTarget.profile)
     }
 }

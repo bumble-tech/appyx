@@ -11,15 +11,16 @@ import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class DebugProgressInputSource<NavTarget, State>(
-    private val navModel: TransitionModel<NavTarget, State>,
+class DebugProgressInputSource<NavTarget, ModelState>(
+    private val navModel: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
-) : InputSource<NavTarget, State> {
+) : InputSource<NavTarget, ModelState> {
     private val animatable = Animatable(0f)
     private lateinit var result: AnimationResult<Float, AnimationVector1D>
     private var progress: Float = 1f
 
-    override fun operation(operation: Operation<NavTarget, State>) {
+    override fun operation(operation: Operation<ModelState>) {
+        // Regardless of operation.mode, only enqueue makes sense
         navModel.enqueue(operation)
     }
 

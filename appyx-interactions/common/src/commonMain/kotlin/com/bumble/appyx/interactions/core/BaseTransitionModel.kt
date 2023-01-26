@@ -9,22 +9,31 @@ import kotlin.coroutines.EmptyCoroutineContext
 import com.bumble.appyx.interactions.Logger
 
 @SuppressWarnings("UnusedPrivateMember")
-abstract class BaseTransitionModel<NavTarget, NavState>(
-    private val finalStates: Set<NavState> = setOf(),
+abstract class BaseTransitionModel<NavTarget, ModelState>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-) : TransitionModel<NavTarget, NavState> {
-    abstract val initialState: NavElements<NavTarget, NavState>
+) : TransitionModel<NavTarget, ModelState> {
+    abstract val initialState: ModelState
+
+    abstract fun ModelState.destroyedElements(): Set<NavElement<NavTarget>>
+    abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
+
+    fun availableElements(): Set<NavElement<NavTarget>> =
+        state.value.navTransition.targetState.availableElements()
 
     /**
      * A state queue that can be prefetched. Could also work as state history if we implement
      * reversing progress.
      */
-    private val queue: MutableList<NavTransition<NavTarget, NavState>> by lazy {
+    private val queue: MutableList<NavTransition<ModelState>> by lazy {
         mutableListOf(
-            NavTransition(
-                fromState = initialState,
-                targetState = initialState,
-            )
+            initialTransition
+        )
+    }
+
+    open protected val initialTransition: NavTransition<ModelState> by lazy {
+        NavTransition(
+            fromState = initialState,
+            targetState = initialState,
         )
     }
 
@@ -39,15 +48,15 @@ abstract class BaseTransitionModel<NavTarget, NavState>(
     override val maxProgress: Float
         get() = (queue.lastIndex + 1).toFloat()
 
-    private val state: MutableStateFlow<TransitionModel.Segment<NavTarget, NavState>> by lazy {
+    private val state: MutableStateFlow<TransitionModel.Segment<ModelState>> by lazy {
         MutableStateFlow(createState(lastRecordedProgress))
     }
 
-    override val segments: StateFlow<TransitionModel.Segment<NavTarget, NavState>> by lazy {
+    override val segments: StateFlow<TransitionModel.Segment<ModelState>> by lazy {
         state
     }
 
-    private fun createState(progress: Float): TransitionModel.Segment<NavTarget, NavState> {
+    private fun createState(progress: Float): TransitionModel.Segment<ModelState> {
         val progress = progress.coerceAtLeast(minimumValue = 1f)
 
         /**
@@ -66,7 +75,7 @@ abstract class BaseTransitionModel<NavTarget, NavState>(
         )
     }
 
-    override fun enqueue(operation: Operation<NavTarget, NavState>): Boolean {
+    override fun enqueue(operation: Operation<ModelState>): Boolean {
         val baseline = queue.last().targetState
 
         return if (operation.isApplicable(baseline)) {
@@ -75,6 +84,23 @@ abstract class BaseTransitionModel<NavTarget, NavState>(
             true
         } else {
             Logger.log(TAG, "Operation $operation is not applicable on state: $baseline")
+            false
+        }
+    }
+
+    override fun updateState(operation: Operation<ModelState>): Boolean {
+        val latestState = queue.last()
+
+        return if (operation.isApplicable(latestState.targetState)) {
+            val newState = operation.invoke(latestState.targetState)
+            queue[queue.lastIndex] = NavTransition(
+                fromState = latestState.fromState,
+                targetState = newState.targetState
+            )
+            state.update { createState(currentProgress) }
+            true
+        } else {
+            Logger.log(TAG, "Operation $operation is not applicable on state: $latestState")
             false
         }
     }
