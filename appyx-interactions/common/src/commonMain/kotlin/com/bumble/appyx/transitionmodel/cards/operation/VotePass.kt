@@ -1,11 +1,14 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
 import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.PASSED
 
 @Parcelize
-class VotePass<NavTarget> : TopCardOperation<NavTarget>() {
+class VotePass<NavTarget>(
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+) : TopCardOperation<NavTarget>() {
 
     override fun createTargetState(fromState: CardsModel.State<NavTarget>): CardsModel.State<NavTarget> {
         val votedCards = fromState.votedCards

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -183,13 +184,13 @@ class CardsProps<NavTarget : Any>(
 
             return if (delta.x < 0) {
                 Gesture(
-                    operation = VotePass(),
+                    operation = VotePass(Operation.Mode.KEYFRAME),
                     dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) * -1 },
                     partial = { offset, progress -> offset.copy(x = progress * width * -1) }
                 )
             } else {
                 Gesture(
-                    operation = VoteLike(),
+                    operation = VoteLike(Operation.Mode.KEYFRAME),
                     dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) },
                     partial = { offset, progress -> offset.copy(x = progress * width) }
                 )

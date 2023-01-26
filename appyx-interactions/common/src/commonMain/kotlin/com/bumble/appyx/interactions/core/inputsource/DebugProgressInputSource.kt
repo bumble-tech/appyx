@@ -21,6 +21,7 @@ class DebugProgressInputSource<NavTarget, ModelState>(
     private var progress: Float = 1f
 
     override fun operation(operation: Operation<ModelState>) {
+        // Regardless of operation.mode, only enqueue makes sense
         transitionModel.enqueue(operation)
     }
 

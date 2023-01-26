@@ -5,10 +5,20 @@ import com.bumble.appyx.interactions.Parcelize
 
 interface Operation<ModelState> : (ModelState) -> NavTransition<ModelState>, Parcelable {
 
+    enum class Mode {
+        IMMEDIATE, KEYFRAME
+    }
+
+    val mode: Mode
+
     fun isApplicable(state: ModelState): Boolean
+
 
     @Parcelize
     class Noop<ModelState> : Operation<ModelState> {
+
+        override val mode: Mode
+            get() = Mode.IMMEDIATE
 
         override fun isApplicable(state: ModelState): Boolean =
             false
@@ -17,7 +27,6 @@ interface Operation<ModelState> : (ModelState) -> NavTransition<ModelState>, Par
             NavTransition(state, state)
 
         override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
-
         override fun hashCode(): Int = this.javaClass.hashCode()
     }
 }

@@ -1,6 +1,7 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
 import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.BottomCard
@@ -8,7 +9,9 @@ import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.TopCard.TOP_CARD_STATE.STANDARD
 
 @Parcelize
-class VoteLike<NavTarget> : TopCardOperation<NavTarget>() {
+class VoteLike<NavTarget>(
+    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+): TopCardOperation<NavTarget>() {
 
     override fun createTargetState(fromState: CardsModel.State<NavTarget>): CardsModel.State<NavTarget> {
         val votedCards = fromState.votedCards
