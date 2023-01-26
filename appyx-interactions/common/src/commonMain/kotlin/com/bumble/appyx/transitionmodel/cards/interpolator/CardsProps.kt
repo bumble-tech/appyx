@@ -71,7 +71,7 @@ class CardsProps<NavTarget : Any>(
         positionalOffsetX = (voteCardPositionMultiplier * width).dp,
         rotationZ = 45f,
         zIndex = 2f,
-        isVisible = true
+        isVisible = false
     )
 
 
