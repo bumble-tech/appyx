@@ -12,7 +12,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class DebugProgressInputSource<NavTarget, ModelState>(
-    private val navModel: TransitionModel<NavTarget, ModelState>,
+    private val transitionModel: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
 ) : InputSource<NavTarget, ModelState> {
     private val animatable = Animatable(0f)
@@ -21,13 +21,13 @@ class DebugProgressInputSource<NavTarget, ModelState>(
 
     override fun operation(operation: Operation<ModelState>) {
         // Regardless of operation.mode, only enqueue makes sense
-        navModel.enqueue(operation)
+        transitionModel.operation(operation, Operation.Mode.KEYFRAME)
     }
 
     fun setNormalisedProgress(progress: Float) {
         this.progress = progress.coerceIn(0f, 1f)
         // TODO enforce min 1f in NavModel as a hidden detail rather than here:
-        navModel.setProgress(1f + this.progress * (navModel.maxProgress - 1f))
+        transitionModel.setProgress(1f + this.progress * (transitionModel.maxProgress - 1f))
     }
 
     fun settle() {

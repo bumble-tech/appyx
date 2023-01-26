@@ -10,7 +10,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 @Parcelize
 class First<NavTarget : Any>(
-    override val mode: Operation.Mode = Operation.Mode.IMMEDIATE
+    override val mode: Operation.Mode = Operation.Mode.GEOMETRY
 ) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
@@ -27,7 +27,7 @@ class First<NavTarget : Any>(
 
 fun <NavTarget : Any> Spotlight<NavTarget>.first(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-    mode: Operation.Mode = Operation.Mode.IMMEDIATE
+    mode: Operation.Mode = Operation.Mode.GEOMETRY
 ) {
     operation(First(mode), animationSpec)
 }

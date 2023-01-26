@@ -9,7 +9,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 @Parcelize
 class Next<NavTarget>(
-    override val mode: Operation.Mode = Operation.Mode.IMMEDIATE
+    override val mode: Operation.Mode = Operation.Mode.GEOMETRY
 ) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
@@ -26,7 +26,7 @@ class Next<NavTarget>(
 
 fun <NavTarget : Any> Spotlight<NavTarget>.next(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-    mode: Operation.Mode = Operation.Mode.IMMEDIATE
+    mode: Operation.Mode = Operation.Mode.GEOMETRY
 ) {
     operation(Next(mode), animationSpec)
 }
