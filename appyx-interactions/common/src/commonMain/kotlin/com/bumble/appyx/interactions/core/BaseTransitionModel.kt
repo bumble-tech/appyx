@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Operation.Mode.*
 
 @SuppressWarnings("UnusedPrivateMember")
 abstract class BaseTransitionModel<NavTarget, ModelState>(
@@ -15,6 +16,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     abstract val initialState: ModelState
 
     abstract fun ModelState.destroyedElements(): Set<NavElement<NavTarget>>
+
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
     fun availableElements(): Set<NavElement<NavTarget>> =
@@ -56,6 +58,12 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         state
     }
 
+    private var enforcedMode: Operation.Mode? = null
+
+    override fun relaxExecutionMode() {
+        enforcedMode = null
+    }
+
     private fun createState(progress: Float): TransitionModel.Segment<ModelState> {
         val progress = progress.coerceAtLeast(minimumValue = 1f)
 
@@ -71,11 +79,29 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         return TransitionModel.Segment(
             index = segmentIndex,
             navTransition = queue[segmentIndex],
-            progress = progress - segmentIndex
+            progress = progress - segmentIndex,
+            animate = enforcedMode == IMMEDIATE
         )
     }
 
-    override fun enqueue(operation: Operation<ModelState>): Boolean {
+    override fun operation(operation: Operation<ModelState>, overrideMode: Operation.Mode?): Boolean =
+        when (enforcedMode ?: overrideMode ?: operation.mode) {
+            IMMEDIATE -> {
+                // Replacing in an active segment triggers IMMEDIATE mode as a side effect
+                if (currentProgress > queue.lastIndex - 1) {
+                    enforcedMode = IMMEDIATE
+                }
+                updateState(operation)
+            }
+            GEOMETRY -> {
+                updateState(operation)
+            }
+            KEYFRAME -> {
+                enqueue(operation)
+            }
+        }
+
+    private fun enqueue(operation: Operation<ModelState>): Boolean {
         val baseline = queue.last().targetState
 
         return if (operation.isApplicable(baseline)) {
@@ -88,7 +114,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         }
     }
 
-    override fun updateState(operation: Operation<ModelState>): Boolean {
+    private fun updateState(operation: Operation<ModelState>): Boolean {
         val latestState = queue.last()
 
         return if (operation.isApplicable(latestState.targetState)) {

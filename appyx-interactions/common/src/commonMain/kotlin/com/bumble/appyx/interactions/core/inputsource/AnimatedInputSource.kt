@@ -5,6 +5,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.Operation.Mode.GEOMETRY
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
@@ -31,18 +32,12 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float>
     ) {
-        Logger.log("AnimatedInputSource", "New operation: $operation")
-        when (operation.mode) {
-            IMMEDIATE -> model.updateState(operation)
-            KEYFRAME -> {
-                model.enqueue(operation)
-                animateModel(
-                    target = model.maxProgress,
-                    animationSpec = animationSpec,
-                    cancelVelocity = false,
-                )
-            }
-        }
+        model.operation(operation)
+        animateModel(
+            target = model.maxProgress,
+            animationSpec = animationSpec,
+            cancelVelocity = false,
+        )
     }
 
     fun settle(

@@ -5,8 +5,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.core.Operation.Mode
-import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
@@ -21,12 +20,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    model: TransitionModel<NavTarget, ModelState>,
+    private val model: TransitionModel<NavTarget, ModelState>,
     private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
@@ -74,7 +74,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     private val debug = DebugProgressInputSource(
-        navModel = model,
+        transitionModel = model,
         coroutineScope = scope
     )
 
@@ -87,6 +87,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             DisableAnimations || disableAnimations -> instant.operation(operation)
             else -> animated.operation(operation, animationSpec)
         }
+    }
+
+    private fun onAnimationsFinished() {
+        model.relaxExecutionMode()
     }
 
     override fun onStartDrag(position: Offset) {
