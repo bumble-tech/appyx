@@ -34,18 +34,20 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.first
 import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import com.bumble.appyx.transitionmodel.spotlight.operation.next
 import com.bumble.appyx.transitionmodel.spotlight.operation.previous
+import com.bumble.appyx.transitionmodel.spotlight.operation.updateElements
 
 
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperiment() {
     val coroutineScope = rememberCoroutineScope()
+    val items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7)
     val spotlight = Spotlight(
         scope = coroutineScope,
-        model = SpotlightModel(items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)),
-        interpolator = { SpotlightSlider(it) },
+        model = SpotlightModel(items = items),
+        interpolator = { SpotlightSlider(it, coroutineScope) },
         gestureFactory = { SpotlightSlider.Gestures(it) },
-        animationSpec = spring(stiffness = Spring.StiffnessMediumLow)
+        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )
 
     Column(
@@ -89,6 +91,10 @@ fun SpotlightExperiment() {
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
+            Button(onClick = { spotlight.updateElements(items, animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20))
+            }) {
+                Text("New")
+            }
             Button(onClick = { spotlight.first() }) {
                 Text("First")
             }
