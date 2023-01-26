@@ -13,7 +13,7 @@ class BaseTransitionModelTest {
     @Test
     fun `When I enqueue an element Then max progress should be increase`() {
         val backStack = BackStackModel(
-            initialElement = Child1,
+            initialTarget = Child1,
             savedStateMap = null
         )
 
@@ -27,7 +27,7 @@ class BaseTransitionModelTest {
     @Test
     fun `When I remove an element Then max progress should decrease`() {
         val backStack = BackStackModel(
-            initialElement = Child1,
+            initialTarget = Child1,
             savedStateMap = null
         )
         backStack.enqueue(Push(Child2))
@@ -42,7 +42,7 @@ class BaseTransitionModelTest {
     @Test
     fun `Given progress is update When it's smaller than it's max Then it should have the same segment`() {
         val backStack = BackStackModel(
-            initialElement = Child1,
+            initialTarget = Child1,
             savedStateMap = null
         )
         backStack.enqueue(Push(Child2))
@@ -56,7 +56,7 @@ class BaseTransitionModelTest {
     @Test
     fun `Given progress is update When it's equal to it's max Then it should have the next segment`() {
         val backStack = BackStackModel(
-            initialElement = Child1,
+            initialTarget = Child1,
             savedStateMap = null
         )
         backStack.enqueue(Push(Child2))
@@ -70,7 +70,7 @@ class BaseTransitionModelTest {
     @Test
     fun `Given progress is update beyond max progress Then it should reach the end`() {
         val backStack = BackStackModel(
-            initialElement = Child1,
+            initialTarget = Child1,
             savedStateMap = null
         )
         backStack.enqueue(Push(Child2))

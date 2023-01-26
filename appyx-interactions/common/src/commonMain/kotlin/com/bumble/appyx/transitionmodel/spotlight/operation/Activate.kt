@@ -12,7 +12,8 @@ class Activate<NavTarget : Any>(
 ) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
-        index != state.activeIndex && 0 <= index && index <= state.standard.lastIndex
+        index != state.activeIndex &&
+                (index in 0f..state.standard.lastIndex.toFloat())
 
     override fun createFromState(baseLineState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
         baseLineState
@@ -23,6 +24,9 @@ class Activate<NavTarget : Any>(
         )
 }
 
-fun <NavTarget : Any> Spotlight<NavTarget>.activate(index: Float, animationSpec: AnimationSpec<Float> = defaultAnimationSpec) {
+fun <NavTarget : Any> Spotlight<NavTarget>.activate(
+    index: Float,
+    animationSpec: AnimationSpec<Float> = defaultAnimationSpec
+) {
     operation(Activate(index), animationSpec)
 }
