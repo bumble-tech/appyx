@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.sample.NavTarget.Child2
 import com.bumble.appyx.interactions.sample.NavTarget.Child3
@@ -40,15 +41,16 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.updateElements
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperiment() {
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
     val items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7)
     val spotlight = Spotlight(
-        scope = coroutineScope,
         model = SpotlightModel(items = items),
-        interpolator = { SpotlightSlider(it, coroutineScope) },
+        interpolator = { SpotlightSlider(it, scope) },
         gestureFactory = { SpotlightSlider.Gestures(it) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )
+
+    InteractionModelSetup(spotlight)
 
     Column(
         Modifier

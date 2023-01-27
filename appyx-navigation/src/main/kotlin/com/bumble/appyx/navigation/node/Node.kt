@@ -15,6 +15,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.navigation.Appyx
+import com.bumble.appyx.navigation.BuildConfig
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.navigation.integrationpoint.requestcode.RequestCodeClient
@@ -34,7 +35,6 @@ import com.bumble.appyx.navigation.plugin.plugins
 import com.bumble.appyx.navigation.state.MutableSavedStateMap
 import com.bumble.appyx.navigation.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.state.SavedStateMap
-import com.example.common.BuildConfig
 import kotlinx.coroutines.withContext
 import java.util.UUID
 
@@ -130,9 +130,15 @@ open class Node(
             LocalNode provides this,
             LocalLifecycleOwner provides this,
         ) {
+            DerivedSetup()
             HandleBackPress()
             View(modifier)
         }
+    }
+
+    @Composable
+    protected open fun DerivedSetup() {
+
     }
 
     @Composable

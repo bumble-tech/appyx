@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
@@ -31,11 +31,9 @@ sealed class DatingCardsNavTarget {
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
-    val coroutineScope = rememberCoroutineScope()
 
     val cards = remember {
         Cards(
-            scope = coroutineScope,
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
                     DatingCardsNavTarget.ProfileCard(it)
@@ -45,6 +43,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
             gestureFactory = { CardsProps.Gestures(it) },
         )
     }
+
+    InteractionModelSetup(cards)
 
     Children(
         modifier = modifier

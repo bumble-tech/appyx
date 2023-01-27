@@ -8,8 +8,10 @@ import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.resolveNavElementVisibility
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
@@ -20,25 +22,30 @@ class BackStackSliderDebugVertical<NavTarget>
 
     data class Props(
         val offset: DpOffset,
-        val color: Color
-    )
+        val color: Color,
+        override val isVisible: Boolean
+    ): BaseProps
 
     private val createdProps = Props(
         offset = DpOffset(0.dp, 0.dp),
         color = Color.Green,
+        isVisible = false
     )
 
     private val activeProps = Props(
         offset = DpOffset(0.dp, size),
         color = Color.Blue,
+        isVisible = true
     )
 
     private val stashedProps = activeProps.copy(
         color = Color.Yellow,
+        isVisible = false
     )
 
     private val destroyedProps = activeProps.copy(
         color = Color.DarkGray,
+        isVisible = false
     )
 
     private fun <NavTarget> BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
@@ -86,7 +93,8 @@ class BackStackSliderDebugVertical<NavTarget>
                         y = offset.y
                     )
                     .background(color = color),
-                progress = segment.progress
+                progress = segment.progress,
+                state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }
 

@@ -29,19 +29,25 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackCrossfader
 import com.bumble.appyx.transitionmodel.backstack.operation.push
+import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
     buildContext: BuildContext,
-    private val backStackModel: BackStackModel<NavTarget> = BackStackModel(
-        initialTarget = NavTarget.DatingCards,
-        savedStateMap = buildContext.savedStateMap
+    private val backStack: BackStack<NavTarget> = BackStack(
+        model = BackStackModel(
+            initialTarget = NavTarget.DatingCards,
+            savedStateMap = buildContext.savedStateMap
+        ),
+        interpolator = { BackStackSlider(it) }
     )
+
 ) : ParentNode<ContainerNode.NavTarget>(
     buildContext = buildContext,
-    transitionModel = backStackModel
+    interactionModel = backStack
 ) {
     sealed class NavTarget : Parcelable {
         @Parcelize
@@ -72,15 +78,6 @@ class ContainerNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val coroutineScope = rememberCoroutineScope()
-        val backStack = remember {
-            BackStack(
-                scope = coroutineScope,
-                model = backStackModel,
-                interpolator = { BackStackCrossfader() }
-            )
-        }
-
         Column(
             modifier = modifier
                 .fillMaxSize()
@@ -101,7 +98,6 @@ class ContainerNode(
 
     @Composable
     private fun Selector(
-        backStack: BackStack<NavTarget>,
         modifier: Modifier = Modifier
     ) {
         var content by remember { mutableStateOf(1) }

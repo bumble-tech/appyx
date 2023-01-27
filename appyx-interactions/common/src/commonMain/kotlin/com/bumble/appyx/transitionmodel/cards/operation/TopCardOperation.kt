@@ -9,5 +9,5 @@ abstract class TopCardOperation<NavTarget> : BaseOperation<CardsModel.State<NavT
         baseLineState
 
     override fun isApplicable(state: CardsModel.State<NavTarget>): Boolean =
-        state.queued.isNotEmpty()
+        state.visibleCards.isNotEmpty()
 }
