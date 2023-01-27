@@ -21,7 +21,7 @@ class Last<NavTarget : Any>(
 
     override fun createTargetState(fromState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
         fromState.copy(
-            activeIndex = fromState.standard.lastIndex.toFloat(),
+            activeIndex = fromState.positions.lastIndex.toFloat(),
         )
 }
 

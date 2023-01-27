@@ -4,13 +4,16 @@ import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.BaseOperation
-import com.bumble.appyx.interactions.core.NavTransition
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.core.asElements
+import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 
 @Parcelize
+// TODO cleanup SpotlightModel.State.positions if a position doesn't contain more elements
 class UpdateElements<NavTarget : Any>(
     private val items: @RawValue List<NavTarget>,
     private val initialActiveIndex: Float? = null,
@@ -23,15 +26,26 @@ class UpdateElements<NavTarget : Any>(
 
     override fun createFromState(baseLineState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
         baseLineState.copy(
-            created = items.asElements(),
-            standard = baseLineState.standard
+            positions = baseLineState.positions.mapIndexed { index, position ->
+                position.copy(
+                    elements = position.elements + (items[index].asElement() to CREATED)
+                )
+            },
         )
 
     override fun createTargetState(fromState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
         fromState.copy(
-            created = emptyList(),
-            standard = fromState.created,
-            destroyed = fromState.standard,
+            positions = fromState.positions.map { position ->
+                position.copy(
+                    elements = position.elements.mapValues { (_, elementState) ->
+                        when (elementState) {
+                            CREATED -> STANDARD
+                            STANDARD -> DESTROYED
+                            DESTROYED -> DESTROYED
+                        }
+                    }
+                )
+            },
             activeIndex = initialActiveIndex ?: fromState.activeIndex,
             activeWindow = initialActiveWindow ?: fromState.activeWindow,
         )
