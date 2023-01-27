@@ -10,9 +10,8 @@ import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
-class BackStackCrossfader<NavTarget : Any>(
-    transitionParams: TransitionParams
-) : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
+class BackStackCrossfader<NavTarget : Any>() :
+    Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
 
     class Props(
         val alpha: Float

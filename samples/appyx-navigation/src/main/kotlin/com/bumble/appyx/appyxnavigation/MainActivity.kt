@@ -32,7 +32,7 @@ class MainActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Column {
                         NodeHost(integrationPoint = appyxIntegrationPoint) {
-                            DatingCardsNode(buildContext = it)
+                            ContainerNode(buildContext = it)
                         }
                     }
                 }
