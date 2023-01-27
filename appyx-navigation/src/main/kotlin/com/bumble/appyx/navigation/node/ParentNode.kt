@@ -7,9 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
-import com.bumble.appyx.interactions.core.BaseTransitionModel
+import androidx.lifecycle.lifecycleScope
+import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
@@ -18,19 +19,26 @@ import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.ChildNodeCreationManager
 import com.bumble.appyx.navigation.children.ChildrenCallback
+import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.composable.ChildRenderer
+import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
 import com.bumble.appyx.navigation.plugin.Plugin
 import com.bumble.appyx.navigation.state.MutableSavedStateMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.coroutines.resume
 import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
 abstract class ParentNode<NavTarget : Any>(
-    val transitionModel: BaseTransitionModel<NavTarget, *>,
+    val interactionModel: InteractionModel<NavTarget, *>,
     buildContext: BuildContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
@@ -57,13 +65,12 @@ abstract class ParentNode<NavTarget : Any>(
     val children: StateFlow<ChildEntryMap<NavTarget>>
         get() = childNodeCreationManager.children
 
-    // TODO ChildNodeLifecycleManager
-//    private val childNodeLifecycleManager = ChildNodeLifecycleManager(
-//        transitionModel = this.transitionModel,
-//        children = children,
-//        keepMode = childKeepMode,
-//        coroutineScope = lifecycleScope,
-//    )
+    private val childNodeLifecycleManager = ChildNodeLifecycleManager(
+        interactionModel = this.interactionModel,
+        children = children,
+        keepMode = childKeepMode,
+        coroutineScope = lifecycleScope,
+    )
 
     private var transitionsInBackgroundJob: Job? = null
 
@@ -71,7 +78,7 @@ abstract class ParentNode<NavTarget : Any>(
     override fun onBuilt() {
         super.onBuilt()
         childNodeCreationManager.launch(this)
-//        childNodeLifecycleManager.launch()
+        childNodeLifecycleManager.launch()
         manageTransitions()
     }
 
@@ -109,7 +116,7 @@ abstract class ParentNode<NavTarget : Any>(
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         super.updateLifecycleState(state)
-//        childNodeLifecycleManager.propagateLifecycleToChildren(state)
+        childNodeLifecycleManager.propagateLifecycleToChildren(state)
     }
 
     /**
@@ -144,21 +151,17 @@ abstract class ParentNode<NavTarget : Any>(
 //        }
 //    }
 
+    @Composable
+    override fun DerivedSetup() {
+        InteractionModelSetup(interactionModel = interactionModel)
+    }
+
     private fun manageTransitionsInForeground() {
         transitionsInBackgroundJob?.run {
             cancel()
             transitionsInBackgroundJob = null
         }
     }
-
-    @Deprecated(
-        replaceWith = ReplaceWith("attachChild(action"),
-        message = "Will be removed in 1.1"
-    )
-//    protected suspend inline fun <reified T : Node> attachWorkflow(
-//        timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
-//        crossinline action: () -> Unit
-//    ) = attachChild<T>(timeout, action)
 
     /**
      * attachChild executes provided action e.g. backstack.push(NodeANavTarget) and waits for the specific
@@ -167,22 +170,22 @@ abstract class ParentNode<NavTarget : Any>(
      * As the result we're doing it asynchronously with timeout after which exception is thrown if
      * expected node has not appeared in the children list.
      */
-//    protected suspend inline fun <reified T : Node> attachChild(
-//        timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
-//        crossinline action: () -> Unit
-//    ): T = withContext(lifecycleScope.coroutineContext) {
-//        action()
-//
-//        // after executing action waiting for the children to sync with navModel and
-//        // throw an exception after short timeout if desired child was not found
-//        val result = withTimeoutOrNull(timeout) {
-//            waitForChildAttached<T>()
-//        }
-//        checkNotNull(result) {
-//            "Expected child of type [${T::class.java}] was not found after executing action. " +
-//                    "Check that your action actually results in the expected child."
-//        }
-//    }
+    protected suspend inline fun <reified T : Node> attachChild(
+        timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
+        crossinline action: () -> Unit
+    ): T = withContext(lifecycleScope.coroutineContext) {
+        action()
+
+        // after executing action waiting for the children to sync with navModel and
+        // throw an exception after short timeout if desired child was not found
+        val result = withTimeoutOrNull(timeout) {
+            waitForChildAttached<T>()
+        }
+        checkNotNull(result) {
+            "Expected child of type [${T::class.java}] was not found after executing action. " +
+                    "Check that your action actually results in the expected child."
+        }
+    }
 
     /**
      * waitForChildAttached waits for the specific child of type T to be attached. For instance, we may
@@ -190,30 +193,31 @@ abstract class ParentNode<NavTarget : Any>(
      * when this happens this job can hang indefinitely therefore you need to provide timeout if
      * you need one.
      */
-//    protected suspend inline fun <reified T : Node> waitForChildAttached(): T =
-//        suspendCancellableCoroutine { continuation ->
-//            lifecycleScope.launch {
-//                children.collect { childMap ->
-//                    val childNodeOfExpectedType = childMap.entries
-//                        .mapNotNull { it.value.nodeOrNull }
-//                        .filterIsInstance<T>()
-//                        .takeIf { it.isNotEmpty() }
-//                        ?.last()
-//
-//                    if (childNodeOfExpectedType != null && !continuation.isCompleted) {
-//                        continuation.resume(childNodeOfExpectedType)
-//                    }
-//                }
-//            }.invokeOnCompletion {
-//                continuation.cancel()
-//            }
-//        }
+    protected suspend inline fun <reified T : Node> waitForChildAttached(): T =
+        suspendCancellableCoroutine { continuation ->
+            lifecycleScope.launch {
+                children.collect { childMap ->
+                    val childNodeOfExpectedType = childMap.entries
+                        .mapNotNull { it.value.nodeOrNull }
+                        .filterIsInstance<T>()
+                        .takeIf { it.isNotEmpty() }
+                        ?.last()
+
+                    if (childNodeOfExpectedType != null && !continuation.isCompleted) {
+                        continuation.resume(childNodeOfExpectedType)
+                    }
+                }
+            }.invokeOnCompletion {
+                continuation.cancel()
+            }
+        }
 
     open fun onChildFinished(child: Node) {
         // TODO warn unhandled child
     }
 
     @CallSuper
+    // TODO save/restore state properly
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
         // permanentNavModel is not provided as a plugin, store manually

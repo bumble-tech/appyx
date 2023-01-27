@@ -7,18 +7,24 @@ import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
     buildContext: BuildContext,
-    backStackModel: BackStackModel<NavTarget> = BackStackModel(
-        initialTarget = NavTarget.DatingCards,
-        savedStateMap = buildContext.savedStateMap
+    backStack: BackStack<NavTarget> = BackStack(
+        model = BackStackModel(
+            initialTarget = NavTarget.DatingCards,
+            savedStateMap = buildContext.savedStateMap
+        ),
+        interpolator = { BackStackSlider(it) }
     )
+
 ) : ParentNode<ContainerNode.NavTarget>(
     buildContext = buildContext,
-    transitionModel = backStackModel
+    interactionModel = backStack
 ) {
 
     sealed class NavTarget : Parcelable {

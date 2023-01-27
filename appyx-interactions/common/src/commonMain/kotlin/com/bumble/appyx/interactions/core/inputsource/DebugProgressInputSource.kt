@@ -7,9 +7,10 @@ import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
-import kotlin.math.roundToInt
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class DebugProgressInputSource<NavTarget, ModelState>(
     private val transitionModel: TransitionModel<NavTarget, ModelState>,
@@ -37,6 +38,12 @@ class DebugProgressInputSource<NavTarget, ModelState>(
             result = animatable.animateTo(progress.roundToInt().toFloat(), spring()) {
                 setNormalisedProgress(this.value)
             }
+        }
+    }
+
+    fun stopModel() {
+        coroutineScope.launch(Dispatchers.Main) {
+            animatable.snapTo(transitionModel.currentProgress)
         }
     }
 

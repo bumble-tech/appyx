@@ -27,6 +27,8 @@ interface TransitionModel<NavTarget, ModelState> {
         val animate: Boolean
     )
 
+    fun availableElements(): Set<NavElement<NavTarget>>
+
     fun relaxExecutionMode()
 
     fun operation(

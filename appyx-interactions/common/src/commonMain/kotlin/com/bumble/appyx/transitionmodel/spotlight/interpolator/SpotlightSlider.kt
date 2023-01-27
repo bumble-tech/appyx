@@ -16,11 +16,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.resolveNavElementVisibility
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
@@ -41,12 +43,13 @@ class SpotlightSlider<NavTarget>(
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
-    private val scroll = Geometry1D<TransitionModel.Segment<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
-        scope = scope,
-        initialValue = 0f
-    ) {
-        mapFrame(it)
-    }
+    private val scroll =
+        Geometry1D<TransitionModel.Segment<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
+            scope = scope,
+            initialValue = 0f
+        ) {
+            mapFrame(it)
+        }
 
     data class Props(
         val offset: DpOffset = DpOffset(0.dp, 0.dp),
@@ -55,7 +58,8 @@ class SpotlightSlider<NavTarget>(
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
-    )
+        override val isVisible: Boolean
+    ) : BaseProps
 
     private val created = Props(
         offset = DpOffset(0.dp, (500).dp),
@@ -63,9 +67,10 @@ class SpotlightSlider<NavTarget>(
         alpha = 1f,
         zIndex = 0f,
         aspectRatio = 1f,
+        isVisible = false
     )
 
-    private val standard = Props()
+    private val standard = Props(isVisible = true)
 
     private val destroyed = Props(
         offset = DpOffset(0.dp, (-500).dp),
@@ -73,7 +78,8 @@ class SpotlightSlider<NavTarget>(
         alpha = 0f,
         zIndex = -1f,
         aspectRatio = 1f,
-        rotation = 360f
+        rotation = 360f,
+        isVisible = false
     )
 
     override fun map(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): StateFlow<List<FrameModel<NavTarget>>> {
@@ -100,12 +106,36 @@ class SpotlightSlider<NavTarget>(
             // TODO check [segment.animate] to start animation rather than lerp
             // TODO call [InteractionModel.onAnimationsFinished()] when finished
 
-            val alpha = if (t0 != null) lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress) else t1.props.alpha
-            val scale = if (t0 != null) lerpFloat(t0.props.scale, t1.props.scale, segment.progress) else t1.props.scale
-            val zIndex = if (t0 != null) lerpFloat(t0.props.zIndex, t1.props.zIndex, segment.progress) else t1.props.zIndex
-            val aspectRatio = if (t0 != null) lerpFloat(t0.props.aspectRatio, t1.props.aspectRatio, segment.progress) else t1.props.aspectRatio
-            val rotation = if (t0 != null) lerpFloat(t0.props.rotation, t1.props.rotation, segment.progress) else t1.props.rotation
-            val offset = if (t0 != null) lerpDpOffset(t0.props.offset, t1.props.offset, segment.progress) else t1.props.offset
+            val alpha = if (t0 != null) lerpFloat(
+                t0.props.alpha,
+                t1.props.alpha,
+                segment.progress
+            ) else t1.props.alpha
+            val scale = if (t0 != null) lerpFloat(
+                t0.props.scale,
+                t1.props.scale,
+                segment.progress
+            ) else t1.props.scale
+            val zIndex = if (t0 != null) lerpFloat(
+                t0.props.zIndex,
+                t1.props.zIndex,
+                segment.progress
+            ) else t1.props.zIndex
+            val aspectRatio = if (t0 != null) lerpFloat(
+                t0.props.aspectRatio,
+                t1.props.aspectRatio,
+                segment.progress
+            ) else t1.props.aspectRatio
+            val rotation = if (t0 != null) lerpFloat(
+                t0.props.rotation,
+                t1.props.rotation,
+                segment.progress
+            ) else t1.props.rotation
+            val offset = if (t0 != null) lerpDpOffset(
+                t0.props.offset,
+                t1.props.offset,
+                segment.progress
+            ) else t1.props.offset
 
             FrameModel(
                 navElement = t1.element,
@@ -118,9 +148,9 @@ class SpotlightSlider<NavTarget>(
                     .aspectRatio(aspectRatio)
                     .scale(scale)
                     .rotate(rotation)
-                    .alpha(alpha)
-                ,
-                progress = segment.progress
+                    .alpha(alpha),
+                progress = segment.progress,
+                state = resolveNavElementVisibility(t0?.props ?: t1.props, t1.props)
             )
         }
     }
@@ -138,6 +168,7 @@ class SpotlightSlider<NavTarget>(
                         zIndex = target.zIndex,
                         rotation = target.rotation,
                         aspectRatio = target.aspectRatio,
+                        isVisible = (index + activeWindow.toInt()) <= activeIndex || (index - activeWindow.toInt()) >= activeIndex
                     )
                 )
             }
