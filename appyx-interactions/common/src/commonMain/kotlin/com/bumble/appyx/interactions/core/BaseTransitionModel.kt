@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.*
+import com.bumble.appyx.interactions.core.TransitionModel.Output
 
 @SuppressWarnings("UnusedPrivateMember")
 abstract class BaseTransitionModel<NavTarget, ModelState>(
@@ -20,29 +21,42 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
     fun availableElements(): Set<NavElement<NavTarget>> =
-        state.value.navTransition.targetState.availableElements()
+        state.value.targetState.availableElements()
 
     /**
      * A state queue that can be prefetched. Could also work as state history if we implement
      * reversing progress.
      */
-    private val queue: MutableList<NavTransition<ModelState>> by lazy {
+    private val queue: MutableList<Output<ModelState>> by lazy {
         mutableListOf(
-            initialTransition
-        )
-    }
-
-    open protected val initialTransition: NavTransition<ModelState> by lazy {
-        NavTransition(
-            fromState = initialState,
-            targetState = initialState,
+            Output.Update(
+                index = 0,
+                targetState = initialState
+            )
         )
     }
 
     /**
      * 0..infinity
      */
-    private var lastRecordedProgress: Float = 1f
+    private var lastRecordedProgress: Float = 0f
+    override val currentProgress: Float
+        get() = lastRecordedProgress
+
+    private val currentIndex: Int
+        get() {
+            /**
+             *  Normally progress on any segment is a half-open interval: [0%, 100), so that
+             *  100% is interpreted as 0% of the next segment.
+             *  The only case when this won't work is when we reach the very end of possible progress,
+             *  then there's no next segment to go to. Instead, let's interpret it as 100% of the last
+             *  segment.
+             */
+            return (if (currentProgress == maxProgress) (currentProgress - 1) else currentProgress).toInt()
+        }
+
+    private val currentLocalProgress: Float
+        get() = currentProgress - currentIndex
 
     /**
      * 0..infinity
@@ -50,11 +64,11 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     override val maxProgress: Float
         get() = (queue.lastIndex + 1).toFloat()
 
-    private val state: MutableStateFlow<TransitionModel.Segment<ModelState>> by lazy {
-        MutableStateFlow(createState(lastRecordedProgress))
+    private val state: MutableStateFlow<Output<ModelState>> by lazy {
+        MutableStateFlow(queue.first())
     }
 
-    override val segments: StateFlow<TransitionModel.Segment<ModelState>> by lazy {
+    override val output: StateFlow<Output<ModelState>> by lazy {
         state
     }
 
@@ -64,26 +78,6 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         enforcedMode = null
     }
 
-    private fun createState(progress: Float): TransitionModel.Segment<ModelState> {
-        val progress = progress.coerceAtLeast(minimumValue = 1f)
-
-        /**
-         *  Normally progress on any segment is a half-open interval: [0%, 100), so that
-         *  100% is interpreted as 0% of the next segment.
-         *  The only case when this won't work is when we reach the very end of possible progress,
-         *  then there's no next segment to go to. Instead, let's interpret it as 100% of the last
-         *  segment.
-         */
-        val segmentIndex = (if (progress == maxProgress) (progress - 1) else progress).toInt()
-
-        return TransitionModel.Segment(
-            index = segmentIndex,
-            navTransition = queue[segmentIndex],
-            progress = progress - segmentIndex,
-            animate = enforcedMode == IMMEDIATE
-        )
-    }
-
     override fun operation(operation: Operation<ModelState>, overrideMode: Operation.Mode?): Boolean =
         when (enforcedMode ?: overrideMode ?: operation.mode) {
             IMMEDIATE -> {
@@ -91,48 +85,77 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                 if (currentProgress > queue.lastIndex - 1) {
                     enforcedMode = IMMEDIATE
                 }
-                updateState(operation)
+                createUpdate(operation)
             }
             GEOMETRY -> {
-                updateState(operation)
+                updateGeometry(operation)
             }
             KEYFRAME -> {
-                enqueue(operation)
+                createSegment(operation)
             }
+        }.also {
+            Logger.log(TAG, "Current progress: $currentProgress, queue: $queue")
         }
 
-    private fun enqueue(operation: Operation<ModelState>): Boolean {
-        val baseline = queue.last().targetState
+    private fun createUpdate(operation: Operation<ModelState>): Boolean {
+        val baseLine = queue[currentIndex]
 
-        return if (operation.isApplicable(baseline)) {
-            val newState = operation.invoke(baseline)
-            queue.add(newState)
+        return if (operation.isApplicable(baseLine.targetState)) {
+            val transition = operation.invoke(baseLine.targetState)
+            queue[currentIndex] = baseLine.deriveUpdate(transition)
+            dropAfter(currentIndex) // An update clears the queue of unprocessed segments
+            updateState()
             true
         } else {
-            Logger.log(TAG, "Operation $operation is not applicable on state: $baseline")
+            Logger.log(TAG, "Operation $operation is not applicable on state: $baseLine")
             false
         }
     }
 
-    private fun updateState(operation: Operation<ModelState>): Boolean {
-        val latestState = queue.last()
+    private fun updateGeometry(operation: Operation<ModelState>): Boolean {
+        val remaining = queue.subList(currentIndex, queue.lastIndex)
 
-        return if (operation.isApplicable(latestState.targetState)) {
-            val newState = operation.invoke(latestState.targetState)
-            queue[queue.lastIndex] = NavTransition(
-                fromState = latestState.fromState,
-                targetState = newState.targetState
-            )
-            state.update { createState(currentProgress) }
+        return if (remaining.all { operation.isApplicable(it.targetState) }) {
+            // Replace the operation result into all the queued outputs
+            for (i in currentIndex..queue.lastIndex) {
+                val current = queue[i]
+                val transition = operation.invoke(current.targetState)
+                queue[i] = current.replace(transition.targetState)
+            }
+            updateState()
             true
         } else {
-            Logger.log(TAG, "Operation $operation is not applicable on state: $latestState")
+            Logger.log(TAG, "Operation $operation is not applicable on one or more queued states: $remaining")
+            false
+        }
+    }
+
+    private fun createSegment(operation: Operation<ModelState>): Boolean {
+        val last = queue.last()
+        val baselineState = last.targetState
+
+        return if (operation.isApplicable(baselineState)) {
+            val newSegment = operation.invoke(baselineState)
+            val deriveSegment = last.deriveSegment(newSegment)
+            when (queue.last()) {
+                is Output.Segment -> queue.add(deriveSegment)
+                is Output.Update -> queue[queue.lastIndex] = deriveSegment
+            }
+            updateState()
+            true
+        } else {
+            Logger.log(TAG, "Operation $operation is not applicable on state: $baselineState")
             false
         }
     }
 
     override fun setProgress(progress: Float) {
-        val progress = progress.coerceAtLeast(1f)
+        if (queue[currentIndex] !is Output.Segment<ModelState>) {
+//            Logger.log(TAG, "Not in keyframe state, ignoring setProgress")
+            return
+        }
+
+        // val progress = progress.coerceAtLeast(1f)
         Logger.log(TAG, "Progress update: $progress")
         if (progress.toInt() > lastRecordedProgress.toInt()) {
             // TODO uncomment when method is merged here
@@ -142,13 +165,15 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         }
 
         lastRecordedProgress = progress
-        state.update { createState(progress) }
+        updateState()
     }
 
-    override fun dropAfter(segmentIndex: Int) {
-        while (segmentIndex < queue.size) {
-            queue.removeLast()
-        }
+    private fun updateState() {
+        state.update { queue[currentIndex].withProgress(currentLocalProgress) }
+    }
+
+    override fun dropAfter(index: Int) {
+        queue.dropLast(queue.lastIndex - index)
     }
 
     private companion object {

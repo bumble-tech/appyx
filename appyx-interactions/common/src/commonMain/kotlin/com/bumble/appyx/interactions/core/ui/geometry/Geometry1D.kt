@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class Geometry1D<Segment, Frame>(
+class Geometry1D<Output, Frame>(
     private val scope: CoroutineScope,
     initialValue: Float,
-    private val onGeometryChange: (segment: Segment) -> Frame
+    private val onGeometryChange: (output: Output) -> Frame
 ) {
     private val animatableX = Animatable(initialValue)
 
@@ -19,7 +19,7 @@ class Geometry1D<Segment, Frame>(
         get() = animatableX.value
 
     fun animateTo(
-        segment: Segment,
+        segment: Output,
         targetValue: Float,
         animationSpec: AnimationSpec<Float>
     ): StateFlow<Frame> {

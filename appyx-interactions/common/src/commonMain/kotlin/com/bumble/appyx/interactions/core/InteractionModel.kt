@@ -12,7 +12,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 
 
@@ -46,7 +45,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     val frames: Flow<List<FrameModel<NavTarget>>> =
             model
-                .segments
+                .output
                 .flatMapLatest { _interpolator.map(it) }
 
     private val instant = InstantInputSource(

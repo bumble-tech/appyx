@@ -33,7 +33,7 @@ class BackStackCrossfader<NavTarget : Any>(
             MatchedProps(it, hidden)
         }
 
-    override fun mapFrame(segment: TransitionModel.Segment<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: TransitionModel.Output.Segment<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()

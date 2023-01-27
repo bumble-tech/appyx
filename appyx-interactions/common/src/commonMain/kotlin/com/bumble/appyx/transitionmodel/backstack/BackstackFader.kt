@@ -5,7 +5,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.TransitionModel.Output.Segment
+import com.bumble.appyx.interactions.core.TransitionModel.Output.Update
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
@@ -53,7 +54,42 @@ class BackstackFader<NavTarget : Any>(
             MatchedProps(it, hidden)
         }
 
-    override fun mapFrame(segment: TransitionModel.Segment<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        val targetProps = update.targetState.toProps()
+
+        // TODO: use a map instead of find
+        return targetProps.map { t1 ->
+            val elementProps = interpolated.getOrPut(t1.element.id) {
+                Props(alpha = Alpha(0f))
+            }
+
+            Logger.log("FRAME", "Produced target: ${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value} goal=${t1.props.alpha.value}")
+            FrameModel(
+                navElement = t1.element,
+                modifier = elementProps.modifier
+                    .composed {
+                        LaunchedEffect(elementProps.alpha.animatable.asState().value) {
+                            Logger.log("Alpha", "${t1.element.navTarget} value = ${elementProps.alpha.animatable.asState().value}")
+                        }
+                        this
+                    }
+                    .composed {
+                        LaunchedEffect(update) {
+                            if (elementProps.alpha.value != t1.props.alpha.value) {
+                                Logger.log("Animate", "Animation launched target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value}")
+                                elementProps.animateTo(t1.props)
+                                Logger.log("Animate", "Animation finished target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value}")
+                            }
+                        }
+                        this
+                    },
+                progress = 1f,
+                props = elementProps
+            )
+        }
+    }
+
+    override fun mapSegment(segment: Segment<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -62,59 +98,21 @@ class BackstackFader<NavTarget : Any>(
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = interpolated.getOrPut(t1.element.id) {
-                Props(
-                    alpha = Alpha(0f)
-                )
-            }
-            // TODO
-
-            if (segment.animate) {
-//                scope.launch {
-//                    elementProps.animateTo(t1.props)
-//                    Logger.log(
-//                        "ANIMATE",
-//                        "animation finished target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value}"
-//                    )
-//                }
-            } else {
-                runBlocking {
-                    elementProps.lerpTo(t0.props, t1.props, segment.progress)
-                }
+                Props(alpha = Alpha(0f))
             }
 
-            Logger.log(
-                "FRAME",
-                "frame produced target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value} goal =${t1.props.alpha.value}"
-            )
-            Logger.log(
-                "FRAME",
-                "${segment.navTransition.targetState}"
-            )
+            runBlocking {
+                elementProps.lerpTo(t0.props, t1.props, segment.progress)
+            }
+
+            Logger.log("FRAME", "frame produced target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value} -> ${t1.props.alpha.value}")
+            Logger.log("FRAME", "${segment.navTransition.targetState}")
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier
                     .composed {
                         LaunchedEffect(elementProps.alpha.animatable.asState().value) {
-                            Logger.log(
-                                "ALPHA",
-                                "${t1.element.navTarget} value = ${elementProps.alpha.animatable.asState().value}"
-                            )
-                        }
-                        this
-                    }
-                    .composed {
-                        LaunchedEffect(t1.element.id, segment.index, segment.animate) {
-                            if (segment.animate && elementProps.alpha.value != t1.props.alpha.value) {
-                                Logger.log(
-                                    "ANIMATE",
-                                    "animation launched target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value}"
-                                )
-                                elementProps.animateTo(t1.props)
-                                Logger.log(
-                                    "ANIMATE",
-                                    "animation finished target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value}"
-                                )
-                            }
+                            Logger.log("ALPHA", "${t1.element.navTarget} value=${elementProps.alpha.animatable.asState().value}")
                         }
                         this
                     },

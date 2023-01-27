@@ -83,7 +83,7 @@ class CardsProps<NavTarget : Any>(
                     MatchedProps(navElement, props)
                 }
 
-    override fun mapFrame(segment: TransitionModel.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: TransitionModel.Output.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()

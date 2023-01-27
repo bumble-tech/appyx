@@ -4,19 +4,40 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.lerp
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.TransitionModel.Output.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 interface Interpolator<Target, ModelState> {
 
     fun map(
-        segment: TransitionModel.Segment<ModelState>
+        output: TransitionModel.Output<ModelState>
     ): StateFlow<List<FrameModel<Target>>> =
-        MutableStateFlow(mapFrame(segment))
+        applyGeometry(output)
 
-    fun mapFrame(
-        segment: TransitionModel.Segment<ModelState>
+    fun applyGeometry(
+        output: TransitionModel.Output<ModelState>
+    ): StateFlow<List<FrameModel<Target>>> =
+        MutableStateFlow(mapCore(output))
+
+    fun mapCore(
+        output: TransitionModel.Output<ModelState>
+    ): List<FrameModel<Target>> =
+        when (output) {
+            is Segment -> mapSegment(output)
+            is Update -> mapUpdate(output)
+        }
+
+
+    fun mapSegment(
+        segment: Segment<ModelState>
     ): List<FrameModel<Target>>
+
+    fun mapUpdate(
+        update: Update<ModelState>
+    ): List<FrameModel<Target>> {
+        TODO("Implement this")
+    }
 
     // TODO extract along with other interpolation helpers
     companion object {

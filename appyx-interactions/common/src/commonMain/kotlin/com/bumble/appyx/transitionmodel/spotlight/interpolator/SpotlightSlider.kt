@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.TransitionModel.Output.*
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
@@ -41,11 +42,11 @@ class SpotlightSlider<NavTarget>(
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
-    private val scroll = Geometry1D<TransitionModel.Segment<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
+    private val scroll = Geometry1D<TransitionModel.Output<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
         scope = scope,
         initialValue = 0f
     ) {
-        mapFrame(it)
+        mapCore(it)
     }
 
     data class Props(
@@ -76,29 +77,52 @@ class SpotlightSlider<NavTarget>(
         rotation = 360f
     )
 
-    override fun map(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): StateFlow<List<FrameModel<NavTarget>>> {
-        val (_, targetState) = segment.navTransition
-
-        return scroll.animateTo(
-            segment,
-            targetState.activeIndex,
+    override fun applyGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>): StateFlow<List<FrameModel<NavTarget>>> =
+        scroll.animateTo(
+            output,
+            output.targetState.activeIndex,
             spring(
                 stiffness = Spring.StiffnessVeryLow / 20,
 //                dampingRatio = Spring.DampingRatioHighBouncy
             )
         )
+
+    override fun mapUpdate(update: Update<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        val targetProps = update.targetState.toProps()
+
+        return targetProps.map { t1 ->
+            val alpha = t1.props.alpha
+            val scale = t1.props.scale
+            val zIndex = t1.props.zIndex
+            val aspectRatio = t1.props.aspectRatio
+            val rotation = t1.props.rotation
+            val offset = t1.props.offset
+
+            FrameModel(
+                navElement = t1.element,
+                modifier = Modifier
+                    .offset(
+                        x = offset.x,
+                        y = offset.y
+                    )
+                    .zIndex(zIndex)
+                    .aspectRatio(aspectRatio)
+                    .scale(scale)
+                    .rotate(rotation)
+                    .alpha(alpha)
+                ,
+                progress = 0f
+            )
+        }
     }
 
-    override fun mapFrame(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }
-
-            // TODO check [segment.animate] to start animation rather than lerp
-            // TODO call [InteractionModel.onAnimationsFinished()] when finished
 
             val alpha = if (t0 != null) lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress) else t1.props.alpha
             val scale = if (t0 != null) lerpFloat(t0.props.scale, t1.props.scale, segment.progress) else t1.props.scale
