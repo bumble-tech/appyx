@@ -62,6 +62,7 @@ class BackstackDebugNode(
 
                 Box(
                     modifier = Modifier
+                        .fillMaxSize()
                         .clip(RoundedCornerShape(5))
                         .background(backgroundColor)
                         .padding(24.dp)
