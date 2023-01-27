@@ -41,17 +41,31 @@ import kotlinx.parcelize.Parcelize
 
 class PromoterNode(
     buildContext: BuildContext,
-    private val promoterModel: PromoterModel<NavTarget> = PromoterModel()
+    private val promoter: Promoter<NavTarget> = Promoter(
+        model = PromoterModel(),
+        interpolator = {
+            PromoterInterpolator(
+                childSize = 100.dp,
+                transitionBounds = it
+            )
+        }
+    )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    transitionModel = promoterModel
+    interactionModel = promoter
 ) {
+
+    init {
+        promoter.addFirst(NavTarget.Child(1))
+        promoter.addFirst(NavTarget.Child(2))
+        promoter.addFirst(NavTarget.Child(3))
+        promoter.addFirst(NavTarget.Child(4))
+    }
 
     sealed class NavTarget : Parcelable {
         @Parcelize
         class Child(val index: Int) : NavTarget()
     }
-
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
@@ -78,26 +92,6 @@ class PromoterNode(
     @Composable
     override fun View(modifier: Modifier) {
         var index by remember { mutableStateOf(5) }
-        val coroutineScope = rememberCoroutineScope()
-        val promoter = remember {
-            Promoter(
-                scope = coroutineScope,
-                model = promoterModel,
-                interpolator = {
-                    PromoterInterpolator(
-                        childSize = 100.dp,
-                        transitionBounds = it
-                    )
-                }
-            )
-        }
-
-        LaunchedEffect(Unit) {
-            promoter.addFirst(NavTarget.Child(1))
-            promoter.addFirst(NavTarget.Child(2))
-            promoter.addFirst(NavTarget.Child(3))
-            promoter.addFirst(NavTarget.Child(4))
-        }
 
         Column(
             modifier = Modifier

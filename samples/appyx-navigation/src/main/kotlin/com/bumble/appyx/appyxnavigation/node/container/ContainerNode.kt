@@ -1,6 +1,7 @@
 package com.bumble.appyx.appyxnavigation.node.container
 
 import android.os.Parcelable
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,39 +14,43 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.appyxnavigation.node.backstack.debug.BackstackDebugNode
+import com.bumble.appyx.appyxnavigation.node.container.ContainerNode.NavTarget
 import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode
 import com.bumble.appyx.appyxnavigation.node.promoter.PromoterNode
 import com.bumble.appyx.appyxnavigation.node.spotlight.SpotlightNode
 import com.bumble.appyx.appyxnavigation.node.spotlight.debug.SpotlightDebugNode
+import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.ui.GestureSpec
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackCrossfader
 import com.bumble.appyx.transitionmodel.backstack.operation.push
-import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
+import gestureModifier
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
     buildContext: BuildContext,
+    private val coroutineScope: CoroutineScope,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTarget = NavTarget.DatingCards,
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { BackStackSlider(it) }
+        interpolator = { BackStackCrossfader() }
     )
 
-) : ParentNode<ContainerNode.NavTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     interactionModel = backStack
 ) {
@@ -70,8 +75,11 @@ class ContainerNode(
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is NavTarget.DatingCards -> DatingCardsNode(buildContext)
-            is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext)
-            is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
+            is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext, coroutineScope)
+            is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(
+                buildContext,
+                coroutineScope
+            )
             is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
             is NavTarget.PromoterExperiment -> PromoterNode(buildContext)
         }
@@ -81,16 +89,12 @@ class ContainerNode(
         Column(
             modifier = modifier
                 .fillMaxSize()
-                .padding(top = 40.dp)
         ) {
             Selector(
-                backStack = backStack,
                 modifier = Modifier.weight(weight = 0.1f)
             )
             Children(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(weight = 0.9f),
+                modifier = Modifier.weight(weight = 0.9f),
                 interactionModel = backStack,
             )
         }
@@ -100,27 +104,19 @@ class ContainerNode(
     private fun Selector(
         modifier: Modifier = Modifier
     ) {
-        var content by remember { mutableStateOf(1) }
         Column {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(4.dp),
-                horizontalArrangement = Arrangement.Center
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Button({ content = 0 }) { Text("1") }
-                Button({ content = 1 }) { Text("2") }
-                Button({ content = 2 }) { Text("3") }
-                Button({ content = 3 }) { Text("4") }
-                Button({ content = 4 }) { Text("5") }
-            }
-            when (content) {
-                0 -> backStack.push(NavTarget.DatingCards)
-                1 -> backStack.push(NavTarget.SpotlightExperiment)
-                2 -> backStack.push(NavTarget.SpotlightExperimentDebug)
-                3 -> backStack.push(NavTarget.BackStackExperimentDebug)
-                4 -> backStack.push(NavTarget.PromoterExperiment)
-                else -> backStack.push(NavTarget.SpotlightExperiment)
+                Button({ backStack.push(NavTarget.DatingCards) }) { Text("1") }
+                Button({ backStack.push(NavTarget.SpotlightExperiment) }) { Text("2") }
+                Button({ backStack.push(NavTarget.SpotlightExperimentDebug) }) { Text("3") }
+                Button({ backStack.push(NavTarget.BackStackExperimentDebug) }) { Text("4") }
+                Button({ backStack.push(NavTarget.PromoterExperiment) }) { Text("5") }
             }
         }
     }

@@ -20,9 +20,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.composable.KnobControl
 import com.bumble.appyx.appyxnavigation.node.backstack.debug.BackstackDebugNode.NavTarget
+import com.bumble.appyx.appyxnavigation.node.container.ContainerNode
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -40,20 +42,33 @@ import kotlinx.parcelize.Parcelize
 
 class BackstackDebugNode(
     buildContext: BuildContext,
-    private val backstackModel: BackStackModel<NavTarget> = BackStackModel(
-        initialTarget = NavTarget.Child(1),
-        savedStateMap = buildContext.savedStateMap
+    private val backStack: BackStack<NavTarget> = BackStack(
+        model = BackStackModel(
+            initialTarget = NavTarget.Child(1),
+            savedStateMap = buildContext.savedStateMap
+        ),
+        interpolator = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    transitionModel = backstackModel
+    interactionModel = backStack
 ) {
+
+    init {
+        backStack.push(NavTarget.Child(2))
+        backStack.push(NavTarget.Child(3))
+        backStack.push(NavTarget.Child(4))
+        backStack.push(NavTarget.Child(5))
+        backStack.replace(NavTarget.Child(6))
+        backStack.pop()
+        backStack.pop()
+        backStack.newRoot(NavTarget.Child(1))
+    }
 
     sealed class NavTarget : Parcelable {
         @Parcelize
         class Child(val index: Int) : NavTarget()
     }
-
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
@@ -80,27 +95,6 @@ class BackstackDebugNode(
     @ExperimentalMaterialApi
     @Composable
     override fun View(modifier: Modifier) {
-        val coroutineScope = rememberCoroutineScope()
-        val backStack = remember {
-            BackStack(
-                scope = coroutineScope,
-                model = backstackModel,
-                interpolator = { BackStackSlider(it) },
-                isDebug = true
-            )
-        }
-
-        LaunchedEffect(Unit) {
-            backStack.push(NavTarget.Child(2))
-            backStack.push(NavTarget.Child(3))
-            backStack.push(NavTarget.Child(4))
-            backStack.push(NavTarget.Child(5))
-            backStack.replace(NavTarget.Child(6))
-            backStack.pop()
-            backStack.pop()
-            backStack.newRoot(NavTarget.Child(1))
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxWidth()
