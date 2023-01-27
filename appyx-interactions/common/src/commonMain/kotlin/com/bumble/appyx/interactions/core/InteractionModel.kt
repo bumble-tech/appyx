@@ -13,18 +13,19 @@ import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
 import com.bumble.appyx.interactions.core.ui.FlexibleBounds
 import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.UNSPECIFIED
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.mapState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 
 
 // TODO move to navigation
@@ -58,9 +59,22 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     val frames: Flow<List<FrameModel<NavTarget>>> =
-            model
-                .segments
-                .flatMapLatest { _interpolator.map(it) }
+        model
+            .segments
+            .flatMapLatest { _interpolator.map(it) }
+
+    val screenState: Flow<ScreenState<NavTarget>> = frames.map {
+        val onScreen = mutableSetOf<NavElement<NavTarget>>()
+        val offScreen = mutableSetOf<NavElement<NavTarget>>()
+        it.forEach { frame ->
+            if (frame.state == UNSPECIFIED || frame.state == INVISIBLE) {
+                offScreen.add(frame.navElement)
+            } else {
+                onScreen.add(frame.navElement)
+            }
+        }
+        ScreenState(onScreen = onScreen, offScreen = offScreen)
+    }
 
     private val instant = InstantInputSource(
         model = model
@@ -82,10 +96,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     fun availableElements(): Set<NavElement<NavTarget>> = model.availableElements()
-
-    val screenState: StateFlow<ScreenState<NavTarget>> = model.segments.mapState(scope) {
-        _interpolator.mapVisibility(it)
-    }
 
     fun operation(
         operation: Operation<ModelState>,

@@ -6,37 +6,41 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.resolveNavElementVisibility
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.VisibilityInterpolator
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
 class BackStackSlider<NavTarget>(
     transitionBounds: TransitionBounds
-) : Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
-    VisibilityInterpolator<NavTarget, BackStackModel.State<NavTarget>> by BackStackVisibilityInterpolator() {
+) : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
     private val width = transitionBounds.widthDp
 
     data class Props(
         val offset: DpOffset,
         val offsetMultiplier: Int = 1,
-        val alpha: Float = 1f
-    )
+        val alpha: Float = 1f,
+        override val isVisible: Boolean
+    ): BaseProps
 
     private val outsideLeft = Props(
-        offset = DpOffset(-width, 0.dp)
+        offset = DpOffset(-width, 0.dp),
+        isVisible = false
     )
 
     private val outsideRight = Props(
-        offset = DpOffset(width, 0.dp)
+        offset = DpOffset(width, 0.dp),
+        isVisible = false
     )
 
     private val noOffset = Props(
-        offset = DpOffset(0.dp, 0.dp)
+        offset = DpOffset(0.dp, 0.dp),
+        isVisible = true
     )
 
     private fun <NavTarget> BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
@@ -83,7 +87,8 @@ class BackStackSlider<NavTarget>(
                         x = offset.x,
                         y = offset.y
                     ),
-                progress = segment.progress
+                progress = segment.progress,
+                state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }
 

@@ -9,6 +9,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
@@ -32,12 +33,13 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.previous
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperimentDebug() {
+    val scope = rememberCoroutineScope()
     val spotlight = remember {
         Spotlight(
             model = SpotlightModel(
                 items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)
             ),
-            interpolator = { SpotlightSlider(it, coroutineScope) },
+            interpolator = { SpotlightSlider(it, scope) },
             gestureFactory = { SpotlightSlider.Gestures(it) },
             isDebug = true
         )

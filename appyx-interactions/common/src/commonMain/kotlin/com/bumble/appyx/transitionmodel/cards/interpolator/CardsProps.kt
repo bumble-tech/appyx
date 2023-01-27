@@ -15,13 +15,14 @@ import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDp
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.resolveNavElementVisibility
 import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
@@ -31,7 +32,7 @@ import kotlin.math.roundToInt
 
 
 class CardsProps<NavTarget : Any>(
-    transitionBounds: TransitionBounds
+    transitionBounds: TransitionBounds,
 ) : Interpolator<NavTarget, CardsModel.State<NavTarget>> {
     private val width = transitionBounds.widthDp.value
 
@@ -41,8 +42,8 @@ class CardsProps<NavTarget : Any>(
         val rotationZ: Float = 0f,
         val zIndex: Float = 0f,
         // indicates if any given set of properties is visible on the screen
-        val isVisible: Boolean = true
-    )
+        override val isVisible: Boolean = true
+    ): BaseProps
 
     private val hidden = Props(
         scale = 0f,
@@ -108,13 +109,10 @@ class CardsProps<NavTarget : Any>(
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 
-        val result = mutableListOf<FrameModel<NavTarget>>()
-
-        targetProps
+        return targetProps
             .map { t1 ->
                 val t0 = fromProps.find { it.element.id == t1.element.id }!!
 
-                if (!t0.props.isVisible && !t1.props.isVisible) return@map
 
                 val scale = lerpFloat(
                     start = t0.props.scale,
@@ -140,28 +138,25 @@ class CardsProps<NavTarget : Any>(
                     progress = segment.progress
                 )
 
-                result.add(
-                    FrameModel(
-                        navElement = t1.element,
-                        modifier = Modifier
-                            .offset {
-                                IntOffset(
-                                    x = (this.density * (offsetX.value)).roundToInt(),
-                                    y = 0
-                                )
-                            }
-                            .zIndex(zIndex)
-                            .graphicsLayer {
-                                this.rotationZ = rotationZ
-                                transformOrigin = TransformOrigin(0.5f, 1f)
-                            }
-                            .scale(scale),
-                        progress = segment.progress
-                    )
+                FrameModel(
+                    navElement = t1.element,
+                    modifier = Modifier
+                        .offset {
+                            IntOffset(
+                                x = (this.density * (offsetX.value)).roundToInt(),
+                                y = 0
+                            )
+                        }
+                        .zIndex(zIndex)
+                        .graphicsLayer {
+                            this.rotationZ = rotationZ
+                            transformOrigin = TransformOrigin(0.5f, 1f)
+                        }
+                        .scale(scale),
+                    progress = segment.progress,
+                    state = resolveNavElementVisibility(t0.props, t1.props)
                 )
             }
-
-        return result
     }
 
     class Gestures<NavTarget>(
@@ -211,19 +206,5 @@ class CardsProps<NavTarget : Any>(
 
     private companion object {
         private const val voteCardPositionMultiplier = 2
-    }
-
-    override fun mapVisibility(segment: TransitionModel.Segment<CardsModel.State<NavTarget>>): ScreenState<NavTarget> {
-        val fromState = segment.navTransition.fromState
-
-        val allElements =
-            (fromState.visibleCards + fromState.queued + fromState.votedCards).map { it.navElement }
-                .toSet()
-        val onScreen = fromState.visibleCards.map { it.navElement }.toSet()
-
-        return ScreenState(
-            onScreen = onScreen,
-            offScreen = allElements - onScreen
-        )
     }
 }
