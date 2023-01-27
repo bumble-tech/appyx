@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.sample.NavTarget.*
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
@@ -30,7 +31,7 @@ fun BackStackExperimentDebug() {
         BackStack(
             scope = coroutineScope,
             model = BackStackModel(
-                initialTargets = listOf(Child1, Child2, Child3, Child4, Child5),
+                initialTargets = listOf(Child1, Child2, Child3),
                 savedStateMap = null
             ),
             interpolator = { BackstackFader(coroutineScope) },
@@ -55,7 +56,7 @@ fun BackStackExperimentDebug() {
 //            backStack.setNormalisedProgress(it)
 //        })
         Button(onClick = {
-            backStack.pop()
+            backStack.pop(Operation.Mode.IMMEDIATE)
         }
         ) {
             Text("POP")

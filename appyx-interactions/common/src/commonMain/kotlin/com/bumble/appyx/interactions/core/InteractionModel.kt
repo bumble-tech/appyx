@@ -6,20 +6,13 @@ import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.Draggable
-import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
-import com.bumble.appyx.interactions.core.ui.FlexibleBounds
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.inputsource.*
+import com.bumble.appyx.interactions.core.ui.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 
 

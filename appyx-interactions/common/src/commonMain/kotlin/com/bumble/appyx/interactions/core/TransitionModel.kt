@@ -17,7 +17,7 @@ interface TransitionModel<NavTarget, ModelState> {
 
     val segments: StateFlow<Segment<ModelState>>
 
-    class Segment<ModelState>(
+    data class Segment<ModelState>(
         val index: Int,
         val navTransition: NavTransition<ModelState>,
         /**
