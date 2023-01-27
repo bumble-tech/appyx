@@ -2,7 +2,6 @@ package com.bumble.appyx.appyxnavigation.node.spotlight.debug
 
 import android.os.Parcelable
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,17 +15,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.composable.KnobControl
 import com.bumble.appyx.appyxnavigation.node.spotlight.debug.SpotlightDebugNode.NavTarget
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
-import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -40,7 +35,6 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import com.bumble.appyx.transitionmodel.spotlight.operation.next
 import com.bumble.appyx.transitionmodel.spotlight.operation.previous
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import kotlinx.parcelize.Parcelize
 
 class SpotlightDebugNode(
@@ -48,7 +42,7 @@ class SpotlightDebugNode(
     coroutineScope: CoroutineScope,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
-            items = List(7) { NavTarget.Child(it) },
+            items = List(7) { NavTarget.Child(it + 1) },
             initialActiveIndex = 0f,
             initialActiveWindow = 1f
         ),
@@ -61,12 +55,12 @@ class SpotlightDebugNode(
 ) {
 
     init {
-//        spotlight.next(mode = Operation.Mode.KEYFRAME)
-//        spotlight.next(mode = Operation.Mode.KEYFRAME)
-//        spotlight.next(mode = Operation.Mode.KEYFRAME)
-//        spotlight.previous(mode = Operation.Mode.KEYFRAME)
-//        spotlight.last(mode = Operation.Mode.KEYFRAME)
-//        spotlight.first(mode = Operation.Mode.KEYFRAME)
+        spotlight.next()
+        spotlight.next()
+        spotlight.next()
+        spotlight.previous()
+        spotlight.last()
+        spotlight.first()
     }
 
     sealed class NavTarget : Parcelable {
