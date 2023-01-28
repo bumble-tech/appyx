@@ -55,19 +55,19 @@ fun <NavTarget : Any, NavState : Any> Children(
 
 @Composable
 fun Element(
-    color: Color = Color.Unspecified,
+    color: Color? = Color.Unspecified,
     frameModel: FrameModel<*>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     val backgroundColor = remember {
-        if (color == Color.Unspecified) colors.shuffled().random() else color
+        if (color == Color.Unspecified) colors.shuffled().random() else color ?: Color.Unspecified
     }
 
     Box(
         modifier = Modifier
             .then(frameModel.modifier)
             .clip(RoundedCornerShape(5))
-            .background(backgroundColor)
+            .then(if (color == null) Modifier else Modifier.background(backgroundColor))
             .then(modifier)
             .padding(24.dp)
     ) {

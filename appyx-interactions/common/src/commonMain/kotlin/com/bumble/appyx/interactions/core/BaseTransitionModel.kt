@@ -169,7 +169,9 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     }
 
     private fun updateState() {
-        state.update { queue[currentIndex].withProgress(currentLocalProgress) }
+        val output = queue[currentIndex].withProgress(currentLocalProgress)
+        Logger.log(TAG, "Publishing new state: $output")
+        state.update { output }
     }
 
     override fun dropAfter(index: Int) {

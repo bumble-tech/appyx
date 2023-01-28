@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = appyx_dark
                 ) {
-                    var content by remember { mutableStateOf(3) }
+                    var content by remember { mutableStateOf(4) }
                     Column {
                         Row(
                             modifier = Modifier
@@ -44,13 +44,15 @@ class MainActivity : ComponentActivity() {
                             Button({ content = 2 }) { Text("3") }
                             Button({ content = 3 }) { Text("4") }
                             Button({ content = 4 }) { Text("5") }
+                            Button({ content = 5 }) { Text("6") }
                         }
                         when (content) {
                             0 -> DatingCards()
                             1 -> SpotlightExperiment()
                             2 -> SpotlightExperimentDebug()
                             3 -> BackStackExperimentDebug()
-                            4 -> PromoterExperiment()
+                            4 -> TestDriveExperiment()
+                            5 -> PromoterExperiment()
                             else -> SpotlightExperiment()
                         }
                     }

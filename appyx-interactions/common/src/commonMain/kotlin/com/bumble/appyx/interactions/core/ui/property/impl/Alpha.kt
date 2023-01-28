@@ -1,24 +1,18 @@
 package com.bumble.appyx.interactions.core.ui.property.impl
 
 import androidx.compose.animation.core.Animatable
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
-import com.bumble.appyx.interactions.core.ui.property.Property
 
 class Alpha(
     value: Float
-) : Property<Float>, Interpolatable<Alpha> {
-
-    val animatable = Animatable(value)
-
-    override val value: Float
-        get() = animatable.value
+) : AnimatedProperty<Float, AnimationVector1D>(
+    animatable = Animatable(value)
+), Interpolatable<Alpha> {
 
     override val modifier: Modifier
         get() = Modifier.composed {
@@ -27,13 +21,5 @@ class Alpha(
 
     override suspend fun lerpTo(start: Alpha, end: Alpha, fraction: Float) {
         snapTo(lerpFloat(start.value, end.value, fraction))
-    }
-
-    override suspend fun snapTo(targetValue: Float) {
-        animatable.snapTo(targetValue)
-    }
-
-    override suspend fun animateTo(targetValue: Float, animationSpec: AnimationSpec<Float>) {
-        animatable.animateTo(targetValue, animationSpec)
     }
 }

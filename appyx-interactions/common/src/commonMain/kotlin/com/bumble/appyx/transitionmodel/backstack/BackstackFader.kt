@@ -4,7 +4,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.TransitionModel.Output.Segment
 import com.bumble.appyx.interactions.core.TransitionModel.Output.Update
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -14,6 +13,7 @@ import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
 class BackstackFader<NavTarget : Any>(
@@ -32,8 +32,10 @@ class BackstackFader<NavTarget : Any>(
             get() = Modifier
                 .then(alpha.modifier)
 
-        suspend fun animateTo(props: Props) {
-            alpha.animateTo(props.alpha.value, spring())
+        suspend fun animateTo(scope: CoroutineScope, props: Props) {
+            scope.launch {
+                alpha.animateTo(props.alpha.value, spring())
+            }
         }
     }
 
@@ -63,28 +65,16 @@ class BackstackFader<NavTarget : Any>(
                 Props(alpha = Alpha(0f))
             }
 
-            Logger.log("FRAME", "Produced target: ${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value} goal=${t1.props.alpha.value}")
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier
                     .composed {
-                        LaunchedEffect(elementProps.alpha.animatable.asState().value) {
-                            Logger.log("Alpha", "${t1.element.navTarget} value = ${elementProps.alpha.animatable.asState().value}")
-                        }
-                        this
-                    }
-                    .composed {
                         LaunchedEffect(update) {
-                            if (elementProps.alpha.value != t1.props.alpha.value) {
-                                Logger.log("Animate", "Animation launched target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value}")
-                                elementProps.animateTo(t1.props)
-                                Logger.log("Animate", "Animation finished target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value}")
-                            }
+                            elementProps.animateTo(this, t1.props)
                         }
                         this
                     },
-                progress = 1f,
-                props = elementProps
+                progress = 1f
             )
         }
     }
@@ -105,19 +95,11 @@ class BackstackFader<NavTarget : Any>(
                 elementProps.lerpTo(t0.props, t1.props, segment.progress)
             }
 
-            Logger.log("FRAME", "frame produced target=${t1.element.navTarget} id=${t1.element.id} value=${elementProps.alpha.value} -> ${t1.props.alpha.value}")
-            Logger.log("FRAME", "${segment.navTransition.targetState}")
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier
-                    .composed {
-                        LaunchedEffect(elementProps.alpha.animatable.asState().value) {
-                            Logger.log("ALPHA", "${t1.element.navTarget} value=${elementProps.alpha.animatable.asState().value}")
-                        }
-                        this
-                    },
-                progress = segment.progress,
-                props = elementProps
+                    .composed { this },
+                progress = segment.progress
             )
         }
     }
