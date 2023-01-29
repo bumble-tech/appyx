@@ -59,7 +59,7 @@ class TestDriveUiModel<NavTarget : Any>(
             // FIXME this should match the own animationSpec of the model (which can also be supplied
             //  from operation extension methods) rather than created here
             val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow / 2,
+                stiffness = Spring.StiffnessVeryLow / 5,
                 dampingRatio = Spring.DampingRatioLowBouncy,
             )
             onStart()
@@ -94,12 +94,12 @@ class TestDriveUiModel<NavTarget : Any>(
         )
 
         val c = Props(
-            offset = Offset(DpOffset(200.dp, 200.dp)),
+            offset = Offset(DpOffset(200.dp, 300.dp)),
             backgroundColor = BackgroundColor(md_yellow_500)
         )
 
         val d = Props(
-            offset = Offset(DpOffset(0.dp, 200.dp)),
+            offset = Offset(DpOffset(0.dp, 300.dp)),
             backgroundColor = BackgroundColor(md_light_blue_500)
         )
     }

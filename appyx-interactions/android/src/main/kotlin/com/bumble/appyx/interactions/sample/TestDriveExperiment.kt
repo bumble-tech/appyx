@@ -101,7 +101,7 @@ fun TestDriveExperiment() {
         ) {
             Button(onClick = { testDrive.next(
                 mode = KEYFRAME,
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 2)
+                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 5)
             ) }) {
                 Text("Keyframe")
             }
@@ -109,7 +109,7 @@ fun TestDriveExperiment() {
             Button(onClick = { testDrive.next(
                 mode = IMMEDIATE,
                 // FIXME this animationSpec affects only progress, not the update!
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 2)
+                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 5)
             ) }) {
                 Text("Immediate")
             }
