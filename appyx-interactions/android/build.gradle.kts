@@ -9,7 +9,7 @@ android {
     namespace = "com.bumble.appyx.interactions"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
-        applicationId = "com.example.android"
+        applicationId = "com.bumble.appyx.interactions"
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
