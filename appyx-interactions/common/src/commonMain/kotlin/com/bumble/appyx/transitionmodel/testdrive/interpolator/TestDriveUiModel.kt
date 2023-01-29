@@ -24,7 +24,11 @@ import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementSt
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.D
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
 
 class TestDriveUiModel<NavTarget : Any>(
@@ -46,19 +50,27 @@ class TestDriveUiModel<NavTarget : Any>(
                 .then(offset.modifier)
                 .then(backgroundColor.modifier)
 
-        suspend fun animateTo(scope: CoroutineScope, props: Props) {
+        suspend fun animateTo(
+            scope: CoroutineScope,
+            props: Props,
+            onStart: () -> Unit,
+            onFinished: () -> Unit
+        ) {
             // FIXME this should match the own animationSpec of the model (which can also be supplied
             //  from operation extension methods) rather than created here
             val animationSpec: SpringSpec<Float> = spring(
                 stiffness = Spring.StiffnessVeryLow,
-                dampingRatio = Spring.DampingRatioMediumBouncy
+                dampingRatio = Spring.DampingRatioLowBouncy,
             )
-            scope.launch {
+            onStart()
+            val a1 = scope.async {
                 offset.animateTo(props.offset.value, spring(animationSpec.dampingRatio, animationSpec.stiffness))
             }
-            scope.launch {
+            val a2 = scope.async {
                 backgroundColor.animateTo(props.backgroundColor.value, spring(animationSpec.dampingRatio, animationSpec.stiffness))
             }
+            awaitAll(a1, a2)
+            onFinished()
         }
     }
 
@@ -95,6 +107,16 @@ class TestDriveUiModel<NavTarget : Any>(
         )
 
     private val cache: MutableMap<String, Props> = mutableMapOf()
+    private val animations: MutableMap<String, Boolean> = mutableMapOf()
+    private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
+
+    override fun isAnimating(): StateFlow<Boolean> =
+        isAnimating
+
+    fun updateAnimationState(key: String, isAnimating: Boolean) {
+        animations[key] = isAnimating
+        this.isAnimating.update { isAnimating || animations.any { it.value } }
+    }
 
     override fun mapUpdate(update: TransitionModel.Output.Update<TestDriveModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val targetProps = update.targetState.toProps()
@@ -108,7 +130,12 @@ class TestDriveUiModel<NavTarget : Any>(
                     .composed {
                         LaunchedEffect(t1.props) {
                             Logger.log("TestDrive", "Animating ${t1.element} to ${t1.props}")
-                            elementProps.animateTo(this, t1.props)
+                            elementProps.animateTo(
+                                scope = this,
+                                props = t1.props,
+                                onStart = { updateAnimationState(t1.element.id, true) },
+                                onFinished = { updateAnimationState(t1.element.id, false) },
+                            )
                         }
                         this
                     },

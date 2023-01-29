@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface Interpolator<Target, ModelState> {
 
+    fun isAnimating(): StateFlow<Boolean> =
+        MutableStateFlow(false)
+
     fun map(
         output: TransitionModel.Output<ModelState>
     ): StateFlow<List<FrameModel<Target>>> =

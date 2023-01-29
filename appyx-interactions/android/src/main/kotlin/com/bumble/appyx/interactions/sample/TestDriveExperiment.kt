@@ -71,7 +71,7 @@ fun TestDriveExperiment() {
         ) {
             Button(onClick = { testDrive.next(
                 mode = KEYFRAME,
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 200)
+                animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
             ) }) {
                 Text("Keyframe")
             }

@@ -12,7 +12,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
@@ -62,6 +65,19 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         model = model,
         gestureFactory = { _gestureFactory }
     )
+
+    init {
+        scope.launch {
+            _interpolator.isAnimating()
+                .onEach {
+                    if (!it) {
+                        Logger.log("InteractionModel", "Finished animating, relaxing mode")
+                        model.relaxExecutionMode()
+                    }
+                }
+                .collect()
+        }
+    }
 
     override fun updateBounds(transitionBounds: TransitionBounds) {
         this.transitionBounds = transitionBounds
