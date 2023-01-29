@@ -59,7 +59,7 @@ class TestDriveUiModel<NavTarget : Any>(
             // FIXME this should match the own animationSpec of the model (which can also be supplied
             //  from operation extension methods) rather than created here
             val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow,
+                stiffness = Spring.StiffnessVeryLow / 2,
                 dampingRatio = Spring.DampingRatioLowBouncy,
             )
             onStart()
@@ -74,34 +74,39 @@ class TestDriveUiModel<NavTarget : Any>(
         }
     }
 
-    private val a = Props(
-        offset = Offset(DpOffset(0.dp, 0.dp)),
-        backgroundColor = BackgroundColor(md_red_500)
-    )
-
-    private val b = Props(
-        offset = Offset(DpOffset(200.dp, 0.dp)),
-        backgroundColor = BackgroundColor(md_light_green_500)
-    )
-
-    private val c = Props(
-        offset = Offset(DpOffset(200.dp, 200.dp)),
-        backgroundColor = BackgroundColor(md_yellow_500)
-    )
-
-    private val d = Props(
-        offset = Offset(DpOffset(0.dp, 200.dp)),
-        backgroundColor = BackgroundColor(md_light_blue_500)
-    )
-
-    private fun <NavTarget : Any> TestDriveModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
-        listOf(
-            MatchedProps(element, when(elementState) {
+    companion object {
+        fun TestDriveModel.State.ElementState.toProps(): Props =
+            when (this) {
                 A -> a
                 B -> b
                 C -> c
                 D -> d
-            }).also {
+            }
+
+        val a = Props(
+            offset = Offset(DpOffset(0.dp, 0.dp)),
+            backgroundColor = BackgroundColor(md_red_500)
+        )
+
+        val b = Props(
+            offset = Offset(DpOffset(200.dp, 0.dp)),
+            backgroundColor = BackgroundColor(md_light_green_500)
+        )
+
+        val c = Props(
+            offset = Offset(DpOffset(200.dp, 200.dp)),
+            backgroundColor = BackgroundColor(md_yellow_500)
+        )
+
+        val d = Props(
+            offset = Offset(DpOffset(0.dp, 200.dp)),
+            backgroundColor = BackgroundColor(md_light_blue_500)
+        )
+    }
+
+    private fun <NavTarget : Any> TestDriveModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+        listOf(
+            MatchedProps(element, elementState.toProps()).also {
                 Logger.log("TestDrive", "Matched $elementState -> Props: ${it.props}")
             }
         )
