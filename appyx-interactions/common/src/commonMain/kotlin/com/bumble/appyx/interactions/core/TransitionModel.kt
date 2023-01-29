@@ -60,7 +60,7 @@ interface TransitionModel<NavTarget, ModelState> {
                         this.navTransition.targetState,
                         navTransition.fromState
                     ),
-                    targetState = targetState
+                    targetState = navTransition.targetState
                 )
 
             override fun deriveSegment(navTransition: NavTransition<ModelState>): Segment<ModelState> =
