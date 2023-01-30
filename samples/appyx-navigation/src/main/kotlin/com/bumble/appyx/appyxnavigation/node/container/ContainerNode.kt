@@ -2,13 +2,12 @@ package com.bumble.appyx.appyxnavigation.node.container
 
 import android.os.Parcelable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,14 +18,16 @@ import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode
 import com.bumble.appyx.appyxnavigation.node.promoter.PromoterNode
 import com.bumble.appyx.appyxnavigation.node.spotlight.SpotlightNode
 import com.bumble.appyx.appyxnavigation.node.spotlight.debug.SpotlightDebugNode
+import com.bumble.appyx.appyxnavigation.ui.TextButton
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackCrossfader
-import com.bumble.appyx.transitionmodel.backstack.operation.replace
+import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
+import com.bumble.appyx.transitionmodel.backstack.operation.push
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 
@@ -35,10 +36,10 @@ class ContainerNode(
     private val coroutineScope: CoroutineScope,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTarget = NavTarget.DatingCards,
+            initialTarget = NavTarget.Selector,
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { BackStackCrossfader() }
+        interpolator = { BackStackSlider(it) }
     )
 
 ) : ParentNode<NavTarget>(
@@ -46,6 +47,9 @@ class ContainerNode(
     interactionModel = backStack
 ) {
     sealed class NavTarget : Parcelable {
+        @Parcelize
+        object Selector : NavTarget()
+
         @Parcelize
         object DatingCards : NavTarget()
 
@@ -65,6 +69,9 @@ class ContainerNode(
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
+            is NavTarget.Selector -> node(buildContext) { modifier ->
+                Selector(modifier)
+            }
             is NavTarget.DatingCards -> DatingCardsNode(buildContext)
             is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext, coroutineScope)
             is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(
@@ -75,40 +82,46 @@ class ContainerNode(
             is NavTarget.PromoterExperiment -> PromoterNode(buildContext)
         }
 
+
     @Composable
-    override fun View(modifier: Modifier) {
-        Column(
+    private fun Selector(modifier: Modifier) {
+        val scrollState = rememberScrollState()
+        Box(
             modifier = modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
+                .padding(24.dp),
+            contentAlignment = Alignment.Center
         ) {
-            Selector(
-                modifier = Modifier.weight(weight = 0.1f)
-            )
-            Children(
-                modifier = Modifier.weight(weight = 0.9f),
-                interactionModel = backStack,
-            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                TextButton(text = "Dating Cards") {
+                    backStack.push(NavTarget.DatingCards)
+                }
+                TextButton(text = "Spotlight") {
+                    backStack.push(NavTarget.SpotlightExperiment)
+                }
+                TextButton(text = "Spotlight Debug") {
+                    backStack.push(NavTarget.SpotlightExperimentDebug)
+                }
+                TextButton(text = "Backstack") {
+                    backStack.push(NavTarget.BackStackExperimentDebug)
+                }
+                TextButton(text = "Promoter") {
+                    backStack.push(NavTarget.PromoterExperiment)
+                }
+            }
         }
     }
 
     @Composable
-    private fun Selector(
-        modifier: Modifier = Modifier
-    ) {
-        Column {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Button({ backStack.replace(NavTarget.DatingCards) }) { Text("1") }
-                Button({ backStack.replace(NavTarget.SpotlightExperiment) }) { Text("2") }
-                Button({ backStack.replace(NavTarget.SpotlightExperimentDebug) }) { Text("3") }
-                Button({ backStack.replace(NavTarget.BackStackExperimentDebug) }) { Text("4") }
-                Button({ backStack.replace(NavTarget.PromoterExperiment) }) { Text("5") }
-            }
-        }
+    override fun View(modifier: Modifier) {
+        Children(
+            interactionModel = backStack,
+            modifier = modifier
+                .fillMaxSize()
+        )
     }
 }

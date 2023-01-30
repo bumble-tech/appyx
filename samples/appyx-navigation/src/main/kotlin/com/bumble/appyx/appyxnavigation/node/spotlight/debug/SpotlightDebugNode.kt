@@ -30,6 +30,10 @@ import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.interpolator.SpotlightSlider
+import com.bumble.appyx.transitionmodel.spotlight.operation.first
+import com.bumble.appyx.transitionmodel.spotlight.operation.last
+import com.bumble.appyx.transitionmodel.spotlight.operation.next
+import com.bumble.appyx.transitionmodel.spotlight.operation.previous
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 
@@ -38,7 +42,7 @@ class SpotlightDebugNode(
     coroutineScope: CoroutineScope,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
-            items = List(7) { NavTarget.Child(it) },
+            items = List(7) { NavTarget.Child(it + 1) },
             initialActiveIndex = 0f,
             initialActiveWindow = 1f
         ),
@@ -51,12 +55,12 @@ class SpotlightDebugNode(
 ) {
 
     init {
-//        spotlight.next(mode = Operation.Mode.KEYFRAME)
-//        spotlight.next(mode = Operation.Mode.KEYFRAME)
-//        spotlight.next(mode = Operation.Mode.KEYFRAME)
-//        spotlight.previous(mode = Operation.Mode.KEYFRAME)
-//        spotlight.last(mode = Operation.Mode.KEYFRAME)
-//        spotlight.first(mode = Operation.Mode.KEYFRAME)
+        spotlight.next()
+        spotlight.next()
+        spotlight.next()
+        spotlight.previous()
+        spotlight.last()
+        spotlight.first()
     }
 
     sealed class NavTarget : Parcelable {
