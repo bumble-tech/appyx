@@ -19,7 +19,7 @@ data class NewRoot<NavTarget>(
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<BackStackModel.State<NavTarget>>() {
     override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
-        state.stashed.size + 1 > 1 || state.active.navTarget != navTarget
+        true
 
     override fun createFromState(baseLineState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
         baseLineState.copy(

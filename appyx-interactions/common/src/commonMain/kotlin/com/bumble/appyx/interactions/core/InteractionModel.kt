@@ -6,20 +6,35 @@ import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.inputsource.*
-import com.bumble.appyx.interactions.core.ui.*
+import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
+import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
+import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
+import com.bumble.appyx.interactions.core.inputsource.Draggable
+import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
+import com.bumble.appyx.interactions.core.ui.FlexibleBounds
+import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
+import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.ScreenState
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
+// TODO move to navigation
+// TODO save/restore state
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
-    scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
+    private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<NavTarget, ModelState>,
     private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
@@ -47,19 +62,32 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     val frames: Flow<List<FrameModel<NavTarget>>> =
-            model
-                .output
-                .flatMapLatest { _interpolator.map(it) }
+        model
+            .output
+            .flatMapLatest { _interpolator.map(it) }
+
+    val screenState: Flow<ScreenState<NavTarget>> = frames.map {
+        val onScreen = mutableSetOf<NavElement<NavTarget>>()
+        val offScreen = mutableSetOf<NavElement<NavTarget>>()
+        it.forEach { frame ->
+            if (frame.state == VISIBLE || frame.state == PARTIALLY_VISIBLE) {
+                onScreen.add(frame.navElement)
+            } else {
+                offScreen.add(frame.navElement)
+            }
+        }
+        ScreenState(onScreen = onScreen, offScreen = offScreen)
+    }
 
     private val instant = InstantInputSource(
         model = model
     )
 
-    private val animated = AnimatedInputSource(
-        model = model,
-        coroutineScope = scope,
-        defaultAnimationSpec = defaultAnimationSpec
-    )
+    private var animationScope: CoroutineScope? = null
+    private var isInitialised: Boolean = false
+
+    private var animated: AnimatedInputSource<NavTarget, ModelState>? = null
+    private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
 
     private val drag = DragProgressInputSource(
         model = model,
@@ -83,19 +111,19 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         this.transitionBounds = transitionBounds
     }
 
-    private val debug = DebugProgressInputSource(
-        transitionModel = model,
-        coroutineScope = scope
-    )
+    fun availableElements(): Set<NavElement<NavTarget>> = model.availableElements()
 
     fun operation(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
+        val animatedSource = animated
+        val debugSource = debug
         when {
-            isDebug -> debug.operation(operation)
+            (isDebug && debugSource != null) -> debugSource.operation(operation)
+            (animatedSource == null) -> instant.operation(operation)
             DisableAnimations || disableAnimations -> instant.operation(operation)
-            else -> animated.operation(operation, animationSpec)
+            else -> animatedSource.operation(operation, animationSpec)
         }
     }
 
@@ -126,11 +154,54 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         revertGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     ) {
         if (isDebug) {
-            debug.settle()
+            debug?.settle()
         } else {
-            animated.settle(completionThreshold, completeGestureSpec, revertGestureSpec)
+            animated?.settle(completionThreshold, completeGestureSpec, revertGestureSpec)
         }
+    }
 
+    /**
+     * Called when ParenNode UI enters composition
+     */
+    fun startAnimation(scope: CoroutineScope) {
+        animationScope = scope
+        createAnimatedInputSource(scope)
+        createdDebugInputSource(scope)
+        isInitialised = true
+    }
+
+    /**
+     * Called when ParenNode UI leaves composition
+     */
+    fun stopAnimation() {
+        // TODO finish unfinished transitions
+        if (isDebug) {
+            debug?.stopModel()
+        } else {
+            animated?.stopModel()
+        }
+        animationScope?.cancel()
+        isInitialised = false
+    }
+
+    private fun createAnimatedInputSource(scope: CoroutineScope) {
+        animated = AnimatedInputSource(
+            model = model,
+            coroutineScope = scope,
+            defaultAnimationSpec = defaultAnimationSpec
+        )
+    }
+
+    private fun createdDebugInputSource(scope: CoroutineScope) {
+        debug = DebugProgressInputSource(
+            transitionModel = model,
+            coroutineScope = scope
+        )
+    }
+
+    // TODO plugin?!
+    fun destroy() {
+        scope.cancel()
     }
 
     fun settleDefault() {
@@ -138,6 +209,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     fun setNormalisedProgress(progress: Float) {
-        debug.setNormalisedProgress(progress)
+        debug?.setNormalisedProgress(progress)
     }
 }

@@ -15,8 +15,10 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.TransitionModel.Output.*
+import com.bumble.appyx.interactions.core.TransitionModel.Output.Segment
+import com.bumble.appyx.interactions.core.TransitionModel.Output.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -56,7 +58,8 @@ class SpotlightSlider<NavTarget>(
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
-    )
+        override val isVisible: Boolean
+    ) : BaseProps
 
     private val created = Props(
         offset = DpOffset(0.dp, (500).dp),
@@ -64,9 +67,10 @@ class SpotlightSlider<NavTarget>(
         alpha = 1f,
         zIndex = 0f,
         aspectRatio = 1f,
+        isVisible = false
     )
 
-    private val standard = Props()
+    private val standard = Props(isVisible = true)
 
     private val destroyed = Props(
         offset = DpOffset(0.dp, (-500).dp),
@@ -74,7 +78,8 @@ class SpotlightSlider<NavTarget>(
         alpha = 0f,
         zIndex = -1f,
         aspectRatio = 1f,
-        rotation = 360f
+        rotation = 360f,
+        isVisible = false
     )
 
     override fun applyGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>): StateFlow<List<FrameModel<NavTarget>>> =
@@ -142,9 +147,9 @@ class SpotlightSlider<NavTarget>(
                     .aspectRatio(aspectRatio)
                     .scale(scale)
                     .rotate(rotation)
-                    .alpha(alpha)
-                ,
-                progress = segment.progress
+                    .alpha(alpha),
+                progress = segment.progress,
+                state = resolveNavElementVisibility(t0?.props ?: t1.props, t1.props)
             )
         }
     }
@@ -162,6 +167,7 @@ class SpotlightSlider<NavTarget>(
                         zIndex = target.zIndex,
                         rotation = target.rotation,
                         aspectRatio = target.aspectRatio,
+                        isVisible = (index + activeWindow.toInt()) <= activeIndex || (index - activeWindow.toInt()) >= activeIndex
                     )
                 )
             }

@@ -105,6 +105,8 @@ interface TransitionModel<NavTarget, ModelState> {
         }
     }
 
+    fun availableElements(): Set<NavElement<NavTarget>>
+
     fun relaxExecutionMode()
 
     fun operation(

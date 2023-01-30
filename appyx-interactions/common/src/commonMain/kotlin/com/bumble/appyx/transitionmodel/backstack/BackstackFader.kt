@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import com.bumble.appyx.interactions.core.TransitionModel.Output.Segment
 import com.bumble.appyx.interactions.core.TransitionModel.Output.Update
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
@@ -21,8 +22,9 @@ class BackstackFader<NavTarget : Any>(
 ) : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
 
     class Props(
-        var alpha: Alpha
-    ) : Interpolatable<Props>, HasModifier {
+        var alpha: Alpha,
+        override val isVisible: Boolean = false
+    ) : Interpolatable<Props>, HasModifier, BaseProps {
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             alpha.lerpTo(start.alpha, end.alpha, fraction)
@@ -40,11 +42,13 @@ class BackstackFader<NavTarget : Any>(
     }
 
     private val visible = Props(
-        alpha = Alpha(1f)
+        alpha = Alpha(1f),
+        isVisible = true
     )
 
     private val hidden = Props(
-        alpha = Alpha(0f)
+        alpha = Alpha(0f),
+        isVisible = false
     )
 
     private val interpolated: MutableMap<String, Props> = mutableMapOf()
@@ -74,7 +78,7 @@ class BackstackFader<NavTarget : Any>(
                         }
                         this
                     },
-                progress = 1f
+                progress = 1f,
             )
         }
     }
@@ -99,7 +103,8 @@ class BackstackFader<NavTarget : Any>(
                 navElement = t1.element,
                 modifier = elementProps.modifier
                     .composed { this },
-                progress = segment.progress
+                progress = segment.progress,
+                state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }
     }

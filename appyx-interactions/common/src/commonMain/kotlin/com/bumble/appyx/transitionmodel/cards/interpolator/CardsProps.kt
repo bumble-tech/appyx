@@ -14,6 +14,7 @@ import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -25,6 +26,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.transitionmodel.cards.CardsModel
+import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlinx.coroutines.CoroutineScope
@@ -53,7 +55,8 @@ class CardsProps<NavTarget : Any>(
         ),
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
-    ) : Interpolatable<Props>, HasModifier {
+        override val isVisible: Boolean = false
+    ) : Interpolatable<Props>, HasModifier, BaseProps {
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             scale.lerpTo(start.scale, end.scale, fraction)
@@ -159,22 +162,33 @@ class CardsProps<NavTarget : Any>(
         this.isAnimating.update { isAnimating || animations.any { it.value } }
     }
 
-    private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
-        (liked.lastOrNull()?.let {
-            listOf(MatchedProps(it, voteLike))
-        } ?: listOf()) +
-                (passed.lastOrNull()?.let {
-                    listOf(MatchedProps(it, votePass))
-                } ?: listOf()) +
-                queued.mapIndexed { index, navElement ->
-                    val props = when (index) {
-                        0 -> top
-                        1 -> bottom
-                        else -> hidden
-                    }
-
-                    MatchedProps(navElement, props)
+    private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
+        val result = mutableListOf<MatchedProps<NavTarget, Props>>()
+        (votedCards + visibleCards + queued).map {
+            when (it) {
+                is CardsModel.State.Card.InvisibleCard.VotedCard -> {
+                    result.add(
+                        if (it.votedCardState == LIKED) {
+                            MatchedProps(it.navElement, voteLike)
+                        } else {
+                            MatchedProps(it.navElement, votePass)
+                        }
+                    )
                 }
+                is CardsModel.State.Card.VisibleCard.TopCard -> {
+                    result.add(MatchedProps(it.navElement, top))
+                }
+                is CardsModel.State.Card.VisibleCard.BottomCard -> {
+                    result.add(MatchedProps(it.navElement, bottom))
+                }
+                is CardsModel.State.Card.InvisibleCard.Queued -> {
+                    result.add(MatchedProps(it.navElement, hidden))
+                }
+            }
+        }
+
+        return result
+    }
 
     override fun mapSegment(segment: TransitionModel.Output.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition

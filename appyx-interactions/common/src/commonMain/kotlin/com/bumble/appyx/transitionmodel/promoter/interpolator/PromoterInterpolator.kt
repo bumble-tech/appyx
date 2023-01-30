@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
@@ -38,7 +39,8 @@ class PromoterInterpolator<NavTarget : Any>(
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-    )
+        override val isVisible: Boolean
+    ): BaseProps
 
     private val created = Props(
         dpOffset = DpOffset(0.dp, 0.dp),
@@ -47,37 +49,44 @@ class PromoterInterpolator<NavTarget : Any>(
         effectiveRadiusRatio = 1f,
         rotationY = 0f,
         rotationZ = 0f,
+        isVisible = false
     )
 
     private val stage1 = created.copy(
-        scale = 0.25f
+        scale = 0.25f,
+        isVisible = true
     )
 
     private val stage2 = stage1.copy(
         scale = 0.45f,
         angleDegrees = 90f,
+        isVisible = true
     )
 
     private val stage3 = stage2.copy(
         scale = 0.65f,
         angleDegrees = 180f,
+        isVisible = true
     )
 
     private val stage4 = stage3.copy(
         scale = 0.85f,
         angleDegrees = 270f,
+        isVisible = true
     )
 
     private val stage5 = stage4.copy(
         scale = 1f,
         effectiveRadiusRatio = 0f,
         rotationY = 360f,
+        isVisible = true
     )
 
     private val destroyed = stage5.copy(
         dpOffset = DpOffset(500.dp, (-200).dp),
         scale = 0f,
         rotationZ = 540f,
+        isVisible = false
     )
 
     private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
@@ -139,7 +148,8 @@ class PromoterInterpolator<NavTarget : Any>(
                         rotationZ = rotationZ
                     )
                     .scale(scale),
-                progress = segment.progress
+                progress = segment.progress,
+                state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }
     }

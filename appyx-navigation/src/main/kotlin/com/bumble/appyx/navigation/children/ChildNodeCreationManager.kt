@@ -40,38 +40,44 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
         syncNavModelWithChildren(parentNode)
     }
 
+
     private fun syncNavModelWithChildren(parentNode: ParentNode<NavTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
-
-            val navModelKeepElements: Set<NavElement<NavTarget>> =
-                parentNode.transitionModel.availableElements()
-
-            val navModelElements: Set<NavElement<NavTarget>> = navModelKeepElements
-
-            updateChildren(navModelElements, navModelKeepElements, emptySet())
-
-//                val navModelKeepKeys = state.navTransition.targetState.map { navElement -> navElement.key }.toSet()
-
-//                val navModelSuspendKeys: Set<NavKey<NavTarget>>
-
-//                when (keepMode) {
-//                    ChildEntry.KeepMode.KEEP -> {
-//                        navModelKeepKeys =
-//                            (state.onScreen + state.offScreen).mapNotNullToSet { element -> element.key }
-//                        navModelSuspendKeys = emptySet()
-//                        navModelKeys = navModelKeepKeys
-//                    }
-//                    ChildEntry.KeepMode.SUSPEND -> {
-//                        navModelKeepKeys =
-//                            state.onScreen.mapNotNullToSet { element -> element.key }
-//                        navModelSuspendKeys =
-//                            state.offScreen.mapNotNullToSet { element -> element.key }
-//                        navModelKeys = navModelKeepKeys + navModelSuspendKeys
-//                    }
-//                }
-
+            parentNode.interactionModel.screenState.collect { state ->
+                val navModelKeepKeys: Set<NavElement<NavTarget>>
+                val navModelSuspendKeys: Set<NavElement<NavTarget>>
+                val navModelKeys: Set<NavElement<NavTarget>>
+                when (keepMode) {
+                    ChildEntry.KeepMode.KEEP -> {
+                        navModelKeepKeys =
+                            (state.onScreen + state.offScreen)
+                        navModelSuspendKeys = emptySet()
+                        navModelKeys = navModelKeepKeys
+                    }
+                    ChildEntry.KeepMode.SUSPEND -> {
+                        navModelKeepKeys =
+                            state.onScreen
+                        navModelSuspendKeys =
+                            state.offScreen
+                        navModelKeys = navModelKeepKeys + navModelSuspendKeys
+                    }
+                }
+                updateChildren(navModelKeys, navModelKeepKeys, navModelSuspendKeys)
+            }
         }
     }
+
+//    private fun syncNavModelWithChildren(parentNode: ParentNode<NavTarget>) {
+//        parentNode.lifecycle.coroutineScope.launch {
+//
+//            val navModelKeepElements: Set<NavElement<NavTarget>> =
+//                parentNode.interactionModel.availableElements()
+//
+//            val navModelElements: Set<NavElement<NavTarget>> = navModelKeepElements
+//
+//            updateChildren(navModelElements, navModelKeepElements, emptySet())
+//        }
+//    }
 
     private fun updateChildren(
         navModelElements: Set<NavElement<NavTarget>>,

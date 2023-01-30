@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
@@ -37,8 +38,9 @@ class TestDriveUiModel<NavTarget : Any>(
 
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
-        val backgroundColor: BackgroundColor = BackgroundColor(md_red_500)
-    ) : Interpolatable<Props>, HasModifier {
+        val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
+        override val isVisible: Boolean = true
+    ) : Interpolatable<Props>, HasModifier, BaseProps {
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             offset.lerpTo(start.offset, end.offset, fraction)
