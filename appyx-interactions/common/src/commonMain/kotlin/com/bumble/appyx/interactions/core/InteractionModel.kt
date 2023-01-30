@@ -13,8 +13,8 @@ import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
 import com.bumble.appyx.interactions.core.ui.FlexibleBounds
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.UNSPECIFIED
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.ScreenState
@@ -67,10 +67,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         val onScreen = mutableSetOf<NavElement<NavTarget>>()
         val offScreen = mutableSetOf<NavElement<NavTarget>>()
         it.forEach { frame ->
-            if (frame.state == UNSPECIFIED || frame.state == INVISIBLE) {
-                offScreen.add(frame.navElement)
-            } else {
+            if (frame.state == VISIBLE || frame.state == PARTIALLY_VISIBLE) {
                 onScreen.add(frame.navElement)
+            } else {
+                offScreen.add(frame.navElement)
             }
         }
         ScreenState(onScreen = onScreen, offScreen = offScreen)

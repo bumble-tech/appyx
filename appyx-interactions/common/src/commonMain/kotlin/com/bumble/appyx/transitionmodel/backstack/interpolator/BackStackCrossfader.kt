@@ -8,12 +8,10 @@ import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
-class BackStackCrossfader<NavTarget : Any>(
-    transitionParams: TransitionParams
-) : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
+class BackStackCrossfader<NavTarget : Any>() :
+    Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
 
     class Props(
         val alpha: Float,
@@ -50,7 +48,12 @@ class BackStackCrossfader<NavTarget : Any>(
                 navElement = t1.element,
                 modifier = Modifier
                     .alpha(alpha),
-                progress = segment.progress
+                progress = segment.progress,
+                state = resolveNavElementVisibility(
+                    fromProps = t0.props,
+                    toProps = t1.props,
+                    progress = segment.progress
+                )
             )
         }
     }
