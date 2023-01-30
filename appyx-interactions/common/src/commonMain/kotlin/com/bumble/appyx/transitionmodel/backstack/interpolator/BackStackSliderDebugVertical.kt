@@ -91,6 +91,10 @@ class BackStackSliderDebugVertical<NavTarget>
         }
 
     }
+
+    override fun mapUpdate(update: TransitionModel.Output.Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        TODO("Not yet implemented")
+    }
 }
 
 //

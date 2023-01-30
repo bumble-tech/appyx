@@ -90,4 +90,8 @@ class BackStackSlider<NavTarget>(
     operator fun DpOffset.times(multiplier: Int) =
         DpOffset(x * multiplier, y * multiplier)
 
+    override fun mapUpdate(update: TransitionModel.Output.Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        TODO("Not yet implemented")
+    }
+
 }

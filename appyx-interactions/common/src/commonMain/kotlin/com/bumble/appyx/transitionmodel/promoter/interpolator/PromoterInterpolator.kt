@@ -143,4 +143,8 @@ class PromoterInterpolator<NavTarget : Any>(
             )
         }
     }
+
+    override fun mapUpdate(update: TransitionModel.Output.Update<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        TODO("Not yet implemented")
+    }
 }

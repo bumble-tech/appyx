@@ -4,7 +4,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.lerp
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.TransitionModel.Output.*
+import com.bumble.appyx.interactions.core.TransitionModel.Output.Segment
+import com.bumble.appyx.interactions.core.TransitionModel.Output.Update
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -38,9 +39,7 @@ interface Interpolator<Target, ModelState> {
 
     fun mapUpdate(
         update: Update<ModelState>
-    ): List<FrameModel<Target>> {
-        TODO("Implement this")
-    }
+    ): List<FrameModel<Target>>
 
     // TODO extract along with other interpolation helpers
     companion object {
