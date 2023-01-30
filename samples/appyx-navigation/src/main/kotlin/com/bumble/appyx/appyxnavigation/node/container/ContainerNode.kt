@@ -1,7 +1,6 @@
 package com.bumble.appyx.appyxnavigation.node.container
 
 import android.os.Parcelable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,13 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.appyxnavigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.appyxnavigation.node.container.ContainerNode.NavTarget
@@ -25,8 +19,6 @@ import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode
 import com.bumble.appyx.appyxnavigation.node.promoter.PromoterNode
 import com.bumble.appyx.appyxnavigation.node.spotlight.SpotlightNode
 import com.bumble.appyx.appyxnavigation.node.spotlight.debug.SpotlightDebugNode
-import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.ui.GestureSpec
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -34,8 +26,7 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackCrossfader
-import com.bumble.appyx.transitionmodel.backstack.operation.push
-import gestureModifier
+import com.bumble.appyx.transitionmodel.backstack.operation.replace
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 
@@ -112,11 +103,11 @@ class ContainerNode(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Button({ backStack.push(NavTarget.DatingCards) }) { Text("1") }
-                Button({ backStack.push(NavTarget.SpotlightExperiment) }) { Text("2") }
-                Button({ backStack.push(NavTarget.SpotlightExperimentDebug) }) { Text("3") }
-                Button({ backStack.push(NavTarget.BackStackExperimentDebug) }) { Text("4") }
-                Button({ backStack.push(NavTarget.PromoterExperiment) }) { Text("5") }
+                Button({ backStack.replace(NavTarget.DatingCards) }) { Text("1") }
+                Button({ backStack.replace(NavTarget.SpotlightExperiment) }) { Text("2") }
+                Button({ backStack.replace(NavTarget.SpotlightExperimentDebug) }) { Text("3") }
+                Button({ backStack.replace(NavTarget.BackStackExperimentDebug) }) { Text("4") }
+                Button({ backStack.replace(NavTarget.PromoterExperiment) }) { Text("5") }
             }
         }
     }

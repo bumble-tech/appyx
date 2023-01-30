@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,21 +19,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.node.spotlight.SpotlightNode.NavTarget
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
-import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.ui.GestureSpec
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.interpolator.SpotlightSlider
@@ -44,7 +39,6 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.next
 import com.bumble.appyx.transitionmodel.spotlight.operation.previous
 import com.bumble.appyx.transitionmodel.spotlight.operation.updateElements
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.MainScope
 import kotlinx.parcelize.Parcelize
 
 class SpotlightNode(
@@ -93,7 +87,7 @@ class SpotlightNode(
     @Composable
     override fun View(modifier: Modifier) {
         Column(
-            Modifier
+            modifier =modifier
                 .fillMaxSize()
                 .background(appyx_dark)
         ) {

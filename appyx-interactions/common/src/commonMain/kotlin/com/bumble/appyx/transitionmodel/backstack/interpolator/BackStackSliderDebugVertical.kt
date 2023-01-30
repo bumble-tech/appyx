@@ -11,7 +11,6 @@ import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.resolveNavElementVisibility
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 

@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
@@ -16,6 +17,7 @@ import com.bumble.appyx.interactions.core.ui.GestureSpec
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.navigation.node.ParentNode
 import gestureModifier
+import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
 @Composable
@@ -85,12 +87,19 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
         block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
     ) {
 
-        val frames = interactionModel.frames.collectAsState(listOf())
+        val visibleFramesFlow = remember {
+            interactionModel.frames
+                .map { list ->
+                    list
+                        .filter { clazz.isInstance(it.navElement.navTarget) }
+                        .filter { (it.state == FrameModel.State.VISIBLE) || (it.state == FrameModel.State.PARTIALLY_VISIBLE) }
+                }
+        }
+
+        val visibleFrames = visibleFramesFlow.collectAsState(initial = emptyList())
         val saveableStateHolder = rememberSaveableStateHolder()
 
-        // TODO apply on/off screen logic
-        frames.value
-            .filter { clazz.isInstance(it.navElement.navTarget) }
+        visibleFrames.value
             .forEach { frameModel ->
                 val navKey = frameModel.navElement
                 key(navKey.id) {

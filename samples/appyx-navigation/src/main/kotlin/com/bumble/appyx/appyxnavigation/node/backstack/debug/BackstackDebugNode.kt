@@ -11,20 +11,16 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.coroutineScope
 import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.composable.KnobControl
 import com.bumble.appyx.appyxnavigation.node.backstack.debug.BackstackDebugNode.NavTarget
-import com.bumble.appyx.appyxnavigation.node.container.ContainerNode
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -96,7 +92,7 @@ class BackstackDebugNode(
     @Composable
     override fun View(modifier: Modifier) {
         Column(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {

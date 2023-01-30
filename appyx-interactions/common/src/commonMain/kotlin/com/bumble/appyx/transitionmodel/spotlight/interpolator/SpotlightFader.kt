@@ -7,7 +7,6 @@ import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.resolveNavElementVisibility
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionParams
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
