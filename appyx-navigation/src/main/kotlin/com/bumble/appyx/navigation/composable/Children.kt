@@ -92,7 +92,10 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
                 .map { list ->
                     list
                         .filter { clazz.isInstance(it.navElement.navTarget) }
-                        .filter { (it.state == FrameModel.State.VISIBLE) || (it.state == FrameModel.State.PARTIALLY_VISIBLE) }
+                        .filter {
+                            (it.state == FrameModel.State.VISIBLE) ||
+                                    (it.state == FrameModel.State.PARTIALLY_VISIBLE)
+                        }
                 }
         }
 

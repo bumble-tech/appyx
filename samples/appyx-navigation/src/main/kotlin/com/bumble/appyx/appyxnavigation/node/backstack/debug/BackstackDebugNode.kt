@@ -101,7 +101,7 @@ class BackstackDebugNode(
             })
             Children(
                 interactionModel = backStack,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .background(appyx_dark)
                     .padding(16.dp),

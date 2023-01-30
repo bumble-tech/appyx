@@ -34,7 +34,8 @@ import kotlin.math.roundToInt
 @ExperimentalMaterialApi
 @Composable
 fun KnobControl(
-    onValueChange: (Float) -> Unit
+    onValueChange: (Float) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val knobSizeDp = 48.dp
     val knobSizePx = with(LocalDensity.current) { knobSizeDp.toPx() }

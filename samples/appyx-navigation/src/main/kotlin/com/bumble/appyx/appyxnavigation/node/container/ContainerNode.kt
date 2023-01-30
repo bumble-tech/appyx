@@ -84,7 +84,7 @@ class ContainerNode(
 
 
     @Composable
-    private fun Selector(modifier: Modifier) {
+    private fun Selector(modifier: Modifier = Modifier) {
         val scrollState = rememberScrollState()
         Box(
             modifier = modifier
