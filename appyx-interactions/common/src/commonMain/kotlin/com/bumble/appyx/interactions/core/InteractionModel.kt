@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.core
 import DefaultAnimationSpec
 import DisableAnimations
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
@@ -14,8 +13,6 @@ import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
 import com.bumble.appyx.interactions.core.ui.FlexibleBounds
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.ScreenState
@@ -48,8 +45,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     private var _interpolator: Interpolator<NavTarget, ModelState> =
         interpolator(TransitionBounds(Density(0f), 0, 0))
+
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
+
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
             if (value != field) {
@@ -110,8 +109,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         val debugSource = debug
         when {
             (isDebug && debugSource != null) -> debugSource.operation(operation)
-            (animatedSource == null) -> instant.operation(operation)
-            DisableAnimations || disableAnimations -> instant.operation(operation)
+            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(operation)
             else -> animatedSource.operation(operation, animationSpec)
         }
     }

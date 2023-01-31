@@ -1,6 +1,7 @@
 package com.bumble.appyx.transitionmodel.backstack
 
-import androidx.compose.animation.core.spring
+import DefaultAnimationSpec
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.MatchedProps
@@ -12,10 +13,12 @@ import com.bumble.appyx.transitionmodel.BaseInterpolator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class BackstackFader<NavTarget : Any>() :
-    BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>({
-        Props(alpha = Alpha(0f))
-    }) {
+class BackstackFader<NavTarget : Any>(
+    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>(
+    defaultProps = { Props(alpha = Alpha(0f)) },
+    defaultAnimationSpec = defaultAnimationSpec
+) {
 
     class Props(
         var alpha: Alpha,
@@ -37,12 +40,13 @@ class BackstackFader<NavTarget : Any>() :
         override suspend fun animateTo(
             scope: CoroutineScope,
             props: Props,
+            springSpec: SpringSpec<Float>,
             onStart: () -> Unit,
             onFinished: () -> Unit
         ) {
             scope.launch {
                 onStart()
-                alpha.animateTo(props.alpha.value, spring())
+                alpha.animateTo(props.alpha.value, springSpec)
                 onFinished()
             }
         }

@@ -1,5 +1,8 @@
 package com.bumble.appyx.transitionmodel
 
+import DefaultAnimationSpec
+import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.composed
 import com.bumble.appyx.interactions.core.Segment
@@ -16,8 +19,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
 
-abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val defaultProps: () -> Props) :
-    Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
+abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
+    private val defaultProps: () -> Props,
+    private val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
 
     private val cache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
@@ -48,9 +53,9 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val 
                             elementProps.animateTo(
                                 scope = this,
                                 props = t1.props,
+                                springSpec = defaultAnimationSpec,
                                 onStart = { updateAnimationState(t1.element.id, true) },
-                                onFinished = { updateAnimationState(t1.element.id, false) },
-                            )
+                            ) { updateAnimationState(t1.element.id, false) }
                         } else {
                             elementProps.snapTo(this, t1.props)
                         }

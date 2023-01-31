@@ -1,5 +1,6 @@
 package com.bumble.appyx.transitionmodel.testdrive.interpolator
 
+import DefaultAnimationSpec
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
@@ -31,8 +32,12 @@ import kotlinx.coroutines.awaitAll
 import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
-    transitionBounds: TransitionBounds
-) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>({ Props() }) {
+    transitionBounds: TransitionBounds,
+    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
+    defaultProps = { Props() },
+    defaultAnimationSpec = defaultAnimationSpec
+) {
 
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
@@ -58,27 +63,22 @@ class TestDriveUiModel<NavTarget : Any>(
         override suspend fun animateTo(
             scope: CoroutineScope,
             props: Props,
+            springSpec: SpringSpec<Float>,
             onStart: () -> Unit,
             onFinished: () -> Unit
         ) {
-            // FIXME this should match the own animationSpec of the model (which can also be supplied
-            //  from operation extension methods) rather than created here
-            val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow / 5,
-                dampingRatio = Spring.DampingRatioLowBouncy,
-            )
             onStart()
             listOf(
                 scope.async {
                     offset.animateTo(
                         props.offset.value,
-                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 },
                 scope.async {
                     backgroundColor.animateTo(
                         props.backgroundColor.value,
-                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 }
             ).awaitAll()

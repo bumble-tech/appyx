@@ -51,7 +51,10 @@ fun TestDriveExperiment() {
         TestDrive(
             scope = coroutineScope,
             model = model,
-            interpolator = { TestDriveUiModel(it) },
+            interpolator = { TestDriveUiModel(it, spring(
+                stiffness = Spring.StiffnessVeryLow / 2,
+                dampingRatio = Spring.DampingRatioLowBouncy,
+            )) },
             gestureFactory = { TestDriveUiModel.Gestures(it) }
         )
     }

@@ -1,4 +1,5 @@
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.runtime.Composable
@@ -13,7 +14,7 @@ import com.bumble.appyx.interactions.core.ui.GestureSpec
 
 var DisableAnimations = false
 
-val DefaultAnimationSpec: AnimationSpec<Float> = spring()
+val DefaultAnimationSpec: SpringSpec<Float> = spring()
 
 @Composable
 @Suppress("UnnecessaryComposedModifier")

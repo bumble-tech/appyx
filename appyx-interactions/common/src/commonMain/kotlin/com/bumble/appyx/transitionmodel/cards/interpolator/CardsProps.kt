@@ -1,22 +1,17 @@
 package com.bumble.appyx.transitionmodel.cards.interpolator
 
-import androidx.compose.animation.core.Spring
+import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
@@ -34,18 +29,16 @@ import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.runBlocking
 
 typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 
 class CardsProps<NavTarget : Any>(
-    transitionBounds: TransitionBounds
+    transitionBounds: TransitionBounds,
+    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
-    defaultProps = { Props() }
+    defaultProps = { Props() },
+    defaultAnimationSpec = defaultAnimationSpec
 ) {
     private val width = transitionBounds.widthDp.value
 
@@ -86,39 +79,34 @@ class CardsProps<NavTarget : Any>(
         override suspend fun animateTo(
             scope: CoroutineScope,
             props: Props,
+            springSpec: SpringSpec<Float>,
             onStart: () -> Unit,
             onFinished: () -> Unit
         ) {
-            // FIXME this should match the own animationSpec of the model (which can also be supplied
-            //  from operation extension methods) rather than created here
-            val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow,
-                dampingRatio = Spring.DampingRatioHighBouncy,
-            )
             onStart()
             listOf(
                 scope.async {
                     scale.animateTo(
                         props.scale.value,
-                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 },
                 scope.async {
                     positionalOffsetX.animateTo(
                         props.positionalOffsetX.value,
-                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 },
                 scope.async {
                     rotationZ.animateTo(
                         props.rotationZ.value,
-                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 },
                 scope.async {
                     zIndex.animateTo(
                         props.zIndex.value,
-                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 }).awaitAll()
             onFinished()
