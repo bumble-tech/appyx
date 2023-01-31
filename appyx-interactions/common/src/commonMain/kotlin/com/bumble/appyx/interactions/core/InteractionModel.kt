@@ -1,5 +1,6 @@
 package com.bumble.appyx.interactions.core
 
+import DefaultAnimationSpec
 import DisableAnimations
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
@@ -58,10 +59,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
                 _gestureFactory = gestureFactory(transitionBounds)
             }
         }
-
-    companion object {
-        val DefaultAnimationSpec: AnimationSpec<Float> = spring()
-    }
 
     val frames: Flow<List<FrameModel<NavTarget>>> =
         model
