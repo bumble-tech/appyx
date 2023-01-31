@@ -53,7 +53,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
             }
     }
 
-    override fun <T : Node> whenChildAttached(
+    override fun <T : Any> whenChildAttached(
         child: KClass<T>,
         callback: ChildCallback<T>
     ) {
@@ -64,7 +64,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         lifecycle.removeWhenDestroyed(info)
     }
 
-    override fun <T1 : Node, T2 : Node> whenChildrenAttached(
+    override fun <T1 : Any, T2 : Any> whenChildrenAttached(
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
