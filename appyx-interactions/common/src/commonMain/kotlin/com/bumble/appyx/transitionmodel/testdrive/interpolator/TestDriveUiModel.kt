@@ -4,10 +4,13 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
+import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.property.Animatable
@@ -17,10 +20,15 @@ import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.*
+import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
+import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.B
+import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.C
+import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.D
+import com.bumble.appyx.transitionmodel.testdrive.operation.MoveTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
     transitionBounds: TransitionBounds
@@ -109,5 +117,47 @@ class TestDriveUiModel<NavTarget : Any>(
                 Logger.log("TestDrive", "Matched $elementState -> Props: ${it.props}")
             }
         )
+
+    class Gestures<NavTarget>(
+        transitionBounds: TransitionBounds,
+    ) : GestureFactory<NavTarget, TestDriveModel.State<NavTarget>> {
+        private val width = transitionBounds.widthPx
+        private val height = transitionBounds.heightPx
+
+        override fun createGesture(
+            delta: androidx.compose.ui.geometry.Offset,
+            density: Density
+        ): Gesture<NavTarget, TestDriveModel.State<NavTarget>> {
+            return if (abs(delta.x) > abs(delta.y)) {
+                if (delta.x < 0) {
+                    Gesture(
+                        operation = MoveTo(D),
+                        dragToProgress = { offset -> (offset.x / width) * -1 },
+                        partial = { offset, progress -> offset.copy(x = progress * width * -1) }
+                    )
+                } else {
+                    Gesture(
+                        operation = MoveTo(B),
+                        dragToProgress = { offset -> (offset.x / width) },
+                        partial = { offset, partial -> offset.copy(x = partial * width) }
+                    )
+                }
+            } else {
+                if (delta.y < 0) {
+                    Gesture(
+                        operation = MoveTo(A),
+                        dragToProgress = { offset -> (offset.y / height) * -1 },
+                        partial = { offset, partial -> offset.copy(y = partial * height * -1) }
+                    )
+                } else {
+                    Gesture(
+                        operation = MoveTo(C),
+                        dragToProgress = { offset -> (offset.y / height) },
+                        partial = { offset, partial -> offset.copy(y = partial * height) }
+                    )
+                }
+            }
+        }
+    }
 }
 
