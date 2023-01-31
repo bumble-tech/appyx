@@ -17,7 +17,6 @@ class CardsModel<NavTarget : Any>(
         val queued: List<Card.InvisibleCard<NavTarget>> = emptyList()
     ) {
         sealed class Card<NavTarget> {
-
             abstract val navElement: NavElement<NavTarget>
 
             sealed class VisibleCard<NavTarget> : Card<NavTarget>() {
@@ -49,17 +48,6 @@ class CardsModel<NavTarget : Any>(
                         LIKED, PASSED
                     }
                 }
-            }
-
-
-        }
-
-        data class VotedCard<NavTarget>(
-            val navElement: NavElement<NavTarget>,
-            val votedCardState: VOTED_CARD_STATE
-        ) {
-            enum class VOTED_CARD_STATE {
-                LIKED, PASSED
             }
         }
     }

@@ -18,14 +18,15 @@ import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
+import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
@@ -43,7 +44,9 @@ typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.
 
 class CardsProps<NavTarget : Any>(
     transitionBounds: TransitionBounds
-) : Interpolator<NavTarget, CardsModel.State<NavTarget>> {
+) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
+    defaultProps = { Props() }
+) {
     private val width = transitionBounds.widthDp.value
 
     class Props(
@@ -57,7 +60,7 @@ class CardsProps<NavTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         override val isVisible: Boolean = false
-    ) : Interpolatable<Props>, HasModifier, BaseProps {
+    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             scale.lerpTo(start.scale, end.scale, fraction)
@@ -73,7 +76,14 @@ class CardsProps<NavTarget : Any>(
                 .then(rotationZ.modifier)
                 .then(zIndex.modifier)
 
-        suspend fun animateTo(
+        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+            scale.snapTo(props.scale.value)
+            positionalOffsetX.snapTo(props.positionalOffsetX.value)
+            rotationZ.snapTo(props.rotationZ.value)
+            zIndex.snapTo(props.zIndex.value)
+        }
+
+        override suspend fun animateTo(
             scope: CoroutineScope,
             props: Props,
             onStart: () -> Unit,
@@ -86,31 +96,31 @@ class CardsProps<NavTarget : Any>(
                 dampingRatio = Spring.DampingRatioLowBouncy,
             )
             onStart()
-            val a1 = scope.async {
-                scale.animateTo(
-                    props.scale.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                )
-            }
-            val a2 = scope.async {
-                positionalOffsetX.animateTo(
-                    props.positionalOffsetX.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                )
-            }
-            val a3 = scope.async {
-                rotationZ.animateTo(
-                    props.rotationZ.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                )
-            }
-            val a4 = scope.async {
-                zIndex.animateTo(
-                    props.zIndex.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                )
-            }
-            awaitAll(a1, a2, a3, a4)
+            listOf(
+                scope.async {
+                    scale.animateTo(
+                        props.scale.value,
+                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                    )
+                },
+                scope.async {
+                    positionalOffsetX.animateTo(
+                        props.positionalOffsetX.value,
+                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                    )
+                },
+                scope.async {
+                    rotationZ.animateTo(
+                        props.rotationZ.value,
+                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                    )
+                },
+                scope.async {
+                    zIndex.animateTo(
+                        props.zIndex.value,
+                        spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                    )
+                }).awaitAll()
             onFinished()
         }
     }
@@ -152,18 +162,7 @@ class CardsProps<NavTarget : Any>(
         rotationZ = RotationZ(45f),
     )
 
-    private val cache: MutableMap<String, Props> = mutableMapOf()
-    private val animations: MutableMap<String, Boolean> = mutableMapOf()
-    private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
-
-    override fun isAnimating(): StateFlow<Boolean> = isAnimating
-
-    fun updateAnimationState(key: String, isAnimating: Boolean) {
-        animations[key] = isAnimating
-        this.isAnimating.update { isAnimating || animations.any { it.value } }
-    }
-
-    private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
+    override fun CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
         val result = mutableListOf<MatchedProps<NavTarget, Props>>()
         (votedCards + visibleCards + queued).map {
             when (it) {
@@ -176,12 +175,15 @@ class CardsProps<NavTarget : Any>(
                         }
                     )
                 }
+
                 is CardsModel.State.Card.VisibleCard.TopCard -> {
                     result.add(MatchedProps(it.navElement, top))
                 }
+
                 is CardsModel.State.Card.VisibleCard.BottomCard -> {
                     result.add(MatchedProps(it.navElement, bottom))
                 }
+
                 is CardsModel.State.Card.InvisibleCard.Queued -> {
                     result.add(MatchedProps(it.navElement, hidden))
                 }
@@ -191,28 +193,6 @@ class CardsProps<NavTarget : Any>(
         return result
     }
 
-    override fun mapSegment(segment: Segment<CardsModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
-        val (fromState, targetState) = segment.navTransition
-        val fromProps = fromState.toProps()
-        val targetProps = targetState.toProps()
-
-        return targetProps.map { t1 ->
-            val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val elementProps = cache.getOrPut(t1.element.id) { Props() }
-
-            runBlocking {
-                elementProps.lerpTo(t0.props, t1.props, segmentProgress)
-            }
-
-            FrameModel(
-                navElement = t1.element,
-                modifier = elementProps.modifier
-                    .composed { this },
-                progress = segmentProgress
-            )
-        }
-    }
-
     class Gestures<NavTarget>(
         transitionBounds: TransitionBounds
     ) : GestureFactory<NavTarget, CardsModel.State<NavTarget>> {
@@ -220,9 +200,9 @@ class CardsProps<NavTarget : Any>(
         private val width = transitionBounds.widthPx
         private val height = transitionBounds.widthPx
 
-        private var touchPosition:  Offset? = null
+        private var touchPosition: Offset? = null
 
-        override fun onStartDrag(position:  Offset) {
+        override fun onStartDrag(position: Offset) {
             touchPosition = position
         }
 
@@ -259,31 +239,5 @@ class CardsProps<NavTarget : Any>(
 
     private companion object {
         private const val voteCardPositionMultiplier = 2
-    }
-
-    override fun mapUpdate(update: Update<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
-        val targetProps = update.currentTargetState.toProps()
-
-        return targetProps.map { t1 ->
-            val elementProps = cache.getOrPut(t1.element.id) { Props() }
-
-            FrameModel(
-                navElement = t1.element,
-                modifier = elementProps.modifier
-                    .composed {
-                        LaunchedEffect(t1.props) {
-                            Logger.log("TestDrive", "Animating ${t1.element} to ${t1.props}")
-                            elementProps.animateTo(
-                                scope = this,
-                                props = t1.props,
-                                onStart = { updateAnimationState(t1.element.id, true) },
-                                onFinished = { updateAnimationState(t1.element.id, false) },
-                            )
-                        }
-                        this
-                    },
-                progress = 1f
-            )
-        }
     }
 }
