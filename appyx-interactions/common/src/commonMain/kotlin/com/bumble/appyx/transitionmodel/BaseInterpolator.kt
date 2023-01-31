@@ -22,7 +22,8 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val 
     private val cache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    override fun isAnimating(): StateFlow<Boolean> =
+
+    final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
 
     fun updateAnimationState(key: String, isAnimating: Boolean) {
@@ -43,12 +44,16 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val 
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed {
                     LaunchedEffect(update) {
-                        elementProps.animateTo(
-                            scope = this,
-                            props = t1.props,
-                            onStart = { updateAnimationState(t1.element.id, true) },
-                            onFinished = { updateAnimationState(t1.element.id, false) },
-                        )
+                        if (update.animate) {
+                            elementProps.animateTo(
+                                scope = this,
+                                props = t1.props,
+                                onStart = { updateAnimationState(t1.element.id, true) },
+                                onFinished = { updateAnimationState(t1.element.id, false) },
+                            )
+                        } else {
+                            elementProps.snapTo(this, t1.props)
+                        }
                     }
                     this
                 },
@@ -57,7 +62,10 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val 
         }
     }
 
-    override fun mapSegment(segment: Segment<ModelState>, segmentProgress: Float): List<FrameModel<NavTarget>> {
+    override fun mapSegment(
+        segment: Segment<ModelState>,
+        segmentProgress: Float
+    ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()

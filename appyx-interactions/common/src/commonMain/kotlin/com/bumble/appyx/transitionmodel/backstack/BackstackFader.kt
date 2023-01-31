@@ -30,10 +30,8 @@ class BackstackFader<NavTarget : Any>() :
             get() = Modifier
                 .then(alpha.modifier)
 
-        suspend fun animateTo(scope: CoroutineScope, props: Props) {
-            scope.launch {
-                alpha.animateTo(props.alpha.value, spring())
-            }
+        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+            alpha.snapTo(props.alpha.value)
         }
 
         override suspend fun animateTo(

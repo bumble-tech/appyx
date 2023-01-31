@@ -50,6 +50,11 @@ class TestDriveUiModel<NavTarget : Any>(
                 .then(offset.modifier)
                 .then(backgroundColor.modifier)
 
+        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+            offset.snapTo(props.offset.value)
+            backgroundColor.snapTo(props.backgroundColor.value)
+        }
+
         override suspend fun animateTo(
             scope: CoroutineScope,
             props: Props,

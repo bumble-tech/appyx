@@ -145,7 +145,6 @@ class BackStackSlider<NavTarget>(
         DpOffset(x * multiplier, y * multiplier)
 
     override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
-
         val targetProps = update.currentTargetState.toProps()
 
         return targetProps.map { t1 ->

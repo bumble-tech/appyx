@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.core
 data class Update<ModelState>(
     val history: List<ModelState> = emptyList(),
     override val currentTargetState: ModelState,
+    val animate: Boolean = true
 ) : TransitionModel.Output<ModelState>() {
 
     override val lastTargetState: ModelState =

@@ -26,7 +26,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     private val state: MutableStateFlow<Output<ModelState>> by lazy {
         MutableStateFlow(
             Update(
-                currentTargetState = initialState
+                currentTargetState = initialState,
+                animate = false
             )
         )
     }
