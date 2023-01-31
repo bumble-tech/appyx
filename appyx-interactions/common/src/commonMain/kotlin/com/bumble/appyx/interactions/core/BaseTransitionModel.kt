@@ -142,8 +142,17 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                 return
             }
             is Keyframes -> {
-                val newState = currentState.dropAfter(segmentIndex)
-                updateState(newState)
+                if (segmentIndex == 0) {
+                    val first = currentState.queue.first()
+                    val newState = Update(
+                        currentTargetState = first.fromState,
+                        animate = false
+                    )
+                    updateState(newState)
+                } else {
+                    val newState = currentState.dropAfter(segmentIndex)
+                    updateState(newState)
+                }
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.bumble.appyx.interactions.core
 
 import com.bumble.appyx.interactions.Logger
-
 data class Keyframes<ModelState>(
     val queue: List<Segment<ModelState>>,
     val progress: Float = 0f,
@@ -57,9 +56,12 @@ data class Keyframes<ModelState>(
         )
 
     fun dropAfter(index: Int): Keyframes<ModelState> =
-        copy(
-            queue = queue.dropLast(queue.lastIndex - index)
-        )
+        if (index < queue.lastIndex) {
+            copy(
+                queue = queue.dropLast(queue.lastIndex - index)
+            )
+        } else this
+
 
     fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit): Keyframes<ModelState> {
         Logger.log("Keyframes", "Progress update: $progress")
@@ -73,3 +75,4 @@ data class Keyframes<ModelState>(
         )
     }
 }
+
