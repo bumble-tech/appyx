@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.core
 import DefaultAnimationSpec
 import DisableAnimations
 import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
@@ -105,6 +106,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
+       if (animationSpec is SpringSpec<Float>) _interpolator.overrideAnimationSpec(animationSpec)
         val animatedSource = animated
         val debugSource = debug
         when {

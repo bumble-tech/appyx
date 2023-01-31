@@ -1,5 +1,6 @@
 package com.bumble.appyx.interactions.core.ui
 
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.lerp
@@ -15,6 +16,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 interface Interpolator<Target, ModelState> {
+
+    fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
+        // TODO remove default once all implementations have been migrated to BaseInterpolator
+    }
 
     fun isAnimating(): StateFlow<Boolean> = MutableStateFlow(false)
 

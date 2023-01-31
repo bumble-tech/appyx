@@ -1,7 +1,9 @@
 package com.bumble.appyx.interactions.sample
 
+import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -51,10 +53,7 @@ fun TestDriveExperiment() {
         TestDrive(
             scope = coroutineScope,
             model = model,
-            interpolator = { TestDriveUiModel(it, spring(
-                stiffness = Spring.StiffnessVeryLow / 2,
-                dampingRatio = Spring.DampingRatioLowBouncy,
-            )) },
+            interpolator = { TestDriveUiModel(it) },
             gestureFactory = { TestDriveUiModel.Gestures(it) }
         )
     }
@@ -123,15 +122,17 @@ fun TestDriveExperiment() {
         ) {
             Button(onClick = { testDrive.next(
                 mode = KEYFRAME,
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 5)
+                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 1)
             ) }) {
                 Text("Keyframe")
             }
 
             Button(onClick = { testDrive.next(
                 mode = IMMEDIATE,
-                // FIXME this animationSpec affects only progress, not the update!
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 5)
+                animationSpec = spring(
+                    stiffness = Spring.StiffnessVeryLow,
+                    dampingRatio = Spring.DampingRatioMediumBouncy
+                )
             ) }) {
                 Text("Immediate")
             }

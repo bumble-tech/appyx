@@ -27,6 +27,11 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private val cache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
+
+    override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
+        currentSpringSpec = springSpec
+    }
 
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
@@ -53,9 +58,15 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                             elementProps.animateTo(
                                 scope = this,
                                 props = t1.props,
-                                springSpec = defaultAnimationSpec,
-                                onStart = { updateAnimationState(t1.element.id, true) },
-                            ) { updateAnimationState(t1.element.id, false) }
+                                springSpec = currentSpringSpec,
+                                onStart = {
+                                    updateAnimationState(t1.element.id, true)
+                                },
+                                onFinished = {
+                                    updateAnimationState(t1.element.id, false)
+                                    currentSpringSpec = defaultAnimationSpec
+                                },
+                            )
                         } else {
                             elementProps.snapTo(this, t1.props)
                         }
