@@ -98,7 +98,7 @@ interface TransitionModel<NavTarget, ModelState> {
 
             override fun deriveSegment(navTransition: NavTransition<ModelState>): Segment<ModelState> =
                 Segment(
-                    index = index + 1,
+                    index = index,
                     navTransition = navTransition,
                     progress = 0f,
                 )
