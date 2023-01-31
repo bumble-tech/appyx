@@ -1,7 +1,8 @@
 # Changelog
 
 ## Pending changes
-–
+
+- [#336](https://github.com/bumble-tech/appyx/pulls/336) – **Updated**: ChildAware API does not enforce Node subtypes only anymore, making it possible to use interfaces as public contracts for child nodes.
 
 ---
 
