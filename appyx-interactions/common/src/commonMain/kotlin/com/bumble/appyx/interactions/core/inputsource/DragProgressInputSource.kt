@@ -48,61 +48,62 @@ class DragProgressInputSource<NavTarget : Any, State>(
 
     private fun consumeDrag(dragAmount: Offset) {
         val currentState = model.output.value
-        if (currentState is Keyframes<*>) {
-            require(dragAmount.isValid()) { "dragAmount is NaN" }
-            require(dragAmount.getDistance() > 0f) { "dragAmount distance is 0" }
-            requireNotNull(_gestureFactory) { "This should have been set already in this class" }
-            if (gesture == null) {
-                gesture = _gestureFactory!!.invoke(dragAmount)
+        require(dragAmount.isValid()) { "dragAmount is NaN" }
+        require(dragAmount.getDistance() > 0f) { "dragAmount distance is 0" }
+        requireNotNull(_gestureFactory) { "This should have been set already in this class" }
+        if (gesture == null) {
+            gesture = _gestureFactory!!.invoke(dragAmount)
+        }
+
+        requireNotNull(gesture)
+        val operation = gesture!!.operation
+        val deltaProgress = gesture!!.dragToProgress(dragAmount)
+        require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
+        val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
+        val totalTarget = currentProgress + deltaProgress
+
+        // Case: we can start a new operation
+        if (gesture!!.startProgress == null) {
+            // TODO internally this will always apply it to the end of a Keyframes queue,
+            //  which is not necessarily what we want:
+            if (model.operation(operation)) {
+                gesture!!.startProgress = currentProgress
+                Logger.log(TAG, "operation applied: $operation")
+            } else {
+                Logger.log(TAG, "operation not applicable: $operation")
+                return
             }
+            // Case: we can continue the existing operation
+        }
 
-            requireNotNull(gesture)
-            val operation = gesture!!.operation
-            val deltaProgress = gesture!!.dragToProgress(dragAmount)
-            require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
-            val currentProgress = currentState.progress
-            val totalTarget = currentProgress + deltaProgress
+        val startProgress = gesture!!.startProgress!!
 
-            // Case: we can start a new operation
-            if (gesture!!.startProgress == null) {
-                if (model.operation(operation)) {
-                    gesture!!.startProgress = currentProgress
-                    Logger.log(TAG, "operation applied: $operation")
-                } else {
-                    Logger.log(TAG, "operation not applicable: $operation")
-                    return
-                }
-                // Case: we can continue the existing operation
-            }
+        // Case: we go forward, it's cool
+        if (totalTarget > startProgress) {
 
-            val startProgress = gesture!!.startProgress!!
+            // Case: standard forward progress
+            if (totalTarget < startProgress + 1) {
+                model.setProgress(totalTarget)
+                val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
+                Logger.log(
+                    TAG,
+                    "delta applied forward, new progress: $currentProgress"
+                )
 
-            // Case: we go forward, it's cool
-            if (totalTarget > startProgress) {
-
-                // Case: standard forward progress
-                if (totalTarget < startProgress + 1) {
-                    model.setProgress(totalTarget)
-                    Logger.log(
-                        TAG,
-                        "delta applied forward, new progress: ${currentState.progress}"
-                    )
-
-                    // Case: target is beyond the current segment, we'll need a new operation
-                } else {
-                    // TODO without recursion
-                    val remainder =
-                        consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
-                    consumeDrag(remainder)
-                }
-
-                // Case: we went back to or beyond the start,
-                // now we need to re-evaluate for a new operation
+                // Case: target is beyond the current segment, we'll need a new operation
             } else {
                 // TODO without recursion
-                val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
+                val remainder =
+                    consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
                 consumeDrag(remainder)
             }
+
+            // Case: we went back to or beyond the start,
+            // now we need to re-evaluate for a new operation
+        } else {
+            // TODO without recursion
+            val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
+            consumeDrag(remainder)
         }
     }
 
