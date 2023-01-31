@@ -9,7 +9,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -102,7 +103,7 @@ class PromoterInterpolator<NavTarget : Any>(
             })
         }
 
-    override fun mapSegment(segment: TransitionModel.Output.Segment<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: Segment<PromoterModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -116,18 +117,18 @@ class PromoterInterpolator<NavTarget : Any>(
 
             // Lerp block
             val dpOffsetX =
-                lerpFloat(t0.props.dpOffset.x.value, t1.props.dpOffset.x.value, segment.progress)
+                lerpFloat(t0.props.dpOffset.x.value, t1.props.dpOffset.x.value, segmentProgress)
             val dpOffsetY =
-                lerpFloat(t0.props.dpOffset.y.value, t1.props.dpOffset.y.value, segment.progress)
-            val rotationY = lerpFloat(t0.props.rotationY, t1.props.rotationY, segment.progress)
-            val rotationZ = lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segment.progress)
-            val scale = lerpFloat(t0.props.scale, t1.props.scale, segment.progress)
+                lerpFloat(t0.props.dpOffset.y.value, t1.props.dpOffset.y.value, segmentProgress)
+            val rotationY = lerpFloat(t0.props.rotationY, t1.props.rotationY, segmentProgress)
+            val rotationZ = lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segmentProgress)
+            val scale = lerpFloat(t0.props.scale, t1.props.scale, segmentProgress)
             val angleRadians =
-                lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segment.progress)
+                lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segmentProgress)
             val effectiveRadiusRatio = lerpFloat(
                 t0.props.effectiveRadiusRatio,
                 t1.props.effectiveRadiusRatio,
-                segment.progress
+                segmentProgress
             )
             val effectiveRadius = radiusDp * effectiveRadiusRatio
             val x = (effectiveRadius * cos(angleRadians))
@@ -148,13 +149,13 @@ class PromoterInterpolator<NavTarget : Any>(
                         rotationZ = rotationZ
                     )
                     .scale(scale),
-                progress = segment.progress,
+                progress = segmentProgress,
                 state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }
     }
 
-    override fun mapUpdate(update: TransitionModel.Output.Update<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(update: Update<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
         TODO("Not yet implemented")
     }
 }

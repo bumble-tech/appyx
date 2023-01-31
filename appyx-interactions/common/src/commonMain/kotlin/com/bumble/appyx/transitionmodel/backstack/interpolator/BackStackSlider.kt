@@ -9,7 +9,8 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -106,7 +107,7 @@ class BackStackSlider<NavTarget>(
                     )
                 }
 
-    override fun mapSegment(segment: TransitionModel.Output.Segment<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: Segment<BackStackModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -117,14 +118,14 @@ class BackStackSlider<NavTarget>(
             val elementProps = cache.getOrPut(t1.element.id) { Props() }
 
             runBlocking {
-                elementProps.lerpTo(t0.props, t1.props, segment.progress)
+                elementProps.lerpTo(t0.props, t1.props, segmentProgress)
             }
 
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier
                     .composed { this },
-                progress = segment.progress,
+                progress = segmentProgress,
                 state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }
@@ -143,9 +144,9 @@ class BackStackSlider<NavTarget>(
     operator fun DpOffset.times(multiplier: Int) =
         DpOffset(x * multiplier, y * multiplier)
 
-    override fun mapUpdate(update: TransitionModel.Output.Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
 
-        val targetProps = update.targetState.toProps()
+        val targetProps = update.currentTargetState.toProps()
 
         return targetProps.map { t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { Props() }

@@ -29,17 +29,15 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.core.Keyframes
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.theme.appyx_dark
-import com.bumble.appyx.interactions.theme.md_light_blue_500
-import com.bumble.appyx.interactions.theme.md_red_500
-import com.bumble.appyx.interactions.theme.md_yellow_500
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel
 import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel.Companion.toProps
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.md_light_green_500
 import com.bumble.appyx.transitionmodel.testdrive.operation.next
 
 
@@ -95,7 +93,7 @@ fun TestDriveExperiment() {
             }
 
             val output = model.output.collectAsState().value
-            val targetProps = output.targetState.elementState.toProps()
+            val targetProps = output.currentTargetState.elementState.toProps()
             Box(modifier = Modifier
                 .size(60.dp)
                 .offset(targetProps.offset.value.x, targetProps.offset.value.y)
@@ -103,7 +101,10 @@ fun TestDriveExperiment() {
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
-                    text = output.index.toString(),
+                    text = when (output) {
+                        is Keyframes -> output.currentIndex.toString()
+                        is Update -> "X"
+                    },
                     fontSize = 24.sp,
                     color = Color.White
                 )

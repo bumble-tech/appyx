@@ -12,7 +12,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -190,7 +191,7 @@ class CardsProps<NavTarget : Any>(
         return result
     }
 
-    override fun mapSegment(segment: TransitionModel.Output.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: Segment<CardsModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -200,14 +201,14 @@ class CardsProps<NavTarget : Any>(
             val elementProps = cache.getOrPut(t1.element.id) { Props() }
 
             runBlocking {
-                elementProps.lerpTo(t0.props, t1.props, segment.progress)
+                elementProps.lerpTo(t0.props, t1.props, segmentProgress)
             }
 
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier
                     .composed { this },
-                progress = segment.progress
+                progress = segmentProgress
             )
         }
     }
@@ -260,8 +261,8 @@ class CardsProps<NavTarget : Any>(
         private const val voteCardPositionMultiplier = 2
     }
 
-    override fun mapUpdate(update: TransitionModel.Output.Update<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
-        val targetProps = update.targetState.toProps()
+    override fun mapUpdate(update: Update<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        val targetProps = update.currentTargetState.toProps()
 
         return targetProps.map { t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { Props() }

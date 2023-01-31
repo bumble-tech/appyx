@@ -12,11 +12,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
+// FIXME
 class DebugProgressInputSource<NavTarget, ModelState>(
     private val transitionModel: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
 ) : InputSource<NavTarget, ModelState> {
-    private val animatable = Animatable(0f)
+    // TODO this should >not< use its own animatable that's independent of AnimatedInputSource
+//    private val animatable = Animatable(0f)
     private lateinit var result: AnimationResult<Float, AnimationVector1D>
     private var progress: Float = 1f
 
@@ -26,25 +28,26 @@ class DebugProgressInputSource<NavTarget, ModelState>(
     }
 
     fun setNormalisedProgress(progress: Float) {
-        this.progress = progress.coerceIn(0f, 1f)
-        // TODO enforce min 1f in NavModel as a hidden detail rather than here:
-        transitionModel.setProgress(1f + this.progress * (transitionModel.maxProgress - 1f))
+        // FIXME
+//        this.progress = progress.coerceIn(0f, 1f)
+//        // TODO enforce min 1f in NavModel as a hidden detail rather than here:
+//        transitionModel.setProgress(1f + this.progress * (transitionModel.maxProgress - 1f))
     }
 
     fun settle() {
-        Logger.log(TAG, "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
-        coroutineScope.launch {
-            animatable.snapTo(progress)
-            result = animatable.animateTo(progress.roundToInt().toFloat(), spring()) {
-                setNormalisedProgress(this.value)
-            }
-        }
+//        Logger.log(TAG, "Settle ${progress} to: ${progress.roundToInt().toFloat()}")
+//        coroutineScope.launch {
+//            animatable.snapTo(progress)
+//            result = animatable.animateTo(progress.roundToInt().toFloat(), spring()) {
+//                setNormalisedProgress(this.value)
+//            }
+//        }
     }
 
     fun stopModel() {
-        coroutineScope.launch(Dispatchers.Main) {
-            animatable.snapTo(transitionModel.currentProgress)
-        }
+//        coroutineScope.launch(Dispatchers.Main) {
+//            animatable.snapTo(transitionModel.currentProgress)
+//        }
     }
 
     private companion object {

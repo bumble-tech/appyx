@@ -2,7 +2,8 @@ package com.bumble.appyx.transitionmodel
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.composed
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -31,8 +32,8 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val 
 
     abstract fun ModelState.toProps(): List<MatchedProps<NavTarget, Props>>
 
-    override fun mapUpdate(update: TransitionModel.Output.Update<ModelState>): List<FrameModel<NavTarget>> {
-        val targetProps = update.targetState.toProps()
+    override fun mapUpdate(update: Update<ModelState>): List<FrameModel<NavTarget>> {
+        val targetProps = update.currentTargetState.toProps()
 
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
@@ -56,7 +57,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val 
         }
     }
 
-    override fun mapSegment(segment: TransitionModel.Output.Segment<ModelState>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: Segment<ModelState>, segmentProgress: Float): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -66,13 +67,13 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(private val 
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = cache.getOrPut(t1.element.id, defaultProps)
             runBlocking {
-                elementProps.lerpTo(t0.props, t1.props, segment.progress)
+                elementProps.lerpTo(t0.props, t1.props, segmentProgress)
             }
 
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed { this },
-                progress = segment.progress,
+                progress = segmentProgress,
                 state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }

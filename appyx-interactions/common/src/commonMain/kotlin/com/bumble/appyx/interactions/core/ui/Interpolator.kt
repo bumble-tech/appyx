@@ -4,8 +4,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.lerp
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.TransitionModel.Output.Segment
-import com.bumble.appyx.interactions.core.TransitionModel.Output.Update
+import com.bumble.appyx.interactions.core.Keyframes
+import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.FrameModel.State
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
@@ -31,13 +32,21 @@ interface Interpolator<Target, ModelState> {
         output: TransitionModel.Output<ModelState>
     ): List<FrameModel<Target>> =
         when (output) {
-            is Segment -> mapSegment(output)
+            is Keyframes -> mapKeyframes(output)
             is Update -> mapUpdate(output)
         }
 
+    fun mapKeyframes(
+        keyframes: Keyframes<ModelState>
+    ): List<FrameModel<Target>> =
+        mapSegment(
+            keyframes.currentSegment,
+            keyframes.segmentProgress
+        )
 
     fun mapSegment(
-        segment: Segment<ModelState>
+        segment: Segment<ModelState>,
+        segmentProgress: Float
     ): List<FrameModel<Target>>
 
     fun mapUpdate(
