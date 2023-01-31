@@ -92,8 +92,8 @@ class CardsProps<NavTarget : Any>(
             // FIXME this should match the own animationSpec of the model (which can also be supplied
             //  from operation extension methods) rather than created here
             val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow / 5,
-                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessVeryLow,
+                dampingRatio = Spring.DampingRatioHighBouncy,
             )
             onStart()
             listOf(

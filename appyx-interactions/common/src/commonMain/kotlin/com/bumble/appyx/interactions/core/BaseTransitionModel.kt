@@ -135,7 +135,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         }
     }
 
-    override fun dropAfter(segmentIndex: Int) {
+    override fun dropAfter(segmentIndex: Int, animateOnRevert: Boolean) {
         when (val currentState = state.value) {
             is Update -> {
                 Logger.log(TAG, "Not in keyframe state, ignoring dropAfter")
@@ -146,7 +146,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                     val first = currentState.queue.first()
                     val newState = Update(
                         currentTargetState = first.fromState,
-                        animate = false
+                        animate = animateOnRevert
                     )
                     updateState(newState)
                 } else {

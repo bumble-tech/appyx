@@ -16,7 +16,8 @@ import kotlin.math.floor
 class AnimatedInputSource<NavTarget : Any, ModelState>(
     private val model: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
-    private val defaultAnimationSpec: AnimationSpec<Float> = spring()
+    private val defaultAnimationSpec: AnimationSpec<Float> = spring(),
+    private val animateSettleRevert: Boolean = false
 ) : InputSource<NavTarget, ModelState> {
 
     private val animatable = Animatable(0f)
@@ -64,7 +65,10 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
                 animationSpec = animationSpec,
                 cancelVelocity = true,
                 onAnimationFinished = {
-                    model.dropAfter(targetValue)
+                    model.dropAfter(
+                        segmentIndex = targetValue,
+                        animateOnRevert = animateSettleRevert
+                    )
                 }
             )
         }

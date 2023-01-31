@@ -30,6 +30,6 @@ interface TransitionModel<NavTarget, ModelState> {
 
     fun setProgress(progress: Float)
 
-    fun dropAfter(segmentIndex: Int)
+    fun dropAfter(segmentIndex: Int, animateOnRevert: Boolean = false)
 
 }

@@ -40,6 +40,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    private val animateSettleRevert: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
 ) : Draggable, FlexibleBounds {
@@ -179,7 +180,8 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         animated = AnimatedInputSource(
             model = model,
             coroutineScope = scope,
-            defaultAnimationSpec = defaultAnimationSpec
+            defaultAnimationSpec = defaultAnimationSpec,
+            animateSettleRevert = animateSettleRevert
         )
     }
 
