@@ -13,3 +13,18 @@ data class FrameModel<NavTarget>(
         VISIBLE, PARTIALLY_VISIBLE, INVISIBLE, UNSPECIFIED
     }
 }
+
+fun <NavTarget> List<FrameModel<NavTarget>>.toScreenState(): ScreenState<NavTarget> {
+    val onScreen = mutableSetOf<NavElement<NavTarget>>()
+    val offScreen = mutableSetOf<NavElement<NavTarget>>()
+    forEach { frame ->
+        if (frame.state == FrameModel.State.VISIBLE || frame.state == FrameModel.State.PARTIALLY_VISIBLE) {
+            onScreen.add(frame.navElement)
+        } else {
+            offScreen.add(frame.navElement)
+        }
+    }
+
+    return ScreenState(onScreen = onScreen, offScreen = offScreen)
+}
+

@@ -19,6 +19,7 @@ import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.toScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -66,18 +67,8 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             .output
             .flatMapLatest { _interpolator.map(it) }
 
-    val screenState: Flow<ScreenState<NavTarget>> = frames.map {
-        val onScreen = mutableSetOf<NavElement<NavTarget>>()
-        val offScreen = mutableSetOf<NavElement<NavTarget>>()
-        it.forEach { frame ->
-            if (frame.state == VISIBLE || frame.state == PARTIALLY_VISIBLE) {
-                onScreen.add(frame.navElement)
-            } else {
-                offScreen.add(frame.navElement)
-            }
-        }
-        ScreenState(onScreen = onScreen, offScreen = offScreen)
-    }
+    val screenState: Flow<ScreenState<NavTarget>> =
+        frames.map { it.toScreenState() }
 
     private val instant = InstantInputSource(
         model = model
