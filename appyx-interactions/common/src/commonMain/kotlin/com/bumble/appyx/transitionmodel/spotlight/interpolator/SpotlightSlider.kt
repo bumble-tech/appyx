@@ -5,7 +5,10 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.scale
@@ -14,26 +17,20 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
-import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
-import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.*
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 class SpotlightSlider<NavTarget>(
@@ -44,12 +41,13 @@ class SpotlightSlider<NavTarget>(
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
-    private val scroll = Geometry1D<TransitionModel.Output<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
-        scope = scope,
-        initialValue = 0f
-    ) {
-        mapCore(it)
-    }
+    private val scroll =
+        Geometry1D<TransitionModel.Output<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
+            scope = scope,
+            initialValue = 0f
+        ) {
+            mapCore(it)
+        }
 
     data class Props(
         val offset: DpOffset = DpOffset(0.dp, 0.dp),
@@ -114,14 +112,16 @@ class SpotlightSlider<NavTarget>(
                     .aspectRatio(aspectRatio)
                     .scale(scale)
                     .rotate(rotation)
-                    .alpha(alpha)
-                ,
-                progress = 0f
+                    .alpha(alpha),
+//                progress = 0f
             )
         }
     }
 
-    override fun mapSegment(segment: Segment<SpotlightModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
+    override fun mapSegment(
+        segment: Segment<SpotlightModel.State<NavTarget>>,
+        segmentProgress: Flow<Float>
+    ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -129,26 +129,54 @@ class SpotlightSlider<NavTarget>(
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }
 
-            val alpha = if (t0 != null) lerpFloat(t0.props.alpha, t1.props.alpha, segmentProgress) else t1.props.alpha
-            val scale = if (t0 != null) lerpFloat(t0.props.scale, t1.props.scale, segmentProgress) else t1.props.scale
-            val zIndex = if (t0 != null) lerpFloat(t0.props.zIndex, t1.props.zIndex, segmentProgress) else t1.props.zIndex
-            val aspectRatio = if (t0 != null) lerpFloat(t0.props.aspectRatio, t1.props.aspectRatio, segmentProgress) else t1.props.aspectRatio
-            val rotation = if (t0 != null) lerpFloat(t0.props.rotation, t1.props.rotation, segmentProgress) else t1.props.rotation
-            val offset = if (t0 != null) lerpDpOffset(t0.props.offset, t1.props.offset, segmentProgress) else t1.props.offset
-
             FrameModel(
                 navElement = t1.element,
                 modifier = Modifier
-                    .offset(
-                        x = offset.x,
-                        y = offset.y
-                    )
-                    .zIndex(zIndex)
-                    .aspectRatio(aspectRatio)
-                    .scale(scale)
-                    .rotate(rotation)
-                    .alpha(alpha),
-                progress = segmentProgress,
+                    .composed {
+                        val segmentProgress by segmentProgress.collectAsState(0f)
+
+                        val alpha = if (t0 != null) lerpFloat(
+                            t0.props.alpha,
+                            t1.props.alpha,
+                            segmentProgress
+                        ) else t1.props.alpha
+                        val scale = if (t0 != null) lerpFloat(
+                            t0.props.scale,
+                            t1.props.scale,
+                            segmentProgress
+                        ) else t1.props.scale
+                        val zIndex = if (t0 != null) lerpFloat(
+                            t0.props.zIndex,
+                            t1.props.zIndex,
+                            segmentProgress
+                        ) else t1.props.zIndex
+                        val aspectRatio = if (t0 != null) lerpFloat(
+                            t0.props.aspectRatio,
+                            t1.props.aspectRatio,
+                            segmentProgress
+                        ) else t1.props.aspectRatio
+                        val rotation = if (t0 != null) lerpFloat(
+                            t0.props.rotation,
+                            t1.props.rotation,
+                            segmentProgress
+                        ) else t1.props.rotation
+                        val offset = if (t0 != null) lerpDpOffset(
+                            t0.props.offset,
+                            t1.props.offset,
+                            segmentProgress
+                        ) else t1.props.offset
+
+                        this.offset(
+                            x = offset.x,
+                            y = offset.y
+                        )
+                            .zIndex(zIndex)
+                            .aspectRatio(aspectRatio)
+                            .scale(scale)
+                            .rotate(rotation)
+                            .alpha(alpha)
+                    },
+//                progress = segmentProgress,
                 state = resolveNavElementVisibility(t0?.props ?: t1.props, t1.props)
             )
         }

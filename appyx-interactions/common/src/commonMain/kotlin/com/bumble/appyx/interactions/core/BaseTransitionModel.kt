@@ -130,7 +130,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                     // onTransitionFinished(state.value.fromState.map { it.key })
                 }
 
-                updateState(newState)
+//                updateState(newState)
             }
         }
     }

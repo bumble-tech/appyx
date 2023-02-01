@@ -56,7 +56,7 @@ fun BackStackExperimentDebug() {
 //            backStack.setNormalisedProgress(it)
 //        })
         Button(onClick = {
-            backStack.pop(Operation.Mode.IMMEDIATE)
+            backStack.pop(Operation.Mode.KEYFRAME)
         }
         ) {
             Text("POP")

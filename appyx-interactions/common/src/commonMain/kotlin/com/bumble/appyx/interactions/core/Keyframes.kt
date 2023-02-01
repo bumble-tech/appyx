@@ -1,9 +1,12 @@
 package com.bumble.appyx.interactions.core
 
 import com.bumble.appyx.interactions.Logger
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
+
 data class Keyframes<ModelState>(
     val queue: List<Segment<ModelState>>,
-    val progress: Float = 0f,
+    val initialProgress: Float = 0f
 ) : TransitionModel.Output<ModelState>() {
 
     val currentIndex: Int
@@ -27,6 +30,17 @@ data class Keyframes<ModelState>(
     val segmentProgress: Float
         get() = this.progress - currentIndex
 
+    val progressFlow = MutableStateFlow(initialProgress)
+
+    val segmentProgressFlow = progressFlow.map {
+        it - currentIndex
+    }
+
+    val progress: Float
+        get() {
+            return progressFlow.value
+        }
+
     override val currentTargetState: ModelState
         get() = currentSegment.targetState
 
@@ -42,7 +56,8 @@ data class Keyframes<ModelState>(
 
     override fun deriveKeyframes(navTransition: NavTransition<ModelState>): Keyframes<ModelState> =
         copy(
-            queue = queue + listOf(Segment(navTransition))
+            queue = queue + listOf(Segment(navTransition)),
+            initialProgress = progress
         )
 
     override fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState> =
@@ -63,16 +78,17 @@ data class Keyframes<ModelState>(
         } else this
 
 
-    fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit): Keyframes<ModelState> {
+    fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit) {
         Logger.log("Keyframes", "Progress update: $progress")
         if (progress.toInt() > this.progress.toInt()) {
             Logger.log("Keyframes", "onTransitionFinished()")
             onTransitionFinished(currentSegment.fromState)
         }
+        progressFlow.value = progress
 
-        return copy(
-            progress = progress
-        )
+//        return copy(
+//            initialProgress = progress
+//        )
     }
 }
 

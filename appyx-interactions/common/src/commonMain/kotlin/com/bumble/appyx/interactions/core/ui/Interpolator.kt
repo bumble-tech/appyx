@@ -12,6 +12,7 @@ import com.bumble.appyx.interactions.core.ui.FrameModel.State
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -46,12 +47,12 @@ interface Interpolator<Target, ModelState> {
     ): List<FrameModel<Target>> =
         mapSegment(
             keyframes.currentSegment,
-            keyframes.segmentProgress
+            keyframes.segmentProgressFlow
         )
 
     fun mapSegment(
         segment: Segment<ModelState>,
-        segmentProgress: Float
+        segmentProgress: Flow<Float>
     ): List<FrameModel<Target>>
 
     fun mapUpdate(
