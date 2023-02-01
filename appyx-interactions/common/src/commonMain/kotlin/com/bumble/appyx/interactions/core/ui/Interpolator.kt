@@ -63,7 +63,7 @@ interface Interpolator<Target, ModelState> {
     fun resolveNavElementVisibility(
         fromProps: BaseProps,
         toProps: BaseProps,
-        progress: Float = 1f
+        progress: Float
     ): State = when {
         (progress == 0.0f && !fromProps.isVisible) || (progress == 1.0f && !toProps.isVisible) -> INVISIBLE
         (progress == 0.0f && fromProps.isVisible) || (progress == 1.0f && toProps.isVisible) -> VISIBLE

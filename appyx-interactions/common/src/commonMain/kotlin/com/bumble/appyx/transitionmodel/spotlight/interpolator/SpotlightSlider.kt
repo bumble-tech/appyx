@@ -114,8 +114,7 @@ class SpotlightSlider<NavTarget>(
                     .aspectRatio(aspectRatio)
                     .scale(scale)
                     .rotate(rotation)
-                    .alpha(alpha)
-                ,
+                    .alpha(alpha),
                 progress = 0f
             )
         }
@@ -149,7 +148,7 @@ class SpotlightSlider<NavTarget>(
                     .rotate(rotation)
                     .alpha(alpha),
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0?.props ?: t1.props, t1.props)
+                state = resolveNavElementVisibility(t0?.props ?: t1.props, t1.props, segmentProgress)
             )
         }
     }

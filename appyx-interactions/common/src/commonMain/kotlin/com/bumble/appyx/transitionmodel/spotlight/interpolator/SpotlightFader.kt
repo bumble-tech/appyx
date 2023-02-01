@@ -73,7 +73,7 @@ class SpotlightFader<NavTarget : Any>(
                     modifier = Modifier
                         .alpha(alpha),
                     progress = segmentProgress,
-                    state = resolveNavElementVisibility(t0.props, t1.props)
+                    state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
                 )
         }
     }

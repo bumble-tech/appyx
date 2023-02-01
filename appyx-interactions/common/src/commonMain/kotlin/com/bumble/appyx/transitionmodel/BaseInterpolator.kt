@@ -1,7 +1,6 @@
 package com.bumble.appyx.transitionmodel
 
 import DefaultAnimationSpec
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.composed
@@ -98,7 +97,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed { this },
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props)
+                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
     }
