@@ -3,9 +3,8 @@ package com.bumble.appyx.interactions.core
 import com.bumble.appyx.NavTarget
 import com.bumble.appyx.NavTarget.Child1
 import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
-import com.bumble.appyx.interactions.core.KeyFramesTest.TestTransitionModel.State
+import com.bumble.appyx.NavTarget.Child3
+import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -160,31 +159,57 @@ class KeyFramesTest {
         assertEquals(0, newKeyFrames.currentIndex)
     }
 
-    private class TestTransitionModel<NavTarget : Any>(
-        initialElements: List<NavTarget>,
-    ) : BaseTransitionModel<NavTarget, State<NavTarget>>() {
-        data class State<NavTarget>(val elements: List<NavElement<NavTarget>>)
-
-        override val initialState: State<NavTarget> = State(
-            elements = initialElements.map { it.asElement() }
+    @Test
+    fun WHEN_replace_THEN_new_targetState() {
+        val keyFrames = Keyframes(
+            queue = listOf(
+                Segment(
+                    NavTransition(
+                        fromState = State(listOf()),
+                        targetState = State(listOf(Child1.asElement()))
+                    )
+                )
+            )
         )
 
-        override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> = setOf()
+        val newTargetState = State(listOf(Child2.asElement()))
 
-        override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> = setOf()
+        assertEquals(newTargetState, keyFrames.replace(newTargetState).currentTargetState)
     }
 
-    @Parcelize
-    private class TestOperation<NavTarget : Any>(
-        private val navTarget: @RawValue NavTarget,
-        override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-    ) : BaseOperation<State<NavTarget>>() {
-        override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
-            baseLineState
+    @Test
+    fun WHEN_update_THEN_new_update_is_created() {
+        val segmentFromState = State(listOf(Child1.asElement()))
+        val segmentTargetState = State(listOf(Child1.asElement(), Child2.asElement()))
+        val keyFrames = Keyframes(
+            queue = listOf(
+                Segment(
+                    NavTransition(
+                        fromState = segmentFromState,
+                        targetState = segmentTargetState
+                    )
+                )
+            )
+        )
 
-        override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
-            fromState.copy(elements = fromState.elements + navTarget.asElement())
+        val fromState = State<NavTarget>(listOf())
+        val targetState = State(listOf(Child3.asElement()))
+        val navTransition = NavTransition(
+            fromState = fromState,
+            targetState = targetState
+        )
 
-        override fun isApplicable(state: State<NavTarget>): Boolean = true
+        val update = keyFrames.deriveUpdate(navTransition)
+
+        val expected = Update(
+            history = listOf(
+                segmentFromState,
+                segmentTargetState,
+                fromState
+            ),
+            currentTargetState = targetState
+        )
+
+        assertEquals(expected, update)
     }
 }
