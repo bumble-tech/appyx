@@ -1,32 +1,26 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
+import com.bumble.appyx.interactions.core.ui.property.Animatable
+import com.bumble.appyx.interactions.core.ui.property.HasModifier
+import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -34,13 +28,20 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
-class SpotlightSlider<NavTarget>(
+typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
+
+class SpotlightSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     private val scope: CoroutineScope,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
+) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
+    defaultProps = { Props() }
+) {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
@@ -52,17 +53,52 @@ class SpotlightSlider<NavTarget>(
     }
 
     data class Props(
-        val offset: DpOffset = DpOffset(0.dp, 0.dp),
+        val offset: InterpolatableOffset = InterpolatableOffset(DpOffset(0.dp, 0.dp)),
         val scale: Float = 1f,
         val alpha: Float = 1f,
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
-        override val isVisible: Boolean
-    ) : BaseProps
+        override val isVisible: Boolean = true
+    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
+
+
+        override val modifier: Modifier
+            get() = Modifier
+                .then(offset.modifier)
+
+        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+            offset.snapTo(props.offset.value)
+        }
+
+        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
+            offset.lerpTo(start.offset, end.offset, fraction)
+        }
+
+        override suspend fun animateTo(
+            scope: CoroutineScope,
+            props: Props,
+            springSpec: SpringSpec<Float>,
+            onStart: () -> Unit,
+            onFinished: () -> Unit
+        ) {
+            scope.launch {
+                onStart()
+                listOf(
+                    scope.async {
+                        offset.animateTo(
+                            props.offset.value,
+                            spring(springSpec.dampingRatio, springSpec.stiffness)
+                        )
+                    }
+                ).awaitAll()
+                onFinished()
+            }
+        }
+    }
 
     private val created = Props(
-        offset = DpOffset(0.dp, (500).dp),
+        offset = InterpolatableOffset(DpOffset(0.dp, 500.dp)),
         scale = 0f,
         alpha = 1f,
         zIndex = 0f,
@@ -73,7 +109,7 @@ class SpotlightSlider<NavTarget>(
     private val standard = Props(isVisible = true)
 
     private val destroyed = Props(
-        offset = DpOffset(0.dp, (-500).dp),
+        offset = InterpolatableOffset(DpOffset(0.dp, (-500).dp)),
         scale = 0f,
         alpha = 0f,
         zIndex = -1f,
@@ -92,75 +128,19 @@ class SpotlightSlider<NavTarget>(
             )
         )
 
-    override fun mapUpdate(update: Update<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
-        val targetProps = update.currentTargetState.toProps()
-
-        return targetProps.map { t1 ->
-            val alpha = t1.props.alpha
-            val scale = t1.props.scale
-            val zIndex = t1.props.zIndex
-            val aspectRatio = t1.props.aspectRatio
-            val rotation = t1.props.rotation
-            val offset = t1.props.offset
-
-            FrameModel(
-                navElement = t1.element,
-                modifier = Modifier
-                    .offset(
-                        x = offset.x,
-                        y = offset.y
-                    )
-                    .zIndex(zIndex)
-                    .aspectRatio(aspectRatio)
-                    .scale(scale)
-                    .rotate(rotation)
-                    .alpha(alpha),
-                progress = 0f
-            )
-        }
-    }
-
-    override fun mapSegment(segment: Segment<SpotlightModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
-        val (fromState, targetState) = segment.navTransition
-        val fromProps = fromState.toProps()
-        val targetProps = targetState.toProps()
-
-        return targetProps.map { t1 ->
-            val t0 = fromProps.find { it.element.id == t1.element.id }
-
-            val alpha = if (t0 != null) lerpFloat(t0.props.alpha, t1.props.alpha, segmentProgress) else t1.props.alpha
-            val scale = if (t0 != null) lerpFloat(t0.props.scale, t1.props.scale, segmentProgress) else t1.props.scale
-            val zIndex = if (t0 != null) lerpFloat(t0.props.zIndex, t1.props.zIndex, segmentProgress) else t1.props.zIndex
-            val aspectRatio = if (t0 != null) lerpFloat(t0.props.aspectRatio, t1.props.aspectRatio, segmentProgress) else t1.props.aspectRatio
-            val rotation = if (t0 != null) lerpFloat(t0.props.rotation, t1.props.rotation, segmentProgress) else t1.props.rotation
-            val offset = if (t0 != null) lerpDpOffset(t0.props.offset, t1.props.offset, segmentProgress) else t1.props.offset
-
-            FrameModel(
-                navElement = t1.element,
-                modifier = Modifier
-                    .offset(
-                        x = offset.x,
-                        y = offset.y
-                    )
-                    .zIndex(zIndex)
-                    .aspectRatio(aspectRatio)
-                    .scale(scale)
-                    .rotate(rotation)
-                    .alpha(alpha),
-                progress = segmentProgress,
-                state = resolveNavElementVisibility(t0?.props ?: t1.props, t1.props, segmentProgress)
-            )
-        }
-    }
-
-    private fun <NavTarget> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
+    override fun SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 val target = it.value.toProps()
                 MatchedProps(
                     element = it.key,
                     props = Props(
-                        offset = DpOffset(dpOffset(index).x, target.offset.y),
+                        offset = InterpolatableOffset(
+                            DpOffset(
+                                dpOffset(index).x,
+                                target.offset.value.y
+                            )
+                        ),
                         scale = target.scale,
                         alpha = target.alpha,
                         zIndex = target.zIndex,

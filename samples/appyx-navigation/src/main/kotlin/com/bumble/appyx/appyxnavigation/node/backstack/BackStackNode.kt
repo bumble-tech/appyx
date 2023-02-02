@@ -20,9 +20,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.appyxnavigation.colors
-import com.bumble.appyx.appyxnavigation.node.backstack.BackStackExampleNode.NavTarget
 import com.bumble.appyx.appyxnavigation.ui.TextButton
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -30,7 +31,6 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import com.bumble.appyx.transitionmodel.backstack.operation.newRoot
 import com.bumble.appyx.transitionmodel.backstack.operation.pop
 import com.bumble.appyx.transitionmodel.backstack.operation.push
@@ -39,20 +39,20 @@ import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
 
-class BackStackExampleNode(
+class BackStackNode(
     buildContext: BuildContext,
+    interpolator: (TransitionBounds) -> Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { BackStackSlider(it) }
+        interpolator = interpolator
     )
-) : ParentNode<NavTarget>(
+) : ParentNode<BackStackNode.NavTarget>(
     buildContext = buildContext,
     interactionModel = backStack
 ) {
-
     sealed class NavTarget : Parcelable {
         @Parcelize
         class Child(val index: Int) : NavTarget()

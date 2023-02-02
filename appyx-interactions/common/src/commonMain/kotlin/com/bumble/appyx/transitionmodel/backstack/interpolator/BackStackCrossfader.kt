@@ -1,68 +1,75 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.property.Animatable
+import com.bumble.appyx.interactions.core.ui.property.HasModifier
+import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
+import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
 
-class BackStackCrossfader<NavTarget : Any>() :
-    Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
+class BackStackCrossfader<NavTarget : Any> :
+    BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
+        defaultProps = { Props() }
+    ) {
 
     class Props(
-        val alpha: Float,
-        override val isVisible: Boolean
-    ) : BaseProps
+        val alpha: Alpha = Alpha(value = 1f),
+        override val isVisible: Boolean = true
+    ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
+
+        override val modifier: Modifier
+            get() = Modifier
+                .then(alpha.modifier)
+
+        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+            alpha.snapTo(props.alpha.value)
+        }
+
+        override suspend fun animateTo(
+            scope: CoroutineScope,
+            props: Props,
+            springSpec: SpringSpec<Float>,
+            onStart: () -> Unit,
+            onFinished: () -> Unit
+        ) {
+            onStart()
+            val a1 = scope.async {
+                alpha.animateTo(
+                    props.alpha.value,
+                    spring(springSpec.dampingRatio, springSpec.stiffness)
+                )
+            }
+            a1.await()
+            onFinished()
+        }
+
+        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
+            alpha.lerpTo(start.alpha, end.alpha, fraction)
+        }
+
+    }
 
     private val visible = Props(
-        alpha = 1f,
+        alpha = Alpha(value = 1f),
         isVisible = true
     )
 
     private val hidden = Props(
-        alpha = 0f,
+        alpha = Alpha(value = 0f),
         isVisible = false
     )
 
-    private fun <NavTarget : Any> BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+    override fun BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
         listOf(
             MatchedProps(active, visible)
         ) + (created + stashed + destroyed).map {
             MatchedProps(it, hidden)
         }
-
-    override fun mapSegment(
-        segment: Segment<BackStackModel.State<NavTarget>>,
-        segmentProgress: Float
-    ): List<FrameModel<NavTarget>> {
-        val (fromState, targetState) = segment.navTransition
-        val fromProps = fromState.toProps()
-        val targetProps = targetState.toProps()
-
-        return targetProps.map { t1 ->
-            val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segmentProgress)
-
-            FrameModel(
-                navElement = t1.element,
-                modifier = Modifier
-                    .alpha(alpha),
-                progress = segmentProgress,
-                state = resolveNavElementVisibility(
-                    fromProps = t0.props,
-                    toProps = t1.props,
-                    progress = segmentProgress
-                )
-            )
-        }
-    }
-
-    override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
-        TODO("Not yet implemented")
-    }
 }
