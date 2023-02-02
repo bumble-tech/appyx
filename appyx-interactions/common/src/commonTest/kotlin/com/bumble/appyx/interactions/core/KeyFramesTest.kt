@@ -212,4 +212,54 @@ class KeyFramesTest {
 
         assertEquals(expected, update)
     }
+
+    @Test
+    fun GIVEN_on_the_last_segment_WHEN_progress_is_max_THEN_segment_progress_is_1() {
+        val keyFrames = Keyframes(
+            queue = listOf(
+                Segment(
+                    NavTransition(
+                        fromState = State(listOf()),
+                        targetState = State(listOf(Child1.asElement()))
+                    )
+                ),
+                Segment(
+                    NavTransition(
+                        fromState = State(listOf(Child1.asElement())),
+                        targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                    )
+                )
+            )
+        )
+
+        val newKeyFrames = keyFrames.setProgress(2f) {}
+
+        assertEquals(1f, newKeyFrames.segmentProgress)
+        assertEquals(1, newKeyFrames.currentIndex)
+    }
+
+    @Test
+    fun GIVEN_3_segments_WHEN_progress_is_2_THEN_segment_progress_is_1() {
+        val keyFrames = Keyframes(
+            queue = listOf(
+                Segment(
+                    NavTransition(
+                        fromState = State(listOf()),
+                        targetState = State(listOf(Child1.asElement()))
+                    )
+                ),
+                Segment(
+                    NavTransition(
+                        fromState = State(listOf(Child1.asElement())),
+                        targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                    )
+                )
+            )
+        )
+
+        val newKeyFrames = keyFrames.setProgress(1f) {}
+
+        assertEquals(0f, newKeyFrames.segmentProgress)
+        assertEquals(1, newKeyFrames.currentIndex)
+    }
 }
