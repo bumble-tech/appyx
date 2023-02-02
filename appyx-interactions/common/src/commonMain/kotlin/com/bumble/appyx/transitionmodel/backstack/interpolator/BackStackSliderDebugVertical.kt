@@ -94,7 +94,7 @@ class BackStackSliderDebugVertical<NavTarget>
                     )
                     .background(color = color),
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props)
+                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
 

@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.appyxnavigation.node.backstack.BackStackExamplesNode
 import com.bumble.appyx.appyxnavigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.appyxnavigation.node.container.ContainerNode.NavTarget
 import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode
@@ -63,6 +64,9 @@ class ContainerNode(
         object BackStackExperimentDebug : NavTarget()
 
         @Parcelize
+        object BackStack : NavTarget()
+
+        @Parcelize
         object PromoterExperiment : NavTarget()
     }
 
@@ -78,6 +82,7 @@ class ContainerNode(
                 buildContext,
                 coroutineScope
             )
+            is NavTarget.BackStack -> BackStackExamplesNode(buildContext)
             is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
             is NavTarget.PromoterExperiment -> PromoterNode(buildContext)
         }
@@ -106,7 +111,10 @@ class ContainerNode(
                 TextButton(text = "Spotlight Debug") {
                     backStack.push(NavTarget.SpotlightExperimentDebug)
                 }
-                TextButton(text = "Backstack") {
+                TextButton(text = "Backstack Examples") {
+                    backStack.push(NavTarget.BackStack)
+                }
+                TextButton(text = "Backstack Debug") {
                     backStack.push(NavTarget.BackStackExperimentDebug)
                 }
                 TextButton(text = "Promoter") {

@@ -150,7 +150,7 @@ class PromoterInterpolator<NavTarget : Any>(
                     )
                     .scale(scale),
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props)
+                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
     }

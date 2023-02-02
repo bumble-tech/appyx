@@ -4,9 +4,9 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.lerp
-import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.FrameModel.State
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
@@ -63,7 +63,7 @@ interface Interpolator<Target, ModelState> {
     fun resolveNavElementVisibility(
         fromProps: BaseProps,
         toProps: BaseProps,
-        progress: Float = 1f
+        progress: Float
     ): State = when {
         (progress == 0.0f && !fromProps.isVisible) || (progress == 1.0f && !toProps.isVisible) -> INVISIBLE
         (progress == 0.0f && fromProps.isVisible) || (progress == 1.0f && toProps.isVisible) -> VISIBLE
