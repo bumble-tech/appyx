@@ -239,7 +239,7 @@ class KeyFramesTest {
     }
 
     @Test
-    fun GIVEN_3_segments_WHEN_progress_is_2_THEN_segment_progress_is_1() {
+    fun WHEN_on_the_last_segment_THEN_segment_progress_is_0() {
         val keyFrames = Keyframes(
             queue = listOf(
                 Segment(
