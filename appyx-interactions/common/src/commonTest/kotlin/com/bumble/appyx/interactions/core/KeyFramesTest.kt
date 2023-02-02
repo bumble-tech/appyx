@@ -106,7 +106,7 @@ class KeyFramesTest {
 
 
     @Test
-    fun WHEN_progress_is_set_beyond_maximum_THEN_it_is_kept_at_maximum() {
+    fun WHEN_progress_is_set_beyond_maximum_THEN_it_is_capped_at_maximum() {
         val secondSegment = Segment(
             NavTransition(
                 fromState = State(listOf(Child1.asElement())),
@@ -133,7 +133,7 @@ class KeyFramesTest {
     }
 
     @Test
-    fun WHEN_progress_is_set_before_minimum_THEN_it_is_kept_at_minimum() {
+    fun WHEN_progress_is_set_before_minimum_THEN_it_is_capped_at_minimum() {
         val firstSegment = Segment(
             NavTransition(
                 fromState = State(listOf()),
