@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.core.ui
 
+import DefaultAnimationSpec
 import androidx.compose.animation.core.AnimationSpec
-import com.bumble.appyx.interactions.core.InteractionModel.Companion.DefaultAnimationSpec
 
 data class GestureSpec(
     val completionThreshold: Float = 0.5f,

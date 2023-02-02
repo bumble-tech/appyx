@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.core
 
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.*
+import com.bumble.appyx.interactions.core.TransitionModel.Output
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,41 +21,18 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
     override fun availableElements(): Set<NavElement<NavTarget>> =
-        state.value.navTransition.targetState.availableElements()
+        state.value.currentTargetState.availableElements()
 
-    /**
-     * A state queue that can be prefetched. Could also work as state history if we implement
-     * reversing progress.
-     */
-    private val queue: MutableList<NavTransition<ModelState>> by lazy {
-        mutableListOf(
-            initialTransition
+    private val state: MutableStateFlow<Output<ModelState>> by lazy {
+        MutableStateFlow(
+            Update(
+                currentTargetState = initialState,
+                animate = false
+            )
         )
     }
 
-    protected open val initialTransition: NavTransition<ModelState> by lazy {
-        NavTransition(
-            fromState = initialState,
-            targetState = initialState,
-        )
-    }
-
-    /**
-     * 0..infinity
-     */
-    private var lastRecordedProgress: Float = 1f
-
-    /**
-     * 0..infinity
-     */
-    override val maxProgress: Float
-        get() = (queue.lastIndex + 1).toFloat()
-
-    private val state: MutableStateFlow<TransitionModel.Segment<ModelState>> by lazy {
-        MutableStateFlow(createState(lastRecordedProgress))
-    }
-
-    override val segments: StateFlow<TransitionModel.Segment<ModelState>> by lazy {
+    override val output: StateFlow<Output<ModelState>> by lazy {
         state
     }
 
@@ -64,91 +42,125 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         enforcedMode = null
     }
 
-    private fun createState(progress: Float): TransitionModel.Segment<ModelState> {
-        val progress = progress.coerceIn(minimumValue = 1f, maximumValue = maxProgress)
-
-        /**
-         *  Normally progress on any segment is a half-open interval: [0%, 100), so that
-         *  100% is interpreted as 0% of the next segment.
-         *  The only case when this won't work is when we reach the very end of possible progress,
-         *  then there's no next segment to go to. Instead, let's interpret it as 100% of the last
-         *  segment.
-         */
-        val segmentIndex = (if (progress == maxProgress) (progress - 1) else progress).toInt()
-
-        return TransitionModel.Segment(
-            index = segmentIndex,
-            navTransition = queue[segmentIndex],
-            progress = progress - segmentIndex,
-            animate = enforcedMode == IMMEDIATE
-        )
-    }
-
     override fun operation(operation: Operation<ModelState>, overrideMode: Operation.Mode?): Boolean =
         when (enforcedMode ?: overrideMode ?: operation.mode) {
             IMMEDIATE -> {
-                // Replacing in an active segment triggers IMMEDIATE mode as a side effect
-                if (currentProgress > queue.lastIndex - 1) {
+                // Replacing while in keyframes mode triggers enforced IMMEDIATE execution as a side effect
+                if (state.value is Keyframes) {
                     enforcedMode = IMMEDIATE
                 }
-                updateState(operation)
+                createUpdate(operation)
             }
             GEOMETRY -> {
-                updateState(operation)
+                updateGeometry(operation)
             }
             KEYFRAME -> {
-                enqueue(operation)
+                createSegment(operation)
             }
         }
 
-    private fun enqueue(operation: Operation<ModelState>): Boolean {
-        val baseline = queue.last().targetState
+    private fun createUpdate(operation: Operation<ModelState>): Boolean {
+        val baseLine = state.value
 
-        return if (operation.isApplicable(baseline)) {
-            val newState = operation.invoke(baseline)
-            queue.add(newState)
+        return if (operation.isApplicable(baseLine.currentTargetState)) {
+            val transition = operation.invoke(baseLine.currentTargetState)
+            val newState = baseLine.deriveUpdate(transition)
+            updateState(newState)
             true
         } else {
-            Logger.log(TAG, "Operation $operation is not applicable on state: $baseline")
+            Logger.log(TAG, "Operation $operation is not applicable on state: $baseLine")
             false
         }
     }
 
-    private fun updateState(operation: Operation<ModelState>): Boolean {
-        val latestState = queue.last()
+    private fun updateGeometry(operation: Operation<ModelState>): Boolean {
+        when (val currentState = state.value) {
+            is Keyframes -> {
+                with(currentState) {
+                    val past = if (currentIndex > 0) queue.subList(0, currentIndex - 1) else emptyList()
+                    val remaining = queue.subList(currentIndex, queue.lastIndex)
 
-        return if (operation.isApplicable(latestState.targetState)) {
-            val newState = operation.invoke(latestState.targetState)
-            queue[queue.lastIndex] = NavTransition(
-                fromState = latestState.fromState,
-                targetState = newState.targetState
-            )
-            state.update { createState(currentProgress) }
+                    return if (remaining.all { operation.isApplicable(it.targetState) }) {
+                        // Replace the operation result into all the queued outputs
+                        val newState = copy(
+                            queue = past + remaining.map {
+                                it.copy(
+                                    navTransition = operation.invoke(it.targetState)
+                                )
+                            }
+                        )
+                        updateState(newState)
+                        true
+                    } else {
+                        Logger.log(TAG, "Operation $operation is not applicable on one or more queued states: $remaining")
+                        false
+                    }
+                }
+            }
+            is Update -> TODO()
+        }
+    }
+
+    private fun createSegment(operation: Operation<ModelState>): Boolean {
+        val currentState = state.value
+        val baselineState = currentState.lastTargetState
+
+        return if (operation.isApplicable(baselineState)) {
+            val transition = operation.invoke(baselineState)
+            val newState = currentState.deriveKeyframes(transition)
+            updateState(newState)
             true
         } else {
-            Logger.log(TAG, "Operation $operation is not applicable on state: $latestState")
+            Logger.log(TAG, "Operation $operation is not applicable on state: $baselineState")
             false
         }
     }
 
     override fun setProgress(progress: Float) {
-        val progress = progress.coerceIn(minimumValue = 1f, maximumValue = maxProgress)
-        Logger.log(TAG, "Progress update: $progress")
-        if (progress.toInt() > lastRecordedProgress.toInt()) {
-            // TODO uncomment when method is merged here
-            //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
-            // onTransitionFinished(state.value.fromState.map { it.key })
-            Logger.log(TAG, "onTransitionFinished()")
-        }
+        when (val currentState = state.value) {
+            is Update -> {
+                Logger.log(TAG, "Not in keyframe state, ignoring setProgress")
+                return
+            }
+            is Keyframes -> {
+                // val progress = progress.coerceAtLeast(1f)
+                val newState = currentState.setProgress(progress) {
+                    // TODO uncomment when method is merged here
+                    //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
+                    // onTransitionFinished(state.value.fromState.map { it.key })
+                }
 
-        lastRecordedProgress = progress
-        state.update { createState(progress) }
+                updateState(newState)
+            }
+        }
     }
 
-    override fun dropAfter(segmentIndex: Int) {
-        while (segmentIndex < queue.size) {
-            queue.removeLast()
+    override fun dropAfter(segmentIndex: Int, animateOnRevert: Boolean) {
+        when (val currentState = state.value) {
+            is Update -> {
+                Logger.log(TAG, "Not in keyframe state, ignoring dropAfter")
+                return
+            }
+            is Keyframes -> {
+                if (segmentIndex == 0) {
+                    val first = currentState.queue.first()
+                    val newState = Update(
+                        currentTargetState = first.fromState,
+                        animate = animateOnRevert
+                    )
+                    updateState(newState)
+                } else {
+                    val newState = currentState.dropAfter(segmentIndex)
+                    updateState(newState)
+                }
+            }
         }
+    }
+
+    private fun updateState(output: Output<ModelState>) {
+        // Logger.log(TAG, "Publishing new state ($currentIndex) of queue: ${queue.map { "${it.index}: ${it.javaClass.simpleName}"  }}")
+        Logger.log(TAG, "Publishing new state: ${this.output.value}")
+        state.update { output }
     }
 
     private companion object {

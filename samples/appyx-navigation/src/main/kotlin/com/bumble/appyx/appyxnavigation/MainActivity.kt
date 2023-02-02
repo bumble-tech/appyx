@@ -12,13 +12,7 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.appyxnavigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.appyxnavigation.node.container.ContainerNode
-import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode
-import com.bumble.appyx.appyxnavigation.node.promoter.PromoterNode
-import com.bumble.appyx.appyxnavigation.node.spotlight.SpotlightNode
-import com.bumble.appyx.appyxnavigation.node.spotlight.debug.SpotlightDebugNode
 import com.bumble.appyx.appyxnavigation.ui.AppyxSampleAppTheme
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.integrationpoint.NodeActivity

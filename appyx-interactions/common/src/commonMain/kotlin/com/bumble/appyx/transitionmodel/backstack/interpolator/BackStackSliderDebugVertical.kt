@@ -7,7 +7,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -68,7 +69,7 @@ class BackStackSliderDebugVertical<NavTarget>
                 }
 
 
-    override fun mapFrame(segment: TransitionModel.Segment<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: Segment<BackStackModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -79,10 +80,10 @@ class BackStackSliderDebugVertical<NavTarget>
             val offset = Interpolator.lerpDpOffset(
                 start = t0.props.offset,
                 end = t1.props.offset,
-                progress = segment.progress
+                progress = segmentProgress
             )
 
-            val color = lerp(t0.props.color, t1.props.color, segment.progress)
+            val color = lerp(t0.props.color, t1.props.color, segmentProgress)
 
             FrameModel(
                 navElement = t1.element,
@@ -92,11 +93,15 @@ class BackStackSliderDebugVertical<NavTarget>
                         y = offset.y
                     )
                     .background(color = color),
-                progress = segment.progress,
+                progress = segmentProgress,
                 state = resolveNavElementVisibility(t0.props, t1.props)
             )
         }
 
+    }
+
+    override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        TODO("Not yet implemented")
     }
 }
 
@@ -149,15 +154,15 @@ class BackStackSliderDebugVertical<NavTarget>
 //            val fromProps = t0.state.toProps(fromStashIndex, fromPoppedIndex, fromDroppedIndex)
 //            val targetProps =
 //                t1.state.toProps(targetStashIndex, targetPoppedIndex, targetDroppedIndex)
-//            val offset = lerpUnit(fromProps.offset, targetProps.offset, segment.progress)
-//            val color = lerpGraphics(fromProps.color, targetProps.color, segment.progress)
+//            val offset = lerpUnit(fromProps.offset, targetProps.offset, segmentProgress)
+//            val color = lerpGraphics(fromProps.color, targetProps.color, segmentProgress)
 //
 //            FrameModel(
 //                navElement = t1,
 //                modifier = Modifier
 //                    .offset(x = offset.x, y = offset.y)
 //                    .background(color),
-//                progress = segment.progress
+//                progress = segmentProgress
 //            )
 //        }
 //    }

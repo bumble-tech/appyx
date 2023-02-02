@@ -36,7 +36,7 @@ class ContainerNode(
     private val coroutineScope: CoroutineScope,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTarget = NavTarget.Selector,
+            initialTargets = listOf(NavTarget.Selector),
             savedStateMap = buildContext.savedStateMap
         ),
         interpolator = { BackStackSlider(it) }

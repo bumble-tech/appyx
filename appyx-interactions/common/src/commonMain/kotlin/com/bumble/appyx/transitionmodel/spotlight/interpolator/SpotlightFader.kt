@@ -2,7 +2,8 @@ package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -57,7 +58,7 @@ class SpotlightFader<NavTarget : Any>(
         }
     }
 
-    override fun mapFrame(segment: TransitionModel.Segment<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapSegment(segment: Segment<SpotlightModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -65,15 +66,19 @@ class SpotlightFader<NavTarget : Any>(
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segment.progress)
+            val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segmentProgress)
 
                 FrameModel(
                     navElement = t1.element,
                     modifier = Modifier
                         .alpha(alpha),
-                    progress = segment.progress,
+                    progress = segmentProgress,
                     state = resolveNavElementVisibility(t0.props, t1.props)
                 )
         }
+    }
+
+    override fun mapUpdate(update: Update<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+        TODO("Not yet implemented")
     }
 }

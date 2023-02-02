@@ -4,6 +4,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 
@@ -46,6 +47,7 @@ class DragProgressInputSource<NavTarget : Any, State>(
     }
 
     private fun consumeDrag(dragAmount: Offset) {
+        val currentState = model.output.value
         require(dragAmount.isValid()) { "dragAmount is NaN" }
         require(dragAmount.getDistance() > 0f) { "dragAmount distance is 0" }
         requireNotNull(_gestureFactory) { "This should have been set already in this class" }
@@ -57,11 +59,13 @@ class DragProgressInputSource<NavTarget : Any, State>(
         val operation = gesture!!.operation
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
         require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
-        val currentProgress = model.currentProgress
+        val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
         val totalTarget = currentProgress + deltaProgress
 
         // Case: we can start a new operation
         if (gesture!!.startProgress == null) {
+            // TODO internally this will always apply it to the end of a Keyframes queue,
+            //  which is not necessarily what we want:
             if (model.operation(operation)) {
                 gesture!!.startProgress = currentProgress
                 Logger.log(TAG, "operation applied: $operation")
@@ -80,9 +84,10 @@ class DragProgressInputSource<NavTarget : Any, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 model.setProgress(totalTarget)
+                val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
                 Logger.log(
                     TAG,
-                    "delta applied forward, new progress: ${model.currentProgress}"
+                    "delta applied forward, new progress: $currentProgress"
                 )
 
                 // Case: target is beyond the current segment, we'll need a new operation

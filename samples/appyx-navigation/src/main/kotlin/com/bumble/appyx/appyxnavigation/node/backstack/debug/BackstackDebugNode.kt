@@ -40,7 +40,7 @@ class BackstackDebugNode(
     buildContext: BuildContext,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTarget = NavTarget.Child(1),
+            initialTargets = listOf(NavTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
         interpolator = { BackStackSlider(it) }

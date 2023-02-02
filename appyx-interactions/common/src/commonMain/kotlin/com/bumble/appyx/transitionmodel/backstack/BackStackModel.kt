@@ -9,7 +9,7 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
 @SuppressWarnings("UnusedPrivateMember")
 class BackStackModel<NavTarget : Any>(
-    initialTarget: NavTarget,
+    initialTargets: List<NavTarget>,
     savedStateMap: SavedStateMap?,
     // key: String = KEY_NAV_MODEL,
     // backPressHandler: BackPressHandlerStrategy<NavTarget, State> = PopBackPressHandler(),
@@ -53,6 +53,7 @@ class BackStackModel<NavTarget : Any>(
 
 
     override val initialState = State(
-        active = initialTarget.asElement(),
+        active = initialTargets.last().asElement(),
+        stashed = initialTargets.take(initialTargets.size - 1).map { it.asElement() }
     )
 }

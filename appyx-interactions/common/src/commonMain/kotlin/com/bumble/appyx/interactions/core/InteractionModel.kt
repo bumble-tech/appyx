@@ -1,8 +1,9 @@
 package com.bumble.appyx.interactions.core
 
+import DefaultAnimationSpec
 import DisableAnimations
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
@@ -13,19 +14,21 @@ import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
 import com.bumble.appyx.interactions.core.ui.FlexibleBounds
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.toScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 
 // TODO move to navigation
@@ -36,14 +39,17 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    private val animateSettleRevert: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
 ) : Draggable, FlexibleBounds {
 
     private var _interpolator: Interpolator<NavTarget, ModelState> =
         interpolator(TransitionBounds(Density(0f), 0, 0))
+
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
+
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
             if (value != field) {
@@ -54,27 +60,13 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             }
         }
 
-    companion object {
-        val DefaultAnimationSpec: AnimationSpec<Float> = spring()
-    }
-
     val frames: Flow<List<FrameModel<NavTarget>>> =
         model
-            .segments
+            .output
             .flatMapLatest { _interpolator.map(it) }
 
-    val screenState: Flow<ScreenState<NavTarget>> = frames.map {
-        val onScreen = mutableSetOf<NavElement<NavTarget>>()
-        val offScreen = mutableSetOf<NavElement<NavTarget>>()
-        it.forEach { frame ->
-            if (frame.state == VISIBLE || frame.state == PARTIALLY_VISIBLE) {
-                onScreen.add(frame.navElement)
-            } else {
-                offScreen.add(frame.navElement)
-            }
-        }
-        ScreenState(onScreen = onScreen, offScreen = offScreen)
-    }
+    val screenState: Flow<ScreenState<NavTarget>> =
+        frames.map { it.toScreenState() }
 
     private val instant = InstantInputSource(
         model = model
@@ -91,6 +83,19 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         gestureFactory = { _gestureFactory }
     )
 
+    init {
+        scope.launch {
+            _interpolator.isAnimating()
+                .onEach {
+                    if (!it) {
+                        Logger.log("InteractionModel", "Finished animating, relaxing mode")
+                        model.relaxExecutionMode()
+                    }
+                }
+                .collect()
+        }
+    }
+
     override fun updateBounds(transitionBounds: TransitionBounds) {
         this.transitionBounds = transitionBounds
     }
@@ -101,12 +106,12 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
+       if (animationSpec is SpringSpec<Float>) _interpolator.overrideAnimationSpec(animationSpec)
         val animatedSource = animated
         val debugSource = debug
         when {
             (isDebug && debugSource != null) -> debugSource.operation(operation)
-            (animatedSource == null) -> instant.operation(operation)
-            DisableAnimations || disableAnimations -> instant.operation(operation)
+            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(operation)
             else -> animatedSource.operation(operation, animationSpec)
         }
     }
@@ -172,7 +177,8 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         animated = AnimatedInputSource(
             model = model,
             coroutineScope = scope,
-            defaultAnimationSpec = defaultAnimationSpec
+            defaultAnimationSpec = defaultAnimationSpec,
+            animateSettleRevert = animateSettleRevert
         )
     }
 

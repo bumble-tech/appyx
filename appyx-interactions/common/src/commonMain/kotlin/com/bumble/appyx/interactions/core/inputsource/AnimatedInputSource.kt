@@ -5,10 +5,8 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.core.Operation.Mode.GEOMETRY
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
-import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.core.Keyframes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,7 +16,8 @@ import kotlin.math.floor
 class AnimatedInputSource<NavTarget : Any, ModelState>(
     private val model: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
-    private val defaultAnimationSpec: AnimationSpec<Float> = spring()
+    private val defaultAnimationSpec: AnimationSpec<Float> = spring(),
+    private val animateSettleRevert: Boolean = false
 ) : InputSource<NavTarget, ModelState> {
 
     private val animatable = Animatable(0f)
@@ -33,11 +32,15 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
         animationSpec: AnimationSpec<Float>
     ) {
         model.operation(operation)
-        animateModel(
-            target = model.maxProgress,
-            animationSpec = animationSpec,
-            cancelVelocity = false,
-        )
+        val currentState = model.output.value
+        if (currentState is Keyframes<ModelState>) {
+            animateModel(
+                from = { currentState.progress },
+                target = { currentState.maxProgress },
+                animationSpec = animationSpec,
+                cancelVelocity = false,
+            )
+        }
     }
 
     fun settle(
@@ -46,35 +49,43 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
         completeGestureSpec: AnimationSpec<Float> = spring(),
         revertGestureSpec: AnimationSpec<Float> = spring(),
     ) {
-        val currentProgress = model.currentProgress
-        val (targetValue, animationSpec) = if (currentProgress % 1 < completionThreshold) {
-            floor(currentProgress).toInt() to revertGestureSpec
-        } else {
-            ceil(currentProgress).toInt() to completeGestureSpec
-        }
-
-        Logger.log(TAG, "Settle ${model.currentProgress} to: $targetValue")
-        animateModel(
-            target = targetValue.toFloat(),
-            animationSpec = animationSpec,
-            cancelVelocity = true,
-            onAnimationFinished = {
-                model.dropAfter(targetValue)
+        val currentState = model.output.value
+        if (currentState is Keyframes<ModelState>) {
+            val currentProgress = currentState.progress
+            val (targetValue, animationSpec) = if (currentProgress % 1 < completionThreshold) {
+                floor(currentProgress).toInt() to revertGestureSpec
+            } else {
+                ceil(currentProgress).toInt() to completeGestureSpec
             }
-        )
+
+            Logger.log(TAG, "Settle ${currentState.progress} to: $targetValue")
+            animateModel(
+                from = { currentState.progress },
+                target = { targetValue.toFloat() },
+                animationSpec = animationSpec,
+                cancelVelocity = true,
+                onAnimationFinished = {
+                    model.dropAfter(
+                        segmentIndex = targetValue,
+                        animateOnRevert = animateSettleRevert
+                    )
+                }
+            )
+        }
     }
 
-    fun animateModel(
-        target: Float,
+    private fun animateModel(
+        from: () -> Float,
+        target: () -> Float,
         animationSpec: AnimationSpec<Float>,
         cancelVelocity: Boolean,
         onAnimationFinished: () -> Unit = {}
     ) {
         val velocity = animatable.velocity // snap will reset it to 0
-        coroutineScope.launch(Dispatchers.Main) {
-            animatable.snapTo(model.currentProgress)
+        coroutineScope.launch(Dispatchers.Main.immediate) {
+            animatable.snapTo(from())
             animatable.animateTo(
-                targetValue = target,
+                targetValue = target(),
                 animationSpec = animationSpec,
                 initialVelocity = if (cancelVelocity) 0f else velocity,
             ) {
@@ -85,8 +96,11 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
     }
 
     fun stopModel() {
-        coroutineScope.launch(Dispatchers.Main) {
-            animatable.snapTo(model.currentProgress)
+        val currentState = model.output.value
+        if (currentState is Keyframes<ModelState>) {
+            coroutineScope.launch(Dispatchers.Main) {
+                animatable.snapTo(currentState.progress)
+            }
         }
     }
 

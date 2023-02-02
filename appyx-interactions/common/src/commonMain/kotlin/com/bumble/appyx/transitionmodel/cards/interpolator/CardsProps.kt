@@ -1,81 +1,156 @@
 package com.bumble.appyx.transitionmodel.cards.interpolator
 
-import androidx.compose.foundation.layout.offset
+import DefaultAnimationSpec
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDp
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.property.Animatable
+import com.bumble.appyx.interactions.core.ui.property.HasModifier
+import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.core.ui.property.impl.Scale
+import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
+import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
-import kotlin.math.roundToInt
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+
+typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 
 class CardsProps<NavTarget : Any>(
     transitionBounds: TransitionBounds,
-) : Interpolator<NavTarget, CardsModel.State<NavTarget>> {
+    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
+    defaultProps = { Props() },
+    defaultAnimationSpec = defaultAnimationSpec
+) {
     private val width = transitionBounds.widthDp.value
 
-    private data class Props(
-        val scale: Float = 1f,
-        val positionalOffsetX: Dp = 0.dp,
-        val rotationZ: Float = 0f,
-        val zIndex: Float = 0f,
-        // indicates if any given set of properties is visible on the screen
-        override val isVisible: Boolean = true
-    ): BaseProps
+    class Props(
+        val scale: Scale = Scale(value = 1f),
+        val positionalOffsetX: InterpolatableOffset = InterpolatableOffset(
+            value = DpOffset(
+                0.dp,
+                0.dp
+            )
+        ),
+        val rotationZ: RotationZ = RotationZ(value = 0f),
+        val zIndex: ZIndex = ZIndex(value = 0f),
+        override val isVisible: Boolean = false
+    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
+
+        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
+            scale.lerpTo(start.scale, end.scale, fraction)
+            positionalOffsetX.lerpTo(start.positionalOffsetX, end.positionalOffsetX, fraction)
+            rotationZ.lerpTo(start.rotationZ, end.rotationZ, fraction)
+            zIndex.lerpTo(start.zIndex, end.zIndex, fraction)
+        }
+
+        override val modifier: Modifier
+            get() = Modifier
+                .then(scale.modifier)
+                .then(positionalOffsetX.modifier)
+                .then(rotationZ.modifier)
+                .then(zIndex.modifier)
+
+        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+            scale.snapTo(props.scale.value)
+            positionalOffsetX.snapTo(props.positionalOffsetX.value)
+            rotationZ.snapTo(props.rotationZ.value)
+            zIndex.snapTo(props.zIndex.value)
+        }
+
+        override suspend fun animateTo(
+            scope: CoroutineScope,
+            props: Props,
+            springSpec: SpringSpec<Float>,
+            onStart: () -> Unit,
+            onFinished: () -> Unit
+        ) {
+            onStart()
+            listOf(
+                scope.async {
+                    scale.animateTo(
+                        props.scale.value,
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
+                    )
+                },
+                scope.async {
+                    positionalOffsetX.animateTo(
+                        props.positionalOffsetX.value,
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
+                    )
+                },
+                scope.async {
+                    rotationZ.animateTo(
+                        props.rotationZ.value,
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
+                    )
+                },
+                scope.async {
+                    zIndex.animateTo(
+                        props.zIndex.value,
+                        spring(springSpec.dampingRatio, springSpec.stiffness)
+                    )
+                }).awaitAll()
+            onFinished()
+        }
+    }
 
     private val hidden = Props(
-        scale = 0f,
-        isVisible = false
+        scale = Scale(0f)
     )
 
     private val bottom = Props(
-        scale = 0.85f,
-        isVisible = true
+        scale = Scale(0.85f),
     )
 
     private val top = Props(
-        scale = 1f,
-        zIndex = 1f,
-        isVisible = true
+        scale = Scale(1f),
+        zIndex = ZIndex(1f),
     )
 
-    private val votePass = top.copy(
-        positionalOffsetX = (-voteCardPositionMultiplier * width).dp,
-        rotationZ = -45f,
-        zIndex = 2f,
-        isVisible = false
+    private val votePass = Props(
+        positionalOffsetX = InterpolatableOffset(
+            DpOffset(
+                (-voteCardPositionMultiplier * width).dp,
+                0.dp
+            )
+        ),
+        scale = Scale(1f),
+        zIndex = ZIndex(2f),
+        rotationZ = RotationZ(-45f),
     )
 
-    private val voteLike = top.copy(
-        positionalOffsetX = (voteCardPositionMultiplier * width).dp,
-        rotationZ = 45f,
-        zIndex = 2f,
-        isVisible = false
+    private val voteLike = Props(
+        positionalOffsetX = InterpolatableOffset(
+            DpOffset(
+                (voteCardPositionMultiplier * width).dp,
+                0.dp
+            )
+        ),
+        scale = Scale(1f),
+        zIndex = ZIndex(2f),
+        rotationZ = RotationZ(45f),
     )
 
-
-    private fun <NavTarget> CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
+    override fun CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
         val result = mutableListOf<MatchedProps<NavTarget, Props>>()
         (votedCards + visibleCards + queued).map {
             when (it) {
@@ -88,12 +163,15 @@ class CardsProps<NavTarget : Any>(
                         }
                     )
                 }
+
                 is CardsModel.State.Card.VisibleCard.TopCard -> {
                     result.add(MatchedProps(it.navElement, top))
                 }
+
                 is CardsModel.State.Card.VisibleCard.BottomCard -> {
                     result.add(MatchedProps(it.navElement, bottom))
                 }
+
                 is CardsModel.State.Card.InvisibleCard.Queued -> {
                     result.add(MatchedProps(it.navElement, hidden))
                 }
@@ -101,61 +179,6 @@ class CardsProps<NavTarget : Any>(
         }
 
         return result
-    }
-
-    override fun mapFrame(segment: TransitionModel.Segment<CardsModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
-        val (fromState, targetState) = segment.navTransition
-        val fromProps = fromState.toProps()
-        val targetProps = targetState.toProps()
-
-        return targetProps
-            .map { t1 ->
-                val t0 = fromProps.find { it.element.id == t1.element.id }!!
-
-
-                val scale = lerpFloat(
-                    start = t0.props.scale,
-                    end = t1.props.scale,
-                    progress = segment.progress
-                )
-
-                val zIndex = lerpFloat(
-                    start = t0.props.zIndex,
-                    end = t1.props.zIndex,
-                    progress = segment.progress
-                )
-
-                val rotationZ = lerpFloat(
-                    start = t0.props.rotationZ,
-                    end = t1.props.rotationZ,
-                    progress = segment.progress
-                )
-
-                val offsetX = lerpDp(
-                    start = t0.props.positionalOffsetX,
-                    end = t1.props.positionalOffsetX,
-                    progress = segment.progress
-                )
-
-                FrameModel(
-                    navElement = t1.element,
-                    modifier = Modifier
-                        .offset {
-                            IntOffset(
-                                x = (this.density * (offsetX.value)).roundToInt(),
-                                y = 0
-                            )
-                        }
-                        .zIndex(zIndex)
-                        .graphicsLayer {
-                            this.rotationZ = rotationZ
-                            transformOrigin = TransformOrigin(0.5f, 1f)
-                        }
-                        .scale(scale),
-                    progress = segment.progress,
-                    state = resolveNavElementVisibility(t0.props, t1.props)
-                )
-            }
     }
 
     class Gestures<NavTarget>(
@@ -200,7 +223,6 @@ class CardsProps<NavTarget : Any>(
                 )
             }
         }
-
     }
 
     private companion object {

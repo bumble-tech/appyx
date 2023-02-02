@@ -4,28 +4,20 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface TransitionModel<NavTarget, ModelState> {
 
-    /**
-     * 0..infinity
-     */
-    val maxProgress: Float
+    val output: StateFlow<Output<ModelState>>
 
-    /**
-     * 0..infinity
-     */
-    val currentProgress: Float
-        get() = with(segments.value) { index + progress }
+    sealed class Output<ModelState> {
+        abstract val currentTargetState: ModelState
 
-    val segments: StateFlow<Segment<ModelState>>
+        abstract val lastTargetState: ModelState
 
-    class Segment<ModelState>(
-        val index: Int,
-        val navTransition: NavTransition<ModelState>,
-        /**
-         * 0..1
-         */
-        val progress: Float,
-        val animate: Boolean
-    )
+        abstract fun replace(targetState: ModelState): Output<ModelState>
+
+        abstract fun deriveKeyframes(navTransition: NavTransition<ModelState>): Keyframes<ModelState>
+
+        abstract fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState>
+
+    }
 
     fun availableElements(): Set<NavElement<NavTarget>>
 
@@ -38,5 +30,6 @@ interface TransitionModel<NavTarget, ModelState> {
 
     fun setProgress(progress: Float)
 
-    fun dropAfter(segmentIndex: Int)
+    fun dropAfter(segmentIndex: Int, animateOnRevert: Boolean = false)
+
 }
