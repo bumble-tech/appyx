@@ -126,13 +126,16 @@ class TestDriveUiModel<NavTarget : Any>(
     class Gestures<NavTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<NavTarget, TestDriveModel.State<NavTarget>> {
-        private val width = transitionBounds.widthPx
-        private val height = transitionBounds.heightPx
+        private val width = b.offset.value.x - a.offset.value.x
+        private val height = d.offset.value.y - a.offset.value.y
 
         override fun createGesture(
             delta: androidx.compose.ui.geometry.Offset,
             density: Density
         ): Gesture<NavTarget, TestDriveModel.State<NavTarget>> {
+            val width = with (density) { width.toPx() }
+            val height = with (density) { height.toPx() }
+
             return if (abs(delta.x) > abs(delta.y)) {
                 if (delta.x < 0) {
                     Gesture(
