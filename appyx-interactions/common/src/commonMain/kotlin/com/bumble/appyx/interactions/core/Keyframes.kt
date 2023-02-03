@@ -71,7 +71,7 @@ data class Keyframes<ModelState>(
         }
 
         return copy(
-            progress = progress
+            progress = progress.coerceIn(0f, maxProgress)
         )
     }
 }
