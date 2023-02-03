@@ -91,6 +91,34 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
     }
 
+    fun onAddedToComposition(scope: CoroutineScope) {
+        animationScope = scope
+        createAnimatedInputSource(scope)
+        createdDebugInputSource(scope)
+    }
+
+    fun onRemovedFromComposition() {
+        // TODO finish unfinished transitions
+        if (isDebug) debug?.stopModel() else animated?.stopModel()
+        animationScope?.cancel()
+    }
+
+    private fun createAnimatedInputSource(scope: CoroutineScope) {
+        animated = AnimatedInputSource(
+            model = model,
+            coroutineScope = scope,
+            defaultAnimationSpec = defaultAnimationSpec,
+            animateSettle = animateSettle
+        )
+    }
+
+    private fun createdDebugInputSource(scope: CoroutineScope) {
+        debug = DebugProgressInputSource(
+            transitionModel = model,
+            coroutineScope = scope
+        )
+    }
+
     override fun updateBounds(transitionBounds: TransitionBounds) {
         this.transitionBounds = transitionBounds
     }
@@ -144,41 +172,9 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
     }
 
-    fun onAddedToComposition(scope: CoroutineScope) {
-        animationScope = scope
-        createAnimatedInputSource(scope)
-        createdDebugInputSource(scope)
-    }
-
-    fun onRemovedFromComposition() {
-        // TODO finish unfinished transitions
-        if (isDebug) debug?.stopModel() else animated?.stopModel()
-        animationScope?.cancel()
-    }
-
-    private fun createAnimatedInputSource(scope: CoroutineScope) {
-        animated = AnimatedInputSource(
-            model = model,
-            coroutineScope = scope,
-            defaultAnimationSpec = defaultAnimationSpec,
-            animateSettle = animateSettle
-        )
-    }
-
-    private fun createdDebugInputSource(scope: CoroutineScope) {
-        debug = DebugProgressInputSource(
-            transitionModel = model,
-            coroutineScope = scope
-        )
-    }
-
     // TODO plugin?!
     fun destroy() {
         scope.cancel()
-    }
-
-    fun settleDefault() {
-        settle()
     }
 
     fun setNormalisedProgress(progress: Float) {
