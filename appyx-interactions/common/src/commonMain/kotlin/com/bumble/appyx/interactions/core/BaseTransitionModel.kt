@@ -40,6 +40,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     private var enforcedMode: Operation.Mode? = null
 
     override fun relaxExecutionMode() {
+        Logger.log("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
     }
 

@@ -62,6 +62,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             }
         }
 
+    private var isAnimating: Boolean = false
     private val instant = InstantInputSource(model = model)
     private var animated: AnimatedInputSource<NavTarget, ModelState>? = null
     private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
@@ -83,8 +84,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             _interpolator.isAnimating()
                 .onEach {
                     if (!it) {
-                        Logger.log("InteractionModel", "Finished animating, relaxing mode")
-                        model.relaxExecutionMode()
+                        Logger.log("InteractionModel", "Finished animating")
+                        onAnimationsFinished()
+                    } else {
+                        onAnimationsStarted()
                     }
                 }
                 .collect()
@@ -139,7 +142,12 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
     }
 
+    private fun onAnimationsStarted() {
+        isAnimating = true
+    }
+
     private fun onAnimationsFinished() {
+        isAnimating = false
         model.relaxExecutionMode()
     }
 
@@ -148,7 +156,9 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     override fun onDrag(dragAmount: Offset, density: Density) {
-        drag.onDrag(dragAmount, density)
+        if (!isAnimating) {
+            drag.onDrag(dragAmount, density)
+        }
     }
 
     override fun onDragEnd(
@@ -156,8 +166,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         completeGestureSpec: AnimationSpec<Float>,
         revertGestureSpec: AnimationSpec<Float>
     ) {
-        drag.onDragEnd()
-        settle(completionThreshold, revertGestureSpec, completeGestureSpec)
+        if (!isAnimating) {
+            drag.onDragEnd()
+            settle(completionThreshold, revertGestureSpec, completeGestureSpec)
+        }
     }
 
     private fun settle(
