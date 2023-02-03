@@ -1,9 +1,9 @@
 package com.bumble.appyx.interactions.sample
 
-import androidx.compose.animation.core.LinearEasing
+import DefaultAnimationSpec
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -29,9 +29,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
-import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
@@ -45,18 +45,23 @@ import com.bumble.appyx.transitionmodel.testdrive.operation.next
 
 @ExperimentalMaterialApi
 @Composable
-fun TestDriveExperiment() {
+fun TestDriveExperiment(
+    animationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    transitionModel: TestDriveModel<NavTarget> = TestDriveModel(Child1)
+) {
     val coroutineScope = rememberCoroutineScope()
 
-    val model = remember { TestDriveModel(Child1) }
+    val model = remember { transitionModel }
     val testDrive = remember {
         TestDrive(
             scope = coroutineScope,
             model = model,
             interpolator = { TestDriveUiModel(it) },
-            gestureFactory = { TestDriveUiModel.Gestures(it) }
+            gestureFactory = { TestDriveUiModel.Gestures(it) },
+            animationSpec = animationSpec
         )
     }
+
 
     InteractionModelSetup(testDrive)
 
@@ -96,10 +101,11 @@ fun TestDriveExperiment() {
 
             val output = model.output.collectAsState().value
             val targetProps = output.currentTargetState.elementState.toProps()
-            Box(modifier = Modifier
-                .size(60.dp)
-                .offset(targetProps.offset.value.x, targetProps.offset.value.y)
-                .border(2.dp, targetProps.backgroundColor.value)
+            Box(
+                modifier = Modifier
+                    .size(60.dp)
+                    .offset(targetProps.offset.value.x, targetProps.offset.value.y)
+                    .border(2.dp, targetProps.backgroundColor.value)
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -120,20 +126,24 @@ fun TestDriveExperiment() {
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(onClick = { testDrive.next(
-                mode = KEYFRAME,
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 1)
-            ) }) {
+            Button(onClick = {
+                testDrive.next(
+                    mode = KEYFRAME,
+                    animationSpec = animationSpec
+                )
+            }) {
                 Text("Keyframe")
             }
 
-            Button(onClick = { testDrive.next(
-                mode = IMMEDIATE,
-                animationSpec = spring(
-                    stiffness = Spring.StiffnessVeryLow,
-                    dampingRatio = Spring.DampingRatioMediumBouncy
+            Button(onClick = {
+                testDrive.next(
+                    mode = IMMEDIATE,
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioMediumBouncy
+                    )
                 )
-            ) }) {
+            }) {
                 Text("Immediate")
             }
         }

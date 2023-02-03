@@ -106,12 +106,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
-       if (animationSpec is SpringSpec<Float>) _interpolator.overrideAnimationSpec(animationSpec)
+        if (animationSpec is SpringSpec<Float>) _interpolator.overrideAnimationSpec(animationSpec)
         val animatedSource = animated
         val debugSource = debug
         when {
             (isDebug && debugSource != null) -> debugSource.operation(operation)
-            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(operation)
+            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(
+                operation
+            )
             else -> animatedSource.operation(operation, animationSpec)
         }
     }
