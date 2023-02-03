@@ -45,6 +45,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val isDebug: Boolean = false
 ) : Draggable, FlexibleBounds {
 
+    private var animationScope: CoroutineScope? = null
     private var _interpolator: Interpolator<NavTarget, ModelState> =
         interpolator(TransitionBounds(Density(0f), 0, 0))
 
@@ -61,6 +62,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             }
         }
 
+    private val instant = InstantInputSource(model = model)
+    private var animated: AnimatedInputSource<NavTarget, ModelState>? = null
+    private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
+    private val drag = DragProgressInputSource(
+        model = model,
+        gestureFactory = { _gestureFactory }
+    )
+
     val frames: Flow<List<FrameModel<NavTarget>>> =
         model
             .output
@@ -68,21 +77,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     val screenState: Flow<ScreenState<NavTarget>> =
         frames.map { it.toScreenState() }
-
-    private val instant = InstantInputSource(
-        model = model
-    )
-
-    private var animationScope: CoroutineScope? = null
-    private var isInitialised: Boolean = false
-
-    private var animated: AnimatedInputSource<NavTarget, ModelState>? = null
-    private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
-
-    private val drag = DragProgressInputSource(
-        model = model,
-        gestureFactory = { _gestureFactory }
-    )
 
     init {
         scope.launch {
@@ -150,28 +144,16 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
     }
 
-    /**
-     * Called when ParenNode UI enters composition
-     */
-    fun startAnimation(scope: CoroutineScope) {
+    fun onAddedToComposition(scope: CoroutineScope) {
         animationScope = scope
         createAnimatedInputSource(scope)
         createdDebugInputSource(scope)
-        isInitialised = true
     }
 
-    /**
-     * Called when ParenNode UI leaves composition
-     */
-    fun stopAnimation() {
+    fun onRemovedFromComposition() {
         // TODO finish unfinished transitions
-        if (isDebug) {
-            debug?.stopModel()
-        } else {
-            animated?.stopModel()
-        }
+        if (isDebug) debug?.stopModel() else animated?.stopModel()
         animationScope?.cancel()
-        isInitialised = false
     }
 
     private fun createAnimatedInputSource(scope: CoroutineScope) {
