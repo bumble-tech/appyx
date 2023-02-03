@@ -1,7 +1,6 @@
 package com.bumble.appyx.transitionmodel.testdrive.interpolator
 
 import DefaultAnimationSpec
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
@@ -33,10 +32,10 @@ import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
     transitionBounds: TransitionBounds,
-    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
     defaultProps = { Props() },
-    defaultAnimationSpec = defaultAnimationSpec
+    defaultAnimationSpec = uiAnimationSpec
 ) {
 
     class Props(

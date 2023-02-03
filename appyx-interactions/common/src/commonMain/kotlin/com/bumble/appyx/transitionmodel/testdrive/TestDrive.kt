@@ -15,11 +15,13 @@ open class TestDrive<NavTarget : Any>(
     model: TestDriveModel<NavTarget>,
     interpolator: (TransitionBounds) -> Interpolator<NavTarget, TestDriveModel.State<NavTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, TestDriveModel.State<NavTarget>> = { GestureFactory.Noop() },
-    animationSpec: AnimationSpec<Float> = spring(),
+    progressAnimationSpec: AnimationSpec<Float> = spring(),
+    animateSettle: Boolean = false
 ) : InteractionModel<NavTarget, TestDriveModel.State<NavTarget>>(
     scope = scope,
     model = model,
     interpolator = interpolator,
     gestureFactory = gestureFactory,
-    defaultAnimationSpec = animationSpec
+    defaultAnimationSpec = progressAnimationSpec,
+    animateSettle = animateSettle
 )

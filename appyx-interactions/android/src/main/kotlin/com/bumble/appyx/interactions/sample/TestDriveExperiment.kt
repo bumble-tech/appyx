@@ -53,7 +53,16 @@ fun TestDriveExperiment() {
         TestDrive(
             scope = coroutineScope,
             model = model,
-            interpolator = { TestDriveUiModel(it) },
+            progressAnimationSpec =
+                 spring(stiffness = Spring.StiffnessLow)
+//                tween(200, easing = LinearEasing)
+            ,
+            animateSettle = true,
+            interpolator = { TestDriveUiModel(it, uiAnimationSpec = spring(
+                stiffness = Spring.StiffnessVeryLow,
+                dampingRatio = Spring.DampingRatioHighBouncy,
+                visibilityThreshold = 0.1f
+            )) },
             gestureFactory = { TestDriveUiModel.Gestures(it) }
         )
     }
@@ -122,7 +131,7 @@ fun TestDriveExperiment() {
         ) {
             Button(onClick = { testDrive.next(
                 mode = KEYFRAME,
-                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 1)
+//                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 1)
             ) }) {
                 Text("Keyframe")
             }
