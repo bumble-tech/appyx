@@ -59,9 +59,9 @@ fun TestDriveExperiment() {
             ,
             animateSettle = true,
             interpolator = { TestDriveUiModel(it, uiAnimationSpec = spring(
-                stiffness = Spring.StiffnessVeryLow,
-                dampingRatio = Spring.DampingRatioHighBouncy,
-                visibilityThreshold = 0.1f
+                stiffness = Spring.StiffnessLow,
+                dampingRatio = Spring.DampingRatioMediumBouncy,
+                // reminder: visibilityThreshold is ignored
             )) },
             gestureFactory = { TestDriveUiModel.Gestures(it) }
         )
