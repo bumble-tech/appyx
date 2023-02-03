@@ -4,9 +4,11 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.Keyframes
+import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.COMPLETE
+import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.REVERT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,7 +19,7 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
     private val model: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
     private val defaultAnimationSpec: AnimationSpec<Float> = spring(),
-    private val animateSettleRevert: Boolean = false
+    private val animateSettle: Boolean = false
 ) : InputSource<NavTarget, ModelState> {
 
     private val animatable = Animatable(0f)
@@ -39,6 +41,12 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
                 target = { currentState.maxProgress },
                 animationSpec = animationSpec,
                 cancelVelocity = false,
+                onAnimationFinished = {
+                    model.onSettled(
+                        direction = COMPLETE,
+                        animate = animateSettle
+                    )
+                }
             )
         }
     }
@@ -52,11 +60,9 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
         val currentState = model.output.value
         if (currentState is Keyframes<ModelState>) {
             val currentProgress = currentState.progress
-            val (targetValue, animationSpec) = if (currentProgress % 1 < completionThreshold) {
-                floor(currentProgress).toInt() to revertGestureSpec
-            } else {
-                ceil(currentProgress).toInt() to completeGestureSpec
-            }
+            val direction : TransitionModel.SettleDirection = if (currentProgress % 1 < completionThreshold) REVERT else COMPLETE
+            val targetValue = if (direction == REVERT) floor(currentProgress).toInt() else ceil(currentProgress).toInt()
+            val animationSpec = if (direction == REVERT) revertGestureSpec else completeGestureSpec
 
             Logger.log(TAG, "Settle ${currentState.progress} to: $targetValue")
             animateModel(
@@ -65,9 +71,9 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
                 animationSpec = animationSpec,
                 cancelVelocity = true,
                 onAnimationFinished = {
-                    model.dropAfter(
-                        segmentIndex = targetValue,
-                        animateOnRevert = animateSettleRevert
+                    model.onSettled(
+                        direction = direction,
+                        animate = animateSettle
                     )
                 }
             )

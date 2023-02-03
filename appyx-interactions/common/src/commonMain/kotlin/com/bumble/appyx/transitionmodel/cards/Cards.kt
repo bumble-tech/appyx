@@ -12,11 +12,11 @@ open class Cards<NavTarget : Any>(
     interpolator: (TransitionBounds) -> Interpolator<NavTarget, CardsModel.State<NavTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, CardsModel.State<NavTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
-    animateSettleRevert: Boolean = false,
+    animateSettle: Boolean = false,
 ) : InteractionModel<NavTarget, CardsModel.State<NavTarget>>(
     model = model,
     interpolator = interpolator,
     gestureFactory = gestureFactory,
     defaultAnimationSpec = animationSpec,
-    animateSettleRevert = animateSettleRevert
+    animateSettle = animateSettle
 )

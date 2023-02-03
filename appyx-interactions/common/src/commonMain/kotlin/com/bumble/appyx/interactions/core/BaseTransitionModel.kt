@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.core
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.*
 import com.bumble.appyx.interactions.core.TransitionModel.Output
+import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +40,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     private var enforcedMode: Operation.Mode? = null
 
     override fun relaxExecutionMode() {
+        Logger.log("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
     }
 
@@ -135,31 +137,28 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         }
     }
 
-    override fun dropAfter(segmentIndex: Int, animateOnRevert: Boolean) {
+    override fun onSettled(direction: SettleDirection, animate: Boolean) {
         when (val currentState = state.value) {
             is Update -> {
-                Logger.log(TAG, "Not in keyframe state, ignoring dropAfter")
+                Logger.log(TAG, "Not in keyframe state, nothing to do")
                 return
             }
             is Keyframes -> {
-                if (segmentIndex == 0) {
-                    val first = currentState.queue.first()
-                    val newState = Update(
-                        currentTargetState = first.fromState,
-                        animate = animateOnRevert
-                    )
-                    updateState(newState)
-                } else {
-                    val newState = currentState.dropAfter(segmentIndex)
-                    updateState(newState)
-                }
+                val newState = Update(
+                    currentTargetState = when (direction) {
+                        SettleDirection.REVERT -> currentState.currentSegment.fromState
+                        SettleDirection.COMPLETE -> currentState.currentSegment.targetState
+                    },
+                    animate = animate
+                )
+                updateState(newState)
             }
         }
     }
 
     private fun updateState(output: Output<ModelState>) {
         // Logger.log(TAG, "Publishing new state ($currentIndex) of queue: ${queue.map { "${it.index}: ${it.javaClass.simpleName}"  }}")
-        Logger.log(TAG, "Publishing new state: ${this.output.value}")
+        Logger.log(TAG, "Publishing new state: $output")
         state.update { output }
     }
 
