@@ -22,10 +22,10 @@ import kotlinx.coroutines.awaitAll
 
 class BackStackSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds
-) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
-    defaultProps = { Props() }
-) {
+) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>() {
     private val width = transitionBounds.widthDp
+
+    override fun defaultProps(): Props = Props()
 
     data class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),

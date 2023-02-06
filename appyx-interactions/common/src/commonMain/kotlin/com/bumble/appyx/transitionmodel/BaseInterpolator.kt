@@ -1,10 +1,14 @@
 package com.bumble.appyx.transitionmodel
 
 import DefaultAnimationSpec
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.composed
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.core.Segment
+import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -19,7 +23,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
 
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
-    private val defaultProps: () -> Props,
     private val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
 
@@ -28,12 +31,22 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
 
+    abstract fun defaultProps(): Props
+
     override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         currentSpringSpec = springSpec
     }
 
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
+
+    final override fun applyGeometry(output: TransitionModel.Output<ModelState>) {
+        if (false /* isDragging */) snapGeometry(output) else animateGeometry(output)
+    }
+
+    open fun snapGeometry(output: TransitionModel.Output<ModelState>) {}
+
+    open fun animateGeometry(output: TransitionModel.Output<ModelState>) {}
 
     fun updateAnimationState(key: String, isAnimating: Boolean) {
         animations[key] = isAnimating
@@ -47,7 +60,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
-            val elementProps = cache.getOrPut(t1.element.id, defaultProps)
+            val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
 
             FrameModel(
                 navElement = t1.element,
@@ -88,7 +101,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val elementProps = cache.getOrPut(t1.element.id, defaultProps)
+            val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             runBlocking {
                 elementProps.lerpTo(t0.props, t1.props, segmentProgress)
             }

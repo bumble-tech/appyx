@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -30,30 +31,27 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
+typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 class SpotlightSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     private val scope: CoroutineScope,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
-    defaultProps = { Props() }
-) {
+) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>() {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
     private val scroll = Geometry1D<TransitionModel.Output<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
         scope = scope,
-        initialValue = 0f
+        initialValue = 0f // TODO sync this with the model's initial value
     ) {
         mapCore(it)
     }
 
     data class Props(
-        val offset: InterpolatableOffset = InterpolatableOffset(DpOffset(0.dp, 0.dp)),
+        val offset: OffsetP,
         val scale: Float = 1f,
         val alpha: Float = 1f,
         val zIndex: Float = 1f,
@@ -97,8 +95,16 @@ class SpotlightSlider<NavTarget : Any>(
         }
     }
 
+    override fun defaultProps(): Props = Props(
+        offset = OffsetP(DpOffset.Zero).also {
+            it.displacement = derivedStateOf {
+                DpOffset((scroll.value * width.value).dp, 0.dp)
+            }
+        }
+    )
+
     private val created = Props(
-        offset = InterpolatableOffset(DpOffset(0.dp, 500.dp)),
+        offset = OffsetP(DpOffset(0.dp, 500.dp)),
         scale = 0f,
         alpha = 1f,
         zIndex = 0f,
@@ -106,10 +112,13 @@ class SpotlightSlider<NavTarget : Any>(
         isVisible = false
     )
 
-    private val standard = Props(isVisible = true)
+    private val standard = Props(
+        offset = OffsetP(DpOffset.Zero),
+        isVisible = true
+    )
 
     private val destroyed = Props(
-        offset = InterpolatableOffset(DpOffset(0.dp, (-500).dp)),
+        offset = OffsetP(DpOffset(0.dp, (-500).dp)),
         scale = 0f,
         alpha = 0f,
         zIndex = -1f,
@@ -118,15 +127,20 @@ class SpotlightSlider<NavTarget : Any>(
         isVisible = false
     )
 
-    override fun applyGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>): StateFlow<List<FrameModel<NavTarget>>> =
+    override fun snapGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) {
+        scroll.snapTo(output.currentTargetState.activeIndex)
+    }
+
+    override fun animateGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) {
         scroll.animateTo(
-            output,
             output.currentTargetState.activeIndex,
             spring(
+                // FIXME animation spec should come from client code
                 stiffness = Spring.StiffnessVeryLow / 20,
 //                dampingRatio = Spring.DampingRatioHighBouncy
             )
         )
+    }
 
     override fun SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
         return positions.flatMapIndexed { index, position ->
@@ -135,7 +149,7 @@ class SpotlightSlider<NavTarget : Any>(
                 MatchedProps(
                     element = it.key,
                     props = Props(
-                        offset = InterpolatableOffset(
+                        offset = OffsetP(
                             DpOffset(
                                 dpOffset(index).x,
                                 target.offset.value.y
@@ -163,7 +177,7 @@ class SpotlightSlider<NavTarget : Any>(
     private fun dpOffset(
         index: Int
     ) = DpOffset(
-        x = ((index - this.scroll.value) * width.value).dp,
+        x = (index * width.value).dp,
         y = 0.dp
     )
 
