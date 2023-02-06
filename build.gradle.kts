@@ -9,6 +9,7 @@ buildscript {
     dependencies {
         classpath(libs.plugin.android)
         classpath(libs.plugin.kotlin)
+        classpath("com.karumi:shot:5.14.1")
     }
 }
 

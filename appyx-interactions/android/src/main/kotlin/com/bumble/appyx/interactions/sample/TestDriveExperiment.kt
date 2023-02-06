@@ -1,7 +1,5 @@
 package com.bumble.appyx.interactions.sample
 
-import DefaultAnimationSpec
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
@@ -45,23 +43,18 @@ import com.bumble.appyx.transitionmodel.testdrive.operation.next
 
 @ExperimentalMaterialApi
 @Composable
-fun TestDriveExperiment(
-    animationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    transitionModel: TestDriveModel<NavTarget> = TestDriveModel(Child1)
-) {
+fun TestDriveExperiment() {
     val coroutineScope = rememberCoroutineScope()
 
-    val model = remember { transitionModel }
+    val model = remember { TestDriveModel(Child1) }
     val testDrive = remember {
         TestDrive(
             scope = coroutineScope,
             model = model,
             interpolator = { TestDriveUiModel(it) },
             gestureFactory = { TestDriveUiModel.Gestures(it) },
-            animationSpec = animationSpec
         )
     }
-
 
     InteractionModelSetup(testDrive)
 
@@ -70,54 +63,11 @@ fun TestDriveExperiment(
             .fillMaxWidth()
             .background(appyx_dark)
     ) {
-        Box(
-            Modifier
-                .weight(0.9f)
-                .padding(
-                    horizontal = 64.dp,
-                    vertical = 12.dp
-                )
-        ) {
-            Children(
-                interactionModel = testDrive,
-            ) { frameModel ->
-                Box(
-                    modifier = Modifier.size(60.dp)
-                        .then(frameModel.modifier)
-                        .pointerInput(frameModel.navElement.id) {
-                            detectDragGestures(
-                                onDrag = { change, dragAmount ->
-                                    change.consume()
-                                    testDrive.onDrag(dragAmount, this)
-                                },
-                                onDragEnd = {
-                                    Logger.log("drag", "end")
-                                    testDrive.onDragEnd()
-                                }
-                            )
-                        }
-                )
-            }
-
-            val output = model.output.collectAsState().value
-            val targetProps = output.currentTargetState.elementState.toProps()
-            Box(
-                modifier = Modifier
-                    .size(60.dp)
-                    .offset(targetProps.offset.value.x, targetProps.offset.value.y)
-                    .border(2.dp, targetProps.backgroundColor.value)
-            ) {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = when (output) {
-                        is Keyframes -> output.currentIndex.toString()
-                        is Update -> "X"
-                    },
-                    fontSize = 24.sp,
-                    color = Color.White
-                )
-            }
-        }
+        TestDriveUi(
+            testDrive = testDrive,
+            model = model,
+            modifier = Modifier.weight(0.9f)
+        )
 
         Row(
             modifier = Modifier
@@ -129,7 +79,7 @@ fun TestDriveExperiment(
             Button(onClick = {
                 testDrive.next(
                     mode = KEYFRAME,
-                    animationSpec = animationSpec
+                    animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 1)
                 )
             }) {
                 Text("Keyframe")
@@ -146,6 +96,62 @@ fun TestDriveExperiment(
             }) {
                 Text("Immediate")
             }
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun <NavTarget : Any> TestDriveUi(
+    testDrive: TestDrive<NavTarget>,
+    model: TestDriveModel<NavTarget>,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier
+            .padding(
+                horizontal = 64.dp,
+                vertical = 12.dp
+            )
+    ) {
+        Children(
+            interactionModel = testDrive,
+        ) { frameModel ->
+            Box(
+                modifier = Modifier.size(60.dp)
+                    .then(frameModel.modifier)
+                    .pointerInput(frameModel.navElement.id) {
+                        detectDragGestures(
+                            onDrag = { change, dragAmount ->
+                                change.consume()
+                                testDrive.onDrag(dragAmount, this)
+                            },
+                            onDragEnd = {
+                                Logger.log("drag", "end")
+                                testDrive.onDragEnd()
+                            }
+                        )
+                    }
+            )
+        }
+
+        val output = model.output.collectAsState().value
+        val targetProps = output.currentTargetState.elementState.toProps()
+        Box(
+            modifier = Modifier
+                .size(60.dp)
+                .offset(targetProps.offset.value.x, targetProps.offset.value.y)
+                .border(2.dp, targetProps.backgroundColor.value)
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = when (output) {
+                    is Keyframes -> output.currentIndex.toString()
+                    is Update -> "X"
+                },
+                fontSize = 24.sp,
+                color = Color.White
+            )
         }
     }
 }

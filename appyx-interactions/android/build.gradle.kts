@@ -4,6 +4,8 @@ plugins {
     kotlin("android")
 }
 
+apply(plugin = "shot")
+
 
 android {
     namespace = "com.bumble.appyx.interactions"
@@ -13,7 +15,7 @@ android {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.karumi.shot.ShotTestRunner"
     }
 }
 
