@@ -25,9 +25,9 @@ interface Interpolator<Target, ModelState> {
 
     fun map(
         output: TransitionModel.Output<ModelState>
-    ): StateFlow<List<FrameModel<Target>>> {
+    ): List<FrameModel<Target>> {
         applyGeometry(output)
-        return MutableStateFlow(mapCore(output)) // TODO remove flow
+        return mapCore(output)
     }
 
 

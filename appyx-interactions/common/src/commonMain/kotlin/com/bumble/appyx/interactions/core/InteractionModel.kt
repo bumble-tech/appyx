@@ -74,7 +74,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     val frames: Flow<List<FrameModel<NavTarget>>> =
         model
             .output
-            .flatMapLatest { _interpolator.map(it) }
+            .map { _interpolator.map(it) }
 
     val screenState: Flow<ScreenState<NavTarget>> =
         frames.map { it.toScreenState() }
