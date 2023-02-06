@@ -38,6 +38,24 @@ class SpotlightFader<NavTarget : Any>(
         isVisible = false
     )
 
+    // TODO Migrate to BaseInterpolator
+
+    override fun onStartDrag(position: Offset) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDrag(dragAmount: Offset, density: Density) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
+        TODO("Not yet implemented")
+    }
+
     fun SpotlightModel.State.ElementState.isVisible() =
         when (this) {
             CREATED -> false

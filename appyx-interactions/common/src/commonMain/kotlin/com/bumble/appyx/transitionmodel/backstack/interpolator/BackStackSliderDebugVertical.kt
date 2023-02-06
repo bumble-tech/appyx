@@ -100,7 +100,24 @@ class BackStackSliderDebugVertical<NavTarget>
                 state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
+    }
 
+    // TODO Migrate to BaseInterpolator
+
+    override fun onStartDrag(position: Offset) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDrag(dragAmount: Offset, density: Density) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
+        TODO("Not yet implemented")
     }
 
     override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {

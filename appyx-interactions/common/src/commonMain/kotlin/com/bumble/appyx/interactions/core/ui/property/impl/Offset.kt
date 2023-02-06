@@ -13,7 +13,7 @@ import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Offset(
-    value: DpOffset
+    value: DpOffset,
 ) : AnimatedProperty<DpOffset, AnimationVector2D>(
     animatable = Animatable(value, DpOffset.VectorConverter)
 ), Interpolatable<Offset> {

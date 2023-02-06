@@ -30,6 +30,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
     private var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
+    private var isDragging: Boolean = false
 
     abstract fun defaultProps(): Props
 
@@ -40,8 +41,24 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
 
+    final override fun onStartDrag(position: Offset) {
+        isDragging = true
+    }
+
+    final override fun onDrag(dragAmount: Offset, density: Density) {
+        isDragging = true
+    }
+
+    final override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
+        isDragging = false
+    }
+
     final override fun applyGeometry(output: TransitionModel.Output<ModelState>) {
-        if (false /* isDragging */) snapGeometry(output) else animateGeometry(output)
+        if (isDragging) snapGeometry(output) else animateGeometry(output)
     }
 
     open fun snapGeometry(output: TransitionModel.Output<ModelState>) {}

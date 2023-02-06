@@ -10,11 +10,16 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.Keyframes
+import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
@@ -128,19 +133,31 @@ class SpotlightSlider<NavTarget : Any>(
     )
 
     override fun snapGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) {
-        scroll.snapTo(output.currentTargetState.activeIndex)
+        val target = targetIndex(output)
+        scroll.snapTo(target)
     }
 
     override fun animateGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) {
+        val target = targetIndex(output)
+
         scroll.animateTo(
-            output.currentTargetState.activeIndex,
-            spring(
-                // FIXME animation spec should come from client code
-                stiffness = Spring.StiffnessVeryLow / 20,
-//                dampingRatio = Spring.DampingRatioHighBouncy
-            )
+            target,
+            // FIXME animation spec should come from client code
+            spring()
         )
     }
+
+    // TODO make this work in a generic way: List<(ModelState) -> Animatable>
+    private fun targetIndex(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) =
+        when (output) {
+            is Keyframes -> Interpolator.lerpFloat(
+                output.currentSegment.fromState.activeIndex,
+                output.currentSegment.targetState.activeIndex,
+                output.segmentProgress
+            )
+
+            is Update -> output.currentTargetState.activeIndex
+        }
 
     override fun SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
         return positions.flatMapIndexed { index, position ->
@@ -195,26 +212,26 @@ class SpotlightSlider<NavTarget : Any>(
             return when (orientation) {
                 Orientation.Horizontal -> if (delta.x < 0) {
                     Gesture(
-                        operation = Next(),
+                        operation = Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) * -1 },
                         partial = { offset, progress -> offset.copy(x = progress * width * -1) }
                     )
                 } else {
                     Gesture(
-                        operation = Previous(),
+                        operation = Previous(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) },
                         partial = { offset, partial -> offset.copy(x = partial * width) }
                     )
                 }
                 Orientation.Vertical -> if (delta.y < 0) {
                     Gesture(
-                        operation = Next(),
+                        operation = Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.y / height) * -1 },
                         partial = { offset, partial -> offset.copy(y = partial * height * -1) }
                     )
                 } else {
                     Gesture(
-                        operation = Previous(),
+                        operation = Previous(KEYFRAME),
                         dragToProgress = { offset -> (offset.y / height) },
                         partial = { offset, partial -> offset.copy(y = partial * height) }
                     )
