@@ -80,7 +80,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
             is Keyframes -> {
                 with(currentState) {
                     val past = if (currentIndex > 0) queue.subList(0, currentIndex - 1) else emptyList()
-                    val remaining = queue.subList(currentIndex, queue.lastIndex)
+                    val remaining = queue.subList(currentIndex, queue.lastIndex + 1)
 
                     if (remaining.all { operation.isApplicable(it.targetState) }) {
                         // Replace the operation result into all the queued outputs
