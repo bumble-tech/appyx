@@ -18,10 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -104,21 +101,30 @@ fun TestDriveExperiment() {
             }
 
             val output = model.output.collectAsState().value
-            val targetProps = output.currentTargetState.elementState.toProps()
-            Box(modifier = Modifier
-                .size(60.dp)
-                .offset(targetProps.offset.value.x, targetProps.offset.value.y)
-                .border(2.dp, targetProps.backgroundColor.value)
-            ) {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = when (output) {
-                        is Keyframes -> output.currentIndex.toString()
-                        is Update -> "X"
-                    },
-                    fontSize = 24.sp,
-                    color = Color.White
-                )
+            val targetState: State<TestDriveModel.State<NavTarget>?> =
+                when (output) {
+                    is Keyframes -> output.currentSegmentTargetStateFlow
+                        .collectAsState(null)
+                    is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
+                }
+            val targetProps = targetState.value?.elementState?.toProps()
+            targetProps?.let {
+                Box(
+                    modifier = Modifier
+                        .size(60.dp)
+                        .offset(targetProps.offset.value.x, targetProps.offset.value.y)
+                        .border(2.dp, targetProps.backgroundColor.value)
+                ) {
+                    Text(
+                        modifier = Modifier.align(Alignment.Center),
+                        text = when (output) {
+                            is Keyframes -> output.currentIndex.toString()
+                            is Update -> "X"
+                        },
+                        fontSize = 24.sp,
+                        color = Color.White
+                    )
+                }
             }
         }
 

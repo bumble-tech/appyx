@@ -9,11 +9,8 @@ import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.FrameModel.State
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.*
+import kotlinx.coroutines.flow.*
 
 interface Interpolator<Target, ModelState> {
 
@@ -25,13 +22,19 @@ interface Interpolator<Target, ModelState> {
 
     fun map(
         output: TransitionModel.Output<ModelState>
-    ): StateFlow<List<FrameModel<Target>>> =
+    ): Flow<List<FrameModel<Target>>> =
         applyGeometry(output)
 
     fun applyGeometry(
         output: TransitionModel.Output<ModelState>
-    ): StateFlow<List<FrameModel<Target>>> =
-        MutableStateFlow(mapCore(output))
+    ): Flow<List<FrameModel<Target>>> =
+        when (output) {
+            is Keyframes -> {
+                //Produce new frame model every time we switch segments
+                output.currentIndexFlow.distinctUntilChanged().map { mapKeyframes(output) }
+            }
+            is Update -> MutableStateFlow(mapUpdate(output))
+        }
 
     fun mapCore(
         output: TransitionModel.Output<ModelState>
@@ -51,7 +54,7 @@ interface Interpolator<Target, ModelState> {
 
     fun mapSegment(
         segment: Segment<ModelState>,
-        segmentProgress: Float
+        segmentProgress: StateFlow<Float>
     ): List<FrameModel<Target>>
 
     fun mapUpdate(
