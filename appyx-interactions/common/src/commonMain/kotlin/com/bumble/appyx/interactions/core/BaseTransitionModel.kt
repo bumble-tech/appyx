@@ -47,10 +47,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     override fun operation(operation: Operation<ModelState>, overrideMode: Operation.Mode?): Boolean =
         when (enforcedMode ?: overrideMode ?: operation.mode) {
             IMMEDIATE -> {
-                // Replacing while in keyframes mode triggers enforced IMMEDIATE execution as a side effect
-                if (state.value is Keyframes) {
-                    enforcedMode = IMMEDIATE
-                }
+                // IMMEDIATE mode is kept until UI is settled and model is relaxed
+                enforcedMode = IMMEDIATE
                 createUpdate(operation)
             }
             GEOMETRY -> {
