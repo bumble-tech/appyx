@@ -1,7 +1,11 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.DpOffset
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -34,6 +38,24 @@ class SpotlightFader<NavTarget : Any>(
         isVisible = false
     )
 
+    // TODO Migrate to BaseInterpolator
+
+    override fun onStartDrag(position: Offset) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDrag(dragAmount: Offset, density: Density) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
+        TODO("Not yet implemented")
+    }
+
     fun SpotlightModel.State.ElementState.isVisible() =
         when (this) {
             CREATED -> false
@@ -50,6 +72,7 @@ class SpotlightFader<NavTarget : Any>(
                 MatchedProps(
                     element = it.key,
                     props = SpotlightSlider.Props(
+                        offset = OffsetP(DpOffset.Zero),
                         alpha = target.alpha,
                         isVisible = isVisible
                     )

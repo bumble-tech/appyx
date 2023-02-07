@@ -74,7 +74,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     val frames: Flow<List<FrameModel<NavTarget>>> =
         model
             .output
-            .flatMapLatest { _interpolator.map(it) }
+            .map { _interpolator.map(it) }
 
     val screenState: Flow<ScreenState<NavTarget>> =
         frames.map { it.toScreenState() }
@@ -152,11 +152,13 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     override fun onStartDrag(position: Offset) {
+        _interpolator.onStartDrag(position)
         drag.onStartDrag(position)
     }
 
     override fun onDrag(dragAmount: Offset, density: Density) {
         if (!isAnimating) {
+            _interpolator.onDrag(dragAmount, density)
             drag.onDrag(dragAmount, density)
         }
     }
@@ -167,6 +169,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         revertGestureSpec: AnimationSpec<Float>
     ) {
         if (!isAnimating) {
+            _interpolator.onDragEnd()
             drag.onDragEnd()
             settle(completionThreshold, revertGestureSpec, completeGestureSpec)
         }

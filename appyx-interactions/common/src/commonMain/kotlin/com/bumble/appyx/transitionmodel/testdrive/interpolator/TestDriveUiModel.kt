@@ -34,9 +34,9 @@ class TestDriveUiModel<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
-    defaultProps = { Props() },
     defaultAnimationSpec = uiAnimationSpec
 ) {
+    override fun defaultProps(): Props = Props()
 
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),

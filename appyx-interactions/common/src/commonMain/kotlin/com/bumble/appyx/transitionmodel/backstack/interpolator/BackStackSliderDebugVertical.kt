@@ -1,10 +1,13 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.offset
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.Segment
@@ -97,7 +100,24 @@ class BackStackSliderDebugVertical<NavTarget>
                 state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
+    }
 
+    // TODO Migrate to BaseInterpolator
+
+    override fun onStartDrag(position: Offset) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDrag(dragAmount: Offset, density: Density) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
+        TODO("Not yet implemented")
     }
 
     override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
