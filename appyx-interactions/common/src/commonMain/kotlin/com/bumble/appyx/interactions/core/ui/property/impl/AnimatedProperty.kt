@@ -88,7 +88,7 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
             }
         }
 
-        Logger.log("Animatable", "Calculated velocity: $velocity")
+        Logger.v("Animatable", "Calculated velocity: $velocity")
         return velocity
     }
 
