@@ -50,7 +50,7 @@ class SpotlightNode(
             initialActiveIndex = 0f,
             initialActiveWindow = 1f
         ),
-        interpolator = { SpotlightSlider(it, coroutineScope) }
+        interpolator = { SpotlightSlider(it, coroutineScope, activeWindow = 0f) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
