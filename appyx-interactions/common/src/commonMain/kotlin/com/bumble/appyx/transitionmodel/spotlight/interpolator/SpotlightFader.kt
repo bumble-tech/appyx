@@ -15,6 +15,8 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 
+
+// TODO BaseInterpolator + dynamic on visibility calculation
 class SpotlightFader<NavTarget : Any>(
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {

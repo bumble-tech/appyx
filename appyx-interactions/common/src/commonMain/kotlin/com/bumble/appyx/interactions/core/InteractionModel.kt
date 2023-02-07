@@ -21,6 +21,7 @@ import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.toScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
@@ -50,12 +51,16 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
 
+    private var animationChangesJob: Job? = null
+
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
             if (value != field) {
                 Logger.log("InteractionModel", "TransitionBounds changed: $value")
                 field = value
-                _interpolator = interpolator(transitionBounds)
+                _interpolator = interpolator(transitionBounds).also {
+                    observeAnimationChanges()
+                }
                 _gestureFactory = gestureFactory(transitionBounds)
             }
         }
@@ -83,16 +88,15 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         gestureFactory = { _gestureFactory }
     )
 
-    init {
-        scope.launch {
+    private fun observeAnimationChanges() {
+        animationChangesJob?.cancel()
+        animationChangesJob = scope.launch {
             _interpolator.isAnimating()
-                .onEach {
+                .collect {
                     if (!it) {
-                        Logger.log("InteractionModel", "Finished animating, relaxing mode")
-                        model.relaxExecutionMode()
+                        onAnimationsFinished()
                     }
                 }
-                .collect()
         }
     }
 
@@ -106,18 +110,20 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float> = defaultAnimationSpec
     ) {
-       if (animationSpec is SpringSpec<Float>) _interpolator.overrideAnimationSpec(animationSpec)
+        if (animationSpec is SpringSpec<Float>) _interpolator.overrideAnimationSpec(animationSpec)
         val animatedSource = animated
         val debugSource = debug
         when {
             (isDebug && debugSource != null) -> debugSource.operation(operation)
-            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(operation)
+            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(
+                operation
+            )
             else -> animatedSource.operation(operation, animationSpec)
         }
     }
 
     private fun onAnimationsFinished() {
-        model.relaxExecutionMode()
+        model.onAnimationFinished()
     }
 
     override fun onStartDrag(position: Offset) {

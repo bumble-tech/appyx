@@ -47,11 +47,6 @@ data class Keyframes<ModelState>(
 
     override fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState> =
         Update(
-            history = listOf(
-                currentSegment.navTransition.fromState,
-                currentSegment.navTransition.targetState,
-                navTransition.fromState
-            ),
             currentTargetState = navTransition.targetState
         )
 

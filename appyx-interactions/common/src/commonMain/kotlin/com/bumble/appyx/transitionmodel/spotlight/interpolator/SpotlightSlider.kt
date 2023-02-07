@@ -59,6 +59,7 @@ class SpotlightSlider<NavTarget : Any>(
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
+        // TODO dynamic visibility calculation
         override val isVisible: Boolean = true
     ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
 

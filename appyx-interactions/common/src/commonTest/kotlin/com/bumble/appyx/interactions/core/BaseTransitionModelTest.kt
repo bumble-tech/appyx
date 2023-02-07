@@ -89,6 +89,8 @@ class BaseTransitionModelTest {
             elements = initialElements.map { it.asElement() }
         )
 
+        override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget>  = this
+
         override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> = setOf()
 
         override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> = setOf()

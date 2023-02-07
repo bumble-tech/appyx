@@ -37,7 +37,7 @@ class CardsProps<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
-    defaultProps = { Props() },
+    defaultProps = { Props(width = transitionBounds.widthDp.value) },
     defaultAnimationSpec = defaultAnimationSpec
 ) {
     private val width = transitionBounds.widthDp.value
@@ -52,8 +52,12 @@ class CardsProps<NavTarget : Any>(
         ),
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
-        override val isVisible: Boolean = false
+        private val width: Float,
     ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
+
+        override val isVisible: Boolean
+            get() = scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
+                    positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             scale.lerpTo(start.scale, end.scale, fraction)
@@ -114,16 +118,19 @@ class CardsProps<NavTarget : Any>(
     }
 
     private val hidden = Props(
-        scale = Scale(0f)
+        scale = Scale(0f),
+        width = width
     )
 
     private val bottom = Props(
         scale = Scale(0.85f),
+        width = width
     )
 
     private val top = Props(
         scale = Scale(1f),
         zIndex = ZIndex(1f),
+        width = width
     )
 
     private val votePass = Props(
@@ -136,6 +143,7 @@ class CardsProps<NavTarget : Any>(
         scale = Scale(1f),
         zIndex = ZIndex(2f),
         rotationZ = RotationZ(-45f),
+        width = width
     )
 
     private val voteLike = Props(
@@ -148,6 +156,7 @@ class CardsProps<NavTarget : Any>(
         scale = Scale(1f),
         zIndex = ZIndex(2f),
         rotationZ = RotationZ(45f),
+        width = width
     )
 
     override fun CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {

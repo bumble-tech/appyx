@@ -23,6 +23,7 @@ class BackStackSliderDebugVertical<NavTarget>
     data class Props(
         val offset: DpOffset,
         val color: Color,
+        // TODO
         override val isVisible: Boolean
     ): BaseProps
 
@@ -94,7 +95,7 @@ class BackStackSliderDebugVertical<NavTarget>
                     )
                     .background(color = color),
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+//                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
 

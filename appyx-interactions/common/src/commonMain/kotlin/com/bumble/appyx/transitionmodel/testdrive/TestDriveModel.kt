@@ -38,4 +38,6 @@ class TestDriveModel<NavTarget : Any>(
             element = element.asElement(),
             elementState = A
         )
+
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> = this
 }

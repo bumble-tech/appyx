@@ -4,7 +4,8 @@ import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.*
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 
 class SpotlightModel<NavTarget : Any>(
     items: List<NavTarget>,
@@ -48,12 +49,16 @@ class SpotlightModel<NavTarget : Any>(
 
     override val initialState: State<NavTarget> =
         State(
-            positions = items.map { State.Position(
-                elements = mapOf(it.asElement() to STANDARD)
-            ) },
+            positions = items.map {
+                State.Position(
+                    elements = mapOf(it.asElement() to STANDARD)
+                )
+            },
             activeIndex = initialActiveIndex,
             activeWindow = initialActiveWindow
         )
+
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> = this
 
     override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
         positions
