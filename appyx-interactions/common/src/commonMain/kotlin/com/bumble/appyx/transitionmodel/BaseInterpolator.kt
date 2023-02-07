@@ -1,14 +1,12 @@
 package com.bumble.appyx.transitionmodel
 
 import DefaultAnimationSpec
-import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.composed
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -21,6 +19,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
+import com.bumble.appyx.interactions.Logger
+import androidx.compose.animation.core.Animatable as Animatable1
 
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
@@ -30,7 +30,10 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
     protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
-    private var isDragging: Boolean = false
+
+    open val geometryMappings: List<Pair<(ModelState) -> Float, Animatable1<Float, AnimationVector1D>>> =
+        emptyList()
+
 
     abstract fun defaultProps(): Props
 
@@ -40,30 +43,6 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
-
-    final override fun onStartDrag(position: Offset) {
-        isDragging = true
-    }
-
-    final override fun onDrag(dragAmount: Offset, density: Density) {
-        isDragging = true
-    }
-
-    final override fun onDragEnd(
-        completionThreshold: Float,
-        completeGestureSpec: AnimationSpec<Float>,
-        revertGestureSpec: AnimationSpec<Float>
-    ) {
-        isDragging = false
-    }
-
-    final override fun applyGeometry(output: TransitionModel.Output<ModelState>) {
-        if (isDragging) snapGeometry(output) else animateGeometry(output)
-    }
-
-    open fun snapGeometry(output: TransitionModel.Output<ModelState>) {}
-
-    open fun animateGeometry(output: TransitionModel.Output<ModelState>) {}
 
     fun updateAnimationState(key: String, isAnimating: Boolean) {
         animations[key] = isAnimating
@@ -76,13 +55,31 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         val targetProps = update.currentTargetState.toProps()
 
         // TODO: use a map instead of find
-        return targetProps.map { t1 ->
+        return targetProps.mapIndexed { index, t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
 
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed {
                     LaunchedEffect(update) {
+                        // Apply geometry animation only once.
+                        // TODO Consider having scope in the constructor,
+                        //  then we can launch it outside of composition.
+                        if (index == 0) {
+                            geometryMappings.forEach { (fieldOfState, geometry) ->
+                                val targetValue = geometryTargetValue(update, fieldOfState)
+                                geometry.animateTo(
+                                    targetValue,
+                                    spring(
+                                        stiffness = currentSpringSpec.stiffness,
+                                        dampingRatio = currentSpringSpec.dampingRatio
+                                    )
+                                ) {
+                                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Update) – ${t1.element.navTarget}: $targetValue")
+                                }
+                            }
+                        }
+
                         if (update.animate) {
                             elementProps.animateTo(
                                 scope = this,
@@ -115,6 +112,14 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 
+        runBlocking {
+            geometryMappings.forEach { (fieldOfState, geometry) ->
+                val targetValue = geometryTargetValue(segment, segmentProgress, fieldOfState)
+                geometry.snapTo(targetValue)
+                Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry snapTo (Segment): $targetValue")
+            }
+        }
+
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
@@ -131,4 +136,20 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             )
         }
     }
+
+    private fun geometryTargetValue(
+        segment: Segment<ModelState>,
+        segmentProgress: Float,
+        fieldOfState: (ModelState) -> Float
+    ) = Interpolator.lerpFloat(
+        fieldOfState(segment.fromState),
+        fieldOfState(segment.targetState),
+        segmentProgress
+    )
+
+    private fun geometryTargetValue(
+        output: Update<ModelState>,
+        fieldOfState: (ModelState) -> Float
+    ) = fieldOfState(output.currentTargetState)
+
 }

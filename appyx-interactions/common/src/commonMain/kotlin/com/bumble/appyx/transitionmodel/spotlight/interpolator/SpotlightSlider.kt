@@ -1,5 +1,6 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
@@ -9,18 +10,12 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
-import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -35,6 +30,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import androidx.compose.animation.core.Animatable as Animatable1
 
 typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
@@ -45,13 +41,12 @@ class SpotlightSlider<NavTarget : Any>(
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>() {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
+    private val scroll = Animatable1(0f) // TODO sync this with the model's initial value
 
-    private val scroll = Geometry1D<TransitionModel.Output<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
-        scope = scope,
-        initialValue = 0f // TODO sync this with the model's initial value
-    ) {
-        mapCore(it)
-    }
+    override val geometryMappings: List<Pair<(SpotlightModel.State<NavTarget>) -> Float, Animatable1<Float, AnimationVector1D>>> =
+        listOf(
+            { state: SpotlightModel.State<NavTarget> -> state.activeIndex } to scroll
+        )
 
     data class Props(
         val offset: OffsetP,
@@ -129,35 +124,6 @@ class SpotlightSlider<NavTarget : Any>(
         rotation = 360f,
         isVisible = false
     )
-
-    override fun snapGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) {
-        val target = targetIndex(output)
-        scroll.snapTo(target)
-    }
-
-    override fun animateGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) {
-        val target = targetIndex(output)
-
-        scroll.animateTo(
-            target,
-            spring(
-                stiffness = currentSpringSpec.stiffness,
-                dampingRatio = currentSpringSpec.dampingRatio
-            )
-        )
-    }
-
-    // TODO make this work in a generic way: List<(ModelState) -> Animatable>
-    private fun targetIndex(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) =
-        when (output) {
-            is Keyframes -> Interpolator.lerpFloat(
-                output.currentSegment.fromState.activeIndex,
-                output.currentSegment.targetState.activeIndex,
-                output.segmentProgress
-            )
-
-            is Update -> output.currentTargetState.activeIndex
-        }
 
     override fun SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
         return positions.flatMapIndexed { index, position ->

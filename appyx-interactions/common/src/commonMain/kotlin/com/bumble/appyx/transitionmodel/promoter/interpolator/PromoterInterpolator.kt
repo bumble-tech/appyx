@@ -94,22 +94,6 @@ class PromoterInterpolator<NavTarget : Any>(
 
     // TODO Migrate to BaseInterpolator
 
-    override fun onStartDrag(position: Offset) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onDrag(dragAmount: Offset, density: Density) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onDragEnd(
-        completionThreshold: Float,
-        completeGestureSpec: AnimationSpec<Float>,
-        revertGestureSpec: AnimationSpec<Float>
-    ) {
-        TODO("Not yet implemented")
-    }
-
     private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
         elements.map {
             MatchedProps(it.first, when(it.second) {
