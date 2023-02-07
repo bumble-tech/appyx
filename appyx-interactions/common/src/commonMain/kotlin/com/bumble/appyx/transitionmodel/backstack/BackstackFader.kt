@@ -16,12 +16,12 @@ import kotlinx.coroutines.launch
 class BackstackFader<NavTarget : Any>(
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>(
-    defaultProps = { Props(alpha = Alpha(0f)) },
     defaultAnimationSpec = defaultAnimationSpec
 ) {
+    override fun defaultProps(): Props = Props()
 
     class Props(
-        var alpha: Alpha
+        var alpha: Alpha = Alpha(1f),
     ) : Interpolatable<Props>, Animatable<Props>, HasModifier, BaseProps {
 
         override val isVisible: Boolean

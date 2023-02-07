@@ -7,12 +7,15 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.AnimationVector3D
 import androidx.compose.animation.core.AnimationVector4D
+import androidx.compose.runtime.State
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.property.Property
 
 abstract class AnimatedProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>
 ) : Property<T> {
+
+    var displacement: State<T>? = null
 
     /**
      * When in interpolation mode, the Animatable is snapping and doesn't have a concept of velocity.

@@ -23,10 +23,10 @@ import kotlinx.coroutines.awaitAll
 
 class BackStackSlider<NavTarget : Any>(
     private val transitionBounds: TransitionBounds
-) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
-    defaultProps = { Props(screenWidth = transitionBounds.widthDp) }
-) {
+) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>() {
     private val width = transitionBounds.widthDp
+
+    override fun defaultProps(): Props = Props(screenWidth = transitionBounds.widthDp)
 
     data class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
@@ -58,8 +58,8 @@ class BackStackSlider<NavTarget : Any>(
             // FIXME this should match the own animationSpec of the model (which can also be supplied
             //  from operation extension methods) rather than created here
             val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow,
-//                dampingRatio = Spring.DampingRatioLowBouncy,
+                stiffness = Spring.StiffnessVeryLow / 5,
+                dampingRatio = Spring.DampingRatioLowBouncy,
             )
             onStart()
             val a1 = scope.async {

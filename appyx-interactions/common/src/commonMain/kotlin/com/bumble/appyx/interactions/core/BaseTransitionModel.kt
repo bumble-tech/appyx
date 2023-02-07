@@ -66,10 +66,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     ): Boolean =
         when (enforcedMode ?: overrideMode ?: operation.mode) {
             IMMEDIATE -> {
-                // Replacing while in keyframes mode triggers enforced IMMEDIATE execution as a side effect
-                if (state.value is Keyframes) {
-                    enforcedMode = IMMEDIATE
-                }
+                // IMMEDIATE mode is kept until UI is settled and model is relaxed
+                enforcedMode = IMMEDIATE
                 createUpdate(operation)
             }
             GEOMETRY -> {
@@ -95,14 +93,13 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     }
 
     private fun updateGeometry(operation: Operation<ModelState>): Boolean {
-        when (val currentState = state.value) {
+        return when (val currentState = state.value) {
             is Keyframes -> {
                 with(currentState) {
-                    val past =
-                        if (currentIndex > 0) queue.subList(0, currentIndex - 1) else emptyList()
-                    val remaining = queue.subList(currentIndex, queue.lastIndex)
+                    val past = if (currentIndex > 0) queue.subList(0, currentIndex - 1) else emptyList()
+                    val remaining = queue.subList(currentIndex, queue.lastIndex + 1)
 
-                    return if (remaining.all { operation.isApplicable(it.targetState) }) {
+                    if (remaining.all { operation.isApplicable(it.targetState) }) {
                         // Replace the operation result into all the queued outputs
                         val newState = copy(
                             queue = past + remaining.map {
@@ -119,7 +116,17 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                     }
                 }
             }
-            is Update -> TODO()
+            is Update -> {
+                if (operation.isApplicable(currentState.currentTargetState)) {
+                    val newState = currentState.deriveUpdate(
+                        navTransition = operation.invoke(currentState.currentTargetState)
+                    )
+                    updateState(newState)
+                    true
+                }
+                Logger.log(TAG, "Operation $operation is not applicable on states: $currentState.currentTargetState")
+                false
+            }
         }
     }
 

@@ -8,6 +8,7 @@ import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
+import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.ui.FrameModel.State
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
 import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
@@ -15,7 +16,7 @@ import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface Interpolator<NavTarget, ModelState> {
+interface Interpolator<NavTarget, ModelState>: Draggable {
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseInterpolator
@@ -25,13 +26,13 @@ interface Interpolator<NavTarget, ModelState> {
 
     fun map(
         output: TransitionModel.Output<ModelState>
-    ): StateFlow<List<FrameModel<NavTarget>>> =
+    ): List<FrameModel<NavTarget>> {
         applyGeometry(output)
+        return mapCore(output)
+    }
 
-    fun applyGeometry(
-        output: TransitionModel.Output<ModelState>
-    ): StateFlow<List<FrameModel<NavTarget>>> =
-        MutableStateFlow(mapCore(output))
+
+    fun applyGeometry(output: TransitionModel.Output<ModelState>) {}
 
     fun mapCore(
         output: TransitionModel.Output<ModelState>

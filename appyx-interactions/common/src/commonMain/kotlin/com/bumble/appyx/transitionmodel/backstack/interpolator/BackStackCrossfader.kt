@@ -15,9 +15,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 
 class BackStackCrossfader<NavTarget : Any> :
-    BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
-        defaultProps = { Props() }
-    ) {
+    BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>() {
+
+    override fun defaultProps(): Props = Props()
 
     class Props(
         val alpha: Alpha = Alpha(value = 1f),

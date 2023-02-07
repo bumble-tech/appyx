@@ -37,10 +37,11 @@ class CardsProps<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
-    defaultProps = { Props(width = transitionBounds.widthDp.value) },
     defaultAnimationSpec = defaultAnimationSpec
 ) {
     private val width = transitionBounds.widthDp.value
+
+    override fun defaultProps(): Props = Props(width = width)
 
     class Props(
         val scale: Scale = Scale(value = 1f),
