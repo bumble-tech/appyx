@@ -71,6 +71,8 @@ class SpotlightSlider<NavTarget : Any>(
 
         private val activeWindowOffset = (activeWindow * width.value).dp
 
+
+        // TODO fix when displacement is ready
         override val isVisible: Boolean
             get() {
                 val currentOffset = (scrollValue() * width.value).dp

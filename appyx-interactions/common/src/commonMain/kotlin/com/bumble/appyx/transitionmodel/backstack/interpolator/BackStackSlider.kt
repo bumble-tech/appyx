@@ -35,6 +35,7 @@ class BackStackSlider<NavTarget : Any>(
         val screenWidth: Dp
     ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
 
+        // TODO take into account element width
         override val isVisible: Boolean
             get() = alpha.value >= 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
 

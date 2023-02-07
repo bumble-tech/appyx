@@ -58,6 +58,7 @@ class SpotlightModel<NavTarget : Any>(
             activeWindow = initialActiveWindow
         )
 
+    // TODO support removing destroyed elements
     override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> = this
 
     override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
