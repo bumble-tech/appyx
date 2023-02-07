@@ -16,7 +16,7 @@ import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-interface Interpolator<Target, ModelState> : Draggable {
+interface Interpolator<NavTarget, ModelState>: Draggable {
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseInterpolator
@@ -26,7 +26,7 @@ interface Interpolator<Target, ModelState> : Draggable {
 
     fun map(
         output: TransitionModel.Output<ModelState>
-    ): List<FrameModel<Target>> {
+    ): List<FrameModel<NavTarget>> {
         applyGeometry(output)
         return mapCore(output)
     }
@@ -36,7 +36,7 @@ interface Interpolator<Target, ModelState> : Draggable {
 
     fun mapCore(
         output: TransitionModel.Output<ModelState>
-    ): List<FrameModel<Target>> =
+    ): List<FrameModel<NavTarget>> =
         when (output) {
             is Keyframes -> mapKeyframes(output)
             is Update -> mapUpdate(output)
@@ -44,7 +44,7 @@ interface Interpolator<Target, ModelState> : Draggable {
 
     fun mapKeyframes(
         keyframes: Keyframes<ModelState>
-    ): List<FrameModel<Target>> =
+    ): List<FrameModel<NavTarget>> =
         mapSegment(
             keyframes.currentSegment,
             keyframes.segmentProgress
@@ -53,11 +53,11 @@ interface Interpolator<Target, ModelState> : Draggable {
     fun mapSegment(
         segment: Segment<ModelState>,
         segmentProgress: Float
-    ): List<FrameModel<Target>>
+    ): List<FrameModel<NavTarget>>
 
     fun mapUpdate(
         update: Update<ModelState>
-    ): List<FrameModel<Target>>
+    ): List<FrameModel<NavTarget>>
 
 
     // TODO test it

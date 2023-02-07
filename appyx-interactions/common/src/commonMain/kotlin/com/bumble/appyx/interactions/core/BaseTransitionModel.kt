@@ -8,6 +8,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -18,6 +19,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     abstract val initialState: ModelState
 
     abstract fun ModelState.destroyedElements(): Set<NavElement<NavTarget>>
+
+    abstract fun ModelState.removeDestroyedElements(): ModelState
 
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
@@ -39,12 +42,28 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
 
     private var enforcedMode: Operation.Mode? = null
 
-    override fun relaxExecutionMode() {
+    override fun onAnimationFinished() {
         Logger.log("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
+        removeDestroyedElements()
     }
 
-    override fun operation(operation: Operation<ModelState>, overrideMode: Operation.Mode?): Boolean =
+    private fun removeDestroyedElements() {
+        state.getAndUpdate { output ->
+            when (output) {
+                is Update<ModelState> -> output // TODO
+                is Keyframes -> Update(
+                    animate = false,
+                    currentTargetState = output.currentTargetState.removeDestroyedElements()
+                )
+            }
+        }
+    }
+
+    override fun operation(
+        operation: Operation<ModelState>,
+        overrideMode: Operation.Mode?
+    ): Boolean =
         when (enforcedMode ?: overrideMode ?: operation.mode) {
             IMMEDIATE -> {
                 // IMMEDIATE mode is kept until UI is settled and model is relaxed
@@ -63,7 +82,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         val baseLine = state.value
 
         return if (operation.isApplicable(baseLine.currentTargetState)) {
-            val transition = operation.invoke(baseLine.currentTargetState)
+            val transition = operation.invoke(baseLine.currentTargetState.removeDestroyedElements())
             val newState = baseLine.deriveUpdate(transition)
             updateState(newState)
             true
@@ -113,7 +132,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
 
     private fun createSegment(operation: Operation<ModelState>): Boolean {
         val currentState = state.value
-        val baselineState = currentState.lastTargetState
+        val baselineState = currentState.lastTargetState.removeDestroyedElements()
 
         return if (operation.isApplicable(baselineState)) {
             val transition = operation.invoke(baselineState)

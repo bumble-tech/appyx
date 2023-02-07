@@ -51,6 +51,8 @@ class BackStackModel<NavTarget : Any>(
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
         destroyed.toSet()
 
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
+        copy(destroyed = emptyList())
 
     override val initialState = State(
         active = initialTargets.last().asElement(),

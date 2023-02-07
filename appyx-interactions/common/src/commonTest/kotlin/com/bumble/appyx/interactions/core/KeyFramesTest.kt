@@ -202,11 +202,6 @@ class KeyFramesTest {
         val update = keyFrames.deriveUpdate(navTransition)
 
         val expected = Update(
-            history = listOf(
-                segmentFromState,
-                segmentTargetState,
-                fromState
-            ),
             currentTargetState = targetState
         )
 

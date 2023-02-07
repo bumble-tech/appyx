@@ -2,6 +2,7 @@ package com.bumble.appyx.transitionmodel.promoter
 
 import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState.DESTROYED
 
 class PromoterModel<NavTarget : Any>(
 ) : BaseTransitionModel<NavTarget, PromoterModel.State<NavTarget>>(
@@ -30,17 +31,22 @@ class PromoterModel<NavTarget : Any>(
 
     override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
         elements
-            .filter { it.second != State.ElementState.DESTROYED }
+            .filter { it.second != DESTROYED }
             .map { it.first }
             .toSet()
 
 
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
         elements
-            .filter { it.second == State.ElementState.DESTROYED }
+            .filter { it.second == DESTROYED }
             .map { it.first }
             .toSet()
 
     override val initialState: State<NavTarget> =
         State(elements = listOf())
+
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
+        copy(
+            this.elements.filter { pair -> pair.second != DESTROYED }
+        )
 }

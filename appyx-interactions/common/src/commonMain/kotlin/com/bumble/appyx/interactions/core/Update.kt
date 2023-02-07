@@ -1,7 +1,6 @@
 package com.bumble.appyx.interactions.core
 
 data class Update<ModelState>(
-    val history: List<ModelState> = emptyList(),
     override val currentTargetState: ModelState,
     val animate: Boolean = true
 ) : TransitionModel.Output<ModelState>() {
@@ -11,13 +10,11 @@ data class Update<ModelState>(
 
     override fun replace(targetState: ModelState): TransitionModel.Output<ModelState> =
         Update(
-            history = history,
             currentTargetState = targetState
         )
 
     override fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState> =
         Update(
-            history = history + listOf(),
             currentTargetState = navTransition.targetState
         )
 

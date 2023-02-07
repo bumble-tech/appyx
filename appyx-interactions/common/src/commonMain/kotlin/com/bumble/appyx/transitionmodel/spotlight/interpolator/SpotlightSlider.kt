@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
@@ -8,10 +7,11 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Keyframes
-import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
@@ -44,16 +44,18 @@ class SpotlightSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     private val scope: CoroutineScope,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
+    val activeWindow: Float
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>() {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
-    private val scroll = Geometry1D<TransitionModel.Output<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
-        scope = scope,
-        initialValue = 0f // TODO sync this with the model's initial value
-    ) {
-        mapCore(it)
-    }
+    private val scroll =
+        Geometry1D<TransitionModel.Output<SpotlightModel.State<NavTarget>>, List<FrameModel<NavTarget>>>(
+            scope = scope,
+            initialValue = 0f // TODO sync this with the model's initial value
+        ) {
+            mapCore(it)
+        }
 
     data class Props(
         val offset: OffsetP,
@@ -62,9 +64,26 @@ class SpotlightSlider<NavTarget : Any>(
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
-        override val isVisible: Boolean = true
+        val scrollValue: () -> Float,
+        private val width: Dp,
+        private val activeWindow: Float
     ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
 
+        private val activeWindowOffset = (activeWindow * width.value).dp
+
+
+        // TODO fix when displacement is ready
+        override val isVisible: Boolean
+            get() {
+                val currentOffset = (scrollValue() * width.value).dp
+                val visibleRange = currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+                val isVisible = offset.value.x in visibleRange
+                Logger.log(
+                    "SpotlightSlider",
+                    "scrollValue: ${scrollValue()}, offsetValue: ${offset.value.x}, visibleRange: $visibleRange, isVisible: $isVisible, activeWindowOffset: $activeWindowOffset"
+                )
+                return isVisible
+            }
 
         override val modifier: Modifier
             get() = Modifier
@@ -105,31 +124,40 @@ class SpotlightSlider<NavTarget : Any>(
             it.displacement = derivedStateOf {
                 DpOffset((scroll.value * width.value).dp, 0.dp)
             }
-        }
+        },
+        scrollValue = { scroll.value },
+        width = width,
+        activeWindow = activeWindow
     )
 
     private val created = Props(
-        offset = OffsetP(DpOffset(0.dp, 500.dp)),
+        offset = OffsetP(DpOffset(0.dp, width)),
         scale = 0f,
         alpha = 1f,
         zIndex = 0f,
         aspectRatio = 1f,
-        isVisible = false
+        scrollValue = { scroll.value },
+        width = width,
+        activeWindow = activeWindow
     )
 
     private val standard = Props(
         offset = OffsetP(DpOffset.Zero),
-        isVisible = true
+        scrollValue = { scroll.value },
+        width = width,
+        activeWindow = activeWindow
     )
 
     private val destroyed = Props(
-        offset = OffsetP(DpOffset(0.dp, (-500).dp)),
+        offset = OffsetP(DpOffset(0.dp, -width)),
         scale = 0f,
         alpha = 0f,
         zIndex = -1f,
         aspectRatio = 1f,
         rotation = 360f,
-        isVisible = false
+        scrollValue = { scroll.value },
+        width = width,
+        activeWindow = activeWindow
     )
 
     override fun snapGeometry(output: TransitionModel.Output<SpotlightModel.State<NavTarget>>) {
@@ -177,7 +205,9 @@ class SpotlightSlider<NavTarget : Any>(
                         zIndex = target.zIndex,
                         rotation = target.rotation,
                         aspectRatio = target.aspectRatio,
-                        isVisible = (index + activeWindow.toInt()) <= activeIndex || (index - activeWindow.toInt()) >= activeIndex
+                        scrollValue = { scroll.value },
+                        width = width,
+                        activeWindow = activeWindow
                     )
                 )
             }

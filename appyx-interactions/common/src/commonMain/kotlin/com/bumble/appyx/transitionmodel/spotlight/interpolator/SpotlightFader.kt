@@ -5,7 +5,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.DpOffset
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -19,6 +18,8 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 
+
+// TODO BaseInterpolator + dynamic on visibility calculation
 class SpotlightFader<NavTarget : Any>(
     transitionParams: TransitionParams
 ) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
@@ -26,7 +27,7 @@ class SpotlightFader<NavTarget : Any>(
     class Props(
         val alpha: Float,
         override val isVisible: Boolean
-    ): BaseProps
+    ) : BaseProps
 
     private val visible = Props(
         alpha = 1f,
@@ -63,7 +64,7 @@ class SpotlightFader<NavTarget : Any>(
             DESTROYED -> false
         }
 
-    private fun <NavTarget> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, SpotlightSlider.Props>> {
+    private fun <NavTarget> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, SpotlightFader.Props>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 val isVisible =
@@ -71,17 +72,19 @@ class SpotlightFader<NavTarget : Any>(
                 val target = if (isVisible) visible else hidden
                 MatchedProps(
                     element = it.key,
-                    props = SpotlightSlider.Props(
-                        offset = OffsetP(DpOffset.Zero),
+                    props = Props(
                         alpha = target.alpha,
-                        isVisible = isVisible
+                        isVisible = true
                     )
                 )
             }
         }
     }
 
-    override fun mapSegment(segment: Segment<SpotlightModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
+    override fun mapSegment(
+        segment: Segment<SpotlightModel.State<NavTarget>>,
+        segmentProgress: Float
+    ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -91,13 +94,13 @@ class SpotlightFader<NavTarget : Any>(
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segmentProgress)
 
-                FrameModel(
-                    navElement = t1.element,
-                    modifier = Modifier
-                        .alpha(alpha),
-                    progress = segmentProgress,
-                    state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
-                )
+            FrameModel(
+                navElement = t1.element,
+                modifier = Modifier
+                    .alpha(alpha),
+                progress = segmentProgress,
+                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+            )
         }
     }
 

@@ -22,13 +22,11 @@ import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.toScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 
@@ -45,19 +43,22 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val isDebug: Boolean = false
 ) : Draggable, FlexibleBounds {
 
-    private var animationScope: CoroutineScope? = null
     private var _interpolator: Interpolator<NavTarget, ModelState> =
         interpolator(TransitionBounds(Density(0f), 0, 0))
 
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
 
+    private var animationChangesJob: Job? = null
+
     private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
         set(value) {
             if (value != field) {
                 Logger.log("InteractionModel", "TransitionBounds changed: $value")
                 field = value
-                _interpolator = interpolator(transitionBounds)
+                _interpolator = interpolator(transitionBounds).also {
+                    observeAnimationChanges()
+                }
                 _gestureFactory = gestureFactory(transitionBounds)
             }
         }
@@ -79,10 +80,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     val screenState: Flow<ScreenState<NavTarget>> =
         frames.map { it.toScreenState() }
 
-    init {
-        scope.launch {
+    private var animationScope: CoroutineScope? = null
+    private var isInitialised: Boolean = false
+
+    private fun observeAnimationChanges() {
+        animationChangesJob?.cancel()
+        animationChangesJob = scope.launch {
             _interpolator.isAnimating()
-                .onEach {
+                .collect {
                     if (!it) {
                         Logger.log("InteractionModel", "Finished animating")
                         onAnimationsFinished()
@@ -90,7 +95,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
                         onAnimationsStarted()
                     }
                 }
-                .collect()
         }
     }
 
@@ -148,7 +152,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     private fun onAnimationsFinished() {
         isAnimating = false
-        model.relaxExecutionMode()
+        model.onAnimationFinished()
     }
 
     override fun onStartDrag(position: Offset) {
