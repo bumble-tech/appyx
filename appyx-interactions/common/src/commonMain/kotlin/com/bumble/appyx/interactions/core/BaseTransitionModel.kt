@@ -45,13 +45,13 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     override fun onAnimationFinished() {
         Logger.log("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
-        cleanupAnimation()
+        removeDestroyedElements()
     }
 
-    private fun cleanupAnimation() {
+    private fun removeDestroyedElements() {
         state.getAndUpdate { output ->
             when (output) {
-                is Update<ModelState> -> output
+                is Update<ModelState> -> output // TODO
                 is Keyframes -> Update(
                     animate = false,
                     currentTargetState = output.currentTargetState.removeDestroyedElements()
