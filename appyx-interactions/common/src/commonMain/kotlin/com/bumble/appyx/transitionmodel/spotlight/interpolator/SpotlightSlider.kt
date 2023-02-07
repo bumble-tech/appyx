@@ -20,6 +20,7 @@ import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
@@ -51,7 +52,7 @@ class SpotlightSlider<NavTarget : Any>(
 
     data class Props(
         val offset: OffsetP,
-        val scale: Float = 1f,
+        val scale: Scale = Scale(1f),
         val alpha: Alpha = Alpha(1f),
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
@@ -64,15 +65,18 @@ class SpotlightSlider<NavTarget : Any>(
             get() = Modifier
                 .then(offset.modifier)
                 .then(alpha.modifier)
+                .then(scale.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
             offset.snapTo(props.offset.value)
             alpha.snapTo(props.alpha.value)
+            scale.snapTo(props.scale.value)
         }
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             offset.lerpTo(start.offset, end.offset, fraction)
             alpha.lerpTo(start.alpha, end.alpha, fraction)
+            scale.lerpTo(start.scale, end.scale, fraction)
         }
 
         override suspend fun animateTo(
@@ -94,6 +98,10 @@ class SpotlightSlider<NavTarget : Any>(
                             props.alpha.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
                         )
+                        scale.animateTo(
+                            props.scale.value,
+                            spring(springSpec.dampingRatio, springSpec.stiffness)
+                        )
                     }
                 ).awaitAll()
                 onFinished()
@@ -111,7 +119,7 @@ class SpotlightSlider<NavTarget : Any>(
 
     private val created = Props(
         offset = OffsetP(DpOffset(0.dp, 500.dp)),
-        scale = 0f,
+        scale = Scale(0f),
         alpha = Alpha(1f),
         zIndex = 0f,
         aspectRatio = 1f,
@@ -125,7 +133,7 @@ class SpotlightSlider<NavTarget : Any>(
 
     private val destroyed = Props(
         offset = OffsetP(DpOffset(0.dp, (-500).dp)),
-        scale = 0f,
+        scale = Scale(0f),
         alpha = Alpha(0f),
         zIndex = -1f,
         aspectRatio = 1f,
