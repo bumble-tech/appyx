@@ -14,6 +14,7 @@ import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionParams
+import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -24,17 +25,17 @@ class SpotlightFader<NavTarget : Any>(
 ) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
 
     class Props(
-        val alpha: Float,
+        val alpha: Alpha,
         override val isVisible: Boolean
     ): BaseProps
 
     private val visible = Props(
-        alpha = 1f,
+        alpha = Alpha(1f),
         isVisible = true
     )
 
     private val hidden = Props(
-        alpha = 0f,
+        alpha = Alpha(0f),
         isVisible = false
     )
 
@@ -73,7 +74,7 @@ class SpotlightFader<NavTarget : Any>(
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segmentProgress)
+            val alpha = lerpFloat(t0.props.alpha.value, t1.props.alpha.value, segmentProgress)
 
                 FrameModel(
                     navElement = t1.element,
