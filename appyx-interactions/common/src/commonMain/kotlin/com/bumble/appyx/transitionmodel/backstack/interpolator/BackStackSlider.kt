@@ -37,7 +37,7 @@ class BackStackSlider<NavTarget : Any>(
 
         // TODO take into account element width
         override val isVisible: Boolean
-            get() = alpha.value >= 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
+            get() = alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
 
         override val modifier: Modifier
             get() = Modifier
