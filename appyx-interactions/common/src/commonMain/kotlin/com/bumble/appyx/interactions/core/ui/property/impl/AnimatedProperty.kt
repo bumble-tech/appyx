@@ -15,8 +15,6 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>
 ) : Property<T> {
 
-    var displacement: State<T>? = null
-
     /**
      * When in interpolation mode, the Animatable is snapping and doesn't have a concept of velocity.
      * However, we can calculate it as a difference between the latest two snapped values,

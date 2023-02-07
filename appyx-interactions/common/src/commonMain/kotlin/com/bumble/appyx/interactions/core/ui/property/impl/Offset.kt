@@ -4,6 +4,9 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.State
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
@@ -18,14 +21,24 @@ class Offset(
     animatable = Animatable(value, DpOffset.VectorConverter)
 ), Interpolatable<Offset> {
 
+    var displacement: State<DpOffset> =
+        mutableStateOf(DpOffset(0.dp, 0.dp))
+
+    val displacedValue: State<DpOffset> =
+        derivedStateOf {
+            val animated = animatable.asState().value
+
+            DpOffset(
+                x = animated.x - displacement.value.x,
+                y = animated.y - displacement.value.y
+            )
+        }
+
     override val modifier: Modifier
         get() = Modifier.composed {
-            val value = animatable.asState().value
-            val displacement = displacement?.value ?: remember { DpOffset(0.dp, 0.dp) }
-
             this.offset(
-                x = value.x - displacement.x,
-                y = value.y - displacement.y
+                x = displacedValue.value.x,
+                y = displacedValue.value.y
             )
         }
 
