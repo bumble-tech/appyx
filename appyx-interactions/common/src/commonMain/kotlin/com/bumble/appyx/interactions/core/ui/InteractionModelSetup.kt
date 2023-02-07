@@ -9,9 +9,9 @@ import com.bumble.appyx.interactions.core.InteractionModel
 fun InteractionModelSetup(interactionModel: InteractionModel<*, *>) {
     val coroutineScope = rememberCoroutineScope()
     DisposableEffect(interactionModel) {
-        interactionModel.startAnimation(coroutineScope)
+        interactionModel.onAddedToComposition(coroutineScope)
         onDispose {
-            interactionModel.stopAnimation()
+            interactionModel.onRemovedFromComposition()
         }
     }
 }

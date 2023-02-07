@@ -15,11 +15,14 @@ data class Keyframes<ModelState>(
              *  then there's no next segment to go to. Instead, let's interpret it as 100% of the last
              *  segment.
              */
-            return (if (this.progress == maxProgress) (this.progress - 1) else this.progress).toInt()
+            return (if (reachedMaxProgress) (this.progress - 1) else this.progress).toInt()
         }
 
     val maxProgress: Float
         get() = (queue.lastIndex + 1).toFloat()
+
+    val reachedMaxProgress: Boolean
+        get() = progress == maxProgress
 
     val currentSegment: Segment<ModelState>
         get() = queue[currentIndex]
@@ -66,7 +69,7 @@ data class Keyframes<ModelState>(
         }
 
         return copy(
-            progress = progress
+            progress = progress.coerceIn(0f, maxProgress)
         )
     }
 }
