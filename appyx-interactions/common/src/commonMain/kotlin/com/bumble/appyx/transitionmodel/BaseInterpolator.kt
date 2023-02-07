@@ -23,13 +23,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
 
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
-    private val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+    protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
 
     private val cache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
+    protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
     private var isDragging: Boolean = false
 
     abstract fun defaultProps(): Props

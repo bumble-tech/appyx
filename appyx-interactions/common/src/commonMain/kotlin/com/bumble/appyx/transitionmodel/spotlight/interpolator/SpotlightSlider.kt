@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
@@ -11,7 +10,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.Keyframes
-import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
@@ -142,8 +140,10 @@ class SpotlightSlider<NavTarget : Any>(
 
         scroll.animateTo(
             target,
-            // FIXME animation spec should come from client code
-            spring()
+            spring(
+                stiffness = currentSpringSpec.stiffness,
+                dampingRatio = currentSpringSpec.dampingRatio
+            )
         )
     }
 
