@@ -87,7 +87,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed {
                     LaunchedEffect(update) {
-                        coroutineScope?.launch {
+                        coroutineScope.launch {
                             if (update.animate) {
                                 elementProps.animateTo(
                                     scope = this,
@@ -126,7 +126,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
-            coroutineScope?.launch {
+            coroutineScope.launch {
                 elementProps.lerpTo(t0.props, t1.props, segmentProgress.value)
             }
 
