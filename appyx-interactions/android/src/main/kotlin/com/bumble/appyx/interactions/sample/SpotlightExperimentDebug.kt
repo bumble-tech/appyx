@@ -9,17 +9,10 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.NavTarget.Child1
-import com.bumble.appyx.interactions.sample.NavTarget.Child2
-import com.bumble.appyx.interactions.sample.NavTarget.Child3
-import com.bumble.appyx.interactions.sample.NavTarget.Child4
-import com.bumble.appyx.interactions.sample.NavTarget.Child5
-import com.bumble.appyx.interactions.sample.NavTarget.Child6
-import com.bumble.appyx.interactions.sample.NavTarget.Child7
+import com.bumble.appyx.interactions.sample.NavTarget.*
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
@@ -33,13 +26,14 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.previous
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperimentDebug() {
-    val scope = rememberCoroutineScope()
     val spotlight = remember {
         Spotlight(
             model = SpotlightModel(
                 items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)
             ),
-            interpolator = { SpotlightSlider(it, scope, activeWindow = 1f, coroutineScope=scope) },
+            interpolator = { (bounds, scope) ->
+                SpotlightSlider(bounds, scope, activeWindow = 1f)
+            },
             gestureFactory = { SpotlightSlider.Gestures(it) },
             isDebug = true
         )

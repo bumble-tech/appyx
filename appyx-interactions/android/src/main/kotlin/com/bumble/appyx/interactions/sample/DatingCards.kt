@@ -32,7 +32,6 @@ sealed class DatingCardsNavTarget {
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
-    val coroutineScope = rememberCoroutineScope()
     val cards = remember {
         Cards(
             model = CardsModel(
@@ -40,7 +39,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     DatingCardsNavTarget.ProfileCard(it)
                 }
             ),
-            interpolator = { CardsProps(it,coroutineScope=coroutineScope) },
+            interpolator = {(bounds, scope) -> CardsProps(bounds,scope)  },
             gestureFactory = { CardsProps.Gestures(it) },
             animateSettle = true
         )

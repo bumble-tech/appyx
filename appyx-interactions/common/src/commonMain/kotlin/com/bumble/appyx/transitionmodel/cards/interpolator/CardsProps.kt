@@ -35,8 +35,8 @@ typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.
 
 class CardsProps<NavTarget : Any>(
     transitionBounds: TransitionBounds,
-    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-    coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope,
+    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
     defaultAnimationSpec = defaultAnimationSpec,
     coroutineScope

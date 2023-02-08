@@ -1,11 +1,7 @@
 package com.bumble.appyx.appyxnavigation.node.container
 
 import android.os.Parcelable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -40,7 +36,7 @@ class ContainerNode(
             initialTargets = listOf(NavTarget.Selector),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { BackStackSlider(it) }
+        interpolator = { (bounds, scope) -> BackStackSlider(bounds, scope) }
     )
 
 ) : ParentNode<NavTarget>(
@@ -77,11 +73,8 @@ class ContainerNode(
                 Selector(modifier)
             }
             is NavTarget.DatingCards -> DatingCardsNode(buildContext)
-            is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext, coroutineScope)
-            is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(
-                buildContext,
-                coroutineScope
-            )
+            is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext)
+            is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
             is NavTarget.BackStack -> BackStackExamplesNode(buildContext)
             is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
             is NavTarget.PromoterExperiment -> PromoterNode(buildContext)

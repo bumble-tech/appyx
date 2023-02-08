@@ -35,12 +35,11 @@ typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 class SpotlightSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds,
-    private val scope: CoroutineScope,
-    private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
+    scope: CoroutineScope,
     val activeWindow: Float,
-    coroutineScope: CoroutineScope
+    private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
-    coroutineScope = coroutineScope
+    coroutineScope = scope
 ) {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
