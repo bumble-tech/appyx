@@ -56,7 +56,7 @@ fun TestDriveExperiment() {
 //                tween(200, easing = LinearEasing)
             ,
             animateSettle = true,
-            interpolator = { TestDriveUiModel(it, uiAnimationSpec = spring(
+            interpolator = { TestDriveUiModel(coroutineScope, it, uiAnimationSpec = spring(
                 stiffness = Spring.StiffnessLow,
                 dampingRatio = Spring.DampingRatioMediumBouncy,
                 // reminder: visibilityThreshold is ignored

@@ -20,9 +20,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.runBlocking
 import com.bumble.appyx.interactions.Logger
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import androidx.compose.animation.core.Animatable as Animatable1
 
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
+    private val scope: CoroutineScope,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
 
@@ -54,32 +57,29 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     override fun mapUpdate(update: Update<ModelState>): List<FrameModel<NavTarget>> {
         val targetProps = update.currentTargetState.toProps()
 
+        scope.launch {
+            geometryMappings.forEach { (fieldOfState, geometry) ->
+                val targetValue = geometryTargetValue(update, fieldOfState)
+                geometry.animateTo(
+                    targetValue,
+                    spring(
+                        stiffness = currentSpringSpec.stiffness,
+                        dampingRatio = currentSpringSpec.dampingRatio
+                    )
+                ) {
+                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Update) – $targetValue")
+                }
+            }
+        }
+
         // TODO: use a map instead of find
-        return targetProps.mapIndexed { index, t1 ->
+        return targetProps.map { t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
 
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed {
                     LaunchedEffect(update) {
-                        // Apply geometry animation only once.
-                        // TODO Consider having scope in the constructor,
-                        //  then we can launch it outside of composition.
-                        if (index == 0) {
-                            geometryMappings.forEach { (fieldOfState, geometry) ->
-                                val targetValue = geometryTargetValue(update, fieldOfState)
-                                geometry.animateTo(
-                                    targetValue,
-                                    spring(
-                                        stiffness = currentSpringSpec.stiffness,
-                                        dampingRatio = currentSpringSpec.dampingRatio
-                                    )
-                                ) {
-                                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Update) – ${t1.element.navTarget}: $targetValue")
-                                }
-                            }
-                        }
-
                         if (update.animate) {
                             elementProps.animateTo(
                                 scope = this,
@@ -112,8 +112,12 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 
+        scope.launch {
+            updateGeometry(segment, segmentProgress)
+        }
+
         // TODO: use a map instead of find
-        return targetProps.mapIndexed { index, t1 ->
+        return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             runBlocking {
@@ -123,54 +127,54 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             FrameModel(
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed {
-                    LaunchedEffect(segment, segmentProgress) {
-                        // Apply geometry animation only once.
-                        // TODO Consider having scope in the constructor,
-                        //  then we can launch it outside of composition.
-                        if (index == 0) {
-                            geometryMappings.forEach { (fieldOfState, geometry) ->
-                                val (behaviour, targetValue) = geometryTargetValue(
-                                    segment,
-                                    segmentProgress,
-                                    fieldOfState
-                                )
-
-                                when (behaviour) {
-                                    GeometryBehaviour.SNAP -> {
-                                        geometry.snapTo(targetValue)
-                                        Logger.log(
-                                            this@BaseInterpolator.javaClass.simpleName,
-                                            "Geometry snapTo (Segment): $targetValue"
-                                        )
-                                    }
-
-                                    GeometryBehaviour.ANIMATE -> {
-                                        geometry.animateTo(
-                                            targetValue,
-                                            spring(
-                                                stiffness = currentSpringSpec.stiffness,
-                                                dampingRatio = currentSpringSpec.dampingRatio
-                                            )
-                                        ) {
-                                            Logger.log(
-                                                this@BaseInterpolator.javaClass.simpleName,
-                                                "Geometry animateTo (Segment) – ${t1.element.navTarget}: $targetValue"
-                                            )
-                                        }
-                                    }
-                                }
-                                geometry.snapTo(targetValue)
-                                Logger.log(
-                                    this@BaseInterpolator.javaClass.simpleName,
-                                    "Geometry snapTo (Segment): $targetValue"
-                                )
-                            }
-                        }
-                    }
                     this
                                                           },
                 progress = segmentProgress,
                 state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+            )
+        }
+    }
+
+    private suspend fun updateGeometry(
+        segment: Segment<ModelState>,
+        segmentProgress: Float
+    ) {
+        geometryMappings.forEach { (fieldOfState, geometry) ->
+            val (behaviour, targetValue) = geometryTargetValue(
+                segment,
+                segmentProgress,
+                fieldOfState
+            )
+
+            when (behaviour) {
+                GeometryBehaviour.SNAP -> {
+                    geometry.snapTo(targetValue)
+                    Logger.log(
+                        this@BaseInterpolator.javaClass.simpleName,
+                        "Geometry snapTo (Segment): $targetValue"
+                    )
+                }
+
+                GeometryBehaviour.ANIMATE -> {
+                    if (geometry.value != targetValue) {
+                        geometry.animateTo(
+                            targetValue,
+                            spring(
+                                stiffness = currentSpringSpec.stiffness,
+                                dampingRatio = currentSpringSpec.dampingRatio
+                            )
+                        ) {
+                            Logger.log(
+                                this@BaseInterpolator.javaClass.simpleName,
+                                "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
+                            )
+                        }
+                    }
+                }
+            }
+            Logger.log(
+                this@BaseInterpolator.javaClass.simpleName,
+                "Geometry snapTo (Segment): $targetValue"
             )
         }
     }
