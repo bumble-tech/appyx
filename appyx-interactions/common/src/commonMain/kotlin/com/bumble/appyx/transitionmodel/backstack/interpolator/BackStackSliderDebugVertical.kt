@@ -26,6 +26,7 @@ class BackStackSliderDebugVertical<NavTarget>
     data class Props(
         val offset: DpOffset,
         val color: Color,
+        // TODO
         override val isVisible: Boolean
     ): BaseProps
 

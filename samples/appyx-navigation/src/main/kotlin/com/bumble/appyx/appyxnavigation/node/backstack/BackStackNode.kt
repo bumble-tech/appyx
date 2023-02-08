@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.ui.TextButton
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
+import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.navigation.composable.Children
