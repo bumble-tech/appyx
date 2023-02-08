@@ -37,8 +37,11 @@ class SpotlightSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     private val scope: CoroutineScope,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-    val activeWindow: Float
-) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>() {
+    val activeWindow: Float,
+    coroutineScope: CoroutineScope
+) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
+    coroutineScope = coroutineScope
+) {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 

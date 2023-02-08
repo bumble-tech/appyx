@@ -45,7 +45,7 @@ fun SpotlightExperiment() {
     val items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7)
     val spotlight = Spotlight(
         model = SpotlightModel(items = items),
-        interpolator = { SpotlightSlider(it, scope, activeWindow = 1f) },
+        interpolator = { SpotlightSlider(it, scope, activeWindow = 1f,coroutineScope=scope) },
         gestureFactory = { SpotlightSlider.Gestures(it) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )

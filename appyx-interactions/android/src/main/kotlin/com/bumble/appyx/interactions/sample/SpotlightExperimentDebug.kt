@@ -39,7 +39,7 @@ fun SpotlightExperimentDebug() {
             model = SpotlightModel(
                 items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)
             ),
-            interpolator = { SpotlightSlider(it, scope, activeWindow = 1f) },
+            interpolator = { SpotlightSlider(it, scope, activeWindow = 1f, coroutineScope=scope) },
             gestureFactory = { SpotlightSlider.Gestures(it) },
             isDebug = true
         )

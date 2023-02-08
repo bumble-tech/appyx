@@ -22,8 +22,11 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
 class BackStackSlider<NavTarget : Any>(
-    private val transitionBounds: TransitionBounds
-) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>() {
+    private val transitionBounds: TransitionBounds,
+    coroutineScope: CoroutineScope
+) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
+    coroutineScope = coroutineScope
+) {
     private val width = transitionBounds.widthDp
 
     override fun defaultProps(): Props = Props(screenWidth = transitionBounds.widthDp)

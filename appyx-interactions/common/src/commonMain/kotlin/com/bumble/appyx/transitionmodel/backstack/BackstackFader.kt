@@ -14,9 +14,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class BackstackFader<NavTarget : Any>(
-    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
+    coroutineScope: CoroutineScope
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>(
-    defaultAnimationSpec = defaultAnimationSpec
+    defaultAnimationSpec = defaultAnimationSpec,
+    coroutineScope
 ) {
     override fun defaultProps(): Props = Props()
 
