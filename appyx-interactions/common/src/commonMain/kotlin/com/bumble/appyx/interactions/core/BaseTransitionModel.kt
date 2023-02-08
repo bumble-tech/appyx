@@ -188,6 +188,6 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     }
 
     private companion object {
-        private val TAG = BaseTransitionModel::class.java.name
+        private val TAG = "BaseTransitionModel"
     }
 }

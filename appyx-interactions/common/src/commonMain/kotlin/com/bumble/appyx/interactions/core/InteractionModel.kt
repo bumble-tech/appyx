@@ -114,12 +114,13 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     override fun updateContext(uiContext: UiContext) {
-        this.transitionBounds = uiContext.transitionBounds
-        _interpolator = interpolator(uiContext).also {
-            observeAnimationChanges()
+        if (this.transitionBounds!=uiContext.transitionBounds){
+            this.transitionBounds = uiContext.transitionBounds
+            _interpolator = interpolator(uiContext).also {
+                observeAnimationChanges()
+            }
+            _gestureFactory = gestureFactory(transitionBounds)
         }
-        _gestureFactory = gestureFactory(transitionBounds)
-
     }
 
     fun availableElements(): Set<NavElement<NavTarget>> = model.availableElements()
