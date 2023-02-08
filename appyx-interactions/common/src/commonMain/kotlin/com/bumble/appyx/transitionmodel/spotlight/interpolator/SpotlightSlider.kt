@@ -46,7 +46,6 @@ class SpotlightSlider<NavTarget : Any>(
     val activeWindow: Float
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
     scope = scope,
-    defaultAnimationSpec = spring(stiffness = Spring.StiffnessVeryLow / 14) // FIXME STOPSHIP, only for testing
 ) {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
