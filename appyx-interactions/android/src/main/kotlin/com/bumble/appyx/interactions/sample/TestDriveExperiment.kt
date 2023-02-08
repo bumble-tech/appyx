@@ -5,14 +5,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
@@ -49,15 +42,19 @@ fun TestDriveExperiment() {
             scope = coroutineScope,
             model = model,
             progressAnimationSpec =
-                 spring(stiffness = Spring.StiffnessLow)
+            spring(stiffness = Spring.StiffnessLow)
 //                tween(200, easing = LinearEasing)
             ,
             animateSettle = true,
-            interpolator = { TestDriveUiModel(it, uiAnimationSpec = spring(
-                stiffness = Spring.StiffnessLow,
-                dampingRatio = Spring.DampingRatioMediumBouncy,
-                // reminder: visibilityThreshold is ignored
-            )) },
+            interpolator = {
+                TestDriveUiModel(
+                    it, uiAnimationSpec = spring(
+                        stiffness = Spring.StiffnessLow,
+                        dampingRatio = Spring.DampingRatioMediumBouncy,
+                        // reminder: visibilityThreshold is ignored
+                    ), coroutineScope
+                )
+            },
             gestureFactory = { TestDriveUiModel.Gestures(it) }
         )
     }
@@ -133,20 +130,24 @@ fun TestDriveExperiment() {
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(onClick = { testDrive.next(
-                mode = KEYFRAME,
+            Button(onClick = {
+                testDrive.next(
+                    mode = KEYFRAME,
 //                animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 1)
-            ) }) {
+                )
+            }) {
                 Text("Keyframe")
             }
 
-            Button(onClick = { testDrive.next(
-                mode = IMMEDIATE,
-                animationSpec = spring(
-                    stiffness = Spring.StiffnessVeryLow,
-                    dampingRatio = Spring.DampingRatioMediumBouncy
+            Button(onClick = {
+                testDrive.next(
+                    mode = IMMEDIATE,
+                    animationSpec = spring(
+                        stiffness = Spring.StiffnessVeryLow,
+                        dampingRatio = Spring.DampingRatioMediumBouncy
+                    )
                 )
-            ) }) {
+            }) {
                 Text("Immediate")
             }
         }

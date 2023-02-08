@@ -32,9 +32,11 @@ import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
     transitionBounds: TransitionBounds,
-    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
+    coroutineScope: CoroutineScope
 ) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
-    defaultAnimationSpec = uiAnimationSpec
+    defaultAnimationSpec = uiAnimationSpec,
+    coroutineScope
 ) {
     override fun defaultProps(): Props = Props()
 
