@@ -16,21 +16,14 @@ import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
-import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.*
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import kotlinx.coroutines.CoroutineScope
@@ -54,7 +47,7 @@ class SpotlightSlider<NavTarget : Any>(
             scope = scope,
             initialValue = 0f // TODO sync this with the model's initial value
         ) {
-            mapCore(it)
+            mapOutput(it)
         }
 
     data class Props(
@@ -76,7 +69,8 @@ class SpotlightSlider<NavTarget : Any>(
         override val isVisible: Boolean
             get() {
                 val currentOffset = (scrollValue() * width.value).dp
-                val visibleRange = currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+                val visibleRange =
+                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
                 val isVisible = offset.value.x in visibleRange
                 Logger.log(
                     "SpotlightSlider",
@@ -181,7 +175,7 @@ class SpotlightSlider<NavTarget : Any>(
             is Keyframes -> Interpolator.lerpFloat(
                 output.currentSegment.fromState.activeIndex,
                 output.currentSegment.targetState.activeIndex,
-                output.segmentProgress
+                output.segmentProgress.value
             )
 
             is Update -> output.currentTargetState.activeIndex

@@ -26,6 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -75,7 +76,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     val frames: Flow<List<FrameModel<NavTarget>>> =
         model
             .output
-            .map { _interpolator.map(it) }
+            .flatMapLatest { _interpolator.map(it) }
 
     val screenState: Flow<ScreenState<NavTarget>> =
         frames.map { it.toScreenState() }
