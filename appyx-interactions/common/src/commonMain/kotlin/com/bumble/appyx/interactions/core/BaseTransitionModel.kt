@@ -84,8 +84,14 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                         // Replace the operation result into all the queued outputs
                         val newState = copy(
                             queue = past + remaining.map {
+                                val newFrom = operation.invoke(it.fromState)
+                                val newTarget = operation.invoke(it.targetState)
+
                                 it.copy(
-                                    navTransition = operation.invoke(it.targetState)
+                                    navTransition = NavTransition(
+                                        newFrom.targetState,
+                                        newTarget.targetState
+                                    )
                                 )
                             }
                         )
