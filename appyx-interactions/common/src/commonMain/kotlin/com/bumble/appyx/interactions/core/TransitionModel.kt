@@ -21,7 +21,7 @@ interface TransitionModel<NavTarget, ModelState> {
 
     fun availableElements(): Set<NavElement<NavTarget>>
 
-    fun relaxExecutionMode()
+    fun onAnimationFinished()
 
     fun operation(
         operation: Operation<ModelState>,

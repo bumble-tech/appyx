@@ -8,11 +8,15 @@ import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
+import com.bumble.appyx.interactions.core.inputsource.Draggable
 import com.bumble.appyx.interactions.core.ui.FrameModel.State
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.*
-import kotlinx.coroutines.flow.*
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
+import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-interface Interpolator<Target, ModelState> {
+interface Interpolator<NavTarget, ModelState>: Draggable {
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseInterpolator
@@ -22,10 +26,15 @@ interface Interpolator<Target, ModelState> {
 
     fun map(
         output: TransitionModel.Output<ModelState>
-    ): Flow<List<FrameModel<Target>>> =
+    ): Flow<List<FrameModel<NavTarget>>> = {
         applyGeometry(output)
+        return mapCore(output)
+    }
 
-    fun applyGeometry(
+
+    fun applyGeometry(output: TransitionModel.Output<ModelState>) {}
+
+    fun mapCore(
         output: TransitionModel.Output<ModelState>
     ): Flow<List<FrameModel<Target>>> =
         when (output) {
@@ -36,17 +45,9 @@ interface Interpolator<Target, ModelState> {
             is Update -> MutableStateFlow(mapUpdate(output))
         }
 
-    fun mapCore(
-        output: TransitionModel.Output<ModelState>
-    ): List<FrameModel<Target>> =
-        when (output) {
-            is Keyframes -> mapKeyframes(output)
-            is Update -> mapUpdate(output)
-        }
-
     fun mapKeyframes(
         keyframes: Keyframes<ModelState>
-    ): List<FrameModel<Target>> =
+    ): List<FrameModel<NavTarget>> =
         mapSegment(
             keyframes.currentSegment,
             keyframes.segmentProgress
@@ -55,11 +56,11 @@ interface Interpolator<Target, ModelState> {
     fun mapSegment(
         segment: Segment<ModelState>,
         segmentProgress: StateFlow<Float>
-    ): List<FrameModel<Target>>
+    ): List<FrameModel<NavTarget>>
 
     fun mapUpdate(
         update: Update<ModelState>
-    ): List<FrameModel<Target>>
+    ): List<FrameModel<NavTarget>>
 
 
     // TODO test it

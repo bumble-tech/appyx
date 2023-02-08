@@ -70,9 +70,10 @@ class DragProgressInputSource<NavTarget : Any, State>(
             //  which is not necessarily what we want:
             if (model.operation(operation)) {
                 gesture!!.startProgress = currentProgress
-                Logger.log(TAG, "operation applied: $operation")
+                Logger.log(TAG, "Gesture operation applied: $operation")
             } else {
-                Logger.log(TAG, "operation not applicable: $operation")
+                Logger.log(TAG, "Gesture operation wasn't applied, releasing it to re-evaluate")
+                gesture = null
                 return
             }
             // Case: we can continue the existing operation

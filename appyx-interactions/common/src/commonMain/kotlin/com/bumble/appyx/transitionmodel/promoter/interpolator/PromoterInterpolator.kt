@@ -1,5 +1,6 @@
 package com.bumble.appyx.transitionmodel.promoter.interpolator
 
+import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -8,6 +9,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
@@ -40,6 +42,7 @@ class PromoterInterpolator<NavTarget : Any>(
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
+        // TODO migrate
         override val isVisible: Boolean
     ) : BaseProps
 
@@ -89,6 +92,24 @@ class PromoterInterpolator<NavTarget : Any>(
         rotationZ = 540f,
         isVisible = false
     )
+
+    // TODO Migrate to BaseInterpolator
+
+    override fun onStartDrag(position: Offset) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDrag(dragAmount: Offset, density: Density) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDragEnd(
+        completionThreshold: Float,
+        completeGestureSpec: AnimationSpec<Float>,
+        revertGestureSpec: AnimationSpec<Float>
+    ) {
+        TODO("Not yet implemented")
+    }
 
     private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
         elements.map {

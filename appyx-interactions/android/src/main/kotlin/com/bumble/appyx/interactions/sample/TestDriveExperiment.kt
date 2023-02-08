@@ -1,9 +1,7 @@
 package com.bumble.appyx.interactions.sample
 
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -26,9 +24,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
-import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
