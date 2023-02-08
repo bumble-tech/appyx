@@ -78,8 +78,9 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
-
+            val visibleState = MutableStateFlow(elementProps.isVisible)
             FrameModel(
+                visibleState = visibleState,
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed {
                     LaunchedEffect(update) {
@@ -89,15 +90,18 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                                 props = t1.props,
                                 springSpec = currentSpringSpec,
                                 onStart = {
+                                    visibleState.update { elementProps.isVisible || t1.props.isVisible }
                                     updateAnimationState(t1.element.id, true)
                                 },
                                 onFinished = {
+                                    visibleState.update { t1.props.isVisible }
                                     updateAnimationState(t1.element.id, false)
                                     currentSpringSpec = defaultAnimationSpec
                                 },
                             )
                         } else {
                             elementProps.snapTo(this, t1.props)
+                            visibleState.update { elementProps.isVisible }
                         }
                     }
                     this
@@ -124,10 +128,12 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             }
 
             FrameModel(
+                visibleState = MutableStateFlow(
+                    value = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+                ),
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed { this },
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
     }

@@ -21,6 +21,7 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -44,7 +45,7 @@ class PromoterInterpolator<NavTarget : Any>(
         val rotationZ: Float,
         // TODO migrate
         override val isVisible: Boolean
-    ): BaseProps
+    ) : BaseProps
 
     private val created = Props(
         dpOffset = DpOffset(0.dp, 0.dp),
@@ -113,18 +114,23 @@ class PromoterInterpolator<NavTarget : Any>(
 
     private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
         elements.map {
-            MatchedProps(it.first, when(it.second) {
-                ElementState.CREATED -> created
-                ElementState.STAGE1 -> stage1
-                ElementState.STAGE2 -> stage2
-                ElementState.STAGE3 -> stage3
-                ElementState.STAGE4 -> stage4
-                ElementState.STAGE5 -> stage5
-                else -> destroyed
-            })
+            MatchedProps(
+                it.first, when (it.second) {
+                    ElementState.CREATED -> created
+                    ElementState.STAGE1 -> stage1
+                    ElementState.STAGE2 -> stage2
+                    ElementState.STAGE3 -> stage3
+                    ElementState.STAGE4 -> stage4
+                    ElementState.STAGE5 -> stage5
+                    else -> destroyed
+                }
+            )
         }
 
-    override fun mapSegment(segment: Segment<PromoterModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
+    override fun mapSegment(
+        segment: Segment<PromoterModel.State<NavTarget>>,
+        segmentProgress: Float
+    ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -157,6 +163,9 @@ class PromoterInterpolator<NavTarget : Any>(
             val arcOffsetDp = Offset(x, y)
 
             FrameModel(
+                visibleState = MutableStateFlow(
+                    value = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+                ),
                 navElement = t1.element,
                 modifier = Modifier
                     .offset {
@@ -171,7 +180,6 @@ class PromoterInterpolator<NavTarget : Any>(
                     )
                     .scale(scale),
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
     }

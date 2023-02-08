@@ -9,10 +9,6 @@ import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Draggable
-import com.bumble.appyx.interactions.core.ui.FrameModel.State
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.INVISIBLE
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.PARTIALLY_VISIBLE
-import com.bumble.appyx.interactions.core.ui.FrameModel.State.VISIBLE
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -65,12 +61,12 @@ interface Interpolator<NavTarget, ModelState>: Draggable {
         fromProps: BaseProps,
         toProps: BaseProps,
         progress: Float
-    ): State = when {
-        (progress == 0.0f && !fromProps.isVisible) || (progress == 1.0f && !toProps.isVisible) -> INVISIBLE
-        (progress == 0.0f && fromProps.isVisible) || (progress == 1.0f && toProps.isVisible) -> VISIBLE
-        (progress > 0f && progress < 1f && (fromProps.isVisible && toProps.isVisible)) -> VISIBLE
-        (progress > 0f && progress < 1f && (fromProps.isVisible || toProps.isVisible)) -> PARTIALLY_VISIBLE
-        else -> INVISIBLE
+    ): Boolean = when {
+        (progress == 0.0f && !fromProps.isVisible) || (progress == 1.0f && !toProps.isVisible) -> false
+        (progress == 0.0f && fromProps.isVisible) || (progress == 1.0f && toProps.isVisible) -> true
+        (progress > 0f && progress < 1f && (fromProps.isVisible && toProps.isVisible)) -> true
+        (progress > 0f && progress < 1f && (fromProps.isVisible || toProps.isVisible)) -> true
+        else -> false
     }
 
     // TODO extract along with other interpolation helpers

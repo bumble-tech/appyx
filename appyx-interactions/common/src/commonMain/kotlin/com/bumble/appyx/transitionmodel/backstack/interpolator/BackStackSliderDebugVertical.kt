@@ -17,6 +17,7 @@ import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class BackStackSliderDebugVertical<NavTarget>
     : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
@@ -28,7 +29,7 @@ class BackStackSliderDebugVertical<NavTarget>
         val color: Color,
         // TODO
         override val isVisible: Boolean
-    ): BaseProps
+    ) : BaseProps
 
     private val createdProps = Props(
         offset = DpOffset(0.dp, 0.dp),
@@ -73,7 +74,10 @@ class BackStackSliderDebugVertical<NavTarget>
                 }
 
 
-    override fun mapSegment(segment: Segment<BackStackModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
+    override fun mapSegment(
+        segment: Segment<BackStackModel.State<NavTarget>>,
+        segmentProgress: Float
+    ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -90,6 +94,9 @@ class BackStackSliderDebugVertical<NavTarget>
             val color = lerp(t0.props.color, t1.props.color, segmentProgress)
 
             FrameModel(
+                visibleState = MutableStateFlow(
+                    value = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+                ),
                 navElement = t1.element,
                 modifier = Modifier
                     .offset(
@@ -98,7 +105,6 @@ class BackStackSliderDebugVertical<NavTarget>
                     )
                     .background(color = color),
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
     }

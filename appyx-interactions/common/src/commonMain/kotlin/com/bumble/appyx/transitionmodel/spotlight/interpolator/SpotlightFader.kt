@@ -17,6 +17,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
+import kotlinx.coroutines.flow.MutableStateFlow
 
 
 // TODO BaseInterpolator + dynamic on visibility calculation
@@ -95,11 +96,13 @@ class SpotlightFader<NavTarget : Any>(
             val alpha = lerpFloat(t0.props.alpha, t1.props.alpha, segmentProgress)
 
             FrameModel(
+                visibleState = MutableStateFlow(
+                    value = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+                ),
                 navElement = t1.element,
                 modifier = Modifier
                     .alpha(alpha),
                 progress = segmentProgress,
-                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
     }
