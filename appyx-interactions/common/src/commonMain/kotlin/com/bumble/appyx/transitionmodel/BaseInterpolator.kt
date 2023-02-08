@@ -58,18 +58,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         val targetProps = update.currentTargetState.toProps()
 
         scope.launch {
-            geometryMappings.forEach { (fieldOfState, geometry) ->
-                val targetValue = geometryTargetValue(update, fieldOfState)
-                geometry.animateTo(
-                    targetValue,
-                    spring(
-                        stiffness = currentSpringSpec.stiffness,
-                        dampingRatio = currentSpringSpec.dampingRatio
-                    )
-                ) {
-                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Update) – $targetValue")
-                }
-            }
+            updateGeometry(update)
         }
 
         // TODO: use a map instead of find
@@ -104,6 +93,24 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         }
     }
 
+    private suspend fun updateGeometry(update: Update<ModelState>) {
+        geometryMappings.forEach { (fieldOfState, geometry) ->
+            val targetValue = fieldOfState(update.currentTargetState)
+            geometry.animateTo(
+                targetValue,
+                spring(
+                    stiffness = currentSpringSpec.stiffness,
+                    dampingRatio = currentSpringSpec.dampingRatio
+                )
+            ) {
+                Logger.log(
+                    this@BaseInterpolator.javaClass.simpleName,
+                    "Geometry animateTo (Update) – $targetValue"
+                )
+            }
+        }
+    }
+
     override fun mapSegment(
         segment: Segment<ModelState>,
         segmentProgress: Float
@@ -126,9 +133,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
             FrameModel(
                 navElement = t1.element,
-                modifier = elementProps.modifier.composed {
-                    this
-                                                          },
+                modifier = elementProps.modifier.composed { this },
                 progress = segmentProgress,
                 state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
@@ -140,42 +145,25 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         segmentProgress: Float
     ) {
         geometryMappings.forEach { (fieldOfState, geometry) ->
-            val (behaviour, targetValue) = geometryTargetValue(
-                segment,
-                segmentProgress,
-                fieldOfState
-            )
+            val (behaviour, targetValue) = geometryTargetValue(segment, segmentProgress, fieldOfState)
 
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
-                    Logger.log(
-                        this@BaseInterpolator.javaClass.simpleName,
-                        "Geometry snapTo (Segment): $targetValue"
-                    )
+                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry snapTo (Segment): $targetValue")
                 }
 
                 GeometryBehaviour.ANIMATE -> {
                     if (geometry.value != targetValue) {
-                        geometry.animateTo(
-                            targetValue,
-                            spring(
-                                stiffness = currentSpringSpec.stiffness,
-                                dampingRatio = currentSpringSpec.dampingRatio
-                            )
-                        ) {
-                            Logger.log(
-                                this@BaseInterpolator.javaClass.simpleName,
-                                "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
-                            )
+                        geometry.animateTo(targetValue, spring(
+                            stiffness = currentSpringSpec.stiffness,
+                            dampingRatio = currentSpringSpec.dampingRatio
+                        )) {
+                            Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
                         }
                     }
                 }
             }
-            Logger.log(
-                this@BaseInterpolator.javaClass.simpleName,
-                "Geometry snapTo (Segment): $targetValue"
-            )
         }
     }
 
@@ -203,10 +191,5 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private enum class GeometryBehaviour {
         SNAP, ANIMATE
     }
-
-    private fun geometryTargetValue(
-        output: Update<ModelState>,
-        fieldOfState: (ModelState) -> Float
-    ) = fieldOfState(output.currentTargetState)
 
 }
