@@ -101,10 +101,10 @@ fun SpotlightExperiment() {
             Button(onClick = { spotlight.first() }) {
                 Text("First")
             }
-            Button(onClick = { spotlight.previous(spring(stiffness = Spring.StiffnessLow)) }) {
+            Button(onClick = { spotlight.previous() }) {
                 Text("Prev")
             }
-            Button(onClick = { spotlight.next(spring(stiffness = Spring.StiffnessMedium)) }) {
+            Button(onClick = { spotlight.next() }) {
                 Text("Next")
             }
             Button(onClick = { spotlight.last() }) {
