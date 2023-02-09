@@ -30,12 +30,10 @@ class MainActivity : NodeActivity() {
             AppyxSampleAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    val coroutineScope = rememberCoroutineScope()
                     Column {
                         NodeHost(integrationPoint = appyxIntegrationPoint) {
                             ContainerNode(
                                 buildContext = it,
-                                coroutineScope = coroutineScope
                             )
                         }
                     }
