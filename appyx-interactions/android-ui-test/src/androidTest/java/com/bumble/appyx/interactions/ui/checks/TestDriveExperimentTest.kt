@@ -11,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.takeScreenshot
@@ -90,7 +92,7 @@ class TestDriveExperimentTest {
     @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
     @Test
     fun testDrive_Drag_To_Middle() = runTest {
-        composeTestRule.mainClock.autoAdvance = false
+//        composeTestRule.mainClock.autoAdvance = false
 
         var testDrive: TestDrive<NavTarget>? = null
 
