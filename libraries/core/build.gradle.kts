@@ -5,6 +5,7 @@ plugins {
     id("appyx-publish-android")
     id("appyx-lint")
     id("appyx-detekt")
+    id("appyx-screenshots")
 }
 
 android {
