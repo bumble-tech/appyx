@@ -44,7 +44,7 @@ class PromoterNode(
         interpolator = {
             PromoterInterpolator(
                 childSize = 100.dp,
-                transitionBounds = it
+                transitionBounds = it.transitionBounds
             )
         }
     )

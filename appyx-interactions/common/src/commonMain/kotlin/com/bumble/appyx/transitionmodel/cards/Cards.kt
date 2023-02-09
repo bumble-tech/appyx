@@ -6,17 +6,18 @@ import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
 
 open class Cards<NavTarget : Any>(
     model: CardsModel<NavTarget>,
-    interpolator: (TransitionBounds) -> Interpolator<NavTarget, CardsModel.State<NavTarget>>,
+    interpolator: (UiContext) -> Interpolator<NavTarget, CardsModel.State<NavTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, CardsModel.State<NavTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
-    animateSettleRevert: Boolean = false,
+    animateSettle: Boolean = false,
 ) : InteractionModel<NavTarget, CardsModel.State<NavTarget>>(
     model = model,
     interpolator = interpolator,
     gestureFactory = gestureFactory,
     defaultAnimationSpec = animationSpec,
-    animateSettleRevert = animateSettleRevert
+    animateSettle = animateSettle
 )

@@ -75,6 +75,9 @@ class CardsModel<NavTarget : Any>(
 
     override val initialState: State<NavTarget> = getInitialState(initialItems)
 
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
+        copy(votedCards = emptyList())
+
     override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
         (votedCards + visibleCards + queued).map { it.navElement }.toSet()
 

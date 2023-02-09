@@ -14,16 +14,20 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class BackstackFader<NavTarget : Any>(
+    coroutineScope: CoroutineScope,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>(
-    defaultProps = { Props(alpha = Alpha(0f)) },
-    defaultAnimationSpec = defaultAnimationSpec
+    defaultAnimationSpec = defaultAnimationSpec,
+    coroutineScope
 ) {
+    override fun defaultProps(): Props = Props()
 
     class Props(
-        var alpha: Alpha,
-        override val isVisible: Boolean = false
+        var alpha: Alpha = Alpha(1f),
     ) : Interpolatable<Props>, Animatable<Props>, HasModifier, BaseProps {
+
+        override val isVisible: Boolean
+            get() = alpha.value > 0.0f
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             alpha.lerpTo(start.alpha, end.alpha, fraction)
@@ -53,13 +57,11 @@ class BackstackFader<NavTarget : Any>(
     }
 
     private val visible = Props(
-        alpha = Alpha(1f),
-        isVisible = true
+        alpha = Alpha(1f)
     )
 
     private val hidden = Props(
-        alpha = Alpha(0f),
-        isVisible = false
+        alpha = Alpha(0f)
     )
 
     override fun BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =

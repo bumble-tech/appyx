@@ -21,7 +21,7 @@ interface TransitionModel<NavTarget, ModelState> {
 
     fun availableElements(): Set<NavElement<NavTarget>>
 
-    fun relaxExecutionMode()
+    fun onAnimationFinished()
 
     fun operation(
         operation: Operation<ModelState>,
@@ -30,6 +30,9 @@ interface TransitionModel<NavTarget, ModelState> {
 
     fun setProgress(progress: Float)
 
-    fun dropAfter(segmentIndex: Int, animateOnRevert: Boolean = false)
+    fun onSettled(direction: SettleDirection, animate: Boolean = false)
 
+    enum class SettleDirection {
+        REVERT, COMPLETE
+    }
 }

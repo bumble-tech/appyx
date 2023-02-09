@@ -1,7 +1,6 @@
 package com.bumble.appyx.transitionmodel.testdrive.interpolator
 
 import DefaultAnimationSpec
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
@@ -32,12 +31,13 @@ import kotlinx.coroutines.awaitAll
 import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
-    transitionBounds: TransitionBounds,
-    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
+    coroutineScope: CoroutineScope
 ) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
-    defaultProps = { Props() },
-    defaultAnimationSpec = defaultAnimationSpec
+    defaultAnimationSpec = uiAnimationSpec,
+    coroutineScope
 ) {
+    override fun defaultProps(): Props = Props()
 
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
@@ -126,13 +126,16 @@ class TestDriveUiModel<NavTarget : Any>(
     class Gestures<NavTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<NavTarget, TestDriveModel.State<NavTarget>> {
-        private val width = transitionBounds.widthPx
-        private val height = transitionBounds.heightPx
+        private val width = b.offset.value.x - a.offset.value.x
+        private val height = d.offset.value.y - a.offset.value.y
 
         override fun createGesture(
             delta: androidx.compose.ui.geometry.Offset,
             density: Density
         ): Gesture<NavTarget, TestDriveModel.State<NavTarget>> {
+            val width = with (density) { width.toPx() }
+            val height = with (density) { height.toPx() }
+
             return if (abs(delta.x) > abs(delta.y)) {
                 if (delta.x < 0) {
                     Gesture(

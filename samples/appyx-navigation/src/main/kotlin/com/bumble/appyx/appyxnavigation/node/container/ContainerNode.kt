@@ -34,13 +34,12 @@ import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
     buildContext: BuildContext,
-    private val coroutineScope: CoroutineScope,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Selector),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { BackStackSlider(it) }
+        interpolator = { (bounds, scope) -> BackStackSlider(bounds, scope) }
     )
 
 ) : ParentNode<NavTarget>(
@@ -77,11 +76,8 @@ class ContainerNode(
                 Selector(modifier)
             }
             is NavTarget.DatingCards -> DatingCardsNode(buildContext)
-            is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext, coroutineScope)
-            is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(
-                buildContext,
-                coroutineScope
-            )
+            is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext)
+            is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
             is NavTarget.BackStack -> BackStackExamplesNode(buildContext)
             is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
             is NavTarget.PromoterExperiment -> PromoterNode(buildContext)

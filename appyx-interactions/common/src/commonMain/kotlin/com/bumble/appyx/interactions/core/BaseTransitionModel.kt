@@ -3,10 +3,12 @@ package com.bumble.appyx.interactions.core
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.*
 import com.bumble.appyx.interactions.core.TransitionModel.Output
+import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -17,6 +19,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     abstract val initialState: ModelState
 
     abstract fun ModelState.destroyedElements(): Set<NavElement<NavTarget>>
+
+    abstract fun ModelState.removeDestroyedElements(): ModelState
 
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
@@ -38,17 +42,32 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
 
     private var enforcedMode: Operation.Mode? = null
 
-    override fun relaxExecutionMode() {
+    override fun onAnimationFinished() {
+        Logger.log("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
+        removeDestroyedElements()
     }
 
-    override fun operation(operation: Operation<ModelState>, overrideMode: Operation.Mode?): Boolean =
+    private fun removeDestroyedElements() {
+        state.getAndUpdate { output ->
+            when (output) {
+                is Update<ModelState> -> output // TODO
+                is Keyframes -> Update(
+                    animate = false,
+                    currentTargetState = output.currentTargetState.removeDestroyedElements()
+                )
+            }
+        }
+    }
+
+    override fun operation(
+        operation: Operation<ModelState>,
+        overrideMode: Operation.Mode?
+    ): Boolean =
         when (enforcedMode ?: overrideMode ?: operation.mode) {
             IMMEDIATE -> {
-                // Replacing while in keyframes mode triggers enforced IMMEDIATE execution as a side effect
-                if (state.value is Keyframes) {
-                    enforcedMode = IMMEDIATE
-                }
+                // IMMEDIATE mode is kept until UI is settled and model is relaxed
+                enforcedMode = IMMEDIATE
                 createUpdate(operation)
             }
             GEOMETRY -> {
@@ -63,7 +82,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         val baseLine = state.value
 
         return if (operation.isApplicable(baseLine.currentTargetState)) {
-            val transition = operation.invoke(baseLine.currentTargetState)
+            val transition = operation.invoke(baseLine.currentTargetState.removeDestroyedElements())
             val newState = baseLine.deriveUpdate(transition)
             updateState(newState)
             true
@@ -74,13 +93,13 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     }
 
     private fun updateGeometry(operation: Operation<ModelState>): Boolean {
-        when (val currentState = state.value) {
+        return when (val currentState = state.value) {
             is Keyframes -> {
                 with(currentState) {
                     val past = if (currentIndex > 0) queue.subList(0, currentIndex - 1) else emptyList()
-                    val remaining = queue.subList(currentIndex, queue.lastIndex)
+                    val remaining = queue.subList(currentIndex, queue.lastIndex + 1)
 
-                    return if (remaining.all { operation.isApplicable(it.targetState) }) {
+                    if (remaining.all { operation.isApplicable(it.targetState) }) {
                         // Replace the operation result into all the queued outputs
                         val newState = copy(
                             queue = past + remaining.map {
@@ -97,13 +116,23 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                     }
                 }
             }
-            is Update -> TODO()
+            is Update -> {
+                if (operation.isApplicable(currentState.currentTargetState)) {
+                    val newState = currentState.deriveUpdate(
+                        navTransition = operation.invoke(currentState.currentTargetState)
+                    )
+                    updateState(newState)
+                    true
+                }
+                Logger.log(TAG, "Operation $operation is not applicable on states: $currentState.currentTargetState")
+                false
+            }
         }
     }
 
     private fun createSegment(operation: Operation<ModelState>): Boolean {
         val currentState = state.value
-        val baselineState = currentState.lastTargetState
+        val baselineState = currentState.lastTargetState.removeDestroyedElements()
 
         return if (operation.isApplicable(baselineState)) {
             val transition = operation.invoke(baselineState)
@@ -123,47 +152,42 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                 return
             }
             is Keyframes -> {
-                // val progress = progress.coerceAtLeast(1f)
-                val newState = currentState.setProgress(progress) {
+                //Do not produce new state because progress is observed
+                currentState.setProgress(progress) {
                     // TODO uncomment when method is merged here
                     //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
                     // onTransitionFinished(state.value.fromState.map { it.key })
                 }
-
-                updateState(newState)
             }
         }
     }
 
-    override fun dropAfter(segmentIndex: Int, animateOnRevert: Boolean) {
+    override fun onSettled(direction: SettleDirection, animate: Boolean) {
         when (val currentState = state.value) {
             is Update -> {
-                Logger.log(TAG, "Not in keyframe state, ignoring dropAfter")
+                Logger.log(TAG, "Not in keyframe state, nothing to do")
                 return
             }
             is Keyframes -> {
-                if (segmentIndex == 0) {
-                    val first = currentState.queue.first()
-                    val newState = Update(
-                        currentTargetState = first.fromState,
-                        animate = animateOnRevert
-                    )
-                    updateState(newState)
-                } else {
-                    val newState = currentState.dropAfter(segmentIndex)
-                    updateState(newState)
-                }
+                val newState = Update(
+                    currentTargetState = when (direction) {
+                        SettleDirection.REVERT -> currentState.currentSegment.fromState
+                        SettleDirection.COMPLETE -> currentState.currentSegment.targetState
+                    },
+                    animate = animate
+                )
+                updateState(newState)
             }
         }
     }
 
     private fun updateState(output: Output<ModelState>) {
         // Logger.log(TAG, "Publishing new state ($currentIndex) of queue: ${queue.map { "${it.index}: ${it.javaClass.simpleName}"  }}")
-        Logger.log(TAG, "Publishing new state: ${this.output.value}")
+        Logger.log(TAG, "Publishing new state: $output")
         state.update { output }
     }
 
     private companion object {
-        private val TAG = BaseTransitionModel::class.java.name
+        private val TAG = "BaseTransitionModel"
     }
 }

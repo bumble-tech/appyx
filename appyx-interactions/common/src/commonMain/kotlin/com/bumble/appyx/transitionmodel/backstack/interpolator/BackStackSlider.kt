@@ -4,6 +4,7 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -21,18 +22,25 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
 class BackStackSlider<NavTarget : Any>(
-    transitionBounds: TransitionBounds
+    private val transitionBounds: TransitionBounds,
+    coroutineScope: CoroutineScope
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
-    defaultProps = { Props() }
+    coroutineScope = coroutineScope
 ) {
     private val width = transitionBounds.widthDp
+
+    override fun defaultProps(): Props = Props(screenWidth = transitionBounds.widthDp)
 
     data class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
-        override val isVisible: Boolean = true
+        val screenWidth: Dp
     ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
+
+        // TODO take into account element width
+        override val isVisible: Boolean
+            get() = alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
 
         override val modifier: Modifier
             get() = Modifier
@@ -82,18 +90,19 @@ class BackStackSlider<NavTarget : Any>(
 
     private val outsideLeft = Props(
         offset = Offset(DpOffset(-width, 0.dp)),
-        isVisible = false
+        screenWidth = width
     )
 
     private val outsideRight = Props(
         offset = Offset(DpOffset(width, 0.dp)),
-        isVisible = false
+        screenWidth = width
     )
 
     private val noOffset = Props(
         offset = Offset(DpOffset(0.dp, 0.dp)),
-        isVisible = true
+        screenWidth = width
     )
+
 
     override fun BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
         created.map { MatchedProps(it, outsideRight) } +

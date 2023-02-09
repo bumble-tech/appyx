@@ -6,6 +6,8 @@ import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.COMPLETE
+import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.REVERT
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 
 class DragProgressInputSource<NavTarget : Any, State>(
@@ -68,9 +70,10 @@ class DragProgressInputSource<NavTarget : Any, State>(
             //  which is not necessarily what we want:
             if (model.operation(operation)) {
                 gesture!!.startProgress = currentProgress
-                Logger.log(TAG, "operation applied: $operation")
+                Logger.log(TAG, "Gesture operation applied: $operation")
             } else {
-                Logger.log(TAG, "operation not applicable: $operation")
+                Logger.log(TAG, "Gesture operation wasn't applied, releasing it to re-evaluate")
+                gesture = null
                 return
             }
             // Case: we can continue the existing operation
@@ -94,7 +97,7 @@ class DragProgressInputSource<NavTarget : Any, State>(
             } else {
                 // TODO without recursion
                 val remainder =
-                    consumePartial(dragAmount, totalTarget, deltaProgress, startProgress + 1)
+                    consumePartial(COMPLETE, dragAmount, totalTarget, deltaProgress, startProgress + 1)
                 consumeDrag(remainder)
             }
 
@@ -102,19 +105,20 @@ class DragProgressInputSource<NavTarget : Any, State>(
             // now we need to re-evaluate for a new operation
         } else {
             // TODO without recursion
-            val remainder = consumePartial(dragAmount, totalTarget, deltaProgress, startProgress)
+            val remainder = consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
             consumeDrag(remainder)
         }
     }
 
     private fun consumePartial(
+        direction: TransitionModel.SettleDirection,
         dragAmount: Offset,
         totalTarget: Float,
         deltaProgress: Float,
         boundary: Float
     ): Offset {
         model.setProgress(boundary)
-        model.dropAfter(boundary.toInt())
+        model.onSettled(direction, false)
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
         gesture = null
         Logger.log(TAG, "1 ------")

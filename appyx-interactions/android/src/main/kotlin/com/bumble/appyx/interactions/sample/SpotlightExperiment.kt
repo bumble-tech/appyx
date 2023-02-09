@@ -41,11 +41,10 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.updateElements
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperiment() {
-    val scope = rememberCoroutineScope()
     val items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7)
     val spotlight = Spotlight(
         model = SpotlightModel(items = items),
-        interpolator = { SpotlightSlider(it, scope) },
+        interpolator = {(bounds, scope) -> SpotlightSlider(bounds, scope, activeWindow = 1f) },
         gestureFactory = { SpotlightSlider.Gestures(it) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )
@@ -78,7 +77,7 @@ fun SpotlightExperiment() {
                                 },
                                 onDragEnd = {
                                     Logger.log("drag", "end")
-                                    spotlight.onDragEnd()
+                                    spotlight.onDragEnd(completionThreshold = 0.2f)
                                 }
                             )
                         }

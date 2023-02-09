@@ -14,15 +14,19 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 
-class BackStackCrossfader<NavTarget : Any> :
+class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
     BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
-        defaultProps = { Props() }
+        coroutineScope = coroutineScope
     ) {
+
+    override fun defaultProps(): Props = Props()
 
     class Props(
         val alpha: Alpha = Alpha(value = 1f),
-        override val isVisible: Boolean = true
     ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
+
+        override val isVisible: Boolean
+            get() = alpha.value > 0.0f
 
         override val modifier: Modifier
             get() = Modifier
@@ -57,13 +61,11 @@ class BackStackCrossfader<NavTarget : Any> :
     }
 
     private val visible = Props(
-        alpha = Alpha(value = 1f),
-        isVisible = true
+        alpha = Alpha(value = 1f)
     )
 
     private val hidden = Props(
-        alpha = Alpha(value = 0f),
-        isVisible = false
+        alpha = Alpha(value = 0f)
     )
 
     override fun BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
