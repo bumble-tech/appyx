@@ -70,11 +70,10 @@ class KeyFramesTest {
             )
         )
 
-        val newKeyFrames = keyFrames.setProgress(0.5f) {}
+        keyFrames.setProgress(0.5f) {}
 
-
-        assertEquals(firstSegment, newKeyFrames.currentSegment)
-        assertEquals(0, newKeyFrames.currentIndex)
+        assertEquals(firstSegment, keyFrames.currentSegment)
+        assertEquals(0, keyFrames.currentIndex)
     }
 
     @Test
@@ -97,11 +96,11 @@ class KeyFramesTest {
             )
         )
 
-        val newKeyFrames = keyFrames.setProgress(1f) {}
+        keyFrames.setProgress(1f) {}
 
 
-        assertEquals(secondSegment, newKeyFrames.currentSegment)
-        assertEquals(1, newKeyFrames.currentIndex)
+        assertEquals(secondSegment, keyFrames.currentSegment)
+        assertEquals(1, keyFrames.currentIndex)
     }
 
 
@@ -125,11 +124,11 @@ class KeyFramesTest {
             )
         )
 
-        val newKeyFrames = keyFrames.setProgress(3f) {}
+        keyFrames.setProgress(3f) {}
 
 
-        assertEquals(secondSegment, newKeyFrames.currentSegment)
-        assertEquals(1, newKeyFrames.currentIndex)
+        assertEquals(secondSegment, keyFrames.currentSegment)
+        assertEquals(1, keyFrames.currentIndex)
     }
 
     @Test
@@ -153,10 +152,10 @@ class KeyFramesTest {
             )
         )
 
-        val newKeyFrames = keyFrames.setProgress(-1f) {}
+        keyFrames.setProgress(-1f) {}
 
-        assertEquals(firstSegment, newKeyFrames.currentSegment)
-        assertEquals(0, newKeyFrames.currentIndex)
+        assertEquals(firstSegment, keyFrames.currentSegment)
+        assertEquals(0, keyFrames.currentIndex)
     }
 
     @Test
@@ -227,10 +226,10 @@ class KeyFramesTest {
             )
         )
 
-        val newKeyFrames = keyFrames.setProgress(2f) {}
+        keyFrames.setProgress(2f) {}
 
-        assertEquals(1f, newKeyFrames.segmentProgress)
-        assertEquals(1, newKeyFrames.currentIndex)
+        assertEquals(1f, keyFrames.segmentProgress.value)
+        assertEquals(1, keyFrames.currentIndex)
     }
 
     @Test
@@ -252,9 +251,9 @@ class KeyFramesTest {
             )
         )
 
-        val newKeyFrames = keyFrames.setProgress(1f) {}
+        keyFrames.setProgress(1f) {}
 
-        assertEquals(0f, newKeyFrames.segmentProgress)
-        assertEquals(1, newKeyFrames.currentIndex)
+        assertEquals(0f, keyFrames.segmentProgress.value)
+        assertEquals(1, keyFrames.currentIndex)
     }
 }
