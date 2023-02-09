@@ -54,7 +54,6 @@ fun DefaultPreview() {
         Column {
             ContainerNode(
                 buildContext = BuildContext.root(null),
-                coroutineScope = rememberCoroutineScope()
             ).Compose()
         }
     }
