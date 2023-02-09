@@ -34,7 +34,6 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.first
 import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import com.bumble.appyx.transitionmodel.spotlight.operation.next
 import com.bumble.appyx.transitionmodel.spotlight.operation.previous
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 
 class SpotlightDebugNode(

@@ -13,6 +13,7 @@ import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -31,12 +32,12 @@ import kotlinx.coroutines.awaitAll
 import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
+    uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
     coroutineScope: CoroutineScope
 ) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
-    scope = scope,
+    scope = uiContext.coroutineScope,
     defaultAnimationSpec = uiAnimationSpec,
-    coroutineScope
 ) {
     override fun defaultProps(): Props = Props()
 

@@ -5,6 +5,7 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import com.bumble.appyx.interactions.Logger
@@ -27,7 +28,6 @@ import androidx.compose.animation.core.Animatable as Animatable1
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private val scope: CoroutineScope,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-    private val coroutineScope: CoroutineScope
 ) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
 
     private val cache: MutableMap<String, Props> = mutableMapOf()
@@ -70,7 +70,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                 navElement = t1.element,
                 modifier = elementProps.modifier.composed {
                     LaunchedEffect(update) {
-                        coroutineScope.launch {
+                        scope.launch {
                             if (update.animate) {
                                 elementProps.animateTo(
                                     scope = this,
@@ -123,7 +123,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         val targetProps = targetState.toProps()
 
         scope.launch {
-            updateGeometry(segment, segmentProgress)
+            updateGeometry(segment, segmentProgress.value)
         }
 
         // TODO: use a map instead of find
@@ -131,7 +131,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
-            coroutineScope.launch {
+            scope.launch {
                 elementProps.lerpTo(t0.props, t1.props, segmentProgress.value)
             }
 

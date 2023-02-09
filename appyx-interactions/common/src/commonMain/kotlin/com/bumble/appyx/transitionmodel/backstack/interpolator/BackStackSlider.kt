@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -22,14 +22,13 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 
 class BackStackSlider<NavTarget : Any>(
-    scope: CoroutineScope,
-    private val transitionBounds: TransitionBounds
+    private val uiContext: UiContext,
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
-    scope = scope,
+    scope = uiContext.coroutineScope,
 ) {
-    private val width = transitionBounds.widthDp
+    private val width = uiContext.transitionBounds.widthDp
 
-    override fun defaultProps(): Props = Props(screenWidth = transitionBounds.widthDp)
+    override fun defaultProps(): Props = Props(screenWidth = uiContext.transitionBounds.widthDp)
 
     data class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),

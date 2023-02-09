@@ -48,6 +48,7 @@ fun TestDriveExperiment() {
             animateSettle = true,
             interpolator = {
                 TestDriveUiModel(
+                    it,
                     uiAnimationSpec = spring(
                         stiffness = Spring.StiffnessLow,
                         dampingRatio = Spring.DampingRatioMediumBouncy,

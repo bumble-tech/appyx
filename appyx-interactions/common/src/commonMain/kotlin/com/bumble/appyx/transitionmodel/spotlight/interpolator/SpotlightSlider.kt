@@ -1,7 +1,6 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
@@ -39,15 +38,14 @@ import androidx.compose.animation.core.Animatable as Animatable1
 typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 class SpotlightSlider<NavTarget : Any>(
-    transitionBounds: TransitionBounds,
-    scope: CoroutineScope,
+    uiContext: UiContext,
     val activeWindow: Float,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
-    coroutineScope = scope
+    scope = uiContext.coroutineScope
 ) {
-    private val width = transitionBounds.widthDp
-    private val height = transitionBounds.heightDp
+    private val width = uiContext.transitionBounds.widthDp
+    private val height = uiContext.transitionBounds.heightDp
     private val scroll = Animatable1(0f) // TODO sync this with the model's initial value
 
     override val geometryMappings: List<Pair<(SpotlightModel.State<NavTarget>) -> Float, Animatable1<Float, AnimationVector1D>>> =

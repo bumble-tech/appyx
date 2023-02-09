@@ -36,7 +36,7 @@ class BackStackExamplesNode(
             initialTargets = listOf(NavTarget.BackStackPicker),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { (bounds, scope) -> BackStackSlider(bounds, scope) }
+        interpolator = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
@@ -59,12 +59,8 @@ class BackStackExamplesNode(
             is NavTarget.BackStackPicker -> node(buildContext) {
                 BackStackPicker(it)
             }
-            is NavTarget.BackStackFader -> BackStackNode(
-                buildContext,
-                { (bounds, scope) -> BackstackFader(scope) })
-            is NavTarget.BackStackSlider -> BackStackNode(
-                buildContext,
-                { (bounds, scope) -> BackStackSlider(bounds, scope) })
+            is NavTarget.BackStackFader -> BackStackNode(buildContext, { BackstackFader(it) })
+            is NavTarget.BackStackSlider -> BackStackNode(buildContext, { BackStackSlider(it) })
         }
 
     @Composable
