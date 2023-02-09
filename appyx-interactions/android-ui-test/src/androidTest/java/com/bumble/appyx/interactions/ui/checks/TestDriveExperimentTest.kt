@@ -8,7 +8,11 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.unit.Density
+import androidx.compose.ui.unit.dp
 import androidx.test.core.app.takeScreenshot
 import androidx.test.core.graphics.writeToTestStorage
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
@@ -58,6 +62,7 @@ class TestDriveExperimentTest {
                         interpolator = {
                             TestDriveUiModel(coroutineScope = coroutineScope)
                         },
+                        progressAnimationSpec = testAnimationSpec,
                         gestureFactory = { TestDriveUiModel.Gestures(it) },
                     )
                 }
@@ -77,6 +82,58 @@ class TestDriveExperimentTest {
         )
 
         composeTestRule.mainClock.advanceTimeBy(500)
+
+        takeScreenshot()
+            .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
+    }
+
+    @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
+    @Test
+    fun testDrive_Drag_To_Middle() = runTest {
+        composeTestRule.mainClock.autoAdvance = false
+
+        var testDrive: TestDrive<NavTarget>? = null
+
+        var density: Density? = null
+
+        val testAnimationSpec = tween<Float>(durationMillis = 1000, easing = LinearEasing)
+
+        composeTestRule.setContent {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = appyx_dark
+            ) {
+                val coroutineScope = rememberCoroutineScope()
+                val model = remember { TestDriveModel(NavTarget.Child1) }
+
+                testDrive = remember {
+                    TestDrive(
+                        scope = coroutineScope,
+                        model = model,
+                        progressAnimationSpec = testAnimationSpec,
+                        interpolator = {
+                            TestDriveUiModel(coroutineScope = coroutineScope)
+                        },
+                        gestureFactory = { TestDriveUiModel.Gestures(it) },
+                    )
+                }
+
+                density = LocalDensity.current
+
+                InteractionModelSetup(testDrive!!)
+
+                TestDriveUi(
+                    testDrive = testDrive!!,
+                    model = model
+                )
+            }
+        }
+
+        val x = with(density!!) { 100.dp.toPx() }
+
+        testDrive!!.onDrag(Offset(x, 0f), density!!)
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
 
         takeScreenshot()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
