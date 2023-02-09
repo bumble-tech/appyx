@@ -42,10 +42,12 @@ typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 class SpotlightSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds,
-    private val scope: CoroutineScope,
+    scope: CoroutineScope,
+    val activeWindow: Float,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-    val activeWindow: Float
-) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>() {
+) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
+    coroutineScope = scope
+) {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
 
@@ -54,7 +56,7 @@ class SpotlightSlider<NavTarget : Any>(
             scope = scope,
             initialValue = 0f // TODO sync this with the model's initial value
         ) {
-            mapCore(it)
+            mapOutput(it)
         }
 
     data class Props(
@@ -76,7 +78,8 @@ class SpotlightSlider<NavTarget : Any>(
         override val isVisible: Boolean
             get() {
                 val currentOffset = (scrollValue() * width.value).dp
-                val visibleRange = currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+                val visibleRange =
+                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
                 val isVisible = offset.value.x in visibleRange
                 Logger.log(
                     "SpotlightSlider",
@@ -181,7 +184,7 @@ class SpotlightSlider<NavTarget : Any>(
             is Keyframes -> Interpolator.lerpFloat(
                 output.currentSegment.fromState.activeIndex,
                 output.currentSegment.targetState.activeIndex,
-                output.segmentProgress
+                output.segmentProgress.value
             )
 
             is Update -> output.currentTargetState.activeIndex

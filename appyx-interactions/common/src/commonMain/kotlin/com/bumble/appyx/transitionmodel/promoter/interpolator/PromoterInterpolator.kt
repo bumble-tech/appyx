@@ -2,7 +2,10 @@ package com.bumble.appyx.transitionmodel.promoter.interpolator
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
@@ -13,15 +16,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
-import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
-import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -129,7 +129,7 @@ class PromoterInterpolator<NavTarget : Any>(
 
     override fun mapSegment(
         segment: Segment<PromoterModel.State<NavTarget>>,
-        segmentProgress: Float
+        segmentProgress: StateFlow<Float>
     ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
@@ -138,47 +138,48 @@ class PromoterInterpolator<NavTarget : Any>(
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
 
-            // TODO memoize
-            val angleRadians0 = Math.toRadians(t0.props.angleDegrees.toDouble() - 90)
-            val angleRadians1 = Math.toRadians(t1.props.angleDegrees.toDouble() - 90)
-
-            // Lerp block
-            val dpOffsetX =
-                lerpFloat(t0.props.dpOffset.x.value, t1.props.dpOffset.x.value, segmentProgress)
-            val dpOffsetY =
-                lerpFloat(t0.props.dpOffset.y.value, t1.props.dpOffset.y.value, segmentProgress)
-            val rotationY = lerpFloat(t0.props.rotationY, t1.props.rotationY, segmentProgress)
-            val rotationZ = lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segmentProgress)
-            val scale = lerpFloat(t0.props.scale, t1.props.scale, segmentProgress)
-            val angleRadians =
-                lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segmentProgress)
-            val effectiveRadiusRatio = lerpFloat(
-                t0.props.effectiveRadiusRatio,
-                t1.props.effectiveRadiusRatio,
-                segmentProgress
-            )
-            val effectiveRadius = radiusDp * effectiveRadiusRatio
-            val x = (effectiveRadius * cos(angleRadians))
-            val y = (effectiveRadius * sin(angleRadians))
-            val arcOffsetDp = Offset(x, y)
-
             FrameModel(
                 visibleState = MutableStateFlow(
-                    value = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
+                    value = resolveNavElementVisibility(t0.props, t1.props, segmentProgress.value)
                 ),
                 navElement = t1.element,
-                modifier = Modifier
-                    .offset {
-                        IntOffset(
-                            x = (this.density * (halfWidthDp + dpOffsetX + arcOffsetDp.x)).roundToInt(),
-                            y = (this.density * (halfHeightDp + dpOffsetY + arcOffsetDp.y)).roundToInt()
-                        )
-                    }
+                modifier = Modifier.composed {
+                    val segmentProgress by segmentProgress.collectAsState(segmentProgress.value)
+                    val angleRadians0 = Math.toRadians(t0.props.angleDegrees.toDouble() - 90)
+                    val angleRadians1 = Math.toRadians(t1.props.angleDegrees.toDouble() - 90)
+
+                    // Lerp block
+                    val dpOffsetX =
+                        lerpFloat(t0.props.dpOffset.x.value, t1.props.dpOffset.x.value, segmentProgress)
+                    val dpOffsetY =
+                        lerpFloat(t0.props.dpOffset.y.value, t1.props.dpOffset.y.value, segmentProgress)
+                    val rotationY = lerpFloat(t0.props.rotationY, t1.props.rotationY, segmentProgress)
+                    val rotationZ = lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segmentProgress)
+                    val scale = lerpFloat(t0.props.scale, t1.props.scale, segmentProgress)
+                    val angleRadians =
+                        lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segmentProgress)
+                    val effectiveRadiusRatio = lerpFloat(
+                        t0.props.effectiveRadiusRatio,
+                        t1.props.effectiveRadiusRatio,
+                        segmentProgress
+                    )
+                    val effectiveRadius = radiusDp * effectiveRadiusRatio
+                    val x = (effectiveRadius * cos(angleRadians))
+                    val y = (effectiveRadius * sin(angleRadians))
+                    val arcOffsetDp = Offset(x, y)
+
+                    this.offset {
+                    IntOffset(
+                        x = (this.density * (halfWidthDp + dpOffsetX + arcOffsetDp.x)).roundToInt(),
+                        y = (this.density * (halfHeightDp + dpOffsetY + arcOffsetDp.y)).roundToInt()
+                    )
+                }
                     .graphicsLayer(
                         rotationY = rotationY,
                         rotationZ = rotationZ
                     )
-                    .scale(scale),
+                    .scale(scale)
+                },
                 progress = segmentProgress,
             )
         }

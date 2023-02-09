@@ -40,7 +40,7 @@ fun PromoterExperiment() {
             interpolator = {
                 PromoterInterpolator(
                     childSize = 100.dp,
-                    transitionBounds = it
+                    transitionBounds = it.transitionBounds
                 )
             },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)

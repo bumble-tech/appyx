@@ -34,7 +34,7 @@ fun BackStackExperimentDebug() {
                 initialTargets = listOf(Child1, Child2, Child3),
                 savedStateMap = null
             ),
-            interpolator = { BackstackFader() },
+            interpolator = { BackstackFader(coroutineScope=coroutineScope) },
             isDebug = false
         )
     }

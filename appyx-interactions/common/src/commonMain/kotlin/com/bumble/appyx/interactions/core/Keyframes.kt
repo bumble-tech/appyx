@@ -1,9 +1,13 @@
 package com.bumble.appyx.interactions.core
 
 import com.bumble.appyx.interactions.Logger
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+
 data class Keyframes<ModelState>(
     val queue: List<Segment<ModelState>>,
-    val progress: Float = 0f,
+    val initialProgress: Float = 0f
 ) : TransitionModel.Output<ModelState>() {
 
     val currentIndex: Int
@@ -27,8 +31,23 @@ data class Keyframes<ModelState>(
     val currentSegment: Segment<ModelState>
         get() = queue[currentIndex]
 
-    val segmentProgress: Float
-        get() = this.progress - currentIndex
+    val progressFlow = MutableStateFlow(initialProgress)
+
+    val currentIndexFlow = progressFlow.map { progress ->
+        (if (progress == maxProgress) (progress - 1) else progress).toInt()
+    }.distinctUntilChanged()
+
+    val currentSegmentFlow = currentIndexFlow.map {
+        queue[it]
+    }
+    val currentSegmentTargetStateFlow = currentIndexFlow.map {
+        queue[it].targetState
+    }
+
+    val segmentProgress = MutableStateFlow(progressFlow.value - currentIndex)
+
+    val progress: Float
+        get() = progressFlow.value
 
     override val currentTargetState: ModelState
         get() = currentSegment.targetState
@@ -45,7 +64,8 @@ data class Keyframes<ModelState>(
 
     override fun deriveKeyframes(navTransition: NavTransition<ModelState>): Keyframes<ModelState> =
         copy(
-            queue = queue + listOf(Segment(navTransition))
+            queue = queue + listOf(Segment(navTransition)),
+            initialProgress = progress
         )
 
     override fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState> =
@@ -60,17 +80,13 @@ data class Keyframes<ModelState>(
             )
         } else this
 
-
-    fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit): Keyframes<ModelState> {
-        Logger.log("Keyframes", "Progress update: $progress")
+    fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit) {
         if (progress.toInt() > this.progress.toInt()) {
             Logger.log("Keyframes", "onTransitionFinished()")
             onTransitionFinished(currentSegment.fromState)
         }
-
-        return copy(
-            progress = progress.coerceIn(0f, maxProgress)
-        )
+        progressFlow.value = progress
+        segmentProgress.value = progress - currentIndex
     }
 }
 
