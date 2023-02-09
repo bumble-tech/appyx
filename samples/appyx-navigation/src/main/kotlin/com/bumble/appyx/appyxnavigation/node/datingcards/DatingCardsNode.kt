@@ -16,6 +16,7 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.samples.common.profile.Profile
+import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import com.bumble.appyx.transitionmodel.cards.Cards
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps
@@ -29,7 +30,7 @@ class DatingCardsNode(
                 initialItems = Profile.allProfiles.shuffled().map {
                     NavTarget.ProfileCard(it)
                 }),
-            interpolator = { CardsProps(it) },
+            interpolator = {(bounds, scope) -> CardsProps(bounds,scope) },
             gestureFactory = { CardsProps.Gestures(it) },
         )
 

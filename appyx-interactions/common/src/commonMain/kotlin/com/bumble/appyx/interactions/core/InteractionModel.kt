@@ -8,18 +8,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.Draggable
-import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
-import com.bumble.appyx.interactions.core.ui.FlexibleBounds
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.ScreenState
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.toScreenState
+import com.bumble.appyx.interactions.core.inputsource.*
+import com.bumble.appyx.interactions.core.ui.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -27,6 +17,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
@@ -36,16 +27,16 @@ import kotlinx.coroutines.launch
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<NavTarget, ModelState>,
-    private val interpolator: (TransitionBounds) -> Interpolator<NavTarget, ModelState>,
+    private val interpolator: (UiContext) -> Interpolator<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : Draggable, FlexibleBounds {
+) : Draggable, UiContextAware {
 
     private var _interpolator: Interpolator<NavTarget, ModelState> =
-        interpolator(TransitionBounds(Density(0f), 0, 0))
+        interpolator( UiContext(TransitionBounds(Density(0f), 0, 0), scope))
 
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(TransitionBounds(Density(0f), 0, 0))
@@ -57,10 +48,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             if (value != field) {
                 Logger.log("InteractionModel", "TransitionBounds changed: $value")
                 field = value
-                _interpolator = interpolator(transitionBounds).also {
-                    observeAnimationChanges()
-                }
-                _gestureFactory = gestureFactory(transitionBounds)
             }
         }
 
@@ -76,7 +63,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     val frames: Flow<List<FrameModel<NavTarget>>> =
         model
             .output
-            .map { _interpolator.map(it) }
+            .flatMapLatest { _interpolator.map(it) }
 
     val screenState: Flow<ScreenState<NavTarget>> =
         frames.map { it.toScreenState() }
@@ -127,8 +114,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         )
     }
 
-    override fun updateBounds(transitionBounds: TransitionBounds) {
-        this.transitionBounds = transitionBounds
+    override fun updateContext(uiContext: UiContext) {
+        if (this.transitionBounds!=uiContext.transitionBounds){
+            this.transitionBounds = uiContext.transitionBounds
+            _interpolator = interpolator(uiContext).also {
+                observeAnimationChanges()
+            }
+            _gestureFactory = gestureFactory(transitionBounds)
+        }
     }
 
     fun availableElements(): Set<NavElement<NavTarget>> = model.availableElements()

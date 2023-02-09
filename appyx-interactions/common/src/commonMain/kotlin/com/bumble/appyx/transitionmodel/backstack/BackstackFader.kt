@@ -18,7 +18,7 @@ class BackstackFader<NavTarget : Any>(
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>(
     scope = scope,
-    defaultAnimationSpec = defaultAnimationSpec
+    defaultAnimationSpec = defaultAnimationSpec,
 ) {
     override fun defaultProps(): Props = Props()
 

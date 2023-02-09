@@ -14,11 +14,10 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 
-class BackStackCrossfader<NavTarget : Any>(
-    scope: CoroutineScope,
-) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
-    scope = scope,
-) {
+class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
+    BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
+        scope = coroutineScope
+    ) {
 
     override fun defaultProps(): Props = Props()
 

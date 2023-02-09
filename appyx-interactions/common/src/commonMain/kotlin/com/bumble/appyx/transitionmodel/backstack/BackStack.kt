@@ -6,6 +6,7 @@ import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -13,7 +14,7 @@ import kotlinx.coroutines.SupervisorJob
 class BackStack<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: BackStackModel<NavTarget>,
-    interpolator: (TransitionBounds) -> Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
+    interpolator: (UiContext) -> Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, BackStackModel.State<NavTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
     isDebug: Boolean = false

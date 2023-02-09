@@ -158,14 +158,12 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                 return
             }
             is Keyframes -> {
-                // val progress = progress.coerceAtLeast(1f)
-                val newState = currentState.setProgress(progress) {
+                //Do not produce new state because progress is observed
+                currentState.setProgress(progress) {
                     // TODO uncomment when method is merged here
                     //  com.bumble.appyx.interactions.core.navigation.BaseNavModel.onTransitionFinished
                     // onTransitionFinished(state.value.fromState.map { it.key })
                 }
-
-                updateState(newState)
             }
         }
     }
@@ -196,6 +194,6 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
     }
 
     private companion object {
-        private val TAG = BaseTransitionModel::class.java.name
+        private val TAG = "BaseTransitionModel"
     }
 }

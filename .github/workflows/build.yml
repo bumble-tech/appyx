@@ -75,7 +75,7 @@ jobs:
   instrumentation-tests:
     name: Instrumentation tests
     runs-on: macOS-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
@@ -119,6 +119,14 @@ jobs:
           script: |
             adb logcat > logcat.out &
             ./gradlew connectedCheck
+      # Uncomment when the first tests are ready
+      #- name: Screenshot tests
+          # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/AndroidCIWithGmd.yaml
+          #run: >
+            #./gradlew screenshotTestsCompareBaseline
+            #-Dorg.gradle.workers.max=1
+            #-Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
+            #-Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
       - name: Upload failed instrumentation artifacts
         if: failure()
         uses: actions/upload-artifact@v2

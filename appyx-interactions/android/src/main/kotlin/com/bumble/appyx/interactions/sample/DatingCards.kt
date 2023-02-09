@@ -41,7 +41,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     DatingCardsNavTarget.ProfileCard(it)
                 }
             ),
-            interpolator = { CardsProps(coroutineScope, it) },
+            interpolator = {(bounds, scope) -> CardsProps(bounds,scope)  },
             gestureFactory = { CardsProps.Gestures(it) },
             animateSettle = true
         )

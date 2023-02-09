@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.key
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -22,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
 
 
 @ExperimentalMaterialApi
@@ -35,13 +33,16 @@ fun <NavTarget : Any, NavState : Any> Children(
 ) {
     val density = LocalDensity.current
     val frames = interactionModel.frames.collectAsState(listOf())
-
+    val coroutineScope = rememberCoroutineScope()
     Box(
         modifier = modifier
             .fillMaxSize()
             .onSizeChanged {
-                interactionModel.updateBounds(
-                    TransitionBounds(density, it.width, it.height)
+                interactionModel.updateContext(
+                    UiContext(
+                        TransitionBounds(density, it.width, it.height),
+                        coroutineScope
+                    )
                 )
             }
     ) {

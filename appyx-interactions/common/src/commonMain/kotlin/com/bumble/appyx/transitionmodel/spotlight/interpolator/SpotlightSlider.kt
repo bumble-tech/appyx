@@ -19,6 +19,7 @@ import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -26,9 +27,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.*
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import kotlinx.coroutines.CoroutineScope
@@ -42,10 +41,10 @@ typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 class SpotlightSlider<NavTarget : Any>(
     transitionBounds: TransitionBounds,
     scope: CoroutineScope,
+    val activeWindow: Float,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-    val activeWindow: Float
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
-    scope = scope,
+    coroutineScope = scope
 ) {
     private val width = transitionBounds.widthDp
     private val height = transitionBounds.heightDp
@@ -75,7 +74,8 @@ class SpotlightSlider<NavTarget : Any>(
         override val isVisible: Boolean
             get() {
                 val currentOffset = (scrollValue() * width.value).dp
-                val visibleRange = currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+                val visibleRange =
+                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
                 val isVisible = offset.value.x in visibleRange
                 Logger.log(
                     "SpotlightSlider",
