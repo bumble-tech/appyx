@@ -39,14 +39,13 @@ import kotlinx.parcelize.Parcelize
 
 class SpotlightDebugNode(
     buildContext: BuildContext,
-    coroutineScope: CoroutineScope,
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it + 1) },
             initialActiveIndex = 0f,
             initialActiveWindow = 1f
         ),
-        interpolator = { SpotlightSlider(it, coroutineScope, activeWindow = 1f) },
+        interpolator = {(bounds, scope) -> SpotlightSlider(bounds, scope, activeWindow = 1f) },
         isDebug = true
     )
 ) : ParentNode<NavTarget>(

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
@@ -31,7 +32,6 @@ sealed class DatingCardsNavTarget {
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
-
     val cards = remember {
         Cards(
             model = CardsModel(
@@ -39,7 +39,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     DatingCardsNavTarget.ProfileCard(it)
                 }
             ),
-            interpolator = { CardsProps(it) },
+            interpolator = {(bounds, scope) -> CardsProps(bounds,scope)  },
             gestureFactory = { CardsProps.Gestures(it) },
             animateSettle = true
         )
