@@ -82,6 +82,7 @@ data class Keyframes<ModelState>(
 
     fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit) {
         val currentProgress = this.progress.toInt()
+        val progress = progress.coerceIn(0f, maxProgress)
         Logger.log("Keyframes", "$progress")
         progressFlow.value = progress
         segmentProgress.value = progress - currentIndex
