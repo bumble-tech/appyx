@@ -176,13 +176,11 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     override fun onStartDrag(position: Offset) {
-        _interpolator.onStartDrag(position)
         drag.onStartDrag(position)
     }
 
     override fun onDrag(dragAmount: Offset, density: Density) {
         if (!isAnimating) {
-            _interpolator.onDrag(dragAmount, density)
             drag.onDrag(dragAmount, density)
         }
     }
@@ -193,7 +191,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         revertGestureSpec: AnimationSpec<Float>
     ) {
         if (!isAnimating) {
-            _interpolator.onDragEnd()
             drag.onDragEnd()
             settle(completionThreshold, revertGestureSpec, completeGestureSpec)
         }

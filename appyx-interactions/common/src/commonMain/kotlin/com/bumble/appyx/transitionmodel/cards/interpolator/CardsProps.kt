@@ -15,6 +15,7 @@ import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
@@ -34,14 +35,13 @@ typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.
 
 
 class CardsProps<NavTarget : Any>(
-    transitionBounds: TransitionBounds,
-    coroutineScope: CoroutineScope,
+    uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
+    scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
-    coroutineScope
 ) {
-    private val width = transitionBounds.widthDp.value
+    private val width = uiContext.transitionBounds.widthDp.value
 
     override fun defaultProps(): Props = Props(width = width)
 

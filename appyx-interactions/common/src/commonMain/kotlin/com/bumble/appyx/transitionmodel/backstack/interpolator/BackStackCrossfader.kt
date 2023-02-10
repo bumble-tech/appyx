@@ -14,10 +14,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
-    BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
-        coroutineScope = coroutineScope
-    ) {
+class BackStackCrossfader<NavTarget : Any>(
+    scope: CoroutineScope
+) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
+    scope = scope
+) {
 
     override fun defaultProps(): Props = Props()
 

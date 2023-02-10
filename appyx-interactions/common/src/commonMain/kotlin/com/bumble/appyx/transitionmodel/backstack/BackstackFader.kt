@@ -5,6 +5,7 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
@@ -13,11 +14,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 class BackstackFader<NavTarget : Any>(
-    coroutineScope: CoroutineScope,
+    uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>(
+    scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
-    coroutineScope
 ) {
     override fun defaultProps(): Props = Props()
 
