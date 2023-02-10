@@ -123,7 +123,9 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         val targetProps = targetState.toProps()
 
         scope.launch {
-            updateGeometry(segment, segmentProgress.value)
+            segmentProgress.collect {
+                updateGeometry(segment, segmentProgress.value)
+            }
         }
 
         // TODO: use a map instead of find
