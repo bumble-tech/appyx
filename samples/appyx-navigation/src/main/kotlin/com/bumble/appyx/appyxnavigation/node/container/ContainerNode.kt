@@ -38,7 +38,7 @@ class ContainerNode(
             initialTargets = listOf(NavTarget.Selector),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { (bounds, scope) -> BackStackSlider(bounds, scope) }
+        interpolator = { BackStackSlider(it) }
     )
 
 ) : ParentNode<NavTarget>(

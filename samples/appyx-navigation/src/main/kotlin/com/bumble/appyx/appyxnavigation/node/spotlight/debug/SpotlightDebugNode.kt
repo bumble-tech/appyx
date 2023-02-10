@@ -44,7 +44,7 @@ class SpotlightDebugNode(
             initialActiveIndex = 0f,
             initialActiveWindow = 1f
         ),
-        interpolator = {(bounds, scope) -> SpotlightSlider(bounds, scope, activeWindow = 1f) },
+        interpolator = { SpotlightSlider(it, activeWindow = 1f) },
         isDebug = true
     )
 ) : ParentNode<NavTarget>(
