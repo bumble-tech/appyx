@@ -56,11 +56,11 @@ class CardsProps<NavTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         private val width: Float,
-    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
+    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps() {
 
-        override val isVisible: Boolean
-            get() = scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
-                    positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
+//        override val isVisible: Boolean
+//            get() = scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
+//                    positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             scale.lerpTo(start.scale, end.scale, fraction)
@@ -96,27 +96,35 @@ class CardsProps<NavTarget : Any>(
                     scale.animateTo(
                         props.scale.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ){}
                 },
                 scope.async {
                     positionalOffsetX.animateTo(
                         props.positionalOffsetX.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {}
                 },
                 scope.async {
                     rotationZ.animateTo(
                         props.rotationZ.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ){}
                 },
                 scope.async {
                     zIndex.animateTo(
                         props.zIndex.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ){}
                 }).awaitAll()
             onFinished()
+        }
+
+        override fun calculateVisibilityState() {
+            TODO("Not yet implemented")
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            TODO("Not yet implemented")
         }
     }
 

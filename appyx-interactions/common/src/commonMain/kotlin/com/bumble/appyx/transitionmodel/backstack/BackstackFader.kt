@@ -24,10 +24,10 @@ class BackstackFader<NavTarget : Any>(
 
     class Props(
         var alpha: Alpha = Alpha(1f),
-    ) : Interpolatable<Props>, Animatable<Props>, HasModifier, BaseProps {
+    ) : Interpolatable<Props>, Animatable<Props>, HasModifier, BaseProps() {
 
-        override val isVisible: Boolean
-            get() = alpha.value > 0.0f
+//        override val isVisible: Boolean
+//            get() = alpha.value > 0.0f
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             alpha.lerpTo(start.alpha, end.alpha, fraction)
@@ -50,9 +50,19 @@ class BackstackFader<NavTarget : Any>(
         ) {
             scope.launch {
                 onStart()
-                alpha.animateTo(props.alpha.value, springSpec)
+                alpha.animateTo(props.alpha.value, springSpec) {
+
+                }
                 onFinished()
             }
+        }
+
+        override fun calculateVisibilityState() {
+            TODO("Not yet implemented")
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            TODO("Not yet implemented")
         }
     }
 

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 data class FrameModel<NavTarget>(
     val modifier: Modifier,
+    val animationModifier: Modifier,
     val navElement: NavElement<NavTarget>,
     val progress: StateFlow<Float>,
     val visibleState: Flow<Boolean>

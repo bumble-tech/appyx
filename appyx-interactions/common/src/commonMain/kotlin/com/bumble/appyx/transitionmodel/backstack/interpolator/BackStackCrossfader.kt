@@ -23,10 +23,10 @@ class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
 
     class Props(
         val alpha: Alpha = Alpha(value = 1f),
-    ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
+    ) : Interpolatable<Props>, HasModifier, BaseProps(), Animatable<Props> {
 
-        override val isVisible: Boolean
-            get() = alpha.value > 0.0f
+//        override val isVisible: Boolean
+//            get() = alpha.value > 0.0f
 
         override val modifier: Modifier
             get() = Modifier
@@ -48,7 +48,9 @@ class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
                 alpha.animateTo(
                     props.alpha.value,
                     spring(springSpec.dampingRatio, springSpec.stiffness)
-                )
+                ) {
+
+                }
             }
             a1.await()
             onFinished()
@@ -56,6 +58,14 @@ class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             alpha.lerpTo(start.alpha, end.alpha, fraction)
+        }
+
+        override fun calculateVisibilityState() {
+
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            TODO("Not yet implemented")
         }
 
     }

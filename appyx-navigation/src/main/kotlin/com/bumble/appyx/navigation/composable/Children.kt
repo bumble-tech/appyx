@@ -93,7 +93,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
         block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
     ) {
 
-        val visibleFramesFlow = remember {
+        val framesFlow = remember {
             interactionModel.frames
                 .map { list ->
                     list
@@ -101,12 +101,14 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
                 }
         }
 
-        val visibleFrames = visibleFramesFlow.collectAsState(initial = emptyList())
+        val visibleFrames = framesFlow.collectAsState(initial = emptyList())
         val saveableStateHolder = rememberSaveableStateHolder()
 
         visibleFrames.value
             .forEach { frameModel ->
                 key(frameModel.navElement.id) {
+                    // TODO find a better way than empty Box
+                    Box(modifier = frameModel.animationModifier)
                     val isVisible by frameModel.visibleState.collectAsState(initial = false)
                     if (isVisible) {
                         Child(

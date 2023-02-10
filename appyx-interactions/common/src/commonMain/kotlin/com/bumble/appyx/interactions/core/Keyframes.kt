@@ -81,12 +81,14 @@ data class Keyframes<ModelState>(
         } else this
 
     fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit) {
-        if (progress.toInt() > this.progress.toInt()) {
+        val currentProgress = this.progress.toInt()
+        Logger.log("Keyframes", "$progress")
+        progressFlow.value = progress
+        segmentProgress.value = progress - currentIndex
+        if (progress.toInt() > currentProgress) {
             Logger.log("Keyframes", "onTransitionFinished()")
             onTransitionFinished(currentSegment.fromState)
         }
-        progressFlow.value = progress
-        segmentProgress.value = progress - currentIndex
     }
 }
 

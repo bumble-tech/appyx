@@ -21,7 +21,6 @@ import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,7 +30,7 @@ import kotlinx.coroutines.launch
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
     private val coroutineScope: CoroutineScope
-) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
+) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
 
     private val cache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
@@ -87,13 +86,11 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
-            val visibleState = MutableStateFlow(t1.props.isVisible)
-            Logger.log("VIS", "creating update FrameModel. isVisible: ${elementProps.isVisible}")
             FrameModel(
-//                visibleState  = MutableStateFlow(true),
-                visibleState = MutableStateFlow(t1.props.isVisible),
+                visibleState = elementProps.visibilityState,
                 navElement = t1.element,
-                modifier = elementProps.modifier.composed {
+                modifier = elementProps.modifier,
+                animationModifier = Modifier.composed {
                     LaunchedEffect(update) {
                         coroutineScope.launch {
                             if (update.animate) {
@@ -102,30 +99,15 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                                     props = t1.props,
                                     springSpec = currentSpringSpec,
                                     onStart = {
-                                        Logger.log(
-                                            "VIS",
-                                            "starting update. isVisible: ${elementProps.isVisible || t1.props.isVisible}"
-                                        )
-                                        visibleState.update { elementProps.isVisible || t1.props.isVisible }
                                         updateAnimationState(t1.element.id, true)
                                     },
                                     onFinished = {
-                                        visibleState.update { elementProps.isVisible }
-                                        Logger.log(
-                                            "VIS",
-                                            "finishing update. isVisible: ${t1.props.isVisible}"
-                                        )
                                         updateAnimationState(t1.element.id, false)
                                         currentSpringSpec = defaultAnimationSpec
                                     },
                                 )
                             } else {
-                                Logger.log(
-                                    "VIS",
-                                    "snapTo update. isVisible: ${elementProps.isVisible}"
-                                )
                                 elementProps.snapTo(this, t1.props)
-                                visibleState.update { elementProps.isVisible }
                             }
                         }
                     }
@@ -150,29 +132,19 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
             coroutineScope.launch {
-                elementProps.lerpTo(t0.props, t1.props, segmentProgress.value)
+                elementProps.lerpTo(coroutineScope, t0.props, t1.props, segmentProgress.value)
             }
 
-            val state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress.value)
-            Logger.log(
-                "VIS",
-                "map Segment. isVisible: $state, promProps: ${t0.props}, toProps: ${t1.props}, progress: ${segmentProgress.value}"
-            )
-            val visibleState = MutableStateFlow(
-                state
-            )
-
             FrameModel(
-                visibleState = visibleState,
+                visibleState = elementProps.visibilityState,
                 navElement = t1.element,
-                modifier = Modifier.interpolatedProps(
+                animationModifier = Modifier.interpolatedProps(
                     segmentProgress,
-                    visibleState,
                     elementProps,
                     t0,
                     t1
-                )
-                    .then(elementProps.modifier),
+                ),
+                modifier = elementProps.modifier,
                 progress = segmentProgress,
             )
         }
@@ -180,17 +152,13 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
     private fun Modifier.interpolatedProps(
         segmentProgress: StateFlow<Float>,
-        visibilityState: MutableStateFlow<Boolean>,
         elementProps: Props,
         from: MatchedProps<NavTarget, Props>,
         to: MatchedProps<NavTarget, Props>
     ): Modifier = composed {
         val progress by segmentProgress.collectAsState(segmentProgress.value)
         LaunchedEffect(progress) {
-            elementProps.lerpTo(from.props, to.props, progress)
-            visibilityState.update {
-                from.props.isVisible || to.props.isVisible
-            }
+            elementProps.lerpTo(coroutineScope, from.props, to.props, progress)
         }
         this
     }

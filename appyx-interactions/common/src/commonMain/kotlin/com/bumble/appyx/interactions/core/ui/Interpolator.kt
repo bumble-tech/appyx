@@ -67,20 +67,6 @@ interface Interpolator<NavTarget, ModelState> : Draggable {
         update: Update<ModelState>
     ): List<FrameModel<NavTarget>>
 
-
-    // TODO test it
-    fun resolveNavElementVisibility(
-        fromProps: BaseProps,
-        toProps: BaseProps,
-        progress: Float
-    ): Boolean = when {
-        (progress == 0.0f && !fromProps.isVisible) || (progress == 1.0f && !toProps.isVisible) -> false
-        (progress == 0.0f && fromProps.isVisible) || (progress == 1.0f && toProps.isVisible) -> true
-        (progress > 0f && progress < 1f && (fromProps.isVisible && toProps.isVisible)) -> true
-        (progress > 0f && progress < 1f && (fromProps.isVisible || toProps.isVisible)) -> true
-        else -> false
-    }
-
     // TODO extract along with other interpolation helpers
     companion object {
         fun lerpFloat(start: Float, end: Float, progress: Float): Float =

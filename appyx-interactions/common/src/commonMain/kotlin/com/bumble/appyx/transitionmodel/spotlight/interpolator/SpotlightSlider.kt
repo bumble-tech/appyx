@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.TransitionModel
@@ -69,24 +68,24 @@ class SpotlightSlider<NavTarget : Any>(
         val scrollValue: () -> Float,
         private val width: Dp,
         private val activeWindow: Float
-    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
+    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps() {
 
         private val activeWindowOffset = (activeWindow * width.value).dp
 
 
         // TODO fix when displacement is ready
-        override val isVisible: Boolean
-            get() {
-                val currentOffset = (scrollValue() * width.value).dp
-                val visibleRange =
-                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
-                val isVisible = offset.value.x in visibleRange
-                Logger.log(
-                    "SpotlightSlider",
-                    "scrollValue: ${scrollValue()}, offsetValue: ${offset.value.x}, visibleRange: $visibleRange, isVisible: $isVisible, activeWindowOffset: $activeWindowOffset"
-                )
-                return isVisible
-            }
+//        override val isVisible: Boolean
+//            get() {
+//                val currentOffset = (scrollValue() * width.value).dp
+//                val visibleRange =
+//                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+//                val isVisible = offset.value.x in visibleRange
+//                Logger.log(
+//                    "SpotlightSlider",
+//                    "scrollValue: ${scrollValue()}, offsetValue: ${offset.value.x}, visibleRange: $visibleRange, isVisible: $isVisible, activeWindowOffset: $activeWindowOffset"
+//                )
+//                return isVisible
+//            }
 
         override val modifier: Modifier
             get() = Modifier
@@ -114,11 +113,19 @@ class SpotlightSlider<NavTarget : Any>(
                         offset.animateTo(
                             props.offset.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
-                        )
+                        ) {}
                     }
                 ).awaitAll()
                 onFinished()
             }
+        }
+
+        override fun calculateVisibilityState() {
+            TODO("Not yet implemented")
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            TODO("Not yet implemented")
         }
     }
 

@@ -10,6 +10,8 @@ interface Animatable<T> {
         props: T
     )
 
+    fun lerpTo(scope: CoroutineScope, start: T, end: T, fraction: Float)
+
     suspend fun animateTo(
         scope: CoroutineScope,
         props: T,

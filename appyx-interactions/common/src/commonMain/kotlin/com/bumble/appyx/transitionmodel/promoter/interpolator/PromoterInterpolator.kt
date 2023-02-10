@@ -36,6 +36,7 @@ class PromoterInterpolator<NavTarget : Any>(
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
+    // TODO migrate to baseInterpolator
     data class Props(
         val dpOffset: DpOffset,
         val scale: Float,
@@ -43,9 +44,11 @@ class PromoterInterpolator<NavTarget : Any>(
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-        // TODO migrate
-        override val isVisible: Boolean
-    ) : BaseProps
+    ) : BaseProps() {
+        override fun calculateVisibilityState() {
+            TODO("Not yet implemented")
+        }
+    }
 
     private val created = Props(
         dpOffset = DpOffset(0.dp, 0.dp),
@@ -54,44 +57,37 @@ class PromoterInterpolator<NavTarget : Any>(
         effectiveRadiusRatio = 1f,
         rotationY = 0f,
         rotationZ = 0f,
-        isVisible = false
     )
 
     private val stage1 = created.copy(
         scale = 0.25f,
-        isVisible = true
     )
 
     private val stage2 = stage1.copy(
         scale = 0.45f,
         angleDegrees = 90f,
-        isVisible = true
     )
 
     private val stage3 = stage2.copy(
         scale = 0.65f,
-        angleDegrees = 180f,
-        isVisible = true
+        angleDegrees = 180f
     )
 
     private val stage4 = stage3.copy(
         scale = 0.85f,
         angleDegrees = 270f,
-        isVisible = true
     )
 
     private val stage5 = stage4.copy(
         scale = 1f,
         effectiveRadiusRatio = 0f,
         rotationY = 360f,
-        isVisible = true
     )
 
     private val destroyed = stage5.copy(
         dpOffset = DpOffset(500.dp, (-200).dp),
         scale = 0f,
-        rotationZ = 540f,
-        isVisible = false
+        rotationZ = 540f
     )
 
     // TODO Migrate to BaseInterpolator
@@ -139,9 +135,8 @@ class PromoterInterpolator<NavTarget : Any>(
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
 
             FrameModel(
-                visibleState = MutableStateFlow(
-                    value = resolveNavElementVisibility(t0.props, t1.props, segmentProgress.value)
-                ),
+                // TODO fix after migration to base interoplator
+                visibleState = MutableStateFlow(value = true),
                 navElement = t1.element,
                 modifier = Modifier.composed {
                     val segmentProgress by segmentProgress.collectAsState(segmentProgress.value)
@@ -181,6 +176,7 @@ class PromoterInterpolator<NavTarget : Any>(
                     .scale(scale)
                 },
                 progress = segmentProgress,
+                animationModifier = Modifier
             )
         }
     }

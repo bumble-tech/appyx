@@ -39,7 +39,7 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
             animateModel(
                 from = { currentState.progress },
                 target = { currentState.maxProgress },
-                animationSpec = animationSpec,
+                animationSpec = spring(stiffness = 30f),
                 cancelVelocity = false,
                 onAnimationFinished = {
                     model.onSettled(

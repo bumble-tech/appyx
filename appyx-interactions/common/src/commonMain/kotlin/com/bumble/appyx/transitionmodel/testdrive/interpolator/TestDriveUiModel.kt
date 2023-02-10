@@ -42,8 +42,7 @@ class TestDriveUiModel<NavTarget : Any>(
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-        override val isVisible: Boolean = true
-    ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
+    ) : Interpolatable<Props>, HasModifier, BaseProps(), Animatable<Props> {
 
         override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
             offset.lerpTo(start.offset, end.offset, fraction)
@@ -73,16 +72,28 @@ class TestDriveUiModel<NavTarget : Any>(
                     offset.animateTo(
                         props.offset.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+
+                    }
                 },
                 scope.async {
                     backgroundColor.animateTo(
                         props.backgroundColor.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+
+                    }
                 }
             ).awaitAll()
             onFinished()
+        }
+
+        override fun calculateVisibilityState() {
+            TODO("Not yet implemented")
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            TODO("Not yet implemented")
         }
     }
 
