@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -92,30 +93,29 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
         block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
     ) {
 
-        val visibleFramesFlow = remember {
+        val framesFlow = remember {
             interactionModel.frames
                 .map { list ->
                     list
                         .filter { clazz.isInstance(it.navElement.navTarget) }
-                        .filter {
-                            (it.state == FrameModel.State.VISIBLE) ||
-                                    (it.state == FrameModel.State.PARTIALLY_VISIBLE)
-                        }
                 }
         }
 
-        val visibleFrames = visibleFramesFlow.collectAsState(initial = emptyList())
+        val visibleFrames = framesFlow.collectAsState(initial = emptyList())
         val saveableStateHolder = rememberSaveableStateHolder()
 
         visibleFrames.value
             .forEach { frameModel ->
-                val navKey = frameModel.navElement
-                key(navKey.id) {
-                    Child(
-                        frameModel,
-                        saveableStateHolder,
-                        block
-                    )
+                key(frameModel.navElement.id) {
+                    frameModel.animationContainer()
+                    val isVisible by frameModel.visibleState.collectAsState(initial = false)
+                    if (isVisible) {
+                        Child(
+                            frameModel,
+                            saveableStateHolder,
+                            block
+                        )
+                    }
                 }
             }
     }

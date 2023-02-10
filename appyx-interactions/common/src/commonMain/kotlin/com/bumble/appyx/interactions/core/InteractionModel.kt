@@ -8,17 +8,26 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.inputsource.*
-import com.bumble.appyx.interactions.core.ui.*
+import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
+import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
+import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
+import com.bumble.appyx.interactions.core.inputsource.Draggable
+import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
+import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.ScreenState
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
+import com.bumble.appyx.interactions.core.ui.UiContextAware
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
@@ -66,7 +75,24 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             .flatMapLatest { _interpolator.map(it) }
 
     val screenState: Flow<ScreenState<NavTarget>> =
-        frames.map { it.toScreenState() }
+        frames.flatMapLatest { frames ->
+            val frameVisibilityFlows = frames.map { frame ->
+                frame.visibleState
+            }
+            combine(frameVisibilityFlows) { visibilityValues ->
+                val onScreen = mutableSetOf<NavElement<NavTarget>>()
+                val offScreen = mutableSetOf<NavElement<NavTarget>>()
+                visibilityValues.forEachIndexed { index, visibilityValue ->
+                    val navElement = frames[index].navElement
+                    if (visibilityValue) {
+                        onScreen.add(navElement)
+                    } else {
+                        offScreen.add(navElement)
+                    }
+                }
+                ScreenState(onScreen = onScreen, offScreen = offScreen)
+            }
+        }
 
     private var animationScope: CoroutineScope? = null
     private var isInitialised: Boolean = false

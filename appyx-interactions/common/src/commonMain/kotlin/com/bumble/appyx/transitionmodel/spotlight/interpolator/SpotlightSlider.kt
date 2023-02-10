@@ -11,22 +11,18 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.inputsource.Gesture
-import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.*
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import kotlinx.coroutines.CoroutineScope
@@ -63,24 +59,9 @@ class SpotlightSlider<NavTarget : Any>(
         val scrollValue: () -> Float,
         private val width: Dp,
         private val activeWindow: Float
-    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
+    ) : BaseProps(), HasModifier, Animatable<Props> {
 
         private val activeWindowOffset = (activeWindow * width.value).dp
-
-
-        // TODO fix when displacement is ready
-        override val isVisible: Boolean
-            get() {
-                val currentOffset = (scrollValue() * width.value).dp
-                val visibleRange =
-                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
-                val isVisible = offset.value.x in visibleRange
-                Logger.log(
-                    "SpotlightSlider",
-                    "scrollValue: ${scrollValue()}, offsetValue: ${offset.value.x}, visibleRange: $visibleRange, isVisible: $isVisible, activeWindowOffset: $activeWindowOffset"
-                )
-                return isVisible
-            }
 
         override val modifier: Modifier
             get() = Modifier
@@ -89,15 +70,12 @@ class SpotlightSlider<NavTarget : Any>(
                 .then(scale.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            offset.snapTo(props.offset.value)
-            alpha.snapTo(props.alpha.value)
-            scale.snapTo(props.scale.value)
-        }
-
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            offset.lerpTo(start.offset, end.offset, fraction)
-            alpha.lerpTo(start.alpha, end.alpha, fraction)
-            scale.lerpTo(start.scale, end.scale, fraction)
+            scope.launch {
+                offset.snapTo(props.offset.value)
+                alpha.snapTo(props.alpha.value)
+                scale.snapTo(props.scale.value)
+                updateVisibilityState()
+            }
         }
 
         override suspend fun animateTo(
@@ -114,18 +92,39 @@ class SpotlightSlider<NavTarget : Any>(
                         offset.animateTo(
                             props.offset.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
-                        )
+                        ) {
+                            updateVisibilityState()
+                        }
                         alpha.animateTo(
                             props.alpha.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
-                        )
+                        ) {
+                            updateVisibilityState()
+                        }
                         scale.animateTo(
                             props.scale.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
-                        )
+                        ) {
+                            updateVisibilityState()
+                        }
                     }
                 ).awaitAll()
                 onFinished()
+            }
+        }
+
+        // TODO fix with displacement is ready
+        override fun isVisible(): Boolean {
+            val currentOffset = (scrollValue() * width.value).dp
+            val visibleRange =
+                currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+            return offset.value.x in visibleRange
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            scope.launch {
+                offset.lerpTo(start.offset, end.offset, fraction)
+                updateVisibilityState()
             }
         }
     }

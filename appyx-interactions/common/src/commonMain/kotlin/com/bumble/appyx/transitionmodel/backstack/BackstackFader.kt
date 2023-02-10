@@ -8,7 +8,6 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import kotlinx.coroutines.CoroutineScope
@@ -25,21 +24,20 @@ class BackstackFader<NavTarget : Any>(
 
     class Props(
         var alpha: Alpha = Alpha(1f),
-    ) : Interpolatable<Props>, Animatable<Props>, HasModifier, BaseProps {
+    ) : BaseProps(), Animatable<Props>, HasModifier {
 
-        override val isVisible: Boolean
-            get() = alpha.value > 0.0f
-
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            alpha.lerpTo(start.alpha, end.alpha, fraction)
-        }
+        override fun isVisible() =
+            alpha.value > 0.0f
 
         override val modifier: Modifier
             get() = Modifier
                 .then(alpha.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            alpha.snapTo(props.alpha.value)
+            scope.launch {
+                alpha.snapTo(props.alpha.value)
+                updateVisibilityState()
+            }
         }
 
         override suspend fun animateTo(
@@ -51,8 +49,17 @@ class BackstackFader<NavTarget : Any>(
         ) {
             scope.launch {
                 onStart()
-                alpha.animateTo(props.alpha.value, springSpec)
+                alpha.animateTo(props.alpha.value, springSpec) {
+                    updateVisibilityState()
+                }
                 onFinished()
+            }
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            scope.launch {
+                alpha.lerpTo(start.alpha, end.alpha, fraction)
+                updateVisibilityState()
             }
         }
     }

@@ -12,7 +12,6 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
 import com.bumble.appyx.transitionmodel.BaseInterpolator
@@ -20,6 +19,7 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 
 class BackStackSlider<NavTarget : Any>(
     private val uiContext: UiContext,
@@ -28,28 +28,23 @@ class BackStackSlider<NavTarget : Any>(
 ) {
     private val width = uiContext.transitionBounds.widthDp
 
-    override fun defaultProps(): Props = Props(screenWidth = uiContext.transitionBounds.widthDp)
+    override fun defaultProps(): Props =
+        Props(screenWidth = uiContext.transitionBounds.widthDp)
 
     data class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
         val screenWidth: Dp
-    ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
+    ) : HasModifier, BaseProps(), Animatable<Props> {
 
-        // TODO take into account element width
-        override val isVisible: Boolean
-            get() = alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
+        override fun isVisible() =
+            alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
 
         override val modifier: Modifier
             get() = Modifier
                 .then(offset.modifier)
                 .then(alpha.modifier)
-
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            offset.lerpTo(start.offset, end.offset, fraction)
-            alpha.lerpTo(start.alpha, end.alpha, fraction)
-        }
 
         override suspend fun animateTo(
             scope: CoroutineScope,
@@ -69,21 +64,32 @@ class BackStackSlider<NavTarget : Any>(
                 offset.animateTo(
                     props.offset.value,
                     spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                )
+                ) { updateVisibilityState() }
             }
             val a2 = scope.async {
                 alpha.animateTo(
                     props.alpha.value,
                     spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                )
+                ) { updateVisibilityState() }
             }
             awaitAll(a1, a2)
             onFinished()
         }
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            offset.snapTo(props.offset.value)
-            alpha.snapTo(props.alpha.value)
+            scope.launch {
+                offset.snapTo(props.offset.value)
+                alpha.snapTo(props.alpha.value)
+                updateVisibilityState()
+            }
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            scope.launch {
+                offset.lerpTo(start.offset, end.offset, fraction)
+                alpha.lerpTo(start.alpha, end.alpha, fraction)
+                updateVisibilityState()
+            }
         }
     }
 
