@@ -25,21 +25,20 @@ import kotlinx.coroutines.launch
 
 class BackStackSlider<NavTarget : Any>(
     private val transitionBounds: TransitionBounds,
-    private val coroutineScope: CoroutineScope
+    coroutineScope: CoroutineScope
 ) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
     coroutineScope = coroutineScope
 ) {
     private val width = transitionBounds.widthDp
 
     override fun defaultProps(): Props =
-        Props(screenWidth = transitionBounds.widthDp, coroutineScope = coroutineScope)
+        Props(screenWidth = transitionBounds.widthDp)
 
     data class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
-        val screenWidth: Dp,
-        val coroutineScope: CoroutineScope
+        val screenWidth: Dp
     ) : HasModifier, BaseProps(), Animatable<Props> {
 
         override fun calculateVisibilityState() {
@@ -52,14 +51,6 @@ class BackStackSlider<NavTarget : Any>(
             get() = Modifier
                 .then(offset.modifier)
                 .then(alpha.modifier)
-
-//        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-//            coroutineScope.launch {
-//                offset.lerpTo(start.offset, end.offset, fraction)
-//                alpha.lerpTo(start.alpha, end.alpha, fraction)
-//                calculateVisibilityState()
-//            }
-//        }
 
         override suspend fun animateTo(
             scope: CoroutineScope,
@@ -101,7 +92,7 @@ class BackStackSlider<NavTarget : Any>(
         }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
-            coroutineScope.launch {
+            scope.launch {
                 offset.lerpTo(start.offset, end.offset, fraction)
                 alpha.lerpTo(start.alpha, end.alpha, fraction)
                 calculateVisibilityState()
@@ -111,20 +102,17 @@ class BackStackSlider<NavTarget : Any>(
 
     private val outsideLeft = Props(
         offset = Offset(DpOffset(-width, 0.dp)),
-        screenWidth = width,
-        coroutineScope = coroutineScope
+        screenWidth = width
     )
 
     private val outsideRight = Props(
         offset = Offset(DpOffset(width, 0.dp)),
-        screenWidth = width,
-        coroutineScope = coroutineScope
+        screenWidth = width
     )
 
     private val noOffset = Props(
         offset = Offset(DpOffset(0.dp, 0.dp)),
-        screenWidth = width,
-        coroutineScope = coroutineScope
+        screenWidth = width
     )
 
 
