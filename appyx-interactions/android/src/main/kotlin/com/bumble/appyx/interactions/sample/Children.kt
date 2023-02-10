@@ -7,7 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -48,7 +53,11 @@ fun <NavTarget : Any, NavState : Any> Children(
     ) {
         frames.value.forEach { frameModel ->
             key(frameModel.navElement.id) {
-                element.invoke(frameModel)
+                frameModel.animationContainer()
+                val isVisible by frameModel.visibleState.collectAsState(initial = false)
+                if (isVisible) {
+                    element.invoke(frameModel)
+                }
             }
         }
     }

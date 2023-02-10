@@ -33,8 +33,7 @@ import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
     uiContext: UiContext,
-    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-    coroutineScope: CoroutineScope
+    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = uiAnimationSpec,
