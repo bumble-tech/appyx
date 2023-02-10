@@ -45,9 +45,8 @@ class PromoterInterpolator<NavTarget : Any>(
         val rotationY: Float,
         val rotationZ: Float,
     ) : BaseProps() {
-        override fun calculateVisibilityState() {
-            TODO("Not yet implemented")
-        }
+        override fun isVisible() = true
+
     }
 
     private val created = Props(
@@ -145,11 +144,21 @@ class PromoterInterpolator<NavTarget : Any>(
 
                     // Lerp block
                     val dpOffsetX =
-                        lerpFloat(t0.props.dpOffset.x.value, t1.props.dpOffset.x.value, segmentProgress)
+                        lerpFloat(
+                            t0.props.dpOffset.x.value,
+                            t1.props.dpOffset.x.value,
+                            segmentProgress
+                        )
                     val dpOffsetY =
-                        lerpFloat(t0.props.dpOffset.y.value, t1.props.dpOffset.y.value, segmentProgress)
-                    val rotationY = lerpFloat(t0.props.rotationY, t1.props.rotationY, segmentProgress)
-                    val rotationZ = lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segmentProgress)
+                        lerpFloat(
+                            t0.props.dpOffset.y.value,
+                            t1.props.dpOffset.y.value,
+                            segmentProgress
+                        )
+                    val rotationY =
+                        lerpFloat(t0.props.rotationY, t1.props.rotationY, segmentProgress)
+                    val rotationZ =
+                        lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segmentProgress)
                     val scale = lerpFloat(t0.props.scale, t1.props.scale, segmentProgress)
                     val angleRadians =
                         lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segmentProgress)
@@ -164,16 +173,16 @@ class PromoterInterpolator<NavTarget : Any>(
                     val arcOffsetDp = Offset(x, y)
 
                     this.offset {
-                    IntOffset(
-                        x = (this.density * (halfWidthDp + dpOffsetX + arcOffsetDp.x)).roundToInt(),
-                        y = (this.density * (halfHeightDp + dpOffsetY + arcOffsetDp.y)).roundToInt()
-                    )
-                }
-                    .graphicsLayer(
-                        rotationY = rotationY,
-                        rotationZ = rotationZ
-                    )
-                    .scale(scale)
+                        IntOffset(
+                            x = (this.density * (halfWidthDp + dpOffsetX + arcOffsetDp.x)).roundToInt(),
+                            y = (this.density * (halfHeightDp + dpOffsetY + arcOffsetDp.y)).roundToInt()
+                        )
+                    }
+                        .graphicsLayer(
+                            rotationY = rotationY,
+                            rotationZ = rotationZ
+                        )
+                        .scale(scale)
                 },
                 progress = segmentProgress,
                 animationModifier = Modifier

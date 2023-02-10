@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
-//import com.bumble.appyx.interactions.Logger
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
@@ -20,7 +19,6 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class BackStackSlider<NavTarget : Any>(
@@ -41,11 +39,8 @@ class BackStackSlider<NavTarget : Any>(
         val screenWidth: Dp
     ) : HasModifier, BaseProps(), Animatable<Props> {
 
-        override fun calculateVisibilityState() {
-            _visibilityState.update {
-                alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
-            }
-        }
+        override fun isVisible() =
+            alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
 
         override val modifier: Modifier
             get() = Modifier
@@ -70,13 +65,13 @@ class BackStackSlider<NavTarget : Any>(
                 offset.animateTo(
                     props.offset.value,
                     spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                ) { calculateVisibilityState() }
+                ) { updateVisibilityState() }
             }
             val a2 = scope.async {
                 alpha.animateTo(
                     props.alpha.value,
                     spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                ) { calculateVisibilityState() }
+                ) { updateVisibilityState() }
             }
             awaitAll(a1, a2)
             onFinished()
@@ -84,10 +79,9 @@ class BackStackSlider<NavTarget : Any>(
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
             scope.launch {
-                val a1 = async { offset.snapTo(props.offset.value) }
-                val a2 = async { alpha.snapTo(props.alpha.value) }
-                awaitAll(a1, a2)
-                calculateVisibilityState()
+                offset.snapTo(props.offset.value)
+                alpha.snapTo(props.alpha.value)
+                updateVisibilityState()
             }
         }
 
@@ -95,7 +89,7 @@ class BackStackSlider<NavTarget : Any>(
             scope.launch {
                 offset.lerpTo(start.offset, end.offset, fraction)
                 alpha.lerpTo(start.alpha, end.alpha, fraction)
-                calculateVisibilityState()
+                updateVisibilityState()
             }
         }
     }

@@ -24,7 +24,6 @@ import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
@@ -68,35 +67,19 @@ class SpotlightSlider<NavTarget : Any>(
         val scrollValue: () -> Float,
         private val width: Dp,
         private val activeWindow: Float
-    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps() {
+    ) : BaseProps(), HasModifier, Animatable<Props> {
 
         private val activeWindowOffset = (activeWindow * width.value).dp
-
-
-        // TODO fix when displacement is ready
-//        override val isVisible: Boolean
-//            get() {
-//                val currentOffset = (scrollValue() * width.value).dp
-//                val visibleRange =
-//                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
-//                val isVisible = offset.value.x in visibleRange
-//                Logger.log(
-//                    "SpotlightSlider",
-//                    "scrollValue: ${scrollValue()}, offsetValue: ${offset.value.x}, visibleRange: $visibleRange, isVisible: $isVisible, activeWindowOffset: $activeWindowOffset"
-//                )
-//                return isVisible
-//            }
 
         override val modifier: Modifier
             get() = Modifier
                 .then(offset.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            offset.snapTo(props.offset.value)
-        }
-
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            offset.lerpTo(start.offset, end.offset, fraction)
+            scope.launch {
+                offset.snapTo(props.offset.value)
+                updateVisibilityState()
+            }
         }
 
         override suspend fun animateTo(
@@ -113,19 +96,28 @@ class SpotlightSlider<NavTarget : Any>(
                         offset.animateTo(
                             props.offset.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
-                        ) {}
+                        ) {
+                            updateVisibilityState()
+                        }
                     }
                 ).awaitAll()
                 onFinished()
             }
         }
 
-        override fun calculateVisibilityState() {
-            TODO("Not yet implemented")
+        // TODO fix with displacement is ready
+        override fun isVisible(): Boolean {
+            val currentOffset = (scrollValue() * width.value).dp
+            val visibleRange =
+                currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+            return offset.value.x in visibleRange
         }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
-            TODO("Not yet implemented")
+            scope.launch {
+                offset.lerpTo(start.offset, end.offset, fraction)
+                updateVisibilityState()
+            }
         }
     }
 
