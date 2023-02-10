@@ -14,7 +14,7 @@ import com.bumble.appyx.interactions.core.ui.GestureSpec
 
 var DisableAnimations = false
 
-val DefaultAnimationSpec: SpringSpec<Float> = spring(stiffness = 10f)
+val DefaultAnimationSpec: SpringSpec<Float> = spring()
 
 @Composable
 @Suppress("UnnecessaryComposedModifier")

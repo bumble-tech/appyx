@@ -185,7 +185,7 @@ class PromoterInterpolator<NavTarget : Any>(
                         .scale(scale)
                 },
                 progress = segmentProgress,
-                animationModifier = Modifier
+                animationContainer = {}
             )
         }
     }

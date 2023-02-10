@@ -4,14 +4,12 @@ package com.bumble.appyx.transitionmodel
 import DefaultAnimationSpec
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
@@ -81,8 +79,6 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     override fun mapUpdate(update: Update<ModelState>): List<FrameModel<NavTarget>> {
         val targetProps = update.currentTargetState.toProps()
 
-        Logger.log("VIS", "--------------------------")
-
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
@@ -90,7 +86,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                 visibleState = elementProps.visibilityState,
                 navElement = t1.element,
                 modifier = elementProps.modifier,
-                animationModifier = Modifier.composed {
+                animationContainer = @Composable {
                     LaunchedEffect(update) {
                         coroutineScope.launch {
                             if (update.animate) {
@@ -111,7 +107,6 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                             }
                         }
                     }
-                    this
                 },
                 progress = MutableStateFlow(1f),
             )
@@ -131,35 +126,30 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
-            coroutineScope.launch {
-                elementProps.lerpTo(coroutineScope, t0.props, t1.props, segmentProgress.value)
-            }
+            elementProps.lerpTo(coroutineScope, t0.props, t1.props, segmentProgress.value)
 
             FrameModel(
                 visibleState = elementProps.visibilityState,
                 navElement = t1.element,
-                animationModifier = Modifier.interpolatedProps(
-                    segmentProgress,
-                    elementProps,
-                    t0,
-                    t1
-                ),
+                animationContainer = @Composable {
+                    interpolatedProps(segmentProgress, elementProps, t0, t1)
+                },
                 modifier = elementProps.modifier,
                 progress = segmentProgress,
             )
         }
     }
 
-    private fun Modifier.interpolatedProps(
+    @Composable
+    private fun interpolatedProps(
         segmentProgress: StateFlow<Float>,
         elementProps: Props,
         from: MatchedProps<NavTarget, Props>,
         to: MatchedProps<NavTarget, Props>
-    ): Modifier = composed {
+    ) {
         val progress by segmentProgress.collectAsState(segmentProgress.value)
         LaunchedEffect(progress) {
             elementProps.lerpTo(coroutineScope, from.props, to.props, progress)
         }
-        this
     }
 }

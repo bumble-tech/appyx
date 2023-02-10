@@ -107,8 +107,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
         visibleFrames.value
             .forEach { frameModel ->
                 key(frameModel.navElement.id) {
-                    // TODO find a better way than empty Box
-                    Box(modifier = frameModel.animationModifier)
+                    frameModel.animationContainer()
                     val isVisible by frameModel.visibleState.collectAsState(initial = false)
                     if (isVisible) {
                         Child(
