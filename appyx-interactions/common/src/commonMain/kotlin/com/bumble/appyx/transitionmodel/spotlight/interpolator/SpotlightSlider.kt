@@ -10,20 +10,25 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.inputsource.Gesture
-import com.bumble.appyx.interactions.core.ui.*
+import com.bumble.appyx.interactions.core.ui.BaseProps
+import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.geometry.Geometry1D
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.*
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
+import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.transitionmodel.spotlight.operation.Next
 import com.bumble.appyx.transitionmodel.spotlight.operation.Previous
 import kotlinx.coroutines.CoroutineScope
@@ -62,35 +67,19 @@ class SpotlightSlider<NavTarget : Any>(
         val scrollValue: () -> Float,
         private val width: Dp,
         private val activeWindow: Float
-    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
+    ) : BaseProps(), HasModifier, Animatable<Props> {
 
         private val activeWindowOffset = (activeWindow * width.value).dp
-
-
-        // TODO fix when displacement is ready
-        override val isVisible: Boolean
-            get() {
-                val currentOffset = (scrollValue() * width.value).dp
-                val visibleRange =
-                    currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
-                val isVisible = offset.value.x in visibleRange
-                Logger.log(
-                    "SpotlightSlider",
-                    "scrollValue: ${scrollValue()}, offsetValue: ${offset.value.x}, visibleRange: $visibleRange, isVisible: $isVisible, activeWindowOffset: $activeWindowOffset"
-                )
-                return isVisible
-            }
 
         override val modifier: Modifier
             get() = Modifier
                 .then(offset.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            offset.snapTo(props.offset.value)
-        }
-
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            offset.lerpTo(start.offset, end.offset, fraction)
+            scope.launch {
+                offset.snapTo(props.offset.value)
+                updateVisibilityState()
+            }
         }
 
         override suspend fun animateTo(
@@ -107,10 +96,27 @@ class SpotlightSlider<NavTarget : Any>(
                         offset.animateTo(
                             props.offset.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
-                        )
+                        ) {
+                            updateVisibilityState()
+                        }
                     }
                 ).awaitAll()
                 onFinished()
+            }
+        }
+
+        // TODO fix with displacement is ready
+        override fun isVisible(): Boolean {
+            val currentOffset = (scrollValue() * width.value).dp
+            val visibleRange =
+                currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
+            return offset.value.x in visibleRange
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            scope.launch {
+                offset.lerpTo(start.offset, end.offset, fraction)
+                updateVisibilityState()
             }
         }
     }

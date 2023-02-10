@@ -15,7 +15,6 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
 import com.bumble.appyx.transitionmodel.BaseInterpolator
@@ -28,6 +27,7 @@ import com.bumble.appyx.transitionmodel.testdrive.operation.MoveTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 class TestDriveUiModel<NavTarget : Any>(
@@ -42,13 +42,7 @@ class TestDriveUiModel<NavTarget : Any>(
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-        override val isVisible: Boolean = true
-    ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
-
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            offset.lerpTo(start.offset, end.offset, fraction)
-            backgroundColor.lerpTo(start.backgroundColor, end.backgroundColor, fraction)
-        }
+    ) : HasModifier, BaseProps(), Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -56,8 +50,11 @@ class TestDriveUiModel<NavTarget : Any>(
                 .then(backgroundColor.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            offset.snapTo(props.offset.value)
-            backgroundColor.snapTo(props.backgroundColor.value)
+            scope.launch {
+                offset.snapTo(props.offset.value)
+                backgroundColor.snapTo(props.backgroundColor.value)
+                updateVisibilityState()
+            }
         }
 
         override suspend fun animateTo(
@@ -73,17 +70,31 @@ class TestDriveUiModel<NavTarget : Any>(
                     offset.animateTo(
                         props.offset.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+                        updateVisibilityState()
+                    }
                 },
                 scope.async {
                     backgroundColor.animateTo(
                         props.backgroundColor.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+                        updateVisibilityState()
+                    }
                 }
             ).awaitAll()
             onFinished()
         }
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            scope.launch {
+                offset.lerpTo(start.offset, end.offset, fraction)
+                backgroundColor.lerpTo(start.backgroundColor, end.backgroundColor, fraction)
+                updateVisibilityState()
+            }
+        }
+
+        override fun isVisible() = true
     }
 
     companion object {

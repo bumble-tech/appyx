@@ -17,7 +17,6 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
@@ -29,6 +28,7 @@ import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.launch
 
 typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
@@ -56,18 +56,7 @@ class CardsProps<NavTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         private val width: Float,
-    ) : Interpolatable<Props>, HasModifier, Animatable<Props>, BaseProps {
-
-        override val isVisible: Boolean
-            get() = scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
-                    positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
-
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            scale.lerpTo(start.scale, end.scale, fraction)
-            positionalOffsetX.lerpTo(start.positionalOffsetX, end.positionalOffsetX, fraction)
-            rotationZ.lerpTo(start.rotationZ, end.rotationZ, fraction)
-            zIndex.lerpTo(start.zIndex, end.zIndex, fraction)
-        }
+    ) : BaseProps(), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -77,10 +66,13 @@ class CardsProps<NavTarget : Any>(
                 .then(zIndex.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            scale.snapTo(props.scale.value)
-            positionalOffsetX.snapTo(props.positionalOffsetX.value)
-            rotationZ.snapTo(props.rotationZ.value)
-            zIndex.snapTo(props.zIndex.value)
+            scope.launch {
+                scale.snapTo(props.scale.value)
+                positionalOffsetX.snapTo(props.positionalOffsetX.value)
+                rotationZ.snapTo(props.rotationZ.value)
+                zIndex.snapTo(props.zIndex.value)
+                updateVisibilityState()
+            }
         }
 
         override suspend fun animateTo(
@@ -96,27 +88,49 @@ class CardsProps<NavTarget : Any>(
                     scale.animateTo(
                         props.scale.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+                        updateVisibilityState()
+                    }
                 },
                 scope.async {
                     positionalOffsetX.animateTo(
                         props.positionalOffsetX.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+                        updateVisibilityState()
+                    }
                 },
                 scope.async {
                     rotationZ.animateTo(
                         props.rotationZ.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+                        updateVisibilityState()
+                    }
                 },
                 scope.async {
                     zIndex.animateTo(
                         props.zIndex.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    )
+                    ) {
+                        updateVisibilityState()
+                    }
                 }).awaitAll()
             onFinished()
+        }
+
+        override fun isVisible(): Boolean =
+            scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
+                    positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
+
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            scope.launch {
+                scale.lerpTo(start.scale, end.scale, fraction)
+                positionalOffsetX.lerpTo(start.positionalOffsetX, end.positionalOffsetX, fraction)
+                rotationZ.lerpTo(start.rotationZ, end.rotationZ, fraction)
+                zIndex.lerpTo(start.zIndex, end.zIndex, fraction)
+                updateVisibilityState()
+            }
         }
     }
 

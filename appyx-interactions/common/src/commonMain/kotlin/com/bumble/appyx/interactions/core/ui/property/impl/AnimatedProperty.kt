@@ -13,7 +13,7 @@ import com.bumble.appyx.interactions.core.ui.property.Property
 
 abstract class AnimatedProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>
-) : Property<T> {
+) : Property<T, V> {
 
     var displacement: State<T>? = null
 
@@ -94,14 +94,22 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
         return velocity
     }
 
-    override suspend fun animateTo(targetValue: T, animationSpec: AnimationSpec<T>) {
+    override suspend fun animateTo(
+        targetValue: T,
+        animationSpec: AnimationSpec<T>,
+        block: (Animatable<T, V>.() -> Unit)
+    ) {
         Logger.log("Animatable", "Starting with initialVelocity = $lastVelocity")
         animatable.animateTo(
             targetValue = targetValue,
             animationSpec = animationSpec,
             initialVelocity = lastVelocity
         ) {
-            Logger.log("Animatable", "Value = ${animatable.value}, Velocity = ${animatable.velocity})")
+            block(this)
+            Logger.log(
+                "Animatable",
+                "Value = ${animatable.value}, Velocity = ${animatable.velocity})"
+            )
             lastVelocity = animatable.velocity
         }
     }
