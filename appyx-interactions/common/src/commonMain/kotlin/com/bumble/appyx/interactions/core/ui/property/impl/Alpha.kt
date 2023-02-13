@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
+import androidx.compose.animation.core.Easing
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
@@ -9,9 +10,11 @@ import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Alpha(
-    value: Float
+    value: Float,
+    easing: Easing? = null
 ) : AnimatedProperty<Float, AnimationVector1D>(
-    animatable = Animatable(value)
+    animatable = Animatable(value),
+    easing = easing
 ), Interpolatable<Alpha> {
 
     override val modifier: Modifier
@@ -20,6 +23,12 @@ class Alpha(
         }
 
     override suspend fun lerpTo(start: Alpha, end: Alpha, fraction: Float) {
-        snapTo(lerpFloat(start.value, end.value, fraction))
+        snapTo(
+            lerpFloat(
+                start = start.value,
+                end = end.value,
+                progress = easingTransform(end.easing, fraction)
+            )
+        )
     }
 }
