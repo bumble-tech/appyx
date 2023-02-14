@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.*
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
+import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
 import kotlinx.coroutines.flow.MutableStateFlow

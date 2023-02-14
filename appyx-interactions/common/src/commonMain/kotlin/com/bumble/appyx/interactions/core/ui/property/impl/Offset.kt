@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
+import com.bumble.appyx.interactions.core.ui.helper.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Offset(
