@@ -61,9 +61,7 @@ class TestDriveExperimentTest {
                     TestDrive(
                         scope = coroutineScope,
                         model = model,
-                        interpolator = {
-                            TestDriveUiModel(coroutineScope = coroutineScope)
-                        },
+                        interpolator = { TestDriveUiModel(it) },
                         progressAnimationSpec = testAnimationSpec,
                         gestureFactory = { TestDriveUiModel.Gestures(it) },
                     )
@@ -113,9 +111,7 @@ class TestDriveExperimentTest {
                         scope = coroutineScope,
                         model = model,
                         progressAnimationSpec = testAnimationSpec,
-                        interpolator = {
-                            TestDriveUiModel(coroutineScope = coroutineScope)
-                        },
+                        interpolator = { TestDriveUiModel(it) },
                         gestureFactory = { TestDriveUiModel.Gestures(it) },
                     )
                 }
