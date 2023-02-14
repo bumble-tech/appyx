@@ -119,6 +119,7 @@ jobs:
           script: |
             adb logcat > logcat.out &
             ./gradlew connectedCheck
+      # Uncomment when the first tests are ready
       - name: Screenshot tests
           # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/AndroidCIWithGmd.yaml
           run: >
