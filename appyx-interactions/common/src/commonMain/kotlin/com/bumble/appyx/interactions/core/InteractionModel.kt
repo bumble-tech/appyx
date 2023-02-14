@@ -258,7 +258,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     fun setNormalisedProgress(progress: Float) {
-
         debug?.setNormalisedProgress(progress)
     }
 }

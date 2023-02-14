@@ -118,9 +118,7 @@ class SpotlightSlider<NavTarget : Any>(
         }
 
         // TODO fix with displacement is ready
-        override fun isVisible(): Boolean {
-            return true
-        }
+        override fun isVisible(): Boolean = true
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
             scope.launch {
