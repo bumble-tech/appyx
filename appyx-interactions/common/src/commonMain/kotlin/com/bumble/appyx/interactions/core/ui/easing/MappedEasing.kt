@@ -19,6 +19,7 @@ class MappedEasing(
 
     override fun transform(fraction: Float): Float =
         when {
+            fraction < 0 -> easing.transform(0f)
             (0f..min).contains(fraction) -> easing.transform(0f)
             (min..max).contains(fraction) -> easing.transform(
                 mapFloat(fraction, min, max, 0f, 1f)
