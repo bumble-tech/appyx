@@ -9,8 +9,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.test.core.app.takeScreenshot
@@ -81,7 +84,10 @@ class TestDriveExperimentTest {
 
         composeTestRule.mainClock.advanceTimeBy(500)
 
-        takeScreenshot()
+        composeTestRule
+            .onRoot()
+            .captureToImage()
+            .asAndroidBitmap()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
     }
 
@@ -131,7 +137,10 @@ class TestDriveExperimentTest {
 
         composeTestRule.mainClock.advanceTimeBy(1000)
 
-        takeScreenshot()
+        composeTestRule
+            .onRoot()
+            .captureToImage()
+            .asAndroidBitmap()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
     }
 }
