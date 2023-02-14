@@ -1,8 +1,8 @@
 plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
-    kotlin("android")
     id("appyx-screenshots")
+    kotlin("android")
 }
 
 android {
@@ -33,17 +33,8 @@ android {
 
 
 dependencies {
-    val composeBom = platform(libs.compose.bom)
-
-    implementation(project(":appyx-interactions:android"))
-    implementation(project(":appyx-interactions:common"))
-    implementation(project(":samples:common"))
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.compose.ui.tooling)
-
-    androidTestImplementation(composeBom)
+    androidTestImplementation(project(":appyx-interactions:android"))
+    androidTestImplementation(project(":appyx-interactions:common"))
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.androidx.test.espresso.core)
-    androidTestUtil(libs.androidx.test.utils)
-    debugImplementation(libs.compose.ui.test.manifest)
 }

@@ -16,7 +16,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import androidx.test.core.app.takeScreenshot
 import androidx.test.core.graphics.writeToTestStorage
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
@@ -94,8 +93,6 @@ class TestDriveExperimentTest {
     @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
     @Test
     fun testDrive_Drag_To_Middle() = runTest {
-//        composeTestRule.mainClock.autoAdvance = false
-
         var testDrive: TestDrive<NavTarget>? = null
 
         var density: Density? = null
@@ -134,8 +131,6 @@ class TestDriveExperimentTest {
         val x = with(density!!) { 100.dp.toPx() }
 
         testDrive!!.onDrag(Offset(x, 0f), density!!)
-
-        composeTestRule.mainClock.advanceTimeBy(1000)
 
         composeTestRule
             .onRoot()
