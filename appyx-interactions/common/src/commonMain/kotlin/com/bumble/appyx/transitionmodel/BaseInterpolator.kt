@@ -1,11 +1,10 @@
 package com.bumble.appyx.transitionmodel
 
-//import com.bumble.appyx.interactions.Logger
 import DefaultAnimationSpec
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.runtime.Composable
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
