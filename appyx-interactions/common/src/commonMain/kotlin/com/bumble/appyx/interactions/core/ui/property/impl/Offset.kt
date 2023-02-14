@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
@@ -17,8 +16,10 @@ import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Offset(
     value: DpOffset,
+    visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp)
 ) : AnimatedProperty<DpOffset, AnimationVector2D>(
-    animatable = Animatable(value, DpOffset.VectorConverter)
+    animatable = Animatable(value, DpOffset.VectorConverter),
+    visibilityThreshold = visibilityThreshold
 ), Interpolatable<Offset> {
 
     var displacement: State<DpOffset> =

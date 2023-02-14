@@ -9,9 +9,11 @@ import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Alpha(
-    value: Float
+    value: Float,
+    visibilityThreshold: Float = 0.01f
 ) : AnimatedProperty<Float, AnimationVector1D>(
-    animatable = Animatable(value)
+    animatable = Animatable(value),
+    visibilityThreshold = visibilityThreshold
 ), Interpolatable<Alpha> {
 
     override val modifier: Modifier

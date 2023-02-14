@@ -11,9 +11,11 @@ import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import androidx.compose.ui.graphics.lerp as lerpColor
 
 class BackgroundColor(
-    value: Color
+    value: Color,
+    visibilityThreshold: Color = Color(1, 1, 1, 1)
 ) : AnimatedProperty<Color, AnimationVector4D>(
-    animatable = Animatable(value, Color.VectorConverter(value.colorSpace))
+    animatable = Animatable(value, Color.VectorConverter(value.colorSpace)),
+    visibilityThreshold = visibilityThreshold
 ), Interpolatable<BackgroundColor> {
 
     override val modifier: Modifier
