@@ -117,6 +117,11 @@ abstract class ParentNode<NavTarget : Any>(
     override fun updateLifecycleState(state: Lifecycle.State) {
         super.updateLifecycleState(state)
         childNodeLifecycleManager.propagateLifecycleToChildren(state)
+
+        // TODO move to plugins
+        if (state == Lifecycle.State.DESTROYED) {
+            interactionModel.destroy()
+        }
     }
 
     /**

@@ -19,7 +19,7 @@ interface TransitionModel<NavTarget, ModelState> {
 
     }
 
-    fun availableElements(): Set<NavElement<NavTarget>>
+    fun availableElements(): StateFlow<Set<NavElement<NavTarget>>>
 
     fun onAnimationFinished()
 

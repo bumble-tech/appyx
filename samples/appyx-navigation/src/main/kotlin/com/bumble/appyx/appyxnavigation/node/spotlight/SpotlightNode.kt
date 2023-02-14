@@ -85,7 +85,7 @@ class SpotlightNode(
     @Composable
     override fun View(modifier: Modifier) {
         Column(
-            modifier =modifier
+            modifier = modifier
                 .fillMaxSize()
                 .background(appyx_dark)
         ) {

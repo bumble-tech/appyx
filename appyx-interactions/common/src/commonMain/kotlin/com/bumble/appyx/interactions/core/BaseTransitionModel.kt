@@ -7,8 +7,11 @@ import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -24,8 +27,10 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
 
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
-    override fun availableElements(): Set<NavElement<NavTarget>> =
-        state.value.currentTargetState.availableElements()
+    override fun availableElements(): StateFlow<Set<NavElement<NavTarget>>> =
+        output
+            .map { it.currentTargetState.availableElements() }
+            .stateIn(scope, SharingStarted.Eagerly, initialState.availableElements())
 
     private val state: MutableStateFlow<Output<ModelState>> by lazy {
         MutableStateFlow(
