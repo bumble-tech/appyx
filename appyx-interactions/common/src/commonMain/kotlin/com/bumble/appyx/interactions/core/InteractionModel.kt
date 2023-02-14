@@ -252,10 +252,13 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     // TODO plugin?!
     fun destroy() {
+        interpolatorObserverJob?.cancel()
+        screenStateJob.cancel()
         scope.cancel()
     }
 
     fun setNormalisedProgress(progress: Float) {
+
         debug?.setNormalisedProgress(progress)
     }
 }
