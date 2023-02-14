@@ -1,16 +1,16 @@
 package com.bumble.appyx.transitionmodel
 
+//import com.bumble.appyx.interactions.Logger
 import DefaultAnimationSpec
-import androidx.compose.animation.core.AnimationSpec
+import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.runtime.Composable
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Density
+import androidx.compose.runtime.getValue
+import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -18,23 +18,26 @@ import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import androidx.compose.animation.core.Animatable as Animatable1
 
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
-    private val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-    private val coroutineScope: CoroutineScope
-) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Interpolatable<Props>, Props : Animatable<Props> {
+    private val scope: CoroutineScope,
+    protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
+) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
 
     private val cache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    private var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
-    private var isDragging: Boolean = false
+    protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
+
+    open val geometryMappings: List<Pair<(ModelState) -> Float, Animatable1<Float, AnimationVector1D>>> =
+        emptyList()
+
 
     abstract fun defaultProps(): Props
 
@@ -44,30 +47,6 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
-
-    final override fun onStartDrag(position: Offset) {
-        isDragging = true
-    }
-
-    final override fun onDrag(dragAmount: Offset, density: Density) {
-        isDragging = true
-    }
-
-    final override fun onDragEnd(
-        completionThreshold: Float,
-        completeGestureSpec: AnimationSpec<Float>,
-        revertGestureSpec: AnimationSpec<Float>
-    ) {
-        isDragging = false
-    }
-
-    final override fun applyGeometry(output: TransitionModel.Output<ModelState>) {
-        if (isDragging) snapGeometry(output) else animateGeometry(output)
-    }
-
-    open fun snapGeometry(output: TransitionModel.Output<ModelState>) {}
-
-    open fun animateGeometry(output: TransitionModel.Output<ModelState>) {}
 
     fun updateAnimationState(key: String, isAnimating: Boolean) {
         animations[key] = isAnimating
@@ -79,15 +58,20 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     override fun mapUpdate(update: Update<ModelState>): List<FrameModel<NavTarget>> {
         val targetProps = update.currentTargetState.toProps()
 
+        scope.launch {
+            updateGeometry(update)
+        }
+
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
-
             FrameModel(
+                visibleState = elementProps.visibilityState,
                 navElement = t1.element,
-                modifier = elementProps.modifier.composed {
+                modifier = elementProps.modifier,
+                animationContainer = @Composable {
                     LaunchedEffect(update) {
-                        coroutineScope.launch {
+                        scope.launch {
                             if (update.animate) {
                                 elementProps.animateTo(
                                     scope = this,
@@ -106,10 +90,27 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                             }
                         }
                     }
-                    this
                 },
                 progress = MutableStateFlow(1f),
             )
+        }
+    }
+
+    private suspend fun updateGeometry(update: Update<ModelState>) {
+        geometryMappings.forEach { (fieldOfState, geometry) ->
+            val targetValue = fieldOfState(update.currentTargetState)
+            geometry.animateTo(
+                targetValue,
+                spring(
+                    stiffness = currentSpringSpec.stiffness,
+                    dampingRatio = currentSpringSpec.dampingRatio
+                )
+            ) {
+                Logger.log(
+                    this@BaseInterpolator.javaClass.simpleName,
+                    "Geometry animateTo (Update) – $targetValue"
+                )
+            }
         }
     }
 
@@ -121,36 +122,94 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 
+        scope.launch {
+            segmentProgress.collect {
+                updateGeometry(segment, segmentProgress.value)
+            }
+        }
+
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
-            coroutineScope.launch {
-                elementProps.lerpTo(t0.props, t1.props, segmentProgress.value)
-            }
+            elementProps.lerpTo(scope, t0.props, t1.props, segmentProgress.value)
 
             FrameModel(
+                visibleState = elementProps.visibilityState,
                 navElement = t1.element,
-                modifier = Modifier.interpolatedProps(segmentProgress, elementProps, t0, t1)
-                    .then(elementProps.modifier),
+                animationContainer = @Composable {
+                    interpolatedProps(segmentProgress, elementProps, t0, t1)
+                },
+                modifier = elementProps.modifier,
                 progress = segmentProgress,
-                //TODO make observable
-//                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
             )
         }
     }
 
-    private fun Modifier.interpolatedProps(
+    @Composable
+    private fun interpolatedProps(
         segmentProgress: StateFlow<Float>,
         elementProps: Props,
         from: MatchedProps<NavTarget, Props>,
         to: MatchedProps<NavTarget, Props>
-    ): Modifier = composed {
-        val progress = segmentProgress.collectAsState(segmentProgress.value)
-        LaunchedEffect(progress.value) {
-            elementProps.lerpTo(from.props, to.props, progress.value)
+    ) {
+        val progress by segmentProgress.collectAsState(segmentProgress.value)
+        LaunchedEffect(progress) {
+            elementProps.lerpTo(scope, from.props, to.props, progress)
         }
-        this
     }
+
+    private suspend fun updateGeometry(
+        segment: Segment<ModelState>,
+        segmentProgress: Float
+    ) {
+        geometryMappings.forEach { (fieldOfState, geometry) ->
+            val (behaviour, targetValue) = geometryTargetValue(segment, segmentProgress, fieldOfState)
+
+            when (behaviour) {
+                GeometryBehaviour.SNAP -> {
+                    geometry.snapTo(targetValue)
+                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry snapTo (Segment): $targetValue")
+                }
+
+                GeometryBehaviour.ANIMATE -> {
+                    if (geometry.value != targetValue) {
+                        geometry.animateTo(targetValue, spring(
+                            stiffness = currentSpringSpec.stiffness,
+                            dampingRatio = currentSpringSpec.dampingRatio
+                        )) {
+                            Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun geometryTargetValue(
+        segment: Segment<ModelState>,
+        segmentProgress: Float,
+        fieldOfState: (ModelState) -> Float
+    ): Pair<GeometryBehaviour, Float> {
+        val fromValue = fieldOfState(segment.fromState)
+        val targetValue = fieldOfState(segment.targetState)
+
+        // If the geometry value was inserted via a GEOMETRY operation mode, then it was applied both to the
+        // start and end values (see [BaseTransitionModel.updateGeometry()], and they should be the same.
+        // This means that even though we have a Segment, the interpolation is working on some other part of
+        // the ModelState, not the geometry, and we should still consider the geometry value as a separate concern,
+        // that we need to animate.
+        return if (fromValue == targetValue) GeometryBehaviour.ANIMATE to targetValue
+        // If the geometry value was added via a KEYFRAME operation mode, then the relevant value
+        // will be different for the targetValue.
+        // This means that the Segment was specifically created to interpolate the geometry value (probably a gesture)
+        // and that it's important to follow the interpolation by snapping.
+        else GeometryBehaviour.SNAP to Interpolator.lerpFloat(fromValue, targetValue, segmentProgress)
+    }
+
+    private enum class GeometryBehaviour {
+        SNAP, ANIMATE
+    }
+
 }

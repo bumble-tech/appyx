@@ -13,9 +13,7 @@ import com.bumble.appyx.interactions.core.ui.property.Property
 
 abstract class AnimatedProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>
-) : Property<T> {
-
-    var displacement: State<T>? = null
+) : Property<T, V> {
 
     /**
      * When in interpolation mode, the Animatable is snapping and doesn't have a concept of velocity.
@@ -90,18 +88,26 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
             }
         }
 
-        Logger.log("Animatable", "Calculated velocity: $velocity")
+        Logger.v("Animatable", "Calculated velocity: $velocity")
         return velocity
     }
 
-    override suspend fun animateTo(targetValue: T, animationSpec: AnimationSpec<T>) {
+    override suspend fun animateTo(
+        targetValue: T,
+        animationSpec: AnimationSpec<T>,
+        block: (Animatable<T, V>.() -> Unit)
+    ) {
         Logger.log("Animatable", "Starting with initialVelocity = $lastVelocity")
         animatable.animateTo(
             targetValue = targetValue,
             animationSpec = animationSpec,
             initialVelocity = lastVelocity
         ) {
-            Logger.log("Animatable", "Value = ${animatable.value}, Velocity = ${animatable.velocity})")
+            block(this)
+            Logger.log(
+                "Animatable",
+                "Value = ${animatable.value}, Velocity = ${animatable.velocity})"
+            )
             lastVelocity = animatable.velocity
         }
     }

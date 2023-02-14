@@ -29,7 +29,6 @@ import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import com.bumble.appyx.transitionmodel.backstack.operation.push
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.parcelize.Parcelize
 
 class ContainerNode(
@@ -39,7 +38,7 @@ class ContainerNode(
             initialTargets = listOf(NavTarget.Selector),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { (bounds, scope) -> BackStackSlider(bounds, scope) }
+        interpolator = { BackStackSlider(it) }
     )
 
 ) : ParentNode<NavTarget>(

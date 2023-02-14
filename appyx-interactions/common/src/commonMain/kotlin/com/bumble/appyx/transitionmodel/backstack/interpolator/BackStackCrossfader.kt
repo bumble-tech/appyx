@@ -7,33 +7,34 @@ import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
-import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseInterpolator
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
-class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
-    BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
-        coroutineScope = coroutineScope
-    ) {
+class BackStackCrossfader<NavTarget : Any>(
+    scope: CoroutineScope
+) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
+    scope = scope
+) {
 
     override fun defaultProps(): Props = Props()
 
     class Props(
         val alpha: Alpha = Alpha(value = 1f),
-    ) : Interpolatable<Props>, HasModifier, BaseProps, Animatable<Props> {
-
-        override val isVisible: Boolean
-            get() = alpha.value > 0.0f
+    ) : BaseProps(), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
                 .then(alpha.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
-            alpha.snapTo(props.alpha.value)
+            scope.launch {
+                alpha.snapTo(props.alpha.value)
+                updateVisibilityState()
+            }
         }
 
         override suspend fun animateTo(
@@ -48,15 +49,22 @@ class BackStackCrossfader<NavTarget : Any>(coroutineScope: CoroutineScope) :
                 alpha.animateTo(
                     props.alpha.value,
                     spring(springSpec.dampingRatio, springSpec.stiffness)
-                )
+                ) {
+                    updateVisibilityState()
+                }
             }
             a1.await()
             onFinished()
         }
 
-        override suspend fun lerpTo(start: Props, end: Props, fraction: Float) {
-            alpha.lerpTo(start.alpha, end.alpha, fraction)
+        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+            scope.launch {
+                alpha.lerpTo(start.alpha, end.alpha, fraction)
+                updateVisibilityState()
+            }
         }
+
+        override fun isVisible() = alpha.value > 0.0f
 
     }
 
