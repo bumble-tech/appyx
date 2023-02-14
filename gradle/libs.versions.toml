@@ -45,6 +45,7 @@ compose-runtime = { module = "androidx.compose.runtime:runtime" }
 compose-ui-test-junit4 = { module = "androidx.compose.ui:ui-test-junit4" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 compose-ui-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
 google-accompanist-systemui = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
 google-accompanist-flow = { module = "com.google.accompanist:accompanist-flowlayout", version.ref = "accompanist" }
 google-material = "com.google.android.material:material:1.4.0"
