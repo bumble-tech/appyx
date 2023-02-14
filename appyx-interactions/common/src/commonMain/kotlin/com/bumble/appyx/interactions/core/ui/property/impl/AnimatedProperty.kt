@@ -7,12 +7,14 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.AnimationVector3D
 import androidx.compose.animation.core.AnimationVector4D
-import androidx.compose.runtime.State
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.property.Property
 
 abstract class AnimatedProperty<T, V : AnimationVector>(
-    protected val animatable: Animatable<T, V>
+    protected val animatable: Animatable<T, V>,
+    private val visibilityThreshold: T? = null
 ) : Property<T, V> {
 
     /**
@@ -97,10 +99,11 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
         animationSpec: AnimationSpec<T>,
         block: (Animatable<T, V>.() -> Unit)
     ) {
+        val animationSpec1 = insertVisibilityThreshold(animationSpec)
         Logger.log("Animatable", "Starting with initialVelocity = $lastVelocity")
         animatable.animateTo(
             targetValue = targetValue,
-            animationSpec = animationSpec,
+            animationSpec = animationSpec1,
             initialVelocity = lastVelocity
         ) {
             block(this)
@@ -112,7 +115,17 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
         }
     }
 
+    private fun insertVisibilityThreshold(animationSpec: AnimationSpec<T>) =
+        if (animationSpec is SpringSpec<T>) {
+            spring(
+                stiffness = animationSpec.stiffness,
+                dampingRatio = animationSpec.dampingRatio,
+                visibilityThreshold = visibilityThreshold
+            )
+        } else animationSpec
+
     companion object {
         internal const val MillisToNanos: Long = 1_000_000L
     }
 }
+
