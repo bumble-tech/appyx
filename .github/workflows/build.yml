@@ -120,13 +120,13 @@ jobs:
             adb logcat > logcat.out &
             ./gradlew connectedCheck
       # Uncomment when the first tests are ready
-      #- name: Screenshot tests
+      - name: Screenshot tests
           # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/AndroidCIWithGmd.yaml
-          #run: >
-            #./gradlew screenshotTestsCompareBaseline
-            #-Dorg.gradle.workers.max=1
-            #-Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
-            #-Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
+        run: >
+          ./gradlew screenshotTestsCompareBaseline
+          -Dorg.gradle.workers.max=1
+          -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
+          -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
       - name: Upload failed instrumentation artifacts
         if: failure()
         uses: actions/upload-artifact@v2
