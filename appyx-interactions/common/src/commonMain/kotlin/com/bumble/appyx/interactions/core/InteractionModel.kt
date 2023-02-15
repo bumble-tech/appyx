@@ -26,6 +26,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -262,4 +263,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     open fun handleBackNavigation(): Boolean = false
+
+    open fun canHandeBackNavigation(): Flow<Boolean> = MutableStateFlow(false)
 }

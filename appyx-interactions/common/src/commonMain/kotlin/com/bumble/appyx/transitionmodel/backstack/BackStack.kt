@@ -11,6 +11,8 @@ import com.bumble.appyx.transitionmodel.backstack.operation.Pop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class BackStack<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
@@ -35,4 +37,7 @@ class BackStack<NavTarget : Any>(
             true
         } else false
     }
+
+    override fun canHandeBackNavigation(): Flow<Boolean> =
+        model.output.map { it.currentTargetState }.map { it.stashed.isNotEmpty() }
 }
