@@ -7,12 +7,13 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.AnimationVector3D
 import androidx.compose.animation.core.AnimationVector4D
-import androidx.compose.runtime.State
+import androidx.compose.animation.core.Easing
+import androidx.compose.animation.core.LinearEasing
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.property.Property
-
 abstract class AnimatedProperty<T, V : AnimationVector>(
-    protected val animatable: Animatable<T, V>
+    protected val animatable: Animatable<T, V>,
+    protected val easing: Easing? = null
 ) : Property<T, V> {
 
     /**
@@ -27,6 +28,16 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
 
     override val value: T
         get() = animatable.value
+
+    /**
+     * Takes the supplied [Easing] as a priority to transform [fraction].
+     * Falls back to using the default [Easing] if a priority wasn't specified.
+     * Falls back to a simple [LinearEasing] if none of those were specified.
+     */
+    fun easingTransform(priority: Easing? = null, fraction: Float): Float {
+        val resolved = priority ?: this.easing ?: LinearEasing
+        return resolved.transform(fraction)
+    }
 
     override suspend fun snapTo(targetValue: T) {
         lastVelocity = calculateVelocity(targetValue)
@@ -116,3 +127,4 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
         internal const val MillisToNanos: Long = 1_000_000L
     }
 }
+
