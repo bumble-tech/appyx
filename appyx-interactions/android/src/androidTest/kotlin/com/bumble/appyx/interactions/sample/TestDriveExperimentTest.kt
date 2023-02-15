@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.ui.checks
+package com.bumble.appyx.interactions.sample
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -19,8 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.test.core.graphics.writeToTestStorage
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.NavTarget
-import com.bumble.appyx.interactions.sample.TestDriveUi
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
