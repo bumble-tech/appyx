@@ -35,7 +35,7 @@ class PreviousTest {
                 )
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val previous = Previous<NavTarget>()
@@ -63,7 +63,7 @@ class PreviousTest {
                 )
             ),
             activeIndex = 2f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val previous = Previous<NavTarget>()

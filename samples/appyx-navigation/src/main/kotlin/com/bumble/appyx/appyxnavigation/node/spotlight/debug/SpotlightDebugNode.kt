@@ -42,9 +42,9 @@ class SpotlightDebugNode(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it + 1) },
             initialActiveIndex = 0f,
-            initialActiveWindow = 1f
+            initialExtraWindow = 0
         ),
-        interpolator = { SpotlightSlider(it, activeWindow = 1f) },
+        interpolator = { SpotlightSlider(it, extraWindow = 0) },
         isDebug = true
     )
 ) : ParentNode<NavTarget>(

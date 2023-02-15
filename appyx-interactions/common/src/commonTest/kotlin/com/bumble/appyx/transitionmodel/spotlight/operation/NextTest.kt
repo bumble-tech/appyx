@@ -23,7 +23,7 @@ class NextTest {
                 Position(elements = mapOf(Child3.asElement() to STANDARD))
             ),
             activeIndex = 2f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val next = Next<NavTarget>()
@@ -40,7 +40,7 @@ class NextTest {
                 Position(elements = mapOf(Child3.asElement() to STANDARD))
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val next = Next<NavTarget>()

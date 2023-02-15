@@ -25,7 +25,7 @@ class UpdateElementsTest {
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val updateElements = UpdateElements(listOf(Child3, Child4))
@@ -50,7 +50,7 @@ class UpdateElementsTest {
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 1
         )
 
         val updateElements = UpdateElements(listOf(Child3, Child4))
@@ -76,7 +76,7 @@ class UpdateElementsTest {
                 Position(elements = mapOf(Child3.asElement() to STANDARD))
             ),
             activeIndex = 2f,
-            activeWindow = 2f
+            extraWindow = 0
         )
 
         val updateElements = UpdateElements(listOf(Child4, Child5, Child6))
@@ -89,8 +89,8 @@ class UpdateElementsTest {
         )
 
         assertEquals(
-            actual = finalState.targetState.activeWindow,
-            expected = 2f
+            actual = finalState.targetState.extraWindow,
+            expected = 0
         )
     }
 }

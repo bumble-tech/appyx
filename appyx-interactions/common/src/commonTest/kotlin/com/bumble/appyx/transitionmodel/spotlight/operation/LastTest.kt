@@ -20,7 +20,7 @@ class LastTest {
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 0
         )
         val last = Last<NavTarget>()
 

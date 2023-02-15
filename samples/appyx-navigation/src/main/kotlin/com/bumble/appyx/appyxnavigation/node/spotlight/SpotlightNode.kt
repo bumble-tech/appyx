@@ -46,9 +46,9 @@ class SpotlightNode(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it) },
             initialActiveIndex = 0f,
-            initialActiveWindow = 1f
+            initialExtraWindow = 0
         ),
-        interpolator = { SpotlightSlider(it, activeWindow = 1f) }
+        interpolator = { SpotlightSlider(it, extraWindow = 1) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,

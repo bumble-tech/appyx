@@ -1,11 +1,10 @@
 package com.bumble.appyx.transitionmodel.spotlight.operation
 
-import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.NavTarget
 import com.bumble.appyx.NavTarget.Child1
 import com.bumble.appyx.NavTarget.Child2
 import com.bumble.appyx.NavTarget.Child3
-import com.bumble.appyx.NavTarget.Child4
+import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.Position
@@ -23,7 +22,7 @@ class ActivateTest {
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val activate = Activate<NavTarget>(0f)
@@ -39,7 +38,7 @@ class ActivateTest {
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val activate = Activate<NavTarget>(2f)
@@ -56,7 +55,7 @@ class ActivateTest {
                 Position(elements = mapOf(Child3.asElement() to STANDARD)),
             ),
             activeIndex = 0f,
-            activeWindow = 1f
+            extraWindow = 0
         )
 
         val activate = Activate<NavTarget>(1f)

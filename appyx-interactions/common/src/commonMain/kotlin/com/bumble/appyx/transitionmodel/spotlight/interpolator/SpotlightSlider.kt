@@ -40,7 +40,8 @@ typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 class SpotlightSlider<NavTarget : Any>(
     uiContext: UiContext,
-    val activeWindow: Float,
+    // indicates how many more elements to the right and left from the centred one are visible
+    val extraWindow: Int,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
     scope = uiContext.coroutineScope
@@ -62,10 +63,10 @@ class SpotlightSlider<NavTarget : Any>(
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
         private val width: Dp,
-        private val activeWindow: Float
+        private val extraWindow: Int
     ) : BaseProps(), HasModifier, Animatable<Props> {
 
-        private val activeWindowOffset = (activeWindow * width.value).dp
+        private val extraWindowOffset = (extraWindow * width.value).dp
 
         override val modifier: Modifier
             get() = Modifier
@@ -120,7 +121,9 @@ class SpotlightSlider<NavTarget : Any>(
         override fun isVisible(): Boolean {
             val leftEdgeOffsetDp = (offset.displacedValue.value.x).value.roundToInt()
             val rightEdgeOffsetDp = (offset.displacedValue.value.x + width).value.roundToInt()
-            return (rightEdgeOffsetDp <= 0.0f || leftEdgeOffsetDp >= width.value.roundToInt()).not()
+            val visibleWindowLeftEdge = (-extraWindowOffset).value.roundToInt()
+            val visibleWindowRightEdge = (width.value + extraWindowOffset.value).roundToInt()
+            return (rightEdgeOffsetDp <= visibleWindowLeftEdge || leftEdgeOffsetDp >= visibleWindowRightEdge).not()
         }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
@@ -138,26 +141,26 @@ class SpotlightSlider<NavTarget : Any>(
             }
         },
         width = width,
-        activeWindow = activeWindow
+        extraWindow = extraWindow
     )
 
-    private val created = Props(
+    private val created = defaultProps().copy(
         offset = OffsetP(DpOffset(0.dp, width)),
         scale = Scale(0f),
         alpha = Alpha(1f),
         zIndex = 0f,
         aspectRatio = 1f,
         width = width,
-        activeWindow = activeWindow
+        extraWindow = extraWindow
     )
 
-    private val standard = Props(
+    private val standard = defaultProps().copy(
         offset = OffsetP(DpOffset.Zero),
         width = width,
-        activeWindow = activeWindow
+        extraWindow = extraWindow
     )
 
-    private val destroyed = Props(
+    private val destroyed = defaultProps().copy(
         offset = OffsetP(DpOffset(0.dp, -width)),
         scale = Scale(0f),
         alpha = Alpha(0f),
@@ -165,7 +168,7 @@ class SpotlightSlider<NavTarget : Any>(
         aspectRatio = 1f,
         rotation = 360f,
         width = width,
-        activeWindow = activeWindow
+        extraWindow = extraWindow
     )
 
     override fun SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
@@ -187,7 +190,7 @@ class SpotlightSlider<NavTarget : Any>(
                         rotation = target.rotation,
                         aspectRatio = target.aspectRatio,
                         width = width,
-                        activeWindow = activeWindow
+                        extraWindow = extraWindow
                     )
                 )
             }
