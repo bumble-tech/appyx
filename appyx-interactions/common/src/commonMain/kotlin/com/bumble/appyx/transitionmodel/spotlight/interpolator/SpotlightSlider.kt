@@ -13,7 +13,11 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.inputsource.Gesture
-import com.bumble.appyx.interactions.core.ui.*
+import com.bumble.appyx.interactions.core.ui.BaseProps
+import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
@@ -114,12 +118,7 @@ class SpotlightSlider<NavTarget : Any>(
         }
 
         // TODO fix with displacement is ready
-        override fun isVisible(): Boolean {
-            val currentOffset = (scrollValue() * width.value).dp
-            val visibleRange =
-                currentOffset - activeWindowOffset..currentOffset + activeWindowOffset
-            return offset.value.x in visibleRange
-        }
+        override fun isVisible(): Boolean = true
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
             scope.launch {
