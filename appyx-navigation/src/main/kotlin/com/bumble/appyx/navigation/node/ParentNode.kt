@@ -1,5 +1,6 @@
 package com.bumble.appyx.navigation.node
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -160,6 +161,9 @@ abstract class ParentNode<NavTarget : Any>(
     override fun DerivedSetup() {
         InteractionModelSetup(interactionModel = interactionModel)
     }
+
+    public override fun performUpNavigation(): Boolean =
+        interactionModel.handleBackNavigation() || super.performUpNavigation()
 
     private fun manageTransitionsInForeground() {
         transitionsInBackgroundJob?.run {

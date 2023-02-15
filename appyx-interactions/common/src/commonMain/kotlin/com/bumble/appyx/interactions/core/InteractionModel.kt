@@ -179,7 +179,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
                         ScreenState(onScreen = onScreen, offScreen = offScreen) to frames
                     }
                 }
-                .collect { (screenState , frames) ->
+                .collect { (screenState, frames) ->
                     // order is important here. We need to report screen state to the ParentNode first
                     // before frames are consumed by the UI
                     _screenState.emit(screenState)
@@ -260,4 +260,6 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     fun setNormalisedProgress(progress: Float) {
         debug?.setNormalisedProgress(progress)
     }
+
+    open fun handleBackNavigation(): Boolean = false
 }
