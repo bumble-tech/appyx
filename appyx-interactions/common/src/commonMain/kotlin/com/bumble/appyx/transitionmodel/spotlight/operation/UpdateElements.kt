@@ -17,7 +17,6 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 class UpdateElements<NavTarget : Any>(
     private val items: @RawValue List<NavTarget>,
     private val initialActiveIndex: Float? = null,
-    private val initialExtraWindow: Int? = null,
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
@@ -46,15 +45,13 @@ class UpdateElements<NavTarget : Any>(
                     }
                 )
             },
-            activeIndex = initialActiveIndex ?: fromState.activeIndex,
-            extraWindow = initialExtraWindow ?: fromState.extraWindow,
+            activeIndex = initialActiveIndex ?: fromState.activeIndex
         )
 }
 
 fun <NavTarget : Any> Spotlight<NavTarget>.updateElements(
     items: List<NavTarget>,
     initialActiveIndex: Float? = null,
-    initialExtraWindow: Int? = null,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) {
@@ -62,7 +59,6 @@ fun <NavTarget : Any> Spotlight<NavTarget>.updateElements(
         operation = UpdateElements(
             items = items,
             initialActiveIndex = initialActiveIndex,
-            initialExtraWindow = initialExtraWindow,
             mode = mode
         ),
         animationSpec = animationSpec,

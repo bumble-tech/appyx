@@ -9,9 +9,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 
 class SpotlightModel<NavTarget : Any>(
     items: List<NavTarget>,
-    initialActiveIndex: Float = 0f,
-    // indicates how many more elements to the right and left from the centred one are visible
-    initialExtraWindow: Int = 0,
+    initialActiveIndex: Float = 0f
 //    savedStateMap: SavedStateMap?,
 //    key: String = KEY_NAV_MODEL,
 //    backPressHandler: BackPressHandlerStrategy<NavTarget, State> = GoToDefault(
@@ -30,8 +28,7 @@ class SpotlightModel<NavTarget : Any>(
 
     data class State<NavTarget>(
         val positions: List<Position<NavTarget>>,
-        val activeIndex: Float,
-        val extraWindow: Int
+        val activeIndex: Float
     ) {
         data class Position<NavTarget>(
             val elements: Map<NavElement<NavTarget>, ElementState> = mapOf()
@@ -55,8 +52,7 @@ class SpotlightModel<NavTarget : Any>(
                     elements = mapOf(it.asElement() to STANDARD)
                 )
             },
-            activeIndex = initialActiveIndex,
-            extraWindow = initialExtraWindow
+            activeIndex = initialActiveIndex
         )
 
     // TODO support removing destroyed elements

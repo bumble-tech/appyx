@@ -41,8 +41,7 @@ class SpotlightDebugNode(
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it + 1) },
-            initialActiveIndex = 0f,
-            initialExtraWindow = 0
+            initialActiveIndex = 0f
         ),
         interpolator = { SpotlightSlider(it, extraWindow = 0) },
         isDebug = true

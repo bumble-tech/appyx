@@ -38,10 +38,13 @@ import androidx.compose.animation.core.Animatable as Animatable1
 
 typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
+/**
+ * extraWindow - indicates how many more elements to the right and left from the centred one are visible
+ * 0 means only central one is visible. 1 means that total window of 3 elements is visible
+ */
 class SpotlightSlider<NavTarget : Any>(
     uiContext: UiContext,
-    // indicates how many more elements to the right and left from the centred one are visible
-    val extraWindow: Int,
+    private val extraWindow: Int,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
     scope = uiContext.coroutineScope
