@@ -12,6 +12,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -21,6 +22,7 @@ import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.navigation.node.ParentNode
 import gestureModifier
 import kotlinx.coroutines.flow.map
+import kotlin.math.roundToInt
 import kotlin.reflect.KClass
 
 @Composable
@@ -43,13 +45,20 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
 
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
+    val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
+    val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
     Box(
         modifier = modifier
             .fillMaxSize()
             .onSizeChanged {
                 interactionModel.updateContext(
                     UiContext(
-                        TransitionBounds(density, it.width, it.height),
+                        TransitionBounds(
+                            density = density,
+                            widthPx = it.width, heightPx = it.height,
+                            screenWidthPx = screenWidthPx,
+                            screenHeightPx = screenHeightPx
+                        ),
                         coroutineScope
                     )
                 )

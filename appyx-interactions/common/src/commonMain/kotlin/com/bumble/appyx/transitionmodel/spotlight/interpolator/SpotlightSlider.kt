@@ -33,6 +33,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 import androidx.compose.animation.core.Animatable as Animatable1
 
 typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
@@ -49,7 +50,7 @@ class SpotlightSlider<NavTarget : Any>(
     private val scroll = Animatable1(0f) // TODO sync this with the model's initial value
 
     override val geometryMappings: List<Pair<(SpotlightModel.State<NavTarget>) -> Float, Animatable1<Float, AnimationVector1D>>> =
-            listOf(
+        listOf(
             { state: SpotlightModel.State<NavTarget> -> state.activeIndex } to scroll
         )
 
@@ -60,7 +61,6 @@ class SpotlightSlider<NavTarget : Any>(
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
-        val scrollValue: () -> Float,
         private val width: Dp,
         private val activeWindow: Float
     ) : BaseProps(), HasModifier, Animatable<Props> {
@@ -117,8 +117,11 @@ class SpotlightSlider<NavTarget : Any>(
             }
         }
 
-        // TODO fix with displacement is ready
-        override fun isVisible(): Boolean = true
+        override fun isVisible(): Boolean {
+            val leftEdgeOffsetDp = (offset.displacedValue.value.x).value.roundToInt()
+            val rightEdgeOffsetDp = (offset.displacedValue.value.x + width).value.roundToInt()
+            return (rightEdgeOffsetDp <= 0.0f || leftEdgeOffsetDp >= width.value.roundToInt()).not()
+        }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
             scope.launch {
@@ -134,7 +137,6 @@ class SpotlightSlider<NavTarget : Any>(
                 DpOffset((scroll.value * width.value).dp, 0.dp)
             }
         },
-        scrollValue = { scroll.value },
         width = width,
         activeWindow = activeWindow
     )
@@ -145,14 +147,12 @@ class SpotlightSlider<NavTarget : Any>(
         alpha = Alpha(1f),
         zIndex = 0f,
         aspectRatio = 1f,
-        scrollValue = { scroll.value },
         width = width,
         activeWindow = activeWindow
     )
 
     private val standard = Props(
         offset = OffsetP(DpOffset.Zero),
-        scrollValue = { scroll.value },
         width = width,
         activeWindow = activeWindow
     )
@@ -164,7 +164,6 @@ class SpotlightSlider<NavTarget : Any>(
         zIndex = -1f,
         aspectRatio = 1f,
         rotation = 360f,
-        scrollValue = { scroll.value },
         width = width,
         activeWindow = activeWindow
     )
@@ -187,7 +186,6 @@ class SpotlightSlider<NavTarget : Any>(
                         zIndex = target.zIndex,
                         rotation = target.rotation,
                         aspectRatio = target.aspectRatio,
-                        scrollValue = { scroll.value },
                         width = width,
                         activeWindow = activeWindow
                     )

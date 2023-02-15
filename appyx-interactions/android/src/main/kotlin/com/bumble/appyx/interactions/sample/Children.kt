@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,6 +26,7 @@ import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.UiContext
+import kotlin.math.roundToInt
 
 
 @ExperimentalMaterialApi
@@ -39,13 +41,20 @@ fun <NavTarget : Any, NavState : Any> Children(
     val density = LocalDensity.current
     val frames = interactionModel.frames.collectAsState(listOf())
     val coroutineScope = rememberCoroutineScope()
+    val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
+    val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
     Box(
         modifier = modifier
             .fillMaxSize()
             .onSizeChanged {
                 interactionModel.updateContext(
                     UiContext(
-                        TransitionBounds(density, it.width, it.height),
+                        TransitionBounds(
+                            density = density,
+                            widthPx = it.width, heightPx = it.height,
+                            screenWidthPx = screenWidthPx,
+                            screenHeightPx = screenHeightPx
+                        ),
                         coroutineScope
                     )
                 )

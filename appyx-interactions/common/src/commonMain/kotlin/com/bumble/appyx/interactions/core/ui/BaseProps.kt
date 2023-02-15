@@ -9,7 +9,7 @@ abstract class BaseProps {
     private val _visibilityState = MutableStateFlow(true)
     val visibilityState: StateFlow<Boolean> = _visibilityState
 
-    protected fun updateVisibilityState() {
+    fun updateVisibilityState() {
         _visibilityState.update {
             isVisible()
         }

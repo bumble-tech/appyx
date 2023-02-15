@@ -8,8 +8,12 @@ import androidx.compose.ui.unit.Dp
 data class TransitionBounds(
     val density: Density,
     val widthPx: Int,
-    val heightPx: Int
+    val heightPx: Int,
+    val screenWidthPx: Int,
+    val screenHeightPx: Int
 ) {
     val widthDp: Dp = with (density) { widthPx.toDp() }
     val heightDp: Dp = with (density) { heightPx.toDp() }
+    val screenWidthDp: Dp = with (density) { screenWidthPx.toDp() }
+    val screenHeightDp: Dp = with (density) { screenHeightPx.toDp() }
 }

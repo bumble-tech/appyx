@@ -50,11 +50,11 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var _interpolator: Interpolator<NavTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
-        gestureFactory(TransitionBounds(Density(0f), 0, 0))
+        gestureFactory(TransitionBounds(Density(0f), 0, 0, 0, 0))
 
     private var animationChangesJob: Job? = null
 
-    private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
+    private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0, 0, 0)
         set(value) {
             if (value != field) {
                 Logger.log("InteractionModel", "TransitionBounds changed: $value")
@@ -179,7 +179,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
                         ScreenState(onScreen = onScreen, offScreen = offScreen) to frames
                     }
                 }
-                .collect { (screenState , frames) ->
+                .collect { (screenState, frames) ->
                     // order is important here. We need to report screen state to the ParentNode first
                     // before frames are consumed by the UI
                     _screenState.emit(screenState)
