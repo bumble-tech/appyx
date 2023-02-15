@@ -29,7 +29,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
 ) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
 
-    private val cache: MutableMap<String, Props> = mutableMapOf()
+    private val propsCache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
     protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
@@ -63,7 +63,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
-            val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
+            val elementProps = propsCache.getOrPut(t1.element.id) { defaultProps() }
             FrameModel(
                 visibleState = elementProps.visibilityState,
                 navElement = t1.element,
@@ -131,7 +131,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
+            val elementProps = propsCache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
             elementProps.lerpTo(scope, t0.props, t1.props, segmentProgress.value)
 
@@ -190,7 +190,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     }
 
     private fun updatePropsVisibility() {
-        cache.values.forEach { it.updateVisibilityState() }
+        propsCache.values.forEach { it.updateVisibilityState() }
     }
 
     private fun geometryTargetValue(
