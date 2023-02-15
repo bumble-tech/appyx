@@ -95,8 +95,6 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         }
     }
 
-    open fun onGeometryUpdated(animatable: Animatable1<Float, AnimationVector1D>) = Unit
-
     private suspend fun updateGeometry(update: Update<ModelState>) {
         geometryMappings.forEach { (fieldOfState, geometry) ->
             val targetValue = fieldOfState(update.currentTargetState)
@@ -107,8 +105,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                     dampingRatio = currentSpringSpec.dampingRatio
                 )
             ) {
-                onGeometryUpdated(this)
-                cache.values.forEach { it.updateVisibilityState() }
+                updatePropsVisibility()
                 Logger.log(
                     this@BaseInterpolator.javaClass.simpleName,
                     "Geometry animateTo (Update) – $targetValue"
@@ -173,6 +170,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
+                    updatePropsVisibility()
                     Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry snapTo (Segment): $targetValue")
                 }
 
@@ -182,12 +180,17 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                             stiffness = currentSpringSpec.stiffness,
                             dampingRatio = currentSpringSpec.dampingRatio
                         )) {
+                            updatePropsVisibility()
                             Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun updatePropsVisibility() {
+        cache.values.forEach { it.updateVisibilityState() }
     }
 
     private fun geometryTargetValue(
