@@ -112,6 +112,9 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
         }
     }
 
+    open val isVisible: Boolean
+        get() = true
+
     companion object {
         internal const val MillisToNanos: Long = 1_000_000L
     }

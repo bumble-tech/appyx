@@ -16,6 +16,9 @@ class Scale(
     animatable = Animatable(value, Float.VectorConverter)
 ), Interpolatable<Scale> {
 
+    override val isVisible: Boolean
+        get() = value > 0f
+
     override val modifier: Modifier
         get() = Modifier.composed {
             val value by animatable.asState()

@@ -27,19 +27,19 @@ class BackStackSlider<NavTarget : Any>(
     scope = uiContext.coroutineScope,
 ) {
     private val width = uiContext.transitionBounds.widthDp
+    private val bounds = uiContext.transitionBounds
 
     override fun defaultProps(): Props =
-        Props(screenWidth = uiContext.transitionBounds.widthDp)
+        Props(offset = Offset(DpOffset.Zero, bounds))
 
     data class Props(
-        val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
+        val offset: Offset,
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
-        val screenWidth: Dp
     ) : HasModifier, BaseProps(), Animatable<Props> {
 
         override fun isVisible() =
-            alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
+            alpha.isVisible && offset.isVisible
 
         override val modifier: Modifier
             get() = Modifier
@@ -94,18 +94,15 @@ class BackStackSlider<NavTarget : Any>(
     }
 
     private val outsideLeft = Props(
-        offset = Offset(DpOffset(-width, 0.dp)),
-        screenWidth = width
+        offset = Offset(DpOffset(-width, 0.dp), bounds),
     )
 
     private val outsideRight = Props(
-        offset = Offset(DpOffset(width, 0.dp)),
-        screenWidth = width
+        offset = Offset(DpOffset(width, 0.dp), bounds),
     )
 
     private val noOffset = Props(
-        offset = Offset(DpOffset(0.dp, 0.dp)),
-        screenWidth = width
+        offset = Offset(DpOffset(0.dp, 0.dp), bounds),
     )
 
 

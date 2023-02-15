@@ -26,13 +26,12 @@ import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
+import com.bumble.appyx.transitionmodel.spotlight.interpolator.OffsetP
+import com.bumble.appyx.interactions.core.ui.property.impl.Offset as Offset1
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-
-typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
-
 
 class CardsProps<NavTarget : Any>(
     uiContext: UiContext,
@@ -42,20 +41,15 @@ class CardsProps<NavTarget : Any>(
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
     private val width = uiContext.transitionBounds.widthDp.value
+    private val bounds = uiContext.transitionBounds
 
-    override fun defaultProps(): Props = Props(width = width)
+    override fun defaultProps(): Props = Props(positionalOffsetX = OffsetP(DpOffset.Zero, bounds))
 
     class Props(
+        val positionalOffsetX: Offset1,
         val scale: Scale = Scale(value = 1f),
-        val positionalOffsetX: InterpolatableOffset = InterpolatableOffset(
-            value = DpOffset(
-                0.dp,
-                0.dp
-            )
-        ),
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
-        private val width: Float,
     ) : BaseProps(), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
@@ -120,8 +114,7 @@ class CardsProps<NavTarget : Any>(
         }
 
         override fun isVisible(): Boolean =
-            scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
-                    positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
+            scale.isVisible && positionalOffsetX.isVisible
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
             scope.launch {
@@ -135,45 +128,45 @@ class CardsProps<NavTarget : Any>(
     }
 
     private val hidden = Props(
+        positionalOffsetX = Offset1(DpOffset.Zero, bounds),
         scale = Scale(0f),
-        width = width
     )
 
     private val bottom = Props(
+        positionalOffsetX = Offset1(DpOffset.Zero, bounds),
         scale = Scale(0.85f),
-        width = width
     )
 
     private val top = Props(
+        positionalOffsetX = Offset1(DpOffset.Zero, bounds),
         scale = Scale(1f),
         zIndex = ZIndex(1f),
-        width = width
     )
 
     private val votePass = Props(
-        positionalOffsetX = InterpolatableOffset(
-            DpOffset(
+        positionalOffsetX = Offset1(
+            value = DpOffset(
                 (-voteCardPositionMultiplier * width).dp,
                 0.dp
-            )
+            ),
+            bounds = bounds
         ),
         scale = Scale(1f),
         zIndex = ZIndex(2f),
         rotationZ = RotationZ(-45f),
-        width = width
     )
 
     private val voteLike = Props(
-        positionalOffsetX = InterpolatableOffset(
-            DpOffset(
+        positionalOffsetX = Offset1(
+            value = DpOffset(
                 (voteCardPositionMultiplier * width).dp,
                 0.dp
-            )
+            ),
+            bounds = bounds
         ),
         scale = Scale(1f),
         zIndex = ZIndex(2f),
         rotationZ = RotationZ(45f),
-        width = width
     )
 
     override fun CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {

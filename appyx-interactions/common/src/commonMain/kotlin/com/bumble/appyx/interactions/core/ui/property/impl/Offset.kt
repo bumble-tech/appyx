@@ -13,13 +13,21 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.Interpolator.Companion.lerpDpOffset
+import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Offset(
     value: DpOffset,
+    private val bounds: TransitionBounds,
 ) : AnimatedProperty<DpOffset, AnimationVector2D>(
     animatable = Animatable(value, DpOffset.VectorConverter)
 ), Interpolatable<Offset> {
+
+    override val isVisible: Boolean // TODO also consider element's own width
+        get() = displacedValue.value.x > 0.dp &&
+                displacedValue.value.y > 0.dp &&
+                displacedValue.value.x < bounds.widthDp &&
+                displacedValue.value.y < bounds.heightDp
 
     var displacement: State<DpOffset> =
         mutableStateOf(DpOffset(0.dp, 0.dp))

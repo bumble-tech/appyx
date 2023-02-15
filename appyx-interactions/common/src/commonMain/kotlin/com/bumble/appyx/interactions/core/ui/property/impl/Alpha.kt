@@ -14,6 +14,9 @@ class Alpha(
     animatable = Animatable(value)
 ), Interpolatable<Alpha> {
 
+    override val isVisible: Boolean
+        get() = value > 0f
+
     override val modifier: Modifier
         get() = Modifier.composed {
             this.alpha(animatable.asState().value)
