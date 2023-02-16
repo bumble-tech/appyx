@@ -193,7 +193,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     fun operation(
         operation: Operation<ModelState>,
-        animationSpec: AnimationSpec<Float> = defaultAnimationSpec
+        animationSpec: AnimationSpec<Float>? = null
     ) {
         if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _interpolator?.overrideAnimationSpec(
             animationSpec
@@ -205,7 +205,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(
                 operation
             )
-            else -> animatedSource.operation(operation, animationSpec)
+            else -> animatedSource.operation(operation, animationSpec ?: defaultAnimationSpec)
         }
     }
 
