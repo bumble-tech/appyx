@@ -41,7 +41,6 @@ include(
     ":samples:navmodel-samples",
     ":samples:sandbox",
     ":appyx-interactions:android", ":appyx-interactions:desktop", ":appyx-interactions:common",
-    ":appyx-interactions:android-ui-test",
     ":appyx-navigation"
 )
 
