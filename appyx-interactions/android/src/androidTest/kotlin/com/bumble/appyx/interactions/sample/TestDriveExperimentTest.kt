@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.ui.checks
+package com.bumble.appyx.interactions.sample
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.tween
@@ -9,18 +9,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
-import androidx.test.core.app.takeScreenshot
 import androidx.test.core.graphics.writeToTestStorage
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.NavTarget
-import com.bumble.appyx.interactions.sample.TestDriveUi
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
@@ -61,9 +59,7 @@ class TestDriveExperimentTest {
                     TestDrive(
                         scope = coroutineScope,
                         model = model,
-                        interpolator = {
-                            TestDriveUiModel(it)
-                        },
+                        interpolator = { TestDriveUiModel(it) },
                         progressAnimationSpec = testAnimationSpec,
                         gestureFactory = { TestDriveUiModel.Gestures(it) },
                     )
@@ -85,15 +81,16 @@ class TestDriveExperimentTest {
 
         composeTestRule.mainClock.advanceTimeBy(500)
 
-        takeScreenshot()
+        composeTestRule
+            .onRoot()
+            .captureToImage()
+            .asAndroidBitmap()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
     }
 
     @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
     @Test
     fun testDrive_Drag_To_Middle() = runTest {
-//        composeTestRule.mainClock.autoAdvance = false
-
         var testDrive: TestDrive<NavTarget>? = null
 
         var density: Density? = null
@@ -113,9 +110,7 @@ class TestDriveExperimentTest {
                         scope = coroutineScope,
                         model = model,
                         progressAnimationSpec = testAnimationSpec,
-                        interpolator = {
-                            TestDriveUiModel(it)
-                        },
+                        interpolator = { TestDriveUiModel(it) },
                         gestureFactory = { TestDriveUiModel.Gestures(it) },
                     )
                 }
@@ -135,9 +130,10 @@ class TestDriveExperimentTest {
 
         testDrive!!.onDrag(Offset(x, 0f), density!!)
 
-        composeTestRule.mainClock.advanceTimeBy(1000)
-
-        takeScreenshot()
+        composeTestRule
+            .onRoot()
+            .captureToImage()
+            .asAndroidBitmap()
             .writeToTestStorage("${javaClass.simpleName}_${nameRule.methodName}")
     }
 }
