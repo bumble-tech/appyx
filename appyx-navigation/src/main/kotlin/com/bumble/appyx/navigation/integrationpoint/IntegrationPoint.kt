@@ -18,6 +18,8 @@ abstract class IntegrationPoint(
 
     abstract val permissionRequester: PermissionRequester
 
+    abstract val isChangingConfigurations: Boolean
+
     fun onSaveInstanceState(outState: Bundle) {
         requestCodeRegistry.onSaveInstanceState(outState)
     }
