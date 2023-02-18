@@ -23,6 +23,9 @@ open class ActivityIntegrationPoint(
     override val permissionRequester: PermissionRequester
         get() = permissionRequestBoundary
 
+    override val isChangingConfigurations: Boolean
+        get() = activity.isChangingConfigurations
+
     fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         activityBoundary.onActivityResult(requestCode, resultCode, data)
     }

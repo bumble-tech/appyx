@@ -48,6 +48,7 @@ nav:
       - Lifecycle: apps/lifecycle.md
       - Plugins: apps/plugins.md
       - ChildAware API: apps/childaware.md
+      - Configuration changes: apps/configuration.md
   - FAQ: faq.md
 
 
