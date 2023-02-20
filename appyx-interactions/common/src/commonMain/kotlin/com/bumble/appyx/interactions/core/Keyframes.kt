@@ -84,8 +84,8 @@ data class Keyframes<ModelState>(
         val currentProgress = this.progress.toInt()
         val progress = progress.coerceIn(0f, maxProgress)
         Logger.log("Keyframes", "$progress")
-        progressFlow.value = progress
         segmentProgress.value = progress - currentIndex
+        progressFlow.value = progress
         if (progress.toInt() > currentProgress) {
             Logger.log("Keyframes", "onTransitionFinished()")
             onTransitionFinished(currentSegment.fromState)
