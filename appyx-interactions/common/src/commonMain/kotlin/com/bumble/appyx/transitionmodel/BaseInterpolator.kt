@@ -19,8 +19,10 @@ import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import androidx.compose.animation.core.Animatable as Animatable1
@@ -116,7 +118,8 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
     override fun mapSegment(
         segment: Segment<ModelState>,
-        segmentProgress: StateFlow<Float>
+        segmentProgress: Flow<Float>,
+        initialProgress: Float
     ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
@@ -124,7 +127,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
         scope.launch {
             segmentProgress.collect {
-                updateGeometry(segment, segmentProgress.value)
+                updateGeometry(segment, it)
             }
         }
 
@@ -133,13 +136,13 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
             val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
-            elementProps.lerpTo(scope, t0.props, t1.props, segmentProgress.value)
+            elementProps.lerpTo(scope, t0.props, t1.props, initialProgress)
 
             FrameModel(
                 visibleState = elementProps.visibilityState,
                 navElement = t1.element,
                 animationContainer = @Composable {
-                    interpolatedProps(segmentProgress, elementProps, t0, t1)
+                    interpolatedProps(segmentProgress, elementProps, t0, t1, initialProgress)
                 },
                 modifier = elementProps.modifier,
                 progress = segmentProgress,
@@ -149,12 +152,13 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
     @Composable
     private fun interpolatedProps(
-        segmentProgress: StateFlow<Float>,
+        segmentProgress: Flow<Float>,
         elementProps: Props,
         from: MatchedProps<NavTarget, Props>,
-        to: MatchedProps<NavTarget, Props>
+        to: MatchedProps<NavTarget, Props>,
+        initialProgress: Float
     ) {
-        val progress by segmentProgress.collectAsState(segmentProgress.value)
+        val progress by segmentProgress.collectAsState(initialProgress)
         LaunchedEffect(progress) {
             elementProps.lerpTo(scope, from.props, to.props, progress)
         }
@@ -165,21 +169,33 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         segmentProgress: Float
     ) {
         geometryMappings.forEach { (fieldOfState, geometry) ->
-            val (behaviour, targetValue) = geometryTargetValue(segment, segmentProgress, fieldOfState)
+            val (behaviour, targetValue) = geometryTargetValue(
+                segment,
+                segmentProgress,
+                fieldOfState
+            )
 
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
-                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry snapTo (Segment): $targetValue")
+                    Logger.log(
+                        this@BaseInterpolator.javaClass.simpleName,
+                        "Geometry snapTo (Segment): $targetValue"
+                    )
                 }
 
                 GeometryBehaviour.ANIMATE -> {
                     if (geometry.value != targetValue) {
-                        geometry.animateTo(targetValue, spring(
-                            stiffness = currentSpringSpec.stiffness,
-                            dampingRatio = currentSpringSpec.dampingRatio
-                        )) {
-                            Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
+                        geometry.animateTo(
+                            targetValue, spring(
+                                stiffness = currentSpringSpec.stiffness,
+                                dampingRatio = currentSpringSpec.dampingRatio
+                            )
+                        ) {
+                            Logger.log(
+                                this@BaseInterpolator.javaClass.simpleName,
+                                "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
+                            )
                         }
                     }
                 }
