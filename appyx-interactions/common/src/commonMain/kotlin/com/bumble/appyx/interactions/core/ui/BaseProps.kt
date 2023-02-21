@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.update
 
 abstract class BaseProps {
 
-    private val _visibilityState = MutableStateFlow(true)
-    val visibilityState: StateFlow<Boolean> = _visibilityState
+    private val _visibilityState by lazy { MutableStateFlow(isVisible()) }
+    val visibilityState: StateFlow<Boolean>  by lazy {  _visibilityState }
 
     fun updateVisibilityState() {
         _visibilityState.update {

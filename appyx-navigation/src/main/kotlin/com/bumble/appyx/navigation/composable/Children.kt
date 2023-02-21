@@ -11,7 +11,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.layout.boundsInRoot
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.InteractionModel
@@ -50,12 +53,22 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
     Box(
         modifier = modifier
             .fillMaxSize()
-            .onSizeChanged {
+            .composed {
+                val clipToBounds by interactionModel.clipToBounds.collectAsState(initial = false)
+                if (clipToBounds) {
+                    clipToBounds()
+                } else {
+                    Modifier
+                }
+            }
+            .onGloballyPositioned {
                 interactionModel.updateContext(
                     UiContext(
                         TransitionBounds(
                             density = density,
-                            widthPx = it.width, heightPx = it.height,
+                            widthPx = it.size.width,
+                            heightPx = it.size.height,
+                            containerBoundsInRoot = it.boundsInRoot(),
                             screenWidthPx = screenWidthPx,
                             screenHeightPx = screenHeightPx
                         ),

@@ -69,7 +69,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                 navElement = t1.element,
                 modifier = elementProps.modifier,
                 animationContainer = @Composable {
-                    LaunchedEffect(update) {
+                    LaunchedEffect(update, this) {
                         scope.launch {
                             if (update.animate) {
                                 elementProps.animateTo(
@@ -165,23 +165,35 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         segmentProgress: Float
     ) {
         geometryMappings.forEach { (fieldOfState, geometry) ->
-            val (behaviour, targetValue) = geometryTargetValue(segment, segmentProgress, fieldOfState)
+            val (behaviour, targetValue) = geometryTargetValue(
+                segment,
+                segmentProgress,
+                fieldOfState
+            )
 
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
                     updatePropsVisibility()
-                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry snapTo (Segment): $targetValue")
+                    Logger.log(
+                        this@BaseInterpolator.javaClass.simpleName,
+                        "Geometry snapTo (Segment): $targetValue"
+                    )
                 }
 
                 GeometryBehaviour.ANIMATE -> {
                     if (geometry.value != targetValue) {
-                        geometry.animateTo(targetValue, spring(
-                            stiffness = currentSpringSpec.stiffness,
-                            dampingRatio = currentSpringSpec.dampingRatio
-                        )) {
+                        geometry.animateTo(
+                            targetValue, spring(
+                                stiffness = currentSpringSpec.stiffness,
+                                dampingRatio = currentSpringSpec.dampingRatio
+                            )
+                        ) {
                             updatePropsVisibility()
-                            Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
+                            Logger.log(
+                                this@BaseInterpolator.javaClass.simpleName,
+                                "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
+                            )
                         }
                     }
                 }
