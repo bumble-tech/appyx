@@ -69,7 +69,7 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
                 if (clipToBounds) {
                     clipToBounds()
                 } else {
-                    Modifier
+                    this
                 }
             }
             .onGloballyPositioned {
