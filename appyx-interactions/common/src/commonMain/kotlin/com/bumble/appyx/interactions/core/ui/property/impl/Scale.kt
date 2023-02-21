@@ -13,10 +13,12 @@ import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Scale(
     value: Float,
-    easing: Easing? = null
+    easing: Easing? = null,
+    visibilityThreshold: Float = 0.01f
 ) : AnimatedProperty<Float, AnimationVector1D>(
     animatable = Animatable(value, Float.VectorConverter),
-    easing = easing
+    easing = easing,
+    visibilityThreshold = visibilityThreshold
 ), Interpolatable<Scale> {
 
     override val modifier: Modifier

@@ -18,10 +18,12 @@ import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class Offset(
     value: DpOffset,
-    easing: Easing? = null
+    easing: Easing? = null,
+    visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp)
 ) : AnimatedProperty<DpOffset, AnimationVector2D>(
     animatable = Animatable(value, DpOffset.VectorConverter),
-    easing = easing
+    easing = easing,
+    visibilityThreshold = visibilityThreshold
 ), Interpolatable<Offset> {
 
     var displacement: State<DpOffset> =

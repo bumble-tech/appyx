@@ -13,10 +13,12 @@ import androidx.compose.ui.graphics.lerp as lerpColor
 
 class BackgroundColor(
     value: Color,
-    easing: Easing? = null
+    easing: Easing? = null,
+    visibilityThreshold: Color = Color(1, 1, 1, 1)
 ) : AnimatedProperty<Color, AnimationVector4D>(
     animatable = Animatable(value, Color.VectorConverter(value.colorSpace)),
-    easing = easing
+    easing = easing,
+    visibilityThreshold = visibilityThreshold
 ), Interpolatable<BackgroundColor> {
 
     override val modifier: Modifier
@@ -25,7 +27,11 @@ class BackgroundColor(
         }
 
     override suspend fun lerpTo(start: BackgroundColor, end: BackgroundColor, fraction: Float) {
-        snapTo(lerpColor(start.value, end.value, easingTransform(end.easing, fraction)))
+        snapTo(lerpColor(
+            start = start.value,
+            stop = end.value,
+            fraction = easingTransform(end.easing, fraction)
+        ))
     }
 
 }

@@ -13,10 +13,12 @@ import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
 class RotationZ(
     value: Float,
-    easing: Easing? = null
+    easing: Easing? = null,
+    visibilityThreshold: Float = 1f
 ) : AnimatedProperty<Float, AnimationVector1D>(
     animatable = Animatable(value, Float.VectorConverter),
-    easing = easing
+    easing = easing,
+    visibilityThreshold = visibilityThreshold
 ), Interpolatable<RotationZ> {
 
     override val modifier: Modifier
