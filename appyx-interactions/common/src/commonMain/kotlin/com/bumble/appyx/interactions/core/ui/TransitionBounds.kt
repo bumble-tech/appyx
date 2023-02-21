@@ -22,4 +22,4 @@ data class TransitionBounds(
     val containerOffsetY = with(density) { containerBoundsInRoot.topLeft.y.toDp() }
 }
 
-val defaultTransitionBounds  = TransitionBounds(Density(0f), 0, 0, 0, 0, Rect(0f, 0f, 0f, 0f))
+val zeroSizeTransitionBounds  = TransitionBounds(Density(0f), 0, 0, 0, 0, Rect(0f, 0f, 0f, 0f))

@@ -20,7 +20,7 @@ import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.UiContextAware
-import com.bumble.appyx.interactions.core.ui.defaultTransitionBounds
+import com.bumble.appyx.interactions.core.ui.zeroSizeTransitionBounds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -52,11 +52,11 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var _interpolator: Interpolator<NavTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
-        gestureFactory(defaultTransitionBounds)
+        gestureFactory(zeroSizeTransitionBounds)
 
     private var animationChangesJob: Job? = null
 
-    private var transitionBounds: TransitionBounds = defaultTransitionBounds
+    private var transitionBounds: TransitionBounds = zeroSizeTransitionBounds
         set(value) {
             if (value != field) {
                 Logger.log("InteractionModel", "TransitionBounds changed: $value")
