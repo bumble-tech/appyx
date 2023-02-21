@@ -4,12 +4,15 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
@@ -50,6 +53,14 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
     val coroutineScope = rememberCoroutineScope()
     val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
     val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
+    var uiContext by remember { mutableStateOf<UiContext?>(null) }
+
+    LaunchedEffect(uiContext) {
+        val uiContext = uiContext
+        if (uiContext != null) {
+            interactionModel.updateContext(uiContext)
+        }
+    }
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -62,18 +73,16 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
                 }
             }
             .onGloballyPositioned {
-                interactionModel.updateContext(
-                    UiContext(
-                        TransitionBounds(
-                            density = density,
-                            widthPx = it.size.width,
-                            heightPx = it.size.height,
-                            containerBoundsInRoot = it.boundsInRoot(),
-                            screenWidthPx = screenWidthPx,
-                            screenHeightPx = screenHeightPx
-                        ),
-                        coroutineScope
-                    )
+                uiContext = UiContext(
+                    TransitionBounds(
+                        density = density,
+                        widthPx = it.size.width,
+                        heightPx = it.size.height,
+                        containerBoundsInRoot = it.boundsInRoot(),
+                        screenWidthPx = screenWidthPx,
+                        screenHeightPx = screenHeightPx
+                    ),
+                    coroutineScope
                 )
             }
     ) {
