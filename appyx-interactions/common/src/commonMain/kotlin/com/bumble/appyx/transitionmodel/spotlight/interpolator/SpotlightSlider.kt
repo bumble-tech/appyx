@@ -40,7 +40,7 @@ typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 class SpotlightSlider<NavTarget : Any>(
     uiContext: UiContext,
-    override val clipToBounds: Boolean = true,
+    override val clipToBounds: Boolean = false,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
     scope = uiContext.coroutineScope
