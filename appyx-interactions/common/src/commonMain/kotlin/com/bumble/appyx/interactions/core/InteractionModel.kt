@@ -8,6 +8,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.core.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.interactions.core.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
@@ -41,11 +43,15 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val model: TransitionModel<NavTarget, ModelState>,
     private val interpolator: (UiContext) -> Interpolator<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
+    private val backPressStrategy: BackPressHandlerStrategy<NavTarget, ModelState> = DontHandleBackPress(),
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
 ) : Draggable, UiContextAware {
+    init {
+        backPressStrategy.init(this, model)
+    }
 
     private var interpolatorObserverJob: Job? = null
     private var _interpolator: Interpolator<NavTarget, ModelState>? = null
@@ -262,7 +268,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         debug?.setNormalisedProgress(progress)
     }
 
-    open fun handleBackNavigation(): Boolean = false
+    open fun handleBackNavigation(): Boolean = backPressStrategy.handleUpNavigation()
 
-    open fun canHandeBackNavigation(): Flow<Boolean> = MutableStateFlow(false)
+    open fun canHandeBackNavigation(): Flow<Boolean> = backPressStrategy.canHandleBackPress
 }
