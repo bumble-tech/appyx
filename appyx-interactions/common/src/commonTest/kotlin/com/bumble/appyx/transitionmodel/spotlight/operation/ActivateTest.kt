@@ -22,7 +22,6 @@ class ActivateTest {
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
             activeIndex = 0f,
-            extraWindow = 0
         )
 
         val activate = Activate<NavTarget>(0f)
@@ -37,8 +36,7 @@ class ActivateTest {
                 Position(elements = mapOf(Child1.asElement() to STANDARD)),
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
-            activeIndex = 0f,
-            extraWindow = 0
+            activeIndex = 0f
         )
 
         val activate = Activate<NavTarget>(2f)
@@ -54,8 +52,7 @@ class ActivateTest {
                 Position(elements = mapOf(Child2.asElement() to STANDARD)),
                 Position(elements = mapOf(Child3.asElement() to STANDARD)),
             ),
-            activeIndex = 0f,
-            extraWindow = 0
+            activeIndex = 0f
         )
 
         val activate = Activate<NavTarget>(1f)
