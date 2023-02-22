@@ -19,8 +19,7 @@ class FirstTest {
                 Position(elements = mapOf(Child1.asElement() to STANDARD)),
                 Position(elements = mapOf(Child2.asElement() to STANDARD))
             ),
-            activeIndex = 1f,
-            activeWindow = 1f
+            activeIndex = 1f
         )
         val first = First<NavTarget>()
 
