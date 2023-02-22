@@ -15,6 +15,7 @@ import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.MatchedProps
+import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import kotlinx.coroutines.CoroutineScope
@@ -223,7 +224,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         // will be different for the targetValue.
         // This means that the Segment was specifically created to interpolate the geometry value (probably a gesture)
         // and that it's important to follow the interpolation by snapping.
-        else GeometryBehaviour.SNAP to Interpolator.lerpFloat(fromValue, targetValue, segmentProgress)
+        else GeometryBehaviour.SNAP to lerpFloat(fromValue, targetValue, segmentProgress)
     }
 
     private enum class GeometryBehaviour {

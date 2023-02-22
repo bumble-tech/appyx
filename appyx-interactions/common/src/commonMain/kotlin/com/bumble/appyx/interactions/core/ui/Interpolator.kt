@@ -63,17 +63,4 @@ interface Interpolator<NavTarget, ModelState> {
     fun mapUpdate(
         update: Update<ModelState>
     ): List<FrameModel<NavTarget>>
-
-    // TODO extract along with other interpolation helpers
-    companion object {
-        fun lerpFloat(start: Float, end: Float, progress: Float): Float =
-            start + progress * (end - start)
-
-        fun lerpDpOffset(start: DpOffset, end: DpOffset, progress: Float): DpOffset =
-            DpOffset(lerp(start.x, end.x, progress), lerp(start.y, end.y, progress))
-
-        fun lerpDp(start: Dp, end: Dp, progress: Float): Dp =
-            Dp(lerpFloat(start.value, end.value, progress))
-
-    }
 }

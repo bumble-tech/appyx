@@ -1,6 +1,7 @@
 plugins {
     id("org.jetbrains.compose")
     id("com.android.application")
+    id("appyx-screenshots")
     kotlin("android")
 }
 
@@ -28,5 +29,7 @@ dependencies {
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+
     debugImplementation(libs.compose.ui.test.manifest)
 }
