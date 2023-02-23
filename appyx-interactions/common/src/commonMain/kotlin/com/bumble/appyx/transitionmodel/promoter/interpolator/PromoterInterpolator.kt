@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.promoter.interpolator
 
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -9,17 +8,18 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.cos
@@ -35,6 +35,9 @@ class PromoterInterpolator<NavTarget : Any>(
     private val halfWidthDp = (transitionBounds.widthDp.value - childSize.value) / 2
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
+
+    override val finishedAnimations: Flow<NavElement<NavTarget>>
+        get() = TODO("Not yet implemented")
 
     // TODO migrate to baseInterpolator
     data class Props(
@@ -174,7 +177,9 @@ class PromoterInterpolator<NavTarget : Any>(
         }
     }
 
-    override fun mapUpdate(update: Update<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(
+        update: Update<PromoterModel.State<NavTarget>>
+    ): List<FrameModel<NavTarget>> {
         TODO("Not yet implemented")
     }
 }

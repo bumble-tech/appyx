@@ -75,6 +75,9 @@ class CardsModel<NavTarget : Any>(
 
     override val initialState: State<NavTarget> = getInitialState(initialItems)
 
+    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>): State<NavTarget> =
+        copy(votedCards = votedCards.filterNot { it == navElement })
+
     override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
         copy(votedCards = emptyList())
 

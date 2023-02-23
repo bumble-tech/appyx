@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.zIndex
+import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
@@ -19,7 +20,7 @@ class ZIndex(
     animatable = Animatable(value, Float.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold
-), Interpolatable<ZIndex> {
+), Interpolatable<ZIndex>, Comparable<ZIndex> {
 
     override val modifier: Modifier
         get() = Modifier.composed {
@@ -34,4 +35,6 @@ class ZIndex(
             progress = easingTransform(end.easing, fraction)
         ))
     }
+
+    override fun isEqualTo(other: ZIndex) = value == other.value
 }

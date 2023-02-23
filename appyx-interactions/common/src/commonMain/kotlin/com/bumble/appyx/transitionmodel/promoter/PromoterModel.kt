@@ -45,6 +45,9 @@ class PromoterModel<NavTarget : Any>(
     override val initialState: State<NavTarget> =
         State(elements = listOf())
 
+    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>): State<NavTarget> =
+        copy(elements.filterNot { it.first == navElement && it.second == DESTROYED })
+
     override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
         copy(
             this.elements.filter { pair -> pair.second != DESTROYED }

@@ -23,6 +23,8 @@ interface TransitionModel<NavTarget, ModelState> {
 
     fun onAnimationFinished()
 
+    fun onAnimationFinished(navElement: NavElement<NavTarget>)
+
     fun operation(
         operation: Operation<ModelState>,
         overrideMode: Operation.Mode? = null

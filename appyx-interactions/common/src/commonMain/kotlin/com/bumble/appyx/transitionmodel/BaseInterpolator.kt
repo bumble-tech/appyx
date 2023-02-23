@@ -9,6 +9,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Comparable
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -19,6 +21,8 @@ import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -28,7 +32,7 @@ import androidx.compose.animation.core.Animatable as Animatable1
 abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     private val scope: CoroutineScope,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
+) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props>, Props : Comparable<Props> {
 
     private val propsCache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
@@ -39,6 +43,9 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         emptyList()
 
 
+    private val _finishedAnimations = MutableSharedFlow<NavElement<NavTarget>>()
+    override val finishedAnimations: Flow<NavElement<NavTarget>> = _finishedAnimations
+
     abstract fun defaultProps(): Props
 
     override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
@@ -48,14 +55,11 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
 
-    fun updateAnimationState(key: String, isAnimating: Boolean) {
-        animations[key] = isAnimating
-        this.isAnimating.update { isAnimating || animations.any { it.value } }
-    }
-
     abstract fun ModelState.toProps(): List<MatchedProps<NavTarget, Props>>
 
-    override fun mapUpdate(update: Update<ModelState>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(
+        update: Update<ModelState>
+    ): List<FrameModel<NavTarget>> {
         val targetProps = update.currentTargetState.toProps()
 
         scope.launch {
@@ -73,18 +77,13 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                     LaunchedEffect(update, this) {
                         scope.launch {
                             if (update.animate) {
+                                onAnimationStarted(elementProps, t1)
                                 elementProps.animateTo(
                                     scope = this,
                                     props = t1.props,
                                     springSpec = currentSpringSpec,
-                                    onStart = {
-                                        updateAnimationState(t1.element.id, true)
-                                    },
-                                    onFinished = {
-                                        updateAnimationState(t1.element.id, false)
-                                        currentSpringSpec = defaultAnimationSpec
-                                    },
                                 )
+                                onAnimationFinished(elementProps, t1)
                             } else {
                                 elementProps.snapTo(this, t1.props)
                             }
@@ -94,6 +93,40 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                 progress = MutableStateFlow(1f),
             )
         }
+    }
+
+    private fun onAnimationStarted(
+        elementProps: Props,
+        targetProps: MatchedProps<NavTarget, Props>
+    ) {
+        val isStarted = animations.getOrDefault(targetProps.element.id, false)
+        if (elementProps.isEqualTo(targetProps.props).not() && !isStarted) {
+            Logger.log(
+                this@BaseInterpolator.javaClass.simpleName,
+                "animation started for element ${targetProps.element.id.substring(0..4)}"
+            )
+            animations[targetProps.element.id] = true
+        }
+        this.isAnimating.update { true }
+    }
+
+    private fun onAnimationFinished(
+        elementProps: Props,
+        targetProps: MatchedProps<NavTarget, Props>
+    ) {
+        val isStarted = animations.getOrDefault(targetProps.element.id, false)
+        if (elementProps.isEqualTo(targetProps.props) && isStarted) {
+            Logger.log(
+                this@BaseInterpolator.javaClass.simpleName,
+                "animation finished for element ${targetProps.element.id.substring(0..4)}"
+            )
+            animations[targetProps.element.id] = false
+            scope.launch {
+                _finishedAnimations.emit(targetProps.element)
+            }
+        }
+        currentSpringSpec = defaultAnimationSpec
+        this.isAnimating.update { animations.any { it.value } }
     }
 
     private suspend fun updateGeometry(update: Update<ModelState>) {

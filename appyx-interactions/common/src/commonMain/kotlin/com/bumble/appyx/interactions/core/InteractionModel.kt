@@ -55,6 +55,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         gestureFactory(zeroSizeTransitionBounds)
 
     private var animationChangesJob: Job? = null
+    private var animationFinishedJob: Job? = null
 
     private var transitionBounds: TransitionBounds = zeroSizeTransitionBounds
         set(value) {
@@ -111,6 +112,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
                     } else {
                         onAnimationsStarted()
                     }
+                }
+        }
+        animationFinishedJob?.cancel()
+        animationFinishedJob = scope.launch {
+            interpolator.finishedAnimations
+                .collect {
+                    Logger.log("InteractionModel", "$it onAnimation finished")
+                    model.onAnimationFinished(it)
                 }
         }
     }

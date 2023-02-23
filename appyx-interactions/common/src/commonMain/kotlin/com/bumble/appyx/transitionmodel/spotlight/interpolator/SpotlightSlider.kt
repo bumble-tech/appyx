@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -67,7 +68,7 @@ class SpotlightSlider<NavTarget : Any>(
         private val containerWidth: Dp,
         private val screenWidth: Dp,
         private val transitionBounds: TransitionBounds
-    ) : BaseProps(), HasModifier, Animatable<Props> {
+    ) : BaseProps(), HasModifier, Animatable<Props>, Comparable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -88,11 +89,8 @@ class SpotlightSlider<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
             scope.launch {
-                onStart()
                 listOf(
                     scope.async {
                         offset.animateTo(
@@ -115,7 +113,6 @@ class SpotlightSlider<NavTarget : Any>(
                         }
                     }
                 ).awaitAll()
-                onFinished()
             }
         }
 
@@ -147,6 +144,11 @@ class SpotlightSlider<NavTarget : Any>(
                 updateVisibilityState()
             }
         }
+
+        override fun isEqualTo(other: Props) =
+            offset.isEqualTo(other.offset) &&
+                    alpha.isEqualTo(other.alpha) &&
+                    scale.isEqualTo(other.scale)
     }
 
     override fun defaultProps(): Props = Props(

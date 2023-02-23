@@ -8,6 +8,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.GestureFactory
@@ -43,7 +44,7 @@ class TestDriveUiModel<NavTarget : Any>(
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-    ) : HasModifier, BaseProps(), Animatable<Props> {
+    ) : HasModifier, BaseProps(), Animatable<Props>, Comparable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -62,10 +63,7 @@ class TestDriveUiModel<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
-            onStart()
             listOf(
                 scope.async {
                     offset.animateTo(
@@ -84,7 +82,6 @@ class TestDriveUiModel<NavTarget : Any>(
                     }
                 }
             ).awaitAll()
-            onFinished()
         }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
@@ -96,6 +93,10 @@ class TestDriveUiModel<NavTarget : Any>(
         }
 
         override fun isVisible() = true
+
+        override fun isEqualTo(other: Props) =
+            offset.isEqualTo(other.offset) &&
+                    backgroundColor.isEqualTo(other.backgroundColor)
     }
 
     companion object {
@@ -145,8 +146,8 @@ class TestDriveUiModel<NavTarget : Any>(
             delta: androidx.compose.ui.geometry.Offset,
             density: Density
         ): Gesture<NavTarget, TestDriveModel.State<NavTarget>> {
-            val width = with (density) { width.toPx() }
-            val height = with (density) { height.toPx() }
+            val width = with(density) { width.toPx() }
+            val height = with(density) { height.toPx() }
 
             return if (abs(delta.x) > abs(delta.y)) {
                 if (delta.x < 0) {

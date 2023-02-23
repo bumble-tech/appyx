@@ -9,6 +9,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -56,7 +57,7 @@ class CardsProps<NavTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         private val width: Float,
-    ) : BaseProps(), HasModifier, Animatable<Props> {
+    ) : BaseProps(), HasModifier, Animatable<Props>, Comparable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -79,10 +80,7 @@ class CardsProps<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
-            onStart()
             listOf(
                 scope.async {
                     scale.animateTo(
@@ -116,7 +114,6 @@ class CardsProps<NavTarget : Any>(
                         updateVisibilityState()
                     }
                 }).awaitAll()
-            onFinished()
         }
 
         override fun isVisible(): Boolean =
@@ -132,6 +129,12 @@ class CardsProps<NavTarget : Any>(
                 updateVisibilityState()
             }
         }
+
+        override fun isEqualTo(other: Props) =
+            scale.isEqualTo(other.scale) &&
+                    positionalOffsetX.isEqualTo(other.positionalOffsetX) &&
+                    rotationZ.isEqualTo(other.rotationZ) &&
+                    zIndex.isEqualTo(other.zIndex)
     }
 
     private val hidden = Props(

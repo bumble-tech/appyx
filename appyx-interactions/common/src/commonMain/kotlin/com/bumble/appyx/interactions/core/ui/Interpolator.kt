@@ -1,10 +1,8 @@
 package com.bumble.appyx.interactions.core.ui
 
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.lerp
 import com.bumble.appyx.interactions.core.Keyframes
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
@@ -18,6 +16,8 @@ interface Interpolator<NavTarget, ModelState> {
 
     val clipToBounds: Boolean
         get() = false
+
+    val finishedAnimations: Flow<NavElement<NavTarget>>
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseInterpolator
@@ -41,7 +41,9 @@ interface Interpolator<NavTarget, ModelState> {
             is Update -> MutableStateFlow(mapUpdate(output))
         }
 
-    fun mapOutput(output: TransitionModel.Output<ModelState>) =
+    fun mapOutput(
+        output: TransitionModel.Output<ModelState>
+    ) =
         when (output) {
             is Keyframes -> mapKeyframes(output)
             is Update -> mapUpdate(output)

@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
+import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
@@ -19,7 +20,7 @@ class RotationZ(
     animatable = Animatable(value, Float.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold
-), Interpolatable<RotationZ> {
+), Interpolatable<RotationZ>, Comparable<RotationZ> {
 
     override val modifier: Modifier
         get() = Modifier.composed {
@@ -29,11 +30,15 @@ class RotationZ(
             }
         }
 
+    override fun isEqualTo(other: RotationZ) = value == other.value
+
     override suspend fun lerpTo(start: RotationZ, end: RotationZ, fraction: Float) {
-        snapTo(lerpFloat(
-            start = start.value,
-            end = end.value,
-            progress = easingTransform(end.easing, fraction)
-        ))
+        snapTo(
+            lerpFloat(
+                start = start.value,
+                end = end.value,
+                progress = easingTransform(end.easing, fraction)
+            )
+        )
     }
 }

@@ -7,12 +7,13 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.AnimationVector3D
 import androidx.compose.animation.core.AnimationVector4D
-import androidx.compose.animation.core.SpringSpec
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.property.Property
+
 abstract class AnimatedProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>,
     protected val easing: Easing? = null,

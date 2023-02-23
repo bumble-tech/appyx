@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.UiContext
@@ -36,7 +37,7 @@ class BackStackSlider<NavTarget : Any>(
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
         val screenWidth: Dp
-    ) : HasModifier, BaseProps(), Animatable<Props> {
+    ) : HasModifier, BaseProps(), Animatable<Props>, Comparable<Props> {
 
         override fun isVisible() =
             alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
@@ -50,8 +51,6 @@ class BackStackSlider<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
             // FIXME this should match the own animationSpec of the model (which can also be supplied
             //  from operation extension methods) rather than created here
@@ -59,7 +58,6 @@ class BackStackSlider<NavTarget : Any>(
                 stiffness = Spring.StiffnessVeryLow / 5,
                 dampingRatio = Spring.DampingRatioLowBouncy,
             )
-            onStart()
             val a1 = scope.async {
                 offset.animateTo(
                     props.offset.value,
@@ -73,7 +71,6 @@ class BackStackSlider<NavTarget : Any>(
                 ) { updateVisibilityState() }
             }
             awaitAll(a1, a2)
-            onFinished()
         }
 
         override suspend fun snapTo(scope: CoroutineScope, props: Props) {
@@ -91,6 +88,9 @@ class BackStackSlider<NavTarget : Any>(
                 updateVisibilityState()
             }
         }
+
+        override fun isEqualTo(other: Props) =
+            offset.isEqualTo(other.offset) && alpha.isEqualTo(other.alpha)
     }
 
     private val outsideLeft = Props(

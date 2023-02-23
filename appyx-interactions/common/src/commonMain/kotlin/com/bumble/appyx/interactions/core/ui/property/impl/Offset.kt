@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.Easing
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.State
@@ -13,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.helper.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
@@ -24,7 +24,7 @@ class Offset(
     animatable = Animatable(value, DpOffset.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold
-), Interpolatable<Offset> {
+), Interpolatable<Offset>, Comparable<Offset> {
 
     var displacement: State<DpOffset> =
         mutableStateOf(DpOffset(0.dp, 0.dp))
@@ -47,12 +47,17 @@ class Offset(
             )
         }
 
+    override fun isEqualTo(other: Offset) =
+        value.x == other.value.x && value.y == other.value.y
+
     override suspend fun lerpTo(start: Offset, end: Offset, fraction: Float) {
-        snapTo(lerpDpOffset(
-            start = start.value,
-            end = end.value,
-            progress = easingTransform(end.easing, fraction)
-        ))
+        snapTo(
+            lerpDpOffset(
+                start = start.value,
+                end = end.value,
+                progress = easingTransform(end.easing, fraction)
+            )
+        )
     }
 
 }

@@ -55,8 +55,31 @@ class SpotlightModel<NavTarget : Any>(
             activeIndex = initialActiveIndex
         )
 
-    // TODO support removing destroyed elements
-    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> = this
+    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>): State<NavTarget> {
+        val newPositions = positions.map { position ->
+            val newElements = position
+                .elements
+                .filterNot { mapEntry ->
+                    mapEntry.key == navElement && mapEntry.value == DESTROYED
+                }
+
+            position.copy(elements = newElements)
+        }
+        return copy(positions = newPositions)
+    }
+
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget>  {
+        val newPositions = positions.map { position ->
+            val newElements = position
+                .elements
+                .filterNot { mapEntry ->
+                    mapEntry.value == DESTROYED
+                }
+
+            position.copy(elements = newElements)
+        }
+        return copy(positions = newPositions)
+    }
 
     override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
         positions

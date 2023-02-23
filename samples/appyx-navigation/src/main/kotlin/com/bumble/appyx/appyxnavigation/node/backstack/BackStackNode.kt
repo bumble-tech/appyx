@@ -24,7 +24,6 @@ import com.bumble.appyx.appyxnavigation.ui.TextButton
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -104,7 +103,7 @@ class BackStackNode(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(text = "Push") {
-                    backStack.push(NavTarget.Child(Random.nextInt(20)))
+                    backStack.push(NavTarget.Child(Random.nextInt(20)), Operation.Mode.IMMEDIATE)
                 }
                 TextButton(text = "Pop") {
                     backStack.pop()
