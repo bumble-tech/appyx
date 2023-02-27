@@ -74,6 +74,10 @@ class TestDriveExperimentTest {
             }
         }
 
+        // TODO extract to setup method
+        // this is needed to initialise uiContext update which happens on the next frame
+        composeTestRule.mainClock.advanceTimeBy(100)
+
         testDrive!!.operation(
             operation = Next(KEYFRAME),
             animationSpec = testAnimationSpec

@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.map
 
 interface Interpolator<NavTarget, ModelState> {
 
+    val clipToBounds: Boolean
+        get() = false
+
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseInterpolator
     }
