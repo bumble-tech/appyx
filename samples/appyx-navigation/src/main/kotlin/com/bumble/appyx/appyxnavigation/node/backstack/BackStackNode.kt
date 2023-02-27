@@ -22,7 +22,6 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.ui.TextButton
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
-import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.navigation.composable.Children
@@ -103,7 +102,7 @@ class BackStackNode(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(text = "Push") {
-                    backStack.push(NavTarget.Child(Random.nextInt(20)), Operation.Mode.IMMEDIATE)
+                    backStack.push(NavTarget.Child(Random.nextInt(20)))
                 }
                 TextButton(text = "Pop") {
                     backStack.pop()

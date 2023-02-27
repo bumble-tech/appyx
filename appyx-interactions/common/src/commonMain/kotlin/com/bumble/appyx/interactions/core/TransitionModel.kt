@@ -21,9 +21,9 @@ interface TransitionModel<NavTarget, ModelState> {
 
     fun availableElements(): StateFlow<Set<NavElement<NavTarget>>>
 
-    fun onAnimationFinished()
+    fun relaxExecutionMode()
 
-    fun onAnimationFinished(navElement: NavElement<NavTarget>)
+    fun cleanUpElement(navElement: NavElement<NavTarget>)
 
     fun operation(
         operation: Operation<ModelState>,

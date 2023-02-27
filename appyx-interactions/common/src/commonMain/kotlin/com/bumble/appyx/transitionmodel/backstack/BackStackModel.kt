@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.backstack
 
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.SavedStateMap
@@ -52,13 +51,8 @@ class BackStackModel<NavTarget : Any>(
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
         destroyed.toSet()
 
-    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>): State<NavTarget> {
-        Logger.log("BackStackModel", "before $this")
-
-        val newState = copy(destroyed = destroyed.filterNot { it == navElement })
-        Logger.log("BackStackModel", "after $newState")
-        return newState
-    }
+    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>): State<NavTarget> =
+        copy(destroyed = destroyed.filterNot { it == navElement })
 
     override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
         copy(destroyed = emptyList())

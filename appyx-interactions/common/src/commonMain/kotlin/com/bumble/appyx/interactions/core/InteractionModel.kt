@@ -119,7 +119,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
             interpolator.finishedAnimations
                 .collect {
                     Logger.log("InteractionModel", "$it onAnimation finished")
-                    model.onAnimationFinished(it)
+                    model.cleanUpElement(it)
                 }
         }
     }
@@ -229,7 +229,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     private fun onAnimationsFinished() {
         isAnimating = false
-        model.onAnimationFinished()
+        model.relaxExecutionMode()
     }
 
     override fun onStartDrag(position: Offset) {

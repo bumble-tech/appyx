@@ -49,13 +49,13 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
 
     private var enforcedMode: Operation.Mode? = null
 
-    override fun onAnimationFinished() {
+    override fun relaxExecutionMode() {
         Logger.log("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
         removeDestroyedElements()
     }
 
-    override fun onAnimationFinished(navElement: NavElement<NavTarget>) {
+    override fun cleanUpElement(navElement: NavElement<NavTarget>) {
         state.getAndUpdate { output ->
             when (output) {
                 is Update<ModelState> -> output.copy(

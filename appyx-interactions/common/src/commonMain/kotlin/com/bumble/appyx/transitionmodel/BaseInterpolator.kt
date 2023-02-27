@@ -103,7 +103,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         if (elementProps.isEqualTo(targetProps.props).not() && !isStarted) {
             Logger.log(
                 this@BaseInterpolator.javaClass.simpleName,
-                "animation started for element ${targetProps.element.id.substring(0..4)}"
+                "Animation started for element ${targetProps.element.id}"
             )
             animations[targetProps.element.id] = true
         }
