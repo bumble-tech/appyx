@@ -43,6 +43,7 @@ interface Interpolator<NavTarget, ModelState> {
             keyframes.currentSegment,
             keyframes.getSegmentProgress(segmentIndex),
             keyframes.progress.toSegmentProgress(segmentIndex)
+                ?: throw IllegalStateException("Segment progress should be in bounds")
         )
 
     fun mapSegment(
