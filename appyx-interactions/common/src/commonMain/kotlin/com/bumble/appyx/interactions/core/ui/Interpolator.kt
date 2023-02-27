@@ -1,17 +1,14 @@
 package com.bumble.appyx.interactions.core.ui
 
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.lerp
 import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
+import com.bumble.appyx.interactions.core.toSegmentProgress
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 
 interface Interpolator<NavTarget, ModelState> {
@@ -36,28 +33,26 @@ interface Interpolator<NavTarget, ModelState> {
         when (output) {
             is Keyframes -> {
                 //Produce new frame model every time we switch segments
-                output.currentIndexFlow.distinctUntilChanged().map { mapKeyframes(output) }
+                output.currentIndexFlow.map { mapKeyframes(output, it) }
             }
             is Update -> MutableStateFlow(mapUpdate(output))
         }
 
-    fun mapOutput(output: TransitionModel.Output<ModelState>) =
-        when (output) {
-            is Keyframes -> mapKeyframes(output)
-            is Update -> mapUpdate(output)
-        }
-
     fun mapKeyframes(
-        keyframes: Keyframes<ModelState>
+        keyframes: Keyframes<ModelState>,
+        segmentIndex: Int
     ): List<FrameModel<NavTarget>> =
         mapSegment(
             keyframes.currentSegment,
-            keyframes.segmentProgress
+            keyframes.getSegmentProgress(segmentIndex),
+            keyframes.progress.toSegmentProgress(segmentIndex)
+                ?: throw IllegalStateException("Segment progress should be in bounds")
         )
 
     fun mapSegment(
         segment: Segment<ModelState>,
-        segmentProgress: StateFlow<Float>
+        segmentProgress: Flow<Float>,
+        initialProgress: Float
     ): List<FrameModel<NavTarget>>
 
     fun mapUpdate(
