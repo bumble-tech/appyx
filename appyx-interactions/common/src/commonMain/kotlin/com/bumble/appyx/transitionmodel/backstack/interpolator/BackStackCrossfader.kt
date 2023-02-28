@@ -24,7 +24,7 @@ class BackStackCrossfader<NavTarget : Any>(
 
     class Props(
         val alpha: Alpha = Alpha(value = 1f),
-    ) : BaseProps(listOf(alpha.isAnimatingFlow)), HasModifier, Animatable<Props> {
+    ) : BaseProps(listOf(alpha.isAnimating)), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier

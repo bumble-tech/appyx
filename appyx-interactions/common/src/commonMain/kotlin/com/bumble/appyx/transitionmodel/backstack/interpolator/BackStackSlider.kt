@@ -36,7 +36,7 @@ class BackStackSlider<NavTarget : Any>(
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
         val screenWidth: Dp
-    ) : HasModifier, BaseProps(listOf(offset.isAnimatingFlow, alpha.isAnimatingFlow)),
+    ) : HasModifier, BaseProps(listOf(offset.isAnimating, alpha.isAnimating)),
         Animatable<Props> {
 
         override fun isVisible() =

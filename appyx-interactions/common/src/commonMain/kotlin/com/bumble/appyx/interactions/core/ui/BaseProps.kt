@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.update
 
 abstract class BaseProps(isAnimatingFlows: List<Flow<Boolean>>) {
 
-    val isAnimatingFlow: Flow<Boolean> = combine(isAnimatingFlows) { booleanArray ->
+    val isAnimating: Flow<Boolean> = combine(isAnimatingFlows) { booleanArray ->
         booleanArray.any { it }
     }
 

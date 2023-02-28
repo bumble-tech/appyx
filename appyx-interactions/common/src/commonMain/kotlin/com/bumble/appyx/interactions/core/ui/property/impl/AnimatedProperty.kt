@@ -36,7 +36,7 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
         get() = animatable.value
 
     private val _isAnimatingFlow = MutableStateFlow(false)
-    override val isAnimatingFlow: Flow<Boolean>
+    override val isAnimating: Flow<Boolean>
         get() = _isAnimatingFlow
 
     /**

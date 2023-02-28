@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 // TODO better name?
 interface AnimatableHolder<T, V : AnimationVector> {
 
-    val isAnimatingFlow: Flow<Boolean>
+    val isAnimating: Flow<Boolean>
 
     suspend fun snapTo(targetValue: T)
 

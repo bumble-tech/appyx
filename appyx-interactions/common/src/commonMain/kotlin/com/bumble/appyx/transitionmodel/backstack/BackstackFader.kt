@@ -24,7 +24,7 @@ class BackstackFader<NavTarget : Any>(
 
     class Props(
         var alpha: Alpha = Alpha(1f),
-    ) : BaseProps(listOf(alpha.isAnimatingFlow)), Animatable<Props>, HasModifier {
+    ) : BaseProps(listOf(alpha.isAnimating)), Animatable<Props>, HasModifier {
 
         override fun isVisible() =
             alpha.value > 0.0f

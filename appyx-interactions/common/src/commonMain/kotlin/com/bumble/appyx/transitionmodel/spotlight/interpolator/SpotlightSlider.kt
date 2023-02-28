@@ -67,7 +67,7 @@ class SpotlightSlider<NavTarget : Any>(
         private val containerWidth: Dp,
         private val screenWidth: Dp,
         private val transitionBounds: TransitionBounds
-    ) : BaseProps(listOf(offset.isAnimatingFlow, scale.isAnimatingFlow, alpha.isAnimatingFlow)),
+    ) : BaseProps(listOf(offset.isAnimating, scale.isAnimating, alpha.isAnimating)),
         HasModifier, Animatable<Props> {
 
         override val modifier: Modifier

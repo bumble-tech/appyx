@@ -115,7 +115,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             // make sure to use scope created by Launched effect as this scope should be cancelled
             // when associated FrameModel cease to exist
             launch {
-                elementProps.isAnimatingFlow
+                elementProps.isAnimating
                     .distinctUntilChanged()
                     .withPrevious()
                     .collect { values ->

@@ -43,7 +43,7 @@ class TestDriveUiModel<NavTarget : Any>(
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-    ) : HasModifier, BaseProps(listOf(offset.isAnimatingFlow, backgroundColor.isAnimatingFlow)), Animatable<Props> {
+    ) : HasModifier, BaseProps(listOf(offset.isAnimating, backgroundColor.isAnimating)), Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier

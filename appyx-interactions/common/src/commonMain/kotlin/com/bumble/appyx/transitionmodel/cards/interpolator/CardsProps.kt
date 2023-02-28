@@ -56,7 +56,7 @@ class CardsProps<NavTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         private val width: Float,
-    ) : BaseProps(listOf(scale.isAnimatingFlow, positionalOffsetX.isAnimatingFlow)), HasModifier, Animatable<Props> {
+    ) : BaseProps(listOf(scale.isAnimating, positionalOffsetX.isAnimating)), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
