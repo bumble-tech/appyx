@@ -90,6 +90,8 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         update: Update<ModelState>
     ) {
         LaunchedEffect(update, this) {
+            // make sure to use scope created by Launched effect as this scope should be cancelled
+            // when associated FrameModel cease to exist
             launch {
                 if (update.animate) {
                     elementProps.animateTo(
@@ -110,7 +112,8 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         targetProps: MatchedProps<NavTarget, Props>
     ) {
         LaunchedEffect(this) {
-            //
+            // make sure to use scope created by Launched effect as this scope should be cancelled
+            // when associated FrameModel cease to exist
             launch {
                 elementProps.isAnimatingFlow
                     .distinctUntilChanged()
