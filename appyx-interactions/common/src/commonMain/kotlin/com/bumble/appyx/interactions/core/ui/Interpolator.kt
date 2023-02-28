@@ -43,11 +43,10 @@ interface Interpolator<NavTarget, ModelState> {
 
     fun mapOutput(
         output: TransitionModel.Output<ModelState>
-    ) =
-        when (output) {
-            is Keyframes -> mapKeyframes(output)
-            is Update -> mapUpdate(output)
-        }
+    ) = when (output) {
+        is Keyframes -> mapKeyframes(output)
+        is Update -> mapUpdate(output)
+    }
 
     fun mapKeyframes(
         keyframes: Keyframes<ModelState>
