@@ -47,7 +47,7 @@ class PromoterInterpolator<NavTarget : Any>(
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-    ) : BaseProps() {
+    ) : BaseProps(listOf()) {
         override fun isVisible() = true
 
     }

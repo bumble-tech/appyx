@@ -7,7 +7,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.UiContext
@@ -37,7 +36,8 @@ class BackStackSlider<NavTarget : Any>(
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
         val screenWidth: Dp
-    ) : HasModifier, BaseProps(), Animatable<Props>, Comparable<Props> {
+    ) : HasModifier, BaseProps(listOf(offset.isAnimatingFlow, alpha.isAnimatingFlow)),
+        Animatable<Props> {
 
         override fun isVisible() =
             alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
@@ -88,9 +88,6 @@ class BackStackSlider<NavTarget : Any>(
                 updateVisibilityState()
             }
         }
-
-        override fun isEqualTo(other: Props) =
-            offset.isEqualTo(other.offset) && alpha.isEqualTo(other.alpha)
     }
 
     private val outsideLeft = Props(

@@ -3,7 +3,6 @@ package com.bumble.appyx.transitionmodel.backstack
 import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.UiContext
@@ -25,7 +24,7 @@ class BackstackFader<NavTarget : Any>(
 
     class Props(
         var alpha: Alpha = Alpha(1f),
-    ) : BaseProps(), Animatable<Props>, HasModifier, Comparable<Props> {
+    ) : BaseProps(listOf(alpha.isAnimatingFlow)), Animatable<Props>, HasModifier {
 
         override fun isVisible() =
             alpha.value > 0.0f
@@ -59,9 +58,6 @@ class BackstackFader<NavTarget : Any>(
                 updateVisibilityState()
             }
         }
-
-        override fun isEqualTo(other: Props) =
-            alpha.isEqualTo(other.alpha)
     }
 
     private val visible = Props(

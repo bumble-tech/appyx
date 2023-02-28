@@ -6,7 +6,6 @@ import androidx.compose.animation.core.Easing
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
@@ -18,14 +17,12 @@ class Alpha(
     animatable = Animatable(value),
     easing = easing,
     visibilityThreshold = visibilityThreshold
-), Interpolatable<Alpha>, Comparable<Alpha> {
+), Interpolatable<Alpha> {
 
     override val modifier: Modifier
         get() = Modifier.composed {
             this.alpha(animatable.asState().value)
         }
-
-    override fun isEqualTo(other: Alpha) = value == other.value
 
     override suspend fun lerpTo(start: Alpha, end: Alpha, fraction: Float) {
         snapTo(

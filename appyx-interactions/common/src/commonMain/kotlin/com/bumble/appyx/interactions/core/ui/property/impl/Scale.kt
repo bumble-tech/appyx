@@ -8,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
-import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
@@ -20,7 +19,7 @@ class Scale(
     animatable = Animatable(value, Float.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold
-), Interpolatable<Scale>, Comparable<Scale> {
+), Interpolatable<Scale> {
 
     override val modifier: Modifier
         get() = Modifier.composed {
@@ -37,6 +36,4 @@ class Scale(
             )
         )
     }
-
-    override fun isEqualTo(other: Scale) = value == other.value
 }

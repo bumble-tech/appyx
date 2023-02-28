@@ -13,7 +13,6 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import com.bumble.appyx.interactions.core.Comparable
 
 class BackStackCrossfader<NavTarget : Any>(
     scope: CoroutineScope
@@ -25,7 +24,7 @@ class BackStackCrossfader<NavTarget : Any>(
 
     class Props(
         val alpha: Alpha = Alpha(value = 1f),
-    ) : BaseProps(), HasModifier, Animatable<Props>, Comparable<Props> {
+    ) : BaseProps(listOf(alpha.isAnimatingFlow)), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -62,9 +61,6 @@ class BackStackCrossfader<NavTarget : Any>(
         }
 
         override fun isVisible() = alpha.value > 0.0f
-
-        override fun isEqualTo(other: Props) =
-            alpha.isEqualTo(other.alpha)
 
     }
 

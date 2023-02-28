@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.inputsource.Gesture
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.GestureFactory
@@ -44,7 +43,7 @@ class TestDriveUiModel<NavTarget : Any>(
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-    ) : HasModifier, BaseProps(), Animatable<Props>, Comparable<Props> {
+    ) : HasModifier, BaseProps(listOf(offset.isAnimatingFlow, backgroundColor.isAnimatingFlow)), Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -93,10 +92,6 @@ class TestDriveUiModel<NavTarget : Any>(
         }
 
         override fun isVisible() = true
-
-        override fun isEqualTo(other: Props) =
-            offset.isEqualTo(other.offset) &&
-                    backgroundColor.isEqualTo(other.backgroundColor)
     }
 
     companion object {

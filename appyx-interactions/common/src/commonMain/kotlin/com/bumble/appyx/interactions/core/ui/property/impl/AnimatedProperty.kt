@@ -13,11 +13,14 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.property.Property
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
 
 abstract class AnimatedProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>,
     protected val easing: Easing? = null,
-    private val visibilityThreshold: T? = null
+    private val visibilityThreshold: T? = null,
 ) : Property<T, V> {
 
     /**
@@ -29,9 +32,12 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
     private var lastVelocity = animatable.velocity
     private var lastTime = 0L
 
-
     override val value: T
         get() = animatable.value
+
+    private val _isAnimatingFlow = MutableStateFlow(false)
+    override val isAnimatingFlow: Flow<Boolean>
+        get() = _isAnimatingFlow
 
     /**
      * Takes the supplied [Easing] as a priority to transform [fraction].
@@ -114,7 +120,10 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
     ) {
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
         Logger.log("Animatable", "Starting with initialVelocity = $lastVelocity")
-        animatable.animateTo(
+        _isAnimatingFlow.update {
+            targetValue != value
+        }
+        val result = animatable.animateTo(
             targetValue = targetValue,
             animationSpec = animationSpec1,
             initialVelocity = lastVelocity
@@ -125,6 +134,9 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
                 "Value = ${animatable.value}, Velocity = ${animatable.velocity})"
             )
             lastVelocity = animatable.velocity
+        }
+        _isAnimatingFlow.update {
+            result.endState.value != targetValue
         }
     }
 

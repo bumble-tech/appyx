@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.Comparable
 import com.bumble.appyx.interactions.core.ui.helper.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 
@@ -24,7 +23,7 @@ class Offset(
     animatable = Animatable(value, DpOffset.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold
-), Interpolatable<Offset>, Comparable<Offset> {
+), Interpolatable<Offset> {
 
     var displacement: State<DpOffset> =
         mutableStateOf(DpOffset(0.dp, 0.dp))
@@ -46,9 +45,6 @@ class Offset(
                 y = displacedValue.value.y
             )
         }
-
-    override fun isEqualTo(other: Offset) =
-        value.x == other.value.x && value.y == other.value.y
 
     override suspend fun lerpTo(start: Offset, end: Offset, fraction: Float) {
         snapTo(
