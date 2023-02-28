@@ -1,8 +1,11 @@
 package com.bumble.appyx.interactions.core
 
 import com.bumble.appyx.interactions.Logger
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
 data class Keyframes<ModelState>(
@@ -44,7 +47,8 @@ data class Keyframes<ModelState>(
         queue[it].targetState
     }
 
-    val segmentProgress = MutableStateFlow(progressFlow.value - currentIndex)
+    fun getSegmentProgress(segmentIndex: Int): Flow<Float> =
+        progressFlow.map { it.toSegmentProgress(segmentIndex) }.filterNotNull()
 
     val progress: Float
         get() = progressFlow.value
@@ -85,11 +89,17 @@ data class Keyframes<ModelState>(
         val progress = progress.coerceIn(0f, maxProgress)
         Logger.log("Keyframes", "$progress")
         progressFlow.value = progress
-        segmentProgress.value = progress - currentIndex
         if (progress.toInt() > currentProgress) {
             Logger.log("Keyframes", "onTransitionFinished()")
             onTransitionFinished(currentSegment.fromState)
         }
     }
+}
+
+internal fun Float.toSegmentProgress(segmentIndex: Int): Float? {
+    val segmentProgress = this - segmentIndex
+    return if (segmentProgress in 0f..1f) {
+        segmentProgress
+    } else null
 }
 
