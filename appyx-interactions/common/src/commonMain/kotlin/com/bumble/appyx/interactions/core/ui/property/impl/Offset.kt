@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.Easing
-import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.State
@@ -48,11 +47,13 @@ class Offset(
         }
 
     override suspend fun lerpTo(start: Offset, end: Offset, fraction: Float) {
-        snapTo(lerpDpOffset(
-            start = start.value,
-            end = end.value,
-            progress = easingTransform(end.easing, fraction)
-        ))
+        snapTo(
+            lerpDpOffset(
+                start = start.value,
+                end = end.value,
+                progress = easingTransform(end.easing, fraction)
+            )
+        )
     }
 
 }

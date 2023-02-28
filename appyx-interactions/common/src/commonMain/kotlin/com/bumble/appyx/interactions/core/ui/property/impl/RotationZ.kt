@@ -30,10 +30,12 @@ class RotationZ(
         }
 
     override suspend fun lerpTo(start: RotationZ, end: RotationZ, fraction: Float) {
-        snapTo(lerpFloat(
-            start = start.value,
-            end = end.value,
-            progress = easingTransform(end.easing, fraction)
-        ))
+        snapTo(
+            lerpFloat(
+                start = start.value,
+                end = end.value,
+                progress = easingTransform(end.easing, fraction)
+            )
+        )
     }
 }

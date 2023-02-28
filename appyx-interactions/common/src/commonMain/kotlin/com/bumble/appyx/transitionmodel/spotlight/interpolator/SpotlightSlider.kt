@@ -67,7 +67,8 @@ class SpotlightSlider<NavTarget : Any>(
         private val containerWidth: Dp,
         private val screenWidth: Dp,
         private val transitionBounds: TransitionBounds
-    ) : BaseProps(), HasModifier, Animatable<Props> {
+    ) : BaseProps(listOf(offset.isAnimating, scale.isAnimating, alpha.isAnimating)),
+        HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -88,11 +89,8 @@ class SpotlightSlider<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
             scope.launch {
-                onStart()
                 listOf(
                     scope.async {
                         offset.animateTo(
@@ -115,7 +113,6 @@ class SpotlightSlider<NavTarget : Any>(
                         }
                     }
                 ).awaitAll()
-                onFinished()
             }
         }
 

@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.*
@@ -34,6 +35,9 @@ class PromoterInterpolator<NavTarget : Any>(
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
+    override val finishedAnimations: Flow<NavElement<NavTarget>>
+        get() = TODO("Not yet implemented")
+
     // TODO migrate to baseInterpolator
     data class Props(
         val dpOffset: DpOffset,
@@ -42,7 +46,7 @@ class PromoterInterpolator<NavTarget : Any>(
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-    ) : BaseProps() {
+    ) : BaseProps(listOf()) {
         override fun isVisible() = true
 
     }
@@ -173,7 +177,9 @@ class PromoterInterpolator<NavTarget : Any>(
         }
     }
 
-    override fun mapUpdate(update: Update<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(
+        update: Update<PromoterModel.State<NavTarget>>
+    ): List<FrameModel<NavTarget>> {
         TODO("Not yet implemented")
     }
 }

@@ -24,7 +24,7 @@ class BackStackCrossfader<NavTarget : Any>(
 
     class Props(
         val alpha: Alpha = Alpha(value = 1f),
-    ) : BaseProps(), HasModifier, Animatable<Props> {
+    ) : BaseProps(listOf(alpha.isAnimating)), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -41,10 +41,7 @@ class BackStackCrossfader<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
-            onStart()
             val a1 = scope.async {
                 alpha.animateTo(
                     props.alpha.value,
@@ -54,7 +51,6 @@ class BackStackCrossfader<NavTarget : Any>(
                 }
             }
             a1.await()
-            onFinished()
         }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {

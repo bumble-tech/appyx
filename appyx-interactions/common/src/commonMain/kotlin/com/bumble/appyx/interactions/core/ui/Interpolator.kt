@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.core.ui
 
 import androidx.compose.animation.core.SpringSpec
 import com.bumble.appyx.interactions.core.Keyframes
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.Update
@@ -15,6 +16,8 @@ interface Interpolator<NavTarget, ModelState> {
 
     val clipToBounds: Boolean
         get() = false
+
+    val finishedAnimations: Flow<NavElement<NavTarget>>
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseInterpolator

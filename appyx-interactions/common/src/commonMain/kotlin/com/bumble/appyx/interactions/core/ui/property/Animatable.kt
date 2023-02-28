@@ -16,7 +16,5 @@ interface Animatable<T> {
         scope: CoroutineScope,
         props: T,
         springSpec: SpringSpec<Float>,
-        onStart: () -> Unit = {},
-        onFinished: () -> Unit = {}
     )
 }

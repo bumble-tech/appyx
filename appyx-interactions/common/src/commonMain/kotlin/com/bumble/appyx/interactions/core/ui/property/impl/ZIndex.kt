@@ -28,10 +28,12 @@ class ZIndex(
         }
 
     override suspend fun lerpTo(start: ZIndex, end: ZIndex, fraction: Float) {
-        snapTo(lerpFloat(
-            start = start.value,
-            end = end.value,
-            progress = easingTransform(end.easing, fraction)
-        ))
+        snapTo(
+            lerpFloat(
+                start = start.value,
+                end = end.value,
+                progress = easingTransform(end.easing, fraction)
+            )
+        )
     }
 }

@@ -43,7 +43,7 @@ class TestDriveUiModel<NavTarget : Any>(
     class Props(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-    ) : HasModifier, BaseProps(), Animatable<Props> {
+    ) : HasModifier, BaseProps(listOf(offset.isAnimating, backgroundColor.isAnimating)), Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -62,10 +62,7 @@ class TestDriveUiModel<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
-            onStart()
             listOf(
                 scope.async {
                     offset.animateTo(
@@ -84,7 +81,6 @@ class TestDriveUiModel<NavTarget : Any>(
                     }
                 }
             ).awaitAll()
-            onFinished()
         }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
@@ -145,8 +141,8 @@ class TestDriveUiModel<NavTarget : Any>(
             delta: androidx.compose.ui.geometry.Offset,
             density: Density
         ): Gesture<NavTarget, TestDriveModel.State<NavTarget>> {
-            val width = with (density) { width.toPx() }
-            val height = with (density) { height.toPx() }
+            val width = with(density) { width.toPx() }
+            val height = with(density) { height.toPx() }
 
             return if (abs(delta.x) > abs(delta.y)) {
                 if (delta.x < 0) {

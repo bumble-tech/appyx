@@ -27,11 +27,14 @@ class BackgroundColor(
         }
 
     override suspend fun lerpTo(start: BackgroundColor, end: BackgroundColor, fraction: Float) {
-        snapTo(lerpColor(
-            start = start.value,
-            stop = end.value,
-            fraction = easingTransform(end.easing, fraction)
-        ))
+        snapTo(
+            lerpColor(
+                start = start.value,
+                stop = end.value,
+                fraction = easingTransform(end.easing, fraction)
+            )
+        )
     }
+
 
 }

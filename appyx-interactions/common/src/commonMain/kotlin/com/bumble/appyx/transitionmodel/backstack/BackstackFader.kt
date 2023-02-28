@@ -24,7 +24,7 @@ class BackstackFader<NavTarget : Any>(
 
     class Props(
         var alpha: Alpha = Alpha(1f),
-    ) : BaseProps(), Animatable<Props>, HasModifier {
+    ) : BaseProps(listOf(alpha.isAnimating)), Animatable<Props>, HasModifier {
 
         override fun isVisible() =
             alpha.value > 0.0f
@@ -44,15 +44,11 @@ class BackstackFader<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
             scope.launch {
-                onStart()
                 alpha.animateTo(props.alpha.value, springSpec) {
                     updateVisibilityState()
                 }
-                onFinished()
             }
         }
 
