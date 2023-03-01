@@ -14,6 +14,7 @@ import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
 import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
 import com.bumble.appyx.interactions.core.inputsource.Draggable
+import com.bumble.appyx.interactions.core.inputsource.HasDefaultAnimationSpec
 import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
@@ -45,12 +46,12 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val model: TransitionModel<NavTarget, ModelState>,
     private val interpolator: (UiContext) -> Interpolator<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
+    override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val backPressStrategy: BackPressHandlerStrategy<NavTarget, ModelState> = DontHandleBackPress(),
-    val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : Draggable, UiContextAware {
+) : HasDefaultAnimationSpec<Float>, Draggable, UiContextAware {
     init {
         backPressStrategy.init(this, model)
     }
@@ -78,7 +79,8 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
     private val drag = DragProgressInputSource(
         model = model,
-        gestureFactory = { _gestureFactory }
+        gestureFactory = { _gestureFactory },
+        defaultAnimationSpec = defaultAnimationSpec
     )
 
     private val _frames: MutableStateFlow<List<FrameModel<NavTarget>>> =

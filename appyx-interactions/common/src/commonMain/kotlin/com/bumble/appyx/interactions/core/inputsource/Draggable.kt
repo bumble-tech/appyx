@@ -5,7 +5,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 
-interface Draggable {
+interface Draggable : HasDefaultAnimationSpec<Float>{
 
     fun onStartDrag(position: Offset)
 
@@ -13,7 +13,7 @@ interface Draggable {
 
     fun onDragEnd(
         completionThreshold: Float = 0.5f,
-        completeGestureSpec: AnimationSpec<Float> = spring(),
-        revertGestureSpec: AnimationSpec<Float> = spring()
+        completeGestureSpec: AnimationSpec<Float> = defaultAnimationSpec,
+        revertGestureSpec: AnimationSpec<Float> = defaultAnimationSpec
     )
 }
