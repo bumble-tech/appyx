@@ -19,7 +19,7 @@ class Offset(
     value: DpOffset,
     easing: Easing? = null,
     visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp)
-) : AnimatedProperty<DpOffset, AnimationVector2D>(
+) : MotionProperty<DpOffset, AnimationVector2D>(
     animatable = Animatable(value, DpOffset.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold

@@ -15,7 +15,7 @@ class Scale(
     value: Float,
     easing: Easing? = null,
     visibilityThreshold: Float = 0.01f
-) : AnimatedProperty<Float, AnimationVector1D>(
+) : MotionProperty<Float, AnimationVector1D>(
     animatable = Animatable(value, Float.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold

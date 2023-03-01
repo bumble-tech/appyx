@@ -17,18 +17,16 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 
-abstract class AnimatedProperty<T, V : AnimationVector>(
+/**
+ * Keeps a value change in motion by calculating the rate of change of the wrapped Animatable value
+ * even when snapping. This is used to seamlessly switch to animation with a natural initial velocity
+ * rather than zero.
+ */
+abstract class MotionProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>,
     protected val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
 ) : Property<T, V> {
-
-    /**
-     * When in interpolation mode, the Animatable is snapping and doesn't have a concept of velocity.
-     * However, we can calculate it as a difference between the latest two snapped values,
-     * then use it as an initial velocity when switching to animation, so that the animation
-     * starts from a natural speed rather than zero.
-     */
     private var lastVelocity = animatable.velocity
     private var lastTime = 0L
 

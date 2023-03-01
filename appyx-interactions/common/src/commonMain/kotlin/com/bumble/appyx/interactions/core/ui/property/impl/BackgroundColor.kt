@@ -15,7 +15,7 @@ class BackgroundColor(
     value: Color,
     easing: Easing? = null,
     visibilityThreshold: Color = Color(1, 1, 1, 1)
-) : AnimatedProperty<Color, AnimationVector4D>(
+) : MotionProperty<Color, AnimationVector4D>(
     animatable = Animatable(value, Color.VectorConverter(value.colorSpace)),
     easing = easing,
     visibilityThreshold = visibilityThreshold

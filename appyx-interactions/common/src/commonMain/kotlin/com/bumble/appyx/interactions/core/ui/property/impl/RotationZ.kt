@@ -15,7 +15,7 @@ class RotationZ(
     value: Float,
     easing: Easing? = null,
     visibilityThreshold: Float = 1f
-) : AnimatedProperty<Float, AnimationVector1D>(
+) : MotionProperty<Float, AnimationVector1D>(
     animatable = Animatable(value, Float.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold
