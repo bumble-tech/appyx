@@ -30,6 +30,13 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
      * starts from a natural speed rather than zero.
      */
     private var lastVelocity = animatable.velocity
+
+    /**
+     * Contains the previous value of [lastVelocity]. To be used in initial velocity instead of it,
+     * as the values in the last animation frame can jump due to snapping if within threshold of target value,
+     * and that would result in unrealistic speeds.
+     */
+    private var lastVelocity2 = animatable.velocity
     private var lastTime = 0L
 
     override val value: T
@@ -50,6 +57,7 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
     }
 
     override suspend fun snapTo(targetValue: T) {
+        lastVelocity2 = lastVelocity
         lastVelocity = calculateVelocity(targetValue)
         animatable.snapTo(targetValue)
     }
@@ -119,14 +127,14 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
         block: (Animatable<T, V>.() -> Unit)
     ) {
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
-        Logger.log("Animatable", "Starting with initialVelocity = $lastVelocity")
+        Logger.log("Animatable", "Starting with initialVelocity = $lastVelocity2")
         _isAnimatingFlow.update {
             targetValue != value
         }
         val result = animatable.animateTo(
             targetValue = targetValue,
             animationSpec = animationSpec1,
-            initialVelocity = lastVelocity
+            initialVelocity = lastVelocity2
         ) {
             block(this)
             Logger.log(
@@ -134,6 +142,7 @@ abstract class AnimatedProperty<T, V : AnimationVector>(
                 "Value = ${animatable.value}, Velocity = ${animatable.velocity})"
             )
             lastVelocity = animatable.velocity
+            lastVelocity2 = animatable.velocity
         }
         _isAnimatingFlow.update {
             result.endState.value != targetValue
