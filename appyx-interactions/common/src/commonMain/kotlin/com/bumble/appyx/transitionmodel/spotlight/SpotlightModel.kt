@@ -9,8 +9,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 
 class SpotlightModel<NavTarget : Any>(
     items: List<NavTarget>,
-    initialActiveIndex: Float = 0f,
-    initialActiveWindow: Float = 1f,
+    initialActiveIndex: Float = 0f
 //    savedStateMap: SavedStateMap?,
 //    key: String = KEY_NAV_MODEL,
 //    backPressHandler: BackPressHandlerStrategy<NavTarget, State> = GoToDefault(
@@ -29,8 +28,7 @@ class SpotlightModel<NavTarget : Any>(
 
     data class State<NavTarget>(
         val positions: List<Position<NavTarget>>,
-        val activeIndex: Float,
-        val activeWindow: Float
+        val activeIndex: Float
     ) {
         data class Position<NavTarget>(
             val elements: Map<NavElement<NavTarget>, ElementState> = mapOf()
@@ -54,12 +52,34 @@ class SpotlightModel<NavTarget : Any>(
                     elements = mapOf(it.asElement() to STANDARD)
                 )
             },
-            activeIndex = initialActiveIndex,
-            activeWindow = initialActiveWindow
+            activeIndex = initialActiveIndex
         )
 
-    // TODO support removing destroyed elements
-    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> = this
+    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>): State<NavTarget> {
+        val newPositions = positions.map { position ->
+            val newElements = position
+                .elements
+                .filterNot { mapEntry ->
+                    mapEntry.key == navElement && mapEntry.value == DESTROYED
+                }
+
+            position.copy(elements = newElements)
+        }
+        return copy(positions = newPositions)
+    }
+
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget>  {
+        val newPositions = positions.map { position ->
+            val newElements = position
+                .elements
+                .filterNot { mapEntry ->
+                    mapEntry.value == DESTROYED
+                }
+
+            position.copy(elements = newElements)
+        }
+        return copy(positions = newPositions)
+    }
 
     override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
         positions

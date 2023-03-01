@@ -25,6 +25,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
 
     abstract fun ModelState.removeDestroyedElements(): ModelState
 
+    abstract fun ModelState.removeDestroyedElement(navElement: NavElement<NavTarget>): ModelState
+
     abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
 
     override fun availableElements(): StateFlow<Set<NavElement<NavTarget>>> =
@@ -47,10 +49,21 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
 
     private var enforcedMode: Operation.Mode? = null
 
-    override fun onAnimationFinished() {
+    override fun relaxExecutionMode() {
         Logger.log("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
         removeDestroyedElements()
+    }
+
+    override fun cleanUpElement(navElement: NavElement<NavTarget>) {
+        state.getAndUpdate { output ->
+            when (output) {
+                is Update<ModelState> -> output.copy(
+                    currentTargetState = output.currentTargetState.removeDestroyedElement(navElement)
+                )
+                is Keyframes -> output
+            }
+        }
     }
 
     private fun removeDestroyedElements() {
@@ -101,7 +114,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         return when (val currentState = state.value) {
             is Keyframes -> {
                 with(currentState) {
-                    val past = if (currentIndex > 0) queue.subList(0, currentIndex - 1) else emptyList()
+                    val past =
+                        if (currentIndex > 0) queue.subList(0, currentIndex - 1) else emptyList()
                     val remaining = queue.subList(currentIndex, queue.lastIndex + 1)
 
                     if (remaining.all { operation.isApplicable(it.targetState) }) {
@@ -122,7 +136,10 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                         updateState(newState)
                         true
                     } else {
-                        Logger.log(TAG, "Operation $operation is not applicable on one or more queued states: $remaining")
+                        Logger.log(
+                            TAG,
+                            "Operation $operation is not applicable on one or more queued states: $remaining"
+                        )
                         false
                     }
                 }
@@ -135,7 +152,10 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
                     updateState(newState)
                     true
                 }
-                Logger.log(TAG, "Operation $operation is not applicable on states: $currentState.currentTargetState")
+                Logger.log(
+                    TAG,
+                    "Operation $operation is not applicable on states: $currentState.currentTargetState"
+                )
                 false
             }
         }
@@ -182,8 +202,8 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
             is Keyframes -> {
                 val newState = Update(
                     currentTargetState = when (direction) {
-                        SettleDirection.REVERT -> currentState.currentSegment.fromState
-                        SettleDirection.COMPLETE -> currentState.currentSegment.targetState
+                        SettleDirection.REVERT -> currentState.currentSegment.fromState.removeDestroyedElements()
+                        SettleDirection.COMPLETE -> currentState.currentSegment.targetState.removeDestroyedElements()
                     },
                     animate = animate
                 )

@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -18,9 +19,13 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
+import com.bumble.appyx.withPrevious
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import androidx.compose.animation.core.Animatable as Animatable1
@@ -30,7 +35,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
 ) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
 
-    private val cache: MutableMap<String, Props> = mutableMapOf()
+    private val propsCache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
     private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
     protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
@@ -38,6 +43,9 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     open val geometryMappings: List<Pair<(ModelState) -> Float, Animatable1<Float, AnimationVector1D>>> =
         emptyList()
 
+
+    private val _finishedAnimations = MutableSharedFlow<NavElement<NavTarget>>()
+    override val finishedAnimations: Flow<NavElement<NavTarget>> = _finishedAnimations
 
     abstract fun defaultProps(): Props
 
@@ -48,14 +56,11 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
 
-    fun updateAnimationState(key: String, isAnimating: Boolean) {
-        animations[key] = isAnimating
-        this.isAnimating.update { isAnimating || animations.any { it.value } }
-    }
-
     abstract fun ModelState.toProps(): List<MatchedProps<NavTarget, Props>>
 
-    override fun mapUpdate(update: Update<ModelState>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(
+        update: Update<ModelState>
+    ): List<FrameModel<NavTarget>> {
         val targetProps = update.currentTargetState.toProps()
 
         scope.launch {
@@ -64,35 +69,78 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
-            val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
+            val elementProps = propsCache.getOrPut(t1.element.id) { defaultProps() }
             FrameModel(
                 visibleState = elementProps.visibilityState,
                 navElement = t1.element,
                 modifier = elementProps.modifier,
                 animationContainer = @Composable {
-                    LaunchedEffect(update) {
-                        scope.launch {
-                            if (update.animate) {
-                                elementProps.animateTo(
-                                    scope = this,
-                                    props = t1.props,
-                                    springSpec = currentSpringSpec,
-                                    onStart = {
-                                        updateAnimationState(t1.element.id, true)
-                                    },
-                                    onFinished = {
-                                        updateAnimationState(t1.element.id, false)
-                                        currentSpringSpec = defaultAnimationSpec
-                                    },
-                                )
-                            } else {
-                                elementProps.snapTo(this, t1.props)
-                            }
-                        }
-                    }
+                    observeElementAnimationChanges(elementProps, t1)
+                    manageAnimations(elementProps, t1, update)
                 },
                 progress = MutableStateFlow(1f),
             )
+        }
+    }
+
+    @Composable
+    private fun manageAnimations(
+        elementProps: Props,
+        targetProps: MatchedProps<NavTarget, Props>,
+        update: Update<ModelState>
+    ) {
+        LaunchedEffect(update, this) {
+            // make sure to use scope created by Launched effect as this scope should be cancelled
+            // when associated FrameModel cease to exist
+            launch {
+                if (update.animate) {
+                    elementProps.animateTo(
+                        scope = this,
+                        props = targetProps.props,
+                        springSpec = currentSpringSpec,
+                    )
+                } else {
+                    elementProps.snapTo(this, targetProps.props)
+                }
+            }
+        }
+    }
+
+    @Composable
+    private fun observeElementAnimationChanges(
+        elementProps: Props,
+        targetProps: MatchedProps<NavTarget, Props>
+    ) {
+        LaunchedEffect(this) {
+            // make sure to use scope created by Launched effect as this scope should be cancelled
+            // when associated FrameModel cease to exist
+            launch {
+                elementProps.isAnimating
+                    .distinctUntilChanged()
+                    .withPrevious()
+                    .collect { values ->
+                        val previous = values.previous ?: return@collect
+                        val current = values.current
+                        if (current && !previous) {
+                            // animation started
+                            animations[targetProps.element.id] = true
+                            isAnimating.update { true }
+                            Logger.log(
+                                this@BaseInterpolator.javaClass.simpleName,
+                                "animation for element ${targetProps.element.id} is started"
+                            )
+                        } else {
+                            // animation finished
+                            _finishedAnimations.emit(targetProps.element)
+                            animations[targetProps.element.id] = false
+                            isAnimating.update { animations.any { it.value } }
+                            Logger.log(
+                                this@BaseInterpolator.javaClass.simpleName,
+                                "animation for element ${targetProps.element.id} is finished"
+                            )
+                        }
+                    }
+            }
         }
     }
 
@@ -106,6 +154,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                     dampingRatio = currentSpringSpec.dampingRatio
                 )
             ) {
+                updatePropsVisibility()
                 Logger.log(
                     this@BaseInterpolator.javaClass.simpleName,
                     "Geometry animateTo (Update) – $targetValue"
@@ -116,7 +165,8 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
     override fun mapSegment(
         segment: Segment<ModelState>,
-        segmentProgress: StateFlow<Float>
+        segmentProgress: Flow<Float>,
+        initialProgress: Float
     ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
@@ -124,22 +174,22 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
         scope.launch {
             segmentProgress.collect {
-                updateGeometry(segment, segmentProgress.value)
+                updateGeometry(segment, it)
             }
         }
 
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val elementProps = cache.getOrPut(t1.element.id) { defaultProps() }
+            val elementProps = propsCache.getOrPut(t1.element.id) { defaultProps() }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
-            elementProps.lerpTo(scope, t0.props, t1.props, segmentProgress.value)
+            elementProps.lerpTo(scope, t0.props, t1.props, initialProgress)
 
             FrameModel(
                 visibleState = elementProps.visibilityState,
                 navElement = t1.element,
                 animationContainer = @Composable {
-                    interpolatedProps(segmentProgress, elementProps, t0, t1)
+                    interpolatedProps(segmentProgress, elementProps, t0, t1, initialProgress)
                 },
                 modifier = elementProps.modifier,
                 progress = segmentProgress,
@@ -149,12 +199,13 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
 
     @Composable
     private fun interpolatedProps(
-        segmentProgress: StateFlow<Float>,
+        segmentProgress: Flow<Float>,
         elementProps: Props,
         from: MatchedProps<NavTarget, Props>,
-        to: MatchedProps<NavTarget, Props>
+        to: MatchedProps<NavTarget, Props>,
+        initialProgress: Float
     ) {
-        val progress by segmentProgress.collectAsState(segmentProgress.value)
+        val progress by segmentProgress.collectAsState(initialProgress)
         LaunchedEffect(progress) {
             elementProps.lerpTo(scope, from.props, to.props, progress)
         }
@@ -165,26 +216,44 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
         segmentProgress: Float
     ) {
         geometryMappings.forEach { (fieldOfState, geometry) ->
-            val (behaviour, targetValue) = geometryTargetValue(segment, segmentProgress, fieldOfState)
+            val (behaviour, targetValue) = geometryTargetValue(
+                segment,
+                segmentProgress,
+                fieldOfState
+            )
 
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
-                    Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry snapTo (Segment): $targetValue")
+                    updatePropsVisibility()
+                    Logger.log(
+                        this@BaseInterpolator.javaClass.simpleName,
+                        "Geometry snapTo (Segment): $targetValue"
+                    )
                 }
 
                 GeometryBehaviour.ANIMATE -> {
                     if (geometry.value != targetValue) {
-                        geometry.animateTo(targetValue, spring(
-                            stiffness = currentSpringSpec.stiffness,
-                            dampingRatio = currentSpringSpec.dampingRatio
-                        )) {
-                            Logger.log(this@BaseInterpolator.javaClass.simpleName, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
+                        geometry.animateTo(
+                            targetValue, spring(
+                                stiffness = currentSpringSpec.stiffness,
+                                dampingRatio = currentSpringSpec.dampingRatio
+                            )
+                        ) {
+                            updatePropsVisibility()
+                            Logger.log(
+                                this@BaseInterpolator.javaClass.simpleName,
+                                "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
+                            )
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun updatePropsVisibility() {
+        propsCache.values.forEach { it.updateVisibilityState() }
     }
 
     private fun geometryTargetValue(

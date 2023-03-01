@@ -22,6 +22,7 @@ import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.interactions.core.ui.UiContextAware
+import com.bumble.appyx.interactions.core.ui.zeroSizeTransitionBounds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -33,6 +34,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -57,11 +59,12 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var _interpolator: Interpolator<NavTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
-        gestureFactory(TransitionBounds(Density(0f), 0, 0))
+        gestureFactory(zeroSizeTransitionBounds)
 
     private var animationChangesJob: Job? = null
+    private var animationFinishedJob: Job? = null
 
-    private var transitionBounds: TransitionBounds = TransitionBounds(Density(0f), 0, 0)
+    private var transitionBounds: TransitionBounds = zeroSizeTransitionBounds
         set(value) {
             if (value != field) {
                 Logger.log("InteractionModel", "TransitionBounds changed: $value")
@@ -86,6 +89,9 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val _screenState: MutableStateFlow<ScreenState<NavTarget>> =
         MutableStateFlow(ScreenState(offScreen = model.availableElements().value))
     val screenState: StateFlow<ScreenState<NavTarget>> = _screenState
+
+    private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val clipToBounds: StateFlow<Boolean> = _clipToBounds
 
 
     init {
@@ -113,6 +119,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
                     } else {
                         onAnimationsStarted()
                     }
+                }
+        }
+        animationFinishedJob?.cancel()
+        animationFinishedJob = scope.launch {
+            interpolator.finishedAnimations
+                .collect {
+                    Logger.log("InteractionModel", "$it onAnimation finished")
+                    model.cleanUpElement(it)
                 }
         }
     }
@@ -156,6 +170,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     private fun onInterpolatorReady(interpolator: Interpolator<NavTarget, ModelState>) {
+        _clipToBounds.update { interpolator.clipToBounds }
         observeAnimationChanges(interpolator)
         observeInterpolator(interpolator)
     }
@@ -167,7 +182,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         interpolatorObserverJob = scope.launch {
             model
                 .output
-                .flatMapLatest { interpolator.mapCore(it) }
+                .flatMapLatest { interpolator.map(it) }
                 .flatMapLatest { frames ->
                     val frameVisibilityFlows = frames.map { frame ->
                         frame.visibleState
@@ -221,7 +236,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     private fun onAnimationsFinished() {
         isAnimating = false
-        model.onAnimationFinished()
+        model.relaxExecutionMode()
     }
 
     override fun onStartDrag(position: Offset) {

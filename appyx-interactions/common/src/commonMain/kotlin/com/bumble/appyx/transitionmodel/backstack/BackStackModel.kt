@@ -51,6 +51,9 @@ class BackStackModel<NavTarget : Any>(
     override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
         destroyed.toSet()
 
+    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>): State<NavTarget> =
+        copy(destroyed = destroyed.filterNot { it == navElement })
+
     override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
         copy(destroyed = emptyList())
 

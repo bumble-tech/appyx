@@ -28,10 +28,12 @@ class Scale(
         }
 
     override suspend fun lerpTo(start: Scale, end: Scale, fraction: Float) {
-        snapTo(lerpFloat(
-            start = start.value,
-            end = end.value,
-            progress = easingTransform(end.easing, fraction)
-        ))
+        snapTo(
+            lerpFloat(
+                start = start.value,
+                end = end.value,
+                progress = easingTransform(end.easing, fraction)
+            )
+        )
     }
 }

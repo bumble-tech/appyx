@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.promoter.interpolator
 
-import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -9,19 +8,19 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.Segment
 import com.bumble.appyx.interactions.core.Update
 import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.roundToInt
@@ -36,6 +35,9 @@ class PromoterInterpolator<NavTarget : Any>(
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
+    override val finishedAnimations: Flow<NavElement<NavTarget>>
+        get() = TODO("Not yet implemented")
+
     // TODO migrate to baseInterpolator
     data class Props(
         val dpOffset: DpOffset,
@@ -44,7 +46,7 @@ class PromoterInterpolator<NavTarget : Any>(
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-    ) : BaseProps() {
+    ) : BaseProps(listOf()) {
         override fun isVisible() = true
 
     }
@@ -108,7 +110,8 @@ class PromoterInterpolator<NavTarget : Any>(
 
     override fun mapSegment(
         segment: Segment<PromoterModel.State<NavTarget>>,
-        segmentProgress: StateFlow<Float>
+        segmentProgress: Flow<Float>,
+        initialProgress: Float
     ): List<FrameModel<NavTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
@@ -122,7 +125,7 @@ class PromoterInterpolator<NavTarget : Any>(
                 visibleState = MutableStateFlow(value = true),
                 navElement = t1.element,
                 modifier = Modifier.composed {
-                    val segmentProgress by segmentProgress.collectAsState(segmentProgress.value)
+                    val segmentProgress by segmentProgress.collectAsState(initialProgress)
                     val angleRadians0 = Math.toRadians(t0.props.angleDegrees.toDouble() - 90)
                     val angleRadians1 = Math.toRadians(t1.props.angleDegrees.toDouble() - 90)
 
@@ -174,7 +177,9 @@ class PromoterInterpolator<NavTarget : Any>(
         }
     }
 
-    override fun mapUpdate(update: Update<PromoterModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+    override fun mapUpdate(
+        update: Update<PromoterModel.State<NavTarget>>
+    ): List<FrameModel<NavTarget>> {
         TODO("Not yet implemented")
     }
 }

@@ -33,23 +33,26 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 import androidx.compose.animation.core.Animatable as Animatable1
 
 typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 class SpotlightSlider<NavTarget : Any>(
     uiContext: UiContext,
-    val activeWindow: Float,
+    override val clipToBounds: Boolean = false,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
     scope = uiContext.coroutineScope
 ) {
+    private val screenWidth = uiContext.transitionBounds.screenWidthDp
+    private val transitionBounds = uiContext.transitionBounds
     private val width = uiContext.transitionBounds.widthDp
     private val height = uiContext.transitionBounds.heightDp
     private val scroll = Animatable1(0f) // TODO sync this with the model's initial value
 
     override val geometryMappings: List<Pair<(SpotlightModel.State<NavTarget>) -> Float, Animatable1<Float, AnimationVector1D>>> =
-            listOf(
+        listOf(
             { state: SpotlightModel.State<NavTarget> -> state.activeIndex } to scroll
         )
 
@@ -60,12 +63,12 @@ class SpotlightSlider<NavTarget : Any>(
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
-        val scrollValue: () -> Float,
-        private val width: Dp,
-        private val activeWindow: Float
-    ) : BaseProps(), HasModifier, Animatable<Props> {
-
-        private val activeWindowOffset = (activeWindow * width.value).dp
+        val clipToBounds: Boolean,
+        private val containerWidth: Dp,
+        private val screenWidth: Dp,
+        private val transitionBounds: TransitionBounds
+    ) : BaseProps(listOf(offset.isAnimating, scale.isAnimating, alpha.isAnimating)),
+        HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -86,11 +89,8 @@ class SpotlightSlider<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
             scope.launch {
-                onStart()
                 listOf(
                     scope.async {
                         offset.animateTo(
@@ -113,12 +113,30 @@ class SpotlightSlider<NavTarget : Any>(
                         }
                     }
                 ).awaitAll()
-                onFinished()
             }
         }
 
-        // TODO fix with displacement is ready
-        override fun isVisible(): Boolean = true
+        override fun isVisible(): Boolean {
+            val leftEdgeOffsetDp = offset.displacedValue.value.x.value.roundToInt()
+            val rightEdgeOffsetDp = leftEdgeOffsetDp + containerWidth.value.roundToInt()
+            val visibleWindowLeftEdge = calculatedWindowLeftEdge(clipToBounds)
+            val visibleWindowRightEdge = calculateWindowRightEdge()
+            return (rightEdgeOffsetDp <= visibleWindowLeftEdge || leftEdgeOffsetDp >= visibleWindowRightEdge).not()
+        }
+
+        private fun calculateWindowRightEdge() = if (clipToBounds) {
+            containerWidth.value.roundToInt()
+        } else {
+            (screenWidth - transitionBounds.containerOffsetX).value.roundToInt()
+        }
+
+        private fun calculatedWindowLeftEdge(clipToBounds: Boolean): Int {
+            return if (clipToBounds) {
+                0
+            } else {
+                -transitionBounds.containerOffsetX.value.roundToInt()
+            }
+        }
 
         override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
             scope.launch {
@@ -134,39 +152,34 @@ class SpotlightSlider<NavTarget : Any>(
                 DpOffset((scroll.value * width.value).dp, 0.dp)
             }
         },
-        scrollValue = { scroll.value },
-        width = width,
-        activeWindow = activeWindow
+        screenWidth = screenWidth,
+        containerWidth = width,
+        clipToBounds = clipToBounds,
+        transitionBounds = transitionBounds
     )
 
-    private val created = Props(
+    private val created = defaultProps().copy(
         offset = OffsetP(DpOffset(0.dp, width)),
         scale = Scale(0f),
         alpha = Alpha(1f),
         zIndex = 0f,
         aspectRatio = 1f,
-        scrollValue = { scroll.value },
-        width = width,
-        activeWindow = activeWindow
+        screenWidth = width
     )
 
-    private val standard = Props(
+    private val standard = defaultProps().copy(
         offset = OffsetP(DpOffset.Zero),
-        scrollValue = { scroll.value },
-        width = width,
-        activeWindow = activeWindow
+        screenWidth = width
     )
 
-    private val destroyed = Props(
+    private val destroyed = defaultProps().copy(
         offset = OffsetP(DpOffset(0.dp, -width)),
         scale = Scale(0f),
         alpha = Alpha(0f),
         zIndex = -1f,
         aspectRatio = 1f,
         rotation = 360f,
-        scrollValue = { scroll.value },
-        width = width,
-        activeWindow = activeWindow
+        screenWidth = width
     )
 
     override fun SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
@@ -187,9 +200,10 @@ class SpotlightSlider<NavTarget : Any>(
                         zIndex = target.zIndex,
                         rotation = target.rotation,
                         aspectRatio = target.aspectRatio,
-                        scrollValue = { scroll.value },
-                        width = width,
-                        activeWindow = activeWindow
+                        screenWidth = width,
+                        containerWidth = width,
+                        clipToBounds = clipToBounds,
+                        transitionBounds = transitionBounds
                     )
                 )
             }

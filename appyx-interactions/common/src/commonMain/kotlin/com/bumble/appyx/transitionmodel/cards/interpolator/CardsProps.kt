@@ -56,7 +56,7 @@ class CardsProps<NavTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         private val width: Float,
-    ) : BaseProps(), HasModifier, Animatable<Props> {
+    ) : BaseProps(listOf(scale.isAnimating, positionalOffsetX.isAnimating)), HasModifier, Animatable<Props> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -79,10 +79,7 @@ class CardsProps<NavTarget : Any>(
             scope: CoroutineScope,
             props: Props,
             springSpec: SpringSpec<Float>,
-            onStart: () -> Unit,
-            onFinished: () -> Unit
         ) {
-            onStart()
             listOf(
                 scope.async {
                     scale.animateTo(
@@ -116,7 +113,6 @@ class CardsProps<NavTarget : Any>(
                         updateVisibilityState()
                     }
                 }).awaitAll()
-            onFinished()
         }
 
         override fun isVisible(): Boolean =

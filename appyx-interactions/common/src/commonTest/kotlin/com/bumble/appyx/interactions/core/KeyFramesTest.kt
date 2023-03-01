@@ -228,8 +228,8 @@ class KeyFramesTest {
 
         keyFrames.setProgress(2f) {}
 
-        assertEquals(1f, keyFrames.segmentProgress.value)
         assertEquals(1, keyFrames.currentIndex)
+        assertEquals(1f, keyFrames.progress.toSegmentProgress(keyFrames.currentIndex))
     }
 
     @Test
@@ -253,7 +253,7 @@ class KeyFramesTest {
 
         keyFrames.setProgress(1f) {}
 
-        assertEquals(0f, keyFrames.segmentProgress.value)
+        assertEquals(0f, keyFrames.progress.toSegmentProgress(keyFrames.currentIndex))
         assertEquals(1, keyFrames.currentIndex)
     }
 }
