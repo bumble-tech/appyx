@@ -28,11 +28,6 @@ interface Interpolator<NavTarget, ModelState> {
     fun map(
         output: TransitionModel.Output<ModelState>
     ): Flow<List<FrameModel<NavTarget>>> =
-        mapCore(output)
-
-    fun mapCore(
-        output: TransitionModel.Output<ModelState>
-    ): Flow<List<FrameModel<NavTarget>>> =
         when (output) {
             is Keyframes -> {
                 //Produce new frame model every time we switch segments
