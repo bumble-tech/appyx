@@ -8,7 +8,8 @@ import com.bumble.appyx.interactions.core.Keyframes
 import com.bumble.appyx.interactions.core.TransitionModel
 import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.COMPLETE
 import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.REVERT
-import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.Gesture
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 class DragProgressController<NavTarget : Any, State>(
     private val model: TransitionModel<NavTarget, State>,

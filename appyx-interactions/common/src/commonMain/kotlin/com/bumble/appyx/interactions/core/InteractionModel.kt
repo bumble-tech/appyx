@@ -16,7 +16,7 @@ import com.bumble.appyx.interactions.core.progress.DragProgressController
 import com.bumble.appyx.interactions.core.progress.Draggable
 import com.bumble.appyx.interactions.core.progress.InstantInputSource
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds

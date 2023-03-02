@@ -4,7 +4,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.backpresshandlerstrategies.BackPressHandlerStrategy
-import com.bumble.appyx.interactions.core.ui.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.UiContext

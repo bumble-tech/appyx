@@ -8,7 +8,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.ui.GestureSpec
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 
 // TODO consider where to keep these
 

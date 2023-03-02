@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.appyxnavigation.node.datingcards.DatingCardsNode.NavTarget
 import com.bumble.appyx.appyxnavigation.node.profilecard.ProfileCardNode
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
-import com.bumble.appyx.interactions.core.ui.GestureSpec
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
