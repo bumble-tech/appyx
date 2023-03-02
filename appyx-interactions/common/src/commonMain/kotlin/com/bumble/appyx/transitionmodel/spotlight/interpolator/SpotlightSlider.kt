@@ -22,7 +22,7 @@ import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.transitionmodel.BaseInterpolator
+import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -42,7 +42,7 @@ class SpotlightSlider<NavTarget : Any>(
     uiContext: UiContext,
     override val clipToBounds: Boolean = false,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseInterpolator<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
+) : BaseMotionController<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
     scope = uiContext.coroutineScope
 ) {
     private val screenWidth = uiContext.transitionBounds.screenWidthDp

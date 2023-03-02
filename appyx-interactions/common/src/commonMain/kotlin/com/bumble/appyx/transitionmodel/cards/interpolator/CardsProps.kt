@@ -21,7 +21,7 @@ import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
-import com.bumble.appyx.transitionmodel.BaseInterpolator
+import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
@@ -37,7 +37,7 @@ typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.
 class CardsProps<NavTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseInterpolator<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
+) : BaseMotionController<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {

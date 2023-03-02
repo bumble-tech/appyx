@@ -8,7 +8,7 @@ import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.transitionmodel.BaseInterpolator
+import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 class BackStackCrossfader<NavTarget : Any>(
     scope: CoroutineScope
-) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
+) : BaseMotionController<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
     scope = scope
 ) {
 

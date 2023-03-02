@@ -14,7 +14,7 @@ import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.MatchedProps
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Animatable
@@ -30,10 +30,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import androidx.compose.animation.core.Animatable as Animatable1
 
-abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
+abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
     private val scope: CoroutineScope,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : Interpolator<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
+) : MotionController<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
 
     private val propsCache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
@@ -126,7 +126,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                             animations[targetProps.element.id] = true
                             isAnimating.update { true }
                             Logger.log(
-                                this@BaseInterpolator.javaClass.simpleName,
+                                this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is started"
                             )
                         } else {
@@ -135,7 +135,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                             animations[targetProps.element.id] = false
                             isAnimating.update { animations.any { it.value } }
                             Logger.log(
-                                this@BaseInterpolator.javaClass.simpleName,
+                                this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is finished"
                             )
                         }
@@ -156,7 +156,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
             ) {
                 updatePropsVisibility()
                 Logger.log(
-                    this@BaseInterpolator.javaClass.simpleName,
+                    this@BaseMotionController.javaClass.simpleName,
                     "Geometry animateTo (Update) – $targetValue"
                 )
             }
@@ -227,7 +227,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                     geometry.snapTo(targetValue)
                     updatePropsVisibility()
                     Logger.log(
-                        this@BaseInterpolator.javaClass.simpleName,
+                        this@BaseMotionController.javaClass.simpleName,
                         "Geometry snapTo (Segment): $targetValue"
                     )
                 }
@@ -242,7 +242,7 @@ abstract class BaseInterpolator<NavTarget : Any, ModelState, Props>(
                         ) {
                             updatePropsVisibility()
                             Logger.log(
-                                this@BaseInterpolator.javaClass.simpleName,
+                                this@BaseMotionController.javaClass.simpleName,
                                 "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
                             )
                         }

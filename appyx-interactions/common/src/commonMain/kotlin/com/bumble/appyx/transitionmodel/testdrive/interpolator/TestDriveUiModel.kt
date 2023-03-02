@@ -18,7 +18,7 @@ import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
-import com.bumble.appyx.transitionmodel.BaseInterpolator
+import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.B
@@ -34,7 +34,7 @@ import kotlin.math.abs
 class TestDriveUiModel<NavTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseInterpolator<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
+) : BaseMotionController<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = uiAnimationSpec,
 ) {

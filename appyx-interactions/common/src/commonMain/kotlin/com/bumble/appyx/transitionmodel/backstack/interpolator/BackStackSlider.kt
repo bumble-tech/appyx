@@ -14,7 +14,7 @@ import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
-import com.bumble.appyx.transitionmodel.BaseInterpolator
+import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -23,7 +23,7 @@ import kotlinx.coroutines.launch
 
 class BackStackSlider<NavTarget : Any>(
     private val uiContext: UiContext,
-) : BaseInterpolator<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
+) : BaseMotionController<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
     scope = uiContext.coroutineScope,
 ) {
     private val width = uiContext.transitionBounds.widthDp

@@ -27,10 +27,10 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
-class PromoterInterpolator<NavTarget : Any>(
+class PromoterMotionController<NavTarget : Any>(
     childSize: Dp,
     transitionBounds: TransitionBounds
-) : Interpolator<NavTarget, PromoterModel.State<NavTarget>> {
+) : MotionController<NavTarget, PromoterModel.State<NavTarget>> {
     private val halfWidthDp = (transitionBounds.widthDp.value - childSize.value) / 2
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f

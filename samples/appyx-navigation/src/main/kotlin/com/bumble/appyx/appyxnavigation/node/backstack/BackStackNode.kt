@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.ui.TextButton
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
-import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.UiContext
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -41,7 +41,7 @@ import kotlin.random.Random
 
 class BackStackNode(
     buildContext: BuildContext,
-    interpolator: (UiContext) -> Interpolator<NavTarget, BackStackModel.State<NavTarget>>,
+    interpolator: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),

@@ -19,7 +19,7 @@ import com.bumble.appyx.interactions.core.model.progress.InstantInputSource
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.UiContext
@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<NavTarget, ModelState>,
-    private val interpolator: (UiContext) -> Interpolator<NavTarget, ModelState>,
+    private val interpolator: (UiContext) -> MotionController<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
     private val backPressStrategy: BackPressHandlerStrategy<NavTarget, ModelState> = DontHandleBackPress(),
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
@@ -58,7 +58,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     private var interpolatorObserverJob: Job? = null
-    private var _interpolator: Interpolator<NavTarget, ModelState>? = null
+    private var _interpolator: MotionController<NavTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(zeroSizeTransitionBounds)
@@ -110,7 +110,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var animationScope: CoroutineScope? = null
     private var isInitialised: Boolean = false
 
-    private fun observeAnimationChanges(interpolator: Interpolator<NavTarget, ModelState>) {
+    private fun observeAnimationChanges(interpolator: MotionController<NavTarget, ModelState>) {
         animationChangesJob?.cancel()
         animationChangesJob = scope.launch {
             interpolator.isAnimating()
@@ -171,14 +171,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
     }
 
-    private fun onInterpolatorReady(interpolator: Interpolator<NavTarget, ModelState>) {
+    private fun onInterpolatorReady(interpolator: MotionController<NavTarget, ModelState>) {
         _clipToBounds.update { interpolator.clipToBounds }
         observeAnimationChanges(interpolator)
         observeInterpolator(interpolator)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeInterpolator(interpolator: Interpolator<NavTarget, ModelState>) {
+    private fun observeInterpolator(interpolator: MotionController<NavTarget, ModelState>) {
         screenStateJob.cancel()
         interpolatorObserverJob?.cancel()
         interpolatorObserverJob = scope.launch {
