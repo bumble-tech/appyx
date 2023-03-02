@@ -109,15 +109,15 @@ class BackStackSlider<InteractionTarget : Any>(
     override fun BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
         created.map { MatchedProps(it, outsideRight) } +
                 listOf(MatchedProps(active, noOffset)) +
-                stashed.mapIndexed { index, navElement ->
+                stashed.mapIndexed { index, element ->
                     MatchedProps(
-                        navElement,
+                        element,
                         outsideLeft.copy(offsetMultiplier = index + 1)
                     )
                 } +
-                destroyed.map { navElement ->
+                destroyed.map { element ->
                     MatchedProps(
-                        navElement,
+                        element,
                         outsideRight.copy(alpha = Alpha(0f))
                     )
                 }
