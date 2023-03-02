@@ -13,7 +13,7 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.output.BaseProps
-import com.bumble.appyx.interactions.core.ui.output.FrameModel
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.output.MatchedProps
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
@@ -60,7 +60,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
 
     override fun mapUpdate(
         update: Update<ModelState>
-    ): List<FrameModel<InteractionTarget>> {
+    ): List<ElementUiModel<InteractionTarget>> {
         val targetProps = update.currentTargetState.toProps()
 
         scope.launch {
@@ -70,7 +70,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val elementProps = propsCache.getOrPut(t1.element.id) { defaultProps() }
-            FrameModel(
+            ElementUiModel(
                 element = t1.element,
                 visibleState = elementProps.visibilityState,
                 animationContainer = @Composable {
@@ -167,7 +167,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
         segment: Segment<ModelState>,
         segmentProgress: Flow<Float>,
         initialProgress: Float
-    ): List<FrameModel<InteractionTarget>> {
+    ): List<ElementUiModel<InteractionTarget>> {
         val (fromState, targetState) = segment.stateTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -185,7 +185,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
             elementProps.lerpTo(scope, t0.props, t1.props, initialProgress)
 
-            FrameModel(
+            ElementUiModel(
                 element = t1.element,
                 visibleState = elementProps.visibilityState,
                 animationContainer = @Composable {

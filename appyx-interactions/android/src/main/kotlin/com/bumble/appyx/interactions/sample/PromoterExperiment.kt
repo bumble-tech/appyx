@@ -68,7 +68,7 @@ fun PromoterExperiment() {
                 ),
             element = {
                 Element(
-                    frameModel = it,
+                    elementUiModel = it,
                     modifier = Modifier.size(100.dp)
                 )
             }

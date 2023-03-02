@@ -5,38 +5,38 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.output.FrameModel
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 
 @Composable
 fun <NavTarget : Any> ParentNode<NavTarget>.Child(
-    frameModel: FrameModel<NavTarget>,
+    elementUiModel: ElementUiModel<NavTarget>,
     saveableStateHolder: SaveableStateHolder,
-    decorator: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
+    decorator: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
 ) {
-    val navElement = frameModel.element
+    val navElement = elementUiModel.element
     val childEntry = remember(navElement.id) { childOrCreate(navElement) }
     saveableStateHolder.SaveableStateProvider(key = navElement) {
         decorator(
             ChildRendererImpl(
                 node = childEntry.node,
-                frameModel = frameModel
+                elementUiModel = elementUiModel
             ),
-            frameModel
+            elementUiModel
         )
     }
 }
 
 private class ChildRendererImpl<NavTarget : Any>(
     private val node: Node,
-    private val frameModel: FrameModel<NavTarget>
+    private val elementUiModel: ElementUiModel<NavTarget>
 ) : ChildRenderer {
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke(modifier: Modifier) {
-        Box(modifier = frameModel.modifier) {
+        Box(modifier = elementUiModel.modifier) {
             node.Compose(modifier = modifier)
         }
     }
@@ -44,7 +44,7 @@ private class ChildRendererImpl<NavTarget : Any>(
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke() {
-        Box(modifier = frameModel.modifier) {
+        Box(modifier = elementUiModel.modifier) {
             node.Compose(modifier = Modifier)
         }
     }

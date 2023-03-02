@@ -6,7 +6,7 @@ import com.bumble.appyx.interactions.core.Element
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-data class FrameModel<InteractionTarget>(
+data class ElementUiModel<InteractionTarget>(
     val element: Element<InteractionTarget>,
     val visibleState: StateFlow<Boolean>,
     val animationContainer: @Composable () -> Unit,

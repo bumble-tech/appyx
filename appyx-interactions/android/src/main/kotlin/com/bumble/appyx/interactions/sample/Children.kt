@@ -29,7 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.ui.output.FrameModel
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import kotlin.math.roundToInt
@@ -40,12 +40,12 @@ import kotlin.math.roundToInt
 fun <NavTarget : Any, NavState : Any> Children(
     interactionModel: InteractionModel<NavTarget, NavState>,
     modifier: Modifier = Modifier,
-    element: @Composable (FrameModel<NavTarget>) -> Unit = {
-        Element(frameModel = it)
+    element: @Composable (ElementUiModel<NavTarget>) -> Unit = {
+        Element(elementUiModel = it)
     },
 ) {
     val density = LocalDensity.current
-    val frames = interactionModel.frames.collectAsState(listOf())
+    val frames = interactionModel.uiModels.collectAsState(listOf())
     val coroutineScope = rememberCoroutineScope()
     val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
     val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
@@ -97,7 +97,7 @@ fun <NavTarget : Any, NavState : Any> Children(
 @Composable
 fun Element(
     color: Color? = Color.Unspecified,
-    frameModel: FrameModel<*>,
+    elementUiModel: ElementUiModel<*>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     val backgroundColor = remember {
@@ -106,14 +106,14 @@ fun Element(
 
     Box(
         modifier = Modifier
-            .then(frameModel.modifier)
+            .then(elementUiModel.modifier)
             .clip(RoundedCornerShape(5))
             .then(if (color == null) Modifier else Modifier.background(backgroundColor))
             .then(modifier)
             .padding(24.dp)
     ) {
         Text(
-            text = frameModel.element.interactionTarget.toString(),
+            text = elementUiModel.element.interactionTarget.toString(),
             fontSize = 21.sp,
             color = Color.Black,
             fontWeight = FontWeight.Bold

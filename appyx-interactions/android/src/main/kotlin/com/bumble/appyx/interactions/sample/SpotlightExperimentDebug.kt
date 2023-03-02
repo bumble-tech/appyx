@@ -72,7 +72,7 @@ fun SpotlightExperimentDebug() {
             interactionModel = spotlight,
             element = {
                 Element(
-                    frameModel = it,
+                    elementUiModel = it,
                     modifier = Modifier
                         .fillMaxSize()
                 )

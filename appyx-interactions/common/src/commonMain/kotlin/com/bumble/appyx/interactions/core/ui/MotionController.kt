@@ -7,7 +7,7 @@ import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.model.transition.toSegmentProgress
-import com.bumble.appyx.interactions.core.ui.output.FrameModel
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,7 +28,7 @@ interface MotionController<InteractionTarget, ModelState> {
 
     fun map(
         output: TransitionModel.Output<ModelState>
-    ): Flow<List<FrameModel<InteractionTarget>>> =
+    ): Flow<List<ElementUiModel<InteractionTarget>>> =
         when (output) {
             is Keyframes -> {
                 //Produce new frame model every time we switch segments
@@ -40,7 +40,7 @@ interface MotionController<InteractionTarget, ModelState> {
     fun mapKeyframes(
         keyframes: Keyframes<ModelState>,
         segmentIndex: Int
-    ): List<FrameModel<InteractionTarget>> =
+    ): List<ElementUiModel<InteractionTarget>> =
         mapSegment(
             keyframes.currentSegment,
             keyframes.getSegmentProgress(segmentIndex),
@@ -52,9 +52,9 @@ interface MotionController<InteractionTarget, ModelState> {
         segment: Segment<ModelState>,
         segmentProgress: Flow<Float>,
         initialProgress: Float
-    ): List<FrameModel<InteractionTarget>>
+    ): List<ElementUiModel<InteractionTarget>>
 
     fun mapUpdate(
         update: Update<ModelState>
-    ): List<FrameModel<InteractionTarget>>
+    ): List<ElementUiModel<InteractionTarget>>
 }

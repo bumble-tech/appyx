@@ -19,7 +19,7 @@ import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.output.BaseProps
-import com.bumble.appyx.interactions.core.ui.output.FrameModel
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.output.MatchedProps
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
@@ -116,7 +116,7 @@ class PromoterMotionController<InteractionTarget : Any>(
         segment: Segment<PromoterModel.State<InteractionTarget>>,
         segmentProgress: Flow<Float>,
         initialProgress: Float
-    ): List<FrameModel<InteractionTarget>> {
+    ): List<ElementUiModel<InteractionTarget>> {
         val (fromState, targetState) = segment.stateTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -124,7 +124,7 @@ class PromoterMotionController<InteractionTarget : Any>(
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
 
-            FrameModel(
+            ElementUiModel(
                 // TODO fix after migration to base interoplator
                 element = t1.element,
                 visibleState = MutableStateFlow(value = true),
@@ -183,7 +183,7 @@ class PromoterMotionController<InteractionTarget : Any>(
 
     override fun mapUpdate(
         update: Update<PromoterModel.State<InteractionTarget>>
-    ): List<FrameModel<InteractionTarget>> {
+    ): List<ElementUiModel<InteractionTarget>> {
         TODO("Not yet implemented")
     }
 }

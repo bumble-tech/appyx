@@ -65,7 +65,7 @@ fun SpotlightExperiment() {
                 ),
             element = {
                 Element(
-                    frameModel = it,
+                    elementUiModel = it,
                     modifier = Modifier
                         .fillMaxSize()
                         .pointerInput(it.element.id) {

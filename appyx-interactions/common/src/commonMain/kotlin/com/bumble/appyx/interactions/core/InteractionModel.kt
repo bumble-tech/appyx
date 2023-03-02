@@ -18,7 +18,7 @@ import com.bumble.appyx.interactions.core.model.progress.Draggable
 import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
 import com.bumble.appyx.interactions.core.model.progress.InstantInputSource
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
-import com.bumble.appyx.interactions.core.ui.output.FrameModel
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.ScreenState
@@ -84,9 +84,9 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         defaultAnimationSpec = defaultAnimationSpec
     )
 
-    private val _frames: MutableStateFlow<List<FrameModel<InteractionTarget>>> =
+    private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
         MutableStateFlow(emptyList())
-    val frames: StateFlow<List<FrameModel<InteractionTarget>>> = _frames
+    val uiModels: StateFlow<List<ElementUiModel<InteractionTarget>>> = _uiModels
 
     private var screenStateJob: Job
     private val _screenState: MutableStateFlow<ScreenState<InteractionTarget>> =
@@ -186,29 +186,29 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
             model
                 .output
                 .flatMapLatest { motionController.map(it) }
-                .flatMapLatest { frames ->
-                    val frameVisibilityFlows = frames.map { frame ->
-                        frame.visibleState
+                .flatMapLatest { elementUiModels ->
+                    val visibilityFlows = elementUiModels.map { uiModel ->
+                        uiModel.visibleState
                     }
-                    combine(frameVisibilityFlows) { visibilityValues ->
+                    combine(visibilityFlows) { visibilityValues ->
                         val onScreen = mutableSetOf<Element<InteractionTarget>>()
                         val offScreen = mutableSetOf<Element<InteractionTarget>>()
                         visibilityValues.forEachIndexed { index, visibilityValue ->
-                            val element = frames[index].element
+                            val element = elementUiModels[index].element
                             if (visibilityValue) {
                                 onScreen.add(element)
                             } else {
                                 offScreen.add(element)
                             }
                         }
-                        ScreenState(onScreen = onScreen, offScreen = offScreen) to frames
+                        ScreenState(onScreen = onScreen, offScreen = offScreen) to elementUiModels
                     }
                 }
-                .collect { (screenState, frames) ->
-                    // order is important here. We need to report screen state to the ParentNode first
-                    // before frames are consumed by the UI
+                .collect { (screenState, elementUiModels) ->
+                    // Order is important here. We need to report screen state to the ParentNode
+                    // first, before elementUiModels are consumed by the UI
                     _screenState.emit(screenState)
-                    _frames.emit(frames)
+                    _uiModels.emit(elementUiModels)
                 }
         }
     }
