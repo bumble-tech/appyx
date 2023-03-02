@@ -7,11 +7,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 data class FrameModel<InteractionTarget>(
-    val modifier: Modifier,
-    val animationContainer: @Composable () -> Unit,
     val element: Element<InteractionTarget>,
-    val progress: Flow<Float>,
-    val visibleState: StateFlow<Boolean>
+    val visibleState: StateFlow<Boolean>,
+    val animationContainer: @Composable () -> Unit,
+    val modifier: Modifier,
+    val progress: Flow<Float>
 )
 
 

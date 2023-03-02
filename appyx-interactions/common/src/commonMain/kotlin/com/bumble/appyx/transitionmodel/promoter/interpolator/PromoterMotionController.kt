@@ -126,8 +126,9 @@ class PromoterMotionController<InteractionTarget : Any>(
 
             FrameModel(
                 // TODO fix after migration to base interoplator
-                visibleState = MutableStateFlow(value = true),
                 element = t1.element,
+                visibleState = MutableStateFlow(value = true),
+                animationContainer = {},
                 modifier = Modifier.composed {
                     val segmentProgress by segmentProgress.collectAsState(initialProgress)
                     val angleRadians0 = Math.toRadians(t0.props.angleDegrees.toDouble() - 90)
@@ -175,8 +176,7 @@ class PromoterMotionController<InteractionTarget : Any>(
                         )
                         .scale(scale)
                 },
-                progress = segmentProgress,
-                animationContainer = {}
+                progress = segmentProgress
             )
         }
     }

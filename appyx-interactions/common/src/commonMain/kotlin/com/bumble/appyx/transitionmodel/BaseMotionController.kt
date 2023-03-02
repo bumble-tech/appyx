@@ -71,13 +71,13 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
         return targetProps.map { t1 ->
             val elementProps = propsCache.getOrPut(t1.element.id) { defaultProps() }
             FrameModel(
-                visibleState = elementProps.visibilityState,
                 element = t1.element,
-                modifier = elementProps.modifier,
+                visibleState = elementProps.visibilityState,
                 animationContainer = @Composable {
                     observeElementAnimationChanges(elementProps, t1)
                     manageAnimations(elementProps, t1, update)
                 },
+                modifier = elementProps.modifier,
                 progress = MutableStateFlow(1f),
             )
         }
@@ -186,8 +186,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
             elementProps.lerpTo(scope, t0.props, t1.props, initialProgress)
 
             FrameModel(
-                visibleState = elementProps.visibilityState,
                 element = t1.element,
+                visibleState = elementProps.visibilityState,
                 animationContainer = @Composable {
                     interpolatedProps(segmentProgress, elementProps, t0, t1, initialProgress)
                 },
