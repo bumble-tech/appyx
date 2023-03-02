@@ -18,8 +18,8 @@ val DefaultAnimationSpec: SpringSpec<Float> = spring()
 
 @Composable
 @Suppress("UnnecessaryComposedModifier")
-fun <InteractionTarget : Any, NavState : Any> Modifier.gestureModifier(
-    interactionModel: InteractionModel<InteractionTarget, NavState>,
+fun <InteractionTarget : Any, ModelState : Any> Modifier.gestureModifier(
+    interactionModel: InteractionModel<InteractionTarget, ModelState>,
     key: Any,
     gestureSpec: GestureSpec = GestureSpec()
 ) = this.composed {
