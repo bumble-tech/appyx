@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.inputsource
+package com.bumble.appyx.interactions.core.progress
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring

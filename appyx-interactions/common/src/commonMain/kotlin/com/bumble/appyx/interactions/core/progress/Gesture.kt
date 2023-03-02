@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.inputsource
+package com.bumble.appyx.interactions.core.progress
 
 import androidx.compose.ui.geometry.Offset
 import com.bumble.appyx.interactions.core.Operation

@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.inputsource
+package com.bumble.appyx.interactions.core.progress
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
@@ -10,7 +10,7 @@ import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.COMPLE
 import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.REVERT
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 
-class DragProgressInputSource<NavTarget : Any, State>(
+class DragProgressController<NavTarget : Any, State>(
     private val model: TransitionModel<NavTarget, State>,
     private val gestureFactory: () -> GestureFactory<NavTarget, State>
 ) : Draggable {
@@ -134,6 +134,6 @@ class DragProgressInputSource<NavTarget : Any, State>(
     }
 
     private companion object {
-        private val TAG = DragProgressInputSource::class.java.name
+        private val TAG = DragProgressController::class.java.name
     }
 }

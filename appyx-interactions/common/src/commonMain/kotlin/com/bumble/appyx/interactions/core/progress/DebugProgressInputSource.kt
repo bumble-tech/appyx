@@ -1,22 +1,16 @@
-package com.bumble.appyx.interactions.core.inputsource
+package com.bumble.appyx.interactions.core.progress
 
-import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.spring
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.TransitionModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 // FIXME
 class DebugProgressInputSource<NavTarget, ModelState>(
     private val transitionModel: TransitionModel<NavTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
-) : InputSource<NavTarget, ModelState> {
+) : ProgressController<NavTarget, ModelState> {
     // TODO this should >not< use its own animatable that's independent of AnimatedInputSource
 //    private val animatable = Animatable(0f)
     private lateinit var result: AnimationResult<Float, AnimationVector1D>

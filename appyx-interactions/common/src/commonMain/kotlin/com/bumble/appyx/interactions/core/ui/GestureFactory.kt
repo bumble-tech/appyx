@@ -2,7 +2,7 @@ package com.bumble.appyx.interactions.core.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.core.inputsource.Gesture
+import com.bumble.appyx.interactions.core.progress.Gesture
 
 interface GestureFactory<NavTarget, State> {
 

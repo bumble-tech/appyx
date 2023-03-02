@@ -10,11 +10,11 @@ import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.backpresshandlerstrategies.DontHandleBackPress
-import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.Draggable
-import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
+import com.bumble.appyx.interactions.core.progress.AnimatedInputSource
+import com.bumble.appyx.interactions.core.progress.DebugProgressInputSource
+import com.bumble.appyx.interactions.core.progress.DragProgressController
+import com.bumble.appyx.interactions.core.progress.Draggable
+import com.bumble.appyx.interactions.core.progress.InstantInputSource
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.GestureFactory
 import com.bumble.appyx.interactions.core.ui.Interpolator
@@ -76,7 +76,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val instant = InstantInputSource(model = model)
     private var animated: AnimatedInputSource<NavTarget, ModelState>? = null
     private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
-    private val drag = DragProgressInputSource(
+    private val drag = DragProgressController(
         model = model,
         gestureFactory = { _gestureFactory }
     )

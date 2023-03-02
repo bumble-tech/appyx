@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.inputsource
+package com.bumble.appyx.interactions.core.progress
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
@@ -20,7 +20,7 @@ class AnimatedInputSource<NavTarget : Any, ModelState>(
     private val coroutineScope: CoroutineScope,
     private val defaultAnimationSpec: AnimationSpec<Float> = spring(),
     private val animateSettle: Boolean = false
-) : InputSource<NavTarget, ModelState> {
+) : ProgressController<NavTarget, ModelState> {
 
     private val animatable = Animatable(0f)
     // FIXME private lateinit var result: AnimationResult<Float, AnimationVector1D>

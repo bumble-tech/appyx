@@ -1,8 +1,8 @@
-package com.bumble.appyx.interactions.core.inputsource
+package com.bumble.appyx.interactions.core.progress
 
 import com.bumble.appyx.interactions.core.Operation
 
-interface InputSource<NavTarget, ModelState> {
+interface ProgressController<NavTarget, ModelState> {
 
     fun operation(operation: Operation<ModelState>)
 }
