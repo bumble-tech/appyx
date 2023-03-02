@@ -68,7 +68,7 @@ fun SpotlightExperiment() {
                     frameModel = it,
                     modifier = Modifier
                         .fillMaxSize()
-                        .pointerInput(it.navElement.id) {
+                        .pointerInput(it.element.id) {
                             detectDragGestures(
                                 onDrag = { change, dragAmount ->
                                     change.consume()

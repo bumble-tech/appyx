@@ -83,7 +83,7 @@ fun <NavTarget : Any, NavState : Any> Children(
             }
     ) {
         frames.value.forEach { frameModel ->
-            key(frameModel.navElement.id) {
+            key(frameModel.element.id) {
                 frameModel.animationContainer()
                 val isVisible by frameModel.visibleState.collectAsState(initial = false)
                 if (isVisible) {
@@ -113,7 +113,7 @@ fun Element(
             .padding(24.dp)
     ) {
         Text(
-            text = frameModel.navElement.interactionTarget.toString(),
+            text = frameModel.element.interactionTarget.toString(),
             fontSize = 21.sp,
             color = Color.Black,
             fontWeight = FontWeight.Bold

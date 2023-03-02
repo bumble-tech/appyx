@@ -14,7 +14,7 @@ class VotePass<InteractionTarget>(
         val votedCards = fromState.votedCards
         return CardsModel.State(
             votedCards = votedCards + CardsModel.State.Card.InvisibleCard.VotedCard(
-                fromState.visibleCards.first().navElement,
+                fromState.visibleCards.first().element,
                 PASSED
             ),
             visibleCards = resolveVisibleCards(fromState),
@@ -29,12 +29,12 @@ class VotePass<InteractionTarget>(
             val result = mutableListOf<CardsModel.State.Card.VisibleCard<InteractionTarget>>()
             result.add(
                 CardsModel.State.Card.VisibleCard.TopCard(
-                    fromState.visibleCards[1].navElement,
+                    fromState.visibleCards[1].element,
                     CardsModel.State.Card.VisibleCard.TopCard.TOP_CARD_STATE.STANDARD
                 )
             )
             if (fromState.queued.isNotEmpty()) {
-                result.add(CardsModel.State.Card.VisibleCard.BottomCard(fromState.queued.first().navElement))
+                result.add(CardsModel.State.Card.VisibleCard.BottomCard(fromState.queued.first().element))
             }
             result
         }

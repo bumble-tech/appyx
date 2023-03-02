@@ -1,7 +1,7 @@
 package com.bumble.appyx.transitionmodel.testdrive
 
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
 
@@ -10,7 +10,7 @@ class TestDriveModel<InteractionTarget : Any>(
 ) : BaseTransitionModel<InteractionTarget, TestDriveModel.State<InteractionTarget>>() {
 
     data class State<InteractionTarget>(
-        val element: NavElement<InteractionTarget>,
+        val element: Element<InteractionTarget>,
         val elementState: ElementState
     ) {
         enum class ElementState {
@@ -26,11 +26,11 @@ class TestDriveModel<InteractionTarget : Any>(
         }
     }
 
-    override fun State<InteractionTarget>.availableElements(): Set<NavElement<InteractionTarget>> =
+    override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         setOf(element)
 
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<NavElement<InteractionTarget>> =
+    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
         emptySet()
 
     override val initialState: State<InteractionTarget> =
@@ -39,7 +39,7 @@ class TestDriveModel<InteractionTarget : Any>(
             elementState = A
         )
 
-    override fun State<InteractionTarget>.removeDestroyedElement(navElement: NavElement<InteractionTarget>) = this
+    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>) = this
 
     override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> = this
 }

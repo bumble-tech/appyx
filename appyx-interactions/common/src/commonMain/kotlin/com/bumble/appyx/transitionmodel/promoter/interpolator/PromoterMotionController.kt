@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.*
@@ -35,7 +35,7 @@ class PromoterMotionController<InteractionTarget : Any>(
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
-    override val finishedAnimations: Flow<NavElement<InteractionTarget>>
+    override val finishedAnimations: Flow<Element<InteractionTarget>>
         get() = TODO("Not yet implemented")
 
     // TODO migrate to BaseMotionController
@@ -123,7 +123,7 @@ class PromoterMotionController<InteractionTarget : Any>(
             FrameModel(
                 // TODO fix after migration to base interoplator
                 visibleState = MutableStateFlow(value = true),
-                navElement = t1.element,
+                element = t1.element,
                 modifier = Modifier.composed {
                     val segmentProgress by segmentProgress.collectAsState(initialProgress)
                     val angleRadians0 = Math.toRadians(t0.props.angleDegrees.toDouble() - 90)

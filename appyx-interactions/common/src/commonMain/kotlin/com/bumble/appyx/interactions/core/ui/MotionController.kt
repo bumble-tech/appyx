@@ -2,7 +2,7 @@ package com.bumble.appyx.interactions.core.ui
 
 import androidx.compose.animation.core.SpringSpec
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.Update
@@ -17,7 +17,7 @@ interface MotionController<InteractionTarget, ModelState> {
     val clipToBounds: Boolean
         get() = false
 
-    val finishedAnimations: Flow<NavElement<InteractionTarget>>
+    val finishedAnimations: Flow<Element<InteractionTarget>>
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseMotionController

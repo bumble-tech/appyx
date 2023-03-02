@@ -1,5 +1,5 @@
 package com.bumble.appyx.navigation.children
 
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 
-typealias ChildEntryMap<NavTarget> = Map<NavElement<NavTarget>, ChildEntry<NavTarget>>
+typealias ChildEntryMap<NavTarget> = Map<Element<NavTarget>, ChildEntry<NavTarget>>

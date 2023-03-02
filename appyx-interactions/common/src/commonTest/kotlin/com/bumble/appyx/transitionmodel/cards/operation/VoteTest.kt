@@ -42,10 +42,10 @@ class VoteTest {
         val state = CardsModel.State(
             visibleCards = listOf(
                 TopCard(
-                    navElement = Child1.asElement(),
+                    element = Child1.asElement(),
                     topCardState = STANDARD
                 ),
-                BottomCard(navElement = Child2.asElement())
+                BottomCard(element = Child2.asElement())
             ),
             queued = listOf(Child3, Child4).map { Queued(it.asElement()) }
         )
@@ -59,7 +59,7 @@ class VoteTest {
         assertEquals(actual.targetState.votedCards.size, 1)
         val votedCard = actual.targetState.votedCards[0] as VotedCard
         assertEquals(
-            actual = votedCard.navElement.interactionTarget,
+            actual = votedCard.element.interactionTarget,
             expected = Child1
         )
         assertEquals(

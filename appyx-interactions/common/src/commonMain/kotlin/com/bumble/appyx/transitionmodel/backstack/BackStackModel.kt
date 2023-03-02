@@ -1,10 +1,10 @@
 package com.bumble.appyx.transitionmodel.backstack
 
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.interactions.core.ui.NavElements
+import com.bumble.appyx.interactions.core.Elements
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
 @SuppressWarnings("UnusedPrivateMember")
@@ -26,33 +26,33 @@ class BackStackModel<InteractionTarget : Any>(
         /**
          * Elements that have been created, but not yet moved to an active state
          */
-        val created: NavElements<InteractionTarget> = listOf(),
+        val created: Elements<InteractionTarget> = listOf(),
 
         /**
          * The currently active element.
          * There should be only one such element in the stack.
          */
-        val active: NavElement<InteractionTarget>,
+        val active: Element<InteractionTarget>,
 
         /**
          * Elements stashed in the back stack (history).
          */
-        val stashed: NavElements<InteractionTarget> = listOf(),
+        val stashed: Elements<InteractionTarget> = listOf(),
 
         /**
          * Elements that will be destroyed after reaching this state.
          */
-        val destroyed: NavElements<InteractionTarget> = listOf(),
+        val destroyed: Elements<InteractionTarget> = listOf(),
     )
 
-    override fun State<InteractionTarget>.availableElements(): Set<NavElement<InteractionTarget>> =
+    override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         (created + active + stashed + destroyed).toSet()
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<NavElement<InteractionTarget>> =
+    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
         destroyed.toSet()
 
-    override fun State<InteractionTarget>.removeDestroyedElement(navElement: NavElement<InteractionTarget>): State<InteractionTarget> =
-        copy(destroyed = destroyed.filterNot { it == navElement })
+    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> =
+        copy(destroyed = destroyed.filterNot { it == element })
 
     override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =
         copy(destroyed = emptyList())

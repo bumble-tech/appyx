@@ -179,23 +179,23 @@ class CardsProps<InteractionTarget : Any>(
                 is CardsModel.State.Card.InvisibleCard.VotedCard -> {
                     result.add(
                         if (it.votedCardState == LIKED) {
-                            MatchedProps(it.navElement, voteLike)
+                            MatchedProps(it.element, voteLike)
                         } else {
-                            MatchedProps(it.navElement, votePass)
+                            MatchedProps(it.element, votePass)
                         }
                     )
                 }
 
                 is CardsModel.State.Card.VisibleCard.TopCard -> {
-                    result.add(MatchedProps(it.navElement, top))
+                    result.add(MatchedProps(it.element, top))
                 }
 
                 is CardsModel.State.Card.VisibleCard.BottomCard -> {
-                    result.add(MatchedProps(it.navElement, bottom))
+                    result.add(MatchedProps(it.element, bottom))
                 }
 
                 is CardsModel.State.Card.InvisibleCard.Queued -> {
-                    result.add(MatchedProps(it.navElement, hidden))
+                    result.add(MatchedProps(it.element, hidden))
                 }
             }
         }

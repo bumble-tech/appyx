@@ -9,7 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
@@ -44,8 +44,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
         emptyList()
 
 
-    private val _finishedAnimations = MutableSharedFlow<NavElement<InteractionTarget>>()
-    override val finishedAnimations: Flow<NavElement<InteractionTarget>> = _finishedAnimations
+    private val _finishedAnimations = MutableSharedFlow<Element<InteractionTarget>>()
+    override val finishedAnimations: Flow<Element<InteractionTarget>> = _finishedAnimations
 
     abstract fun defaultProps(): Props
 
@@ -72,7 +72,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
             val elementProps = propsCache.getOrPut(t1.element.id) { defaultProps() }
             FrameModel(
                 visibleState = elementProps.visibilityState,
-                navElement = t1.element,
+                element = t1.element,
                 modifier = elementProps.modifier,
                 animationContainer = @Composable {
                     observeElementAnimationChanges(elementProps, t1)
@@ -187,7 +187,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
 
             FrameModel(
                 visibleState = elementProps.visibilityState,
-                navElement = t1.element,
+                element = t1.element,
                 animationContainer = @Composable {
                     interpolatedProps(segmentProgress, elementProps, t0, t1, initialProgress)
                 },

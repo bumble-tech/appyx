@@ -10,19 +10,19 @@ import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 class TestTransitionModel<NavTarget : Any>(
     initialElements: List<NavTarget>,
 ) : BaseTransitionModel<NavTarget, State<NavTarget>>() {
-    data class State<NavTarget>(val elements: List<NavElement<NavTarget>>)
+    data class State<NavTarget>(val elements: List<Element<NavTarget>>)
 
     override val initialState: State<NavTarget> = State(
         elements = initialElements.map { it.asElement() }
     )
 
-    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>) = this
+    override fun State<NavTarget>.removeDestroyedElement(element: Element<NavTarget>) = this
 
     override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> = this
 
-    override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> = setOf()
+    override fun State<NavTarget>.destroyedElements(): Set<Element<NavTarget>> = setOf()
 
-    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> = setOf()
+    override fun State<NavTarget>.availableElements(): Set<Element<NavTarget>> = setOf()
 }
 
 @Parcelize

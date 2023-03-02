@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.*
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Output
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
@@ -22,15 +22,15 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
 ) : TransitionModel<InteractionTarget, ModelState> {
     abstract val initialState: ModelState
 
-    abstract fun ModelState.destroyedElements(): Set<NavElement<InteractionTarget>>
+    abstract fun ModelState.destroyedElements(): Set<Element<InteractionTarget>>
 
     abstract fun ModelState.removeDestroyedElements(): ModelState
 
-    abstract fun ModelState.removeDestroyedElement(navElement: NavElement<InteractionTarget>): ModelState
+    abstract fun ModelState.removeDestroyedElement(element: Element<InteractionTarget>): ModelState
 
-    abstract fun ModelState.availableElements(): Set<NavElement<InteractionTarget>>
+    abstract fun ModelState.availableElements(): Set<Element<InteractionTarget>>
 
-    override fun availableElements(): StateFlow<Set<NavElement<InteractionTarget>>> =
+    override fun availableElements(): StateFlow<Set<Element<InteractionTarget>>> =
         output
             .map { it.currentTargetState.availableElements() }
             .stateIn(scope, SharingStarted.Eagerly, initialState.availableElements())
@@ -56,11 +56,11 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
         removeDestroyedElements()
     }
 
-    override fun cleanUpElement(navElement: NavElement<InteractionTarget>) {
+    override fun cleanUpElement(element: Element<InteractionTarget>) {
         state.getAndUpdate { output ->
             when (output) {
                 is Update<ModelState> -> output.copy(
-                    currentTargetState = output.currentTargetState.removeDestroyedElement(navElement)
+                    currentTargetState = output.currentTargetState.removeDestroyedElement(element)
                 )
                 is Keyframes -> output
             }

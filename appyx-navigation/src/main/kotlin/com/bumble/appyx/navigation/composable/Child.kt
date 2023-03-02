@@ -15,7 +15,7 @@ fun <NavTarget : Any> ParentNode<NavTarget>.Child(
     saveableStateHolder: SaveableStateHolder,
     decorator: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
 ) {
-    val navElement = frameModel.navElement
+    val navElement = frameModel.element
     val childEntry = remember(navElement.id) { childOrCreate(navElement) }
     saveableStateHolder.SaveableStateProvider(key = navElement) {
         decorator(

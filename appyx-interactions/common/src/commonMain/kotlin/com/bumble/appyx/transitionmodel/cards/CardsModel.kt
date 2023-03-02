@@ -1,7 +1,7 @@
 package com.bumble.appyx.transitionmodel.cards
 
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.Queued
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.BottomCard
@@ -17,11 +17,11 @@ class CardsModel<InteractionTarget : Any>(
         val queued: List<Card.InvisibleCard<InteractionTarget>> = emptyList()
     ) {
         sealed class Card<InteractionTarget> {
-            abstract val navElement: NavElement<InteractionTarget>
+            abstract val element: Element<InteractionTarget>
 
             sealed class VisibleCard<InteractionTarget> : Card<InteractionTarget>() {
                 data class TopCard<InteractionTarget>(
-                    override val navElement: NavElement<InteractionTarget>,
+                    override val element: Element<InteractionTarget>,
                     val topCardState: TOP_CARD_STATE
                 ) : VisibleCard<InteractionTarget>() {
                     enum class TOP_CARD_STATE {
@@ -30,18 +30,18 @@ class CardsModel<InteractionTarget : Any>(
                 }
 
                 data class BottomCard<InteractionTarget>(
-                    override val navElement: NavElement<InteractionTarget>
+                    override val element: Element<InteractionTarget>
                 ) : VisibleCard<InteractionTarget>()
             }
 
             sealed class InvisibleCard<InteractionTarget> : Card<InteractionTarget>() {
 
                 data class Queued<InteractionTarget>(
-                    override val navElement: NavElement<InteractionTarget>
+                    override val element: Element<InteractionTarget>
                 ) : InvisibleCard<InteractionTarget>()
 
                 data class VotedCard<InteractionTarget>(
-                    override val navElement: NavElement<InteractionTarget>,
+                    override val element: Element<InteractionTarget>,
                     val votedCardState: VOTED_CARD_STATE
                 ) : InvisibleCard<InteractionTarget>() {
                     enum class VOTED_CARD_STATE {
@@ -75,15 +75,15 @@ class CardsModel<InteractionTarget : Any>(
 
     override val initialState: State<InteractionTarget> = getInitialState(initialItems)
 
-    override fun State<InteractionTarget>.removeDestroyedElement(navElement: NavElement<InteractionTarget>): State<InteractionTarget> =
-        copy(votedCards = votedCards.filterNot { it == navElement })
+    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> =
+        copy(votedCards = votedCards.filterNot { it == element })
 
     override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =
         copy(votedCards = emptyList())
 
-    override fun State<InteractionTarget>.availableElements(): Set<NavElement<InteractionTarget>> =
-        (votedCards + visibleCards + queued).map { it.navElement }.toSet()
+    override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
+        (votedCards + visibleCards + queued).map { it.element }.toSet()
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<NavElement<InteractionTarget>> = setOf()
+    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> = setOf()
 
 }

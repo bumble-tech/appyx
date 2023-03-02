@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.promoter.operation
 
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.NavTarget
 import com.bumble.appyx.NavTarget.Child1
 import com.bumble.appyx.NavTarget.Child2
@@ -24,7 +24,7 @@ class AddFirstTest {
     @Test
     fun GIVEN_created_WHEN_add_first_THEN_moves_to_stage1() {
         val state = PromoterModel.State(
-            elements = listOf<Pair<NavElement<NavTarget>, ElementState>>()
+            elements = listOf<Pair<Element<NavTarget>, ElementState>>()
         )
 
         val addFirst = AddFirst(Child1)
@@ -40,7 +40,7 @@ class AddFirstTest {
     @Test
     fun GIVEN_stage1_WHEN_add_first_THEN_moves_to_stage2() {
         val state = PromoterModel.State(
-            elements = listOf(NavElement(Child1) to STAGE1)
+            elements = listOf(Element(Child1) to STAGE1)
         )
 
         val addFirst = AddFirst(Child2)
@@ -65,8 +65,8 @@ class AddFirstTest {
     fun GIVEN_stage2_WHEN_add_first_THEN_moves_to_stage3() {
         val state = PromoterModel.State(
             elements = listOf(
-                NavElement(Child2) to STAGE1,
-                NavElement(Child1) to STAGE2
+                Element(Child2) to STAGE1,
+                Element(Child1) to STAGE2
             )
         )
 
@@ -98,9 +98,9 @@ class AddFirstTest {
     fun GIVEN_stage3_WHEN_add_first_THEN_moves_to_stage4() {
         val state = PromoterModel.State(
             elements = listOf(
-                NavElement(Child3) to STAGE1,
-                NavElement(Child2) to STAGE2,
-                NavElement(Child1) to STAGE3
+                Element(Child3) to STAGE1,
+                Element(Child2) to STAGE2,
+                Element(Child1) to STAGE3
             )
         )
 
@@ -138,10 +138,10 @@ class AddFirstTest {
     fun GIVEN_stage4_WHEN_add_first_THEN_moves_to_stage5() {
         val state = PromoterModel.State(
             elements = listOf(
-                NavElement(Child4) to STAGE1,
-                NavElement(Child3) to STAGE2,
-                NavElement(Child2) to STAGE3,
-                NavElement(Child1) to STAGE4
+                Element(Child4) to STAGE1,
+                Element(Child3) to STAGE2,
+                Element(Child2) to STAGE3,
+                Element(Child1) to STAGE4
             )
         )
 
@@ -185,11 +185,11 @@ class AddFirstTest {
     fun GIVEN_stage5_WHEN_add_first_THEN_moves_to_destroyed() {
         val state = PromoterModel.State(
             elements = listOf(
-                NavElement(Child5) to STAGE1,
-                NavElement(Child4) to STAGE2,
-                NavElement(Child3) to STAGE3,
-                NavElement(Child2) to STAGE4,
-                NavElement(Child1) to STAGE5
+                Element(Child5) to STAGE1,
+                Element(Child4) to STAGE2,
+                Element(Child3) to STAGE3,
+                Element(Child2) to STAGE4,
+                Element(Child1) to STAGE5
             )
         )
 

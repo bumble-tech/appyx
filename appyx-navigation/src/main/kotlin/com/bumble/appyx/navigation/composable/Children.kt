@@ -41,7 +41,7 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
-                    key = frameModel.navElement,
+                    key = frameModel.element,
                     gestureSpec = gestureSpec
                 )
             )
@@ -128,7 +128,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
             interactionModel.frames
                 .map { list ->
                     list
-                        .filter { clazz.isInstance(it.navElement.interactionTarget) }
+                        .filter { clazz.isInstance(it.element.interactionTarget) }
                 }
         }
 
@@ -137,7 +137,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
 
         visibleFrames.value
             .forEach { frameModel ->
-                key(frameModel.navElement.id) {
+                key(frameModel.element.id) {
                     frameModel.animationContainer()
                     val isVisible by frameModel.visibleState.collectAsState(initial = false)
                     if (isVisible) {

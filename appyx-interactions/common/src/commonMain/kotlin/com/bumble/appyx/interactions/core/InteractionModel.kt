@@ -190,14 +190,14 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
                         frame.visibleState
                     }
                     combine(frameVisibilityFlows) { visibilityValues ->
-                        val onScreen = mutableSetOf<NavElement<InteractionTarget>>()
-                        val offScreen = mutableSetOf<NavElement<InteractionTarget>>()
+                        val onScreen = mutableSetOf<Element<InteractionTarget>>()
+                        val offScreen = mutableSetOf<Element<InteractionTarget>>()
                         visibilityValues.forEachIndexed { index, visibilityValue ->
-                            val navElement = frames[index].navElement
+                            val element = frames[index].element
                             if (visibilityValue) {
-                                onScreen.add(navElement)
+                                onScreen.add(element)
                             } else {
-                                offScreen.add(navElement)
+                                offScreen.add(element)
                             }
                         }
                         ScreenState(onScreen = onScreen, offScreen = offScreen) to frames
@@ -212,7 +212,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    fun availableElements(): StateFlow<Set<NavElement<InteractionTarget>>> = model.availableElements()
+    fun availableElements(): StateFlow<Set<Element<InteractionTarget>>> = model.availableElements()
 
     fun operation(
         operation: Operation<ModelState>,

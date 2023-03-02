@@ -1,7 +1,7 @@
 package com.bumble.appyx.transitionmodel.spotlight
 
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -31,7 +31,7 @@ class SpotlightModel<InteractionTarget : Any>(
         val activeIndex: Float
     ) {
         data class Position<InteractionTarget>(
-            val elements: Map<NavElement<InteractionTarget>, ElementState> = mapOf()
+            val elements: Map<Element<InteractionTarget>, ElementState> = mapOf()
         )
 
         enum class ElementState {
@@ -55,12 +55,12 @@ class SpotlightModel<InteractionTarget : Any>(
             activeIndex = initialActiveIndex
         )
 
-    override fun State<InteractionTarget>.removeDestroyedElement(navElement: NavElement<InteractionTarget>): State<InteractionTarget> {
+    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> {
         val newPositions = positions.map { position ->
             val newElements = position
                 .elements
                 .filterNot { mapEntry ->
-                    mapEntry.key == navElement && mapEntry.value == DESTROYED
+                    mapEntry.key == element && mapEntry.value == DESTROYED
                 }
 
             position.copy(elements = newElements)
@@ -81,14 +81,14 @@ class SpotlightModel<InteractionTarget : Any>(
         return copy(positions = newPositions)
     }
 
-    override fun State<InteractionTarget>.availableElements(): Set<NavElement<InteractionTarget>> =
+    override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         positions
             .flatMap { it.elements.entries }
             .filter { it.value != DESTROYED }
             .map { it.key }
             .toSet()
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<NavElement<InteractionTarget>> =
+    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
         positions
             .flatMap { it.elements.entries }
             .filter { it.value == DESTROYED }

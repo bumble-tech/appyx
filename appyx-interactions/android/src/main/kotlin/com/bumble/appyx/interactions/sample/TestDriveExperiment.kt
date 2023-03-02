@@ -136,7 +136,7 @@ fun <NavTarget : Any> TestDriveUi(
             Box(
                 modifier = Modifier.size(60.dp)
                     .then(frameModel.modifier)
-                    .pointerInput(frameModel.navElement.id) {
+                    .pointerInput(frameModel.element.id) {
                         detectDragGestures(
                             onDrag = { change, dragAmount ->
                                 change.consume()

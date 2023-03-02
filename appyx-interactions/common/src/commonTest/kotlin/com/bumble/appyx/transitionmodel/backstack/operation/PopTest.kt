@@ -3,7 +3,7 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 import com.bumble.appyx.NavTarget
 import com.bumble.appyx.NavTarget.Child1
 import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,7 +13,7 @@ class PopTest {
 
     @Test
     fun GIVEN_no_stashed_elements_THEN_it_is_not_applicable() {
-        val state = BackStackModel.State(active = NavElement(Child1))
+        val state = BackStackModel.State(active = Element(Child1))
 
         val pop = Pop<NavTarget>()
 
@@ -23,8 +23,8 @@ class PopTest {
     @Test
     fun GIVEN_active_and_stashed_elements_THEN_destroys_active_and_makes_stashed_active() {
         val state = BackStackModel.State(
-            active = NavElement(Child1),
-            stashed = listOf(NavElement(Child2))
+            active = Element(Child1),
+            stashed = listOf(Element(Child2))
         )
 
         val pop = Pop<NavTarget>()

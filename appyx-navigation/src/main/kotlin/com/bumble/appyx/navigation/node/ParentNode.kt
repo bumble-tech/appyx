@@ -11,7 +11,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -84,8 +84,8 @@ abstract class ParentNode<NavTarget : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(navElement: NavElement<NavTarget>): ChildEntry.Initialized<NavTarget> =
-        childNodeCreationManager.childOrCreate(navElement)
+    fun childOrCreate(element: Element<NavTarget>): ChildEntry.Initialized<NavTarget> =
+        childNodeCreationManager.childOrCreate(element)
 
 //    @Composable
 //    fun PermanentChild(

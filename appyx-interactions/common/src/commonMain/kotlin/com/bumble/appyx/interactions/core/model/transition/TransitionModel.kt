@@ -1,6 +1,6 @@
 package com.bumble.appyx.interactions.core.model.transition
 
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import kotlinx.coroutines.flow.StateFlow
 
 interface TransitionModel<InteractionTarget, ModelState> {
@@ -20,11 +20,11 @@ interface TransitionModel<InteractionTarget, ModelState> {
 
     }
 
-    fun availableElements(): StateFlow<Set<NavElement<InteractionTarget>>>
+    fun availableElements(): StateFlow<Set<Element<InteractionTarget>>>
 
     fun relaxExecutionMode()
 
-    fun cleanUpElement(navElement: NavElement<InteractionTarget>)
+    fun cleanUpElement(element: Element<InteractionTarget>)
 
     fun operation(
         operation: Operation<ModelState>,

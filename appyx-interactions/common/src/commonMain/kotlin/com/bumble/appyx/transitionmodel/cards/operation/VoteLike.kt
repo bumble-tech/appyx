@@ -17,7 +17,7 @@ class VoteLike<InteractionTarget>(
         val votedCards = fromState.votedCards
         return CardsModel.State(
             votedCards = votedCards + CardsModel.State.Card.InvisibleCard.VotedCard(
-                fromState.visibleCards.first().navElement, LIKED
+                fromState.visibleCards.first().element, LIKED
             ),
             visibleCards = resolveVisibleCards(fromState),
             queued = fromState.queued.drop(1)
@@ -29,9 +29,9 @@ class VoteLike<InteractionTarget>(
             emptyList()
         } else {
             val result = mutableListOf<CardsModel.State.Card.VisibleCard<InteractionTarget>>()
-            result.add(TopCard(fromState.visibleCards[1].navElement, STANDARD))
+            result.add(TopCard(fromState.visibleCards[1].element, STANDARD))
             if (fromState.queued.isNotEmpty()) {
-                result.add(BottomCard(fromState.queued.first().navElement))
+                result.add(BottomCard(fromState.queued.first().element))
             }
             result
         }
