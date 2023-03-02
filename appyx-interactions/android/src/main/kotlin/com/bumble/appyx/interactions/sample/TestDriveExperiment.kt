@@ -58,7 +58,7 @@ fun TestDriveExperiment() {
 //                tween(200, easing = LinearEasing)
             ,
             animateSettle = true,
-            interpolator = {
+            motionController = {
                 TestDriveUiModel(
                     it,
                     uiAnimationSpec = spring(

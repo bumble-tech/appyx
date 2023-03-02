@@ -1,7 +1,7 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
 
-// TODO BaseInterpolator + dynamic on visibility calculation
+// TODO BaseMotionController + dynamic on visibility calculation
 //class SpotlightFader<NavTarget : Any>(
 //    transitionParams: TransitionParams
 //) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
@@ -21,7 +21,7 @@ package com.bumble.appyx.transitionmodel.spotlight.interpolator
 //        isVisible = false
 //    )
 //
-//    // TODO Migrate to BaseInterpolator
+//    // TODO Migrate to BaseMotionController
 //
 //    fun SpotlightModel.State.ElementState.isVisible() =
 //        when (this) {

@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<NavTarget, ModelState>,
-    private val interpolator: (UiContext) -> MotionController<NavTarget, ModelState>,
+    private val motionController: (UiContext) -> MotionController<NavTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
     private val backPressStrategy: BackPressHandlerStrategy<NavTarget, ModelState> = DontHandleBackPress(),
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
@@ -57,8 +57,8 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         backPressStrategy.init(this, model)
     }
 
-    private var interpolatorObserverJob: Job? = null
-    private var _interpolator: MotionController<NavTarget, ModelState>? = null
+    private var motionControllerObserverJob: Job? = null
+    private var _motionController: MotionController<NavTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
         gestureFactory(zeroSizeTransitionBounds)
@@ -97,7 +97,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
 
     init {
-        // before interpolator is ready we consider all nav elements as off screen
+        // Before motionController is ready we consider all elements as off-screen
         screenStateJob = scope.launch {
             model
                 .availableElements()
@@ -110,10 +110,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var animationScope: CoroutineScope? = null
     private var isInitialised: Boolean = false
 
-    private fun observeAnimationChanges(interpolator: MotionController<NavTarget, ModelState>) {
+    private fun observeAnimationChanges(motionController: MotionController<NavTarget, ModelState>) {
         animationChangesJob?.cancel()
         animationChangesJob = scope.launch {
-            interpolator.isAnimating()
+            motionController.isAnimating()
                 .collect {
                     if (!it) {
                         Logger.log("InteractionModel", "Finished animating")
@@ -125,7 +125,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
         animationFinishedJob?.cancel()
         animationFinishedJob = scope.launch {
-            interpolator.finishedAnimations
+            motionController.finishedAnimations
                 .collect {
                     Logger.log("InteractionModel", "$it onAnimation finished")
                     model.cleanUpElement(it)
@@ -164,27 +164,27 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     override fun updateContext(uiContext: UiContext) {
         if (this.transitionBounds != uiContext.transitionBounds) {
             this.transitionBounds = uiContext.transitionBounds
-            _interpolator = interpolator(uiContext).also {
-                onInterpolatorReady(it)
+            _motionController = motionController(uiContext).also {
+                onMotionControllerReady(it)
             }
             _gestureFactory = gestureFactory(transitionBounds)
         }
     }
 
-    private fun onInterpolatorReady(interpolator: MotionController<NavTarget, ModelState>) {
-        _clipToBounds.update { interpolator.clipToBounds }
-        observeAnimationChanges(interpolator)
-        observeInterpolator(interpolator)
+    private fun onMotionControllerReady(motionController: MotionController<NavTarget, ModelState>) {
+        _clipToBounds.update { motionController.clipToBounds }
+        observeAnimationChanges(motionController)
+        observeMotionController(motionController)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeInterpolator(interpolator: MotionController<NavTarget, ModelState>) {
+    private fun observeMotionController(motionController: MotionController<NavTarget, ModelState>) {
         screenStateJob.cancel()
-        interpolatorObserverJob?.cancel()
-        interpolatorObserverJob = scope.launch {
+        motionControllerObserverJob?.cancel()
+        motionControllerObserverJob = scope.launch {
             model
                 .output
-                .flatMapLatest { interpolator.map(it) }
+                .flatMapLatest { motionController.map(it) }
                 .flatMapLatest { frames ->
                     val frameVisibilityFlows = frames.map { frame ->
                         frame.visibleState
@@ -218,7 +218,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float>? = null
     ) {
-        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _interpolator?.overrideAnimationSpec(
+        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _motionController?.overrideAnimationSpec(
             animationSpec
         )
         val animatedSource = animated
@@ -276,7 +276,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     // TODO plugin?!
     fun destroy() {
-        interpolatorObserverJob?.cancel()
+        motionControllerObserverJob?.cancel()
         screenStateJob.cancel()
         scope.cancel()
     }

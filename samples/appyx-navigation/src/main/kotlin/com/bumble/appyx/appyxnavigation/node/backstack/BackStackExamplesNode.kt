@@ -36,7 +36,7 @@ class BackStackExamplesNode(
             initialTargets = listOf(NavTarget.BackStackPicker),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { BackStackSlider(it) }
+        motionController = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,

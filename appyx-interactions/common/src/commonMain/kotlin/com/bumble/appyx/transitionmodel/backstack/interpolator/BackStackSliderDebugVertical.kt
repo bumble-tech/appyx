@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
-// TODO discard or convert to BaseInterpolator
+// TODO discard or convert to BaseMotionController
 //class BackStackSliderDebugVertical<NavTarget>
 //    : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
 //    private val size = 100.dp
@@ -86,7 +86,7 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 //        }
 //    }
 //
-//    // TODO Migrate to BaseInterpolator
+//    // TODO Migrate to BaseMotionController
 //
 //    override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
 //        TODO("Not yet implemented")

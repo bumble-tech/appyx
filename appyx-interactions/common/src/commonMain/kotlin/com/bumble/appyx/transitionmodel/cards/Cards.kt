@@ -10,13 +10,13 @@ import com.bumble.appyx.interactions.core.ui.UiContext
 
 open class Cards<NavTarget : Any>(
     model: CardsModel<NavTarget>,
-    interpolator: (UiContext) -> MotionController<NavTarget, CardsModel.State<NavTarget>>,
+    motionController: (UiContext) -> MotionController<NavTarget, CardsModel.State<NavTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, CardsModel.State<NavTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
     animateSettle: Boolean = false,
 ) : InteractionModel<NavTarget, CardsModel.State<NavTarget>>(
     model = model,
-    interpolator = interpolator,
+    motionController = motionController,
     gestureFactory = gestureFactory,
     defaultAnimationSpec = animationSpec,
     animateSettle = animateSettle

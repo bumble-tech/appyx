@@ -29,7 +29,7 @@ class DatingCardsNode(
                 initialItems = Profile.allProfiles.shuffled().map {
                     NavTarget.ProfileCard(it)
                 }),
-            interpolator = { CardsProps(it) },
+            motionController = { CardsProps(it) },
             gestureFactory = { CardsProps.Gestures(it) },
         )
 

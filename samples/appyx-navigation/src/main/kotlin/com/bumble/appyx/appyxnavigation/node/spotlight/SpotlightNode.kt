@@ -47,7 +47,7 @@ class SpotlightNode(
             items = List(7) { NavTarget.Child(it) },
             initialActiveIndex = 0f
         ),
-        interpolator = { SpotlightSlider(it) }
+        motionController = { SpotlightSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,

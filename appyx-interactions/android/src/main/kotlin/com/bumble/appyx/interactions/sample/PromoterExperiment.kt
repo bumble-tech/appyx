@@ -37,7 +37,7 @@ fun PromoterExperiment() {
         Promoter(
             scope = coroutineScope,
             model = PromoterModel<NavTarget>(),
-            interpolator = {
+            motionController = {
                 PromoterMotionController(
                     childSize = 100.dp,
                     transitionBounds = it.transitionBounds

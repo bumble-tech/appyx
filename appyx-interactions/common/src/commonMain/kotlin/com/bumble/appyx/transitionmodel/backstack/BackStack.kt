@@ -16,7 +16,7 @@ import kotlinx.coroutines.SupervisorJob
 class BackStack<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     val model: BackStackModel<NavTarget>,
-    interpolator: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
+    motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, BackStackModel.State<NavTarget>> = { GestureFactory.Noop() },
     backPressStrategy: BackPressHandlerStrategy<NavTarget, BackStackModel.State<NavTarget>> = PopBackstackStrategy(),
     animationSpec: AnimationSpec<Float> = spring(),
@@ -24,7 +24,7 @@ class BackStack<NavTarget : Any>(
 ) : InteractionModel<NavTarget, BackStackModel.State<NavTarget>>(
     scope = scope,
     model = model,
-    interpolator = interpolator,
+    motionController = motionController,
     gestureFactory = gestureFactory,
     backPressStrategy = backPressStrategy,
     defaultAnimationSpec = animationSpec,

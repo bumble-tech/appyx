@@ -41,13 +41,13 @@ import kotlin.random.Random
 
 class BackStackNode(
     buildContext: BuildContext,
-    interpolator: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
+    motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = interpolator
+        motionController = motionController
     )
 ) : ParentNode<BackStackNode.NavTarget>(
     buildContext = buildContext,

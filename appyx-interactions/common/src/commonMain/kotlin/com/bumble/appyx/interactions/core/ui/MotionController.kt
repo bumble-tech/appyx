@@ -20,7 +20,7 @@ interface MotionController<NavTarget, ModelState> {
     val finishedAnimations: Flow<NavElement<NavTarget>>
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
-        // TODO remove default once all implementations have been migrated to BaseInterpolator
+        // TODO remove default once all implementations have been migrated to BaseMotionController
     }
 
     fun isAnimating(): StateFlow<Boolean> = MutableStateFlow(false)

@@ -41,7 +41,7 @@ class PromoterNode(
     buildContext: BuildContext,
     private val promoter: Promoter<NavTarget> = Promoter(
         model = PromoterModel(),
-        interpolator = {
+        motionController = {
             PromoterMotionController(
                 childSize = 100.dp,
                 transitionBounds = it.transitionBounds

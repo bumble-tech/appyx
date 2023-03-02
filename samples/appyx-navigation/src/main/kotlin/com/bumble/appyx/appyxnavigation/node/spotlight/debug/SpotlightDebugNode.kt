@@ -43,7 +43,7 @@ class SpotlightDebugNode(
             items = List(7) { NavTarget.Child(it + 1) },
             initialActiveIndex = 0f
         ),
-        interpolator = { SpotlightSlider(it) },
+        motionController = { SpotlightSlider(it) },
         isDebug = true
     )
 ) : ParentNode<NavTarget>(

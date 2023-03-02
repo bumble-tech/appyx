@@ -43,7 +43,7 @@ class BackstackDebugNode(
             initialTargets = listOf(NavTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
-        interpolator = { BackStackSlider(it) }
+        motionController = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,

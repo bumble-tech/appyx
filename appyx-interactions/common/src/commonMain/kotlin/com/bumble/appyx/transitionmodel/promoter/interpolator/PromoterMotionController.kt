@@ -38,7 +38,7 @@ class PromoterMotionController<NavTarget : Any>(
     override val finishedAnimations: Flow<NavElement<NavTarget>>
         get() = TODO("Not yet implemented")
 
-    // TODO migrate to baseInterpolator
+    // TODO migrate to BaseMotionController
     data class Props(
         val dpOffset: DpOffset,
         val scale: Float,
@@ -91,7 +91,7 @@ class PromoterMotionController<NavTarget : Any>(
         rotationZ = 540f
     )
 
-    // TODO Migrate to BaseInterpolator
+    // TODO Migrate to BaseMotionController
 
     private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
         elements.map {
