@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui
+package com.bumble.appyx.interactions.core.ui.output
 
 import com.bumble.appyx.interactions.core.Element
 

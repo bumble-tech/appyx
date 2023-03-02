@@ -18,7 +18,7 @@ import com.bumble.appyx.interactions.core.model.progress.Draggable
 import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
 import com.bumble.appyx.interactions.core.model.progress.InstantInputSource
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
-import com.bumble.appyx.interactions.core.ui.FrameModel
+import com.bumble.appyx.interactions.core.ui.output.FrameModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.ScreenState
