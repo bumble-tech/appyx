@@ -8,13 +8,13 @@ import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.UiContext
 
-open class Cards<NavTarget : Any>(
-    model: CardsModel<NavTarget>,
-    motionController: (UiContext) -> MotionController<NavTarget, CardsModel.State<NavTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, CardsModel.State<NavTarget>> = { GestureFactory.Noop() },
+open class Cards<InteractionTarget : Any>(
+    model: CardsModel<InteractionTarget>,
+    motionController: (UiContext) -> MotionController<InteractionTarget, CardsModel.State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, CardsModel.State<InteractionTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
     animateSettle: Boolean = false,
-) : InteractionModel<NavTarget, CardsModel.State<NavTarget>>(
+) : InteractionModel<InteractionTarget, CardsModel.State<InteractionTarget>>(
     model = model,
     motionController = motionController,
     gestureFactory = gestureFactory,

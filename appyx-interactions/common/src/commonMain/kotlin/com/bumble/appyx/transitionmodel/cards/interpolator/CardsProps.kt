@@ -34,10 +34,10 @@ import kotlinx.coroutines.launch
 typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
 
-class CardsProps<NavTarget : Any>(
+class CardsProps<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<NavTarget, CardsModel.State<NavTarget>, CardsProps.Props>(
+) : BaseMotionController<InteractionTarget, CardsModel.State<InteractionTarget>, CardsProps.Props>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
@@ -172,8 +172,8 @@ class CardsProps<NavTarget : Any>(
         width = width
     )
 
-    override fun CardsModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
-        val result = mutableListOf<MatchedProps<NavTarget, Props>>()
+    override fun CardsModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> {
+        val result = mutableListOf<MatchedProps<InteractionTarget, Props>>()
         (votedCards + visibleCards + queued).map {
             when (it) {
                 is CardsModel.State.Card.InvisibleCard.VotedCard -> {
@@ -203,9 +203,9 @@ class CardsProps<NavTarget : Any>(
         return result
     }
 
-    class Gestures<NavTarget>(
+    class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds
-    ) : GestureFactory<NavTarget, CardsModel.State<NavTarget>> {
+    ) : GestureFactory<InteractionTarget, CardsModel.State<InteractionTarget>> {
 
         private val width = transitionBounds.widthPx
         private val height = transitionBounds.widthPx
@@ -219,7 +219,7 @@ class CardsProps<NavTarget : Any>(
         override fun createGesture(
             delta: Offset,
             density: Density
-        ): Gesture<NavTarget, CardsModel.State<NavTarget>> {
+        ): Gesture<InteractionTarget, CardsModel.State<InteractionTarget>> {
             val verticalRatio = (touchPosition?.y ?: 0f) / height // 0..1
             // For a perfect solution we should keep track where the touch is currently at, at any
             // given moment; then do the calculation in reverse, how much of a horizontal gesture

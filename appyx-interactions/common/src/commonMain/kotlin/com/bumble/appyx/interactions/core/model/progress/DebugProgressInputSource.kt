@@ -7,10 +7,10 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import kotlinx.coroutines.CoroutineScope
 
 // FIXME
-class DebugProgressInputSource<NavTarget, ModelState>(
-    private val transitionModel: TransitionModel<NavTarget, ModelState>,
+class DebugProgressInputSource<InteractionTarget, ModelState>(
+    private val transitionModel: TransitionModel<InteractionTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
-) : ProgressController<NavTarget, ModelState> {
+) : ProgressController<InteractionTarget, ModelState> {
     // TODO this should >not< use its own animatable that's independent of AnimatedInputSource
 //    private val animatable = Animatable(0f)
     private lateinit var result: AnimationResult<Float, AnimationVector1D>

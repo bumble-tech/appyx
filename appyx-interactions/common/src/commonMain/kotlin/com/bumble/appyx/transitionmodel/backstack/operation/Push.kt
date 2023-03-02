@@ -14,20 +14,20 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
  * [A, B, C] + Push(D) = [A, B, C, D]
  */
 @Parcelize
-data class Push<NavTarget : Any>(
-    private val navTarget: @RawValue NavTarget,
+data class Push<InteractionTarget : Any>(
+    private val interactionTarget: @RawValue InteractionTarget,
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<BackStackModel.State<NavTarget>>() {
+) : BaseOperation<BackStackModel.State<InteractionTarget>>() {
 
-    override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
-        navTarget != state.active.navTarget
+    override fun isApplicable(state: BackStackModel.State<InteractionTarget>): Boolean =
+        interactionTarget != state.active.interactionTarget
 
-    override fun createFromState(baseLineState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
+    override fun createFromState(baseLineState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
         baseLineState.copy(
-            created = baseLineState.created + navTarget.asElement()
+            created = baseLineState.created + interactionTarget.asElement()
         )
 
-    override fun createTargetState(fromState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
+    override fun createTargetState(fromState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),
@@ -35,9 +35,9 @@ data class Push<NavTarget : Any>(
         )
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.push(
-    navTarget: NavTarget,
+fun <InteractionTarget : Any> BackStack<InteractionTarget>.push(
+    interactionTarget: InteractionTarget,
     mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) {
-    operation(Push(navTarget, mode))
+    operation(Push(interactionTarget, mode))
 }

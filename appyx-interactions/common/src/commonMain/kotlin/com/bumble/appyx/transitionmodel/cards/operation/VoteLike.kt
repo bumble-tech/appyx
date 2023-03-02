@@ -9,11 +9,11 @@ import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.TopCard.TOP_CARD_STATE.STANDARD
 
 @Parcelize
-class VoteLike<NavTarget>(
+class VoteLike<InteractionTarget>(
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-): TopCardOperation<NavTarget>() {
+): TopCardOperation<InteractionTarget>() {
 
-    override fun createTargetState(fromState: CardsModel.State<NavTarget>): CardsModel.State<NavTarget> {
+    override fun createTargetState(fromState: CardsModel.State<InteractionTarget>): CardsModel.State<InteractionTarget> {
         val votedCards = fromState.votedCards
         return CardsModel.State(
             votedCards = votedCards + CardsModel.State.Card.InvisibleCard.VotedCard(
@@ -24,11 +24,11 @@ class VoteLike<NavTarget>(
         )
     }
 
-    private fun resolveVisibleCards(fromState: CardsModel.State<NavTarget>): List<CardsModel.State.Card.VisibleCard<NavTarget>> {
+    private fun resolveVisibleCards(fromState: CardsModel.State<InteractionTarget>): List<CardsModel.State.Card.VisibleCard<InteractionTarget>> {
         return if (fromState.visibleCards.size < 2) {
             emptyList()
         } else {
-            val result = mutableListOf<CardsModel.State.Card.VisibleCard<NavTarget>>()
+            val result = mutableListOf<CardsModel.State.Card.VisibleCard<InteractionTarget>>()
             result.add(TopCard(fromState.visibleCards[1].navElement, STANDARD))
             if (fromState.queued.isNotEmpty()) {
                 result.add(BottomCard(fromState.queued.first().navElement))

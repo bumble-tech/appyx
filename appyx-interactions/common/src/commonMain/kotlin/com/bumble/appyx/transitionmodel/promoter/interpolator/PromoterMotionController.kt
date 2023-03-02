@@ -27,15 +27,15 @@ import kotlin.math.roundToInt
 import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
-class PromoterMotionController<NavTarget : Any>(
+class PromoterMotionController<InteractionTarget : Any>(
     childSize: Dp,
     transitionBounds: TransitionBounds
-) : MotionController<NavTarget, PromoterModel.State<NavTarget>> {
+) : MotionController<InteractionTarget, PromoterModel.State<InteractionTarget>> {
     private val halfWidthDp = (transitionBounds.widthDp.value - childSize.value) / 2
     private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
-    override val finishedAnimations: Flow<NavElement<NavTarget>>
+    override val finishedAnimations: Flow<NavElement<InteractionTarget>>
         get() = TODO("Not yet implemented")
 
     // TODO migrate to BaseMotionController
@@ -93,7 +93,7 @@ class PromoterMotionController<NavTarget : Any>(
 
     // TODO Migrate to BaseMotionController
 
-    private fun <NavTarget : Any> PromoterModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+    private fun <InteractionTarget : Any> PromoterModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
         elements.map {
             MatchedProps(
                 it.first, when (it.second) {
@@ -109,10 +109,10 @@ class PromoterMotionController<NavTarget : Any>(
         }
 
     override fun mapSegment(
-        segment: Segment<PromoterModel.State<NavTarget>>,
+        segment: Segment<PromoterModel.State<InteractionTarget>>,
         segmentProgress: Flow<Float>,
         initialProgress: Float
-    ): List<FrameModel<NavTarget>> {
+    ): List<FrameModel<InteractionTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -178,8 +178,8 @@ class PromoterMotionController<NavTarget : Any>(
     }
 
     override fun mapUpdate(
-        update: Update<PromoterModel.State<NavTarget>>
-    ): List<FrameModel<NavTarget>> {
+        update: Update<PromoterModel.State<InteractionTarget>>
+    ): List<FrameModel<InteractionTarget>> {
         TODO("Not yet implemented")
     }
 }

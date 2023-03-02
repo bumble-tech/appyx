@@ -11,13 +11,13 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Settl
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
-class DragProgressController<NavTarget : Any, State>(
-    private val model: TransitionModel<NavTarget, State>,
-    private val gestureFactory: () -> GestureFactory<NavTarget, State>
+class DragProgressController<InteractionTarget : Any, State>(
+    private val model: TransitionModel<InteractionTarget, State>,
+    private val gestureFactory: () -> GestureFactory<InteractionTarget, State>
 ) : Draggable {
 
     // TODO get rid of this
-    private var _gestureFactory: ((Offset) -> Gesture<NavTarget, State>)? = null
+    private var _gestureFactory: ((Offset) -> Gesture<InteractionTarget, State>)? = null
         set(value) {
             field = value
             if (value == null) {
@@ -25,7 +25,7 @@ class DragProgressController<NavTarget : Any, State>(
             }
         }
 
-    private var gesture: Gesture<NavTarget, State>? = null
+    private var gesture: Gesture<InteractionTarget, State>? = null
 
     override fun onStartDrag(position: Offset) {
         gestureFactory().onStartDrag(position)

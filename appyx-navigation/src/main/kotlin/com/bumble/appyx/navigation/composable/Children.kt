@@ -128,7 +128,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
             interactionModel.frames
                 .map { list ->
                     list
-                        .filter { clazz.isInstance(it.navElement.navTarget) }
+                        .filter { clazz.isInstance(it.navElement.interactionTarget) }
                 }
         }
 

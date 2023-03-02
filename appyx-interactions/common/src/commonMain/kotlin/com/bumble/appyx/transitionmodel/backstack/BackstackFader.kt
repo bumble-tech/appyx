@@ -13,10 +13,10 @@ import com.bumble.appyx.transitionmodel.BaseMotionController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-class BackstackFader<NavTarget : Any>(
+class BackstackFader<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<NavTarget, BackStackModel.State<NavTarget>, BackstackFader.Props>(
+) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackstackFader.Props>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
@@ -68,7 +68,7 @@ class BackstackFader<NavTarget : Any>(
         alpha = Alpha(0f)
     )
 
-    override fun BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+    override fun BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
         listOf(
             MatchedProps(active, visible)
         ) + (created + stashed + destroyed).map {

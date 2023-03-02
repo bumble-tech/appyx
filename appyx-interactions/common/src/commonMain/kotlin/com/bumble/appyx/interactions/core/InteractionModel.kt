@@ -42,12 +42,12 @@ import kotlinx.coroutines.launch
 
 // TODO move to navigation
 // TODO save/restore state
-open class InteractionModel<NavTarget : Any, ModelState : Any>(
+open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    private val model: TransitionModel<NavTarget, ModelState>,
-    private val motionController: (UiContext) -> MotionController<NavTarget, ModelState>,
-    private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
-    private val backPressStrategy: BackPressHandlerStrategy<NavTarget, ModelState> = DontHandleBackPress(),
+    private val model: TransitionModel<InteractionTarget, ModelState>,
+    private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
+    private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
+    private val backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModelState> = DontHandleBackPress(),
     val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
@@ -58,9 +58,9 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     private var motionControllerObserverJob: Job? = null
-    private var _motionController: MotionController<NavTarget, ModelState>? = null
+    private var _motionController: MotionController<InteractionTarget, ModelState>? = null
 
-    private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
+    private var _gestureFactory: GestureFactory<InteractionTarget, ModelState> =
         gestureFactory(zeroSizeTransitionBounds)
 
     private var animationChangesJob: Job? = null
@@ -76,21 +76,21 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     private var isAnimating: Boolean = false
     private val instant = InstantInputSource(model = model)
-    private var animated: AnimatedInputSource<NavTarget, ModelState>? = null
-    private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
+    private var animated: AnimatedInputSource<InteractionTarget, ModelState>? = null
+    private var debug: DebugProgressInputSource<InteractionTarget, ModelState>? = null
     private val drag = DragProgressController(
         model = model,
         gestureFactory = { _gestureFactory }
     )
 
-    private val _frames: MutableStateFlow<List<FrameModel<NavTarget>>> =
+    private val _frames: MutableStateFlow<List<FrameModel<InteractionTarget>>> =
         MutableStateFlow(emptyList())
-    val frames: StateFlow<List<FrameModel<NavTarget>>> = _frames
+    val frames: StateFlow<List<FrameModel<InteractionTarget>>> = _frames
 
     private var screenStateJob: Job
-    private val _screenState: MutableStateFlow<ScreenState<NavTarget>> =
+    private val _screenState: MutableStateFlow<ScreenState<InteractionTarget>> =
         MutableStateFlow(ScreenState(offScreen = model.availableElements().value))
-    val screenState: StateFlow<ScreenState<NavTarget>> = _screenState
+    val screenState: StateFlow<ScreenState<InteractionTarget>> = _screenState
 
     private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val clipToBounds: StateFlow<Boolean> = _clipToBounds
@@ -110,7 +110,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var animationScope: CoroutineScope? = null
     private var isInitialised: Boolean = false
 
-    private fun observeAnimationChanges(motionController: MotionController<NavTarget, ModelState>) {
+    private fun observeAnimationChanges(motionController: MotionController<InteractionTarget, ModelState>) {
         animationChangesJob?.cancel()
         animationChangesJob = scope.launch {
             motionController.isAnimating()
@@ -171,14 +171,14 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
     }
 
-    private fun onMotionControllerReady(motionController: MotionController<NavTarget, ModelState>) {
+    private fun onMotionControllerReady(motionController: MotionController<InteractionTarget, ModelState>) {
         _clipToBounds.update { motionController.clipToBounds }
         observeAnimationChanges(motionController)
         observeMotionController(motionController)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeMotionController(motionController: MotionController<NavTarget, ModelState>) {
+    private fun observeMotionController(motionController: MotionController<InteractionTarget, ModelState>) {
         screenStateJob.cancel()
         motionControllerObserverJob?.cancel()
         motionControllerObserverJob = scope.launch {
@@ -190,8 +190,8 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
                         frame.visibleState
                     }
                     combine(frameVisibilityFlows) { visibilityValues ->
-                        val onScreen = mutableSetOf<NavElement<NavTarget>>()
-                        val offScreen = mutableSetOf<NavElement<NavTarget>>()
+                        val onScreen = mutableSetOf<NavElement<InteractionTarget>>()
+                        val offScreen = mutableSetOf<NavElement<InteractionTarget>>()
                         visibilityValues.forEachIndexed { index, visibilityValue ->
                             val navElement = frames[index].navElement
                             if (visibilityValue) {
@@ -212,7 +212,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
     }
 
-    fun availableElements(): StateFlow<Set<NavElement<NavTarget>>> = model.availableElements()
+    fun availableElements(): StateFlow<Set<NavElement<InteractionTarget>>> = model.availableElements()
 
     fun operation(
         operation: Operation<ModelState>,

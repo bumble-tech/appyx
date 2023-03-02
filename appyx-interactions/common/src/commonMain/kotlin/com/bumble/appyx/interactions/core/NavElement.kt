@@ -10,13 +10,13 @@ import java.util.UUID
 
 @Parcelize
 @Immutable
-data class NavElement<NavTarget>(
-    val navTarget: @RawValue NavTarget,
+data class NavElement<InteractionTarget>(
+    val interactionTarget: @RawValue InteractionTarget,
     val id: String = UUID.randomUUID().toString()
 ) : Parcelable
 
-fun <NavTarget> NavTarget.asElement(): NavElement<NavTarget> =
+fun <InteractionTarget> InteractionTarget.asElement(): NavElement<InteractionTarget> =
     NavElement(this)
 
-fun <NavTarget> List<NavTarget>.asElements(): NavElements<NavTarget> =
+fun <InteractionTarget> List<InteractionTarget>.asElements(): NavElements<InteractionTarget> =
     map { it.asElement() }

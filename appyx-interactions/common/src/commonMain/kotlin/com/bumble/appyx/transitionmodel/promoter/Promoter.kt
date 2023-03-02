@@ -11,13 +11,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-open class Promoter<NavTarget : Any>(
+open class Promoter<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    model: PromoterModel<NavTarget>,
-    motionController: (UiContext) -> MotionController<NavTarget, PromoterModel.State<NavTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, PromoterModel.State<NavTarget>> = { GestureFactory.Noop() },
+    model: PromoterModel<InteractionTarget>,
+    motionController: (UiContext) -> MotionController<InteractionTarget, PromoterModel.State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, PromoterModel.State<InteractionTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
-) : InteractionModel<NavTarget, PromoterModel.State<NavTarget>>(
+) : InteractionModel<InteractionTarget, PromoterModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
     motionController = motionController,

@@ -15,12 +15,12 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class AnimatedInputSource<NavTarget : Any, ModelState>(
-    private val model: TransitionModel<NavTarget, ModelState>,
+class AnimatedInputSource<InteractionTarget : Any, ModelState>(
+    private val model: TransitionModel<InteractionTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
     private val defaultAnimationSpec: AnimationSpec<Float> = spring(),
     private val animateSettle: Boolean = false
-) : ProgressController<NavTarget, ModelState> {
+) : ProgressController<InteractionTarget, ModelState> {
 
     private val animatable = Animatable(0f)
     // FIXME private lateinit var result: AnimationResult<Float, AnimationVector1D>

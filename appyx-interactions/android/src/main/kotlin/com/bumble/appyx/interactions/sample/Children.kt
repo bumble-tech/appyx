@@ -113,7 +113,7 @@ fun Element(
             .padding(24.dp)
     ) {
         Text(
-            text = frameModel.navElement.navTarget.toString(),
+            text = frameModel.navElement.interactionTarget.toString(),
             fontSize = 21.sp,
             color = Color.Black,
             fontWeight = FontWeight.Bold

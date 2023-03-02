@@ -1,8 +1,8 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
 // TODO discard or convert to BaseMotionController
-//class BackStackSliderDebugVertical<NavTarget>
-//    : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
+//class BackStackSliderDebugVertical<InteractionTarget>
+//    : Interpolator<InteractionTarget, BackStackModel.State<InteractionTarget>> {
 //    private val size = 100.dp
 //
 //
@@ -35,7 +35,7 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 //        isVisible = false
 //    )
 //
-//    private fun <NavTarget> BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+//    private fun <InteractionTarget> BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
 //        created.map { MatchedProps(it, createdProps) } +
 //                listOf(MatchedProps(active, activeProps)) +
 //                stashed.mapIndexed { index, navElement ->
@@ -56,7 +56,7 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 //                }
 //
 //
-//    override fun mapSegment(segment: Segment<BackStackModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
+//    override fun mapSegment(segment: Segment<BackStackModel.State<InteractionTarget>>, segmentProgress: Float): List<FrameModel<InteractionTarget>> {
 //        val (fromState, targetState) = segment.navTransition
 //        val fromProps = fromState.toProps()
 //        val targetProps = targetState.toProps()
@@ -88,7 +88,7 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 //
 //    // TODO Migrate to BaseMotionController
 //
-//    override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+//    override fun mapUpdate(update: Update<BackStackModel.State<InteractionTarget>>): List<FrameModel<InteractionTarget>> {
 //        TODO("Not yet implemented")
 //    }
 //}
@@ -120,7 +120,7 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 ////            )
 ////        }
 ////
-////    override fun map(segment: Segment<NavTarget, BackStackModel.State>): List<FrameModel<NavTarget, BackStackModel.State>> {
+////    override fun map(segment: Segment<InteractionTarget, BackStackModel.State>): List<FrameModel<InteractionTarget, BackStackModel.State>> {
 ////        val fromState = segment.navTransition.fromState
 ////        val targetState = segment.navTransition.targetState
 //////        val fromStashed = fromState.filter { it.state == STASHED }

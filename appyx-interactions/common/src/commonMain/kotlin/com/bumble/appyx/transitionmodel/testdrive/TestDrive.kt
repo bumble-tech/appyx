@@ -11,14 +11,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-open class TestDrive<NavTarget : Any>(
+open class TestDrive<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    model: TestDriveModel<NavTarget>,
-    motionController: (UiContext) -> MotionController<NavTarget, TestDriveModel.State<NavTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, TestDriveModel.State<NavTarget>> = { GestureFactory.Noop() },
+    model: TestDriveModel<InteractionTarget>,
+    motionController: (UiContext) -> MotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> = { GestureFactory.Noop() },
     progressAnimationSpec: AnimationSpec<Float> = spring(),
     animateSettle: Boolean = false
-) : InteractionModel<NavTarget, TestDriveModel.State<NavTarget>>(
+) : InteractionModel<InteractionTarget, TestDriveModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
     motionController = motionController,

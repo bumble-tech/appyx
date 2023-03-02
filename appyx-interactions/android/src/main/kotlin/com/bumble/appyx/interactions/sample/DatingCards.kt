@@ -92,6 +92,6 @@ fun ElementWrapper(
             .then(frameModel.modifier)
             .then(modifier)
     ) {
-        ProfileCard(profile = frameModel.navElement.navTarget.profile)
+        ProfileCard(profile = frameModel.navElement.interactionTarget.profile)
     }
 }

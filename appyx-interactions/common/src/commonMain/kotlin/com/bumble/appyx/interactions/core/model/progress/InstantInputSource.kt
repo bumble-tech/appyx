@@ -4,9 +4,9 @@ import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 
-class InstantInputSource<NavTarget : Any, ModelState>(
-    private val model: TransitionModel<NavTarget, ModelState>,
-) : ProgressController<NavTarget, ModelState> {
+class InstantInputSource<InteractionTarget : Any, ModelState>(
+    private val model: TransitionModel<InteractionTarget, ModelState>,
+) : ProgressController<InteractionTarget, ModelState> {
 
 
     override fun operation(operation: Operation<ModelState>) {

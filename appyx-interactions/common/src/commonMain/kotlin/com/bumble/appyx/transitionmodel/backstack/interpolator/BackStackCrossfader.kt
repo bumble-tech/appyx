@@ -14,9 +14,9 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class BackStackCrossfader<NavTarget : Any>(
+class BackStackCrossfader<InteractionTarget : Any>(
     scope: CoroutineScope
-) : BaseMotionController<NavTarget, BackStackModel.State<NavTarget>, BackStackCrossfader.Props>(
+) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackStackCrossfader.Props>(
     scope = scope
 ) {
 
@@ -72,7 +72,7 @@ class BackStackCrossfader<NavTarget : Any>(
         alpha = Alpha(value = 0f)
     )
 
-    override fun BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+    override fun BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
         listOf(
             MatchedProps(active, visible)
         ) + (created + stashed + destroyed).map {

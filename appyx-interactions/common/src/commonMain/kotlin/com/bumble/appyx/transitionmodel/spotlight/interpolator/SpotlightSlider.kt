@@ -38,11 +38,11 @@ import androidx.compose.animation.core.Animatable as Animatable1
 
 typealias OffsetP = com.bumble.appyx.interactions.core.ui.property.impl.Offset
 
-class SpotlightSlider<NavTarget : Any>(
+class SpotlightSlider<InteractionTarget : Any>(
     uiContext: UiContext,
     override val clipToBounds: Boolean = false,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseMotionController<NavTarget, SpotlightModel.State<NavTarget>, SpotlightSlider.Props>(
+) : BaseMotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>, SpotlightSlider.Props>(
     scope = uiContext.coroutineScope
 ) {
     private val screenWidth = uiContext.transitionBounds.screenWidthDp
@@ -51,9 +51,9 @@ class SpotlightSlider<NavTarget : Any>(
     private val height = uiContext.transitionBounds.heightDp
     private val scroll = Animatable1(0f) // TODO sync this with the model's initial value
 
-    override val geometryMappings: List<Pair<(SpotlightModel.State<NavTarget>) -> Float, Animatable1<Float, AnimationVector1D>>> =
+    override val geometryMappings: List<Pair<(SpotlightModel.State<InteractionTarget>) -> Float, Animatable1<Float, AnimationVector1D>>> =
         listOf(
-            { state: SpotlightModel.State<NavTarget> -> state.activeIndex } to scroll
+            { state: SpotlightModel.State<InteractionTarget> -> state.activeIndex } to scroll
         )
 
     data class Props(
@@ -182,7 +182,7 @@ class SpotlightSlider<NavTarget : Any>(
         screenWidth = width
     )
 
-    override fun SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> {
+    override fun SpotlightModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 val target = it.value.toProps()
@@ -224,17 +224,17 @@ class SpotlightSlider<NavTarget : Any>(
         y = 0.dp
     )
 
-    class Gestures<NavTarget>(
+    class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
         private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-    ) : GestureFactory<NavTarget, SpotlightModel.State<NavTarget>> {
+    ) : GestureFactory<InteractionTarget, SpotlightModel.State<InteractionTarget>> {
         private val width = transitionBounds.widthPx
         private val height = transitionBounds.heightPx
 
         override fun createGesture(
             delta: Offset,
             density: Density
-        ): Gesture<NavTarget, SpotlightModel.State<NavTarget>> {
+        ): Gesture<InteractionTarget, SpotlightModel.State<InteractionTarget>> {
             return when (orientation) {
                 Orientation.Horizontal -> if (delta.x < 0) {
                     Gesture(

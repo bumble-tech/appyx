@@ -9,23 +9,23 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 
 
 @Parcelize
-class First<NavTarget : Any>(
+class First<InteractionTarget : Any>(
     override val mode: Operation.Mode = Operation.Mode.GEOMETRY
-) : BaseOperation<SpotlightModel.State<NavTarget>>() {
+) : BaseOperation<SpotlightModel.State<InteractionTarget>>() {
 
-    override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
+    override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
+    override fun createFromState(baseLineState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: SpotlightModel.State<NavTarget>): SpotlightModel.State<NavTarget> =
+    override fun createTargetState(fromState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
         fromState.copy(
             activeIndex = 0f,
         )
 }
 
-fun <NavTarget : Any> Spotlight<NavTarget>.first(
+fun <InteractionTarget : Any> Spotlight<InteractionTarget>.first(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.GEOMETRY
 ) {

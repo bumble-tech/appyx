@@ -31,10 +31,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class TestDriveUiModel<NavTarget : Any>(
+class TestDriveUiModel<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<NavTarget, TestDriveModel.State<NavTarget>, TestDriveUiModel.Props>(
+) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, TestDriveUiModel.Props>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
@@ -124,23 +124,23 @@ class TestDriveUiModel<NavTarget : Any>(
         )
     }
 
-    override fun TestDriveModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+    override fun TestDriveModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
         listOf(
             MatchedProps(element, elementState.toProps()).also {
                 Logger.log("TestDrive", "Matched $elementState -> Props: ${it.props}")
             }
         )
 
-    class Gestures<NavTarget>(
+    class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
-    ) : GestureFactory<NavTarget, TestDriveModel.State<NavTarget>> {
+    ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
         private val width = b.offset.value.x - a.offset.value.x
         private val height = d.offset.value.y - a.offset.value.y
 
         override fun createGesture(
             delta: androidx.compose.ui.geometry.Offset,
             density: Density
-        ): Gesture<NavTarget, TestDriveModel.State<NavTarget>> {
+        ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
             val width = with(density) { width.toPx() }
             val height = with(density) { height.toPx() }
 

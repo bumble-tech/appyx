@@ -3,7 +3,7 @@ package com.bumble.appyx.interactions.core.model.transition
 import com.bumble.appyx.interactions.core.NavElement
 import kotlinx.coroutines.flow.StateFlow
 
-interface TransitionModel<NavTarget, ModelState> {
+interface TransitionModel<InteractionTarget, ModelState> {
 
     val output: StateFlow<Output<ModelState>>
 
@@ -20,11 +20,11 @@ interface TransitionModel<NavTarget, ModelState> {
 
     }
 
-    fun availableElements(): StateFlow<Set<NavElement<NavTarget>>>
+    fun availableElements(): StateFlow<Set<NavElement<InteractionTarget>>>
 
     fun relaxExecutionMode()
 
-    fun cleanUpElement(navElement: NavElement<NavTarget>)
+    fun cleanUpElement(navElement: NavElement<InteractionTarget>)
 
     fun operation(
         operation: Operation<ModelState>,

@@ -8,24 +8,24 @@ import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 
 @Parcelize
-data class MoveTo<NavTarget>(
+data class MoveTo<InteractionTarget>(
     private val elementState: TestDriveModel.State.ElementState,
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<TestDriveModel.State<NavTarget>>() {
+) : BaseOperation<TestDriveModel.State<InteractionTarget>>() {
 
-    override fun isApplicable(state: TestDriveModel.State<NavTarget>): Boolean =
+    override fun isApplicable(state: TestDriveModel.State<InteractionTarget>): Boolean =
         state.elementState.next() == elementState
 
-    override fun createFromState(baseLineState: TestDriveModel.State<NavTarget>): TestDriveModel.State<NavTarget> =
+    override fun createFromState(baseLineState: TestDriveModel.State<InteractionTarget>): TestDriveModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: TestDriveModel.State<NavTarget>): TestDriveModel.State<NavTarget> =
+    override fun createTargetState(fromState: TestDriveModel.State<InteractionTarget>): TestDriveModel.State<InteractionTarget> =
         fromState.copy(
             elementState = fromState.elementState.next()
         )
 }
 
-fun <NavTarget : Any> TestDrive<NavTarget>.moveTo(
+fun <InteractionTarget : Any> TestDrive<InteractionTarget>.moveTo(
     elementState: TestDriveModel.State.ElementState,
     mode: Operation.Mode = Operation.Mode.KEYFRAME,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec

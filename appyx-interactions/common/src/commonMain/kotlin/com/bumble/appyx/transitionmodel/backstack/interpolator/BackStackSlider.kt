@@ -21,9 +21,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
-class BackStackSlider<NavTarget : Any>(
+class BackStackSlider<InteractionTarget : Any>(
     private val uiContext: UiContext,
-) : BaseMotionController<NavTarget, BackStackModel.State<NavTarget>, BackStackSlider.Props>(
+) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackStackSlider.Props>(
     scope = uiContext.coroutineScope,
 ) {
     private val width = uiContext.transitionBounds.widthDp
@@ -106,7 +106,7 @@ class BackStackSlider<NavTarget : Any>(
     )
 
 
-    override fun BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+    override fun BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
         created.map { MatchedProps(it, outsideRight) } +
                 listOf(MatchedProps(active, noOffset)) +
                 stashed.mapIndexed { index, navElement ->

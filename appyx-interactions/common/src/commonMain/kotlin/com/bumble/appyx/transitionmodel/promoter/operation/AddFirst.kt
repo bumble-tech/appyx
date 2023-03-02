@@ -10,29 +10,29 @@ import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 
 @Parcelize
-data class AddFirst<NavTarget>(
-    private val element: @RawValue NavTarget,
+data class AddFirst<InteractionTarget>(
+    private val element: @RawValue InteractionTarget,
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<PromoterModel.State<NavTarget>>() {
+) : BaseOperation<PromoterModel.State<InteractionTarget>>() {
 
-    override fun isApplicable(state: PromoterModel.State<NavTarget>): Boolean =
+    override fun isApplicable(state: PromoterModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: PromoterModel.State<NavTarget>): PromoterModel.State<NavTarget> =
+    override fun createFromState(baseLineState: PromoterModel.State<InteractionTarget>): PromoterModel.State<InteractionTarget> =
         baseLineState.copy(
             elements = listOf(element.asElement() to PromoterModel.State.ElementState.CREATED) + baseLineState.elements,
         )
 
-    override fun createTargetState(fromState: PromoterModel.State<NavTarget>): PromoterModel.State<NavTarget> =
+    override fun createTargetState(fromState: PromoterModel.State<InteractionTarget>): PromoterModel.State<InteractionTarget> =
         fromState.copy(
             elements = fromState.elements.map { it.first to it.second.next() }
         )
 }
 
-fun <NavTarget : Any> Promoter<NavTarget>.addFirst(
-    navTarget: NavTarget,
+fun <InteractionTarget : Any> Promoter<InteractionTarget>.addFirst(
+    interactionTarget: InteractionTarget,
     mode: Operation.Mode = Operation.Mode.KEYFRAME,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec
 ) {
-    operation(AddFirst(navTarget, mode), animationSpec)
+    operation(AddFirst(interactionTarget, mode), animationSpec)
 }

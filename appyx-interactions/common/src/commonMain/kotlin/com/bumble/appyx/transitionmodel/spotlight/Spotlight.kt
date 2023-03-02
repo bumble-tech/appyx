@@ -11,14 +11,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-open class Spotlight<NavTarget : Any>(
+open class Spotlight<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    model: SpotlightModel<NavTarget>,
-    motionController: (UiContext) -> MotionController<NavTarget, SpotlightModel.State<NavTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, SpotlightModel.State<NavTarget>> = { GestureFactory.Noop() },
+    model: SpotlightModel<InteractionTarget>,
+    motionController: (UiContext) -> MotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, SpotlightModel.State<InteractionTarget>> = { GestureFactory.Noop() },
     animationSpec: AnimationSpec<Float> = spring(),
     isDebug: Boolean = false
-) : InteractionModel<NavTarget, SpotlightModel.State<NavTarget>>(
+) : InteractionModel<InteractionTarget, SpotlightModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
     motionController = motionController,

@@ -17,20 +17,20 @@ import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
 @SuppressWarnings("UnusedPrivateMember")
-abstract class BaseTransitionModel<NavTarget, ModelState>(
+abstract class BaseTransitionModel<InteractionTarget, ModelState>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
-) : TransitionModel<NavTarget, ModelState> {
+) : TransitionModel<InteractionTarget, ModelState> {
     abstract val initialState: ModelState
 
-    abstract fun ModelState.destroyedElements(): Set<NavElement<NavTarget>>
+    abstract fun ModelState.destroyedElements(): Set<NavElement<InteractionTarget>>
 
     abstract fun ModelState.removeDestroyedElements(): ModelState
 
-    abstract fun ModelState.removeDestroyedElement(navElement: NavElement<NavTarget>): ModelState
+    abstract fun ModelState.removeDestroyedElement(navElement: NavElement<InteractionTarget>): ModelState
 
-    abstract fun ModelState.availableElements(): Set<NavElement<NavTarget>>
+    abstract fun ModelState.availableElements(): Set<NavElement<InteractionTarget>>
 
-    override fun availableElements(): StateFlow<Set<NavElement<NavTarget>>> =
+    override fun availableElements(): StateFlow<Set<NavElement<InteractionTarget>>> =
         output
             .map { it.currentTargetState.availableElements() }
             .stateIn(scope, SharingStarted.Eagerly, initialState.availableElements())
@@ -56,7 +56,7 @@ abstract class BaseTransitionModel<NavTarget, ModelState>(
         removeDestroyedElements()
     }
 
-    override fun cleanUpElement(navElement: NavElement<NavTarget>) {
+    override fun cleanUpElement(navElement: NavElement<InteractionTarget>) {
         state.getAndUpdate { output ->
             when (output) {
                 is Update<ModelState> -> output.copy(

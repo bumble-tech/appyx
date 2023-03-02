@@ -5,12 +5,12 @@ import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
 
-class TestDriveModel<NavTarget : Any>(
-    val element: NavTarget
-) : BaseTransitionModel<NavTarget, TestDriveModel.State<NavTarget>>() {
+class TestDriveModel<InteractionTarget : Any>(
+    val element: InteractionTarget
+) : BaseTransitionModel<InteractionTarget, TestDriveModel.State<InteractionTarget>>() {
 
-    data class State<NavTarget>(
-        val element: NavElement<NavTarget>,
+    data class State<InteractionTarget>(
+        val element: NavElement<InteractionTarget>,
         val elementState: ElementState
     ) {
         enum class ElementState {
@@ -26,20 +26,20 @@ class TestDriveModel<NavTarget : Any>(
         }
     }
 
-    override fun State<NavTarget>.availableElements(): Set<NavElement<NavTarget>> =
+    override fun State<InteractionTarget>.availableElements(): Set<NavElement<InteractionTarget>> =
         setOf(element)
 
 
-    override fun State<NavTarget>.destroyedElements(): Set<NavElement<NavTarget>> =
+    override fun State<InteractionTarget>.destroyedElements(): Set<NavElement<InteractionTarget>> =
         emptySet()
 
-    override val initialState: State<NavTarget> =
+    override val initialState: State<InteractionTarget> =
         State(
             element = element.asElement(),
             elementState = A
         )
 
-    override fun State<NavTarget>.removeDestroyedElement(navElement: NavElement<NavTarget>) = this
+    override fun State<InteractionTarget>.removeDestroyedElement(navElement: NavElement<InteractionTarget>) = this
 
-    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> = this
+    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> = this
 }

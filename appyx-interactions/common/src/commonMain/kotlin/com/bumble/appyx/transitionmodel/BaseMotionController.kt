@@ -30,10 +30,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import androidx.compose.animation.core.Animatable as Animatable1
 
-abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
+abstract class BaseMotionController<InteractionTarget : Any, ModelState, Props>(
     private val scope: CoroutineScope,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : MotionController<NavTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
+) : MotionController<InteractionTarget, ModelState> where Props : BaseProps, Props : HasModifier, Props : Animatable<Props> {
 
     private val propsCache: MutableMap<String, Props> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
@@ -44,8 +44,8 @@ abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
         emptyList()
 
 
-    private val _finishedAnimations = MutableSharedFlow<NavElement<NavTarget>>()
-    override val finishedAnimations: Flow<NavElement<NavTarget>> = _finishedAnimations
+    private val _finishedAnimations = MutableSharedFlow<NavElement<InteractionTarget>>()
+    override val finishedAnimations: Flow<NavElement<InteractionTarget>> = _finishedAnimations
 
     abstract fun defaultProps(): Props
 
@@ -56,11 +56,11 @@ abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
 
-    abstract fun ModelState.toProps(): List<MatchedProps<NavTarget, Props>>
+    abstract fun ModelState.toProps(): List<MatchedProps<InteractionTarget, Props>>
 
     override fun mapUpdate(
         update: Update<ModelState>
-    ): List<FrameModel<NavTarget>> {
+    ): List<FrameModel<InteractionTarget>> {
         val targetProps = update.currentTargetState.toProps()
 
         scope.launch {
@@ -86,7 +86,7 @@ abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
     @Composable
     private fun manageAnimations(
         elementProps: Props,
-        targetProps: MatchedProps<NavTarget, Props>,
+        targetProps: MatchedProps<InteractionTarget, Props>,
         update: Update<ModelState>
     ) {
         LaunchedEffect(update, this) {
@@ -109,7 +109,7 @@ abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
     @Composable
     private fun observeElementAnimationChanges(
         elementProps: Props,
-        targetProps: MatchedProps<NavTarget, Props>
+        targetProps: MatchedProps<InteractionTarget, Props>
     ) {
         LaunchedEffect(this) {
             // make sure to use scope created by Launched effect as this scope should be cancelled
@@ -167,7 +167,7 @@ abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
         segment: Segment<ModelState>,
         segmentProgress: Flow<Float>,
         initialProgress: Float
-    ): List<FrameModel<NavTarget>> {
+    ): List<FrameModel<InteractionTarget>> {
         val (fromState, targetState) = segment.navTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
@@ -201,8 +201,8 @@ abstract class BaseMotionController<NavTarget : Any, ModelState, Props>(
     private fun interpolatedProps(
         segmentProgress: Flow<Float>,
         elementProps: Props,
-        from: MatchedProps<NavTarget, Props>,
-        to: MatchedProps<NavTarget, Props>,
+        from: MatchedProps<InteractionTarget, Props>,
+        to: MatchedProps<InteractionTarget, Props>,
         initialProgress: Float
     ) {
         val progress by segmentProgress.collectAsState(initialProgress)

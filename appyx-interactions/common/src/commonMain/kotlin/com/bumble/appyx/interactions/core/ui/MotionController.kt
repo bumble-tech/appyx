@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
-interface MotionController<NavTarget, ModelState> {
+interface MotionController<InteractionTarget, ModelState> {
 
     val clipToBounds: Boolean
         get() = false
 
-    val finishedAnimations: Flow<NavElement<NavTarget>>
+    val finishedAnimations: Flow<NavElement<InteractionTarget>>
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseMotionController
@@ -27,7 +27,7 @@ interface MotionController<NavTarget, ModelState> {
 
     fun map(
         output: TransitionModel.Output<ModelState>
-    ): Flow<List<FrameModel<NavTarget>>> =
+    ): Flow<List<FrameModel<InteractionTarget>>> =
         when (output) {
             is Keyframes -> {
                 //Produce new frame model every time we switch segments
@@ -39,7 +39,7 @@ interface MotionController<NavTarget, ModelState> {
     fun mapKeyframes(
         keyframes: Keyframes<ModelState>,
         segmentIndex: Int
-    ): List<FrameModel<NavTarget>> =
+    ): List<FrameModel<InteractionTarget>> =
         mapSegment(
             keyframes.currentSegment,
             keyframes.getSegmentProgress(segmentIndex),
@@ -51,9 +51,9 @@ interface MotionController<NavTarget, ModelState> {
         segment: Segment<ModelState>,
         segmentProgress: Flow<Float>,
         initialProgress: Float
-    ): List<FrameModel<NavTarget>>
+    ): List<FrameModel<InteractionTarget>>
 
     fun mapUpdate(
         update: Update<ModelState>
-    ): List<FrameModel<NavTarget>>
+    ): List<FrameModel<InteractionTarget>>
 }

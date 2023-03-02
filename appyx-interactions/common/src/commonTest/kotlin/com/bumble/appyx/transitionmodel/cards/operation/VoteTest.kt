@@ -59,7 +59,7 @@ class VoteTest {
         assertEquals(actual.targetState.votedCards.size, 1)
         val votedCard = actual.targetState.votedCards[0] as VotedCard
         assertEquals(
-            actual = votedCard.navElement.navTarget,
+            actual = votedCard.navElement.interactionTarget,
             expected = Child1
         )
         assertEquals(
