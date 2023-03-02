@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui
+package com.bumble.appyx.interactions.core.ui.context
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.geometry.Rect

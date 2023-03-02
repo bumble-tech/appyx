@@ -5,8 +5,8 @@ import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MotionController
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.UiContext
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 
 open class Cards<InteractionTarget : Any>(
     model: CardsModel<InteractionTarget>,

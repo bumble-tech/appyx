@@ -23,7 +23,7 @@ import com.bumble.appyx.appyxnavigation.colors
 import com.bumble.appyx.appyxnavigation.ui.TextButton
 import com.bumble.appyx.appyxnavigation.ui.appyx_dark
 import com.bumble.appyx.interactions.core.ui.MotionController
-import com.bumble.appyx.interactions.core.ui.UiContext
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
