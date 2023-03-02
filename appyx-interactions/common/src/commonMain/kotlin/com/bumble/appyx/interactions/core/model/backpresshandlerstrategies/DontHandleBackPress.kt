@@ -1,7 +1,5 @@
-package com.bumble.appyx.interactions.core.backpresshandlerstrategies
+package com.bumble.appyx.interactions.core.model.backpresshandlerstrategies
 
-import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.TransitionModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

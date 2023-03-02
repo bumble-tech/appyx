@@ -1,5 +1,6 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.model.transition
 
+import com.bumble.appyx.interactions.core.NavElement
 import kotlinx.coroutines.flow.StateFlow
 
 interface TransitionModel<NavTarget, ModelState> {

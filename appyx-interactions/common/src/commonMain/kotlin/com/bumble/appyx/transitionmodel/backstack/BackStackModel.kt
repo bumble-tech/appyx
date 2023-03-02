@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.backstack
 
-import com.bumble.appyx.interactions.core.BaseTransitionModel
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement

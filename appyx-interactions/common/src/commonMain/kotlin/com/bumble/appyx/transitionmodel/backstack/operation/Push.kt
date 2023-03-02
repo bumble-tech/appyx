@@ -2,8 +2,8 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
-import com.bumble.appyx.interactions.core.BaseOperation
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.model.transition.BaseOperation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel

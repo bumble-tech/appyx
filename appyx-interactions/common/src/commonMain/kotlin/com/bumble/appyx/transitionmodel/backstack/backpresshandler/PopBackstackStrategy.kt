@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.backstack.backpresshandler
 
-import com.bumble.appyx.interactions.core.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.operation.Pop
 import kotlinx.coroutines.flow.Flow

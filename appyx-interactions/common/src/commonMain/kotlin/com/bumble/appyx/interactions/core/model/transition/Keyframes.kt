@@ -1,10 +1,9 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 

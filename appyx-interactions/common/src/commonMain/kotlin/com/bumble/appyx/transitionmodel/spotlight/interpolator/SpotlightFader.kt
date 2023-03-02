@@ -1,24 +1,5 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
-import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
-import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
-
 
 // TODO BaseInterpolator + dynamic on visibility calculation
 //class SpotlightFader<NavTarget : Any>(

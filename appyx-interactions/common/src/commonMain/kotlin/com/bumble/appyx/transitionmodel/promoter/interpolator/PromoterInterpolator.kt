@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
+import com.bumble.appyx.interactions.core.model.transition.Segment
+import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel

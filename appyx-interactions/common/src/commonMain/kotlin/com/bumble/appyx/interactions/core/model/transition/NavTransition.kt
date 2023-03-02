@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.model.transition
 
 data class NavTransition<State>(
     val fromState: State,

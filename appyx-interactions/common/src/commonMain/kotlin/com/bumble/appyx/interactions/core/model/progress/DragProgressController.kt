@@ -1,13 +1,13 @@
-package com.bumble.appyx.interactions.core.progress
+package com.bumble.appyx.interactions.core.model.progress
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.Keyframes
-import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.COMPLETE
-import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection.REVERT
+import com.bumble.appyx.interactions.core.model.transition.Keyframes
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.COMPLETE
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.REVERT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 

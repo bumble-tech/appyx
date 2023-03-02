@@ -10,8 +10,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
+import com.bumble.appyx.interactions.core.model.transition.Segment
+import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.BaseProps
 import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.Interpolator

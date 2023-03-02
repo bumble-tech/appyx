@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.cards
 
-import com.bumble.appyx.interactions.core.BaseTransitionModel
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.Queued

@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel.promoter
 
-import com.bumble.appyx.interactions.core.BaseTransitionModel
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.NavElement
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState.DESTROYED
 

@@ -5,6 +5,11 @@ import com.bumble.appyx.NavTarget.Child1
 import com.bumble.appyx.NavTarget.Child2
 import com.bumble.appyx.NavTarget.Child3
 import com.bumble.appyx.interactions.core.TestTransitionModel.State
+import com.bumble.appyx.interactions.core.model.transition.Keyframes
+import com.bumble.appyx.interactions.core.model.transition.NavTransition
+import com.bumble.appyx.interactions.core.model.transition.Segment
+import com.bumble.appyx.interactions.core.model.transition.Update
+import com.bumble.appyx.interactions.core.model.transition.toSegmentProgress
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -34,13 +39,13 @@ class KeyFramesTest {
                 Segment(
                     NavTransition(
                         fromState = State(listOf()),
-                        targetState = State(listOf(Child1.asElement()))
+                        targetState = State(listOf(asElement()))
                     )
                 ),
                 Segment(
                     NavTransition(
-                        fromState = State(listOf(Child1.asElement())),
-                        targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                        fromState = State(listOf(asElement())),
+                        targetState = State(listOf(asElement(), asElement()))
                     )
                 )
             )
@@ -55,7 +60,7 @@ class KeyFramesTest {
         val firstSegment = Segment(
             NavTransition(
                 fromState = State(listOf()),
-                targetState = State(listOf(Child1.asElement()))
+                targetState = State(listOf(asElement()))
             )
         )
         val keyFrames = Keyframes(
@@ -63,8 +68,8 @@ class KeyFramesTest {
                 firstSegment,
                 Segment(
                     NavTransition(
-                        fromState = State(listOf(Child1.asElement())),
-                        targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                        fromState = State(listOf(asElement())),
+                        targetState = State(listOf(asElement(), asElement()))
                     )
                 )
             )
@@ -80,8 +85,8 @@ class KeyFramesTest {
     fun GIVEN_there_are_2_segments_WHEN_the_progress_is_at_the_end_THEN_currentSegment_will_be_the_last() {
         val secondSegment = Segment(
             NavTransition(
-                fromState = State(listOf(Child1.asElement())),
-                targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                fromState = State(listOf(asElement())),
+                targetState = State(listOf(asElement(), asElement()))
             )
         )
         val keyFrames = Keyframes(
@@ -89,7 +94,7 @@ class KeyFramesTest {
                 Segment(
                     NavTransition(
                         fromState = State(listOf()),
-                        targetState = State(listOf(Child1.asElement()))
+                        targetState = State(listOf(asElement()))
                     )
                 ),
                 secondSegment
@@ -108,8 +113,8 @@ class KeyFramesTest {
     fun WHEN_progress_is_set_beyond_maximum_THEN_it_is_capped_at_maximum() {
         val secondSegment = Segment(
             NavTransition(
-                fromState = State(listOf(Child1.asElement())),
-                targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                fromState = State(listOf(asElement())),
+                targetState = State(listOf(asElement(), asElement()))
             )
         )
         val keyFrames = Keyframes(
@@ -117,7 +122,7 @@ class KeyFramesTest {
                 Segment(
                     NavTransition(
                         fromState = State(listOf()),
-                        targetState = State(listOf(Child1.asElement()))
+                        targetState = State(listOf(asElement()))
                     )
                 ),
                 secondSegment
@@ -136,7 +141,7 @@ class KeyFramesTest {
         val firstSegment = Segment(
             NavTransition(
                 fromState = State(listOf()),
-                targetState = State(listOf(Child1.asElement()))
+                targetState = State(listOf(asElement()))
             )
         )
         val keyFrames = Keyframes(
@@ -144,8 +149,8 @@ class KeyFramesTest {
                 firstSegment,
                 Segment(
                     NavTransition(
-                        fromState = State(listOf(Child1.asElement())),
-                        targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                        fromState = State(listOf(asElement())),
+                        targetState = State(listOf(asElement(), asElement()))
                     )
                 )
 
@@ -165,7 +170,7 @@ class KeyFramesTest {
                 Segment(
                     NavTransition(
                         fromState = State(listOf()),
-                        targetState = State(listOf(Child1.asElement()))
+                        targetState = State(listOf(asElement()))
                     )
                 )
             )
@@ -214,13 +219,13 @@ class KeyFramesTest {
                 Segment(
                     NavTransition(
                         fromState = State(listOf()),
-                        targetState = State(listOf(Child1.asElement()))
+                        targetState = State(listOf(asElement()))
                     )
                 ),
                 Segment(
                     NavTransition(
-                        fromState = State(listOf(Child1.asElement())),
-                        targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                        fromState = State(listOf(asElement())),
+                        targetState = State(listOf(asElement(), asElement()))
                     )
                 )
             )
@@ -239,13 +244,13 @@ class KeyFramesTest {
                 Segment(
                     NavTransition(
                         fromState = State(listOf()),
-                        targetState = State(listOf(Child1.asElement()))
+                        targetState = State(listOf(asElement()))
                     )
                 ),
                 Segment(
                     NavTransition(
-                        fromState = State(listOf(Child1.asElement())),
-                        targetState = State(listOf(Child1.asElement(), Child2.asElement()))
+                        fromState = State(listOf(asElement())),
+                        targetState = State(listOf(asElement(), asElement()))
                     )
                 )
             )

@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.core.ui.gesture
 
 import androidx.compose.ui.geometry.Offset
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 
 open class Gesture<NavTarget, ModelState>(
     val operation: Operation<ModelState>,

@@ -1,12 +1,12 @@
 package com.bumble.appyx.interactions.core.ui
 
 import androidx.compose.animation.core.SpringSpec
-import com.bumble.appyx.interactions.core.Keyframes
+import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.NavElement
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.TransitionModel
-import com.bumble.appyx.interactions.core.Update
-import com.bumble.appyx.interactions.core.toSegmentProgress
+import com.bumble.appyx.interactions.core.model.transition.Segment
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel
+import com.bumble.appyx.interactions.core.model.transition.Update
+import com.bumble.appyx.interactions.core.model.transition.toSegmentProgress
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

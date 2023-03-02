@@ -1,7 +1,7 @@
-package com.bumble.appyx.interactions.core.backpresshandlerstrategies
+package com.bumble.appyx.interactions.core.model.backpresshandlerstrategies
 
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 
 abstract class BaseBackPressHandlerStrategy<NavTarget : Any, State : Any>
     : BackPressHandlerStrategy<NavTarget, State> {

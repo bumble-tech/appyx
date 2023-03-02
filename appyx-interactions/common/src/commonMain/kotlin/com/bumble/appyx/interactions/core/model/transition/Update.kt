@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.model.transition
 
 data class Update<ModelState>(
     override val currentTargetState: ModelState,

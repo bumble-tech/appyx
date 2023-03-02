@@ -1,8 +1,8 @@
-package com.bumble.appyx.interactions.core.progress
+package com.bumble.appyx.interactions.core.model.progress
 
-import com.bumble.appyx.interactions.core.Keyframes
-import com.bumble.appyx.interactions.core.Operation
-import com.bumble.appyx.interactions.core.TransitionModel
+import com.bumble.appyx.interactions.core.model.transition.Keyframes
+import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 
 class InstantInputSource<NavTarget : Any, ModelState>(
     private val model: TransitionModel<NavTarget, ModelState>,

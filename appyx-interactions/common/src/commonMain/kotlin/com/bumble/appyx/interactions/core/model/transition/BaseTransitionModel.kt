@@ -1,9 +1,10 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.Operation.Mode.*
-import com.bumble.appyx.interactions.core.TransitionModel.Output
-import com.bumble.appyx.interactions.core.TransitionModel.SettleDirection
+import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.*
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Output
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -2,11 +2,10 @@ package com.bumble.appyx.transitionmodel.testdrive.operation
 
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.BaseOperation
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.model.transition.BaseOperation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
 
 @Parcelize
 data class MoveTo<NavTarget>(
