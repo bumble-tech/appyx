@@ -4,5 +4,7 @@ import androidx.compose.animation.core.AnimationVector
 
 interface Property<T, V : AnimationVector> :
     AnimatableHolder<T, V>,
-    ValueHolder<T>,
-    HasModifier
+    HasModifier {
+
+    val value: T
+}
