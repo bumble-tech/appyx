@@ -15,6 +15,7 @@ import com.bumble.appyx.interactions.core.model.progress.AnimatedInputSource
 import com.bumble.appyx.interactions.core.model.progress.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.model.progress.DragProgressController
 import com.bumble.appyx.interactions.core.model.progress.Draggable
+import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
 import com.bumble.appyx.interactions.core.model.progress.InstantInputSource
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.ui.FrameModel
@@ -46,12 +47,12 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
+    override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModelState> = DontHandleBackPress(),
-    val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : Draggable, UiContextAware {
+) : HasDefaultAnimationSpec<Float>, Draggable, UiContextAware {
     init {
         backPressStrategy.init(this, model)
     }
@@ -79,7 +80,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     private var debug: DebugProgressInputSource<InteractionTarget, ModelState>? = null
     private val drag = DragProgressController(
         model = model,
-        gestureFactory = { _gestureFactory }
+        gestureFactory = { _gestureFactory },
+        defaultAnimationSpec = defaultAnimationSpec
     )
 
     private val _frames: MutableStateFlow<List<FrameModel<InteractionTarget>>> =

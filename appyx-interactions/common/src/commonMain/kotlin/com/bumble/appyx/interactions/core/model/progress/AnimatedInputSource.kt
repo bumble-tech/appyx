@@ -18,9 +18,9 @@ import kotlin.math.floor
 class AnimatedInputSource<InteractionTarget : Any, ModelState>(
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
-    private val defaultAnimationSpec: AnimationSpec<Float> = spring(),
+    override val defaultAnimationSpec: AnimationSpec<Float> = spring(),
     private val animateSettle: Boolean = false
-) : ProgressController<InteractionTarget, ModelState> {
+) : ProgressController<InteractionTarget, ModelState>, HasDefaultAnimationSpec<Float> {
 
     private val animatable = Animatable(0f)
     // FIXME private lateinit var result: AnimationResult<Float, AnimationVector1D>

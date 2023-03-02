@@ -13,7 +13,8 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 class DragProgressController<InteractionTarget : Any, State>(
     private val model: TransitionModel<InteractionTarget, State>,
-    private val gestureFactory: () -> GestureFactory<InteractionTarget, State>
+    private val gestureFactory: () -> GestureFactory<InteractionTarget, State>,
+    override val defaultAnimationSpec: AnimationSpec<Float>
 ) : Draggable {
 
     // TODO get rid of this
