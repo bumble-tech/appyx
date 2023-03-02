@@ -11,12 +11,12 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDI
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.core.model.progress.AnimatedInputSource
+import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
 import com.bumble.appyx.interactions.core.model.progress.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.model.progress.DragProgressController
 import com.bumble.appyx.interactions.core.model.progress.Draggable
 import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
-import com.bumble.appyx.interactions.core.model.progress.InstantInputSource
+import com.bumble.appyx.interactions.core.model.progress.InstantProgressController
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
@@ -75,8 +75,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
 
     private var isAnimating: Boolean = false
-    private val instant = InstantInputSource(model = model)
-    private var animated: AnimatedInputSource<InteractionTarget, ModelState>? = null
+    private val instant = InstantProgressController(model = model)
+    private var animated: AnimatedProgressController<InteractionTarget, ModelState>? = null
     private var debug: DebugProgressInputSource<InteractionTarget, ModelState>? = null
     private val drag = DragProgressController(
         model = model,
@@ -147,7 +147,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     private fun createAnimatedInputSource(scope: CoroutineScope) {
-        animated = AnimatedInputSource(
+        animated = AnimatedProgressController(
             model = model,
             coroutineScope = scope,
             defaultAnimationSpec = defaultAnimationSpec,

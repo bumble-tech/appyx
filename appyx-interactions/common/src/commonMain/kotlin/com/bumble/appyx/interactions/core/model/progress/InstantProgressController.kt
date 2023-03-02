@@ -4,7 +4,7 @@ import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 
-class InstantInputSource<InteractionTarget : Any, ModelState>(
+class InstantProgressController<InteractionTarget : Any, ModelState>(
     private val model: TransitionModel<InteractionTarget, ModelState>,
 ) : ProgressController<InteractionTarget, ModelState> {
 

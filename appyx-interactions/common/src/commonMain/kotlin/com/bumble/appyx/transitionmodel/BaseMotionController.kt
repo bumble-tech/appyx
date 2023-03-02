@@ -56,6 +56,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimating
 
+    // TODO extract
     abstract fun ModelState.toUiState(): List<MatchedUiState<InteractionTarget, UiState>>
 
     override fun mapUpdate(

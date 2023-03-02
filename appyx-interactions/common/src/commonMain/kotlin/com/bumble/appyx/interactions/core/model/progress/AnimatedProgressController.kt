@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class AnimatedInputSource<InteractionTarget : Any, ModelState>(
+class AnimatedProgressController<InteractionTarget : Any, ModelState>(
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val coroutineScope: CoroutineScope,
     override val defaultAnimationSpec: AnimationSpec<Float> = spring(),
@@ -111,6 +111,6 @@ class AnimatedInputSource<InteractionTarget : Any, ModelState>(
     }
 
     private companion object {
-        private val TAG = AnimatedInputSource::class.java.name
+        private val TAG = AnimatedProgressController::class.java.name
     }
 }

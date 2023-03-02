@@ -189,7 +189,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
             ChildEntry.Initialized(
                 key = key,
                 node = parentNode
-                    .resolve(key.navTarget, childBuildContext(savedState))
+                    .resolve(key.interactionTarget, childBuildContext(savedState))
                     .build()
             )
         }
@@ -201,7 +201,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
                 ChildEntry.Initialized(
                     key = key,
                     node = parentNode.resolve(
-                        navTarget = key.navTarget,
+                        navTarget = key.interactionTarget,
                         buildContext = childBuildContext(savedState),
                     ).build()
                 )

@@ -40,6 +40,7 @@ class TestDriveUiModel<InteractionTarget : Any>(
 ) {
     override fun defaultUiState(): UiState = UiState()
 
+    // TODO extract
     class UiState(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
