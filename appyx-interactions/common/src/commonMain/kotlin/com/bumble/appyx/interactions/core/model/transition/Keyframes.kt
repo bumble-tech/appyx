@@ -65,15 +65,15 @@ data class Keyframes<ModelState>(
             }
         )
 
-    override fun deriveKeyframes(navTransition: NavTransition<ModelState>): Keyframes<ModelState> =
+    override fun deriveKeyframes(stateTransition: StateTransition<ModelState>): Keyframes<ModelState> =
         copy(
-            queue = queue + listOf(Segment(navTransition)),
+            queue = queue + listOf(Segment(stateTransition)),
             initialProgress = progress
         )
 
-    override fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState> =
+    override fun deriveUpdate(stateTransition: StateTransition<ModelState>): Update<ModelState> =
         Update(
-            currentTargetState = navTransition.targetState
+            currentTargetState = stateTransition.targetState
         )
 
     fun dropAfter(index: Int): Keyframes<ModelState> =

@@ -1,18 +1,18 @@
 package com.bumble.appyx.interactions.core.model.transition
 
 data class Segment<ModelState>(
-    val navTransition: NavTransition<ModelState>,
+    val stateTransition: StateTransition<ModelState>,
 ) {
 
     val fromState: ModelState
-        get() = navTransition.fromState
+        get() = stateTransition.fromState
 
     val targetState: ModelState
-        get() = navTransition.targetState
+        get() = stateTransition.targetState
 
     fun replace(targetState: ModelState): Segment<ModelState> =
         copy(
-            navTransition = navTransition.copy(
+            stateTransition = stateTransition.copy(
                 targetState = targetState
             )
         )

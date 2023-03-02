@@ -13,16 +13,16 @@ data class Update<ModelState>(
             currentTargetState = targetState
         )
 
-    override fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState> =
+    override fun deriveUpdate(stateTransition: StateTransition<ModelState>): Update<ModelState> =
         Update(
-            currentTargetState = navTransition.targetState
+            currentTargetState = stateTransition.targetState
         )
 
-    override fun deriveKeyframes(navTransition: NavTransition<ModelState>): Keyframes<ModelState> =
+    override fun deriveKeyframes(stateTransition: StateTransition<ModelState>): Keyframes<ModelState> =
         Keyframes(
             queue = listOf(
                 Segment(
-                    navTransition = navTransition,
+                    stateTransition = stateTransition,
                 )
             )
         )

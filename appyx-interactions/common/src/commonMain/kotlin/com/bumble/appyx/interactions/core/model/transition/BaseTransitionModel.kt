@@ -127,7 +127,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
                                 val newTarget = operation.invoke(it.targetState)
 
                                 it.copy(
-                                    navTransition = NavTransition(
+                                    stateTransition = StateTransition(
                                         newFrom.targetState,
                                         newTarget.targetState
                                     )
@@ -148,7 +148,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
             is Update -> {
                 if (operation.isApplicable(currentState.currentTargetState)) {
                     val newState = currentState.deriveUpdate(
-                        navTransition = operation.invoke(currentState.currentTargetState)
+                        stateTransition = operation.invoke(currentState.currentTargetState)
                     )
                     updateState(newState)
                     true

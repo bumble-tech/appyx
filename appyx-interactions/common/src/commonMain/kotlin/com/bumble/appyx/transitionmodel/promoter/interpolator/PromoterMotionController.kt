@@ -113,7 +113,7 @@ class PromoterMotionController<InteractionTarget : Any>(
         segmentProgress: Flow<Float>,
         initialProgress: Float
     ): List<FrameModel<InteractionTarget>> {
-        val (fromState, targetState) = segment.navTransition
+        val (fromState, targetState) = segment.stateTransition
         val fromProps = fromState.toProps()
         val targetProps = targetState.toProps()
 

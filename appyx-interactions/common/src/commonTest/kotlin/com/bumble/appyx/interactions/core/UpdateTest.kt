@@ -4,7 +4,7 @@ import com.bumble.appyx.NavTarget.Child1
 import com.bumble.appyx.NavTarget.Child2
 import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
-import com.bumble.appyx.interactions.core.model.transition.NavTransition
+import com.bumble.appyx.interactions.core.model.transition.StateTransition
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import kotlin.test.Test
@@ -41,11 +41,11 @@ class UpdateTest {
 
 
         val targetState = State(listOf(Child2.asElement()))
-        val navTransition = NavTransition(
+        val stateTransition = StateTransition(
             fromState = currentState,
             targetState = targetState
         )
-        val newUpdate = update.deriveUpdate(navTransition)
+        val newUpdate = update.deriveUpdate(stateTransition)
 
         assertEquals(Update(currentTargetState = targetState), newUpdate)
     }
@@ -62,15 +62,15 @@ class UpdateTest {
 
 
         val targetState = State(listOf(Child2.asElement()))
-        val navTransition = NavTransition(
+        val stateTransition = StateTransition(
             fromState = currentState,
             targetState = targetState
         )
-        val newKeyframes = update.deriveKeyframes(navTransition)
+        val newKeyframes = update.deriveKeyframes(stateTransition)
 
         val expected = Keyframes(
             queue = listOf(
-                Segment(navTransition = navTransition)
+                Segment(stateTransition = stateTransition)
             )
         )
         assertEquals(expected, newKeyframes)

@@ -14,9 +14,9 @@ interface TransitionModel<InteractionTarget, ModelState> {
 
         abstract fun replace(targetState: ModelState): Output<ModelState>
 
-        abstract fun deriveKeyframes(navTransition: NavTransition<ModelState>): Keyframes<ModelState>
+        abstract fun deriveKeyframes(stateTransition: StateTransition<ModelState>): Keyframes<ModelState>
 
-        abstract fun deriveUpdate(navTransition: NavTransition<ModelState>): Update<ModelState>
+        abstract fun deriveUpdate(stateTransition: StateTransition<ModelState>): Update<ModelState>
 
     }
 
