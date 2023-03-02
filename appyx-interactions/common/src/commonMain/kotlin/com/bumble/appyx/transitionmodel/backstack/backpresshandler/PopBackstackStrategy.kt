@@ -12,7 +12,7 @@ class PopBackstackStrategy<InteractionTarget : Any> :
         transitionModel.output.map { it.currentTargetState }.map { it.stashed.isNotEmpty() }
     }
 
-    override fun handleUpNavigation(): Boolean {
+    override fun handleBackPress(): Boolean {
         val pop = Pop<InteractionTarget>()
         //todo find a better way to check if operation is applicable
         return if (pop.isApplicable(transitionModel.output.value.currentTargetState)) {

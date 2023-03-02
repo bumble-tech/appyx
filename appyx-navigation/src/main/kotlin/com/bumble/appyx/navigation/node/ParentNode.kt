@@ -168,15 +168,15 @@ abstract class ParentNode<NavTarget : Any>(
     private fun BackHandler() {
         //todo support delegating to plugins
         val canHandleBack = interactionModel
-            .canHandeBackNavigation()
+            .canHandeBackPress()
             .collectAsState(initial = false)
         BackHandler(canHandleBack.value) {
-            interactionModel.handleBackNavigation()
+            interactionModel.handleBackPress()
         }
     }
 
     override fun performUpNavigation(): Boolean =
-        interactionModel.handleBackNavigation() || super.performUpNavigation()
+        interactionModel.handleBackPress() || super.performUpNavigation()
 
     private fun manageTransitionsInForeground() {
         transitionsInBackgroundJob?.run {

@@ -11,5 +11,6 @@ interface BackPressHandlerStrategy<InteractionTarget : Any, State : Any> {
     )
 
     val canHandleBackPress: Flow<Boolean>
-    fun handleUpNavigation(): Boolean
+
+    fun handleBackPress(): Boolean
 }

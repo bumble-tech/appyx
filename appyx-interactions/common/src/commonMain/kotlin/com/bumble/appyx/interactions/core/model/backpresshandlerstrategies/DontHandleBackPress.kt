@@ -7,5 +7,5 @@ class DontHandleBackPress<InteractionTarget : Any, State : Any> :
     BaseBackPressHandlerStrategy<InteractionTarget, State>() {
 
     override val canHandleBackPress: Flow<Boolean> = flowOf(false)
-    override fun handleUpNavigation(): Boolean = false
+    override fun handleBackPress(): Boolean = false
 }

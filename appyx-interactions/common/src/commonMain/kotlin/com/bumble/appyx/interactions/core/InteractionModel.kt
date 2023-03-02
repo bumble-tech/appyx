@@ -285,7 +285,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         debug?.setNormalisedProgress(progress)
     }
 
-    open fun handleBackNavigation(): Boolean = backPressStrategy.handleUpNavigation()
+    open fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
-    open fun canHandeBackNavigation(): Flow<Boolean> = backPressStrategy.canHandleBackPress
+    open fun canHandeBackPress(): Flow<Boolean> = backPressStrategy.canHandleBackPress
 }
