@@ -39,7 +39,7 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel.Companion.toProps
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel.Companion.toUiState
 import com.bumble.appyx.transitionmodel.testdrive.operation.next
 
 
@@ -158,7 +158,7 @@ fun <NavTarget : Any> TestDriveUi(
                     .collectAsState(null)
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
-        val targetProps = targetState.value?.elementState?.toProps()
+        val targetProps = targetState.value?.elementState?.toUiState()
         targetProps?.let {
             Box(
                 modifier = Modifier

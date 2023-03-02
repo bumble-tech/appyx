@@ -11,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.output.BaseProps
+import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.output.MatchedProps
+import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
@@ -37,15 +37,15 @@ typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.
 class CardsProps<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, CardsModel.State<InteractionTarget>, CardsProps.Props>(
+) : BaseMotionController<InteractionTarget, CardsModel.State<InteractionTarget>, CardsProps.UiState>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
     private val width = uiContext.transitionBounds.widthDp.value
 
-    override fun defaultProps(): Props = Props(width = width)
+    override fun defaultUiState(): UiState = UiState(width = width)
 
-    class Props(
+    class UiState(
         val scale: Scale = Scale(value = 1f),
         val positionalOffsetX: InterpolatableOffset = InterpolatableOffset(
             value = DpOffset(
@@ -56,7 +56,7 @@ class CardsProps<InteractionTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         private val width: Float,
-    ) : BaseProps(listOf(scale.isAnimating, positionalOffsetX.isAnimating)), HasModifier, Animatable<Props> {
+    ) : BaseUiState(listOf(scale.isAnimating, positionalOffsetX.isAnimating)), HasModifier, Animatable<UiState> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -65,7 +65,7 @@ class CardsProps<InteractionTarget : Any>(
                 .then(rotationZ.modifier)
                 .then(zIndex.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
             scope.launch {
                 scale.snapTo(props.scale.value)
                 positionalOffsetX.snapTo(props.positionalOffsetX.value)
@@ -77,7 +77,7 @@ class CardsProps<InteractionTarget : Any>(
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: Props,
+            props: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             listOf(
@@ -119,7 +119,7 @@ class CardsProps<InteractionTarget : Any>(
             scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
                     positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
 
-        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+        override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
                 scale.lerpTo(start.scale, end.scale, fraction)
                 positionalOffsetX.lerpTo(start.positionalOffsetX, end.positionalOffsetX, fraction)
@@ -130,23 +130,23 @@ class CardsProps<InteractionTarget : Any>(
         }
     }
 
-    private val hidden = Props(
+    private val hidden = UiState(
         scale = Scale(0f),
         width = width
     )
 
-    private val bottom = Props(
+    private val bottom = UiState(
         scale = Scale(0.85f),
         width = width
     )
 
-    private val top = Props(
+    private val top = UiState(
         scale = Scale(1f),
         zIndex = ZIndex(1f),
         width = width
     )
 
-    private val votePass = Props(
+    private val votePass = UiState(
         positionalOffsetX = InterpolatableOffset(
             DpOffset(
                 (-voteCardPositionMultiplier * width).dp,
@@ -159,7 +159,7 @@ class CardsProps<InteractionTarget : Any>(
         width = width
     )
 
-    private val voteLike = Props(
+    private val voteLike = UiState(
         positionalOffsetX = InterpolatableOffset(
             DpOffset(
                 (voteCardPositionMultiplier * width).dp,
@@ -172,30 +172,30 @@ class CardsProps<InteractionTarget : Any>(
         width = width
     )
 
-    override fun CardsModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> {
-        val result = mutableListOf<MatchedProps<InteractionTarget, Props>>()
+    override fun CardsModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> {
+        val result = mutableListOf<MatchedUiState<InteractionTarget, UiState>>()
         (votedCards + visibleCards + queued).map {
             when (it) {
                 is CardsModel.State.Card.InvisibleCard.VotedCard -> {
                     result.add(
                         if (it.votedCardState == LIKED) {
-                            MatchedProps(it.element, voteLike)
+                            MatchedUiState(it.element, voteLike)
                         } else {
-                            MatchedProps(it.element, votePass)
+                            MatchedUiState(it.element, votePass)
                         }
                     )
                 }
 
                 is CardsModel.State.Card.VisibleCard.TopCard -> {
-                    result.add(MatchedProps(it.element, top))
+                    result.add(MatchedUiState(it.element, top))
                 }
 
                 is CardsModel.State.Card.VisibleCard.BottomCard -> {
-                    result.add(MatchedProps(it.element, bottom))
+                    result.add(MatchedUiState(it.element, bottom))
                 }
 
                 is CardsModel.State.Card.InvisibleCard.Queued -> {
-                    result.add(MatchedProps(it.element, hidden))
+                    result.add(MatchedUiState(it.element, hidden))
                 }
             }
         }

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 
-abstract class BaseProps(isAnimatingFlows: List<Flow<Boolean>>) {
+abstract class BaseUiState(isAnimatingFlows: List<Flow<Boolean>>) {
 
     val isAnimating: Flow<Boolean> = combine(isAnimatingFlows) { booleanArray ->
         booleanArray.any { it }

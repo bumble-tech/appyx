@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.output.BaseProps
+import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.output.MatchedProps
+import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
@@ -42,7 +42,7 @@ class SpotlightSlider<InteractionTarget : Any>(
     uiContext: UiContext,
     override val clipToBounds: Boolean = false,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseMotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>, SpotlightSlider.Props>(
+) : BaseMotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>, SpotlightSlider.UiState>(
     scope = uiContext.coroutineScope
 ) {
     private val screenWidth = uiContext.transitionBounds.screenWidthDp
@@ -56,7 +56,7 @@ class SpotlightSlider<InteractionTarget : Any>(
             { state: SpotlightModel.State<InteractionTarget> -> state.activeIndex } to scroll
         )
 
-    data class Props(
+    data class UiState(
         val offset: OffsetP,
         val scale: Scale = Scale(1f),
         val alpha: Alpha = Alpha(1f),
@@ -67,8 +67,8 @@ class SpotlightSlider<InteractionTarget : Any>(
         private val containerWidth: Dp,
         private val screenWidth: Dp,
         private val transitionBounds: TransitionBounds
-    ) : BaseProps(listOf(offset.isAnimating, scale.isAnimating, alpha.isAnimating)),
-        HasModifier, Animatable<Props> {
+    ) : BaseUiState(listOf(offset.isAnimating, scale.isAnimating, alpha.isAnimating)),
+        HasModifier, Animatable<UiState> {
 
         override val modifier: Modifier
             get() = Modifier
@@ -76,7 +76,7 @@ class SpotlightSlider<InteractionTarget : Any>(
                 .then(alpha.modifier)
                 .then(scale.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
             scope.launch {
                 offset.snapTo(props.offset.value)
                 alpha.snapTo(props.alpha.value)
@@ -87,7 +87,7 @@ class SpotlightSlider<InteractionTarget : Any>(
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: Props,
+            props: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             scope.launch {
@@ -138,7 +138,7 @@ class SpotlightSlider<InteractionTarget : Any>(
             }
         }
 
-        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+        override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
                 offset.lerpTo(start.offset, end.offset, fraction)
                 updateVisibilityState()
@@ -146,7 +146,7 @@ class SpotlightSlider<InteractionTarget : Any>(
         }
     }
 
-    override fun defaultProps(): Props = Props(
+    override fun defaultUiState(): UiState = UiState(
         offset = OffsetP(DpOffset.Zero).also {
             it.displacement = derivedStateOf {
                 DpOffset((scroll.value * width.value).dp, 0.dp)
@@ -158,7 +158,7 @@ class SpotlightSlider<InteractionTarget : Any>(
         transitionBounds = transitionBounds
     )
 
-    private val created = defaultProps().copy(
+    private val created = defaultUiState().copy(
         offset = OffsetP(DpOffset(0.dp, width)),
         scale = Scale(0f),
         alpha = Alpha(1f),
@@ -167,12 +167,12 @@ class SpotlightSlider<InteractionTarget : Any>(
         screenWidth = width
     )
 
-    private val standard = defaultProps().copy(
+    private val standard = defaultUiState().copy(
         offset = OffsetP(DpOffset.Zero),
         screenWidth = width
     )
 
-    private val destroyed = defaultProps().copy(
+    private val destroyed = defaultUiState().copy(
         offset = OffsetP(DpOffset(0.dp, -width)),
         scale = Scale(0f),
         alpha = Alpha(0f),
@@ -182,13 +182,13 @@ class SpotlightSlider<InteractionTarget : Any>(
         screenWidth = width
     )
 
-    override fun SpotlightModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> {
+    override fun SpotlightModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 val target = it.value.toProps()
-                MatchedProps(
+                MatchedUiState(
                     element = it.key,
-                    props = Props(
+                    uiState = UiState(
                         offset = OffsetP(
                             DpOffset(
                                 dpOffset(index).x,

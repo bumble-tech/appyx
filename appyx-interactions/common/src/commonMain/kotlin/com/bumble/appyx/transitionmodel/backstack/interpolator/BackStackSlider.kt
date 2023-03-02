@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.output.BaseProps
-import com.bumble.appyx.interactions.core.ui.output.MatchedProps
+import com.bumble.appyx.interactions.core.ui.output.BaseUiState
+import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
@@ -23,21 +23,21 @@ import kotlinx.coroutines.launch
 
 class BackStackSlider<InteractionTarget : Any>(
     private val uiContext: UiContext,
-) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackStackSlider.Props>(
+) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackStackSlider.UiState>(
     scope = uiContext.coroutineScope,
 ) {
     private val width = uiContext.transitionBounds.widthDp
 
-    override fun defaultProps(): Props =
-        Props(screenWidth = uiContext.transitionBounds.widthDp)
+    override fun defaultUiState(): UiState =
+        UiState(screenWidth = uiContext.transitionBounds.widthDp)
 
-    data class Props(
+    data class UiState(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
         val screenWidth: Dp
-    ) : HasModifier, BaseProps(listOf(offset.isAnimating, alpha.isAnimating)),
-        Animatable<Props> {
+    ) : HasModifier, BaseUiState(listOf(offset.isAnimating, alpha.isAnimating)),
+        Animatable<UiState> {
 
         override fun isVisible() =
             alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
@@ -49,7 +49,7 @@ class BackStackSlider<InteractionTarget : Any>(
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: Props,
+            props: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             // FIXME this should match the own animationSpec of the model (which can also be supplied
@@ -73,7 +73,7 @@ class BackStackSlider<InteractionTarget : Any>(
             awaitAll(a1, a2)
         }
 
-        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
             scope.launch {
                 offset.snapTo(props.offset.value)
                 alpha.snapTo(props.alpha.value)
@@ -81,7 +81,7 @@ class BackStackSlider<InteractionTarget : Any>(
             }
         }
 
-        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+        override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
                 offset.lerpTo(start.offset, end.offset, fraction)
                 alpha.lerpTo(start.alpha, end.alpha, fraction)
@@ -90,33 +90,33 @@ class BackStackSlider<InteractionTarget : Any>(
         }
     }
 
-    private val outsideLeft = Props(
+    private val outsideLeft = UiState(
         offset = Offset(DpOffset(-width, 0.dp)),
         screenWidth = width
     )
 
-    private val outsideRight = Props(
+    private val outsideRight = UiState(
         offset = Offset(DpOffset(width, 0.dp)),
         screenWidth = width
     )
 
-    private val noOffset = Props(
+    private val noOffset = UiState(
         offset = Offset(DpOffset(0.dp, 0.dp)),
         screenWidth = width
     )
 
 
-    override fun BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
-        created.map { MatchedProps(it, outsideRight) } +
-                listOf(MatchedProps(active, noOffset)) +
+    override fun BackStackModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> =
+        created.map { MatchedUiState(it, outsideRight) } +
+                listOf(MatchedUiState(active, noOffset)) +
                 stashed.mapIndexed { index, element ->
-                    MatchedProps(
+                    MatchedUiState(
                         element,
                         outsideLeft.copy(offsetMultiplier = index + 1)
                     )
                 } +
                 destroyed.map { element ->
-                    MatchedProps(
+                    MatchedUiState(
                         element,
                         outsideRight.copy(alpha = Alpha(0f))
                     )

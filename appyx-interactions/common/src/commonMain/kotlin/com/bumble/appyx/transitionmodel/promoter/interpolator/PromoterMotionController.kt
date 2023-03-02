@@ -18,9 +18,9 @@ import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
-import com.bumble.appyx.interactions.core.ui.output.BaseProps
+import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.output.MatchedProps
+import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
 import kotlinx.coroutines.flow.Flow
@@ -43,19 +43,19 @@ class PromoterMotionController<InteractionTarget : Any>(
         get() = TODO("Not yet implemented")
 
     // TODO migrate to BaseMotionController
-    data class Props(
+    data class UiState(
         val dpOffset: DpOffset,
         val scale: Float,
         val angleDegrees: Float,
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-    ) : BaseProps(listOf()) {
+    ) : BaseUiState(listOf()) {
         override fun isVisible() = true
 
     }
 
-    private val created = Props(
+    private val created = UiState(
         dpOffset = DpOffset(0.dp, 0.dp),
         scale = 0f,
         angleDegrees = 0f,
@@ -97,9 +97,9 @@ class PromoterMotionController<InteractionTarget : Any>(
 
     // TODO Migrate to BaseMotionController
 
-    private fun <InteractionTarget : Any> PromoterModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
+    private fun <InteractionTarget : Any> PromoterModel.State<InteractionTarget>.toProps(): List<MatchedUiState<InteractionTarget, UiState>> =
         elements.map {
-            MatchedProps(
+            MatchedUiState(
                 it.first, when (it.second) {
                     ElementState.CREATED -> created
                     ElementState.STAGE1 -> stage1
@@ -131,32 +131,32 @@ class PromoterMotionController<InteractionTarget : Any>(
                 animationContainer = {},
                 modifier = Modifier.composed {
                     val segmentProgress by segmentProgress.collectAsState(initialProgress)
-                    val angleRadians0 = Math.toRadians(t0.props.angleDegrees.toDouble() - 90)
-                    val angleRadians1 = Math.toRadians(t1.props.angleDegrees.toDouble() - 90)
+                    val angleRadians0 = Math.toRadians(t0.uiState.angleDegrees.toDouble() - 90)
+                    val angleRadians1 = Math.toRadians(t1.uiState.angleDegrees.toDouble() - 90)
 
                     // Lerp block
                     val dpOffsetX =
                         lerpFloat(
-                            t0.props.dpOffset.x.value,
-                            t1.props.dpOffset.x.value,
+                            t0.uiState.dpOffset.x.value,
+                            t1.uiState.dpOffset.x.value,
                             segmentProgress
                         )
                     val dpOffsetY =
                         lerpFloat(
-                            t0.props.dpOffset.y.value,
-                            t1.props.dpOffset.y.value,
+                            t0.uiState.dpOffset.y.value,
+                            t1.uiState.dpOffset.y.value,
                             segmentProgress
                         )
                     val rotationY =
-                        lerpFloat(t0.props.rotationY, t1.props.rotationY, segmentProgress)
+                        lerpFloat(t0.uiState.rotationY, t1.uiState.rotationY, segmentProgress)
                     val rotationZ =
-                        lerpFloat(t0.props.rotationZ, t1.props.rotationZ, segmentProgress)
-                    val scale = lerpFloat(t0.props.scale, t1.props.scale, segmentProgress)
+                        lerpFloat(t0.uiState.rotationZ, t1.uiState.rotationZ, segmentProgress)
+                    val scale = lerpFloat(t0.uiState.scale, t1.uiState.scale, segmentProgress)
                     val angleRadians =
                         lerpFloat(angleRadians0.toFloat(), angleRadians1.toFloat(), segmentProgress)
                     val effectiveRadiusRatio = lerpFloat(
-                        t0.props.effectiveRadiusRatio,
-                        t1.props.effectiveRadiusRatio,
+                        t0.uiState.effectiveRadiusRatio,
+                        t1.uiState.effectiveRadiusRatio,
                         segmentProgress
                     )
                     val effectiveRadius = radiusDp * effectiveRadiusRatio

@@ -8,12 +8,12 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.output.BaseProps
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.output.MatchedProps
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.Gesture
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.output.BaseUiState
+import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
@@ -34,39 +34,39 @@ import kotlin.math.abs
 class TestDriveUiModel<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, TestDriveUiModel.Props>(
+) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, TestDriveUiModel.UiState>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun defaultProps(): Props = Props()
+    override fun defaultUiState(): UiState = UiState()
 
-    class Props(
+    class UiState(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-    ) : HasModifier, BaseProps(listOf(offset.isAnimating, backgroundColor.isAnimating)), Animatable<Props> {
+    ) : HasModifier, BaseUiState(listOf(offset.isAnimating, backgroundColor.isAnimating)), Animatable<UiState> {
 
         override val modifier: Modifier
             get() = Modifier
                 .then(offset.modifier)
                 .then(backgroundColor.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+        override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
-                offset.snapTo(props.offset.value)
-                backgroundColor.snapTo(props.backgroundColor.value)
+                offset.snapTo(uiState.offset.value)
+                backgroundColor.snapTo(uiState.backgroundColor.value)
                 updateVisibilityState()
             }
         }
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: Props,
+            uiState: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             listOf(
                 scope.async {
                     offset.animateTo(
-                        props.offset.value,
+                        uiState.offset.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     ) {
                         updateVisibilityState()
@@ -74,7 +74,7 @@ class TestDriveUiModel<InteractionTarget : Any>(
                 },
                 scope.async {
                     backgroundColor.animateTo(
-                        props.backgroundColor.value,
+                        uiState.backgroundColor.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     ) {
                         updateVisibilityState()
@@ -83,7 +83,7 @@ class TestDriveUiModel<InteractionTarget : Any>(
             ).awaitAll()
         }
 
-        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+        override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
                 offset.lerpTo(start.offset, end.offset, fraction)
                 backgroundColor.lerpTo(start.backgroundColor, end.backgroundColor, fraction)
@@ -95,7 +95,7 @@ class TestDriveUiModel<InteractionTarget : Any>(
     }
 
     companion object {
-        fun TestDriveModel.State.ElementState.toProps(): Props =
+        fun TestDriveModel.State.ElementState.toUiState(): UiState =
             when (this) {
                 A -> a
                 B -> b
@@ -103,31 +103,31 @@ class TestDriveUiModel<InteractionTarget : Any>(
                 D -> d
             }
 
-        val a = Props(
+        val a = UiState(
             offset = Offset(DpOffset(0.dp, 0.dp)),
             backgroundColor = BackgroundColor(md_red_500)
         )
 
-        val b = Props(
+        val b = UiState(
             offset = Offset(DpOffset(200.dp, 0.dp)),
             backgroundColor = BackgroundColor(md_light_green_500)
         )
 
-        val c = Props(
+        val c = UiState(
             offset = Offset(DpOffset(200.dp, 300.dp)),
             backgroundColor = BackgroundColor(md_yellow_500)
         )
 
-        val d = Props(
+        val d = UiState(
             offset = Offset(DpOffset(0.dp, 300.dp)),
             backgroundColor = BackgroundColor(md_light_blue_500)
         )
     }
 
-    override fun TestDriveModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
+    override fun TestDriveModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> =
         listOf(
-            MatchedProps(element, elementState.toProps()).also {
-                Logger.log("TestDrive", "Matched $elementState -> Props: ${it.props}")
+            MatchedUiState(element, elementState.toUiState()).also {
+                Logger.log("TestDrive", "Matched $elementState -> UiState: ${it.uiState}")
             }
         )
 

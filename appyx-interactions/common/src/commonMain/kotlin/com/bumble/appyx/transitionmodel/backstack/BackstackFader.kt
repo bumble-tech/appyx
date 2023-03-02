@@ -3,8 +3,8 @@ package com.bumble.appyx.transitionmodel.backstack
 import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.output.BaseProps
-import com.bumble.appyx.interactions.core.ui.output.MatchedProps
+import com.bumble.appyx.interactions.core.ui.output.BaseUiState
+import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.HasModifier
@@ -16,15 +16,15 @@ import kotlinx.coroutines.launch
 class BackstackFader<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackstackFader.Props>(
+) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackstackFader.UiState>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
-    override fun defaultProps(): Props = Props()
+    override fun defaultUiState(): UiState = UiState()
 
-    class Props(
+    class UiState(
         var alpha: Alpha = Alpha(1f),
-    ) : BaseProps(listOf(alpha.isAnimating)), Animatable<Props>, HasModifier {
+    ) : BaseUiState(listOf(alpha.isAnimating)), Animatable<UiState>, HasModifier {
 
         override fun isVisible() =
             alpha.value > 0.0f
@@ -33,7 +33,7 @@ class BackstackFader<InteractionTarget : Any>(
             get() = Modifier
                 .then(alpha.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: Props) {
+        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
             scope.launch {
                 alpha.snapTo(props.alpha.value)
                 updateVisibilityState()
@@ -42,7 +42,7 @@ class BackstackFader<InteractionTarget : Any>(
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: Props,
+            props: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             scope.launch {
@@ -52,7 +52,7 @@ class BackstackFader<InteractionTarget : Any>(
             }
         }
 
-        override fun lerpTo(scope: CoroutineScope, start: Props, end: Props, fraction: Float) {
+        override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
                 alpha.lerpTo(start.alpha, end.alpha, fraction)
                 updateVisibilityState()
@@ -60,18 +60,18 @@ class BackstackFader<InteractionTarget : Any>(
         }
     }
 
-    private val visible = Props(
+    private val visible = UiState(
         alpha = Alpha(1f)
     )
 
-    private val hidden = Props(
+    private val hidden = UiState(
         alpha = Alpha(0f)
     )
 
-    override fun BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
+    override fun BackStackModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> =
         listOf(
-            MatchedProps(active, visible)
+            MatchedUiState(active, visible)
         ) + (created + stashed + destroyed).map {
-            MatchedProps(it, hidden)
+            MatchedUiState(it, hidden)
         }
 }
