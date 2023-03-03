@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui.helper
+package com.bumble.appyx.interactions.core.ui.math
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset

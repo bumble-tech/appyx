@@ -1,5 +1,7 @@
 package com.bumble.appyx.interactions.core.ui.helper
 
+import com.bumble.appyx.interactions.core.ui.math.lerpFloat
+
 
 /**
  * Maps a value from a range of [min, max] to [destMin, destMax]
