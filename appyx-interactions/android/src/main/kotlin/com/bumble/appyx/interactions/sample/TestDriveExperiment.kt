@@ -38,8 +38,8 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel.Companion.toUiState
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController.Companion.toUiState
 import com.bumble.appyx.transitionmodel.testdrive.operation.next
 
 
@@ -59,7 +59,7 @@ fun TestDriveExperiment() {
             ,
             animateSettle = true,
             motionController = {
-                TestDriveUiModel(
+                TestDriveMotionController(
                     it,
                     uiAnimationSpec = spring(
                         stiffness = Spring.StiffnessLow,
@@ -68,7 +68,7 @@ fun TestDriveExperiment() {
                     ),
                 )
             },
-            gestureFactory = { TestDriveUiModel.Gestures(it) }
+            gestureFactory = { TestDriveMotionController.Gestures(it) }
         )
     }
 

@@ -22,6 +22,7 @@ import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementSt
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.B
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.D
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController.UiState
 import com.bumble.appyx.transitionmodel.testdrive.operation.MoveTo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -29,10 +30,10 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class TestDriveUiModel<InteractionTarget : Any>(
+class TestDriveMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, TestDriveUiModel.UiState>(
+) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, UiState>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = uiAnimationSpec,
 ) {

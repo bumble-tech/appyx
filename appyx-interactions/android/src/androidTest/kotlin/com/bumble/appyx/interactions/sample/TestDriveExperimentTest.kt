@@ -22,7 +22,7 @@ import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -59,9 +59,9 @@ class TestDriveExperimentTest {
                     TestDrive(
                         scope = coroutineScope,
                         model = model,
-                        motionController = { TestDriveUiModel(it) },
+                        motionController = { TestDriveMotionController(it) },
                         progressAnimationSpec = testAnimationSpec,
-                        gestureFactory = { TestDriveUiModel.Gestures(it) },
+                        gestureFactory = { TestDriveMotionController.Gestures(it) },
                     )
                 }
 
@@ -114,8 +114,8 @@ class TestDriveExperimentTest {
                         scope = coroutineScope,
                         model = model,
                         progressAnimationSpec = testAnimationSpec,
-                        motionController = { TestDriveUiModel(it) },
-                        gestureFactory = { TestDriveUiModel.Gestures(it) },
+                        motionController = { TestDriveMotionController(it) },
+                        gestureFactory = { TestDriveMotionController.Gestures(it) },
                     )
                 }
 
