@@ -15,14 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.FrameModel
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
 import com.bumble.appyx.transitionmodel.cards.Cards
 import com.bumble.appyx.transitionmodel.cards.CardsModel
-import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps
+import com.bumble.appyx.transitionmodel.cards.interpolator.CardsMotionController
 
 sealed class DatingCardsNavTarget {
     class ProfileCard(val profile: Profile) : DatingCardsNavTarget()
@@ -41,8 +41,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     DatingCardsNavTarget.ProfileCard(it)
                 }
             ),
-            interpolator = { CardsProps(it)  },
-            gestureFactory = { CardsProps.Gestures(it) },
+            motionController = { CardsMotionController(it)  },
+            gestureFactory = { CardsMotionController.Gestures(it) },
             animateSettle = true
         )
     }
@@ -57,10 +57,10 @@ fun DatingCards(modifier: Modifier = Modifier) {
         interactionModel = cards,
         element = {
             ElementWrapper(
-                frameModel = it,
+                elementUiModel = it,
                 modifier = Modifier
                     .fillMaxSize()
-                    .pointerInput(it.navElement.id) {
+                    .pointerInput(it.element.id) {
                         detectDragGestures(
                             onDragStart = { position -> cards.onStartDrag(position) },
                             onDrag = { change, dragAmount ->
@@ -83,15 +83,15 @@ fun DatingCards(modifier: Modifier = Modifier) {
 
 @Composable
 fun ElementWrapper(
-    frameModel: FrameModel<DatingCardsNavTarget.ProfileCard>,
+    elementUiModel: ElementUiModel<DatingCardsNavTarget.ProfileCard>,
     modifier: Modifier = Modifier
 ) {
 
     Box(
         modifier = modifier
-            .then(frameModel.modifier)
+            .then(elementUiModel.modifier)
             .then(modifier)
     ) {
-        ProfileCard(profile = frameModel.navElement.navTarget.profile)
+        ProfileCard(profile = elementUiModel.element.interactionTarget.profile)
     }
 }

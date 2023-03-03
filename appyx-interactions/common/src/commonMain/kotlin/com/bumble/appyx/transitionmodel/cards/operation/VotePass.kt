@@ -1,20 +1,20 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
 import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.PASSED
 
 @Parcelize
-class VotePass<NavTarget>(
+class VotePass<InteractionTarget>(
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : TopCardOperation<NavTarget>() {
+) : TopCardOperation<InteractionTarget>() {
 
-    override fun createTargetState(fromState: CardsModel.State<NavTarget>): CardsModel.State<NavTarget> {
+    override fun createTargetState(fromState: CardsModel.State<InteractionTarget>): CardsModel.State<InteractionTarget> {
         val votedCards = fromState.votedCards
         return CardsModel.State(
             votedCards = votedCards + CardsModel.State.Card.InvisibleCard.VotedCard(
-                fromState.visibleCards.first().navElement,
+                fromState.visibleCards.first().element,
                 PASSED
             ),
             visibleCards = resolveVisibleCards(fromState),
@@ -22,19 +22,19 @@ class VotePass<NavTarget>(
         )
     }
 
-    private fun resolveVisibleCards(fromState: CardsModel.State<NavTarget>): List<CardsModel.State.Card.VisibleCard<NavTarget>> {
+    private fun resolveVisibleCards(fromState: CardsModel.State<InteractionTarget>): List<CardsModel.State.Card.VisibleCard<InteractionTarget>> {
         return if (fromState.visibleCards.size < 2) {
             emptyList()
         } else {
-            val result = mutableListOf<CardsModel.State.Card.VisibleCard<NavTarget>>()
+            val result = mutableListOf<CardsModel.State.Card.VisibleCard<InteractionTarget>>()
             result.add(
                 CardsModel.State.Card.VisibleCard.TopCard(
-                    fromState.visibleCards[1].navElement,
+                    fromState.visibleCards[1].element,
                     CardsModel.State.Card.VisibleCard.TopCard.TOP_CARD_STATE.STANDARD
                 )
             )
             if (fromState.queued.isNotEmpty()) {
-                result.add(CardsModel.State.Card.VisibleCard.BottomCard(fromState.queued.first().navElement))
+                result.add(CardsModel.State.Card.VisibleCard.BottomCard(fromState.queued.first().element))
             }
             result
         }

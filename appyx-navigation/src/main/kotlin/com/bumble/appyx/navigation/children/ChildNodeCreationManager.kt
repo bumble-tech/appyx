@@ -1,7 +1,7 @@
 package com.bumble.appyx.navigation.children
 
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.ParentNode
@@ -28,7 +28,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
 ) {
     private lateinit var parentNode: ParentNode<NavTarget>
     private val _children =
-        MutableStateFlow<Map<NavElement<NavTarget>, ChildEntry<NavTarget>>>(emptyMap())
+        MutableStateFlow<Map<Element<NavTarget>, ChildEntry<NavTarget>>>(emptyMap())
     val children: StateFlow<ChildEntryMap<NavTarget>> = _children.asStateFlow()
 
     fun launch(parentNode: ParentNode<NavTarget>) {
@@ -44,9 +44,9 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
     private fun syncNavModelWithChildren(parentNode: ParentNode<NavTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
             parentNode.interactionModel.screenState.collect { state ->
-                val navModelKeepKeys: Set<NavElement<NavTarget>>
-                val navModelSuspendKeys: Set<NavElement<NavTarget>>
-                val navModelKeys: Set<NavElement<NavTarget>>
+                val navModelKeepKeys: Set<Element<NavTarget>>
+                val navModelSuspendKeys: Set<Element<NavTarget>>
+                val navModelKeys: Set<Element<NavTarget>>
                 when (keepMode) {
                     ChildEntry.KeepMode.KEEP -> {
                         navModelKeepKeys =
@@ -80,9 +80,9 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
 //    }
 
     private fun updateChildren(
-        navModelElements: Set<NavElement<NavTarget>>,
-        navModelKeepElements: Set<NavElement<NavTarget>>,
-        navModelSuspendElements: Set<NavElement<NavTarget>>,
+        navModelElements: Set<Element<NavTarget>>,
+        navModelKeepElements: Set<Element<NavTarget>>,
+        navModelSuspendElements: Set<Element<NavTarget>>,
     ) {
         _children.update { map ->
             val localElements = map.keys
@@ -126,30 +126,30 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
     }
 
     @Suppress("ForbiddenComment")
-    fun childOrCreate(navElement: NavElement<NavTarget>): ChildEntry.Initialized<NavTarget> {
+    fun childOrCreate(element: Element<NavTarget>): ChildEntry.Initialized<NavTarget> {
         // TODO: Should not allow child creation and throw exception instead to avoid desynchronisation
         val value = _children.value
-        val child = value[navElement] ?: error(
-            "Rendering and children management is out of sync: requested $navElement but have only ${value.keys}"
+        val child = value[element] ?: error(
+            "Rendering and children management is out of sync: requested $element but have only ${value.keys}"
         )
         return when (child) {
             is ChildEntry.Initialized ->
                 child
             is ChildEntry.Suspended ->
                 _children.updateAndGet { map ->
-                    val updateChild = map[navElement]
-                        ?: error("Requested child $navElement disappeared")
+                    val updateChild = map[element]
+                        ?: error("Requested child $element disappeared")
                     when (updateChild) {
                         is ChildEntry.Initialized -> map
                         is ChildEntry.Suspended ->
-                            map.plus(navElement to updateChild.initialize())
+                            map.plus(element to updateChild.initialize())
                     }
-                }[navElement] as ChildEntry.Initialized
+                }[element] as ChildEntry.Initialized
         }
     }
 
     private fun SavedStateMap?.restoreChildren(): ChildEntryMap<NavTarget>? =
-        (this?.get(KEY_CHILDREN_STATE) as? Map<NavElement<NavTarget>, SavedStateMap>)?.mapValues {
+        (this?.get(KEY_CHILDREN_STATE) as? Map<Element<NavTarget>, SavedStateMap>)?.mapValues {
             // Always restore in suspended mode, they will be unsuspended or destroyed on the first sync cycle
             childEntry(it.key, it.value, true)
         }
@@ -179,7 +179,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
         )
 
     private fun childEntry(
-        key: NavElement<NavTarget>,
+        key: Element<NavTarget>,
         savedState: SavedStateMap?,
         suspended: Boolean,
     ): ChildEntry<NavTarget> =
@@ -189,7 +189,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
             ChildEntry.Initialized(
                 key = key,
                 node = parentNode
-                    .resolve(key.navTarget, childBuildContext(savedState))
+                    .resolve(key.interactionTarget, childBuildContext(savedState))
                     .build()
             )
         }
@@ -201,7 +201,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
                 ChildEntry.Initialized(
                     key = key,
                     node = parentNode.resolve(
-                        navTarget = key.navTarget,
+                        navTarget = key.interactionTarget,
                         buildContext = childBuildContext(savedState),
                     ).build()
                 )

@@ -7,23 +7,25 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.backpresshandlerstrategies.BackPressHandlerStrategy
-import com.bumble.appyx.interactions.core.backpresshandlerstrategies.DontHandleBackPress
-import com.bumble.appyx.interactions.core.inputsource.AnimatedInputSource
-import com.bumble.appyx.interactions.core.inputsource.DebugProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.DragProgressInputSource
-import com.bumble.appyx.interactions.core.inputsource.Draggable
-import com.bumble.appyx.interactions.core.inputsource.HasDefaultAnimationSpec
-import com.bumble.appyx.interactions.core.inputsource.InstantInputSource
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.GestureFactory
-import com.bumble.appyx.interactions.core.ui.Interpolator
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
+import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
+import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
+import com.bumble.appyx.interactions.core.model.progress.DebugProgressInputSource
+import com.bumble.appyx.interactions.core.model.progress.DragProgressController
+import com.bumble.appyx.interactions.core.model.progress.Draggable
+import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
+import com.bumble.appyx.interactions.core.model.progress.InstantProgressController
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.ScreenState
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.UiContext
-import com.bumble.appyx.interactions.core.ui.UiContextAware
-import com.bumble.appyx.interactions.core.ui.zeroSizeTransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.context.UiContextAware
+import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,15 +41,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-// TODO move to navigation
 // TODO save/restore state
-open class InteractionModel<NavTarget : Any, ModelState : Any>(
+open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    private val model: TransitionModel<NavTarget, ModelState>,
-    private val interpolator: (UiContext) -> Interpolator<NavTarget, ModelState>,
-    private val gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, ModelState> = { GestureFactory.Noop() },
+    private val model: TransitionModel<InteractionTarget, ModelState>,
+    private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
+    private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
     override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    private val backPressStrategy: BackPressHandlerStrategy<NavTarget, ModelState> = DontHandleBackPress(),
+    private val backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModelState> = DontHandleBackPress(),
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
@@ -56,10 +57,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         backPressStrategy.init(this, model)
     }
 
-    private var interpolatorObserverJob: Job? = null
-    private var _interpolator: Interpolator<NavTarget, ModelState>? = null
+    private var motionControllerObserverJob: Job? = null
+    private var _motionController: MotionController<InteractionTarget, ModelState>? = null
 
-    private var _gestureFactory: GestureFactory<NavTarget, ModelState> =
+    private var _gestureFactory: GestureFactory<InteractionTarget, ModelState> =
         gestureFactory(zeroSizeTransitionBounds)
 
     private var animationChangesJob: Job? = null
@@ -74,30 +75,30 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
 
     private var isAnimating: Boolean = false
-    private val instant = InstantInputSource(model = model)
-    private var animated: AnimatedInputSource<NavTarget, ModelState>? = null
-    private var debug: DebugProgressInputSource<NavTarget, ModelState>? = null
-    private val drag = DragProgressInputSource(
+    private val instant = InstantProgressController(model = model)
+    private var animated: AnimatedProgressController<InteractionTarget, ModelState>? = null
+    private var debug: DebugProgressInputSource<InteractionTarget, ModelState>? = null
+    private val drag = DragProgressController(
         model = model,
         gestureFactory = { _gestureFactory },
         defaultAnimationSpec = defaultAnimationSpec
     )
 
-    private val _frames: MutableStateFlow<List<FrameModel<NavTarget>>> =
+    private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
         MutableStateFlow(emptyList())
-    val frames: StateFlow<List<FrameModel<NavTarget>>> = _frames
+    val uiModels: StateFlow<List<ElementUiModel<InteractionTarget>>> = _uiModels
 
     private var screenStateJob: Job
-    private val _screenState: MutableStateFlow<ScreenState<NavTarget>> =
+    private val _screenState: MutableStateFlow<ScreenState<InteractionTarget>> =
         MutableStateFlow(ScreenState(offScreen = model.availableElements().value))
-    val screenState: StateFlow<ScreenState<NavTarget>> = _screenState
+    val screenState: StateFlow<ScreenState<InteractionTarget>> = _screenState
 
     private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val clipToBounds: StateFlow<Boolean> = _clipToBounds
 
 
     init {
-        // before interpolator is ready we consider all nav elements as off screen
+        // Before motionController is ready we consider all elements as off-screen
         screenStateJob = scope.launch {
             model
                 .availableElements()
@@ -110,10 +111,10 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     private var animationScope: CoroutineScope? = null
     private var isInitialised: Boolean = false
 
-    private fun observeAnimationChanges(interpolator: Interpolator<NavTarget, ModelState>) {
+    private fun observeAnimationChanges(motionController: MotionController<InteractionTarget, ModelState>) {
         animationChangesJob?.cancel()
         animationChangesJob = scope.launch {
-            interpolator.isAnimating()
+            motionController.isAnimating()
                 .collect {
                     if (!it) {
                         Logger.log("InteractionModel", "Finished animating")
@@ -125,7 +126,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         }
         animationFinishedJob?.cancel()
         animationFinishedJob = scope.launch {
-            interpolator.finishedAnimations
+            motionController.finishedAnimations
                 .collect {
                     Logger.log("InteractionModel", "$it onAnimation finished")
                     model.cleanUpElement(it)
@@ -146,7 +147,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     }
 
     private fun createAnimatedInputSource(scope: CoroutineScope) {
-        animated = AnimatedInputSource(
+        animated = AnimatedProgressController(
             model = model,
             coroutineScope = scope,
             defaultAnimationSpec = defaultAnimationSpec,
@@ -164,61 +165,61 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
     override fun updateContext(uiContext: UiContext) {
         if (this.transitionBounds != uiContext.transitionBounds) {
             this.transitionBounds = uiContext.transitionBounds
-            _interpolator = interpolator(uiContext).also {
-                onInterpolatorReady(it)
+            _motionController = motionController(uiContext).also {
+                onMotionControllerReady(it)
             }
             _gestureFactory = gestureFactory(transitionBounds)
         }
     }
 
-    private fun onInterpolatorReady(interpolator: Interpolator<NavTarget, ModelState>) {
-        _clipToBounds.update { interpolator.clipToBounds }
-        observeAnimationChanges(interpolator)
-        observeInterpolator(interpolator)
+    private fun onMotionControllerReady(motionController: MotionController<InteractionTarget, ModelState>) {
+        _clipToBounds.update { motionController.clipToBounds }
+        observeAnimationChanges(motionController)
+        observeMotionController(motionController)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeInterpolator(interpolator: Interpolator<NavTarget, ModelState>) {
+    private fun observeMotionController(motionController: MotionController<InteractionTarget, ModelState>) {
         screenStateJob.cancel()
-        interpolatorObserverJob?.cancel()
-        interpolatorObserverJob = scope.launch {
+        motionControllerObserverJob?.cancel()
+        motionControllerObserverJob = scope.launch {
             model
                 .output
-                .flatMapLatest { interpolator.map(it) }
-                .flatMapLatest { frames ->
-                    val frameVisibilityFlows = frames.map { frame ->
-                        frame.visibleState
+                .flatMapLatest { motionController.map(it) }
+                .flatMapLatest { elementUiModels ->
+                    val visibilityFlows = elementUiModels.map { uiModel ->
+                        uiModel.visibleState
                     }
-                    combine(frameVisibilityFlows) { visibilityValues ->
-                        val onScreen = mutableSetOf<NavElement<NavTarget>>()
-                        val offScreen = mutableSetOf<NavElement<NavTarget>>()
+                    combine(visibilityFlows) { visibilityValues ->
+                        val onScreen = mutableSetOf<Element<InteractionTarget>>()
+                        val offScreen = mutableSetOf<Element<InteractionTarget>>()
                         visibilityValues.forEachIndexed { index, visibilityValue ->
-                            val navElement = frames[index].navElement
+                            val element = elementUiModels[index].element
                             if (visibilityValue) {
-                                onScreen.add(navElement)
+                                onScreen.add(element)
                             } else {
-                                offScreen.add(navElement)
+                                offScreen.add(element)
                             }
                         }
-                        ScreenState(onScreen = onScreen, offScreen = offScreen) to frames
+                        ScreenState(onScreen = onScreen, offScreen = offScreen) to elementUiModels
                     }
                 }
-                .collect { (screenState, frames) ->
-                    // order is important here. We need to report screen state to the ParentNode first
-                    // before frames are consumed by the UI
+                .collect { (screenState, elementUiModels) ->
+                    // Order is important here. We need to report screen state to the ParentNode
+                    // first, before elementUiModels are consumed by the UI
                     _screenState.emit(screenState)
-                    _frames.emit(frames)
+                    _uiModels.emit(elementUiModels)
                 }
         }
     }
 
-    fun availableElements(): StateFlow<Set<NavElement<NavTarget>>> = model.availableElements()
+    fun availableElements(): StateFlow<Set<Element<InteractionTarget>>> = model.availableElements()
 
     fun operation(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float>? = null
     ) {
-        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _interpolator?.overrideAnimationSpec(
+        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _motionController?.overrideAnimationSpec(
             animationSpec
         )
         val animatedSource = animated
@@ -276,7 +277,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
 
     // TODO plugin?!
     fun destroy() {
-        interpolatorObserverJob?.cancel()
+        motionControllerObserverJob?.cancel()
         screenStateJob.cancel()
         scope.cancel()
     }
@@ -285,7 +286,7 @@ open class InteractionModel<NavTarget : Any, ModelState : Any>(
         debug?.setNormalisedProgress(progress)
     }
 
-    open fun handleBackNavigation(): Boolean = backPressStrategy.handleUpNavigation()
+    open fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
-    open fun canHandeBackNavigation(): Flow<Boolean> = backPressStrategy.canHandleBackPress
+    open fun canHandeBackPress(): Flow<Boolean> = backPressStrategy.canHandleBackPress
 }

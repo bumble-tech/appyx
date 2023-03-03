@@ -6,14 +6,15 @@ import androidx.compose.animation.core.Easing
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
+import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 
 class Alpha(
     value: Float,
     easing: Easing? = null,
     visibilityThreshold: Float = 0.01f
-) : AnimatedProperty<Float, AnimationVector1D>(
+) : MotionProperty<Float, AnimationVector1D>(
     animatable = Animatable(value),
     easing = easing,
     visibilityThreshold = visibilityThreshold

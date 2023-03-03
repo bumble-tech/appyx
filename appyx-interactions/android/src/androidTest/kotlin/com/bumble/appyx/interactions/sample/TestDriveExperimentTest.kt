@@ -17,12 +17,12 @@ import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.test.core.graphics.writeToTestStorage
-import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -59,9 +59,9 @@ class TestDriveExperimentTest {
                     TestDrive(
                         scope = coroutineScope,
                         model = model,
-                        interpolator = { TestDriveUiModel(it) },
+                        motionController = { TestDriveMotionController(it) },
                         progressAnimationSpec = testAnimationSpec,
-                        gestureFactory = { TestDriveUiModel.Gestures(it) },
+                        gestureFactory = { TestDriveMotionController.Gestures(it) },
                     )
                 }
 
@@ -114,8 +114,8 @@ class TestDriveExperimentTest {
                         scope = coroutineScope,
                         model = model,
                         progressAnimationSpec = testAnimationSpec,
-                        interpolator = { TestDriveUiModel(it) },
-                        gestureFactory = { TestDriveUiModel.Gestures(it) },
+                        motionController = { TestDriveMotionController(it) },
+                        gestureFactory = { TestDriveMotionController.Gestures(it) },
                     )
                 }
 

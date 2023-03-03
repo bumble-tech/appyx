@@ -2,8 +2,8 @@ package com.bumble.appyx.transitionmodel.backstack.operation
 
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
-import com.bumble.appyx.interactions.core.BaseOperation
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.model.transition.BaseOperation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -14,19 +14,19 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
  * [A, B, C] + NewRoot(D) = [ D ]
  */
 @Parcelize
-data class NewRoot<NavTarget>(
-    private val navTarget: @RawValue NavTarget,
+data class NewRoot<InteractionTarget>(
+    private val interactionTarget: @RawValue InteractionTarget,
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<BackStackModel.State<NavTarget>>() {
-    override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
+) : BaseOperation<BackStackModel.State<InteractionTarget>>() {
+    override fun isApplicable(state: BackStackModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
+    override fun createFromState(baseLineState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
         baseLineState.copy(
-            created = baseLineState.created + navTarget.asElement()
+            created = baseLineState.created + interactionTarget.asElement()
         )
 
-    override fun createTargetState(fromState: BackStackModel.State<NavTarget>): BackStackModel.State<NavTarget> =
+    override fun createTargetState(fromState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),
@@ -35,9 +35,9 @@ data class NewRoot<NavTarget>(
         )
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.newRoot(
-    navTarget: NavTarget,
+fun <InteractionTarget : Any> BackStack<InteractionTarget>.newRoot(
+    interactionTarget: InteractionTarget,
     mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) {
-    operation(NewRoot(navTarget, mode))
+    operation(NewRoot(interactionTarget, mode))
 }

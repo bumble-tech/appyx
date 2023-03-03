@@ -8,14 +8,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
-import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
+import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 
 class Scale(
     value: Float,
     easing: Easing? = null,
     visibilityThreshold: Float = 0.01f
-) : AnimatedProperty<Float, AnimationVector1D>(
+) : MotionProperty<Float, AnimationVector1D>(
     animatable = Animatable(value, Float.VectorConverter),
     easing = easing,
     visibilityThreshold = visibilityThreshold
