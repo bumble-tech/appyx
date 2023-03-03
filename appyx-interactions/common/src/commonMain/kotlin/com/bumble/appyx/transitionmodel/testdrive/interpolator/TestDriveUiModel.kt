@@ -14,7 +14,6 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -43,7 +42,9 @@ class TestDriveUiModel<InteractionTarget : Any>(
     class UiState(
         val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
-    ) : BaseUiState(listOf(offset.isAnimating, backgroundColor.isAnimating)), Animatable<UiState> {
+    ) : BaseUiState<UiState>(
+        listOf(offset.isAnimating, backgroundColor.isAnimating)
+    ) {
 
         override val modifier: Modifier
             get() = Modifier

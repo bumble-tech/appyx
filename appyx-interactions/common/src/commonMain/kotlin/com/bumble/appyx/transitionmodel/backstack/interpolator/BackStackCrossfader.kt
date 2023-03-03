@@ -5,7 +5,6 @@ import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -23,27 +22,29 @@ class BackStackCrossfader<InteractionTarget : Any>(
 
     class UiState(
         val alpha: Alpha = Alpha(value = 1f),
-    ) : BaseUiState(listOf(alpha.isAnimating)), Animatable<UiState> {
+    ) : BaseUiState<UiState>(
+        listOf(alpha.isAnimating)
+    ) {
 
         override val modifier: Modifier
             get() = Modifier
                 .then(alpha.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
+        override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
-                alpha.snapTo(props.alpha.value)
+                alpha.snapTo(uiState.alpha.value)
                 updateVisibilityState()
             }
         }
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: UiState,
+            uiState: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             val a1 = scope.async {
                 alpha.animateTo(
-                    props.alpha.value,
+                    uiState.alpha.value,
                     spring(springSpec.dampingRatio, springSpec.stiffness)
                 ) {
                     updateVisibilityState()

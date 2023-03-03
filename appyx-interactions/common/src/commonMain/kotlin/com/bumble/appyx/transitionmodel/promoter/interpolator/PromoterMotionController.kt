@@ -1,5 +1,7 @@
 package com.bumble.appyx.transitionmodel.promoter.interpolator
 
+import DefaultAnimationSpec
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -16,13 +18,15 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.*
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
+import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlin.math.cos
@@ -32,17 +36,23 @@ import kotlin.math.sin
 
 @Suppress("TransitionPropertiesLabel")
 class PromoterMotionController<InteractionTarget : Any>(
+    uiContext: UiContext,
+    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
     childSize: Dp,
-    transitionBounds: TransitionBounds
-) : MotionController<InteractionTarget, PromoterModel.State<InteractionTarget>> {
-    private val halfWidthDp = (transitionBounds.widthDp.value - childSize.value) / 2
-    private val halfHeightDp = (transitionBounds.heightDp.value - childSize.value) / 2
+) : BaseMotionController<InteractionTarget, PromoterModel.State<InteractionTarget>, PromoterMotionController.UiState>(
+    scope = uiContext.coroutineScope,
+    defaultAnimationSpec = uiAnimationSpec,
+) {
+    private val halfWidthDp = (uiContext.transitionBounds.widthDp.value - childSize.value) / 2
+    private val halfHeightDp = (uiContext.transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
 
     override val finishedAnimations: Flow<Element<InteractionTarget>>
         get() = TODO("Not yet implemented")
 
-    // TODO migrate to BaseMotionController
+    override fun defaultUiState(): UiState = created.copy()
+
+    // TODO migrate fields to MotionProperty instances
     data class UiState(
         val dpOffset: DpOffset,
         val scale: Float,
@@ -50,9 +60,27 @@ class PromoterMotionController<InteractionTarget : Any>(
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-    ) : BaseUiState(listOf()) {
+    ) : BaseUiState<UiState>(listOf()) { // TODO
         override fun isVisible() = true
 
+        override val modifier: Modifier
+            get() = TODO("Not yet implemented")
+
+        override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
+            TODO("Not yet implemented")
+        }
+
+        override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
+            TODO("Not yet implemented")
+        }
+
+        override suspend fun animateTo(
+            scope: CoroutineScope,
+            uiState: UiState,
+            springSpec: SpringSpec<Float>
+        ) {
+            TODO("Not yet implemented")
+        }
     }
 
     private val created = UiState(
@@ -97,6 +125,10 @@ class PromoterMotionController<InteractionTarget : Any>(
 
     // TODO Migrate to BaseMotionController
 
+    override fun PromoterModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> {
+        TODO("Not yet implemented")
+    }
+
     private fun <InteractionTarget : Any> PromoterModel.State<InteractionTarget>.toProps(): List<MatchedUiState<InteractionTarget, UiState>> =
         elements.map {
             MatchedUiState(
@@ -118,11 +150,11 @@ class PromoterMotionController<InteractionTarget : Any>(
         initialProgress: Float
     ): List<ElementUiModel<InteractionTarget>> {
         val (fromState, targetState) = segment.stateTransition
-        val fromProps = fromState.toProps()
-        val targetProps = targetState.toProps()
+        val fromUiState = fromState.toUiState()
+        val targetUiState = targetState.toUiState()
 
-        return targetProps.map { t1 ->
-            val t0 = fromProps.find { it.element.id == t1.element.id }!!
+        return targetUiState.map { t1 ->
+            val t0 = fromUiState.find { it.element.id == t1.element.id }!!
 
             ElementUiModel(
                 // TODO fix after migration to base interoplator

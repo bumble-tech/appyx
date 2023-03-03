@@ -39,8 +39,8 @@ fun PromoterExperiment() {
             model = PromoterModel<NavTarget>(),
             motionController = {
                 PromoterMotionController(
+                    uiContext = it,
                     childSize = 100.dp,
-                    transitionBounds = it.transitionBounds
                 )
             },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)

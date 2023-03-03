@@ -16,27 +16,26 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
+import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps.UiState
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-
-typealias InterpolatableOffset = com.bumble.appyx.interactions.core.ui.property.impl.Offset
+import com.bumble.appyx.interactions.core.ui.property.impl.Offset as OffsetP
 
 
 class CardsProps<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, CardsModel.State<InteractionTarget>, CardsProps.UiState>(
+) : BaseMotionController<InteractionTarget, CardsModel.State<InteractionTarget>, UiState>(
     scope = uiContext.coroutineScope,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
@@ -46,7 +45,7 @@ class CardsProps<InteractionTarget : Any>(
 
     class UiState(
         val scale: Scale = Scale(value = 1f),
-        val positionalOffsetX: InterpolatableOffset = InterpolatableOffset(
+        val positionalOffsetX: OffsetP = OffsetP(
             value = DpOffset(
                 0.dp,
                 0.dp
@@ -55,7 +54,9 @@ class CardsProps<InteractionTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f),
         private val width: Float,
-    ) : BaseUiState(listOf(scale.isAnimating, positionalOffsetX.isAnimating)), Animatable<UiState> {
+    ) : BaseUiState<UiState>(
+        listOf(scale.isAnimating, positionalOffsetX.isAnimating)
+    ) {
 
         override val modifier: Modifier
             get() = Modifier
@@ -64,25 +65,25 @@ class CardsProps<InteractionTarget : Any>(
                 .then(rotationZ.modifier)
                 .then(zIndex.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
+        override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
-                scale.snapTo(props.scale.value)
-                positionalOffsetX.snapTo(props.positionalOffsetX.value)
-                rotationZ.snapTo(props.rotationZ.value)
-                zIndex.snapTo(props.zIndex.value)
+                scale.snapTo(uiState.scale.value)
+                positionalOffsetX.snapTo(uiState.positionalOffsetX.value)
+                rotationZ.snapTo(uiState.rotationZ.value)
+                zIndex.snapTo(uiState.zIndex.value)
                 updateVisibilityState()
             }
         }
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: UiState,
+            uiState: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             listOf(
                 scope.async {
                     scale.animateTo(
-                        props.scale.value,
+                        uiState.scale.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     ) {
                         updateVisibilityState()
@@ -90,7 +91,7 @@ class CardsProps<InteractionTarget : Any>(
                 },
                 scope.async {
                     positionalOffsetX.animateTo(
-                        props.positionalOffsetX.value,
+                        uiState.positionalOffsetX.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     ) {
                         updateVisibilityState()
@@ -98,7 +99,7 @@ class CardsProps<InteractionTarget : Any>(
                 },
                 scope.async {
                     rotationZ.animateTo(
-                        props.rotationZ.value,
+                        uiState.rotationZ.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     ) {
                         updateVisibilityState()
@@ -106,7 +107,7 @@ class CardsProps<InteractionTarget : Any>(
                 },
                 scope.async {
                     zIndex.animateTo(
-                        props.zIndex.value,
+                        uiState.zIndex.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     ) {
                         updateVisibilityState()
@@ -146,7 +147,7 @@ class CardsProps<InteractionTarget : Any>(
     )
 
     private val votePass = UiState(
-        positionalOffsetX = InterpolatableOffset(
+        positionalOffsetX = OffsetP(
             DpOffset(
                 (-voteCardPositionMultiplier * width).dp,
                 0.dp
@@ -159,7 +160,7 @@ class CardsProps<InteractionTarget : Any>(
     )
 
     private val voteLike = UiState(
-        positionalOffsetX = InterpolatableOffset(
+        positionalOffsetX = OffsetP(
             DpOffset(
                 (voteCardPositionMultiplier * width).dp,
                 0.dp

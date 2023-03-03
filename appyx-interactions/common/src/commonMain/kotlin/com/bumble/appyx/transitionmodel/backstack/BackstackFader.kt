@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import kotlinx.coroutines.CoroutineScope
@@ -23,7 +22,9 @@ class BackstackFader<InteractionTarget : Any>(
 
     class UiState(
         var alpha: Alpha = Alpha(1f),
-    ) : BaseUiState(listOf(alpha.isAnimating)), Animatable<UiState> {
+    ) : BaseUiState<UiState>(
+        listOf(alpha.isAnimating)
+    ) {
 
         override fun isVisible() =
             alpha.value > 0.0f
@@ -32,20 +33,20 @@ class BackstackFader<InteractionTarget : Any>(
             get() = Modifier
                 .then(alpha.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
+        override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
-                alpha.snapTo(props.alpha.value)
+                alpha.snapTo(uiState.alpha.value)
                 updateVisibilityState()
             }
         }
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: UiState,
+            uiState: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             scope.launch {
-                alpha.animateTo(props.alpha.value, springSpec) {
+                alpha.animateTo(uiState.alpha.value, springSpec) {
                     updateVisibilityState()
                 }
             }

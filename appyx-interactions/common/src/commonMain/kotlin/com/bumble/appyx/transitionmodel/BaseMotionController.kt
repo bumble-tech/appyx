@@ -17,7 +17,6 @@ import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
@@ -32,7 +31,7 @@ import androidx.compose.animation.core.Animatable as Animatable1
 abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState>(
     private val scope: CoroutineScope,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : MotionController<InteractionTarget, ModelState> where UiState : BaseUiState, UiState : Animatable<UiState> {
+) : MotionController<InteractionTarget, ModelState> where UiState : BaseUiState<UiState> {
 
     private val uiStateCache: MutableMap<String, UiState> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
@@ -96,7 +95,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                 if (update.animate) {
                     elementProps.animateTo(
                         scope = this,
-                        props = targetProps.uiState,
+                        uiState = targetProps.uiState,
                         springSpec = currentSpringSpec,
                     )
                 } else {

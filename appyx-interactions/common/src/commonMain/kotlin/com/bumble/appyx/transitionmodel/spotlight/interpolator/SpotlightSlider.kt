@@ -18,7 +18,6 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.Animatable
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -66,8 +65,9 @@ class SpotlightSlider<InteractionTarget : Any>(
         private val containerWidth: Dp,
         private val screenWidth: Dp,
         private val transitionBounds: TransitionBounds
-    ) : BaseUiState(listOf(offset.isAnimating, scale.isAnimating, alpha.isAnimating)),
-        Animatable<UiState> {
+    ) : BaseUiState<UiState>(
+        listOf(offset.isAnimating, scale.isAnimating, alpha.isAnimating)
+    ) {
 
         override val modifier: Modifier
             get() = Modifier
@@ -75,37 +75,37 @@ class SpotlightSlider<InteractionTarget : Any>(
                 .then(alpha.modifier)
                 .then(scale.modifier)
 
-        override suspend fun snapTo(scope: CoroutineScope, props: UiState) {
+        override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
-                offset.snapTo(props.offset.value)
-                alpha.snapTo(props.alpha.value)
-                scale.snapTo(props.scale.value)
+                offset.snapTo(uiState.offset.value)
+                alpha.snapTo(uiState.alpha.value)
+                scale.snapTo(uiState.scale.value)
                 updateVisibilityState()
             }
         }
 
         override suspend fun animateTo(
             scope: CoroutineScope,
-            props: UiState,
+            uiState: UiState,
             springSpec: SpringSpec<Float>,
         ) {
             scope.launch {
                 listOf(
                     scope.async {
                         offset.animateTo(
-                            props.offset.value,
+                            uiState.offset.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
                         ) {
                             updateVisibilityState()
                         }
                         alpha.animateTo(
-                            props.alpha.value,
+                            uiState.alpha.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
                         ) {
                             updateVisibilityState()
                         }
                         scale.animateTo(
-                            props.scale.value,
+                            uiState.scale.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
                         ) {
                             updateVisibilityState()
