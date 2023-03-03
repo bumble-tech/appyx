@@ -22,7 +22,7 @@ import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
 import com.bumble.appyx.transitionmodel.cards.Cards
 import com.bumble.appyx.transitionmodel.cards.CardsModel
-import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps
+import com.bumble.appyx.transitionmodel.cards.interpolator.CardsMotionController
 
 sealed class DatingCardsNavTarget {
     class ProfileCard(val profile: Profile) : DatingCardsNavTarget()
@@ -41,8 +41,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
                     DatingCardsNavTarget.ProfileCard(it)
                 }
             ),
-            motionController = { CardsProps(it)  },
-            gestureFactory = { CardsProps.Gestures(it) },
+            motionController = { CardsMotionController(it)  },
+            gestureFactory = { CardsMotionController.Gestures(it) },
             animateSettle = true
         )
     }

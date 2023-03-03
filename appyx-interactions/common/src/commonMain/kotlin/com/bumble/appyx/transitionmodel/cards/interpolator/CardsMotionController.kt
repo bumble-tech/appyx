@@ -22,7 +22,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
-import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps.UiState
+import com.bumble.appyx.transitionmodel.cards.interpolator.CardsMotionController.UiState
 import com.bumble.appyx.transitionmodel.cards.operation.VoteLike
 import com.bumble.appyx.transitionmodel.cards.operation.VotePass
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset as OffsetP
 
 
-class CardsProps<InteractionTarget : Any>(
+class CardsMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<InteractionTarget, CardsModel.State<InteractionTarget>, UiState>(

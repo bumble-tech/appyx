@@ -18,7 +18,7 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.transitionmodel.cards.Cards
 import com.bumble.appyx.transitionmodel.cards.CardsModel
-import com.bumble.appyx.transitionmodel.cards.interpolator.CardsProps
+import com.bumble.appyx.transitionmodel.cards.interpolator.CardsMotionController
 import kotlinx.parcelize.Parcelize
 
 class DatingCardsNode(
@@ -29,8 +29,8 @@ class DatingCardsNode(
                 initialItems = Profile.allProfiles.shuffled().map {
                     NavTarget.ProfileCard(it)
                 }),
-            motionController = { CardsProps(it) },
-            gestureFactory = { CardsProps.Gestures(it) },
+            motionController = { CardsMotionController(it) },
+            gestureFactory = { CardsMotionController.Gestures(it) },
         )
 
 ) : ParentNode<NavTarget>(
