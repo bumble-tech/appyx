@@ -28,6 +28,10 @@ interface RetainedInstanceStore {
 
     fun <T : Any> get(storeId: String, key: String, disposer: (T) -> Unit = {}, factory: () -> T): T
 
+    fun isRetainedByStoreId(storeId: String, value: Any): Boolean
+
+    fun isRetained(value: Any): Boolean
+
     fun clearStore(storeId: String)
 
     companion object : RetainedInstanceStore by RetainedInstanceStoreImpl()

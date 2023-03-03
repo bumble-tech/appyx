@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#370](https://github.com/bumble-tech/appyx/pull/370) – **Added**: `RetainedInstanceStore` has two new functions which allows a developer to check whether an object is retained. These are: `isRetainedByStoreId` and `isRetained`.
 
 ---
 

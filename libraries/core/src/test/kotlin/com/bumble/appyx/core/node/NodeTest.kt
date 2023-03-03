@@ -99,6 +99,14 @@ class NodeTest {
             error("Not needed for this test")
         }
 
+        override fun isRetainedByStoreId(storeId: String, value: Any): Boolean {
+            error("Not needed for this test")
+        }
+
+        override fun isRetained(value: Any): Boolean {
+            error("Not needed for this test")
+        }
+
         override fun clearStore(storeId: String) {
             clearStoreId = storeId
         }
