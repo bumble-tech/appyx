@@ -16,8 +16,8 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.output.BaseUiState
-import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
+import com.bumble.appyx.interactions.core.ui.state.BaseUiState
+import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.transitionmodel.BaseMotionController

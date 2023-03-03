@@ -3,8 +3,8 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.output.BaseUiState
-import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
+import com.bumble.appyx.interactions.core.ui.state.BaseUiState
+import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel

@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui.output
+package com.bumble.appyx.interactions.core.ui.state
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
