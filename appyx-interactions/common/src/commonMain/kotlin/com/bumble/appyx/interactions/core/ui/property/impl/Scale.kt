@@ -10,6 +10,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.scale
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 
 class Scale(
     value: Float,

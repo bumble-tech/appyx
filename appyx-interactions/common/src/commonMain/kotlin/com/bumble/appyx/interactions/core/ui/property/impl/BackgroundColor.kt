@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import androidx.compose.ui.graphics.lerp as lerpColor
 
 class BackgroundColor(

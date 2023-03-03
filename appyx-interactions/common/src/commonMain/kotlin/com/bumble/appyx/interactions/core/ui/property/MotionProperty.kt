@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui.property.impl
+package com.bumble.appyx.interactions.core.ui.property
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
@@ -12,7 +12,6 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.ui.property.Property
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
@@ -26,7 +25,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>,
     protected val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
-) : Property<T, V> {
+) : HasModifier {
     private var lastVelocity = animatable.velocity
 
     /**
@@ -37,7 +36,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
     private var lastVelocity2 = animatable.velocity
     private var lastTime = 0L
 
-    override val value: T
+    val value: T
         get() = animatable.value
 
     private val _isAnimatingFlow = MutableStateFlow(false)

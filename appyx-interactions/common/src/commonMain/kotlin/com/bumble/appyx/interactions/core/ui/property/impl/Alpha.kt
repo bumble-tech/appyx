@@ -8,6 +8,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 
 class Alpha(
     value: Float,
