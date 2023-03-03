@@ -114,7 +114,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
             }
         }
 
-        Logger.v("Animatable", "Calculated velocity: $velocity")
+        Logger.v("MotionProperty", "Calculated velocity: $velocity")
         return velocity
     }
 
@@ -124,7 +124,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         block: (Animatable<T, V>.() -> Unit)
     ) {
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
-        Logger.log("Animatable", "Starting with initialVelocity = $previousVelocity")
+        Logger.log("MotionProperty", "Starting with initialVelocity = $previousVelocity")
         _isAnimatingFlow.update {
             targetValue != value
         }
@@ -135,7 +135,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         ) {
             block(this)
             Logger.log(
-                "Animatable",
+                "MotionProperty",
                 "Value = ${animatable.value}, Velocity = ${animatable.velocity})"
             )
             lastVelocity = animatable.velocity
