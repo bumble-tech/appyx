@@ -33,7 +33,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
      * as the values in the last animation frame can jump due to snapping if within threshold of target value,
      * and that would result in unrealistic speeds.
      */
-    private var lastVelocity2 = animatable.velocity
+    private var previousVelocity = animatable.velocity
     private var lastTime = 0L
 
     val value: T
@@ -54,7 +54,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
     }
 
     suspend fun snapTo(targetValue: T) {
-        lastVelocity2 = lastVelocity
+        previousVelocity = lastVelocity
         lastVelocity = calculateVelocity(targetValue)
         animatable.snapTo(targetValue)
     }
@@ -124,14 +124,14 @@ abstract class MotionProperty<T, V : AnimationVector>(
         block: (Animatable<T, V>.() -> Unit)
     ) {
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
-        Logger.log("Animatable", "Starting with initialVelocity = $lastVelocity2")
+        Logger.log("Animatable", "Starting with initialVelocity = $previousVelocity")
         _isAnimatingFlow.update {
             targetValue != value
         }
         val result = animatable.animateTo(
             targetValue = targetValue,
             animationSpec = animationSpec1,
-            initialVelocity = lastVelocity2
+            initialVelocity = previousVelocity
         ) {
             block(this)
             Logger.log(
@@ -139,7 +139,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
                 "Value = ${animatable.value}, Velocity = ${animatable.velocity})"
             )
             lastVelocity = animatable.velocity
-            lastVelocity2 = animatable.velocity
+            previousVelocity = animatable.velocity
         }
         _isAnimatingFlow.update {
             result.endState.value != targetValue
