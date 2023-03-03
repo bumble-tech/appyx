@@ -3,11 +3,10 @@ package com.bumble.appyx.transitionmodel.backstack
 import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
-import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +23,7 @@ class BackstackFader<InteractionTarget : Any>(
 
     class UiState(
         var alpha: Alpha = Alpha(1f),
-    ) : BaseUiState(listOf(alpha.isAnimating)), Animatable<UiState>, HasModifier {
+    ) : BaseUiState(listOf(alpha.isAnimating)), Animatable<UiState> {
 
         override fun isVisible() =
             alpha.value > 0.0f

@@ -7,11 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Animatable
-import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -36,7 +35,7 @@ class BackStackSlider<InteractionTarget : Any>(
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
         val screenWidth: Dp
-    ) : HasModifier, BaseUiState(listOf(offset.isAnimating, alpha.isAnimating)),
+    ) : BaseUiState(listOf(offset.isAnimating, alpha.isAnimating)),
         Animatable<UiState> {
 
         override fun isVisible() =

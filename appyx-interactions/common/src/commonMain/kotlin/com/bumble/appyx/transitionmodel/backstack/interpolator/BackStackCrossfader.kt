@@ -6,7 +6,6 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.output.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.property.Animatable
-import com.bumble.appyx.interactions.core.ui.property.HasModifier
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -24,7 +23,7 @@ class BackStackCrossfader<InteractionTarget : Any>(
 
     class UiState(
         val alpha: Alpha = Alpha(value = 1f),
-    ) : BaseUiState(listOf(alpha.isAnimating)), HasModifier, Animatable<UiState> {
+    ) : BaseUiState(listOf(alpha.isAnimating)), Animatable<UiState> {
 
         override val modifier: Modifier
             get() = Modifier

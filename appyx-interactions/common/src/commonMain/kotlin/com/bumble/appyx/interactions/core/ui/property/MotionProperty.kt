@@ -11,6 +11,7 @@ import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.Logger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
     protected val animatable: Animatable<T, V>,
     protected val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
-) : HasModifier {
+) {
     private var lastVelocity = animatable.velocity
 
     /**
@@ -38,6 +39,8 @@ abstract class MotionProperty<T, V : AnimationVector>(
 
     val value: T
         get() = animatable.value
+
+    abstract val modifier: Modifier
 
     private val _isAnimatingFlow = MutableStateFlow(false)
     val isAnimating: Flow<Boolean>
