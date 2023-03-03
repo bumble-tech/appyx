@@ -1,10 +1,10 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.NavTarget.Child3
-import com.bumble.appyx.NavTarget.Child4
-import com.bumble.appyx.NavTarget.Child5
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
+import com.bumble.appyx.InteractionTarget.Child3
+import com.bumble.appyx.InteractionTarget.Child4
+import com.bumble.appyx.InteractionTarget.Child5
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlin.test.Test
@@ -24,7 +24,7 @@ class NewRootTest {
         val actual = newRoot.invoke(state)
 
         assertEquals(
-            actual = actual.targetState.active.navTarget,
+            actual = actual.targetState.active.interactionTarget,
             expected = Child5
         )
 
@@ -32,7 +32,7 @@ class NewRootTest {
 
         actual.targetState.destroyed.forEachIndexed { index, element ->
             assertEquals(
-                actual = element.navTarget,
+                actual = element.interactionTarget,
                 expected = expectedDestroyed[index]
             )
         }

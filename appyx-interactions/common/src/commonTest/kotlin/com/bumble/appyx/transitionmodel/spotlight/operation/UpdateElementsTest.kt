@@ -1,11 +1,11 @@
 package com.bumble.appyx.transitionmodel.spotlight.operation
 
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.NavTarget.Child3
-import com.bumble.appyx.NavTarget.Child4
-import com.bumble.appyx.NavTarget.Child5
-import com.bumble.appyx.NavTarget.Child6
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
+import com.bumble.appyx.InteractionTarget.Child3
+import com.bumble.appyx.InteractionTarget.Child4
+import com.bumble.appyx.InteractionTarget.Child5
+import com.bumble.appyx.InteractionTarget.Child6
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -34,7 +34,7 @@ class UpdateElementsTest {
         val actualItems = finalState.positions
             .flatMap { it.elements.entries }
             .filter { it.value == STANDARD }
-            .map { it.key.navTarget }
+            .map { it.key.interactionTarget }
             .toSet()
 
         assertTrue(actualItems.contains(Child3))
@@ -58,7 +58,7 @@ class UpdateElementsTest {
         val actualItems = finalState.positions
             .flatMap { it.elements.entries }
             .filter { it.value == DESTROYED }
-            .map { it.key.navTarget }
+            .map { it.key.interactionTarget }
             .toSet()
 
         assertTrue(actualItems.contains(Child1))

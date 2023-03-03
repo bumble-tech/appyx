@@ -1,7 +1,8 @@
 package com.bumble.appyx.interactions.core
 
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
+import com.bumble.appyx.InteractionTarget
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
 import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.StateTransition
@@ -17,7 +18,7 @@ class UpdateTest {
         val update = Update(
             currentTargetState = State(
                 elements = listOf(
-                    asElement()
+                    Child1.asElement()
                 )
             )
         )

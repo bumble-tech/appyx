@@ -1,13 +1,13 @@
 package com.bumble.appyx.transitionmodel.promoter.operation
 
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.NavTarget
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.NavTarget.Child3
-import com.bumble.appyx.NavTarget.Child4
-import com.bumble.appyx.NavTarget.Child5
-import com.bumble.appyx.NavTarget.Child6
+import com.bumble.appyx.InteractionTarget
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
+import com.bumble.appyx.InteractionTarget.Child3
+import com.bumble.appyx.InteractionTarget.Child4
+import com.bumble.appyx.InteractionTarget.Child5
+import com.bumble.appyx.InteractionTarget.Child6
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState.DESTROYED
@@ -24,7 +24,7 @@ class AddFirstTest {
     @Test
     fun GIVEN_created_WHEN_add_first_THEN_moves_to_stage1() {
         val state = PromoterModel.State(
-            elements = listOf<Pair<Element<NavTarget>, ElementState>>()
+            elements = listOf<Pair<Element<InteractionTarget>, ElementState>>()
         )
 
         val addFirst = AddFirst(Child1)
@@ -32,7 +32,7 @@ class AddFirstTest {
         val firstElement = addFirst(state).targetState.elements[0]
 
         assertEquals(
-            actual = firstElement.first.navTarget to firstElement.second,
+            actual = firstElement.first.interactionTarget to firstElement.second,
             expected = Child1 to STAGE1
         )
     }
@@ -51,12 +51,12 @@ class AddFirstTest {
         val secondElement = finalState.elements[1]
 
         assertEquals(
-            actual = firstElement.first.navTarget to firstElement.second,
+            actual = firstElement.first.interactionTarget to firstElement.second,
             expected = Child2 to STAGE1
         )
 
         assertEquals(
-            actual = secondElement.first.navTarget to secondElement.second,
+            actual = secondElement.first.interactionTarget to secondElement.second,
             expected = Child1 to STAGE2
         )
     }
@@ -79,17 +79,17 @@ class AddFirstTest {
         val thirdElement = finalState.elements[2]
 
         assertEquals(
-            actual = firstElement.first.navTarget to firstElement.second,
+            actual = firstElement.first.interactionTarget to firstElement.second,
             expected = Child3 to STAGE1
         )
 
         assertEquals(
-            actual = secondElement.first.navTarget to secondElement.second,
+            actual = secondElement.first.interactionTarget to secondElement.second,
             expected = Child2 to STAGE2
         )
 
         assertEquals(
-            actual = thirdElement.first.navTarget to thirdElement.second,
+            actual = thirdElement.first.interactionTarget to thirdElement.second,
             expected = Child1 to STAGE3
         )
     }
@@ -114,22 +114,22 @@ class AddFirstTest {
         val fourthElement = finalState.elements[3]
 
         assertEquals(
-            actual = firstElement.first.navTarget to firstElement.second,
+            actual = firstElement.first.interactionTarget to firstElement.second,
             expected = Child4 to STAGE1
         )
 
         assertEquals(
-            actual = secondElement.first.navTarget to secondElement.second,
+            actual = secondElement.first.interactionTarget to secondElement.second,
             expected = Child3 to STAGE2
         )
 
         assertEquals(
-            actual = thirdElement.first.navTarget to thirdElement.second,
+            actual = thirdElement.first.interactionTarget to thirdElement.second,
             expected = Child2 to STAGE3
         )
 
         assertEquals(
-            actual = fourthElement.first.navTarget to fourthElement.second,
+            actual = fourthElement.first.interactionTarget to fourthElement.second,
             expected = Child1 to STAGE4
         )
     }
@@ -156,27 +156,27 @@ class AddFirstTest {
         val fifthElement = finalState.elements[4]
 
         assertEquals(
-            actual = firstElement.first.navTarget to firstElement.second,
+            actual = firstElement.first.interactionTarget to firstElement.second,
             expected = Child5 to STAGE1
         )
 
         assertEquals(
-            actual = secondElement.first.navTarget to secondElement.second,
+            actual = secondElement.first.interactionTarget to secondElement.second,
             expected = Child4 to STAGE2
         )
 
         assertEquals(
-            actual = thirdElement.first.navTarget to thirdElement.second,
+            actual = thirdElement.first.interactionTarget to thirdElement.second,
             expected = Child3 to STAGE3
         )
 
         assertEquals(
-            actual = fourthElement.first.navTarget to fourthElement.second,
+            actual = fourthElement.first.interactionTarget to fourthElement.second,
             expected = Child2 to STAGE4
         )
 
         assertEquals(
-            actual = fifthElement.first.navTarget to fifthElement.second,
+            actual = fifthElement.first.interactionTarget to fifthElement.second,
             expected = Child1 to STAGE5
         )
     }
@@ -205,32 +205,32 @@ class AddFirstTest {
         val sixthElement = finalState.elements[5]
 
         assertEquals(
-            actual = firstElement.first.navTarget to firstElement.second,
+            actual = firstElement.first.interactionTarget to firstElement.second,
             expected = Child6 to STAGE1
         )
 
         assertEquals(
-            actual = secondElement.first.navTarget to secondElement.second,
+            actual = secondElement.first.interactionTarget to secondElement.second,
             expected = Child5 to STAGE2
         )
 
         assertEquals(
-            actual = thirdElement.first.navTarget to thirdElement.second,
+            actual = thirdElement.first.interactionTarget to thirdElement.second,
             expected = Child4 to STAGE3
         )
 
         assertEquals(
-            actual = fourthElement.first.navTarget to fourthElement.second,
+            actual = fourthElement.first.interactionTarget to fourthElement.second,
             expected = Child3 to STAGE4
         )
 
         assertEquals(
-            actual = fifthElement.first.navTarget to fifthElement.second,
+            actual = fifthElement.first.interactionTarget to fifthElement.second,
             expected = Child2 to STAGE5
         )
 
         assertEquals(
-            actual = sixthElement.first.navTarget to sixthElement.second,
+            actual = sixthElement.first.interactionTarget to sixthElement.second,
             expected = Child1 to DESTROYED
         )
     }

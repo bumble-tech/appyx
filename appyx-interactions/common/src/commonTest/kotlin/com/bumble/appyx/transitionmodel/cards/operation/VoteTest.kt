@@ -1,10 +1,10 @@
 package com.bumble.appyx.transitionmodel.cards.operation
 
-import com.bumble.appyx.NavTarget
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.NavTarget.Child3
-import com.bumble.appyx.NavTarget.Child4
+import com.bumble.appyx.InteractionTarget
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
+import com.bumble.appyx.InteractionTarget.Child3
+import com.bumble.appyx.InteractionTarget.Child4
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.Queued
@@ -21,18 +21,18 @@ class VoteTest {
 
     @Test
     fun WHEN_queue_is_empty_THEN_Like_operation_is_not_applicable() {
-        val state = CardsModel.State<NavTarget>()
+        val state = CardsModel.State<InteractionTarget>()
 
-        val voteLike = VoteLike<NavTarget>()
+        val voteLike = VoteLike<InteractionTarget>()
 
         assertFalse(voteLike.isApplicable(state))
     }
 
     @Test
     fun WHEN_queue_is_empty_THEN_Pass_operation_is_not_applicable() {
-        val state = CardsModel.State<NavTarget>()
+        val state = CardsModel.State<InteractionTarget>()
 
-        val votePass = VotePass<NavTarget>()
+        val votePass = VotePass<InteractionTarget>()
 
         assertFalse(votePass.isApplicable(state))
     }
@@ -50,7 +50,7 @@ class VoteTest {
             queued = listOf(Child3, Child4).map { Queued(it.asElement()) }
         )
 
-        val voteLike = VoteLike<NavTarget>()
+        val voteLike = VoteLike<InteractionTarget>()
 
         val actual = voteLike.invoke(state)
 
@@ -75,14 +75,14 @@ class VoteTest {
 //            queued = listOf(Child1, Child2).map { it.asElement() }
 //        )
 //
-//        val votePass = VotePass<NavTarget>()
+//        val votePass = VotePass<InteractionTarget>()
 //
 //        val actual = votePass.invoke(state)
 //
 //        val expectedLiked = listOf(Child1)
 //        actual.targetState.liked.forEachIndexed { index, element ->
 //            assertEquals(
-//                actual = element.navTarget,
+//                actual = element.interactionTarget,
 //                expected = expectedLiked[index]
 //            )
 //        }
@@ -90,7 +90,7 @@ class VoteTest {
 //        val expectedQueued = listOf(Child2)
 //        actual.targetState.queued.forEachIndexed { index, element ->
 //            assertEquals(
-//                actual = element.navTarget,
+//                actual = element.interactionTarget,
 //                expected = expectedQueued[index]
 //            )
 //        }

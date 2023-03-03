@@ -1,9 +1,9 @@
 package com.bumble.appyx.interactions.core
 
-import com.bumble.appyx.NavTarget
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.NavTarget.Child3
+import com.bumble.appyx.InteractionTarget
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
+import com.bumble.appyx.InteractionTarget.Child3
 import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.StateTransition
@@ -18,10 +18,10 @@ class KeyFramesTest {
     @Test
     fun WHEN_a_derived_frame_is_created_THEN_max_progress_should_increase_by_1() {
         val keyFrames = Keyframes(
-            queue = listOf<Segment<State<NavTarget>>>()
+            queue = listOf<Segment<State<InteractionTarget>>>()
         )
 
-        val state = State<NavTarget>(listOf())
+        val state = State<InteractionTarget>(listOf())
 
         assertEquals(0f, keyFrames.maxProgress)
 
@@ -169,8 +169,8 @@ class KeyFramesTest {
             queue = listOf(
                 Segment(
                     StateTransition(
-                        fromState = State(listOf()),
-                        targetState = State(listOf(asElement()))
+                        fromState = State(listOf(Child1.asElement())),
+                        targetState = State(listOf(Child1.asElement()))
                     )
                 )
             )
@@ -196,7 +196,7 @@ class KeyFramesTest {
             )
         )
 
-        val fromState = State<NavTarget>(listOf())
+        val fromState = State<InteractionTarget>(listOf())
         val targetState = State(listOf(Child3.asElement()))
         val stateTransition = StateTransition(
             fromState = fromState,

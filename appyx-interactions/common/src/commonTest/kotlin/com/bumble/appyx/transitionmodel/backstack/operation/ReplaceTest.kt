@@ -1,9 +1,9 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
-import com.bumble.appyx.NavTarget.Child3
-import com.bumble.appyx.NavTarget.Child4
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
+import com.bumble.appyx.InteractionTarget.Child3
+import com.bumble.appyx.InteractionTarget.Child4
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlin.test.Test
@@ -31,7 +31,7 @@ class ReplaceTest {
         val replace = Replace(Child4)
 
         assertEquals(
-            actual = replace(state).targetState.active.navTarget,
+            actual = replace(state).targetState.active.interactionTarget,
             expected = Child4
         )
     }
