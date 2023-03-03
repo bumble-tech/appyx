@@ -41,7 +41,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         get() = animatable.value
 
     private val _isAnimatingFlow = MutableStateFlow(false)
-    override val isAnimating: Flow<Boolean>
+    val isAnimating: Flow<Boolean>
         get() = _isAnimatingFlow
 
     /**
@@ -54,7 +54,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         return resolved.transform(fraction)
     }
 
-    override suspend fun snapTo(targetValue: T) {
+    suspend fun snapTo(targetValue: T) {
         lastVelocity2 = lastVelocity
         lastVelocity = calculateVelocity(targetValue)
         animatable.snapTo(targetValue)
@@ -119,7 +119,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         return velocity
     }
 
-    override suspend fun animateTo(
+    suspend fun animateTo(
         targetValue: T,
         animationSpec: AnimationSpec<T>,
         block: (Animatable<T, V>.() -> Unit)
