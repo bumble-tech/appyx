@@ -8,11 +8,6 @@ data class Update<ModelState>(
     override val lastTargetState: ModelState =
         currentTargetState
 
-    override fun replace(targetState: ModelState): TransitionModel.Output<ModelState> =
-        Update(
-            currentTargetState = targetState
-        )
-
     override fun deriveUpdate(stateTransition: StateTransition<ModelState>): Update<ModelState> =
         Update(
             currentTargetState = stateTransition.targetState

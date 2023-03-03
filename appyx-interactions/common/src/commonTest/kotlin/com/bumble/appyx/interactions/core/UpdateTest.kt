@@ -14,23 +14,6 @@ import kotlin.test.assertEquals
 class UpdateTest {
 
     @Test
-    fun WHEN_replace_THEN_targetState_isUpdated() {
-        val update = Update(
-            currentTargetState = State(
-                elements = listOf(
-                    Child1.asElement()
-                )
-            )
-        )
-
-        val targetState = State(listOf(Child2.asElement()))
-
-        val newUpdate = update.replace(targetState)
-
-        assertEquals(Update(currentTargetState = targetState), newUpdate)
-    }
-
-    @Test
     fun WHEN_derivedUpdate_THEN_targetState_isUpdated() {
         val currentState = State(
             elements = listOf(

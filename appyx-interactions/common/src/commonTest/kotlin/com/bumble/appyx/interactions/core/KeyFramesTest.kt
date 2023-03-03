@@ -164,24 +164,6 @@ class KeyFramesTest {
     }
 
     @Test
-    fun WHEN_replace_THEN_new_targetState() {
-        val keyFrames = Keyframes(
-            queue = listOf(
-                Segment(
-                    StateTransition(
-                        fromState = State(listOf(Child1.asElement())),
-                        targetState = State(listOf(Child1.asElement()))
-                    )
-                )
-            )
-        )
-
-        val newTargetState = State(listOf(Child2.asElement()))
-
-        assertEquals(newTargetState, keyFrames.replace(newTargetState).currentTargetState)
-    }
-
-    @Test
     fun WHEN_update_THEN_new_update_is_created() {
         val segmentFromState = State(listOf(Child1.asElement()))
         val segmentTargetState = State(listOf(Child1.asElement(), Child2.asElement()))

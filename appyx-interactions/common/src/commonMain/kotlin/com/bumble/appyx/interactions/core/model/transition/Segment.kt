@@ -9,11 +9,4 @@ data class Segment<ModelState>(
 
     val targetState: ModelState
         get() = stateTransition.targetState
-
-    fun replace(targetState: ModelState): Segment<ModelState> =
-        copy(
-            stateTransition = stateTransition.copy(
-                targetState = targetState
-            )
-        )
 }

@@ -12,8 +12,6 @@ interface TransitionModel<InteractionTarget, ModelState> {
 
         abstract val lastTargetState: ModelState
 
-        abstract fun replace(targetState: ModelState): Output<ModelState>
-
         abstract fun deriveKeyframes(stateTransition: StateTransition<ModelState>): Keyframes<ModelState>
 
         abstract fun deriveUpdate(stateTransition: StateTransition<ModelState>): Update<ModelState>

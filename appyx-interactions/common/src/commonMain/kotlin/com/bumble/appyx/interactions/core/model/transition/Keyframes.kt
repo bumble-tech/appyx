@@ -58,13 +58,6 @@ data class Keyframes<ModelState>(
     override val lastTargetState: ModelState
         get() = queue.last().targetState
 
-    override fun replace(targetState: ModelState): TransitionModel.Output<ModelState> =
-        copy(
-            queue = queue.map {
-                it.replace(targetState)
-            }
-        )
-
     override fun deriveKeyframes(stateTransition: StateTransition<ModelState>): Keyframes<ModelState> =
         copy(
             queue = queue + listOf(Segment(stateTransition)),
