@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
@@ -8,10 +7,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.state.BaseUiState
-import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Offset
+import com.bumble.appyx.interactions.core.ui.state.BaseUiState
+import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
@@ -51,22 +50,17 @@ class BackStackSlider<InteractionTarget : Any>(
             uiState: UiState,
             springSpec: SpringSpec<Float>,
         ) {
-            // FIXME this should match the own animationSpec of the model (which can also be supplied
-            //  from operation extension methods) rather than created here
-            val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow / 5,
-                dampingRatio = Spring.DampingRatioLowBouncy,
-            )
             val a1 = scope.async {
                 offset.animateTo(
                     uiState.offset.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                ) { updateVisibilityState() }
+                    spring(springSpec.dampingRatio, springSpec.stiffness)
+                ) {
+                    updateVisibilityState() }
             }
             val a2 = scope.async {
                 alpha.animateTo(
                     uiState.alpha.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                    spring(springSpec.dampingRatio, springSpec.stiffness)
                 ) { updateVisibilityState() }
             }
             awaitAll(a1, a2)

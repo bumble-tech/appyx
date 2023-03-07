@@ -7,25 +7,25 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
-import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
 import com.bumble.appyx.interactions.core.model.progress.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.model.progress.DragProgressController
 import com.bumble.appyx.interactions.core.model.progress.Draggable
 import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
 import com.bumble.appyx.interactions.core.model.progress.InstantProgressController
+import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
 import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -74,7 +74,9 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
             }
         }
 
-    private var isAnimating: Boolean = false
+    private var _isAnimating = MutableStateFlow(false)
+    val isAnimating: StateFlow<Boolean> = _isAnimating
+
     private val instant = InstantProgressController(model = model)
     private var animated: AnimatedProgressController<InteractionTarget, ModelState>? = null
     private var debug: DebugProgressInputSource<InteractionTarget, ModelState>? = null
@@ -234,12 +236,12 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     private fun onAnimationsStarted() {
-        isAnimating = true
+        _isAnimating.update { true }
     }
 
     private fun onAnimationsFinished() {
-        isAnimating = false
         model.relaxExecutionMode()
+        _isAnimating.update { false }
     }
 
     override fun onStartDrag(position: Offset) {
@@ -247,7 +249,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     override fun onDrag(dragAmount: Offset, density: Density) {
-        if (!isAnimating) {
+        if (!_isAnimating.value) {
             drag.onDrag(dragAmount, density)
         }
     }
@@ -257,7 +259,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         completeGestureSpec: AnimationSpec<Float>,
         revertGestureSpec: AnimationSpec<Float>
     ) {
-        if (!isAnimating) {
+        if (!_isAnimating.value) {
             drag.onDragEnd()
             settle(completionThreshold, revertGestureSpec, completeGestureSpec)
         }
