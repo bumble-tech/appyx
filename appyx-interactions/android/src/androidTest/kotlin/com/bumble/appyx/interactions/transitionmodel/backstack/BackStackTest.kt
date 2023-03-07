@@ -25,15 +25,14 @@ class BackStackTest {
     private lateinit var backStack: BackStack<NavTarget>
 
     @Test
-    fun backStack_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
+    fun backStack_with_animated_source_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
         createBackStack()
         composeTestRule.setupInteractionModel(backStack)
 
-        val tweenOneSec = tween<Float>(durationMillis = 1000)
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
-        backStack.push(interactionTarget = NavTarget.Child2, animationSpec = tweenOneSec)
-        backStack.push(interactionTarget = NavTarget.Child3, animationSpec = tweenOneSec)
-        backStack.push(interactionTarget = NavTarget.Child4, animationSpec = tweenOneSec)
+        backStack.push(interactionTarget = NavTarget.Child2)
+        backStack.push(interactionTarget = NavTarget.Child3)
+        backStack.push(interactionTarget = NavTarget.Child4)
         backStack.pop(animationSpec = tweenTwoSec)
 
         // all operations finished. advanced time > 2000 (last operation animation spec)
@@ -44,21 +43,33 @@ class BackStackTest {
 
 
     @Test
-    fun backStack_does_not_clean_up_in_keyframe_mode_when_element_is_used() {
+    fun backStack_with_animated_source_does_not_clean_up_in_keyframe_mode_when_element_is_used() {
         createBackStack()
         composeTestRule.setupInteractionModel(backStack)
 
-        val tweenOneSec = tween<Float>(durationMillis = 1000)
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
-        backStack.push(interactionTarget = NavTarget.Child2, animationSpec = tweenOneSec)
-        backStack.push(interactionTarget = NavTarget.Child3, animationSpec = tweenOneSec)
-        backStack.push(interactionTarget = NavTarget.Child4, animationSpec = tweenOneSec)
+        backStack.push(interactionTarget = NavTarget.Child2)
+        backStack.push(interactionTarget = NavTarget.Child3)
+        backStack.push(interactionTarget = NavTarget.Child4)
         backStack.pop(animationSpec = tweenTwoSec)
 
         // last operation is not finished.  advanced time < 2000 (last operation animation spec)
         composeTestRule.mainClock.advanceTimeBy(1900)
 
         assertEquals(4, backStack.availableElements().value.size)
+    }
+
+    @Test
+    fun backStack_with_instant_source_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
+        createBackStack(disableAnimations = true)
+        composeTestRule.setupInteractionModel(backStack)
+
+        backStack.push(interactionTarget = NavTarget.Child2)
+        backStack.push(interactionTarget = NavTarget.Child3)
+        backStack.push(interactionTarget = NavTarget.Child4)
+        backStack.pop()
+
+        assertEquals(3, backStack.availableElements().value.size)
     }
 
     @Test
@@ -93,14 +104,15 @@ class BackStackTest {
         assertEquals(3, backStack.availableElements().value.size)
     }
 
-    private fun createBackStack() {
+    private fun createBackStack(disableAnimations: Boolean = false) {
         backStack = BackStack(
             model = BackStackModel(
                 initialTargets = listOf(NavTarget.Child1),
                 savedStateMap = null
             ),
             motionController = { BackStackSlider(it) },
-            scope = CoroutineScope(Dispatchers.Unconfined)
+            scope = CoroutineScope(Dispatchers.Unconfined),
+            disableAnimations = disableAnimations
         )
     }
 }
