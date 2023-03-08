@@ -17,7 +17,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
 
-class BackStackTest {
+class BackStackSliderTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -25,8 +25,8 @@ class BackStackTest {
     private lateinit var backStack: BackStack<NavTarget>
 
     @Test
-    fun backStack_with_animated_source_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
-        createBackStack()
+    fun backStack_with_animations_enabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
+        createBackStackSlider(disableAnimations = false)
         composeTestRule.setupInteractionModel(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
@@ -43,8 +43,8 @@ class BackStackTest {
 
 
     @Test
-    fun backStack_with_animated_source_does_not_clean_up_in_keyframe_mode_when_element_is_used() {
-        createBackStack()
+    fun backStack_with_animations_enabled_does_not_clean_up_in_keyframe_mode_when_element_is_used() {
+        createBackStackSlider(disableAnimations = false)
         composeTestRule.setupInteractionModel(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
@@ -60,8 +60,8 @@ class BackStackTest {
     }
 
     @Test
-    fun backStack_with_instant_source_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
-        createBackStack(disableAnimations = true)
+    fun backStack_with_animations_disabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
+        createBackStackSlider(disableAnimations = true)
         composeTestRule.setupInteractionModel(backStack)
 
         backStack.push(interactionTarget = NavTarget.Child2)
@@ -73,8 +73,8 @@ class BackStackTest {
     }
 
     @Test
-    fun backStack_cleans_destroyed_element_in_immediate_mode_when_animation_finished() {
-        createBackStack()
+    fun backStack_with_animations_enabled_cleans_destroyed_element_in_immediate_mode_when_animation_finished() {
+        createBackStackSlider(disableAnimations = false)
         composeTestRule.setupInteractionModel(backStack)
 
         val pushSpringSpec = spring<Float>()
@@ -104,7 +104,7 @@ class BackStackTest {
         assertEquals(3, backStack.availableElements().value.size)
     }
 
-    private fun createBackStack(disableAnimations: Boolean = false) {
+    private fun createBackStackSlider(disableAnimations: Boolean) {
         backStack = BackStack(
             model = BackStackModel(
                 initialTargets = listOf(NavTarget.Child1),
