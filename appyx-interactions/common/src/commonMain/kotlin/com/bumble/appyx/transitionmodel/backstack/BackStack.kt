@@ -4,10 +4,10 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.transitionmodel.backstack.backpresshandler.PopBackstackStrategy
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +20,7 @@ class BackStack<InteractionTarget : Any>(
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> = { GestureFactory.Noop() },
     backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> = PopBackstackStrategy(),
     animationSpec: AnimationSpec<Float> = spring(),
+    disableAnimations: Boolean = false,
     isDebug: Boolean = false
 ) : InteractionModel<InteractionTarget, BackStackModel.State<InteractionTarget>>(
     scope = scope,
@@ -28,6 +29,7 @@ class BackStack<InteractionTarget : Any>(
     gestureFactory = gestureFactory,
     backPressStrategy = backPressStrategy,
     defaultAnimationSpec = animationSpec,
+    disableAnimations = disableAnimations,
     isDebug = isDebug
 )
 

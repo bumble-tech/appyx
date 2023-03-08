@@ -19,16 +19,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.ui.TextButton
-import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
+import com.bumble.appyx.navigation.ui.TextButton
+import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.operation.newRoot
@@ -43,6 +43,7 @@ class BackStackNode(
     buildContext: BuildContext,
     motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
     private val backStack: BackStack<NavTarget> = BackStack(
+        disableAnimations = true,
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap

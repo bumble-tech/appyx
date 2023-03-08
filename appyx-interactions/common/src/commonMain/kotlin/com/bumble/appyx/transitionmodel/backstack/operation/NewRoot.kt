@@ -1,10 +1,11 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
+import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
+import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 
@@ -37,7 +38,8 @@ data class NewRoot<InteractionTarget>(
 
 fun <InteractionTarget : Any> BackStack<InteractionTarget>.newRoot(
     interactionTarget: InteractionTarget,
-    mode: Operation.Mode = Operation.Mode.KEYFRAME
+    mode: Operation.Mode = Operation.Mode.KEYFRAME,
+    animationSpec: AnimationSpec<Float>? = null
 ) {
-    operation(NewRoot(interactionTarget, mode))
+    operation(operation = NewRoot(interactionTarget, mode), animationSpec = animationSpec)
 }

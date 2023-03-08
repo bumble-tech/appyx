@@ -1,5 +1,6 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
+import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
@@ -35,7 +36,8 @@ class Pop<InteractionTarget : Any>(
 }
 
 fun <InteractionTarget : Any> BackStack<InteractionTarget>.pop(
-    mode: Operation.Mode = Operation.Mode.KEYFRAME
+    mode: Operation.Mode = Operation.Mode.KEYFRAME,
+    animationSpec: AnimationSpec<Float>? = null
 ) {
-    operation(Pop(mode))
+    operation(operation = Pop(mode), animationSpec = animationSpec)
 }
