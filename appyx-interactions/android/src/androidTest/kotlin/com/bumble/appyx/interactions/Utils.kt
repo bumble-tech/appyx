@@ -15,8 +15,8 @@ import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.interactions.theme.appyx_dark
 
-fun <NavTarget : Any, ModelState : Any> ComposeContentTestRule.setupInteractionModel(
-    interactionModel: InteractionModel<NavTarget, ModelState>
+fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInteractionModel(
+    interactionModel: InteractionModel<InteractionTarget, ModelState>
 ) {
     setContent {
         Surface(
