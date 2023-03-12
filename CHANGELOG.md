@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#296](https://github.com/bumble-tech/appyx/issues/296) – **Fixed**: `NodeConnector.intake` is now disposed when a `Node` is destroyed.
 
 ---
 
