@@ -8,10 +8,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.BaseUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.Offset
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
@@ -20,26 +20,35 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 class BackStackSlider<InteractionTarget : Any>(
-    private val uiContext: UiContext,
+    uiContext: UiContext,
+    override val clipToBounds: Boolean = true,
 ) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackStackSlider.UiState>(
-    scope = uiContext.coroutineScope,
+    uiContext = uiContext,
 ) {
     private val width = uiContext.transitionBounds.widthDp
 
-    override fun defaultUiState(): UiState =
-        UiState(screenWidth = uiContext.transitionBounds.widthDp)
+    override fun defaultUiState(uiContext: UiContext): UiState =
+        UiState(
+            clipToBounds = clipToBounds,
+            uiContext = uiContext,
+            screenWidth = uiContext.transitionBounds.widthDp
+        )
 
     data class UiState(
-        val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
+        val clipToBounds: Boolean,
+        val uiContext: UiContext,
+        val offset: Position = Position(
+            initialOffset = DpOffset(0.dp, 0.dp),
+            bounds = uiContext.transitionBounds,
+            clipToBounds = clipToBounds
+        ),
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1,
         val screenWidth: Dp
     ) : BaseUiState<UiState>(
-        listOf(offset.isAnimating, alpha.isAnimating)
+        motionProperties = listOf(offset, alpha),
+        coroutineScope = uiContext.coroutineScope
     ) {
-
-        override fun isVisible() =
-            alpha.value > 0.0f && offset.value.x < screenWidth && offset.value.x > -screenWidth
 
         override val modifier: Modifier
             get() = Modifier
@@ -61,13 +70,13 @@ class BackStackSlider<InteractionTarget : Any>(
                 offset.animateTo(
                     uiState.offset.value,
                     spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                ) { updateVisibilityState() }
+                )
             }
             val a2 = scope.async {
                 alpha.animateTo(
                     uiState.alpha.value,
                     spring(animationSpec.dampingRatio, animationSpec.stiffness)
-                ) { updateVisibilityState() }
+                )
             }
             awaitAll(a1, a2)
         }
@@ -76,7 +85,6 @@ class BackStackSlider<InteractionTarget : Any>(
             scope.launch {
                 offset.snapTo(uiState.offset.value)
                 alpha.snapTo(uiState.alpha.value)
-                updateVisibilityState()
             }
         }
 
@@ -84,24 +92,29 @@ class BackStackSlider<InteractionTarget : Any>(
             scope.launch {
                 offset.lerpTo(start.offset, end.offset, fraction)
                 alpha.lerpTo(start.alpha, end.alpha, fraction)
-                updateVisibilityState()
             }
         }
     }
 
     private val outsideLeft = UiState(
-        offset = Offset(DpOffset(-width, 0.dp)),
-        screenWidth = width
+        uiContext = uiContext,
+        offset = Position(initialOffset = DpOffset(-width, 0.dp)),
+        screenWidth = width,
+        clipToBounds = clipToBounds
     )
 
     private val outsideRight = UiState(
-        offset = Offset(DpOffset(width, 0.dp)),
-        screenWidth = width
+        uiContext = uiContext,
+        offset = Position(initialOffset = DpOffset(width, 0.dp)),
+        screenWidth = width,
+        clipToBounds = clipToBounds
     )
 
     private val noOffset = UiState(
-        offset = Offset(DpOffset(0.dp, 0.dp)),
-        screenWidth = width
+        uiContext = uiContext,
+        offset = Position(initialOffset = DpOffset(0.dp, 0.dp)),
+        screenWidth = width,
+        clipToBounds = clipToBounds
     )
 
 

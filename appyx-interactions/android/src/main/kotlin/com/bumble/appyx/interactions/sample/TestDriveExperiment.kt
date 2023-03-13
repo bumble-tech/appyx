@@ -34,6 +34,8 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDI
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
@@ -158,7 +160,9 @@ fun <NavTarget : Any> TestDriveUi(
                     .collectAsState(null)
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
-        val targetProps = targetState.value?.elementState?.toUiState()
+        val targetProps = targetState.value?.elementState?.toUiState(
+            uiContext = UiContext(zeroSizeTransitionBounds, rememberCoroutineScope())
+        )
         targetProps?.let {
             Box(
                 modifier = Modifier

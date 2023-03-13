@@ -14,11 +14,12 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.state.BaseUiState
-import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
+import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
+import com.bumble.appyx.interactions.core.ui.state.BaseUiState
+import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.cards.CardsModel
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
@@ -29,33 +30,30 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import com.bumble.appyx.interactions.core.ui.property.impl.Offset as OffsetP
-
 
 class CardsMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<InteractionTarget, CardsModel.State<InteractionTarget>, UiState>(
-    scope = uiContext.coroutineScope,
+    uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
-    private val width = uiContext.transitionBounds.widthDp.value
-
-    override fun defaultUiState(): UiState = UiState(width = width)
+    override fun defaultUiState(uiContext: UiContext): UiState = UiState(uiContext = uiContext)
 
     class UiState(
+        val uiContext: UiContext,
         val scale: Scale = Scale(value = 1f),
-        val positionalOffsetX: OffsetP = OffsetP(
-            value = DpOffset(
+        val positionalOffsetX: Position = Position(
+            initialOffset = DpOffset(
                 0.dp,
                 0.dp
-            )
+            ),
         ),
         val rotationZ: RotationZ = RotationZ(value = 0f),
-        val zIndex: ZIndex = ZIndex(value = 0f),
-        private val width: Float,
+        val zIndex: ZIndex = ZIndex(value = 0f)
     ) : BaseUiState<UiState>(
-        listOf(scale.isAnimating, positionalOffsetX.isAnimating)
+        motionProperties = listOf(scale, positionalOffsetX),
+        coroutineScope = uiContext.coroutineScope
     ) {
 
         override val modifier: Modifier
@@ -71,7 +69,6 @@ class CardsMotionController<InteractionTarget : Any>(
                 positionalOffsetX.snapTo(uiState.positionalOffsetX.value)
                 rotationZ.snapTo(uiState.rotationZ.value)
                 zIndex.snapTo(uiState.zIndex.value)
-                updateVisibilityState()
             }
         }
 
@@ -85,39 +82,27 @@ class CardsMotionController<InteractionTarget : Any>(
                     scale.animateTo(
                         uiState.scale.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    ) {
-                        updateVisibilityState()
-                    }
+                    )
                 },
                 scope.async {
                     positionalOffsetX.animateTo(
                         uiState.positionalOffsetX.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    ) {
-                        updateVisibilityState()
-                    }
+                    )
                 },
                 scope.async {
                     rotationZ.animateTo(
                         uiState.rotationZ.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    ) {
-                        updateVisibilityState()
-                    }
+                    )
                 },
                 scope.async {
                     zIndex.animateTo(
                         uiState.zIndex.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    ) {
-                        updateVisibilityState()
-                    }
+                    )
                 }).awaitAll()
         }
-
-        override fun isVisible(): Boolean =
-            scale.value >= 0.0f && positionalOffsetX.value.x > (-voteCardPositionMultiplier * width).dp &&
-                    positionalOffsetX.value.x < (voteCardPositionMultiplier * width).dp
 
         override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
@@ -125,51 +110,50 @@ class CardsMotionController<InteractionTarget : Any>(
                 positionalOffsetX.lerpTo(start.positionalOffsetX, end.positionalOffsetX, fraction)
                 rotationZ.lerpTo(start.rotationZ, end.rotationZ, fraction)
                 zIndex.lerpTo(start.zIndex, end.zIndex, fraction)
-                updateVisibilityState()
             }
         }
     }
 
     private val hidden = UiState(
-        scale = Scale(0f),
-        width = width
+        uiContext = uiContext,
+        scale = Scale(0f)
     )
 
     private val bottom = UiState(
-        scale = Scale(0.85f),
-        width = width
+        uiContext = uiContext,
+        scale = Scale(0.85f)
     )
 
     private val top = UiState(
+        uiContext = uiContext,
         scale = Scale(1f),
         zIndex = ZIndex(1f),
-        width = width
     )
 
     private val votePass = UiState(
-        positionalOffsetX = OffsetP(
-            DpOffset(
-                (-voteCardPositionMultiplier * width).dp,
+        uiContext = uiContext,
+        positionalOffsetX = Position(
+            initialOffset = DpOffset(
+                (-voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
                 0.dp
-            )
+            ),
         ),
         scale = Scale(1f),
         zIndex = ZIndex(2f),
-        rotationZ = RotationZ(-45f),
-        width = width
+        rotationZ = RotationZ(-45f)
     )
 
     private val voteLike = UiState(
-        positionalOffsetX = OffsetP(
-            DpOffset(
-                (voteCardPositionMultiplier * width).dp,
+        uiContext = uiContext,
+        positionalOffsetX = Position(
+            initialOffset = DpOffset(
+                (voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
                 0.dp
-            )
+            ),
         ),
         scale = Scale(1f),
         zIndex = ZIndex(2f),
-        rotationZ = RotationZ(45f),
-        width = width
+        rotationZ = RotationZ(45f)
     )
 
     override fun CardsModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> {

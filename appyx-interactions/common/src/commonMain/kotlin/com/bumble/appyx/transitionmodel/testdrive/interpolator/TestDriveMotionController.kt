@@ -10,12 +10,13 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
+import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.BaseUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.Offset
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
@@ -28,23 +29,28 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.abs
 
 class TestDriveMotionController<InteractionTarget : Any>(
-    uiContext: UiContext,
+    private val uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, UiState>(
-    scope = uiContext.coroutineScope,
+    uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun defaultUiState(): UiState = UiState()
+    override fun defaultUiState(uiContext: UiContext): UiState = UiState(uiContext)
 
     // TODO extract
     class UiState(
-        val offset: Offset = Offset(DpOffset(0.dp, 0.dp)),
+        val uiContext: UiContext,
+        val offset: Position = Position(
+            initialOffset = DpOffset(0.dp, 0.dp)
+        ),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
     ) : BaseUiState<UiState>(
-        listOf(offset.isAnimating, backgroundColor.isAnimating)
+        motionProperties = listOf(offset, backgroundColor),
+        coroutineScope = uiContext.coroutineScope
     ) {
 
         override val modifier: Modifier
@@ -56,7 +62,6 @@ class TestDriveMotionController<InteractionTarget : Any>(
             scope.launch {
                 offset.snapTo(uiState.offset.value)
                 backgroundColor.snapTo(uiState.backgroundColor.value)
-                updateVisibilityState()
             }
         }
 
@@ -70,17 +75,13 @@ class TestDriveMotionController<InteractionTarget : Any>(
                     offset.animateTo(
                         uiState.offset.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    ) {
-                        updateVisibilityState()
-                    }
+                    )
                 },
                 scope.async {
                     backgroundColor.animateTo(
                         uiState.backgroundColor.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
-                    ) {
-                        updateVisibilityState()
-                    }
+                    )
                 }
             ).awaitAll()
         }
@@ -89,46 +90,64 @@ class TestDriveMotionController<InteractionTarget : Any>(
             scope.launch {
                 offset.lerpTo(start.offset, end.offset, fraction)
                 backgroundColor.lerpTo(start.backgroundColor, end.backgroundColor, fraction)
-                updateVisibilityState()
             }
         }
-
-        override fun isVisible() = true
     }
 
     companion object {
-        fun TestDriveModel.State.ElementState.toUiState(): UiState =
+        val offsetA = DpOffset(0.dp, 0.dp)
+        val offsetB = DpOffset(200.dp, 0.dp)
+        val offsetC = DpOffset(200.dp, 300.dp)
+        val offsetD = DpOffset(0.dp, 300.dp)
+
+        fun TestDriveModel.State.ElementState.toUiState(uiContext: UiContext): UiState =
             when (this) {
-                A -> a
-                B -> b
-                C -> c
-                D -> d
+                A -> UiState(
+                    uiContext = UiContext(
+                        zeroSizeTransitionBounds,
+                        uiContext.coroutineScope
+                    ),
+                    offset = Position(
+                        initialOffset = offsetA,
+                    ),
+                    backgroundColor = BackgroundColor(md_red_500)
+                )
+                B -> UiState(
+                    uiContext = UiContext(
+                        zeroSizeTransitionBounds,
+                        uiContext.coroutineScope
+                    ),
+                    offset = Position(
+                        initialOffset = offsetB
+                    ),
+                    backgroundColor = BackgroundColor(md_light_green_500)
+                )
+                C -> UiState(
+                    uiContext = UiContext(
+                        zeroSizeTransitionBounds,
+                        uiContext.coroutineScope
+                    ),
+                    offset = Position(
+                        initialOffset = offsetC
+                    ),
+                    backgroundColor = BackgroundColor(md_yellow_500)
+                )
+                D -> UiState(
+                    uiContext = UiContext(
+                        zeroSizeTransitionBounds,
+                        CoroutineScope(EmptyCoroutineContext)
+                    ),
+                    offset = Position(
+                        initialOffset = offsetD
+                    ),
+                    backgroundColor = BackgroundColor(md_light_blue_500)
+                )
             }
-
-        val a = UiState(
-            offset = Offset(DpOffset(0.dp, 0.dp)),
-            backgroundColor = BackgroundColor(md_red_500)
-        )
-
-        val b = UiState(
-            offset = Offset(DpOffset(200.dp, 0.dp)),
-            backgroundColor = BackgroundColor(md_light_green_500)
-        )
-
-        val c = UiState(
-            offset = Offset(DpOffset(200.dp, 300.dp)),
-            backgroundColor = BackgroundColor(md_yellow_500)
-        )
-
-        val d = UiState(
-            offset = Offset(DpOffset(0.dp, 300.dp)),
-            backgroundColor = BackgroundColor(md_light_blue_500)
-        )
     }
 
     override fun TestDriveModel.State<InteractionTarget>.toUiState(): List<MatchedUiState<InteractionTarget, UiState>> =
         listOf(
-            MatchedUiState(element, elementState.toUiState()).also {
+            MatchedUiState(element, elementState.toUiState(uiContext)).also {
                 Logger.log("TestDrive", "Matched $elementState -> UiState: ${it.uiState}")
             }
         )
@@ -136,8 +155,8 @@ class TestDriveMotionController<InteractionTarget : Any>(
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val width = b.offset.value.x - a.offset.value.x
-        private val height = d.offset.value.y - a.offset.value.y
+        private val width = offsetB.x - offsetA.x
+        private val height = offsetD.y - offsetA.y
 
         override fun createGesture(
             delta: androidx.compose.ui.geometry.Offset,

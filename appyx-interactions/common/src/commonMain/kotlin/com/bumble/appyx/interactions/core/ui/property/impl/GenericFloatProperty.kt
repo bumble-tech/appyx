@@ -2,34 +2,21 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.animation.core.Easing
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 
-class Alpha(
-    value: Float,
-    easing: Easing? = null,
-    visibilityThreshold: Float = 0.01f
+class GenericFloatProperty(
+    value: Float
 ) : MotionProperty<Float, AnimationVector1D>(
-    animatable = Animatable(value),
-    easing = easing,
-    visibilityThreshold = visibilityThreshold
-), Interpolatable<Alpha> {
-
-    override val visibilityMapper: ((Float) -> Boolean) = { alpha ->
-        alpha > 0.0f
-    }
+    animatable = Animatable(value)
+), Interpolatable<GenericFloatProperty> {
 
     override val modifier: Modifier
-        get() = Modifier.composed {
-            this.alpha(animatable.asState().value)
-        }
+        get() = Modifier
 
-    override suspend fun lerpTo(start: Alpha, end: Alpha, fraction: Float) {
+    override suspend fun lerpTo(start: GenericFloatProperty, end: GenericFloatProperty, fraction: Float) {
         snapTo(
             lerpFloat(
                 start = start.value,
