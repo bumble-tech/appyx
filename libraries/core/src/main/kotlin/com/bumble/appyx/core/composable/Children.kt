@@ -127,18 +127,17 @@ class ChildrenTransitionScope<T : Any, S>(
     ) {
         val saveableStateHolder = rememberSaveableStateHolder()
 
-        val removedElementsFlow = remember {
-            navModel.removedElementKeys().map { list ->
-                list
-                    .filter { clazz.isInstance(it.navTarget) }
-            }
-        }
-        LaunchedEffect(this@ChildrenTransitionScope) {
-            removedElementsFlow.collect { deletedElements ->
-                deletedElements.forEach { navKey ->
-                    saveableStateHolder.removeState(navKey)
+        LaunchedEffect(navModel) {
+            navModel
+                .removedElementKeys()
+                .map { list ->
+                    list.filter { clazz.isInstance(it.navTarget) }
                 }
-            }
+                .collect { deletedKeys ->
+                    deletedKeys.forEach { navKey ->
+                        saveableStateHolder.removeState(navKey)
+                    }
+                }
         }
 
         val visibleElementsFlow = remember {
