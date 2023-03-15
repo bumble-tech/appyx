@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#375](https://github.com/bumble-tech/appyx/issues/375) – **Fixed**: SaveableStateHolder does no longer save state for destroyed elements
 
 ---
 

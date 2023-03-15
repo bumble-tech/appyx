@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)
     implementation(libs.rxrelay2)
+    implementation(libs.toolargetool)
 
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.junit)
