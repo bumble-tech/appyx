@@ -51,7 +51,7 @@ class PromoterMotionController<InteractionTarget : Any>(
     override val finishedAnimations: Flow<Element<InteractionTarget>>
         get() = TODO("Not yet implemented")
 
-    override fun defaultUiState(uiContext: UiContext): UiState = created.copy()
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = created.copy()
 
     // TODO migrate fields to MotionProperty instances
     data class UiState(

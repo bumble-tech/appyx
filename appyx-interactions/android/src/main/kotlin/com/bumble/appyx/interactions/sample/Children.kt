@@ -28,9 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlin.math.roundToInt
 
 
@@ -59,7 +59,7 @@ fun <NavTarget : Any, NavState : Any> Children(
         modifier = modifier
             .fillMaxSize()
             .composed {
-                val clipToBounds by interactionModel.clipToBounds.collectAsState(initial = false)
+                val clipToBounds by interactionModel.clipToBounds.collectAsState()
                 if (clipToBounds) {
                     clipToBounds()
                 } else {
@@ -83,7 +83,7 @@ fun <NavTarget : Any, NavState : Any> Children(
         frames.value.forEach { frameModel ->
             key(frameModel.element.id) {
                 frameModel.animationContainer()
-                val isVisible by frameModel.visibleState.collectAsState(initial = false)
+                val isVisible by frameModel.visibleState.collectAsState()
                 if (isVisible) {
                     element.invoke(frameModel)
                 }

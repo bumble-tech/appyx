@@ -43,7 +43,6 @@ class BackStackNode(
     buildContext: BuildContext,
     motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
     private val backStack: BackStack<NavTarget> = BackStack(
-        disableAnimations = true,
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap

@@ -19,6 +19,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Keeps a value change in motion by calculating the rate of change of the wrapped Animatable value
@@ -26,8 +27,8 @@ import kotlinx.coroutines.flow.update
  * rather than zero.
  */
 abstract class MotionProperty<T, V : AnimationVector>(
+    protected val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     protected val animatable: Animatable<T, V>,
-    protected val coroutineScope: CoroutineScope = CoroutineScope(Dispatchers.Main.immediate),
     protected val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
 ) {

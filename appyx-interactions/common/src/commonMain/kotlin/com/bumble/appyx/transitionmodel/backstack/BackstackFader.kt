@@ -18,7 +18,7 @@ class BackstackFader<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
-    override fun defaultUiState(uiContext: UiContext): UiState = UiState(uiContext)
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(uiContext)
 
     class UiState(
         val uiContext: UiContext,

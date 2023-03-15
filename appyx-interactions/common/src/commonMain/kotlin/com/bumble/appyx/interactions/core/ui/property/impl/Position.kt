@@ -10,15 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlin.math.roundToInt
 
 class Position(
@@ -27,16 +25,17 @@ class Position(
     val clipToBounds: Boolean = false,
     val bounds: TransitionBounds? = null,
     val displacement: StateFlow<DpOffset> = MutableStateFlow(DpOffset.Zero),
-    visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp)
+    visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp),
 ) : MotionProperty<DpOffset, AnimationVector2D>(
     animatable = Animatable(initialOffset, DpOffset.VectorConverter),
     easing = easing,
-    visibilityThreshold = visibilityThreshold
+    visibilityThreshold = visibilityThreshold,
 ), Interpolatable<Position> {
 
     override val visibilityMapper: (DpOffset) -> Boolean = { displacedValue ->
         val bounds = bounds
         if (bounds != null) {
+            // TODO calculate for y axis as well
             val displacedValueX = displacedValue.x.value
             val leftEdgeOffsetDp = displacedValueX.roundToInt()
             val rightEdgeOffsetDp = leftEdgeOffsetDp + bounds.widthDp.value.roundToInt()
@@ -49,17 +48,17 @@ class Position(
     }
 
     override val valueSource: StateFlow<DpOffset>
-        get() = displacement.combine(valueFlow) { displacement, dpOffset ->
+        get() = displacement.combineState(valueFlow, coroutineScope) { displacement, dpOffset ->
             DpOffset(
                 x = dpOffset.x - displacement.x,
                 y = dpOffset.y - displacement.y
             )
-        }.stateIn(coroutineScope, SharingStarted.Eagerly, initialOffset)
+        }
 
     private fun calculateWindowRightEdge(bounds: TransitionBounds) = if (clipToBounds) {
         bounds.widthDp.value.roundToInt()
     } else {
-        (bounds.widthDp + bounds.containerOffsetX).value.roundToInt()
+        (bounds.screenWidthDp - bounds.containerOffsetX).value.roundToInt()
     }
 
     private fun calculatedWindowLeftEdge(bounds: TransitionBounds): Int {

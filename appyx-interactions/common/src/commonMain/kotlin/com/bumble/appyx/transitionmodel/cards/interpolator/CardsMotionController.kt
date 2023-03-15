@@ -38,7 +38,7 @@ class CardsMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
-    override fun defaultUiState(uiContext: UiContext): UiState = UiState(uiContext = uiContext)
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(uiContext = uiContext)
 
     class UiState(
         val uiContext: UiContext,

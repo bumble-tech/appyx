@@ -39,7 +39,7 @@ class TestDriveMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun defaultUiState(uiContext: UiContext): UiState = UiState(uiContext)
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(uiContext)
 
     // TODO extract
     class UiState(

@@ -3,7 +3,6 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -26,11 +25,10 @@ class BackStackSlider<InteractionTarget : Any>(
 ) {
     private val width = uiContext.transitionBounds.widthDp
 
-    override fun defaultUiState(uiContext: UiContext): UiState =
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState =
         UiState(
             clipToBounds = clipToBounds,
             uiContext = uiContext,
-            screenWidth = uiContext.transitionBounds.widthDp
         )
 
     data class UiState(
@@ -42,8 +40,7 @@ class BackStackSlider<InteractionTarget : Any>(
             clipToBounds = clipToBounds
         ),
         val alpha: Alpha = Alpha(value = 1f),
-        val offsetMultiplier: Int = 1,
-        val screenWidth: Dp
+        val offsetMultiplier: Int = 1
     ) : BaseUiState<UiState>(
         motionProperties = listOf(offset, alpha),
         coroutineScope = uiContext.coroutineScope
@@ -92,21 +89,18 @@ class BackStackSlider<InteractionTarget : Any>(
     private val outsideLeft = UiState(
         uiContext = uiContext,
         offset = Position(initialOffset = DpOffset(-width, 0.dp)),
-        screenWidth = width,
         clipToBounds = clipToBounds
     )
 
     private val outsideRight = UiState(
         uiContext = uiContext,
         offset = Position(initialOffset = DpOffset(width, 0.dp)),
-        screenWidth = width,
         clipToBounds = clipToBounds
     )
 
     private val noOffset = UiState(
         uiContext = uiContext,
         offset = Position(initialOffset = DpOffset(0.dp, 0.dp)),
-        screenWidth = width,
         clipToBounds = clipToBounds
     )
 

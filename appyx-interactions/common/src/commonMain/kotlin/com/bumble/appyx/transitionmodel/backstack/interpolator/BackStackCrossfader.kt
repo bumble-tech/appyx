@@ -19,7 +19,7 @@ class BackStackCrossfader<InteractionTarget : Any>(
     uiContext = uiContext
 ) {
 
-    override fun defaultUiState(uiContext: UiContext): UiState = UiState(uiContext)
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(uiContext)
 
     class UiState(
         val uiContext: UiContext,

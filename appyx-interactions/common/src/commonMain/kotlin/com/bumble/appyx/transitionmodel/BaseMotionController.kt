@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
@@ -33,27 +34,46 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
 ) : MotionController<InteractionTarget, ModelState> where UiState : BaseUiState<UiState> {
 
+    open val geometryMappings: List<Pair<(ModelState) -> Float, MotionProperty<Float, AnimationVector1D>>> =
+        emptyList()
+
     private val coroutineScope = uiContext.coroutineScope
     private val uiStateCache: MutableMap<String, UiState> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
-    private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
+    private val geometryModeAnimating: StateFlow<Boolean>
+        get() = if (geometryMappings.isNotEmpty()) {
+            combineState(
+                geometryMappings.map { it.second.isAnimating },
+                uiContext.coroutineScope
+            ) { values ->
+                values.any { it }
+            }
+        } else {
+            MutableStateFlow(false)
+        }
+    private val updateModeAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val isAnimatingState: StateFlow<Boolean>
+        get() = updateModeAnimating.combineState(
+            geometryModeAnimating,
+            uiContext.coroutineScope
+        ) { isGeometryAnimating, isUpdateAnimating ->
+            isGeometryAnimating || isUpdateAnimating
+        }
 
-    open val geometryMappings: List<Pair<(ModelState) -> Float, MotionProperty<Float, AnimationVector1D>>> =
-        emptyList()
+    protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
 
 
     private val _finishedAnimations = MutableSharedFlow<Element<InteractionTarget>>()
     override val finishedAnimations: Flow<Element<InteractionTarget>> = _finishedAnimations
 
-    abstract fun defaultUiState(uiContext: UiContext): UiState
+    abstract fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState
 
     override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         currentSpringSpec = springSpec
     }
 
     final override fun isAnimating(): StateFlow<Boolean> =
-        isAnimating
+        isAnimatingState
 
     // TODO extract
     abstract fun ModelState.toUiState(): List<MatchedUiState<InteractionTarget, UiState>>
@@ -69,7 +89,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
 
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
-            val elementProps = uiStateCache.getOrPut(t1.element.id) { defaultUiState(uiContext) }
+            val elementProps = uiStateCache.getOrPut(t1.element.id) { defaultUiState(uiContext, t1.uiState) }
             ElementUiModel(
                 element = t1.element,
                 visibleState = elementProps.isVisible,
@@ -124,7 +144,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                         if (current && !previous) {
                             // animation started
                             animations[targetProps.element.id] = true
-                            isAnimating.update { true }
+                            updateModeAnimating.update { true }
                             Logger.log(
                                 this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is started"
@@ -133,7 +153,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                             // animation finished
                             _finishedAnimations.emit(targetProps.element)
                             animations[targetProps.element.id] = false
-                            isAnimating.update { animations.any { it.value } }
+                            updateModeAnimating.update { animations.any { it.value } }
                             Logger.log(
                                 this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is finished"
@@ -180,7 +200,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val elementUiState = uiStateCache.getOrPut(t1.element.id) { defaultUiState(uiContext) }
+            val elementUiState = uiStateCache.getOrPut(t1.element.id) { defaultUiState(uiContext, null) }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
             elementUiState.lerpTo(coroutineScope, t0.uiState, t1.uiState, initialProgress)
 

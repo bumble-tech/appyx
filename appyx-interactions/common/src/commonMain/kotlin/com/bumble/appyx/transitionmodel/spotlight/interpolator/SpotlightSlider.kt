@@ -51,26 +51,26 @@ class SpotlightSlider<InteractionTarget : Any>(
 
     data class UiState(
         val uiContext: UiContext,
-        val offset: Position,
+        val position: Position,
         val scale: Scale = Scale(1f),
         val alpha: Alpha = Alpha(1f),
         val zIndex: Float = 1f,
         val aspectRatio: Float = 0.42f,
         val rotation: Float = 0f,
     ) : BaseUiState<UiState>(
-        motionProperties = listOf(scale, alpha, offset),
+        motionProperties = listOf(scale, alpha, position),
         coroutineScope = uiContext.coroutineScope
     ) {
 
         override val modifier: Modifier
             get() = Modifier
-                .then(offset.modifier)
+                .then(position.modifier)
                 .then(alpha.modifier)
                 .then(scale.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
-                offset.snapTo(uiState.offset.value)
+                position.snapTo(uiState.position.value)
                 alpha.snapTo(uiState.alpha.value)
                 scale.snapTo(uiState.scale.value)
             }
@@ -84,8 +84,8 @@ class SpotlightSlider<InteractionTarget : Any>(
             scope.launch {
                 listOf(
                     scope.async {
-                        offset.animateTo(
-                            uiState.offset.value,
+                        position.animateTo(
+                            uiState.position.value,
                             spring(springSpec.dampingRatio, springSpec.stiffness)
                         )
                         alpha.animateTo(
@@ -103,16 +103,16 @@ class SpotlightSlider<InteractionTarget : Any>(
 
         override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
-                offset.lerpTo(start.offset, end.offset, fraction)
+                position.lerpTo(start.position, end.position, fraction)
             }
         }
     }
 
     var position = 0
 
-    override fun defaultUiState(uiContext: UiContext): UiState = UiState(
-        offset = Position(
-            initialOffset = DpOffset.Zero,
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(
+        position = Position(
+            initialOffset = initialUiState?.position?.initialOffset ?: DpOffset.Zero,
             bounds = uiContext.transitionBounds,
             displacement = geometry.valueFlow
                 .mapState(uiContext.coroutineScope) { value ->
@@ -122,8 +122,8 @@ class SpotlightSlider<InteractionTarget : Any>(
         uiContext = uiContext
     )
 
-    private val created = defaultUiState(uiContext).copy(
-        offset = Position(
+    private val created = defaultUiState(uiContext, null).copy(
+        position = Position(
             DpOffset(0.dp, width),
         ),
         scale = Scale(0f),
@@ -132,12 +132,12 @@ class SpotlightSlider<InteractionTarget : Any>(
         aspectRatio = 1f,
     )
 
-    private val standard = defaultUiState(uiContext).copy(
-        offset = Position(DpOffset.Zero)
+    private val standard = defaultUiState(uiContext, null).copy(
+        position = Position(DpOffset.Zero)
     )
 
-    private val destroyed = defaultUiState(uiContext).copy(
-        offset = Position(
+    private val destroyed = defaultUiState(uiContext, null).copy(
+        position = Position(
             DpOffset(0.dp, -width)
         ),
         scale = Scale(0f),
@@ -154,11 +154,11 @@ class SpotlightSlider<InteractionTarget : Any>(
                 MatchedUiState(
                     element = it.key,
                     uiState = UiState(
-                        offset = Position(
+                        position = Position(
                             DpOffset(
                                 dpOffset(index).x,
-                                target.offset.value.y
-                            ),
+                                target.position.value.y
+                            )
                         ),
                         scale = target.scale,
                         alpha = target.alpha,
