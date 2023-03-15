@@ -77,6 +77,7 @@ plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", v
 plugin-android = "com.android.tools.build:gradle:7.3.1"
 
 detekt-compose = "com.twitter.compose.rules:detekt:0.0.26"
+toolargetool = "com.gu.android:toolargetool:0.3.0"
 
 [plugins]
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
