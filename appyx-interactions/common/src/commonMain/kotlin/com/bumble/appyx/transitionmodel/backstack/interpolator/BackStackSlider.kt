@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
@@ -60,22 +59,16 @@ class BackStackSlider<InteractionTarget : Any>(
             uiState: UiState,
             springSpec: SpringSpec<Float>,
         ) {
-            // FIXME this should match the own animationSpec of the model (which can also be supplied
-            //  from operation extension methods) rather than created here
-            val animationSpec: SpringSpec<Float> = spring(
-                stiffness = Spring.StiffnessVeryLow / 5,
-                dampingRatio = Spring.DampingRatioLowBouncy,
-            )
             val a1 = scope.async {
                 offset.animateTo(
                     uiState.offset.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                    spring(springSpec.dampingRatio, springSpec.stiffness)
                 )
             }
             val a2 = scope.async {
                 alpha.animateTo(
                     uiState.alpha.value,
-                    spring(animationSpec.dampingRatio, animationSpec.stiffness)
+                    spring(springSpec.dampingRatio, springSpec.stiffness)
                 )
             }
             awaitAll(a1, a2)
