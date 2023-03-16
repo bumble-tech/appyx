@@ -30,14 +30,12 @@ class KeyframesToUpdateTest {
 
         testController.advanceTimeBy(500)
 
-        composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}_1")
-
         testController.operation(
             operation = Next(Operation.Mode.IMMEDIATE)
         )
 
         testController.advanceTimeBy(50)
 
-        composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}_2")
+        composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
     }
 }
