@@ -155,7 +155,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
     suspend fun animateTo(
         targetValue: T,
         animationSpec: AnimationSpec<T>,
-        block: (Animatable<T, V>.() -> Unit)
+        block: (Animatable<T, V>.() -> Unit) = {}
     ) {
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
         Logger.log("MotionProperty", "Starting with initialVelocity = $previousVelocity")

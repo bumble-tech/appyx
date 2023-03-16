@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.transitionmodel.spotlight
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.ensureAnimationEnded
 import com.bumble.appyx.interactions.sample.NavTarget
 import com.bumble.appyx.interactions.setupInteractionModel
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
@@ -12,20 +13,18 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Parameterized::class)
-class SpotlightSliderTest(private val testParam: TestParam) {
+class SpotlightTest(private val testParam: TestParam) {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     private lateinit var spotlight: Spotlight<NavTarget>
-
 
     companion object {
 
@@ -59,16 +58,13 @@ class SpotlightSliderTest(private val testParam: TestParam) {
             composeTestRule.mainClock.advanceTimeBy(animationDuration.toLong())
         } else {
             spotlight.last(mode = testParam.operationMode)
-            composeTestRule.mainClock.advanceTimeUntil {
-                !spotlight.isAnimating.value
-            }
+            spotlight.ensureAnimationEnded(composeTestRule)
         }
 
         checkInteractionTargetsOnScreen(setOf(NavTarget.Child5, NavTarget.Child4))
     }
 
     @Test
-    @Ignore
     fun spotlight_clip_toBounds_true() {
         createBackStackSlider(
             initialActiveIndex = 1f,
@@ -82,9 +78,7 @@ class SpotlightSliderTest(private val testParam: TestParam) {
             composeTestRule.mainClock.advanceTimeBy(animationDuration.toLong())
         } else {
             spotlight.last(mode = testParam.operationMode)
-            composeTestRule.mainClock.advanceTimeUntil {
-                !spotlight.isAnimating.value
-            }
+            spotlight.ensureAnimationEnded(composeTestRule)
         }
 
         checkInteractionTargetsOnScreen(setOf(NavTarget.Child5))

@@ -113,6 +113,7 @@ class SpotlightSlider<InteractionTarget : Any>(
     override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(
         position = Position(
             initialOffset = initialUiState?.position?.initialOffset ?: DpOffset.Zero,
+            clipToBounds = clipToBounds,
             bounds = uiContext.transitionBounds,
             displacement = geometry.valueFlow
                 .mapState(uiContext.coroutineScope) { value ->

@@ -40,7 +40,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
     private val coroutineScope = uiContext.coroutineScope
     private val uiStateCache: MutableMap<String, UiState> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
-    private val geometryModeAnimating: StateFlow<Boolean>
+    private val geometryModeAnimatingState: StateFlow<Boolean>
         get() = if (geometryMappings.isNotEmpty()) {
             combineState(
                 geometryMappings.map { it.second.isAnimating },
@@ -51,17 +51,16 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
         } else {
             MutableStateFlow(false)
         }
-    private val updateModeAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val updateModeAnimatingState = MutableStateFlow(false)
     private val isAnimatingState: StateFlow<Boolean>
-        get() = updateModeAnimating.combineState(
-            geometryModeAnimating,
+        get() = updateModeAnimatingState.combineState(
+            geometryModeAnimatingState,
             uiContext.coroutineScope
         ) { isGeometryAnimating, isUpdateAnimating ->
             isGeometryAnimating || isUpdateAnimating
         }
 
     protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
-
 
     private val _finishedAnimations = MutableSharedFlow<Element<InteractionTarget>>()
     override val finishedAnimations: Flow<Element<InteractionTarget>> = _finishedAnimations
@@ -144,7 +143,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                         if (current && !previous) {
                             // animation started
                             animations[targetProps.element.id] = true
-                            updateModeAnimating.update { true }
+                            updateModeAnimatingState.update { true }
                             Logger.log(
                                 this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is started"
@@ -153,7 +152,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                             // animation finished
                             _finishedAnimations.emit(targetProps.element)
                             animations[targetProps.element.id] = false
-                            updateModeAnimating.update { animations.any { it.value } }
+                            updateModeAnimatingState.update { animations.any { it.value } }
                             Logger.log(
                                 this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is finished"
