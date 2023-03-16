@@ -1,5 +1,7 @@
 package com.bumble.appyx.interactions.sample.testdrive
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.snapshot
@@ -21,20 +23,21 @@ class KeyframesToUpdateTest {
     fun when_in_segment_interrupt_with_update() {
         val testController = TestDriveController(
             composeTestRule = composeTestRule,
-            autoAdvance = false
+            autoAdvance = false,
+            animationSpec = spring(stiffness = Spring.StiffnessLow)
         )
 
         testController.operation(
             operation = Next(Operation.Mode.KEYFRAME)
         )
 
-        testController.advanceTimeBy(500)
+        testController.advanceTimeBy(150)
 
         testController.operation(
             operation = Next(Operation.Mode.IMMEDIATE)
         )
 
-        testController.advanceTimeBy(50)
+        testController.advanceTimeBy(150)
 
         composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
     }
