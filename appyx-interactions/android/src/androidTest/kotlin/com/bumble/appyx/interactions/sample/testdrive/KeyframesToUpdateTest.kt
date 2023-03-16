@@ -24,20 +24,20 @@ class KeyframesToUpdateTest {
         val testController = TestDriveController(
             composeTestRule = composeTestRule,
             autoAdvance = false,
-            animationSpec = spring(stiffness = Spring.StiffnessLow)
+            animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
         )
 
         testController.operation(
             operation = Next(Operation.Mode.KEYFRAME)
         )
 
-        testController.advanceTimeBy(150)
+        testController.advanceTimeBy(100)
 
         testController.operation(
             operation = Next(Operation.Mode.IMMEDIATE)
         )
 
-        testController.advanceTimeBy(150)
+        testController.advanceTimeBy(100)
 
         composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
     }
