@@ -1,8 +1,8 @@
 package com.bumble.appyx.transitionmodel.spotlight.operation
 
-import com.bumble.appyx.NavTarget
-import com.bumble.appyx.NavTarget.Child1
-import com.bumble.appyx.NavTarget.Child2
+import com.bumble.appyx.InteractionTarget
+import com.bumble.appyx.InteractionTarget.Child1
+import com.bumble.appyx.InteractionTarget.Child2
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
@@ -21,7 +21,7 @@ class LastTest {
             ),
             activeIndex = 0f
         )
-        val last = Last<NavTarget>()
+        val last = Last<InteractionTarget>()
 
         assertEquals(
             actual = last.invoke(state).targetState.activeIndex,

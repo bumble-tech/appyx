@@ -29,17 +29,17 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.core.Keyframes
-import com.bumble.appyx.interactions.core.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.Operation.Mode.KEYFRAME
-import com.bumble.appyx.interactions.core.Update
+import com.bumble.appyx.interactions.core.model.transition.Keyframes
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel.Companion.toProps
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController.Companion.toUiState
 import com.bumble.appyx.transitionmodel.testdrive.operation.next
 
 
@@ -58,8 +58,8 @@ fun TestDriveExperiment() {
 //                tween(200, easing = LinearEasing)
             ,
             animateSettle = true,
-            interpolator = {
-                TestDriveUiModel(
+            motionController = {
+                TestDriveMotionController(
                     it,
                     uiAnimationSpec = spring(
                         stiffness = Spring.StiffnessLow,
@@ -68,7 +68,7 @@ fun TestDriveExperiment() {
                     ),
                 )
             },
-            gestureFactory = { TestDriveUiModel.Gestures(it) }
+            gestureFactory = { TestDriveMotionController.Gestures(it) }
         )
     }
 
@@ -136,7 +136,7 @@ fun <NavTarget : Any> TestDriveUi(
             Box(
                 modifier = Modifier.size(60.dp)
                     .then(frameModel.modifier)
-                    .pointerInput(frameModel.navElement.id) {
+                    .pointerInput(frameModel.element.id) {
                         detectDragGestures(
                             onDrag = { change, dragAmount ->
                                 change.consume()
@@ -158,7 +158,7 @@ fun <NavTarget : Any> TestDriveUi(
                     .collectAsState(null)
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
-        val targetProps = targetState.value?.elementState?.toProps()
+        val targetProps = targetState.value?.elementState?.toUiState()
         targetProps?.let {
             Box(
                 modifier = Modifier

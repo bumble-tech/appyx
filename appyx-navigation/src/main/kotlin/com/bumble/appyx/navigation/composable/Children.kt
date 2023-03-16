@@ -21,10 +21,10 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.GestureSpec
-import com.bumble.appyx.interactions.core.ui.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.UiContext
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.navigation.node.ParentNode
 import gestureModifier
 import kotlinx.coroutines.flow.map
@@ -41,7 +41,7 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
-                    key = frameModel.navElement,
+                    key = frameModel.element,
                     gestureSpec = gestureSpec
                 )
             )
@@ -101,7 +101,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
 
     @Composable
     inline fun <reified V : NavTarget> ParentNode<NavTarget>.children(
-        noinline block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
+        noinline block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
     ) {
         children(V::class, block)
     }
@@ -110,7 +110,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
     @Composable
     fun ParentNode<NavTarget>.children(
         clazz: KClass<out NavTarget>,
-        block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit,
+        block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit,
     ) {
         _children(clazz) { child, frameModel ->
             block(child, frameModel)
@@ -121,14 +121,14 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
     @Composable
     private fun ParentNode<NavTarget>._children(
         clazz: KClass<out NavTarget>,
-        block: @Composable (child: ChildRenderer, frameModel: FrameModel<NavTarget>) -> Unit
+        block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
     ) {
 
         val framesFlow = remember {
-            interactionModel.frames
+            interactionModel.uiModels
                 .map { list ->
                     list
-                        .filter { clazz.isInstance(it.navElement.navTarget) }
+                        .filter { clazz.isInstance(it.element.interactionTarget) }
                 }
         }
 
@@ -136,13 +136,13 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
         val saveableStateHolder = rememberSaveableStateHolder()
 
         visibleFrames.value
-            .forEach { frameModel ->
-                key(frameModel.navElement.id) {
-                    frameModel.animationContainer()
-                    val isVisible by frameModel.visibleState.collectAsState(initial = false)
+            .forEach { uiModel ->
+                key(uiModel.element.id) {
+                    uiModel.animationContainer()
+                    val isVisible by uiModel.visibleState.collectAsState(initial = false)
                     if (isVisible) {
                         Child(
-                            frameModel,
+                            uiModel,
                             saveableStateHolder,
                             block
                         )

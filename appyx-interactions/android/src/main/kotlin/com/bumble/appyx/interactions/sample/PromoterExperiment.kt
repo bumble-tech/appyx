@@ -24,7 +24,7 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child3
 import com.bumble.appyx.interactions.sample.NavTarget.Child4
 import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
-import com.bumble.appyx.transitionmodel.promoter.interpolator.PromoterInterpolator
+import com.bumble.appyx.transitionmodel.promoter.interpolator.PromoterMotionController
 import com.bumble.appyx.transitionmodel.promoter.operation.addFirst
 
 
@@ -37,10 +37,10 @@ fun PromoterExperiment() {
         Promoter(
             scope = coroutineScope,
             model = PromoterModel<NavTarget>(),
-            interpolator = {
-                PromoterInterpolator(
+            motionController = {
+                PromoterMotionController(
+                    uiContext = it,
                     childSize = 100.dp,
-                    transitionBounds = it.transitionBounds
                 )
             },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
@@ -68,7 +68,7 @@ fun PromoterExperiment() {
                 ),
             element = {
                 Element(
-                    frameModel = it,
+                    elementUiModel = it,
                     modifier = Modifier.size(100.dp)
                 )
             }

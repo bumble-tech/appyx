@@ -43,7 +43,7 @@ fun SpotlightExperiment() {
     val items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7)
     val spotlight = Spotlight(
         model = SpotlightModel(items = items),
-        interpolator = { SpotlightSlider(it) },
+        motionController = { SpotlightSlider(it) },
         gestureFactory = { SpotlightSlider.Gestures(it) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )
@@ -65,10 +65,10 @@ fun SpotlightExperiment() {
                 ),
             element = {
                 Element(
-                    frameModel = it,
+                    elementUiModel = it,
                     modifier = Modifier
                         .fillMaxSize()
-                        .pointerInput(it.navElement.id) {
+                        .pointerInput(it.element.id) {
                             detectDragGestures(
                                 onDrag = { change, dragAmount ->
                                     change.consume()

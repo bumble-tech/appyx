@@ -1,15 +1,17 @@
 package com.bumble.appyx.navigation.node
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -82,8 +84,8 @@ abstract class ParentNode<NavTarget : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(navElement: NavElement<NavTarget>): ChildEntry.Initialized<NavTarget> =
-        childNodeCreationManager.childOrCreate(navElement)
+    fun childOrCreate(element: Element<NavTarget>): ChildEntry.Initialized<NavTarget> =
+        childNodeCreationManager.childOrCreate(element)
 
 //    @Composable
 //    fun PermanentChild(
@@ -159,7 +161,22 @@ abstract class ParentNode<NavTarget : Any>(
     @Composable
     override fun DerivedSetup() {
         InteractionModelSetup(interactionModel = interactionModel)
+        BackHandler()
     }
+
+    @Composable
+    private fun BackHandler() {
+        //todo support delegating to plugins
+        val canHandleBack = interactionModel
+            .canHandeBackPress()
+            .collectAsState(initial = false)
+        BackHandler(canHandleBack.value) {
+            interactionModel.handleBackPress()
+        }
+    }
+
+    override fun performUpNavigation(): Boolean =
+        interactionModel.handleBackPress() || super.performUpNavigation()
 
     private fun manageTransitionsInForeground() {
         transitionsInBackgroundJob?.run {

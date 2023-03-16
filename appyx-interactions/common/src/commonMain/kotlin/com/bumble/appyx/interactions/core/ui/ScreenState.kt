@@ -1,8 +1,8 @@
 package com.bumble.appyx.interactions.core.ui
 
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 
-data class ScreenState<NavTarget>(
-    val onScreen: Set<NavElement<NavTarget>> = emptySet(),
-    val offScreen: Set<NavElement<NavTarget>> = emptySet()
+data class ScreenState<InteractionTarget>(
+    val onScreen: Set<Element<InteractionTarget>> = emptySet(),
+    val offScreen: Set<Element<InteractionTarget>> = emptySet()
 )

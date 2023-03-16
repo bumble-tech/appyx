@@ -4,7 +4,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.interactions.core.NavElement
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -20,7 +20,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
-    private lateinit var children: StateFlow<Map<out NavElement<*>, ChildEntry<*>>>
+    private lateinit var children: StateFlow<Map<out Element<*>, ChildEntry<*>>>
     private lateinit var lifecycle: Lifecycle
     private lateinit var coroutineScope: CoroutineScope
 
@@ -101,7 +101,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         })
     }
 
-    private fun getCreatedNodes(childEntryMap: Map<out NavElement<*>, ChildEntry<*>>) =
+    private fun getCreatedNodes(childEntryMap: Map<out Element<*>, ChildEntry<*>>) =
         childEntryMap.values.mapNotNull { entry -> entry.nodeOrNull }
 
 }

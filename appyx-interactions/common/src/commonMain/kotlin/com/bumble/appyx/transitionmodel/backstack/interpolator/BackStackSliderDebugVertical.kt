@@ -1,26 +1,8 @@
 package com.bumble.appyx.transitionmodel.backstack.interpolator
 
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.offset
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.lerp
-import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
-import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-
-// TODO discard or convert to BaseInterpolator
-//class BackStackSliderDebugVertical<NavTarget>
-//    : Interpolator<NavTarget, BackStackModel.State<NavTarget>> {
+// TODO discard or convert to BaseMotionController
+//class BackStackSliderDebugVertical<InteractionTarget>
+//    : Interpolator<InteractionTarget, BackStackModel.State<InteractionTarget>> {
 //    private val size = 100.dp
 //
 //
@@ -53,7 +35,7 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 //        isVisible = false
 //    )
 //
-//    private fun <NavTarget> BackStackModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, Props>> =
+//    private fun <InteractionTarget> BackStackModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, Props>> =
 //        created.map { MatchedProps(it, createdProps) } +
 //                listOf(MatchedProps(active, activeProps)) +
 //                stashed.mapIndexed { index, navElement ->
@@ -74,7 +56,7 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 //                }
 //
 //
-//    override fun mapSegment(segment: Segment<BackStackModel.State<NavTarget>>, segmentProgress: Float): List<FrameModel<NavTarget>> {
+//    override fun mapSegment(segment: Segment<BackStackModel.State<InteractionTarget>>, segmentProgress: Float): List<FrameModel<InteractionTarget>> {
 //        val (fromState, targetState) = segment.navTransition
 //        val fromProps = fromState.toProps()
 //        val targetProps = targetState.toProps()
@@ -104,9 +86,9 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 //        }
 //    }
 //
-//    // TODO Migrate to BaseInterpolator
+//    // TODO Migrate to BaseMotionController
 //
-//    override fun mapUpdate(update: Update<BackStackModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+//    override fun mapUpdate(update: Update<BackStackModel.State<InteractionTarget>>): List<FrameModel<InteractionTarget>> {
 //        TODO("Not yet implemented")
 //    }
 //}
@@ -138,7 +120,7 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 ////            )
 ////        }
 ////
-////    override fun map(segment: Segment<NavTarget, BackStackModel.State>): List<FrameModel<NavTarget, BackStackModel.State>> {
+////    override fun map(segment: Segment<InteractionTarget, BackStackModel.State>): List<FrameModel<InteractionTarget, BackStackModel.State>> {
 ////        val fromState = segment.navTransition.fromState
 ////        val targetState = segment.navTransition.targetState
 //////        val fromStashed = fromState.filter { it.state == STASHED }

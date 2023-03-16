@@ -1,29 +1,10 @@
 package com.bumble.appyx.transitionmodel.spotlight.interpolator
 
-import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.core.Segment
-import com.bumble.appyx.interactions.core.Update
-import com.bumble.appyx.interactions.core.ui.BaseProps
-import com.bumble.appyx.interactions.core.ui.FrameModel
-import com.bumble.appyx.interactions.core.ui.Interpolator
-import com.bumble.appyx.interactions.core.ui.helper.lerpFloat
-import com.bumble.appyx.interactions.core.ui.MatchedProps
-import com.bumble.appyx.interactions.core.ui.TransitionParams
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.CREATED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
-import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 
-
-// TODO BaseInterpolator + dynamic on visibility calculation
-//class SpotlightFader<NavTarget : Any>(
+// TODO BaseMotionController + dynamic on visibility calculation
+//class SpotlightFader<InteractionTarget : Any>(
 //    transitionParams: TransitionParams
-//) : Interpolator<NavTarget, SpotlightModel.State<NavTarget>> {
+//) : Interpolator<InteractionTarget, SpotlightModel.State<InteractionTarget>> {
 //
 //    class Props(
 //        val alpha: Alpha,
@@ -40,7 +21,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 //        isVisible = false
 //    )
 //
-//    // TODO Migrate to BaseInterpolator
+//    // TODO Migrate to BaseMotionController
 //
 //    fun SpotlightModel.State.ElementState.isVisible() =
 //        when (this) {
@@ -49,7 +30,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 //            DESTROYED -> false
 //        }
 //
-//    private fun <NavTarget> SpotlightModel.State<NavTarget>.toProps(): List<MatchedProps<NavTarget, SpotlightFader.Props>> {
+//    private fun <InteractionTarget> SpotlightModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, SpotlightFader.Props>> {
 //        return positions.flatMapIndexed { index, position ->
 //            position.elements.map {
 //                val isVisible =
@@ -67,9 +48,9 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 //    }
 //
 //    override fun mapSegment(
-//        segment: Segment<SpotlightModel.State<NavTarget>>,
+//        segment: Segment<SpotlightModel.State<InteractionTarget>>,
 //        segmentProgress: Float
-//    ): List<FrameModel<NavTarget>> {
+//    ): List<FrameModel<InteractionTarget>> {
 //        val (fromState, targetState) = segment.navTransition
 //        val fromProps = fromState.toProps()
 //        val targetProps = targetState.toProps()
@@ -89,7 +70,7 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 //        }
 //    }
 //
-//    override fun mapUpdate(update: Update<SpotlightModel.State<NavTarget>>): List<FrameModel<NavTarget>> {
+//    override fun mapUpdate(update: Update<SpotlightModel.State<InteractionTarget>>): List<FrameModel<InteractionTarget>> {
 //        TODO("Not yet implemented")
 //    }
 //}

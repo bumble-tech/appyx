@@ -1,10 +1,11 @@
 package com.bumble.appyx.transitionmodel.backstack.operation
 
+import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
-import com.bumble.appyx.interactions.core.BaseOperation
-import com.bumble.appyx.interactions.core.Operation
 import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.model.transition.BaseOperation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
@@ -15,19 +16,19 @@ import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
  * [A, B, C] + Replace(D) = [A, B, D]
  */
 @Parcelize
-data class Replace<NavTarget : Any>(
-    private val navTarget: @RawValue NavTarget,
+data class Replace<InteractionTarget : Any>(
+    private val interactionTarget: @RawValue InteractionTarget,
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<State<NavTarget>>() {
-    override fun isApplicable(state: State<NavTarget>): Boolean =
-        navTarget != state.active.navTarget
+) : BaseOperation<State<InteractionTarget>>() {
+    override fun isApplicable(state: State<InteractionTarget>): Boolean =
+        interactionTarget != state.active.interactionTarget
 
-    override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
+    override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
         baseLineState.copy(
-            created = baseLineState.created + navTarget.asElement()
+            created = baseLineState.created + interactionTarget.asElement()
         )
 
-    override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
+    override fun createTargetState(fromState: State<InteractionTarget>): State<InteractionTarget> =
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),
@@ -35,9 +36,10 @@ data class Replace<NavTarget : Any>(
         )
 }
 
-fun <NavTarget : Any> BackStack<NavTarget>.replace(
-    target: NavTarget,
-    mode: Operation.Mode = Operation.Mode.KEYFRAME
+fun <InteractionTarget : Any> BackStack<InteractionTarget>.replace(
+    target: InteractionTarget,
+    mode: Operation.Mode = Operation.Mode.KEYFRAME,
+    animationSpec: AnimationSpec<Float>? = null
 ) {
-    operation(Replace(target, mode))
+    operation(operation = Replace(target, mode), animationSpec = animationSpec)
 }
