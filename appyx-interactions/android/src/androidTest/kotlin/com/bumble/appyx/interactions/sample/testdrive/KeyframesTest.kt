@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.sample.testdrive
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.snapshot
 import com.bumble.appyx.interactions.sample.testdrive.helper.TestDriveController
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next

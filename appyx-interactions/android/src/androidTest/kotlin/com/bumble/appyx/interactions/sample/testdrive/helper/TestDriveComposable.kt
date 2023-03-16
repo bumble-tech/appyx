@@ -13,20 +13,23 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.core.Operation
+import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget
 import com.bumble.appyx.interactions.sample.TestDriveUi
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveUiModel
+import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController
 
 
 @OptIn(ExperimentalMaterialApi::class)
 class TestDriveController(
     private val composeTestRule: ComposeContentTestRule,
-    private val animationSpec: AnimationSpec<Float> = tween(durationMillis = 1000, easing = LinearEasing),
+    private val animationSpec: AnimationSpec<Float> = tween(
+        durationMillis = 1000,
+        easing = LinearEasing
+    ),
     private val autoAdvance: Boolean = true
 ) {
     private var testDrive: TestDrive<NavTarget>? = null
@@ -47,9 +50,9 @@ class TestDriveController(
                     TestDrive(
                         scope = coroutineScope,
                         model = model,
-                        interpolator = { TestDriveUiModel(it) },
+                        motionController = { TestDriveMotionController(it) },
                         progressAnimationSpec = animationSpec,
-                        gestureFactory = { TestDriveUiModel.Gestures(it) },
+                        gestureFactory = { TestDriveMotionController.Gestures(it) },
                     )
                 }
 
