@@ -50,10 +50,7 @@ fun <NavTarget : Any, NavState : Any> Children(
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
-        val uiContext = uiContext
-        if (uiContext != null) {
-            interactionModel.updateContext(uiContext)
-        }
+        uiContext?.let {  interactionModel.updateContext(it) }
     }
     Box(
         modifier = modifier

@@ -3,9 +3,9 @@ package com.bumble.appyx.interactions.transitionmodel.spotlight
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.ensureAnimationEnded
 import com.bumble.appyx.interactions.sample.NavTarget
 import com.bumble.appyx.interactions.setupInteractionModel
+import com.bumble.appyx.interactions.waitUntilAnimationEnded
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
 import com.bumble.appyx.transitionmodel.spotlight.interpolator.SpotlightSlider
@@ -29,9 +29,7 @@ class SpotlightTest(private val testParam: TestParam) {
     companion object {
 
         data class TestParam(
-            val operationMode: Operation.Mode = Operation.Mode.IMMEDIATE,
-            val clipToBounds: Boolean = false,
-            val containerWidthFraction: Float = 1.0f,
+            val operationMode: Operation.Mode = Operation.Mode.IMMEDIATE
         )
 
         @JvmStatic
@@ -44,7 +42,7 @@ class SpotlightTest(private val testParam: TestParam) {
     }
 
     @Test
-    fun spotlight_clip_toBounds() {
+    fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_false() {
         createBackStackSlider(
             initialActiveIndex = 1f,
             clipToBounds = false
@@ -58,14 +56,14 @@ class SpotlightTest(private val testParam: TestParam) {
             composeTestRule.mainClock.advanceTimeBy(animationDuration.toLong())
         } else {
             spotlight.last(mode = testParam.operationMode)
-            spotlight.ensureAnimationEnded(composeTestRule)
+            spotlight.waitUntilAnimationEnded(composeTestRule)
         }
 
         checkInteractionTargetsOnScreen(setOf(NavTarget.Child5, NavTarget.Child4))
     }
 
     @Test
-    fun spotlight_clip_toBounds_true() {
+    fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_true() {
         createBackStackSlider(
             initialActiveIndex = 1f,
             clipToBounds = true
@@ -78,7 +76,7 @@ class SpotlightTest(private val testParam: TestParam) {
             composeTestRule.mainClock.advanceTimeBy(animationDuration.toLong())
         } else {
             spotlight.last(mode = testParam.operationMode)
-            spotlight.ensureAnimationEnded(composeTestRule)
+            spotlight.waitUntilAnimationEnded(composeTestRule)
         }
 
         checkInteractionTargetsOnScreen(setOf(NavTarget.Child5))

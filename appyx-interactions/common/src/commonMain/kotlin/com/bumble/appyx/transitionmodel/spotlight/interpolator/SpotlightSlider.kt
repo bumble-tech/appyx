@@ -108,8 +108,6 @@ class SpotlightSlider<InteractionTarget : Any>(
         }
     }
 
-    var position = 0
-
     override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(
         position = Position(
             initialOffset = initialUiState?.position?.initialOffset ?: DpOffset.Zero,

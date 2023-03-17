@@ -38,12 +38,15 @@ class CardsMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
-    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(uiContext = uiContext)
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(
+        uiContext = uiContext,
+        scale = initialUiState?.scale ?: Scale(value = 1f)
+    )
 
     class UiState(
         val uiContext: UiContext,
         val scale: Scale = Scale(value = 1f),
-        val positionalOffsetX: Position = Position(
+        val position: Position = Position(
             initialOffset = DpOffset(
                 0.dp,
                 0.dp
@@ -52,21 +55,21 @@ class CardsMotionController<InteractionTarget : Any>(
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f)
     ) : BaseUiState<UiState>(
-        motionProperties = listOf(scale, positionalOffsetX),
+        motionProperties = listOf(scale, position, rotationZ, zIndex),
         coroutineScope = uiContext.coroutineScope
     ) {
 
         override val modifier: Modifier
             get() = Modifier
                 .then(scale.modifier)
-                .then(positionalOffsetX.modifier)
+                .then(position.modifier)
                 .then(rotationZ.modifier)
                 .then(zIndex.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
                 scale.snapTo(uiState.scale.value)
-                positionalOffsetX.snapTo(uiState.positionalOffsetX.value)
+                position.snapTo(uiState.position.value)
                 rotationZ.snapTo(uiState.rotationZ.value)
                 zIndex.snapTo(uiState.zIndex.value)
             }
@@ -85,8 +88,8 @@ class CardsMotionController<InteractionTarget : Any>(
                     )
                 },
                 scope.async {
-                    positionalOffsetX.animateTo(
-                        uiState.positionalOffsetX.value,
+                    position.animateTo(
+                        uiState.position.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 },
@@ -107,7 +110,7 @@ class CardsMotionController<InteractionTarget : Any>(
         override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
                 scale.lerpTo(start.scale, end.scale, fraction)
-                positionalOffsetX.lerpTo(start.positionalOffsetX, end.positionalOffsetX, fraction)
+                position.lerpTo(start.position, end.position, fraction)
                 rotationZ.lerpTo(start.rotationZ, end.rotationZ, fraction)
                 zIndex.lerpTo(start.zIndex, end.zIndex, fraction)
             }
@@ -132,7 +135,7 @@ class CardsMotionController<InteractionTarget : Any>(
 
     private val votePass = UiState(
         uiContext = uiContext,
-        positionalOffsetX = Position(
+        position = Position(
             initialOffset = DpOffset(
                 (-voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
                 0.dp
@@ -145,7 +148,7 @@ class CardsMotionController<InteractionTarget : Any>(
 
     private val voteLike = UiState(
         uiContext = uiContext,
-        positionalOffsetX = Position(
+        position = Position(
             initialOffset = DpOffset(
                 (voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
                 0.dp

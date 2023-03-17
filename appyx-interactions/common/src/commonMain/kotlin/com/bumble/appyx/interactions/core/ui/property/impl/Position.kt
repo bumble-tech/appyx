@@ -41,8 +41,9 @@ class Position(
             val visibleOffsetRangeX = calculateVisibleOffsetRangeX(bounds, clipToBounds)
             val visibleOffsetRangeY = calculateVisibleOffsetRangeY(bounds, clipToBounds)
 
-            itemOffsetRangeX.hasIntersection(visibleOffsetRangeX)
+            val isVisible = itemOffsetRangeX.hasIntersection(visibleOffsetRangeX)
                     && itemOffsetRangeY.hasIntersection(visibleOffsetRangeY)
+            isVisible
         } else {
             true
         }
@@ -87,7 +88,7 @@ class Position(
         }
 
 
-    // if one range ends where another starts we consider them as non-intersected
+    // If one range ends where another starts we consider them as non-intersected
     private fun <T : Comparable<T>> ClosedRange<T>.hasIntersection(another: ClosedRange<T>): Boolean =
         when {
             isEmpty() || another.isEmpty() -> false

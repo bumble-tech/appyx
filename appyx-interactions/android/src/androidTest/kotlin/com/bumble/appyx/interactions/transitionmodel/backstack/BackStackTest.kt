@@ -6,8 +6,8 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.ensureAnimationEnded
-import com.bumble.appyx.interactions.ensureAnimationStarted
+import com.bumble.appyx.interactions.waitUntilAnimationEnded
+import com.bumble.appyx.interactions.waitUntilAnimationStarted
 import com.bumble.appyx.interactions.sample.NavTarget
 import com.bumble.appyx.interactions.setupInteractionModel
 import com.bumble.appyx.transitionmodel.backstack.BackStack
@@ -119,10 +119,10 @@ class BackStackTest(private val testParam: TestParam) {
         backStack.pop(animationSpec = popSpringSpec)
 
         // move clock until animations started
-        backStack.ensureAnimationStarted(composeTestRule)
+        backStack.waitUntilAnimationStarted(composeTestRule)
 
         // wait until animations are finished
-        backStack.ensureAnimationEnded(composeTestRule)
+        backStack.waitUntilAnimationEnded(composeTestRule)
 
 
         assertEquals(3, backStack.availableElements().value.size)
