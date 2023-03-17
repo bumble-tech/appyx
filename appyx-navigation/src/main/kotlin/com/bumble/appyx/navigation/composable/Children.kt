@@ -21,10 +21,10 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.node.ParentNode
 import gestureModifier
 import kotlinx.coroutines.flow.map
@@ -56,16 +56,13 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
-        val uiContext = uiContext
-        if (uiContext != null) {
-            interactionModel.updateContext(uiContext)
-        }
+        uiContext?.let {  interactionModel.updateContext(it) }
     }
     Box(
         modifier = modifier
             .fillMaxSize()
             .composed {
-                val clipToBounds by interactionModel.clipToBounds.collectAsState(initial = false)
+                val clipToBounds by interactionModel.clipToBounds.collectAsState()
                 if (clipToBounds) {
                     clipToBounds()
                 } else {
@@ -139,7 +136,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
             .forEach { uiModel ->
                 key(uiModel.element.id) {
                     uiModel.animationContainer()
-                    val isVisible by uiModel.visibleState.collectAsState(initial = false)
+                    val isVisible by uiModel.visibleState.collectAsState()
                     if (isVisible) {
                         Child(
                             uiModel,

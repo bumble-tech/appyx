@@ -2,24 +2,31 @@ package com.bumble.appyx.interactions.core.ui.state
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.combineState
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.update
 
 abstract class BaseUiState<T>(
-    isAnimatingFlows: List<Flow<Boolean>>
+    val motionProperties: List<MotionProperty<*, *>>,
+    val coroutineScope: CoroutineScope
 ) {
     abstract val modifier: Modifier
 
-    val isAnimating: Flow<Boolean> = combine(isAnimatingFlows) { booleanArray ->
-        booleanArray.any { it }
-    }
+    val isAnimating: Flow<Boolean>
+        get() = combine(motionProperties.map { it.isAnimating }) { booleanArray ->
+            booleanArray.any { it }
+        }
 
-    private val _visibilityState by lazy { MutableStateFlow(isVisible()) }
-    val visibilityState: StateFlow<Boolean> by lazy { _visibilityState }
+    val isVisible: StateFlow<Boolean>
+        get() = combineState(
+            motionProperties.map { it.isVisibleFlow },
+            coroutineScope
+        ) { booleanArray ->
+            booleanArray.all { it }
+        }
 
     abstract suspend fun snapTo(
         scope: CoroutineScope,
@@ -38,12 +45,4 @@ abstract class BaseUiState<T>(
         uiState: T,
         springSpec: SpringSpec<Float>,
     )
-
-    fun updateVisibilityState() {
-        _visibilityState.update {
-            isVisible()
-        }
-    }
-
-    protected abstract fun isVisible(): Boolean
 }

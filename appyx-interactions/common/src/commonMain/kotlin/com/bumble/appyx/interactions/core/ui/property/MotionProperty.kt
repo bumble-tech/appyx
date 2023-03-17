@@ -13,9 +13,13 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.Logger
-import kotlinx.coroutines.flow.Flow
+import com.bumble.appyx.mapState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Keeps a value change in motion by calculating the rate of change of the wrapped Animatable value
@@ -23,6 +27,7 @@ import kotlinx.coroutines.flow.update
  * rather than zero.
  */
 abstract class MotionProperty<T, V : AnimationVector>(
+    protected val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     protected val animatable: Animatable<T, V>,
     protected val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
@@ -37,14 +42,39 @@ abstract class MotionProperty<T, V : AnimationVector>(
     private var previousVelocity = animatable.velocity
     private var lastTime = 0L
 
+    /**
+     * Mapper which resolves visibility of the property. If property has no influence on the visibility
+     * do not change default visibilityMapper.
+     */
+    open val visibilityMapper: ((T) -> Boolean) = { true }
+
+    private val _valueFlow = MutableStateFlow(animatable.value)
+    val valueFlow: StateFlow<T>
+        get() = _valueFlow
+
     val value: T
         get() = animatable.value
 
     abstract val modifier: Modifier
 
     private val _isAnimatingFlow = MutableStateFlow(false)
-    val isAnimating: Flow<Boolean>
+    val isAnimating: StateFlow<Boolean>
         get() = _isAnimatingFlow
+
+    /**
+     * Source of the value which will be used to resolve visibility. By default it's animatable
+     * flow but it can be overridden if the motion property visibility depends.
+     */
+    open val valueSource: StateFlow<T> = valueFlow
+
+    val isVisibleFlow: StateFlow<Boolean>
+        get() = valueSource.mapState(coroutineScope) { value ->
+            visibilityMapper.invoke(value)
+        }
+
+    private fun onValueChanged() {
+        _valueFlow.update { value }
+    }
 
     /**
      * Takes the supplied [Easing] as a priority to transform [fraction].
@@ -60,6 +90,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         previousVelocity = lastVelocity
         lastVelocity = calculateVelocity(targetValue)
         animatable.snapTo(targetValue)
+        onValueChanged()
     }
 
     private fun calculateVelocity(targetValue: T): T {
@@ -124,7 +155,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
     suspend fun animateTo(
         targetValue: T,
         animationSpec: AnimationSpec<T>,
-        block: (Animatable<T, V>.() -> Unit)
+        block: (Animatable<T, V>.() -> Unit) = {}
     ) {
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
         Logger.log("MotionProperty", "Starting with initialVelocity = $previousVelocity")
@@ -143,6 +174,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
             )
             lastVelocity = animatable.velocity
             previousVelocity = animatable.velocity
+            onValueChanged()
         }
         _isAnimatingFlow.update {
             result.endState.value != targetValue

@@ -20,8 +20,8 @@ import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.*
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
-import com.bumble.appyx.interactions.core.ui.state.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.ui.state.BaseUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
@@ -40,9 +40,10 @@ class PromoterMotionController<InteractionTarget : Any>(
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
     childSize: Dp,
 ) : BaseMotionController<InteractionTarget, PromoterModel.State<InteractionTarget>, PromoterMotionController.UiState>(
-    scope = uiContext.coroutineScope,
+    uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
+    private val scope = uiContext.coroutineScope
     private val halfWidthDp = (uiContext.transitionBounds.widthDp.value - childSize.value) / 2
     private val halfHeightDp = (uiContext.transitionBounds.heightDp.value - childSize.value) / 2
     private val radiusDp = min(halfWidthDp, halfHeightDp) * 1.5f
@@ -50,18 +51,18 @@ class PromoterMotionController<InteractionTarget : Any>(
     override val finishedAnimations: Flow<Element<InteractionTarget>>
         get() = TODO("Not yet implemented")
 
-    override fun defaultUiState(): UiState = created.copy()
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = created.copy()
 
     // TODO migrate fields to MotionProperty instances
     data class UiState(
+        val scope: CoroutineScope,
         val dpOffset: DpOffset,
         val scale: Float,
         val angleDegrees: Float,
         val effectiveRadiusRatio: Float,
         val rotationY: Float,
         val rotationZ: Float,
-    ) : BaseUiState<UiState>(listOf()) { // TODO
-        override fun isVisible() = true
+    ) : BaseUiState<UiState>(listOf(), scope) { // TODO
 
         override val modifier: Modifier
             get() = TODO("Not yet implemented")
@@ -90,6 +91,7 @@ class PromoterMotionController<InteractionTarget : Any>(
         effectiveRadiusRatio = 1f,
         rotationY = 0f,
         rotationZ = 0f,
+        scope = scope
     )
 
     private val stage1 = created.copy(
