@@ -15,14 +15,21 @@ fun createTestDrive(
     animationSpec: AnimationSpec<Float> = tween(
         durationMillis = 1000,
         easing = LinearEasing
-    )
-) =
-    TestDrive(
+    ),
+    setup: (TestDrive<NavTarget>, TestDriveModel<NavTarget>) -> Unit
+
+): TestDrive<NavTarget> {
+    val model = TestDriveModel(NavTarget.Child1)
+    val interactionModel = TestDrive(
         scope = CoroutineScope(Dispatchers.Unconfined),
-        model = TestDriveModel(NavTarget.Child1),
+        model = model,
         motionController = { TestDriveMotionController(it) },
         progressAnimationSpec = animationSpec,
         gestureFactory = { TestDriveMotionController.Gestures(it) },
     )
+    setup(interactionModel, model)
+    return interactionModel
+}
+
 
 

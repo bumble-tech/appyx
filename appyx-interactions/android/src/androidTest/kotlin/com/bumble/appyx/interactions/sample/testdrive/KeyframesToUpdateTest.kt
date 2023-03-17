@@ -6,7 +6,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.snapshot
 import com.bumble.appyx.interactions.sample.testdrive.helper.createTestDrive
-import com.bumble.appyx.interactions.setupInteractionModel
+import com.bumble.appyx.interactions.setupTestDrive
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
 import org.junit.Ignore
 import org.junit.Rule
@@ -26,8 +26,8 @@ class KeyframesToUpdateTest {
     fun when_in_segment_interrupt_with_update() {
         val testDrive = createTestDrive(
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
-        ).also {
-            composeTestRule.setupInteractionModel(it)
+        ) { testDrive, model ->
+            composeTestRule.setupTestDrive(testDrive, model)
             composeTestRule.mainClock.autoAdvance = false
         }
 

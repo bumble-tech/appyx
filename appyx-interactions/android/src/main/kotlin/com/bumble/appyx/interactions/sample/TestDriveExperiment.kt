@@ -120,9 +120,9 @@ fun TestDriveExperiment() {
 
 @ExperimentalMaterialApi
 @Composable
-fun <NavTarget : Any> TestDriveUi(
-    testDrive: TestDrive<NavTarget>,
-    model: TestDriveModel<NavTarget>,
+fun <InteractionTarget : Any> TestDriveUi(
+    testDrive: TestDrive<InteractionTarget>,
+    model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -154,11 +154,12 @@ fun <NavTarget : Any> TestDriveUi(
         }
 
         val output = model.output.collectAsState().value
-        val targetState: State<TestDriveModel.State<NavTarget>?> =
+        val targetState: State<TestDriveModel.State<InteractionTarget>?> =
             when (output) {
                 is Keyframes -> output.currentSegmentTargetStateFlow
                     .collectAsState(null)
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
+                else -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
         val targetProps = targetState.value?.elementState?.toUiState(
             uiContext = UiContext(zeroSizeTransitionBounds, rememberCoroutineScope())
@@ -175,6 +176,7 @@ fun <NavTarget : Any> TestDriveUi(
                     text = when (output) {
                         is Keyframes -> output.currentIndex.toString()
                         is Update -> "X"
+                        else -> "X"
                     },
                     fontSize = 24.sp,
                     color = Color.White

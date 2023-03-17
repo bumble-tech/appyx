@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -13,10 +14,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
+import com.bumble.appyx.interactions.sample.TestDriveUi
 import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.transitionmodel.testdrive.TestDrive
+import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import kotlin.random.Random
+
+@OptIn(ExperimentalMaterialApi::class)
+fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
+    testDrive: TestDrive<InteractionTarget>,
+    testDriveModel: TestDriveModel<InteractionTarget>,
+) {
+    setContent {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = appyx_dark
+        ) {
+            InteractionModelSetup(testDrive)
+
+            TestDriveUi(
+                testDrive = testDrive,
+                model = testDriveModel
+            )
+        }
+    }
+}
+
 
 fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInteractionModel(
     interactionModel: InteractionModel<InteractionTarget, ModelState>,

@@ -4,7 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.snapshot
 import com.bumble.appyx.interactions.sample.testdrive.helper.createTestDrive
-import com.bumble.appyx.interactions.setupInteractionModel
+import com.bumble.appyx.interactions.setupTestDrive
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
 import org.junit.Rule
 import org.junit.Test
@@ -20,8 +20,8 @@ class UpdateToKeyframesTest {
 
     @Test
     fun when_update_not_settled_keyframe_is_update() {
-        val testDrive = createTestDrive().also {
-            composeTestRule.setupInteractionModel(it)
+        val testDrive = createTestDrive { testDrive, model ->
+            composeTestRule.setupTestDrive(testDrive, model)
             composeTestRule.mainClock.autoAdvance = false
         }
 
@@ -42,8 +42,8 @@ class UpdateToKeyframesTest {
 
     @Test
     fun when_animation_settles_go_back_to_keyframe_mode() {
-        val testDrive = createTestDrive().also {
-            composeTestRule.setupInteractionModel(it)
+        val testDrive = createTestDrive { testDrive, model ->
+            composeTestRule.setupTestDrive(testDrive, model)
             composeTestRule.mainClock.autoAdvance = false
         }
 

@@ -4,7 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.snapshot
 import com.bumble.appyx.interactions.sample.testdrive.helper.createTestDrive
-import com.bumble.appyx.interactions.setupInteractionModel
+import com.bumble.appyx.interactions.setupTestDrive
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
 import org.junit.Rule
 import org.junit.Test
@@ -20,8 +20,8 @@ class KeyframesTest {
 
     @Test
     fun basic_behaviour_one_segment() {
-        val testDrive = createTestDrive().also {
-            composeTestRule.setupInteractionModel(it)
+        val testDrive = createTestDrive { testDrive, model ->
+            composeTestRule.setupTestDrive(testDrive, model)
             composeTestRule.mainClock.autoAdvance = false
         }
 
@@ -36,8 +36,8 @@ class KeyframesTest {
 
     @Test
     fun basic_behaviour_sequential() {
-        val testDrive = createTestDrive().also {
-            composeTestRule.setupInteractionModel(it)
+        val testDrive = createTestDrive { testDrive, model ->
+            composeTestRule.setupTestDrive(testDrive, model)
             composeTestRule.mainClock.autoAdvance = false
         }
 
@@ -60,8 +60,8 @@ class KeyframesTest {
 
     @Test
     fun basic_behaviour_all_at_once() {
-        val testDrive = createTestDrive().also {
-            composeTestRule.setupInteractionModel(it)
+        val testDrive = createTestDrive { testDrive, model ->
+            composeTestRule.setupTestDrive(testDrive, model)
             composeTestRule.mainClock.autoAdvance = false
         }
 
@@ -78,8 +78,8 @@ class KeyframesTest {
 
     @Test
     fun when_passing_segment_threshold_then_no_artefacts() {
-        val testDrive = createTestDrive().also {
-            composeTestRule.setupInteractionModel(it)
+        val testDrive = createTestDrive { testDrive, model ->
+            composeTestRule.setupTestDrive(testDrive, model)
             composeTestRule.mainClock.autoAdvance = false
         }
 
