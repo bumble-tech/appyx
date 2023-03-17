@@ -120,9 +120,9 @@ fun TestDriveExperiment() {
 
 @ExperimentalMaterialApi
 @Composable
-fun <NavTarget : Any> TestDriveUi(
-    testDrive: TestDrive<NavTarget>,
-    model: TestDriveModel<NavTarget>,
+fun <InteractionTarget : Any> TestDriveUi(
+    testDrive: TestDrive<InteractionTarget>,
+    model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -154,7 +154,7 @@ fun <NavTarget : Any> TestDriveUi(
         }
 
         val output = model.output.collectAsState().value
-        val targetState: State<TestDriveModel.State<NavTarget>?> =
+        val targetState: State<TestDriveModel.State<InteractionTarget>?> =
             when (output) {
                 is Keyframes -> output.currentSegmentTargetStateFlow
                     .collectAsState(null)
