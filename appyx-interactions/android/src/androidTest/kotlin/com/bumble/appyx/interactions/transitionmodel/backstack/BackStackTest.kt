@@ -4,10 +4,15 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.waitUntilAnimationEnded
+import com.bumble.appyx.interactions.waitUntilAnimationStarted
 import com.bumble.appyx.interactions.sample.NavTarget
 import com.bumble.appyx.interactions.setupInteractionModel
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.BackstackFader
 import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
 import com.bumble.appyx.transitionmodel.backstack.operation.pop
 import com.bumble.appyx.transitionmodel.backstack.operation.push
@@ -16,17 +21,34 @@ import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-class BackStackSliderTest {
+
+@RunWith(Parameterized::class)
+class BackStackTest(private val testParam: TestParam) {
 
     @get:Rule
     val composeTestRule = createComposeRule()
 
     private lateinit var backStack: BackStack<NavTarget>
 
+    companion object {
+        data class TestParam(
+            val motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>
+        )
+
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data() = arrayOf(
+            TestParam(motionController = { BackStackSlider(it) }),
+            TestParam(motionController = { BackstackFader(it) }),
+        )
+    }
+
     @Test
     fun backStack_with_animations_enabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
-        createBackStackSlider(disableAnimations = false)
+        createBackStack(disableAnimations = false, testParam.motionController)
         composeTestRule.setupInteractionModel(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
@@ -44,7 +66,7 @@ class BackStackSliderTest {
 
     @Test
     fun backStack_with_animations_enabled_does_not_clean_up_in_keyframe_mode_when_element_is_used() {
-        createBackStackSlider(disableAnimations = false)
+        createBackStack(disableAnimations = false, testParam.motionController)
         composeTestRule.setupInteractionModel(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
@@ -61,7 +83,7 @@ class BackStackSliderTest {
 
     @Test
     fun backStack_with_animations_disabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
-        createBackStackSlider(disableAnimations = true)
+        createBackStack(disableAnimations = true, testParam.motionController)
         composeTestRule.setupInteractionModel(backStack)
 
         backStack.push(interactionTarget = NavTarget.Child2)
@@ -74,7 +96,7 @@ class BackStackSliderTest {
 
     @Test
     fun backStack_with_animations_enabled_cleans_destroyed_element_in_immediate_mode_when_animation_finished() {
-        createBackStackSlider(disableAnimations = false)
+        createBackStack(disableAnimations = false, testParam.motionController)
         composeTestRule.setupInteractionModel(backStack)
 
         val pushSpringSpec = spring<Float>()
@@ -86,31 +108,36 @@ class BackStackSliderTest {
             animationSpec = pushSpringSpec
         )
         // all subsequent operations will be in IMMEDIATE mode until settled
-        backStack.push(interactionTarget = NavTarget.Child3, animationSpec = pushSpringSpec)
-        backStack.push(interactionTarget = NavTarget.Child4, animationSpec = pushSpringSpec)
+        backStack.push(
+            interactionTarget = NavTarget.Child3,
+            animationSpec = pushSpringSpec
+        )
+        backStack.push(
+            interactionTarget = NavTarget.Child4,
+            animationSpec = pushSpringSpec
+        )
         backStack.pop(animationSpec = popSpringSpec)
 
         // move clock until animations started
-        composeTestRule.mainClock.advanceTimeUntil {
-            backStack.isAnimating.value
-        }
+        backStack.waitUntilAnimationStarted(composeTestRule)
 
         // wait until animations are finished
-        composeTestRule.mainClock.advanceTimeUntil {
-            !backStack.isAnimating.value
-        }
+        backStack.waitUntilAnimationEnded(composeTestRule)
 
 
         assertEquals(3, backStack.availableElements().value.size)
     }
 
-    private fun createBackStackSlider(disableAnimations: Boolean) {
+    private fun createBackStack(
+        disableAnimations: Boolean,
+        motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>
+    ) {
         backStack = BackStack(
             model = BackStackModel(
                 initialTargets = listOf(NavTarget.Child1),
                 savedStateMap = null
             ),
-            motionController = { BackStackSlider(it) },
+            motionController = motionController,
             scope = CoroutineScope(Dispatchers.Unconfined),
             disableAnimations = disableAnimations
         )

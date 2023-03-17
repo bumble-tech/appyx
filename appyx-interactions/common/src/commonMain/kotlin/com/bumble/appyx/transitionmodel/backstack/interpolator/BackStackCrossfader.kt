@@ -3,9 +3,10 @@ package com.bumble.appyx.transitionmodel.backstack.interpolator
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.state.BaseUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import kotlinx.coroutines.CoroutineScope
@@ -13,17 +14,19 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class BackStackCrossfader<InteractionTarget : Any>(
-    scope: CoroutineScope
+    uiContext: UiContext
 ) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackStackCrossfader.UiState>(
-    scope = scope
+    uiContext = uiContext
 ) {
 
-    override fun defaultUiState(): UiState = UiState()
+    override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(uiContext)
 
     class UiState(
+        val uiContext: UiContext,
         val alpha: Alpha = Alpha(value = 1f),
     ) : BaseUiState<UiState>(
-        listOf(alpha.isAnimating)
+        motionProperties = listOf(alpha),
+        coroutineScope = uiContext.coroutineScope
     ) {
 
         override val modifier: Modifier
@@ -33,7 +36,6 @@ class BackStackCrossfader<InteractionTarget : Any>(
         override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
                 alpha.snapTo(uiState.alpha.value)
-                updateVisibilityState()
             }
         }
 
@@ -46,9 +48,7 @@ class BackStackCrossfader<InteractionTarget : Any>(
                 alpha.animateTo(
                     uiState.alpha.value,
                     spring(springSpec.dampingRatio, springSpec.stiffness)
-                ) {
-                    updateVisibilityState()
-                }
+                )
             }
             a1.await()
         }
@@ -56,19 +56,18 @@ class BackStackCrossfader<InteractionTarget : Any>(
         override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
                 alpha.lerpTo(start.alpha, end.alpha, fraction)
-                updateVisibilityState()
             }
         }
-
-        override fun isVisible() = alpha.value > 0.0f
 
     }
 
     private val visible = UiState(
+        uiContext = uiContext,
         alpha = Alpha(value = 1f)
     )
 
     private val hidden = UiState(
+        uiContext = uiContext,
         alpha = Alpha(value = 0f)
     )
 

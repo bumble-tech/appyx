@@ -8,17 +8,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
-import com.bumble.appyx.interactions.core.ui.state.BaseUiState
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import com.bumble.appyx.interactions.core.ui.state.BaseUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedUiState
 import com.bumble.appyx.withPrevious
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,33 +28,51 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import androidx.compose.animation.core.Animatable as Animatable1
 
 abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState>(
-    private val scope: CoroutineScope,
+    private val uiContext: UiContext,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
 ) : MotionController<InteractionTarget, ModelState> where UiState : BaseUiState<UiState> {
 
-    private val uiStateCache: MutableMap<String, UiState> = mutableMapOf()
-    private val animations: MutableMap<String, Boolean> = mutableMapOf()
-    private val isAnimating: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
-
-    open val geometryMappings: List<Pair<(ModelState) -> Float, Animatable1<Float, AnimationVector1D>>> =
+    open val geometryMappings: List<Pair<(ModelState) -> Float, MotionProperty<Float, AnimationVector1D>>> =
         emptyList()
 
+    private val coroutineScope = uiContext.coroutineScope
+    private val uiStateCache: MutableMap<String, UiState> = mutableMapOf()
+    private val animations: MutableMap<String, Boolean> = mutableMapOf()
+    private val geometryModeAnimatingState: StateFlow<Boolean>
+        get() = if (geometryMappings.isNotEmpty()) {
+            combineState(
+                geometryMappings.map { it.second.isAnimating },
+                uiContext.coroutineScope
+            ) { values ->
+                values.any { it }
+            }
+        } else {
+            MutableStateFlow(false)
+        }
+    private val updateModeAnimatingState = MutableStateFlow(false)
+    private val isAnimatingState: StateFlow<Boolean>
+        get() = updateModeAnimatingState.combineState(
+            geometryModeAnimatingState,
+            uiContext.coroutineScope
+        ) { isGeometryAnimating, isUpdateAnimating ->
+            isGeometryAnimating || isUpdateAnimating
+        }
+
+    protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
 
     private val _finishedAnimations = MutableSharedFlow<Element<InteractionTarget>>()
     override val finishedAnimations: Flow<Element<InteractionTarget>> = _finishedAnimations
 
-    abstract fun defaultUiState(): UiState
+    abstract fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState
 
     override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         currentSpringSpec = springSpec
     }
 
     final override fun isAnimating(): StateFlow<Boolean> =
-        isAnimating
+        isAnimatingState
 
     // TODO extract
     abstract fun ModelState.toUiState(): List<MatchedUiState<InteractionTarget, UiState>>
@@ -62,16 +82,16 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
     ): List<ElementUiModel<InteractionTarget>> {
         val targetProps = update.currentTargetState.toUiState()
 
-        scope.launch {
+        coroutineScope.launch {
             updateGeometry(update)
         }
 
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
-            val elementProps = uiStateCache.getOrPut(t1.element.id) { defaultUiState() }
+            val elementProps = uiStateCache.getOrPut(t1.element.id) { defaultUiState(uiContext, t1.uiState) }
             ElementUiModel(
                 element = t1.element,
-                visibleState = elementProps.visibilityState,
+                visibleState = elementProps.isVisible,
                 animationContainer = @Composable {
                     observeElementAnimationChanges(elementProps, t1)
                     manageAnimations(elementProps, t1, update)
@@ -123,7 +143,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                         if (current && !previous) {
                             // animation started
                             animations[targetProps.element.id] = true
-                            isAnimating.update { true }
+                            updateModeAnimatingState.update { true }
                             Logger.log(
                                 this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is started"
@@ -132,7 +152,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                             // animation finished
                             _finishedAnimations.emit(targetProps.element)
                             animations[targetProps.element.id] = false
-                            isAnimating.update { animations.any { it.value } }
+                            updateModeAnimatingState.update { animations.any { it.value } }
                             Logger.log(
                                 this@BaseMotionController.javaClass.simpleName,
                                 "animation for element ${targetProps.element.id} is finished"
@@ -153,7 +173,6 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                     dampingRatio = currentSpringSpec.dampingRatio
                 )
             ) {
-                updatePropsVisibility()
                 Logger.log(
                     this@BaseMotionController.javaClass.simpleName,
                     "Geometry animateTo (Update) – $targetValue"
@@ -171,7 +190,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
         val fromProps = fromState.toUiState()
         val targetProps = targetState.toUiState()
 
-        scope.launch {
+        coroutineScope.launch {
             segmentProgress.collect {
                 updateGeometry(segment, it)
             }
@@ -180,13 +199,13 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
         // TODO: use a map instead of find
         return targetProps.map { t1 ->
             val t0 = fromProps.find { it.element.id == t1.element.id }!!
-            val elementUiState = uiStateCache.getOrPut(t1.element.id) { defaultUiState() }
+            val elementUiState = uiStateCache.getOrPut(t1.element.id) { defaultUiState(uiContext, null) }
             //Synchronously apply current value to props before they reach composition to avoid jumping between default & current valu
-            elementUiState.lerpTo(scope, t0.uiState, t1.uiState, initialProgress)
+            elementUiState.lerpTo(coroutineScope, t0.uiState, t1.uiState, initialProgress)
 
             ElementUiModel(
                 element = t1.element,
-                visibleState = elementUiState.visibilityState,
+                visibleState = elementUiState.isVisible,
                 animationContainer = @Composable {
                     interpolatedProps(segmentProgress, elementUiState, t0, t1, initialProgress)
                 },
@@ -206,7 +225,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
     ) {
         val progress by segmentProgress.collectAsState(initialProgress)
         LaunchedEffect(progress) {
-            elementProps.lerpTo(scope, from.uiState, to.uiState, progress)
+            elementProps.lerpTo(coroutineScope, from.uiState, to.uiState, progress)
         }
     }
 
@@ -224,7 +243,6 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
-                    updatePropsVisibility()
                     Logger.log(
                         this@BaseMotionController.javaClass.simpleName,
                         "Geometry snapTo (Segment): $targetValue"
@@ -239,7 +257,6 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-                            updatePropsVisibility()
                             Logger.log(
                                 this@BaseMotionController.javaClass.simpleName,
                                 "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
@@ -249,10 +266,6 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, UiState
                 }
             }
         }
-    }
-
-    private fun updatePropsVisibility() {
-        uiStateCache.values.forEach { it.updateVisibilityState() }
     }
 
     private fun geometryTargetValue(

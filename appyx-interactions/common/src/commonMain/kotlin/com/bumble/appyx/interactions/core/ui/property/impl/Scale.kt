@@ -22,6 +22,10 @@ class Scale(
     visibilityThreshold = visibilityThreshold
 ), Interpolatable<Scale> {
 
+    override val visibilityMapper: ((Float) -> Boolean) = { scale ->
+        scale > 0.0f
+    }
+
     override val modifier: Modifier
         get() = Modifier.composed {
             val value by animatable.asState()

@@ -47,6 +47,19 @@ internal inline fun <reified T, R> combineState(
             initialValue = transform(flows.map { it.value }.toTypedArray())
         )
 
+internal inline fun <reified T1, reified T2, R> StateFlow<T1>.combineState(
+    flow: StateFlow<T2>,
+    scope: CoroutineScope,
+    sharingStarted: SharingStarted = SharingStarted.Eagerly,
+    crossinline transform: (T1, T2) -> R,
+): StateFlow<R> =
+    combine(this, flow) { one, two -> transform(one, two) }
+        .stateIn(
+            scope = scope,
+            started = sharingStarted,
+            initialValue = transform(this.value, flow.value)
+        )
+
 internal fun <T> Flow<T>.withPrevious(): Flow<CompareValues<T>> =
     scan(CompareValues<T>()) { previous, current -> previous.combine(current) }
         .filter { it.isInitialized }

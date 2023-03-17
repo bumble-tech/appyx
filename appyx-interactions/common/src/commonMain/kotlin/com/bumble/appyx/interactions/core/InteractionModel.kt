@@ -98,7 +98,6 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val clipToBounds: StateFlow<Boolean> = _clipToBounds
 
-
     init {
         // Before motionController is ready we consider all elements as off-screen
         screenStateJob = scope.launch {
