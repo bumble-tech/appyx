@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.interactions.sample.TestDriveUi
@@ -42,7 +41,6 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
         }
     }
 }
-
 
 fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInteractionModel(
     interactionModel: InteractionModel<InteractionTarget, ModelState>,

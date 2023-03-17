@@ -1,12 +1,9 @@
 package com.bumble.appyx.interactions.sample.testdrive
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.snapshot
 import com.bumble.appyx.interactions.sample.testdrive.helper.createTestDrive
-import com.bumble.appyx.interactions.setupTestDrive
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
 import org.junit.Ignore
 import org.junit.Rule
@@ -24,12 +21,8 @@ class KeyframesToUpdateTest {
     @Ignore("Fix me, this test is flaky on CI")
     @Test
     fun when_in_segment_interrupt_with_update() {
-        val testDrive = createTestDrive(
-            animationSpec = spring(stiffness = Spring.StiffnessVeryLow)
-        ) { testDrive, model ->
-            composeTestRule.setupTestDrive(testDrive, model)
-            composeTestRule.mainClock.autoAdvance = false
-        }
+        val testDrive = composeTestRule.createTestDrive()
+        composeTestRule.mainClock.autoAdvance = false
 
         testDrive.operation(
             operation = Next(Operation.Mode.KEYFRAME)

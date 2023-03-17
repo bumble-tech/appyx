@@ -5,7 +5,6 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.sample.snapshot
 import com.bumble.appyx.interactions.sample.testdrive.helper.createTestDrive
-import com.bumble.appyx.interactions.setupTestDrive
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestName
@@ -20,9 +19,7 @@ class GesturesTest {
 
     @Test
     fun drag_to_middle() {
-        val testDrive = createTestDrive { testDrive, model ->
-            composeTestRule.setupTestDrive(testDrive, model)
-        }
+        val testDrive = composeTestRule.createTestDrive()
 
         with(composeTestRule.density) {
             val x = 100.dp.toPx()
@@ -34,9 +31,7 @@ class GesturesTest {
 
     @Test
     fun drag_past_maximum_value() {
-        val testDrive = createTestDrive { testDrive, model ->
-            composeTestRule.setupTestDrive(testDrive, model)
-        }
+        val testDrive = composeTestRule.createTestDrive()
 
         with(composeTestRule.density) {
             val x = 1000.dp.toPx()
@@ -49,9 +44,7 @@ class GesturesTest {
 
     @Test
     fun when_released_before_threshold_snaps_to_origin() {
-        val testDrive = createTestDrive { testDrive, model ->
-            composeTestRule.setupTestDrive(testDrive, model)
-        }
+        val testDrive = composeTestRule.createTestDrive()
 
         with(composeTestRule.density) {
             val x = 50.dp.toPx()
@@ -64,9 +57,7 @@ class GesturesTest {
 
     @Test
     fun when_released_after_threshold_snaps_to_destination() {
-        val testDrive = createTestDrive { testDrive, model ->
-            composeTestRule.setupTestDrive(testDrive, model)
-        }
+        val testDrive = composeTestRule.createTestDrive()
 
         with(composeTestRule.density) {
             val x = 100.dp.toPx()
