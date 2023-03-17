@@ -159,7 +159,6 @@ fun <InteractionTarget : Any> TestDriveUi(
                 is Keyframes -> output.currentSegmentTargetStateFlow
                     .collectAsState(null)
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
-                else -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
         val targetProps = targetState.value?.elementState?.toUiState(
             uiContext = UiContext(zeroSizeTransitionBounds, rememberCoroutineScope())
@@ -176,7 +175,6 @@ fun <InteractionTarget : Any> TestDriveUi(
                     text = when (output) {
                         is Keyframes -> output.currentIndex.toString()
                         is Update -> "X"
-                        else -> "X"
                     },
                     fontSize = 24.sp,
                     color = Color.White
