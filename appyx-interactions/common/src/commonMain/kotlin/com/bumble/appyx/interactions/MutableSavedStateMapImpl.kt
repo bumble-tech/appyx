@@ -1,6 +1,7 @@
-package com.bumble.appyx.navigation.state
+package com.bumble.appyx.interactions
 
 import androidx.compose.runtime.saveable.SaverScope
+import com.bumble.appyx.interactions.core.SavedStateMap
 
 class MutableSavedStateMapImpl(
     private val map: MutableMap<String, Any?> = HashMap(),
@@ -26,8 +27,10 @@ class MutableSavedStateMapImpl(
     }
 
     private fun checkState() {
-        check(!lock) { "This MutableSavedStateMap has already dumped its state, it is " +
-                "meaningless to write anything anymore" }
+        check(!lock) {
+            "This MutableSavedStateMap has already dumped its state, it is " +
+                    "meaningless to write anything anymore"
+        }
     }
 
     private fun checkKey(key: String, value: Any?) {

@@ -1,5 +1,7 @@
 package com.bumble.appyx.navigation.node
 
+import Plugin
+import SavesInstanceState
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
@@ -28,12 +30,10 @@ import com.bumble.appyx.navigation.plugin.BackPressHandler
 import com.bumble.appyx.navigation.plugin.Destroyable
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
-import com.bumble.appyx.navigation.plugin.Plugin
-import com.bumble.appyx.navigation.plugin.SavesInstanceState
 import com.bumble.appyx.navigation.plugin.UpNavigationHandler
 import com.bumble.appyx.navigation.plugin.plugins
-import com.bumble.appyx.navigation.state.MutableSavedStateMap
-import com.bumble.appyx.navigation.state.MutableSavedStateMapImpl
+import com.bumble.appyx.interactions.MutableSavedStateMap
+import com.bumble.appyx.interactions.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.state.SavedStateMap
 import kotlinx.coroutines.withContext
 import java.util.UUID
@@ -157,7 +157,7 @@ open class Node(
                 if (!plugin.isCorrect()) {
                     Appyx.reportException(
                         IllegalStateException(
-                            "Plugin $plugin has implementation for both BackPressHandler properties, implement only one"
+                            "Plugins.kt $plugin has implementation for both BackPressHandler properties, implement only one"
                         )
                     )
                 }

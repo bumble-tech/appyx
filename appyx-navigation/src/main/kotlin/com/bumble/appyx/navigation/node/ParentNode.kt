@@ -1,5 +1,6 @@
 package com.bumble.appyx.navigation.node
 
+import Plugin
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
@@ -26,8 +27,7 @@ import com.bumble.appyx.navigation.composable.ChildRenderer
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
-import com.bumble.appyx.navigation.plugin.Plugin
-import com.bumble.appyx.navigation.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.MutableSavedStateMap
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -49,7 +49,7 @@ abstract class ParentNode<NavTarget : Any>(
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + childAware
+    plugins = plugins + interactionModel.transitionModel() + childAware
 ), Resolver<NavTarget> {
 
     // TODO permament model

@@ -57,6 +57,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         backPressStrategy.init(this, model)
     }
 
+    fun transitionModel() = model
+
     private var motionControllerObserverJob: Job? = null
     private var _motionController: MotionController<InteractionTarget, ModelState>? = null
 

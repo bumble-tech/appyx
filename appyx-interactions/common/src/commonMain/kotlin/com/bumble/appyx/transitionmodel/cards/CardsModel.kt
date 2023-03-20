@@ -2,6 +2,7 @@ package com.bumble.appyx.transitionmodel.cards
 
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.Queued
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.BottomCard
@@ -9,7 +10,10 @@ import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.
 
 class CardsModel<InteractionTarget : Any>(
     initialItems: List<InteractionTarget> = listOf(),
-) : BaseTransitionModel<InteractionTarget, CardsModel.State<InteractionTarget>>() {
+    savedStateMap: SavedStateMap?,
+) : BaseTransitionModel<InteractionTarget, CardsModel.State<InteractionTarget>>(
+    savedStateMap = savedStateMap
+) {
 
     data class State<InteractionTarget>(
         val votedCards: List<Card.InvisibleCard<InteractionTarget>> = emptyList(),

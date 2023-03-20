@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.state
+package com.bumble.appyx.interactions
 
 import androidx.compose.runtime.saveable.SaverScope
 

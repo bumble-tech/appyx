@@ -2,6 +2,7 @@ package com.bumble.appyx.transitionmodel.spotlight
 
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -9,8 +10,8 @@ import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementSt
 
 class SpotlightModel<InteractionTarget : Any>(
     items: List<InteractionTarget>,
-    initialActiveIndex: Float = 0f
-//    savedStateMap: SavedStateMap?,
+    initialActiveIndex: Float = 0f,
+    savedStateMap: SavedStateMap?,
 //    key: String = KEY_NAV_MODEL,
 //    backPressHandler: BackPressHandlerStrategy<InteractionTarget, State> = GoToDefault(
 //        initialActiveIndex
@@ -22,7 +23,7 @@ class SpotlightModel<InteractionTarget : Any>(
 //    operationStrategy = operationStrategy,
 //    screenResolver = screenResolver,
 //    finalState = null,
-//    savedStateMap = savedStateMap,
+    savedStateMap = savedStateMap,
 //    key = key
 ) {
 

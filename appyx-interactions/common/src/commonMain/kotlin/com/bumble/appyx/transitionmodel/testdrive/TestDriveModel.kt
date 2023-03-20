@@ -2,12 +2,16 @@ package com.bumble.appyx.transitionmodel.testdrive
 
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
 
 class TestDriveModel<InteractionTarget : Any>(
-    val element: InteractionTarget
-) : BaseTransitionModel<InteractionTarget, TestDriveModel.State<InteractionTarget>>() {
+    val element: InteractionTarget,
+    savedStateMap: SavedStateMap?
+) : BaseTransitionModel<InteractionTarget, TestDriveModel.State<InteractionTarget>>(
+    savedStateMap = savedStateMap
+) {
 
     data class State<InteractionTarget>(
         val element: Element<InteractionTarget>,

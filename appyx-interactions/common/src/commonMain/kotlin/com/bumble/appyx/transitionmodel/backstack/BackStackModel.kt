@@ -19,7 +19,7 @@ class BackStackModel<InteractionTarget : Any>(
 //    backPressHandler = backPressHandler,
 //    screenResolver = screenResolver,
 //    operationStrategy = operationStrategy,
-//    savedStateMap = savedStateMap,
+    savedStateMap = savedStateMap,
 //    key = key,
 ) {
     data class State<InteractionTarget>(

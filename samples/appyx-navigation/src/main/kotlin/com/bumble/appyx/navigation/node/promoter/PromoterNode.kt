@@ -40,7 +40,9 @@ import kotlinx.parcelize.Parcelize
 class PromoterNode(
     buildContext: BuildContext,
     private val promoter: Promoter<NavTarget> = Promoter(
-        model = PromoterModel(),
+        model = PromoterModel(
+            savedStateMap = buildContext.savedStateMap
+        ),
         motionController = {
             PromoterMotionController(
                 uiContext = it,

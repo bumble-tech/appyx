@@ -6,7 +6,7 @@ import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.build
-import com.bumble.appyx.navigation.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.MutableSavedStateMap
 import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import kotlinx.coroutines.flow.MutableStateFlow
