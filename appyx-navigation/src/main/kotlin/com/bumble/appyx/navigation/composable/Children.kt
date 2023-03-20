@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.InteractionModel
@@ -56,7 +56,7 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
-        uiContext?.let {  interactionModel.updateContext(it) }
+        uiContext?.let { interactionModel.updateContext(it) }
     }
     Box(
         modifier = modifier
@@ -69,7 +69,7 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
                     this
                 }
             }
-            .onGloballyPositioned {
+            .onPlaced {
                 uiContext = UiContext(
                     TransitionBounds(
                         density = density,
