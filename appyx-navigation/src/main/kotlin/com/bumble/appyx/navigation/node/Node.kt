@@ -157,7 +157,7 @@ open class Node(
                 if (!plugin.isCorrect()) {
                     Appyx.reportException(
                         IllegalStateException(
-                            "Plugins.kt $plugin has implementation for both BackPressHandler properties, implement only one"
+                            "Plugin $plugin has implementation for both BackPressHandler properties, implement only one"
                         )
                     )
                 }
