@@ -2,7 +2,7 @@ package com.bumble.appyx.navigation.lifecycle
 
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleRegistry
-import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.model.InteractionModel
 import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.nodeOrNull

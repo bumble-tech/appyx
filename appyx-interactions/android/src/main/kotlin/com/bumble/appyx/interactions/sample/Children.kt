@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -36,7 +36,7 @@ import kotlin.math.roundToInt
 
 @Composable
 fun <NavTarget : Any, NavState : Any> Children(
-    interactionModel: InteractionModel<NavTarget, NavState>,
+    interactionModel: BaseInteractionModel<NavTarget, NavState>,
     modifier: Modifier = Modifier,
     element: @Composable (ElementUiModel<NavTarget>) -> Unit = {
         Element(elementUiModel = it)

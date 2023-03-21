@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.model
 
 import DefaultAnimationSpec
 import DisableAnimations
@@ -7,6 +7,7 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
@@ -42,7 +43,7 @@ import kotlinx.coroutines.launch
 
 
 // TODO save/restore state
-open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
+open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
@@ -52,7 +53,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : HasDefaultAnimationSpec<Float>, Draggable, UiContextAware {
+) : InteractionModel<InteractionTarget, ModelState>, HasDefaultAnimationSpec<Float>, Draggable,
+    UiContextAware {
     init {
         backPressStrategy.init(this, model)
     }
@@ -92,8 +94,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
 
     private var screenStateJob: Job
     private val _screenState: MutableStateFlow<ScreenState<InteractionTarget>> =
-        MutableStateFlow(ScreenState(offScreen = model.availableElements().value))
-    val screenState: StateFlow<ScreenState<InteractionTarget>> = _screenState
+        MutableStateFlow(ScreenState(offScreen = model.elements.value))
+    override val screenState: StateFlow<ScreenState<InteractionTarget>> = _screenState
 
     private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val clipToBounds: StateFlow<Boolean> = _clipToBounds
@@ -102,7 +104,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         // Before motionController is ready we consider all elements as off-screen
         screenStateJob = scope.launch {
             model
-                .availableElements()
+                .elements
                 .collect {
                     _screenState.emit(ScreenState(offScreen = it))
                 }
@@ -135,13 +137,13 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    fun onAddedToComposition(scope: CoroutineScope) {
+    override fun onAddedToComposition(scope: CoroutineScope) {
         animationScope = scope
         createAnimatedInputSource(scope)
         createdDebugInputSource(scope)
     }
 
-    fun onRemovedFromComposition() {
+    override fun onRemovedFromComposition() {
         // TODO finish unfinished transitions
         if (isDebug) debug?.stopModel() else animated?.stopModel()
         animationScope?.cancel()
@@ -214,7 +216,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    fun availableElements(): StateFlow<Set<Element<InteractionTarget>>> = model.availableElements()
+    override val elements: StateFlow<Set<Element<InteractionTarget>>>
+        get() = model.elements
 
     fun operation(
         operation: Operation<ModelState>,
@@ -277,7 +280,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     // TODO plugin?!
-    fun destroy() {
+    override fun destroy() {
         motionControllerObserverJob?.cancel()
         screenStateJob.cancel()
         scope.cancel()
@@ -287,7 +290,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         debug?.setNormalisedProgress(progress)
     }
 
-    open fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
+    override fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
-    open fun canHandeBackPress(): Flow<Boolean> = backPressStrategy.canHandleBackPress
+    override fun canHandeBackPress(): StateFlow<Boolean> = backPressStrategy.canHandleBackPress
 }

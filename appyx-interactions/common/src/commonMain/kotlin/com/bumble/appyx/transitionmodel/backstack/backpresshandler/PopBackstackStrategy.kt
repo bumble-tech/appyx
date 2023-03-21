@@ -1,15 +1,21 @@
 package com.bumble.appyx.transitionmodel.backstack.backpresshandler
 
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.mapState
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.operation.Pop
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-class PopBackstackStrategy<InteractionTarget : Any> :
+class PopBackstackStrategy<InteractionTarget : Any>(val scope: CoroutineScope) :
     BaseBackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>>() {
-    override val canHandleBackPress: Flow<Boolean> by lazy {
-        transitionModel.output.map { it.currentTargetState }.map { it.stashed.isNotEmpty() }
+
+    override val canHandleBackPress: StateFlow<Boolean> by lazy {
+        MutableStateFlow(false)
+        transitionModel.output.mapState(scope) { output ->
+            output.currentTargetState.stashed.isNotEmpty()
+        }
     }
 
     override fun handleBackPress(): Boolean {

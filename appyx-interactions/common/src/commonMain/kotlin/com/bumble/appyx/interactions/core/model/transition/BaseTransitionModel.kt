@@ -30,8 +30,8 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
 
     abstract fun ModelState.availableElements(): Set<Element<InteractionTarget>>
 
-    override fun availableElements(): StateFlow<Set<Element<InteractionTarget>>> =
-        output
+    override val elements: StateFlow<Set<Element<InteractionTarget>>>
+        get() = output
             .map { it.currentTargetState.availableElements() }
             .stateIn(scope, SharingStarted.Eagerly, initialState.availableElements())
 

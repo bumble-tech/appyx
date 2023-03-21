@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
-import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 
 // TODO consider where to keep these
@@ -19,7 +19,7 @@ val DefaultAnimationSpec: SpringSpec<Float> = spring()
 @Composable
 @Suppress("UnnecessaryComposedModifier")
 fun <InteractionTarget : Any, ModelState : Any> Modifier.gestureModifier(
-    interactionModel: InteractionModel<InteractionTarget, ModelState>,
+    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     key: Any,
     gestureSpec: GestureSpec = GestureSpec()
 ) = this.composed {
