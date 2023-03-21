@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.plugin
 
-import Plugin
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.node.Node
 
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
@@ -49,5 +49,4 @@ interface BackPressHandler : Plugin {
             if (isEnabled) callback.handleOnBackPressed()
             isEnabled
         }
-
 }

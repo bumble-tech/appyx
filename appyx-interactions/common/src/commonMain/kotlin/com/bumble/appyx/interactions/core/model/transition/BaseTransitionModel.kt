@@ -1,12 +1,12 @@
 package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.Logger
-import com.bumble.appyx.interactions.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.SavedStateMap
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.*
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Output
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -52,7 +52,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
     }
 
     override fun saveInstanceState(state: MutableSavedStateMap) {
-        state[key] = this.state.value
+        state[key] = this.output.value
     }
 
     override val output: StateFlow<Output<ModelState>> by lazy {

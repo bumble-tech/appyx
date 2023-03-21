@@ -18,6 +18,8 @@ import com.bumble.appyx.interactions.core.model.progress.InstantProgressControll
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
+import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -52,12 +54,13 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : HasDefaultAnimationSpec<Float>, Draggable, UiContextAware {
+) : HasDefaultAnimationSpec<Float>,
+    Draggable,
+    UiContextAware,
+    SavesInstanceState {
     init {
         backPressStrategy.init(this, model)
     }
-
-    fun transitionModel() = model
 
     private var motionControllerObserverJob: Job? = null
     private var _motionController: MotionController<InteractionTarget, ModelState>? = null
@@ -292,4 +295,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     open fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
     open fun canHandeBackPress(): Flow<Boolean> = backPressStrategy.canHandleBackPress
+
+    override fun saveInstanceState(state: MutableSavedStateMap) {
+        model.saveInstanceState(state)
+    }
 }

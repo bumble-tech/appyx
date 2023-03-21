@@ -36,7 +36,7 @@ class ContainerNode(
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Selector),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = buildContext.savedStateMap,
         ),
         motionController = { BackStackSlider(it) }
     )

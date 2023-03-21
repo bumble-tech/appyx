@@ -1,16 +1,18 @@
 package com.bumble.appyx.transitionmodel.promoter
 
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.SavedStateMap
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel.State.ElementState.DESTROYED
 
 class PromoterModel<InteractionTarget : Any>(
-    savedStateMap : SavedStateMap?,
+    savedStateMap: SavedStateMap?,
+//    key: String = KEY_PROMOTER_MODEL
 ) : BaseTransitionModel<InteractionTarget, PromoterModel.State<InteractionTarget>>(
 //    screenResolver = PromoterOnScreenResolver,
 //    finalState = DESTROYED,
-    savedStateMap = savedStateMap
+    savedStateMap = savedStateMap,
+//    key = key
 ) {
     data class State<InteractionTarget>(
         val elements: List<Pair<Element<InteractionTarget>, ElementState>>

@@ -9,7 +9,9 @@ import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 
 class TestTransitionModel<InteractionTarget : Any>(
     initialElements: List<InteractionTarget>,
-) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>() {
+) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
+    savedStateMap = null
+) {
     data class State<InteractionTarget>(
         val elements: List<Element<InteractionTarget>>
         )

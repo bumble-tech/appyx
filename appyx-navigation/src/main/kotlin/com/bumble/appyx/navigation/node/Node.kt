@@ -1,7 +1,5 @@
 package com.bumble.appyx.navigation.node
 
-import Plugin
-import SavesInstanceState
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
@@ -16,6 +14,8 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.BuildConfig
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
@@ -32,11 +32,11 @@ import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import com.bumble.appyx.navigation.plugin.UpNavigationHandler
 import com.bumble.appyx.navigation.plugin.plugins
-import com.bumble.appyx.interactions.MutableSavedStateMap
-import com.bumble.appyx.interactions.MutableSavedStateMapImpl
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.state.SavedStateMap
-import kotlinx.coroutines.withContext
 import java.util.UUID
+import kotlinx.coroutines.withContext
 
 @Suppress("TooManyFunctions")
 @Stable

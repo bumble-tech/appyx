@@ -1,9 +1,9 @@
 package com.bumble.appyx.transitionmodel.cards
 
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.Queued
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.BottomCard
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.TopCard
@@ -12,7 +12,7 @@ class CardsModel<InteractionTarget : Any>(
     initialItems: List<InteractionTarget> = listOf(),
     savedStateMap: SavedStateMap?,
 ) : BaseTransitionModel<InteractionTarget, CardsModel.State<InteractionTarget>>(
-    savedStateMap = savedStateMap
+    savedStateMap = savedStateMap,
 ) {
 
     data class State<InteractionTarget>(
@@ -88,6 +88,6 @@ class CardsModel<InteractionTarget : Any>(
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         (votedCards + visibleCards + queued).map { it.element }.toSet()
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> = setOf()
-
+    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
+        setOf()
 }

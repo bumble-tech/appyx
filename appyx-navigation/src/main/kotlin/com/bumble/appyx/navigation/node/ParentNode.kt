@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node
 
-import Plugin
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
@@ -11,8 +10,9 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -27,15 +27,15 @@ import com.bumble.appyx.navigation.composable.ChildRenderer
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
-import com.bumble.appyx.interactions.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import kotlin.coroutines.resume
+import kotlin.reflect.KClass
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
-import kotlin.coroutines.resume
-import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
@@ -49,7 +49,7 @@ abstract class ParentNode<NavTarget : Any>(
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + interactionModel.transitionModel() + childAware
+    plugins = plugins + interactionModel + childAware
 ), Resolver<NavTarget> {
 
     // TODO permament model

@@ -1,4 +1,6 @@
-import com.bumble.appyx.interactions.MutableSavedStateMap
+package com.bumble.appyx.interactions.core.plugin
+
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 
 /**
  * Bundle for future state restoration.
