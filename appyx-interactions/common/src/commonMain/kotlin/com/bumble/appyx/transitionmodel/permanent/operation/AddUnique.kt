@@ -10,19 +10,20 @@ import com.bumble.appyx.transitionmodel.permanent.PermanentModel
 
 @Parcelize
 data class AddUnique<InteractionTarget : Any>(
-    private val navTarget: @RawValue InteractionTarget,
+    private val interactionTarget: @RawValue InteractionTarget,
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<PermanentModel.State<InteractionTarget>>() {
 
 
-    override fun isApplicable(state: PermanentModel.State<InteractionTarget>): Boolean = true
+    override fun isApplicable(state: PermanentModel.State<InteractionTarget>): Boolean =
+        !state.elements.any { it.interactionTarget == interactionTarget }
 
     override fun createFromState(baseLineState: PermanentModel.State<InteractionTarget>): PermanentModel.State<InteractionTarget> =
         baseLineState
 
     override fun createTargetState(fromState: PermanentModel.State<InteractionTarget>): PermanentModel.State<InteractionTarget> =
         fromState.copy(
-            elements = fromState.elements + navTarget.asElement()
+            elements = fromState.elements + interactionTarget.asElement()
         )
 }
 

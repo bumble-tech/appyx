@@ -131,7 +131,6 @@ open class Node(
             LocalLifecycleOwner provides this,
         ) {
             DerivedSetup()
-            HandleBackPress()
             View(modifier)
         }
     }
