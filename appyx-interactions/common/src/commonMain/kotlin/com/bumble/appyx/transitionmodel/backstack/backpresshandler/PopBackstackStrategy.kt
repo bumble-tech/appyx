@@ -5,14 +5,12 @@ import com.bumble.appyx.mapState
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.operation.Pop
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class PopBackstackStrategy<InteractionTarget : Any>(val scope: CoroutineScope) :
     BaseBackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>>() {
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy {
-        MutableStateFlow(false)
         transitionModel.output.mapState(scope) { output ->
             output.currentTargetState.stashed.isNotEmpty()
         }
