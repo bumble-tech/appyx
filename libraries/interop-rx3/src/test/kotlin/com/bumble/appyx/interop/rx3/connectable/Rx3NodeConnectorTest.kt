@@ -26,7 +26,8 @@ internal class Rx3NodeConnectorTest {
     private val lifecycle = object : Lifecycle() {
 
         private val lifecycleOwner = object : LifecycleOwner {
-            override fun getLifecycle(): Lifecycle = LifecycleRegistry(this)
+            override val lifecycle: Lifecycle
+                get() = LifecycleRegistry(this)
         }
 
         override fun addObserver(observer: LifecycleObserver) {
@@ -39,7 +40,8 @@ internal class Rx3NodeConnectorTest {
             // Deliberately empty
         }
 
-        override fun getCurrentState() = lifecycleState
+        override val currentState: State
+            get() = lifecycleState
     }
 
     sealed class Output {
