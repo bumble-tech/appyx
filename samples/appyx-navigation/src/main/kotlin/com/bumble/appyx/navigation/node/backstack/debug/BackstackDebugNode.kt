@@ -41,13 +41,15 @@ class BackstackDebugNode(
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = buildContext.savedStateMap,
+            key = BackstackDebugNode::class.java.name
         ),
         motionController = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    interactionModel = backStack,
+    key = BackstackDebugNode::class.java.name
 ) {
 
     init {

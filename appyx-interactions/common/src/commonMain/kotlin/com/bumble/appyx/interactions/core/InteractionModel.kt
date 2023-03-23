@@ -26,6 +26,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContextAware
 import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.visitor.Visitor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -290,4 +291,8 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     open fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
     open fun canHandeBackPress(): Flow<Boolean> = backPressStrategy.canHandleBackPress
+
+    fun accept(visitor: Visitor) {
+        model.accept(visitor)
+    }
 }

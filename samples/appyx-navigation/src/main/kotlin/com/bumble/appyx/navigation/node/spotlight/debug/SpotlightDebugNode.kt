@@ -41,14 +41,17 @@ class SpotlightDebugNode(
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it + 1) },
-            initialActiveIndex = 0f
+            initialActiveIndex = 0f,
+            key = SpotlightDebugNode::class.java.name,
+            savedStateMap = buildContext.savedStateMap
         ),
         motionController = { SpotlightSlider(it) },
         isDebug = true
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    interactionModel = spotlight
+    interactionModel = spotlight,
+    key = SpotlightDebugNode::class.java.name
 ) {
 
     init {

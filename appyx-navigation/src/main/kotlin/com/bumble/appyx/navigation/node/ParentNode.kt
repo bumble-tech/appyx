@@ -41,16 +41,22 @@ import kotlin.reflect.KClass
 @Stable
 abstract class ParentNode<NavTarget : Any>(
     val interactionModel: InteractionModel<NavTarget, *>,
+    key: String = ParentNode::class.java.name,
     buildContext: BuildContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
+    stateVisitor: SavedStateVisitor<NavTarget, *> = SavedStateVisitor(
+        key = key,
+        interactionModel = interactionModel
+    )
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + childAware
+    plugins = plugins + stateVisitor + childAware
 ), Resolver<NavTarget> {
+
 
     // TODO permament model
 //    private val permanentNavModel = PermanentNavModel<NavTarget>(
@@ -304,5 +310,4 @@ abstract class ParentNode<NavTarget : Any>(
             invoke(modifier = Modifier)
         }
     }
-
 }

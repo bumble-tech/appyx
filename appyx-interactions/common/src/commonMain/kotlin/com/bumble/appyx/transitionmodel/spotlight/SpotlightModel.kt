@@ -1,17 +1,18 @@
 package com.bumble.appyx.transitionmodel.spotlight
 
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
 
 class SpotlightModel<InteractionTarget : Any>(
     items: List<InteractionTarget>,
-    initialActiveIndex: Float = 0f
-//    savedStateMap: SavedStateMap?,
-//    key: String = KEY_NAV_MODEL,
+    initialActiveIndex: Float = 0f,
+    savedStateMap: SavedStateMap? = null,
+    key: String = SpotlightModel::class.java.name,
 //    backPressHandler: BackPressHandlerStrategy<InteractionTarget, State> = GoToDefault(
 //        initialActiveIndex
 //    ),
@@ -22,8 +23,8 @@ class SpotlightModel<InteractionTarget : Any>(
 //    operationStrategy = operationStrategy,
 //    screenResolver = screenResolver,
 //    finalState = null,
-//    savedStateMap = savedStateMap,
-//    key = key
+    savedStateMap = savedStateMap,
+    key = key
 ) {
 
     data class State<InteractionTarget>(
@@ -68,7 +69,7 @@ class SpotlightModel<InteractionTarget : Any>(
         return copy(positions = newPositions)
     }
 
-    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget>  {
+    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> {
         val newPositions = positions.map { position ->
             val newElements = position
                 .elements

@@ -45,13 +45,16 @@ class SpotlightNode(
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it) },
-            initialActiveIndex = 0f
+            initialActiveIndex = 0f,
+            key = SpotlightNode::class.java.name,
+            savedStateMap = buildContext.savedStateMap
         ),
         motionController = { SpotlightSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    interactionModel = spotlight
+    interactionModel = spotlight,
+    key = SpotlightNode::class.java.name
 ) {
     private val newItems = List(7) { NavTarget.Child(it * 3) }
 

@@ -13,14 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.NavTarget
-import com.bumble.appyx.navigation.ui.TextButton
-import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.NavTarget
 import com.bumble.appyx.navigation.node.node
+import com.bumble.appyx.navigation.ui.TextButton
+import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.BackstackFader
@@ -34,13 +34,15 @@ class BackStackExamplesNode(
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.BackStackPicker),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = buildContext.savedStateMap,
+            key = BackStackExamplesNode::class.java.name
         ),
         motionController = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    interactionModel = backStack,
+    key = BackStackExamplesNode::class.java.name
 ) {
 
     sealed class NavTarget : Parcelable {

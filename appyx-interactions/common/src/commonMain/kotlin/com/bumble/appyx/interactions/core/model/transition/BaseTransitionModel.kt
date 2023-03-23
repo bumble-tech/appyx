@@ -2,9 +2,12 @@ package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.*
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Output
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
+import com.bumble.appyx.interactions.core.visitor.Visitor
+import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,11 +17,12 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
-import kotlin.coroutines.EmptyCoroutineContext
 
 @SuppressWarnings("UnusedPrivateMember")
 abstract class BaseTransitionModel<InteractionTarget, ModelState>(
-    protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
+    protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
+    private val key: String = KEY_TRANSITION_MODEL,
+    private val savedStateMap: SavedStateMap?
 ) : TransitionModel<InteractionTarget, ModelState> {
     abstract val initialState: ModelState
 
@@ -35,13 +39,20 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
             .map { it.currentTargetState.availableElements() }
             .stateIn(scope, SharingStarted.Eagerly, initialState.availableElements())
 
+    private fun SavedStateMap.restoreHistory() =
+        this[key] as? Output<ModelState>
+
     private val state: MutableStateFlow<Output<ModelState>> by lazy {
         MutableStateFlow(
-            Update(
+            savedStateMap?.restoreHistory() ?: Update(
                 currentTargetState = initialState,
                 animate = false
             )
         )
+    }
+
+    override fun accept(visitor: Visitor) {
+        visitor.visit(this)
     }
 
     override val output: StateFlow<Output<ModelState>> by lazy {
@@ -220,6 +231,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
     }
 
     private companion object {
-        private val TAG = "BaseTransitionModel"
+        private const val TAG = "BaseTransitionModel"
+        private const val KEY_TRANSITION_MODEL = "TransitionModel"
     }
 }

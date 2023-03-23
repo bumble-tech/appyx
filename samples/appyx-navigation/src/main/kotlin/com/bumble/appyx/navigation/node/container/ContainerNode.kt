@@ -36,14 +36,16 @@ class ContainerNode(
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Selector),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = buildContext.savedStateMap,
+            key = ContainerNode::class.java.name
         ),
         motionController = { BackStackSlider(it) }
     )
 
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    interactionModel = backStack,
+    key = ContainerNode::class.java.name
 ) {
     sealed class NavTarget : Parcelable {
         @Parcelize

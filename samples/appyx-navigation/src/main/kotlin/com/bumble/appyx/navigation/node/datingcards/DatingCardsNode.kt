@@ -28,14 +28,18 @@ class DatingCardsNode(
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
                     NavTarget.ProfileCard(it)
-                }),
+                },
+                savedStateMap = buildContext.savedStateMap,
+                key = DatingCardsNode::class.java.name
+            ),
             motionController = { CardsMotionController(it) },
             gestureFactory = { CardsMotionController.Gestures(it) },
         )
 
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    interactionModel = cards
+    interactionModel = cards,
+    key = DatingCardsNode::class.java.name
 ) {
 
     sealed class NavTarget : Parcelable {

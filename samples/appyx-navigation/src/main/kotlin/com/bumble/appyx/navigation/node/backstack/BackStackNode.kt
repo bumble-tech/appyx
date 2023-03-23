@@ -35,8 +35,8 @@ import com.bumble.appyx.transitionmodel.backstack.operation.newRoot
 import com.bumble.appyx.transitionmodel.backstack.operation.pop
 import com.bumble.appyx.transitionmodel.backstack.operation.push
 import com.bumble.appyx.transitionmodel.backstack.operation.replace
-import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
+import kotlinx.parcelize.Parcelize
 
 
 class BackStackNode(
@@ -45,13 +45,15 @@ class BackStackNode(
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = buildContext.savedStateMap,
+            key = BackStackNode::class.java.name
         ),
         motionController = motionController
     )
 ) : ParentNode<BackStackNode.NavTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    interactionModel = backStack,
+    key = BackStackNode::class.java.name
 ) {
     sealed class NavTarget : Parcelable {
         @Parcelize
