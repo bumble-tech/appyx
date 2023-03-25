@@ -1,5 +1,6 @@
 package com.bumble.appyx.interop.rx3.connectable
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.core.lifecycle.subscribe
 import com.jakewharton.rxrelay3.PublishRelay
@@ -53,6 +54,7 @@ class NodeConnector<Input, Output : Any>(
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun switchToExhaust() {
         intake.subscribe { exhaust.accept(it) }
         cacheSubscription.dispose()

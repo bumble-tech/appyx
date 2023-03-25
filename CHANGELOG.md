@@ -2,6 +2,8 @@
 
 ## Pending changes
 
+- [#376](https://github.com/bumble-tech/appyx/issues/376) – **Changed**: Androidx lifecycle version updated to 2.6.1.
+- [#376](https://github.com/bumble-tech/appyx/issues/376) – **Updated**: Kotlin and Compose compiler version updated to 1.8.10 to align kotlin version used in androidx lifecycle  
 - [#375](https://github.com/bumble-tech/appyx/issues/375) – **Fixed**: SaveableStateHolder does no longer save state for destroyed elements
 
 ---

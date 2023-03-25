@@ -8,7 +8,6 @@ import androidx.lifecycle.LifecycleObserver
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.build
-import com.bumble.appyx.core.plugin.NodeLifecycleAware
 import com.bumble.appyx.testing.junit4.util.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
@@ -32,7 +31,8 @@ class NodeLifecycleAwareTest {
             // no-op
         }
 
-        override fun getCurrentState() = State.DESTROYED
+        override val currentState: State = State.DESTROYED
+
     }
 
     private val nodeLifecycleAwarePlugin = object : NodeLifecycleAware {
