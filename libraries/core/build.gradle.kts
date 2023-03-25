@@ -40,13 +40,13 @@ dependencies {
     api(libs.compose.animation.core)
     api(libs.compose.runtime)
     api(libs.androidx.appcompat)
+    api(libs.kotlin.coroutines.android)
 
     implementation(composeBom)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.foundation.layout)
 
-    runtimeOnly(libs.kotlin.coroutines.android)
 
     testImplementation(project(":libraries:testing-junit4"))
     testImplementation(libs.androidx.arch.core.testing)
