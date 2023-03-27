@@ -2,10 +2,18 @@
 
 ## Pending changes
 
+–
+
+---
+
+## 1.1.0
+
 - [#383](https://github.com/bumble-tech/appyx/pull/383) – **Changed**: Removed deprecated methods in Node, ParentNode and CombinedHandler classes
 - [#376](https://github.com/bumble-tech/appyx/issues/376) – **Changed**: Androidx lifecycle version updated to 2.6.1.
 - [#376](https://github.com/bumble-tech/appyx/issues/376) – **Updated**: Kotlin and Compose compiler version updated to 1.8.10 to align kotlin version used in androidx lifecycle  
 - [#375](https://github.com/bumble-tech/appyx/issues/375) – **Fixed**: SaveableStateHolder does no longer save state for destroyed elements
+
+<div style="text-align: center"><small>27 Mar 2023</small></div>
 
 ---
 
