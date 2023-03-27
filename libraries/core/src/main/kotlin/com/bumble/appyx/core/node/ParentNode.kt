@@ -169,15 +169,6 @@ abstract class ParentNode<NavTarget : Any>(
         }
     }
 
-    @Deprecated(
-        replaceWith = ReplaceWith("attachChild(action"),
-        message = "Will be removed in 1.1"
-    )
-    protected suspend inline fun <reified T : Node> attachWorkflow(
-        timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
-        crossinline action: () -> Unit
-    ) = attachChild<T>(timeout, action)
-
     /**
      * attachChild executes provided action e.g. backstack.push(NodeANavTarget) and waits for the specific
      * Node of type T to appear in the ParentNode's children list. It should happen almost immediately because it happens
