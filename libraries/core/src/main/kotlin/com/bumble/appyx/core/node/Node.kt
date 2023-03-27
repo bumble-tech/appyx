@@ -101,14 +101,6 @@ open class Node @VisibleForTesting internal constructor(
         })
     }
 
-    @Deprecated(
-        replaceWith = ReplaceWith("executeAction(action)"),
-        message = "Will be removed in 1.1"
-    )
-    protected suspend inline fun <reified T : Node> executeWorkflow(
-        crossinline action: () -> Unit
-    ): T = executeAction(action)
-
     protected suspend inline fun <reified T : Node> executeAction(
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
