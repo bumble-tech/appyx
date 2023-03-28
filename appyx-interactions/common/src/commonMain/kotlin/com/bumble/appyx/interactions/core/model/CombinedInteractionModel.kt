@@ -1,8 +1,6 @@
 package com.bumble.appyx.interactions.core.model
 
 import com.bumble.appyx.combineState
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.ui.ScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
@@ -15,17 +13,12 @@ class CombinedInteractionModel<InteractionTarget : Any>(
 
     private val scope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined)
 
-    override val elements: StateFlow<Set<Element<InteractionTarget>>>
-        get() = combineState(interactionModels.map { it.elements }, scope) { arr ->
-            arr.flatMap { it }.toSet()
-        }
-
-    override val screenState: StateFlow<ScreenState<InteractionTarget>>
+    override val elements: StateFlow<InteractionModel.Elements<InteractionTarget>>
         get() = combineState(
-            flows = interactionModels.map { it.screenState },
+            flows = interactionModels.map { it.elements },
             scope = scope,
         ) { arr ->
-            ScreenState(
+            InteractionModel.Elements(
                 onScreen = arr.flatMap { it.onScreen }.toSet(),
                 offScreen = arr.flatMap { it.offScreen }.toSet(),
             )

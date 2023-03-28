@@ -109,6 +109,7 @@ abstract class ParentNode<InteractionTarget : Any>(
                 // use WhileSubscribed or Lazy otherwise desynchronisation issue
                 .mapState(scope, SharingStarted.WhileSubscribed()) { elements ->
                     elements
+                        .all
                         .find { it.interactionTarget == interactionTarget }
                         ?.let { childOrCreate(it) }
                 }

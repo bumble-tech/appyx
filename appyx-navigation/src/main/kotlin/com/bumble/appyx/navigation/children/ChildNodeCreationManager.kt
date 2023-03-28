@@ -42,7 +42,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
 
     private fun syncNavModelWithChildren(parentNode: ParentNode<NavTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
-            parentNode.interactionModel.screenState.collect { state ->
+            parentNode.interactionModel.elements.collect { state ->
                 val navModelKeepKeys: Set<Element<NavTarget>>
                 val navModelSuspendKeys: Set<Element<NavTarget>>
                 val navModelKeys: Set<Element<NavTarget>>

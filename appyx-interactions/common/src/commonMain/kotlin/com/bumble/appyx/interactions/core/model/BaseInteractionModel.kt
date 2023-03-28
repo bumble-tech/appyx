@@ -20,7 +20,6 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.ui.MotionController
-import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
@@ -33,7 +32,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -92,21 +90,21 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         MutableStateFlow(emptyList())
     val uiModels: StateFlow<List<ElementUiModel<InteractionTarget>>> = _uiModels
 
-    private var screenStateJob: Job
-    private val _screenState: MutableStateFlow<ScreenState<InteractionTarget>> =
-        MutableStateFlow(ScreenState(offScreen = model.elements.value))
-    override val screenState: StateFlow<ScreenState<InteractionTarget>> = _screenState
+    private var elementsJob: Job
+    private val _elements: MutableStateFlow<InteractionModel.Elements<InteractionTarget>> =
+        MutableStateFlow(InteractionModel.Elements(offScreen = model.elements.value))
+    override val elements: StateFlow<InteractionModel.Elements<InteractionTarget>> = _elements
 
     private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val clipToBounds: StateFlow<Boolean> = _clipToBounds
 
     init {
         // Before motionController is ready we consider all elements as off-screen
-        screenStateJob = scope.launch {
+        elementsJob = scope.launch {
             model
                 .elements
                 .collect {
-                    _screenState.emit(ScreenState(offScreen = it))
+                    _elements.emit(InteractionModel.Elements(offScreen = it))
                 }
         }
     }
@@ -183,7 +181,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeMotionController(motionController: MotionController<InteractionTarget, ModelState>) {
-        screenStateJob.cancel()
+        elementsJob.cancel()
         motionControllerObserverJob?.cancel()
         motionControllerObserverJob = scope.launch {
             model
@@ -204,20 +202,17 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
                                 offScreen.add(element)
                             }
                         }
-                        ScreenState(onScreen = onScreen, offScreen = offScreen) to elementUiModels
+                        InteractionModel.Elements(onScreen = onScreen, offScreen = offScreen) to elementUiModels
                     }
                 }
-                .collect { (screenState, elementUiModels) ->
+                .collect { (elementsState, elementUiModels) ->
                     // Order is important here. We need to report screen state to the ParentNode
                     // first, before elementUiModels are consumed by the UI
-                    _screenState.emit(screenState)
+                    _elements.emit(elementsState)
                     _uiModels.emit(elementUiModels)
                 }
         }
     }
-
-    override val elements: StateFlow<Set<Element<InteractionTarget>>>
-        get() = model.elements
 
     fun operation(
         operation: Operation<ModelState>,
@@ -282,7 +277,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     // TODO plugin?!
     override fun destroy() {
         motionControllerObserverJob?.cancel()
-        screenStateJob.cancel()
+        elementsJob.cancel()
         scope.cancel()
     }
 

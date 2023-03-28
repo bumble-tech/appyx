@@ -48,7 +48,7 @@ internal class ChildNodeLifecycleManager<NavTarget: Any>(
         coroutineScope.launch {
             combine(
                 lifecycleState,
-                interactionModel.screenState,
+                interactionModel.elements,
                 children.withPrevious(),
                 ::Triple
             )

@@ -85,14 +85,14 @@ class SpotlightTest(private val testParam: TestParam) {
     private fun checkInteractionTargetsOnScreen(interactionTargets: Set<NavTarget>) {
         assertEquals(
             interactionTargets,
-            spotlight.screenState.value.onScreen.map { it.interactionTarget }.toSet()
+            spotlight.elements.value.onScreen.map { it.interactionTarget }.toSet()
         )
     }
 
     private fun checkInteractionTargetsOffScreen(navTargets: Set<NavTarget>) {
         assertEquals(
             navTargets,
-            spotlight.screenState.value.offScreen.map { it.interactionTarget }.toSet()
+            spotlight.elements.value.offScreen.map { it.interactionTarget }.toSet()
         )
     }
 
