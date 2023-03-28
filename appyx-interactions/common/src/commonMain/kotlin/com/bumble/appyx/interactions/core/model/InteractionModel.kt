@@ -1,0 +1,31 @@
+package com.bumble.appyx.interactions.core.model
+
+import com.bumble.appyx.interactions.core.Element
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.StateFlow
+
+interface InteractionModel<InteractionTarget : Any, ModelState : Any> {
+
+    class Elements<InteractionTarget> private constructor(
+        val onScreen: Set<Element<InteractionTarget>>,
+        val offScreen: Set<Element<InteractionTarget>>,
+        val all: Set<Element<InteractionTarget>>
+    ) {
+        constructor(
+            onScreen: Set<Element<InteractionTarget>> = emptySet(),
+            offScreen: Set<Element<InteractionTarget>> = emptySet()
+        ) : this(onScreen = onScreen, offScreen = offScreen, all = onScreen + offScreen)
+    }
+
+    val elements: StateFlow<Elements<InteractionTarget>>
+
+    fun onAddedToComposition(scope: CoroutineScope)
+
+    fun onRemovedFromComposition()
+
+    fun canHandeBackPress(): StateFlow<Boolean>
+
+    fun handleBackPress(): Boolean
+
+    fun destroy()
+}

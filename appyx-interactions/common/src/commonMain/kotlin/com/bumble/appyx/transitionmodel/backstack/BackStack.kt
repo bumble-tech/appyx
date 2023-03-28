@@ -2,7 +2,7 @@ package com.bumble.appyx.transitionmodel.backstack
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
-import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -18,11 +18,11 @@ class BackStack<InteractionTarget : Any>(
     val model: BackStackModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> = { GestureFactory.Noop() },
-    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> = PopBackstackStrategy(),
+    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> = PopBackstackStrategy(scope),
     animationSpec: AnimationSpec<Float> = spring(),
     disableAnimations: Boolean = false,
     isDebug: Boolean = false
-) : InteractionModel<InteractionTarget, BackStackModel.State<InteractionTarget>>(
+) : BaseInteractionModel<InteractionTarget, BackStackModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
     motionController = motionController,

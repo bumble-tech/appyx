@@ -18,7 +18,7 @@ interface TransitionModel<InteractionTarget, ModelState> {
 
     }
 
-    fun availableElements(): StateFlow<Set<Element<InteractionTarget>>>
+    val elements: StateFlow<Set<Element<InteractionTarget>>>
 
     fun relaxExecutionMode()
 

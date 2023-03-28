@@ -1,0 +1,32 @@
+package com.bumble.appyx.transitionmodel.permanent
+
+import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.Elements
+import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.transitionmodel.permanent.PermanentModel.State
+
+class PermanentModel<InteractionTarget : Any>(
+    initialTargets: List<InteractionTarget>,
+) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>() {
+
+    data class State<InteractionTarget>(
+        val elements: Elements<InteractionTarget>
+    )
+
+    override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
+        elements.toSet()
+
+    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
+        emptySet()
+
+    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> =
+        this
+
+    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =
+        this
+
+    override val initialState = State(
+        elements = initialTargets.map { it.asElement() }
+    )
+}

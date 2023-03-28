@@ -1,16 +1,16 @@
 package com.bumble.appyx.interactions.core.model.backpresshandlerstrategies
 
-import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface BackPressHandlerStrategy<InteractionTarget : Any, State : Any> {
     fun init(
-        interactionModel: InteractionModel<InteractionTarget, State>,
+        interactionModel: BaseInteractionModel<InteractionTarget, State>,
         transitionModel: TransitionModel<InteractionTarget, State>
     )
 
-    val canHandleBackPress: Flow<Boolean>
+    val canHandleBackPress: StateFlow<Boolean>
 
     fun handleBackPress(): Boolean
 }

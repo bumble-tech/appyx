@@ -13,8 +13,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import com.bumble.appyx.interactions.core.InteractionModel
-import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
+import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.interactions.sample.TestDriveUi
 import com.bumble.appyx.interactions.theme.appyx_dark
@@ -43,7 +43,7 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
 }
 
 fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInteractionModel(
-    interactionModel: InteractionModel<InteractionTarget, ModelState>,
+    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     fraction: Float = 1.0f
 ) {
     setContent {
@@ -70,7 +70,7 @@ fun randomColor(): Color {
 @Composable
 private fun <NavTarget : Any, ModelState : Any> TestChildrenUi(
     fraction: Float = 1.0f,
-    interactionModel: InteractionModel<NavTarget, ModelState>
+    interactionModel: BaseInteractionModel<NavTarget, ModelState>
 ) {
     BoxWithConstraints {
         val padding = this.maxWidth * (1.0f - fraction) / 2

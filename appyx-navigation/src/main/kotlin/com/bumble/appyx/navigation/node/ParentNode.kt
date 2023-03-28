@@ -3,16 +3,21 @@ package com.bumble.appyx.navigation.node
 import androidx.activity.compose.BackHandler
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
-import com.bumble.appyx.interactions.core.InteractionModel
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.ui.InteractionModelSetup
+import com.bumble.appyx.interactions.core.model.InteractionModel
+import com.bumble.appyx.interactions.core.model.plus
+import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
@@ -24,11 +29,15 @@ import com.bumble.appyx.navigation.children.ChildrenCallback
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.composable.ChildRenderer
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
+import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
 import com.bumble.appyx.navigation.plugin.Plugin
 import com.bumble.appyx.navigation.state.MutableSavedStateMap
+import com.bumble.appyx.transitionmodel.permanent.PermanentInteractionModel
+import com.bumble.appyx.transitionmodel.permanent.operation.addUnique
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -39,32 +48,29 @@ import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
-abstract class ParentNode<NavTarget : Any>(
-    val interactionModel: InteractionModel<NavTarget, *>,
+abstract class ParentNode<InteractionTarget : Any>(
+    interactionModel: InteractionModel<InteractionTarget, *>,
     buildContext: BuildContext,
-    view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
+    view: ParentNodeView<InteractionTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-    private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
+    private val childAware: ChildAware<ParentNode<InteractionTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
     view = view,
     buildContext = buildContext,
     plugins = plugins + childAware
-), Resolver<NavTarget> {
+), Resolver<InteractionTarget> {
 
-    // TODO permament model
-//    private val permanentNavModel = PermanentNavModel<NavTarget>(
-//        savedStateMap = buildContext.savedStateMap,
-//        key = KEY_PERMANENT_NAV_MODEL,
-//    )
-//    val navModel: NavModel<NavTarget, *> = permanentNavModel + navModel
+    private val permanentInteractionModel = PermanentInteractionModel<InteractionTarget>()
+    val interactionModel: InteractionModel<InteractionTarget, *> =
+        interactionModel + permanentInteractionModel
 
-    private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
+    private val childNodeCreationManager = ChildNodeCreationManager<InteractionTarget>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
         keepMode = childKeepMode,
     )
-    val children: StateFlow<ChildEntryMap<NavTarget>>
+    val children: StateFlow<ChildEntryMap<InteractionTarget>>
         get() = childNodeCreationManager.children
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
@@ -84,37 +90,41 @@ abstract class ParentNode<NavTarget : Any>(
         manageTransitions()
     }
 
-    fun childOrCreate(element: Element<NavTarget>): ChildEntry.Initialized<NavTarget> =
+    fun childOrCreate(element: Element<InteractionTarget>): ChildEntry.Initialized<InteractionTarget> =
         childNodeCreationManager.childOrCreate(element)
 
-//    @Composable
-//    fun PermanentChild(
-//        navTarget: NavTarget,
-//        decorator: @Composable (child: ChildRenderer) -> Unit
-//    ) {
-//        LaunchedEffect(navTarget) {
-//            permanentNavModel.addUnique(navTarget)
-//        }
-//        val scope = rememberCoroutineScope()
-//        val child by remember(navTarget) {
-//            permanentNavModel
-//                .elements
-//                // use WhileSubscribed or Lazy otherwise desynchronisation issue
-//                .mapState(scope, SharingStarted.WhileSubscribed()) { navElements ->
-//                    navElements
-//                        .find { it.key.navTarget == navTarget }
-//                        ?.let { childOrCreate(it.key) }
-//                }
-//        }.collectAsState()
-//        child?.let {
-//            decorator(child = PermanentChildRender(it.node))
-//        }
-//    }
-//
-//    @Composable
-//    fun PermanentChild(navTarget: NavTarget) {
-//        PermanentChild(navTarget) { child -> child() }
-//    }
+    @Composable
+    fun PermanentChild(
+        interactionTarget: InteractionTarget,
+        decorator: @Composable (child: ChildRenderer) -> Unit
+    ) {
+
+        LaunchedEffect(interactionTarget) {
+            permanentInteractionModel.addUnique(interactionTarget)
+        }
+        val scope = rememberCoroutineScope()
+        val child by remember(interactionTarget) {
+            permanentInteractionModel
+                .elements
+                // use WhileSubscribed or Lazy otherwise desynchronisation issue
+                .mapState(scope, SharingStarted.WhileSubscribed()) { elements ->
+                    elements
+                        .all
+                        .find { it.interactionTarget == interactionTarget }
+                        ?.let { childOrCreate(it) }
+                }
+        }.collectAsState()
+
+
+        child?.let {
+            decorator(child = PermanentChildRender(it.node))
+        }
+    }
+
+    @Composable
+    fun PermanentChild(navTarget: InteractionTarget) {
+        PermanentChild(navTarget) { child -> child() }
+    }
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         super.updateLifecycleState(state)
