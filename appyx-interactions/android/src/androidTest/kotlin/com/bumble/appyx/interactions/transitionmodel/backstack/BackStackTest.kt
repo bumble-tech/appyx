@@ -60,7 +60,7 @@ class BackStackTest(private val testParam: TestParam) {
         // all operations finished. advanced time > 2000 (last operation animation spec)
         composeTestRule.mainClock.advanceTimeBy(2100)
 
-        assertEquals(3, backStack.elements.value.size)
+        assertEquals(3, backStack.elements.value.all.size)
     }
 
 
@@ -78,7 +78,7 @@ class BackStackTest(private val testParam: TestParam) {
         // last operation is not finished.  advanced time < 2000 (last operation animation spec)
         composeTestRule.mainClock.advanceTimeBy(1900)
 
-        assertEquals(4, backStack.elements.value.size)
+        assertEquals(4, backStack.elements.value.all.size)
     }
 
     @Test
@@ -91,7 +91,7 @@ class BackStackTest(private val testParam: TestParam) {
         backStack.push(interactionTarget = NavTarget.Child4)
         backStack.pop()
 
-        assertEquals(3, backStack.elements.value.size)
+        assertEquals(3, backStack.elements.value.all.size)
     }
 
     @Test
@@ -125,7 +125,7 @@ class BackStackTest(private val testParam: TestParam) {
         backStack.waitUntilAnimationEnded(composeTestRule)
 
 
-        assertEquals(3, backStack.elements.value.size)
+        assertEquals(3, backStack.elements.value.all.size)
     }
 
     private fun createBackStack(
