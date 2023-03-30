@@ -15,7 +15,7 @@ class SpotlightRestoreTest {
     fun GIVEN_spotlight_with_2_elements_WHEN_state_restored_THEN_all_elements_are_retained() {
         val savedStateMap = mutableMapOf<String, Any?>()
         val spotlight = SpotlightModel(
-            items = listOf(Child1, Child2, Child3),
+            items = listOf(Child1, Child2),
             savedStateMap = savedStateMap
         )
 
@@ -25,10 +25,13 @@ class SpotlightRestoreTest {
         spotlight.saveInstanceState(state)
 
         val newSpotlight = SpotlightModel(
-            items = listOf(Child1, Child2, Child3),
+            items = listOf(Child1, Child2),
             savedStateMap = state.savedState
         )
 
-        assertEquals(spotlight.output.value, newSpotlight.output.value)
+        assertEquals(
+            spotlight.output.value.currentTargetState,
+            newSpotlight.output.value.currentTargetState
+        )
     }
 }

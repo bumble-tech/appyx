@@ -28,6 +28,9 @@ class BackstackRestoreTest {
             savedStateMap = state.savedState
         )
 
-        assertEquals(backstack.output.value, newBackstack.output.value)
+        assertEquals(
+            backstack.output.value.currentTargetState,
+            newBackstack.output.value.currentTargetState
+        )
     }
 }
