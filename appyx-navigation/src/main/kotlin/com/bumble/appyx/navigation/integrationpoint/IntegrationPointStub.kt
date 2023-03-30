@@ -18,6 +18,9 @@ class IntegrationPointStub : IntegrationPoint(savedInstanceState = null) {
     override val permissionRequester: PermissionRequester
         get() = error(ERROR)
 
+    override val isChangingConfigurations: Boolean
+        get() = false
+
     override fun handleUpNavigation() {
         error(ERROR)
     }
