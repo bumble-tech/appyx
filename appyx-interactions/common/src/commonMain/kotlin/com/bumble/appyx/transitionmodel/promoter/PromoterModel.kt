@@ -1,5 +1,7 @@
 package com.bumble.appyx.transitionmodel.promoter
 
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
@@ -14,9 +16,10 @@ class PromoterModel<InteractionTarget : Any>(
     savedStateMap = savedStateMap,
 //    key = key
 ) {
+    @Parcelize
     data class State<InteractionTarget>(
         val elements: List<Pair<Element<InteractionTarget>, ElementState>>
-    ) {
+    ) : Parcelable {
         enum class ElementState {
             CREATED, STAGE1, STAGE2, STAGE3, STAGE4, STAGE5, DESTROYED;
 

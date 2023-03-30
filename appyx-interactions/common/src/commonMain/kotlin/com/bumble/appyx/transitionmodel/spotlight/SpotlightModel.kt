@@ -1,9 +1,12 @@
 package com.bumble.appyx.transitionmodel.spotlight
 
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel.State.ElementState.STANDARD
@@ -27,10 +30,11 @@ class SpotlightModel<InteractionTarget : Any>(
 //    key = key
 ) {
 
+    @Parcelize
     data class State<InteractionTarget>(
-        val positions: List<Position<InteractionTarget>>,
+        val positions: @RawValue List<Position<InteractionTarget>>,
         val activeIndex: Float
-    ) {
+    ) : Parcelable {
         data class Position<InteractionTarget>(
             val elements: Map<Element<InteractionTarget>, ElementState> = mapOf()
         )
@@ -69,7 +73,7 @@ class SpotlightModel<InteractionTarget : Any>(
         return copy(positions = newPositions)
     }
 
-    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget>  {
+    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> {
         val newPositions = positions.map { position ->
             val newElements = position
                 .elements

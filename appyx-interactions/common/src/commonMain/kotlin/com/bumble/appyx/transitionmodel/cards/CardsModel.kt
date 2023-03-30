@@ -1,5 +1,8 @@
 package com.bumble.appyx.transitionmodel.cards
 
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
@@ -15,11 +18,12 @@ class CardsModel<InteractionTarget : Any>(
     savedStateMap = savedStateMap,
 ) {
 
+    @Parcelize
     data class State<InteractionTarget>(
-        val votedCards: List<Card.InvisibleCard<InteractionTarget>> = emptyList(),
-        val visibleCards: List<Card.VisibleCard<InteractionTarget>> = emptyList(),
-        val queued: List<Card.InvisibleCard<InteractionTarget>> = emptyList()
-    ) {
+        val votedCards: @RawValue List<Card.InvisibleCard<InteractionTarget>> = emptyList(),
+        val visibleCards: @RawValue List<Card.VisibleCard<InteractionTarget>> = emptyList(),
+        val queued: @RawValue List<Card.InvisibleCard<InteractionTarget>> = emptyList()
+    ) : Parcelable {
         sealed class Card<InteractionTarget> {
             abstract val element: Element<InteractionTarget>
 

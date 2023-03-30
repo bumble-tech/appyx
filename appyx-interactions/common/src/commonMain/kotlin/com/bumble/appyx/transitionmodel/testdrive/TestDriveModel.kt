@@ -1,9 +1,11 @@
 package com.bumble.appyx.transitionmodel.testdrive
 
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel.State.ElementState.A
 
 class TestDriveModel<InteractionTarget : Any>(
@@ -13,10 +15,11 @@ class TestDriveModel<InteractionTarget : Any>(
     savedStateMap = savedStateMap
 ) {
 
+    @Parcelize
     data class State<InteractionTarget>(
         val element: Element<InteractionTarget>,
         val elementState: ElementState
-    ) {
+    ) : Parcelable {
         enum class ElementState {
             A, B, C, D;
 

@@ -7,6 +7,7 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Outpu
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.SavedStateMap
+import com.bumble.appyx.interactions.Parcelable
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +20,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 @SuppressWarnings("UnusedPrivateMember")
-abstract class BaseTransitionModel<InteractionTarget, ModelState>(
+abstract class BaseTransitionModel<InteractionTarget, ModelState: Parcelable>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val key: String = KEY_TRANSITION_MODEL,
     private val savedStateMap: SavedStateMap?,
