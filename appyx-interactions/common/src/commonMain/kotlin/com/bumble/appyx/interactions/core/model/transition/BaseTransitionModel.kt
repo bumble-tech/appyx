@@ -2,11 +2,11 @@ package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.*
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Output
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,9 +22,12 @@ import kotlinx.coroutines.flow.update
 abstract class BaseTransitionModel<InteractionTarget, ModelState>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val key: String = KEY_TRANSITION_MODEL,
-    private val savedStateMap: SavedStateMap?
+    private val savedStateMap: SavedStateMap?,
 ) : TransitionModel<InteractionTarget, ModelState> {
     abstract val initialState: ModelState
+
+    private val savedState: ModelState?
+        get() = savedStateMap?.get(key) as? ModelState
 
     abstract fun ModelState.destroyedElements(): Set<Element<InteractionTarget>>
 
@@ -39,20 +42,17 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState>(
             .map { it.currentTargetState.availableElements() }
             .stateIn(scope, SharingStarted.Eagerly, initialState.availableElements())
 
-    private fun SavedStateMap.restoreHistory() =
-        this[key] as? Output<ModelState>
-
     private val state: MutableStateFlow<Output<ModelState>> by lazy {
         MutableStateFlow(
-            savedStateMap?.restoreHistory() ?: Update(
-                currentTargetState = initialState,
+            Update(
+                currentTargetState = savedState ?: initialState,
                 animate = false
             )
         )
     }
 
     override fun saveInstanceState(state: MutableSavedStateMap) {
-        state[key] = this.output.value
+        state[key] = this.output.value.currentTargetState
     }
 
     override val output: StateFlow<Output<ModelState>> by lazy {
