@@ -19,6 +19,7 @@ import com.bumble.appyx.interactions.core.model.progress.InstantProgressControll
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -51,7 +52,9 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : InteractionModel<InteractionTarget, ModelState>, HasDefaultAnimationSpec<Float>, Draggable,
+) : InteractionModel<InteractionTarget, ModelState>,
+    HasDefaultAnimationSpec<Float>,
+    Draggable,
     UiContextAware {
     init {
         backPressStrategy.init(this, model)
@@ -202,7 +205,10 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
                                 offScreen.add(element)
                             }
                         }
-                        InteractionModel.Elements(onScreen = onScreen, offScreen = offScreen) to elementUiModels
+                        InteractionModel.Elements(
+                            onScreen = onScreen,
+                            offScreen = offScreen
+                        ) to elementUiModels
                     }
                 }
                 .collect { (elementsState, elementUiModels) ->
@@ -288,4 +294,8 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     override fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
     override fun canHandeBackPress(): StateFlow<Boolean> = backPressStrategy.canHandleBackPress
+
+    override fun saveInstanceState(state: MutableSavedStateMap) {
+        model.saveInstanceState(state)
+    }
 }

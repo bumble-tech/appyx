@@ -41,7 +41,8 @@ class SpotlightDebugNode(
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it + 1) },
-            initialActiveIndex = 0f
+            initialActiveIndex = 0f,
+            savedStateMap = buildContext.savedStateMap
         ),
         motionController = { SpotlightSlider(it) },
         isDebug = true

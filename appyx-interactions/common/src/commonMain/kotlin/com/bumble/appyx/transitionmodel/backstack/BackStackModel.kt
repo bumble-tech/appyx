@@ -1,16 +1,21 @@
 package com.bumble.appyx.transitionmodel.backstack
 
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.Elements
-import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
 class BackStackModel<InteractionTarget : Any>(
     initialTargets: List<InteractionTarget>,
     savedStateMap: SavedStateMap?,
-) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>() {
+) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
+    savedStateMap = savedStateMap,
+) {
+    @Parcelize
     data class State<InteractionTarget>(
         /**
          * Elements that have been created, but not yet moved to an active state
@@ -32,7 +37,7 @@ class BackStackModel<InteractionTarget : Any>(
          * Elements that will be destroyed after reaching this state.
          */
         val destroyed: Elements<InteractionTarget> = listOf(),
-    )
+    ) : Parcelable
 
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         (created + active + stashed + destroyed).toSet()

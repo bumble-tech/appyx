@@ -1,21 +1,29 @@
 package com.bumble.appyx.transitionmodel.cards
 
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.InvisibleCard.Queued
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.BottomCard
 import com.bumble.appyx.transitionmodel.cards.CardsModel.State.Card.VisibleCard.TopCard
 
 class CardsModel<InteractionTarget : Any>(
     initialItems: List<InteractionTarget> = listOf(),
-) : BaseTransitionModel<InteractionTarget, CardsModel.State<InteractionTarget>>() {
+    savedStateMap: SavedStateMap?,
+) : BaseTransitionModel<InteractionTarget, CardsModel.State<InteractionTarget>>(
+    savedStateMap = savedStateMap,
+) {
 
+    @Parcelize
     data class State<InteractionTarget>(
-        val votedCards: List<Card.InvisibleCard<InteractionTarget>> = emptyList(),
-        val visibleCards: List<Card.VisibleCard<InteractionTarget>> = emptyList(),
-        val queued: List<Card.InvisibleCard<InteractionTarget>> = emptyList()
-    ) {
+        val votedCards: @RawValue List<Card.InvisibleCard<InteractionTarget>> = emptyList(),
+        val visibleCards: @RawValue List<Card.VisibleCard<InteractionTarget>> = emptyList(),
+        val queued: @RawValue List<Card.InvisibleCard<InteractionTarget>> = emptyList()
+    ) : Parcelable {
         sealed class Card<InteractionTarget> {
             abstract val element: Element<InteractionTarget>
 
@@ -84,6 +92,6 @@ class CardsModel<InteractionTarget : Any>(
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         (votedCards + visibleCards + queued).map { it.element }.toSet()
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> = setOf()
-
+    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
+        setOf()
 }

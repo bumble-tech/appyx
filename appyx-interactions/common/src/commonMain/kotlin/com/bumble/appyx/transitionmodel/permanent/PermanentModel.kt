@@ -1,18 +1,25 @@
 package com.bumble.appyx.transitionmodel.permanent
 
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.Elements
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.permanent.PermanentModel.State
 
 class PermanentModel<InteractionTarget : Any>(
     initialTargets: List<InteractionTarget>,
-) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>() {
+    savedStateMap: SavedStateMap?,
+) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
+    savedStateMap = savedStateMap,
+) {
 
+    @Parcelize
     data class State<InteractionTarget>(
         val elements: Elements<InteractionTarget>
-    )
+    ) : Parcelable
 
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         elements.toSet()

@@ -19,7 +19,10 @@ fun ComposeContentTestRule.createTestDrive(
         easing = LinearEasing
     )
 ): TestDrive<NavTarget> {
-    val model = TestDriveModel(NavTarget.Child1)
+    val model = TestDriveModel(
+        element = NavTarget.Child1,
+        savedStateMap = null
+    )
     return TestDrive(
         scope = CoroutineScope(Dispatchers.Unconfined),
         model = model,

@@ -32,8 +32,8 @@ import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
-import com.bumble.appyx.navigation.plugin.Plugin
-import com.bumble.appyx.navigation.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.transitionmodel.permanent.PermanentInteractionModel
 import com.bumble.appyx.transitionmodel.permanent.operation.addUnique
 import kotlinx.coroutines.Job
@@ -58,7 +58,7 @@ abstract class ParentNode<InteractionTarget : Any>(
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + childAware
+    plugins = plugins + interactionModel + childAware
 ), Resolver<InteractionTarget> {
 
     private val permanentInteractionModel = PermanentInteractionModel<InteractionTarget>()

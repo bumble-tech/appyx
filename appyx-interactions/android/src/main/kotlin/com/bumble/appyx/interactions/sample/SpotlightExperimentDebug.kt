@@ -35,7 +35,8 @@ fun SpotlightExperimentDebug() {
     val spotlight = remember {
         Spotlight(
             model = SpotlightModel(
-                items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7)
+                items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7),
+                savedStateMap = null
             ),
             motionController = { SpotlightSlider(it) },
             gestureFactory = { SpotlightSlider.Gestures(it) },

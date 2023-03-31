@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.state
 
 /**
  * Restored from [android.os.Bundle] state.

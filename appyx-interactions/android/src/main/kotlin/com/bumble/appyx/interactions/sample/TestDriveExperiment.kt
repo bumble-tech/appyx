@@ -50,7 +50,12 @@ import com.bumble.appyx.transitionmodel.testdrive.operation.next
 fun TestDriveExperiment() {
     val coroutineScope = rememberCoroutineScope()
 
-    val model = remember { TestDriveModel(Child1) }
+    val model = remember {
+        TestDriveModel(
+            element = Child1,
+            savedStateMap = null
+        )
+    }
     val testDrive = remember {
         TestDrive(
             scope = coroutineScope,

@@ -36,7 +36,7 @@ fun PromoterExperiment() {
     val promoter = remember {
         Promoter(
             scope = coroutineScope,
-            model = PromoterModel<NavTarget>(),
+            model = PromoterModel<NavTarget>(savedStateMap = null),
             motionController = {
                 PromoterMotionController(
                     uiContext = it,

@@ -2,11 +2,8 @@ package com.bumble.appyx.navigation.plugin
 
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.state.MutableSavedStateMap
-
-interface Plugin
-
 
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
     this.plugins.filterIsInstance(P::class.java)
@@ -52,13 +49,4 @@ interface BackPressHandler : Plugin {
             if (isEnabled) callback.handleOnBackPressed()
             isEnabled
         }
-
-}
-
-/**
- * Bundle for future state restoration.
- * Result should be supported by [androidx.compose.runtime.saveable.SaverScope.canBeSaved].
- */
-interface SavesInstanceState : Plugin {
-    fun saveInstanceState(state: MutableSavedStateMap) {}
 }

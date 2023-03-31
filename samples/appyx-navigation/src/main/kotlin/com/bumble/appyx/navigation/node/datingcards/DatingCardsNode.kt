@@ -28,7 +28,9 @@ class DatingCardsNode(
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
                     NavTarget.ProfileCard(it)
-                }),
+                },
+                savedStateMap = buildContext.savedStateMap
+            ),
             motionController = { CardsMotionController(it) },
             gestureFactory = { CardsMotionController.Gestures(it) },
         )

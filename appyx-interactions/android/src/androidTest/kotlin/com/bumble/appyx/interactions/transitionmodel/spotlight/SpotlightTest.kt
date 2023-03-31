@@ -110,7 +110,8 @@ class SpotlightTest(private val testParam: TestParam) {
                     NavTarget.Child4,
                     NavTarget.Child5
                 ),
-                initialActiveIndex = initialActiveIndex
+                initialActiveIndex = initialActiveIndex,
+                savedStateMap = null
             ),
             motionController = { SpotlightSlider(uiContext = it, clipToBounds = clipToBounds) },
             scope = CoroutineScope(Dispatchers.Unconfined),

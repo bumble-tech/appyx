@@ -45,7 +45,8 @@ class SpotlightNode(
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = List(7) { NavTarget.Child(it) },
-            initialActiveIndex = 0f
+            initialActiveIndex = 0f,
+            savedStateMap = buildContext.savedStateMap
         ),
         motionController = { SpotlightSlider(it) }
     )

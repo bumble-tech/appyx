@@ -39,7 +39,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
                     DatingCardsNavTarget.ProfileCard(it)
-                }
+                },
+                savedStateMap = null
             ),
             motionController = { CardsMotionController(it)  },
             gestureFactory = { CardsMotionController.Gestures(it) },
