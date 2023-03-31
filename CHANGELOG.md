@@ -2,7 +2,15 @@
 
 ## Pending changes
 
+-
+
+---
+
+## 1.1.1
+
 - [#386](https://github.com/bumble-tech/appyx/pull/386) – **Updated**: RIBs version to 0.39.0
+
+<div style="text-align: center"><small>31 Mar 2023</small></div>
 
 ---
 
