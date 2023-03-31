@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.sample.testdrive.helper
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.interactions.sample.NavTarget
@@ -14,7 +15,7 @@ import kotlinx.coroutines.Dispatchers
 
 
 fun ComposeContentTestRule.createTestDrive(
-    animationSpec: AnimationSpec<Float> = tween(
+    animationSpec: AnimationSpec<Float>? = tween(
         durationMillis = 1000,
         easing = LinearEasing
     )
@@ -27,7 +28,7 @@ fun ComposeContentTestRule.createTestDrive(
         scope = CoroutineScope(Dispatchers.Unconfined),
         model = model,
         motionController = { TestDriveMotionController(it) },
-        progressAnimationSpec = animationSpec,
+        progressAnimationSpec = animationSpec ?: spring(),
         gestureFactory = { TestDriveMotionController.Gestures(it) },
     ).also { setupTestDrive(it, model) }
 }
