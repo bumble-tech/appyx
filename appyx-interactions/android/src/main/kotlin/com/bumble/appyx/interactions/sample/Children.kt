@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
@@ -63,7 +63,7 @@ fun <NavTarget : Any, NavState : Any> Children(
                     this
                 }
             }
-            .onGloballyPositioned {
+            .onPlaced {
                 uiContext = UiContext(
                     TransitionBounds(
                         density = density,
