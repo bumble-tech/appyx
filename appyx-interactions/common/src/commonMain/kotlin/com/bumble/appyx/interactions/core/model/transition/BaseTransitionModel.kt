@@ -1,13 +1,13 @@
 package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.Parcelable
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.*
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Output
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.SavedStateMap
-import com.bumble.appyx.interactions.Parcelable
 import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 @SuppressWarnings("UnusedPrivateMember")
-abstract class BaseTransitionModel<InteractionTarget, ModelState: Parcelable>(
+abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val key: String = KEY_TRANSITION_MODEL,
     private val savedStateMap: SavedStateMap?,
@@ -41,7 +41,11 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState: Parcelable>(
     override fun availableElements(): StateFlow<Set<Element<InteractionTarget>>> =
         output
             .map { it.currentTargetState.availableElements() }
-            .stateIn(scope, SharingStarted.Eagerly, initialState.availableElements())
+            .stateIn(
+                scope,
+                SharingStarted.Eagerly,
+                (savedState ?: initialState).availableElements()
+            )
 
     private val state: MutableStateFlow<Output<ModelState>> by lazy {
         MutableStateFlow(
