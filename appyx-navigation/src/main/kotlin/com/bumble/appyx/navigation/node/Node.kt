@@ -1,12 +1,10 @@
 package com.bumble.appyx.navigation.node
 
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.annotation.CallSuper
+import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -26,7 +24,6 @@ import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.plugin.BackPressHandler
 import com.bumble.appyx.navigation.plugin.Destroyable
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
@@ -35,16 +32,23 @@ import com.bumble.appyx.navigation.plugin.plugins
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.state.SavedStateMap
-import java.util.UUID
+import com.bumble.appyx.navigation.store.RetainedInstanceStore
 import kotlinx.coroutines.withContext
 
 @Suppress("TooManyFunctions")
 @Stable
-open class Node(
-    buildContext: BuildContext,
+open class Node @VisibleForTesting internal constructor(
+    private val buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
+    private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = emptyList()
 ) : NodeLifecycle, NodeView by view, RequestCodeClient {
+
+    constructor(
+        buildContext: BuildContext,
+        view: NodeView = EmptyNodeView,
+        plugins: List<Plugin> = emptyList()
+    ) : this(buildContext, view, RetainedInstanceStore, plugins)
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
@@ -77,7 +81,8 @@ open class Node(
 
     private var wasBuilt = false
 
-    val id = getNodeId(buildContext)
+    val id: String
+        get() = buildContext.identifier
 
     override val requestCodeClientId: String = id
 
@@ -91,22 +96,6 @@ open class Node(
             }
         })
     }
-
-    private fun getNodeId(buildContext: BuildContext): String {
-        val state = buildContext.savedStateMap ?: return UUID.randomUUID().toString()
-
-        return state[NODE_ID_KEY] as String? ?: error(
-            "super.onSaveInstanceState() was not called for the node: ${this::class.qualifiedName}"
-        )
-    }
-
-    @Deprecated(
-        replaceWith = ReplaceWith("executeAction(action)"),
-        message = "Will be removed in 1.1"
-    )
-    protected suspend inline fun <reified T : Node> executeWorkflow(
-        crossinline action: () -> Unit
-    ): T = executeAction(action)
 
     protected suspend inline fun <reified T : Node> executeAction(
         crossinline action: () -> Unit
@@ -131,7 +120,6 @@ open class Node(
             LocalLifecycleOwner provides this,
         ) {
             DerivedSetup()
-            HandleBackPress()
             View(modifier)
         }
     }
@@ -139,38 +127,6 @@ open class Node(
     @Composable
     protected open fun DerivedSetup() {
 
-    }
-
-    @Composable
-    private fun HandleBackPress() {
-        // can't use BackHandler Composable because plugins provide OnBackPressedCallback which is not observable
-        // mimic the behaviour of BackHandler Composable here instead
-        val backPressHandlerPlugins = remember {
-            // reversed order because we want direct order, but onBackPressedDispatcher invokes them in reversed order
-            plugins.filterIsInstance<BackPressHandler>().reversed()
-        }
-        val dispatcher =
-            LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher ?: return
-        val lifecycleOwner = LocalLifecycleOwner.current
-        DisposableEffect(lifecycleOwner, dispatcher) {
-            backPressHandlerPlugins.forEach { plugin ->
-                if (!plugin.isCorrect()) {
-                    Appyx.reportException(
-                        IllegalStateException(
-                            "Plugin $plugin has implementation for both BackPressHandler properties, implement only one"
-                        )
-                    )
-                }
-                plugin.onBackPressedCallbackList.forEach { callback ->
-                    dispatcher.addCallback(lifecycleOwner, callback)
-                }
-            }
-            onDispose {
-                backPressHandlerPlugins.forEach { plugin ->
-                    plugin.onBackPressedCallbackList.forEach { it.remove() }
-                }
-            }
-        }
     }
 
     override fun getLifecycle(): Lifecycle =
@@ -188,6 +144,9 @@ open class Node(
         }
         nodeLifecycle.updateLifecycleState(state)
         if (state == Lifecycle.State.DESTROYED) {
+            if (!integrationPoint.isChangingConfigurations) {
+                retainedInstanceStore.clearStore(id)
+            }
             plugins<Destroyable>().forEach { it.destroy() }
         }
     }
@@ -203,7 +162,7 @@ open class Node(
 
     @CallSuper
     protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
-        state[NODE_ID_KEY] = id
+        buildContext.onSaveInstanceState(state)
     }
 
     fun finish() {
@@ -235,18 +194,4 @@ open class Node(
 
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
-
-    companion object {
-        private const val NODE_ID_KEY = "node.id"
-
-        // BackPressHandler is correct when only one of its properties is implemented.
-        private fun BackPressHandler.isCorrect(): Boolean {
-            val listIsOverriddenOrPluginIgnored = onBackPressedCallback == null
-            val onlySingleCallbackIsOverridden = onBackPressedCallback != null &&
-                    onBackPressedCallbackList.size == 1 &&
-                    onBackPressedCallbackList[0] == onBackPressedCallback
-            return onlySingleCallbackIsOverridden || listIsOverriddenOrPluginIgnored
-        }
-
-    }
 }

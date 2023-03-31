@@ -6,7 +6,8 @@ import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequ
 import com.bumble.appyx.core.navigation.upnavigation.UpNavigationHandler
 
 class TestIntegrationPoint(
-    private val upNavigationHandler: UpNavigationHandler
+    private val upNavigationHandler: UpNavigationHandler,
+    override val isChangingConfigurations: Boolean = false
 ) : IntegrationPoint(savedInstanceState = null), UpNavigationHandler by upNavigationHandler {
 
     var rootFinished: Boolean = false

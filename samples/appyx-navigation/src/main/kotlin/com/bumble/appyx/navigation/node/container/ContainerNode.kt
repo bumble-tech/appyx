@@ -12,19 +12,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
-import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode
-import com.bumble.appyx.navigation.node.container.ContainerNode.NavTarget
-import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode
-import com.bumble.appyx.navigation.node.promoter.PromoterNode
-import com.bumble.appyx.navigation.node.spotlight.SpotlightNode
-import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode
-import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
+import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode
+import com.bumble.appyx.navigation.node.container.ContainerNode.NavTarget
+import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode
 import com.bumble.appyx.navigation.node.node
+import com.bumble.appyx.navigation.node.permanentchild.PermanentChildNode
+import com.bumble.appyx.navigation.node.promoter.PromoterNode
+import com.bumble.appyx.navigation.node.spotlight.SpotlightNode
+import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode
+import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
 import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
@@ -48,6 +49,9 @@ class ContainerNode(
     sealed class NavTarget : Parcelable {
         @Parcelize
         object Selector : NavTarget()
+
+        @Parcelize
+        object PermanentChild : NavTarget()
 
         @Parcelize
         object DatingCards : NavTarget()
@@ -74,6 +78,7 @@ class ContainerNode(
             is NavTarget.Selector -> node(buildContext) { modifier ->
                 Selector(modifier)
             }
+            is NavTarget.PermanentChild -> PermanentChildNode(buildContext)
             is NavTarget.DatingCards -> DatingCardsNode(buildContext)
             is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext)
             is NavTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
@@ -114,6 +119,9 @@ class ContainerNode(
                 }
                 TextButton(text = "Promoter") {
                     backStack.push(NavTarget.PromoterExperiment)
+                }
+                TextButton(text = "Permanent Child") {
+                    backStack.push(NavTarget.PermanentChild)
                 }
             }
         }

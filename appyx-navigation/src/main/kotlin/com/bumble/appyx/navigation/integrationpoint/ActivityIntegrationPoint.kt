@@ -17,6 +17,9 @@ open class ActivityIntegrationPoint(
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
     private val permissionRequestBoundary = PermissionRequestBoundary(activity, requestCodeRegistry)
 
+    override val isChangingConfigurations: Boolean
+        get() = activity.isChangingConfigurations
+
     override val activityStarter: ActivityStarter
         get() = activityBoundary
 

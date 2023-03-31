@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.core.model
 
 import DefaultAnimationSpec
 import DisableAnimations
@@ -7,6 +7,7 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
@@ -21,7 +22,6 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.MotionController
-import com.bumble.appyx.interactions.core.ui.ScreenState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
@@ -34,7 +34,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -44,7 +43,7 @@ import kotlinx.coroutines.launch
 
 
 // TODO save/restore state
-open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
+open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
@@ -95,21 +94,21 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         MutableStateFlow(emptyList())
     val uiModels: StateFlow<List<ElementUiModel<InteractionTarget>>> = _uiModels
 
-    private var screenStateJob: Job
-    private val _screenState: MutableStateFlow<ScreenState<InteractionTarget>> =
-        MutableStateFlow(ScreenState(offScreen = model.availableElements().value))
-    val screenState: StateFlow<ScreenState<InteractionTarget>> = _screenState
+    private var elementsJob: Job
+    private val _elements: MutableStateFlow<InteractionModel.Elements<InteractionTarget>> =
+        MutableStateFlow(InteractionModel.Elements(offScreen = model.elements.value))
+    override val elements: StateFlow<InteractionModel.Elements<InteractionTarget>> = _elements
 
     private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
     val clipToBounds: StateFlow<Boolean> = _clipToBounds
 
     init {
         // Before motionController is ready we consider all elements as off-screen
-        screenStateJob = scope.launch {
+        elementsJob = scope.launch {
             model
-                .availableElements()
+                .elements
                 .collect {
-                    _screenState.emit(ScreenState(offScreen = it))
+                    _elements.emit(InteractionModel.Elements(offScreen = it))
                 }
         }
     }
@@ -140,13 +139,13 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    fun onAddedToComposition(scope: CoroutineScope) {
+    override fun onAddedToComposition(scope: CoroutineScope) {
         animationScope = scope
         createAnimatedInputSource(scope)
         createdDebugInputSource(scope)
     }
 
-    fun onRemovedFromComposition() {
+    override fun onRemovedFromComposition() {
         // TODO finish unfinished transitions
         if (isDebug) debug?.stopModel() else animated?.stopModel()
         animationScope?.cancel()
@@ -186,7 +185,7 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
 
     @OptIn(ExperimentalCoroutinesApi::class)
     private fun observeMotionController(motionController: MotionController<InteractionTarget, ModelState>) {
-        screenStateJob.cancel()
+        elementsJob.cancel()
         motionControllerObserverJob?.cancel()
         motionControllerObserverJob = scope.launch {
             model
@@ -207,19 +206,17 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
                                 offScreen.add(element)
                             }
                         }
-                        ScreenState(onScreen = onScreen, offScreen = offScreen) to elementUiModels
+                        InteractionModel.Elements(onScreen = onScreen, offScreen = offScreen) to elementUiModels
                     }
                 }
-                .collect { (screenState, elementUiModels) ->
+                .collect { (elementsState, elementUiModels) ->
                     // Order is important here. We need to report screen state to the ParentNode
                     // first, before elementUiModels are consumed by the UI
-                    _screenState.emit(screenState)
+                    _elements.emit(elementsState)
                     _uiModels.emit(elementUiModels)
                 }
         }
     }
-
-    fun availableElements(): StateFlow<Set<Element<InteractionTarget>>> = model.availableElements()
 
     fun operation(
         operation: Operation<ModelState>,
@@ -282,9 +279,9 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     // TODO plugin?!
-    fun destroy() {
+    override fun destroy() {
         motionControllerObserverJob?.cancel()
-        screenStateJob.cancel()
+        elementsJob.cancel()
         scope.cancel()
     }
 
@@ -292,9 +289,9 @@ open class InteractionModel<InteractionTarget : Any, ModelState : Any>(
         debug?.setNormalisedProgress(progress)
     }
 
-    open fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
+    override fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
-    open fun canHandeBackPress(): Flow<Boolean> = backPressStrategy.canHandleBackPress
+    override fun canHandeBackPress(): StateFlow<Boolean> = backPressStrategy.canHandleBackPress
 
     override fun saveInstanceState(state: MutableSavedStateMap) {
         model.saveInstanceState(state)

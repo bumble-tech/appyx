@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import com.bumble.appyx.interactions.core.InteractionModel
+import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
@@ -33,7 +33,7 @@ import kotlin.reflect.KClass
 
 @Composable
 inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Children(
-    interactionModel: InteractionModel<NavTarget, NavState>,
+    interactionModel: BaseInteractionModel<NavTarget, NavState>,
     modifier: Modifier = Modifier,
     gestureSpec: GestureSpec = GestureSpec(),
     noinline block: @Composable ChildrenTransitionScope<NavTarget, NavState>.() -> Unit = {
@@ -93,7 +93,7 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
 }
 
 class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
-    private val interactionModel: InteractionModel<NavTarget, NavState>
+    private val interactionModel: BaseInteractionModel<NavTarget, NavState>
 ) {
 
     @Composable
@@ -122,7 +122,7 @@ class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
     ) {
 
         val framesFlow = remember {
-            interactionModel.uiModels
+            this@ChildrenTransitionScope.interactionModel.uiModels
                 .map { list ->
                     list
                         .filter { clazz.isInstance(it.element.interactionTarget) }
