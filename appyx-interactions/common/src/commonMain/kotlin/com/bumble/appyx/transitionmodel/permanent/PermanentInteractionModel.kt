@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class PermanentInteractionModel<InteractionTarget : Any>(
-    val model: PermanentModel<InteractionTarget> = PermanentModel(emptyList()),
+    val model: PermanentModel<InteractionTarget> = PermanentModel(emptyList(), null),
     val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 ) : InteractionModel<InteractionTarget, State<InteractionTarget>> {
 

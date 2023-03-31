@@ -19,7 +19,6 @@ import com.bumble.appyx.interactions.core.model.progress.InstantProgressControll
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
-import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -53,10 +52,10 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : HasDefaultAnimationSpec<Float>,
+) : InteractionModel<InteractionTarget, ModelState>,
+    HasDefaultAnimationSpec<Float>,
     Draggable,
-    UiContextAware,
-    SavesInstanceState {
+    UiContextAware {
     init {
         backPressStrategy.init(this, model)
     }
@@ -206,7 +205,10 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
                                 offScreen.add(element)
                             }
                         }
-                        InteractionModel.Elements(onScreen = onScreen, offScreen = offScreen) to elementUiModels
+                        InteractionModel.Elements(
+                            onScreen = onScreen,
+                            offScreen = offScreen
+                        ) to elementUiModels
                     }
                 }
                 .collect { (elementsState, elementUiModels) ->

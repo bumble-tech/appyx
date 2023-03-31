@@ -1,10 +1,12 @@
 package com.bumble.appyx.transitionmodel.backstack
 
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.Elements
-import com.bumble.appyx.interactions.core.SavedStateMap
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel.State
 
 class BackStackModel<InteractionTarget : Any>(
@@ -13,6 +15,7 @@ class BackStackModel<InteractionTarget : Any>(
 ) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
     savedStateMap = savedStateMap,
 ) {
+    @Parcelize
     data class State<InteractionTarget>(
         /**
          * Elements that have been created, but not yet moved to an active state

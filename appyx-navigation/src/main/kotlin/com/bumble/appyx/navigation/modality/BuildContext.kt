@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.modality
 
-import com.bumble.appyx.navigation.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory

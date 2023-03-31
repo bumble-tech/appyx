@@ -32,8 +32,8 @@ import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
-import com.bumble.appyx.navigation.plugin.Plugin
-import com.bumble.appyx.navigation.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.transitionmodel.permanent.PermanentInteractionModel
 import com.bumble.appyx.transitionmodel.permanent.operation.addUnique
 import kotlinx.coroutines.Job
@@ -43,6 +43,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.coroutines.resume
+import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
