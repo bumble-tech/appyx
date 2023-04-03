@@ -35,10 +35,10 @@ import kotlin.math.roundToInt
 
 
 @Composable
-fun <NavTarget : Any, NavState : Any> Children(
-    interactionModel: BaseInteractionModel<NavTarget, NavState>,
+fun <InteractionTarget : Any, ModelState : Any> Children(
+    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
-    element: @Composable (ElementUiModel<NavTarget>) -> Unit = {
+    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
         Element(elementUiModel = it)
     },
 ) {
