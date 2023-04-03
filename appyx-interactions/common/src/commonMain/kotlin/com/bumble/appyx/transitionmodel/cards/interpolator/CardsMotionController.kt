@@ -47,10 +47,8 @@ class CardsMotionController<InteractionTarget : Any>(
         val uiContext: UiContext,
         val scale: Scale = Scale(value = 1f),
         val position: Position = Position(
-            initialOffset = DpOffset(
-                0.dp,
-                0.dp
-            ),
+            initialOffset = DpOffset.Zero,
+            clipToBounds = uiContext.clipToBounds
         ),
         val rotationZ: RotationZ = RotationZ(value = 0f),
         val zIndex: ZIndex = ZIndex(value = 0f)
@@ -137,9 +135,10 @@ class CardsMotionController<InteractionTarget : Any>(
         uiContext = uiContext,
         position = Position(
             initialOffset = DpOffset(
-                (-voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
-                0.dp
+                x = (-voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
+                y = 0.dp
             ),
+            clipToBounds = uiContext.clipToBounds
         ),
         scale = Scale(1f),
         zIndex = ZIndex(2f),
@@ -150,9 +149,10 @@ class CardsMotionController<InteractionTarget : Any>(
         uiContext = uiContext,
         position = Position(
             initialOffset = DpOffset(
-                (voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
-                0.dp
+                x = (voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
+                y = 0.dp
             ),
+            clipToBounds = uiContext.clipToBounds
         ),
         scale = Scale(1f),
         zIndex = ZIndex(2f),

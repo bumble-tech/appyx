@@ -165,14 +165,15 @@ fun <InteractionTarget : Any> TestDriveUi(
                     .collectAsState(null)
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
+        // FIXME this should be internalised probably
         val targetProps = targetState.value?.elementState?.toUiState(
-            uiContext = UiContext(zeroSizeTransitionBounds, rememberCoroutineScope())
+            uiContext = UiContext(rememberCoroutineScope(), zeroSizeTransitionBounds, clipToBounds = false)
         )
         targetProps?.let {
             Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .offset(targetProps.offset.value.x, targetProps.offset.value.y)
+                    .offset(targetProps.position.value.x, targetProps.position.value.y)
                     .border(2.dp, targetProps.backgroundColor.value)
             ) {
                 Text(

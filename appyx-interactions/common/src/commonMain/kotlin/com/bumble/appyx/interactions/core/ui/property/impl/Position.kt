@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.StateFlow
 class Position(
     val initialOffset: DpOffset,
     easing: Easing? = null,
-    val clipToBounds: Boolean = false,
+    val clipToBounds: Boolean,
     val bounds: TransitionBounds? = null,
     val displacement: StateFlow<DpOffset> = MutableStateFlow(DpOffset.Zero),
     visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp),

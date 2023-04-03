@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
@@ -29,7 +28,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlin.math.abs
 
 class TestDriveMotionController<InteractionTarget : Any>(
@@ -44,23 +42,24 @@ class TestDriveMotionController<InteractionTarget : Any>(
     // TODO extract
     class UiState(
         val uiContext: UiContext,
-        val offset: Position = Position(
-            initialOffset = DpOffset(0.dp, 0.dp)
+        val position: Position = Position(
+            initialOffset = DpOffset.Zero,
+            clipToBounds = uiContext.clipToBounds
         ),
         val backgroundColor: BackgroundColor = BackgroundColor(md_red_500),
     ) : BaseUiState<UiState>(
-        motionProperties = listOf(offset, backgroundColor),
+        motionProperties = listOf(position, backgroundColor),
         coroutineScope = uiContext.coroutineScope
     ) {
 
         override val modifier: Modifier
             get() = Modifier
-                .then(offset.modifier)
+                .then(position.modifier)
                 .then(backgroundColor.modifier)
 
         override suspend fun snapTo(scope: CoroutineScope, uiState: UiState) {
             scope.launch {
-                offset.snapTo(uiState.offset.value)
+                position.snapTo(uiState.position.value)
                 backgroundColor.snapTo(uiState.backgroundColor.value)
             }
         }
@@ -72,8 +71,8 @@ class TestDriveMotionController<InteractionTarget : Any>(
         ) {
             listOf(
                 scope.async {
-                    offset.animateTo(
-                        uiState.offset.value,
+                    position.animateTo(
+                        uiState.position.value,
                         spring(springSpec.dampingRatio, springSpec.stiffness)
                     )
                 },
@@ -88,7 +87,7 @@ class TestDriveMotionController<InteractionTarget : Any>(
 
         override fun lerpTo(scope: CoroutineScope, start: UiState, end: UiState, fraction: Float) {
             scope.launch {
-                offset.lerpTo(start.offset, end.offset, fraction)
+                position.lerpTo(start.position, end.position, fraction)
                 backgroundColor.lerpTo(start.backgroundColor, end.backgroundColor, fraction)
             }
         }
@@ -103,42 +102,34 @@ class TestDriveMotionController<InteractionTarget : Any>(
         fun TestDriveModel.State.ElementState.toUiState(uiContext: UiContext): UiState =
             when (this) {
                 A -> UiState(
-                    uiContext = UiContext(
-                        zeroSizeTransitionBounds,
-                        uiContext.coroutineScope
-                    ),
-                    offset = Position(
+                    uiContext = uiContext,
+                    position = Position(
                         initialOffset = offsetA,
+                        clipToBounds = uiContext.clipToBounds
                     ),
                     backgroundColor = BackgroundColor(md_red_500)
                 )
                 B -> UiState(
-                    uiContext = UiContext(
-                        zeroSizeTransitionBounds,
-                        uiContext.coroutineScope
-                    ),
-                    offset = Position(
-                        initialOffset = offsetB
+                    uiContext = uiContext,
+                    position = Position(
+                        initialOffset = offsetB,
+                        clipToBounds = uiContext.clipToBounds
                     ),
                     backgroundColor = BackgroundColor(md_light_green_500)
                 )
                 C -> UiState(
-                    uiContext = UiContext(
-                        zeroSizeTransitionBounds,
-                        uiContext.coroutineScope
-                    ),
-                    offset = Position(
-                        initialOffset = offsetC
+                    uiContext = uiContext,
+                    position = Position(
+                        initialOffset = offsetC,
+                        clipToBounds = uiContext.clipToBounds
                     ),
                     backgroundColor = BackgroundColor(md_yellow_500)
                 )
                 D -> UiState(
-                    uiContext = UiContext(
-                        zeroSizeTransitionBounds,
-                        CoroutineScope(EmptyCoroutineContext)
-                    ),
-                    offset = Position(
-                        initialOffset = offsetD
+                    uiContext = uiContext,
+                    position = Position(
+                        initialOffset = offsetD,
+                        clipToBounds = uiContext.clipToBounds
                     ),
                     backgroundColor = BackgroundColor(md_light_blue_500)
                 )

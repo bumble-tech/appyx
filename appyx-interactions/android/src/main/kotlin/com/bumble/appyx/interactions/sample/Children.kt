@@ -38,6 +38,7 @@ import kotlin.math.roundToInt
 fun <InteractionTarget : Any, ModelState : Any> Children(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
+    clipToBounds: Boolean = false,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
         Element(elementUiModel = it)
     },
@@ -56,7 +57,6 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
         modifier = modifier
             .fillMaxSize()
             .composed {
-                val clipToBounds by interactionModel.clipToBounds.collectAsState()
                 if (clipToBounds) {
                     clipToBounds()
                 } else {
@@ -65,7 +65,8 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
             }
             .onPlaced {
                 uiContext = UiContext(
-                    TransitionBounds(
+                    coroutineScope = coroutineScope,
+                    transitionBounds = TransitionBounds(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
@@ -73,7 +74,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
-                    coroutineScope
+                    clipToBounds = clipToBounds
                 )
             }
     ) {
