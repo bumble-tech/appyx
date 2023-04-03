@@ -119,10 +119,12 @@ jobs:
           script: |
             adb logcat > logcat.out &
             ./gradlew connectedCheck
+      - name: Managed device clean-up
+        run: >
+          ./gradlew cleanManagedDevices --unused-only
       - name: Screenshot tests
         # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/AndroidCIWithGmd.yaml
         run: >
-          ./gradlew cleanManagedDevices &
           ./gradlew screenshotTestsCompareBaseline
           -Dorg.gradle.workers.max=1
           -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"

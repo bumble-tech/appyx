@@ -54,6 +54,22 @@ class KeyframesTest {
     }
 
     @Test
+    fun when_in_a_segment_then_possible_to_enqueue_more_segments() {
+        val testDrive = composeTestRule.createTestDrive()
+        composeTestRule.mainClock.autoAdvance = false
+
+        repeat(2) {
+            testDrive.operation(
+                operation = Next(Operation.Mode.KEYFRAME)
+            )
+
+            composeTestRule.mainClock.advanceTimeBy(700)
+        }
+
+        composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
+    }
+
+    @Test
     fun basic_behaviour_all_at_once() {
         val testDrive = composeTestRule.createTestDrive()
         composeTestRule.mainClock.autoAdvance = false
