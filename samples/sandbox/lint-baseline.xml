@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 7.1.3" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.3)" variant="all" version="7.1.3">
-
-    <issue
-        id="ModifierFactoryExtensionFunction"
-        message="Modifier factory functions should be extensions on Modifier"
-        errorLine1="    override fun createModifier("
-        errorLine2="                 ~~~~~~~~~~~~~~">
-        <location
-            file="src/main/kotlin/com/bumble/appyx/sandbox/client/backstack/BackStackExampleTransitionHandler.kt"
-            line="20"
-            column="18"/>
-    </issue>
+<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all" version="7.4.0">
 
     <issue
         id="Overdraw"
@@ -21,6 +10,28 @@
             file="src/main/res/layout/rib_root.xml"
             line="7"
             column="5"/>
+    </issue>
+
+    <issue
+        id="MonochromeLauncherIcon"
+        message="The application adaptive icon is missing a monochrome tag"
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/mipmap-anydpi-v26/ic_launcher.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MonochromeLauncherIcon"
+        message="The application adaptive roundIcon is missing a monochrome tag"
+        errorLine1="&lt;adaptive-icon xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml"
+            line="2"
+            column="1"/>
     </issue>
 
 </issues>

@@ -169,15 +169,6 @@ abstract class ParentNode<NavTarget : Any>(
         }
     }
 
-    @Deprecated(
-        replaceWith = ReplaceWith("attachChild(action"),
-        message = "Will be removed in 1.1"
-    )
-    protected suspend inline fun <reified T : Node> attachWorkflow(
-        timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
-        crossinline action: () -> Unit
-    ) = attachChild<T>(timeout, action)
-
     /**
      * attachChild executes provided action e.g. backstack.push(NodeANavTarget) and waits for the specific
      * Node of type T to appear in the ParentNode's children list. It should happen almost immediately because it happens
@@ -241,11 +232,11 @@ abstract class ParentNode<NavTarget : Any>(
 
     // region ChildAware
 
-    protected fun <T : Node> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
+    protected fun <T : Any> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
         childAware.whenChildAttached(child, callback)
     }
 
-    protected fun <T1 : Node, T2 : Node> whenChildrenAttached(
+    protected fun <T1 : Any, T2 : Any> whenChildrenAttached(
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
@@ -253,13 +244,13 @@ abstract class ParentNode<NavTarget : Any>(
         childAware.whenChildrenAttached(child1, child2, callback)
     }
 
-    protected inline fun <reified T : Node> whenChildAttached(
+    protected inline fun <reified T : Any> whenChildAttached(
         noinline callback: ChildCallback<T>,
     ) {
         whenChildAttached(T::class, callback)
     }
 
-    protected inline fun <reified T1 : Node, reified T2 : Node> whenChildrenAttached(
+    protected inline fun <reified T1 : Any, reified T2 : Any> whenChildrenAttached(
         noinline callback: ChildrenCallback<T1, T2>,
     ) {
         whenChildrenAttached(T1::class, T2::class, callback)

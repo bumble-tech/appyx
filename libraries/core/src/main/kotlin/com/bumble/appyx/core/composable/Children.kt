@@ -2,6 +2,7 @@ package com.bumble.appyx.core.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -15,13 +16,14 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
-import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.removedElementKeys
 import com.bumble.appyx.core.navigation.transition.JumpToEndTransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionBounds
 import com.bumble.appyx.core.navigation.transition.TransitionDescriptor
 import com.bumble.appyx.core.navigation.transition.TransitionHandler
 import com.bumble.appyx.core.navigation.transition.TransitionParams
+import com.bumble.appyx.core.node.ParentNode
 import kotlinx.coroutines.flow.map
 import kotlin.reflect.KClass
 
@@ -123,6 +125,21 @@ class ChildrenTransitionScope<T : Any, S>(
             transitionDescriptor: TransitionDescriptor<T, S>
         ) -> Unit
     ) {
+        val saveableStateHolder = rememberSaveableStateHolder()
+
+        LaunchedEffect(navModel) {
+            navModel
+                .removedElementKeys()
+                .map { list ->
+                    list.filter { clazz.isInstance(it.navTarget) }
+                }
+                .collect { deletedKeys ->
+                    deletedKeys.forEach { navKey ->
+                        saveableStateHolder.removeState(navKey)
+                    }
+                }
+        }
+
         val visibleElementsFlow = remember {
             this@ChildrenTransitionScope
                 .navModel
@@ -135,7 +152,7 @@ class ChildrenTransitionScope<T : Any, S>(
         }
         val children by visibleElementsFlow.collectAsState(emptyList())
 
-        val saveableStateHolder = rememberSaveableStateHolder()
+
         children.forEach { navElement ->
             key(navElement.key.id) {
                 Child(

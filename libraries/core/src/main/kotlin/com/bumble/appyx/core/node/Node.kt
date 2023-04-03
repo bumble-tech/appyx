@@ -101,14 +101,6 @@ open class Node @VisibleForTesting internal constructor(
         })
     }
 
-    @Deprecated(
-        replaceWith = ReplaceWith("executeAction(action)"),
-        message = "Will be removed in 1.1"
-    )
-    protected suspend inline fun <reified T : Node> executeWorkflow(
-        crossinline action: () -> Unit
-    ): T = executeAction(action)
-
     protected suspend inline fun <reified T : Node> executeAction(
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
@@ -168,8 +160,8 @@ open class Node @VisibleForTesting internal constructor(
         }
     }
 
-    override fun getLifecycle(): Lifecycle =
-        nodeLifecycle.lifecycle
+    override val lifecycle: Lifecycle
+        get() = nodeLifecycle.lifecycle
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         if (lifecycle.currentState == state) return
