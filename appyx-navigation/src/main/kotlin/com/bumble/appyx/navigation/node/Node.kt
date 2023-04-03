@@ -14,6 +14,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.BuildConfig
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
@@ -29,8 +31,6 @@ import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import com.bumble.appyx.navigation.plugin.UpNavigationHandler
 import com.bumble.appyx.navigation.plugin.plugins
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.navigation.store.RetainedInstanceStore
 import kotlinx.coroutines.withContext
@@ -129,8 +129,8 @@ open class Node @VisibleForTesting internal constructor(
 
     }
 
-    override fun getLifecycle(): Lifecycle =
-        nodeLifecycle.lifecycle
+    override val lifecycle: Lifecycle
+        get() = nodeLifecycle.lifecycle
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         if (lifecycle.currentState == state) return
