@@ -9,12 +9,12 @@ import com.bumble.appyx.navigation.lifecycle.isDestroyed
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.withPrevious
-import kotlin.reflect.KClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
 class ChildAwareImpl<N : Node> : ChildAware<N> {
 
@@ -53,7 +53,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
             }
     }
 
-    override fun <T : Node> whenChildAttached(
+    override fun <T : Any> whenChildAttached(
         child: KClass<T>,
         callback: ChildCallback<T>
     ) {
@@ -64,7 +64,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         lifecycle.removeWhenDestroyed(info)
     }
 
-    override fun <T1 : Node, T2 : Node> whenChildrenAttached(
+    override fun <T1 : Any, T2 : Any> whenChildrenAttached(
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>

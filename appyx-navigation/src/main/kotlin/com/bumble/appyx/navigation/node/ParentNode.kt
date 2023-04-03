@@ -17,6 +17,8 @@ import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.InteractionModel
 import com.bumble.appyx.interactions.core.model.plus
+import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -32,8 +34,6 @@ import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
-import com.bumble.appyx.interactions.core.plugin.Plugin
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.transitionmodel.permanent.PermanentInteractionModel
 import com.bumble.appyx.transitionmodel.permanent.operation.addUnique
 import kotlinx.coroutines.Job
@@ -259,11 +259,11 @@ abstract class ParentNode<InteractionTarget : Any>(
 
     // region ChildAware
 
-    protected fun <T : Node> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
+    protected fun <T : Any> whenChildAttached(child: KClass<T>, callback: ChildCallback<T>) {
         childAware.whenChildAttached(child, callback)
     }
 
-    protected fun <T1 : Node, T2 : Node> whenChildrenAttached(
+    protected fun <T1 : Any, T2 : Any> whenChildrenAttached(
         child1: KClass<T1>,
         child2: KClass<T2>,
         callback: ChildrenCallback<T1, T2>
@@ -271,13 +271,13 @@ abstract class ParentNode<InteractionTarget : Any>(
         childAware.whenChildrenAttached(child1, child2, callback)
     }
 
-    protected inline fun <reified T : Node> whenChildAttached(
+    protected inline fun <reified T : Any> whenChildAttached(
         noinline callback: ChildCallback<T>,
     ) {
         whenChildAttached(T::class, callback)
     }
 
-    protected inline fun <reified T1 : Node, reified T2 : Node> whenChildrenAttached(
+    protected inline fun <reified T1 : Any, reified T2 : Any> whenChildrenAttached(
         noinline callback: ChildrenCallback<T1, T2>,
     ) {
         whenChildrenAttached(T1::class, T2::class, callback)

@@ -12,7 +12,7 @@ internal sealed class ChildAwareCallbackInfo {
 
     abstract fun onRegistered(activeNodes: List<Node>)
 
-    class Single<T : Node>(
+    class Single<T : Any>(
         private val child: KClass<T>,
         private val callback: ChildCallback<T>,
         private val parentLifecycle: Lifecycle,
@@ -39,7 +39,7 @@ internal sealed class ChildAwareCallbackInfo {
 
     }
 
-    class Double<T1 : Node, T2 : Node>(
+    class Double<T1 : Any, T2 : Any>(
         private val child1: KClass<T1>,
         private val child2: KClass<T2>,
         private val callback: ChildrenCallback<T1, T2>,
