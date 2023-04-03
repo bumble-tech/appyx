@@ -48,7 +48,6 @@ dependencies {
     implementation(libs.compose.animation.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.compose.foundation.layout)
 
     testImplementation(libs.kotlin.coroutines.test)
