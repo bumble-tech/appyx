@@ -9,6 +9,7 @@ import androidx.test.rule.ActivityTestRule
 import com.bumble.appyx.core.node.LocalNode
 import com.bumble.appyx.core.node.NodeView
 import com.bumble.appyx.core.node.ViewFactory
+import com.bumble.appyx.core.node.build
 import com.bumble.appyx.testing.ui.utils.DummyParentNode
 import org.junit.rules.TestRule
 import org.junit.runner.Description
@@ -47,7 +48,7 @@ open class AppyxViewTestRule<View : NodeView>(
     override fun beforeActivityLaunched() {
         AppyxTestActivity.composableView = {
             CompositionLocalProvider(
-                LocalNode provides DummyParentNode<Any>(),
+                LocalNode provides DummyParentNode<Any>().build(),
             ) {
                 view.View(modifier = Modifier)
             }

@@ -21,23 +21,22 @@ import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.removedElements
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.node.ParentNode
 import gestureModifier
-import kotlinx.coroutines.flow.map
 import kotlin.math.roundToInt
-import kotlin.reflect.KClass
 
 @Composable
-inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Children(
-    interactionModel: BaseInteractionModel<NavTarget, NavState>,
+inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
+    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     gestureSpec: GestureSpec = GestureSpec(),
-    noinline block: @Composable ChildrenTransitionScope<NavTarget, NavState>.() -> Unit = {
-        children<NavTarget> { child, frameModel ->
+    noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
+        children { child, frameModel ->
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
@@ -92,45 +91,32 @@ inline fun <reified NavTarget : Any, NavState : Any> ParentNode<NavTarget>.Child
 
 }
 
-class ChildrenTransitionScope<NavTarget : Any, NavState : Any>(
-    private val interactionModel: BaseInteractionModel<NavTarget, NavState>
+class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
+    private val interactionModel: BaseInteractionModel<InteractionTarget, NavState>
 ) {
 
-    @Composable
-    inline fun <reified V : NavTarget> ParentNode<NavTarget>.children(
-        noinline block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
-    ) {
-        children(V::class, block)
-    }
-
     @SuppressLint("ComposableNaming")
     @Composable
-    fun ParentNode<NavTarget>.children(
-        clazz: KClass<out NavTarget>,
-        block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit,
-    ) {
-        _children(clazz) { child, frameModel ->
-            block(child, frameModel)
-        }
-    }
-
-    @SuppressLint("ComposableNaming")
-    @Composable
-    private fun ParentNode<NavTarget>._children(
-        clazz: KClass<out NavTarget>,
-        block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
+    fun ParentNode<InteractionTarget>.children(
+        block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
     ) {
 
         val framesFlow = remember {
             this@ChildrenTransitionScope.interactionModel.uiModels
-                .map { list ->
-                    list
-                        .filter { clazz.isInstance(it.element.interactionTarget) }
-                }
         }
 
         val visibleFrames = framesFlow.collectAsState(initial = emptyList())
         val saveableStateHolder = rememberSaveableStateHolder()
+
+        LaunchedEffect(this@ChildrenTransitionScope.interactionModel) {
+            this@ChildrenTransitionScope.interactionModel
+                .removedElements()
+                .collect { deletedKeys ->
+                    deletedKeys.forEach { navKey ->
+                        saveableStateHolder.removeState(navKey)
+                    }
+                }
+        }
 
         visibleFrames.value
             .forEach { uiModel ->

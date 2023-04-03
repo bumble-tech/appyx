@@ -1,4 +1,4 @@
-package com.bumble.appyx.core.store
+package com.bumble.appyx.navigation.store
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse

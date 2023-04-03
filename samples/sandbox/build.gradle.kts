@@ -61,7 +61,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
@@ -74,6 +73,7 @@ dependencies {
     implementation(libs.rxjava2)
     implementation(libs.rxandroid2)
     implementation(libs.rxrelay2)
+    implementation(libs.toolargetool)
 
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.junit)
