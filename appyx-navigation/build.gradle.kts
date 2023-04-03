@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.compose.foundation.layout)
 
     testImplementation(libs.kotlin.coroutines.test)
+    testImplementation(libs.junit)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)
