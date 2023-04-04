@@ -2,7 +2,7 @@
 
 ## Pending changes
 
--
+- [#391](https://github.com/bumble-tech/appyx/pull/391) – **Added**: Introduced `putLazy` and `putSubDirectoryLazy` functions within `NodeCustomisationDirectoryImpl` via `LazyMutableNodeCustomisationDirectory`
 
 ---
 
