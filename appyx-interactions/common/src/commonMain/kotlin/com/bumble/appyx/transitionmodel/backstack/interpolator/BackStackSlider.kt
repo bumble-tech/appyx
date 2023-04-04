@@ -19,7 +19,6 @@ import kotlinx.coroutines.launch
 
 class BackStackSlider<InteractionTarget : Any>(
     uiContext: UiContext,
-    override val clipToBounds: Boolean = true,
 ) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, BackStackSlider.UiState>(
     uiContext = uiContext,
 ) {
@@ -27,17 +26,15 @@ class BackStackSlider<InteractionTarget : Any>(
 
     override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState =
         UiState(
-            clipToBounds = clipToBounds,
             uiContext = uiContext,
         )
 
     data class UiState(
-        val clipToBounds: Boolean,
         val uiContext: UiContext,
         val offset: Position = Position(
             initialOffset = DpOffset(0.dp, 0.dp),
             bounds = uiContext.transitionBounds,
-            clipToBounds = clipToBounds
+            clipToBounds = uiContext.clipToBounds
         ),
         val alpha: Alpha = Alpha(value = 1f),
         val offsetMultiplier: Int = 1
@@ -88,20 +85,26 @@ class BackStackSlider<InteractionTarget : Any>(
 
     private val outsideLeft = UiState(
         uiContext = uiContext,
-        offset = Position(initialOffset = DpOffset(-width, 0.dp)),
-        clipToBounds = clipToBounds
+        offset = Position(
+            initialOffset = DpOffset(-width, 0.dp),
+            clipToBounds = uiContext.clipToBounds
+        ),
     )
 
     private val outsideRight = UiState(
         uiContext = uiContext,
-        offset = Position(initialOffset = DpOffset(width, 0.dp)),
-        clipToBounds = clipToBounds
+        offset = Position(
+            initialOffset = DpOffset(width, 0.dp),
+            clipToBounds = uiContext.clipToBounds
+        ),
     )
 
     private val noOffset = UiState(
         uiContext = uiContext,
-        offset = Position(initialOffset = DpOffset(0.dp, 0.dp)),
-        clipToBounds = clipToBounds
+        offset = Position(
+            initialOffset = DpOffset(0.dp, 0.dp),
+            clipToBounds = uiContext.clipToBounds
+        ),
     )
 
 

@@ -44,7 +44,8 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
 
 fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInteractionModel(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
-    fraction: Float = 1.0f
+    fraction: Float = 1.0f,
+    clipToBounds: Boolean = false
 ) {
     setContent {
         Surface(
@@ -55,7 +56,8 @@ fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInte
             InteractionModelSetup(interactionModel)
             TestChildrenUi(
                 fraction = fraction,
-                interactionModel = interactionModel
+                interactionModel = interactionModel,
+                clipToBounds = clipToBounds
             )
         }
     }
@@ -70,7 +72,8 @@ fun randomColor(): Color {
 @Composable
 private fun <NavTarget : Any, ModelState : Any> TestChildrenUi(
     fraction: Float = 1.0f,
-    interactionModel: BaseInteractionModel<NavTarget, ModelState>
+    interactionModel: BaseInteractionModel<NavTarget, ModelState>,
+    clipToBounds: Boolean
 ) {
     BoxWithConstraints {
         val padding = this.maxWidth * (1.0f - fraction) / 2
@@ -82,6 +85,7 @@ private fun <NavTarget : Any, ModelState : Any> TestChildrenUi(
                     color = randomColor()
                 ),
             interactionModel = interactionModel,
+            clipToBounds = clipToBounds,
         ) {
             Box(
                 modifier = Modifier

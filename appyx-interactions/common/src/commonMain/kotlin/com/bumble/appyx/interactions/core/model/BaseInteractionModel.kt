@@ -98,9 +98,6 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         MutableStateFlow(InteractionModel.Elements(offScreen = model.elements.value))
     override val elements: StateFlow<InteractionModel.Elements<InteractionTarget>> = _elements
 
-    private val _clipToBounds: MutableStateFlow<Boolean> = MutableStateFlow(false)
-    val clipToBounds: StateFlow<Boolean> = _clipToBounds
-
     init {
         // Before motionController is ready we consider all elements as off-screen
         elementsJob = scope.launch {
@@ -177,7 +174,6 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     private fun onMotionControllerReady(motionController: MotionController<InteractionTarget, ModelState>) {
-        _clipToBounds.update { motionController.clipToBounds }
         observeAnimationChanges(motionController)
         observeMotionController(motionController)
     }

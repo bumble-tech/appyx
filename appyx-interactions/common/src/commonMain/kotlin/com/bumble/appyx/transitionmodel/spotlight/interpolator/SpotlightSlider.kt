@@ -36,7 +36,6 @@ import kotlinx.coroutines.launch
 
 class SpotlightSlider<InteractionTarget : Any>(
     private val uiContext: UiContext,
-    override val clipToBounds: Boolean = false,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseMotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>, SpotlightSlider.UiState>(
     uiContext = uiContext
@@ -111,8 +110,8 @@ class SpotlightSlider<InteractionTarget : Any>(
     override fun defaultUiState(uiContext: UiContext, initialUiState: UiState?): UiState = UiState(
         position = Position(
             initialOffset = initialUiState?.position?.initialOffset ?: DpOffset.Zero,
-            clipToBounds = clipToBounds,
             bounds = uiContext.transitionBounds,
+            clipToBounds = uiContext.clipToBounds,
             displacement = geometry.valueFlow
                 .mapState(uiContext.coroutineScope) { value ->
                     DpOffset((value * width.value).dp, 0.dp)
@@ -123,7 +122,8 @@ class SpotlightSlider<InteractionTarget : Any>(
 
     private val created = defaultUiState(uiContext, null).copy(
         position = Position(
-            DpOffset(0.dp, width),
+            initialOffset = DpOffset(0.dp, width),
+            clipToBounds = uiContext.clipToBounds
         ),
         scale = Scale(0f),
         alpha = Alpha(1f),
@@ -132,12 +132,16 @@ class SpotlightSlider<InteractionTarget : Any>(
     )
 
     private val standard = defaultUiState(uiContext, null).copy(
-        position = Position(DpOffset.Zero)
+        position = Position(
+            initialOffset = DpOffset.Zero,
+            clipToBounds = uiContext.clipToBounds
+        )
     )
 
     private val destroyed = defaultUiState(uiContext, null).copy(
         position = Position(
-            DpOffset(0.dp, -width)
+            initialOffset = DpOffset(x = 0.dp, y = -width),
+            clipToBounds = uiContext.clipToBounds
         ),
         scale = Scale(0f),
         alpha = Alpha(0f),
@@ -154,10 +158,11 @@ class SpotlightSlider<InteractionTarget : Any>(
                     element = it.key,
                     uiState = UiState(
                         position = Position(
-                            DpOffset(
-                                dpOffset(index).x,
-                                target.position.value.y
-                            )
+                            initialOffset = DpOffset(
+                                x = dpOffset(index).x,
+                                y = target.position.value.y
+                            ),
+                            clipToBounds = uiContext.clipToBounds
                         ),
                         scale = target.scale,
                         alpha = target.alpha,
