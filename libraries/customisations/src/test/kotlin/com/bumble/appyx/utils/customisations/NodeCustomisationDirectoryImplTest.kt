@@ -11,7 +11,7 @@ internal class NodeCustomisationDirectoryImplTest {
     @Test
     fun `GIVEN put lazy WHEN get not invoked THEN customisation provider not invoked`() {
         var providerInvoked = false
-        directory.putLazy(TestCustomisation::class) {
+        directory.put(TestCustomisation::class) {
             providerInvoked = true
             TestCustomisation("lazy")
         }
@@ -21,7 +21,7 @@ internal class NodeCustomisationDirectoryImplTest {
 
     @Test
     fun `GIVEN put lazy WHEN get invoked THEN customisation provider invoked`() {
-        directory.putLazy(TestCustomisation::class) {
+        directory.put(TestCustomisation::class) {
             TestCustomisation("lazy")
         }
         assertEquals(TestCustomisation("lazy"), directory.get(TestCustomisation::class))
@@ -30,9 +30,9 @@ internal class NodeCustomisationDirectoryImplTest {
     @Test
     fun `GIVEN put lazy subdirectory WHEN subdirectory not invoked THEN subdirectory block not invoked`() {
         var customisationDirectoryBlockInvoked = false
-        directory.putSubDirectoryLazy(TestRib::class) {
+        directory.putSubDirectory(TestNodeCustomisationDirectory::class) {
             customisationDirectoryBlockInvoked = true
-            NodeCustomisationDirectoryImpl(directory)
+            TestNodeCustomisationDirectory()
         }
 
         assertFalse(customisationDirectoryBlockInvoked)
@@ -41,12 +41,12 @@ internal class NodeCustomisationDirectoryImplTest {
     @Test
     fun `GIVEN put lazy subdirectory WHEN subdirectory invoked THEN subdirectory block invoked`() {
         var customisationDirectoryBlockInvoked = false
-        directory.putSubDirectoryLazy(TestRib::class) {
+        directory.putSubDirectory(TestNodeCustomisationDirectory::class) {
             customisationDirectoryBlockInvoked = true
-            NodeCustomisationDirectoryImpl(directory)
+            TestNodeCustomisationDirectory()
         }
 
-        directory.getSubDirectory(TestRib::class)
+        directory.getSubDirectory(TestNodeCustomisationDirectory::class)
 
         assertTrue(customisationDirectoryBlockInvoked)
     }
@@ -55,7 +55,7 @@ internal class NodeCustomisationDirectoryImplTest {
     fun `GIVEN subdirectory created via kclass extension WHEN subdirectory not invoked THEN subdirectory block not invoked`() {
         var customisationDirectoryBlockInvoked = false
         directory.apply {
-            TestRib::class {
+            TestNodeCustomisationDirectory::class {
                 customisationDirectoryBlockInvoked = true
             }
         }
@@ -67,17 +67,17 @@ internal class NodeCustomisationDirectoryImplTest {
     fun `GIVEN subdirectory created via kclass extension WHEN subdirectory invoked THEN subdirectory block invoked`() {
         var customisationDirectoryBlockInvoked = false
         directory.apply {
-            TestRib::class {
+            TestNodeCustomisationDirectory::class {
                 customisationDirectoryBlockInvoked = true
             }
         }
 
-        directory.getSubDirectory(TestRib::class)
+        directory.getSubDirectory(TestNodeCustomisationDirectory::class)
 
         assertTrue(customisationDirectoryBlockInvoked)
     }
 
     private data class TestCustomisation(val label: String) : NodeCustomisation
 
-    interface TestRib
+    class TestNodeCustomisationDirectory : NodeCustomisationDirectoryImpl()
 }

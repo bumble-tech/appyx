@@ -4,15 +4,19 @@ import kotlin.reflect.KClass
 
 interface MutableNodeCustomisationDirectory : NodeCustomisationDirectory {
 
-    @Deprecated(
-        message = "Use putSubDirectoryLazy to avoid potential performance issues",
-        replaceWith = ReplaceWith("putSubDirectoryLazy(key) { value }")
-    )
-    fun <T : Any> putSubDirectory(key: KClass<T>, value: NodeCustomisationDirectory)
+    fun <T : Any> putSubDirectory(key: KClass<T>, valueProvider: () -> NodeCustomisationDirectory)
 
-    @Deprecated(
-        message = "Use putLazy to avoid potential performance issues",
-        replaceWith = ReplaceWith("putLazy(key) { value }")
-    )
-    fun <T : NodeCustomisation> put(key: KClass<T>, value: T)
+    fun <T : NodeCustomisation> put(key: KClass<T>, valueProvider: () -> T)
+}
+
+inline fun <reified T : Any> MutableNodeCustomisationDirectory.putSubDirectory(
+    noinline valueProvider: () -> NodeCustomisationDirectory
+) {
+    putSubDirectory(T::class, valueProvider)
+}
+
+inline fun <reified T : NodeCustomisation> MutableNodeCustomisationDirectory.put(
+    noinline valueProvider: () -> T
+) {
+    put(T::class, valueProvider)
 }

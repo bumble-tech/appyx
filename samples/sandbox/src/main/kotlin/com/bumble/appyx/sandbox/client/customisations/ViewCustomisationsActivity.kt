@@ -11,6 +11,7 @@ import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.NodeActivity
 import com.bumble.appyx.sandbox.ui.AppyxSandboxTheme
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
+import com.bumble.appyx.utils.customisations.put
 
 class ViewCustomisationsActivity : NodeActivity() {
 
@@ -38,9 +39,11 @@ class ViewCustomisationsActivity : NodeActivity() {
         val nodeCustomisationDirectory = NodeCustomisationDirectoryImpl()
         if (hasCustomisedView) {
             nodeCustomisationDirectory.apply {
-                put(ViewCustomisationExampleNode.Customisations(viewFactory = {
-                    ViewCustomisationExampleCustomisedView()
-                }))
+                put {
+                    ViewCustomisationExampleNode.Customisations(viewFactory = {
+                        ViewCustomisationExampleCustomisedView()
+                    })
+                }
             }
         }
 

@@ -20,6 +20,7 @@ import com.bumble.appyx.testing.junit5.util.CoroutinesTestExtension
 import com.bumble.appyx.testing.junit5.util.InstantExecutorExtension
 import com.bumble.appyx.testing.unit.common.util.InteropSimpleBuilderStub
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
+import com.bumble.appyx.utils.customisations.put
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -48,13 +49,17 @@ internal class RibsParentNodeTest {
             buildContext = BuildContext.root(
                 savedInstanceState = null,
                 customisations = NodeCustomisationDirectoryImpl().apply {
-                    put(RibsParentRib.Customisation(object : RibsParentView.Factory {
-                        override fun invoke(p1: Nothing?): ViewFactory<RibsParentView> =
-                            ViewFactory { view }
-                    }))
-                    put(InteropNode.Customisation(
-                        { object : RibViewStub<Nothing, Nothing>(), InteropView {} }
-                    ))
+                    put {
+                        RibsParentRib.Customisation(object : RibsParentView.Factory {
+                            override fun invoke(p1: Nothing?): ViewFactory<RibsParentView> =
+                                ViewFactory { view }
+                        })
+                    }
+                    put {
+                        InteropNode.Customisation(
+                            { object : RibViewStub<Nothing, Nothing>(), InteropView {} }
+                        )
+                    }
                 }
             ),
             payload = null,
