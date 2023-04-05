@@ -54,7 +54,7 @@ class KeyframesTest {
     }
 
     @Test
-    fun when_in_a_segment_then_possible_to_enqueue_more_segments() {
+    fun when_keyframe_is_running_then_possible_to_enqueue_more_operations() {
         val testDrive = composeTestRule.createTestDrive()
         composeTestRule.mainClock.autoAdvance = false
 

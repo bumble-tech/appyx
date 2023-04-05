@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.Logger
@@ -174,6 +176,9 @@ fun <InteractionTarget : Any> TestDriveUi(
                     .size(60.dp)
                     .offset(targetProps.offset.value.x, targetProps.offset.value.y)
                     .border(2.dp, targetProps.backgroundColor.value)
+                    .semantics {
+                        contentDescription = "TheSquare"
+                    }
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),

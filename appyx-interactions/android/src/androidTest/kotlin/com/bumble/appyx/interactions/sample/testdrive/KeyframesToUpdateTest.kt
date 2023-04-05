@@ -18,7 +18,6 @@ class KeyframesToUpdateTest {
     @get:Rule
     var nameRule = TestName()
 
-    //    @Ignore("Fix me, this test is flaky on CI")
     @Test
     fun when_in_segment_interrupt_with_update() {
         val animationSpec = spring<Float>()
@@ -30,9 +29,7 @@ class KeyframesToUpdateTest {
             animationSpec = animationSpec
         )
 
-        repeat(3) {
-            composeTestRule.mainClock.advanceTimeByFrame()
-        }
+        composeTestRule.mainClock.advanceTimeByFrame()
 
         testDrive.operation(
             operation = Next(Operation.Mode.IMMEDIATE),
