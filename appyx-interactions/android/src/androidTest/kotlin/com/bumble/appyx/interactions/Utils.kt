@@ -16,11 +16,30 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
+import com.bumble.appyx.interactions.sample.SpotlightUi
 import com.bumble.appyx.interactions.sample.TestDriveUi
 import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import kotlin.random.Random
+
+fun <InteractionTarget : Any> ComposeContentTestRule.setupSpotlight(
+    spotlight: Spotlight<InteractionTarget>,
+) {
+    setContent {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = appyx_dark
+        ) {
+            InteractionModelSetup(spotlight)
+
+            SpotlightUi(
+                spotlight = spotlight,
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterialApi::class)
 fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(

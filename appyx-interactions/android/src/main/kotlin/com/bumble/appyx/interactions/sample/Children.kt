@@ -24,6 +24,8 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,7 +52,7 @@ fun <NavTarget : Any, NavState : Any> Children(
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
-        uiContext?.let {  interactionModel.updateContext(it) }
+        uiContext?.let { interactionModel.updateContext(it) }
     }
     Box(
         modifier = modifier
@@ -93,7 +95,8 @@ fun <NavTarget : Any, NavState : Any> Children(
 fun Element(
     color: Color? = Color.Unspecified,
     elementUiModel: ElementUiModel<*>,
-    modifier: Modifier = Modifier.fillMaxSize()
+    modifier: Modifier = Modifier.fillMaxSize(),
+    contentDescription: String? = null
 ) {
     val backgroundColor = remember {
         if (color == Color.Unspecified) colors.shuffled().random() else color ?: Color.Unspecified
@@ -106,6 +109,9 @@ fun Element(
             .then(if (color == null) Modifier else Modifier.background(backgroundColor))
             .then(modifier)
             .padding(24.dp)
+            .semantics {
+                contentDescription?.let { this.contentDescription = it }
+            }
     ) {
         Text(
             text = elementUiModel.element.interactionTarget.toString(),

@@ -23,9 +23,6 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.sample.NavTarget.Child2
 import com.bumble.appyx.interactions.sample.NavTarget.Child3
 import com.bumble.appyx.interactions.sample.NavTarget.Child4
-import com.bumble.appyx.interactions.sample.NavTarget.Child5
-import com.bumble.appyx.interactions.sample.NavTarget.Child6
-import com.bumble.appyx.interactions.sample.NavTarget.Child7
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
@@ -40,7 +37,12 @@ import com.bumble.appyx.transitionmodel.spotlight.operation.updateElements
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperiment() {
-    val items = listOf(Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child1, Child2, Child3, Child4, Child5, Child6, Child7)
+    val items = listOf(
+        Child1,
+        Child2,
+        Child3,
+        Child4,
+    )
     val spotlight = Spotlight(
         model = SpotlightModel(
             items = items,
@@ -58,33 +60,9 @@ fun SpotlightExperiment() {
             .fillMaxWidth()
             .background(appyx_dark)
     ) {
-        Children(
-            interactionModel = spotlight,
-            modifier = Modifier
-                .weight(0.9f)
-                .padding(
-                    horizontal = 64.dp,
-                    vertical = 12.dp
-                ),
-            element = {
-                Element(
-                    elementUiModel = it,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .pointerInput(it.element.id) {
-                            detectDragGestures(
-                                onDrag = { change, dragAmount ->
-                                    change.consume()
-                                    spotlight.onDrag(dragAmount, this)
-                                },
-                                onDragEnd = {
-                                    Logger.log("drag", "end")
-                                    spotlight.onDragEnd(completionThreshold = 0.2f)
-                                }
-                            )
-                        }
-                )
-            }
+        SpotlightUi(
+            spotlight = spotlight,
+            modifier = Modifier.weight(0.9f)
         )
 
         Row(
@@ -94,7 +72,11 @@ fun SpotlightExperiment() {
                 .padding(4.dp),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(onClick = { spotlight.updateElements(items, animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20))
+            Button(onClick = {
+                spotlight.updateElements(
+                    items,
+                    animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
+                )
             }) {
                 Text("New")
             }
@@ -113,4 +95,42 @@ fun SpotlightExperiment() {
         }
     }
 }
+
+@Composable
+fun <InteractionTarget : Any> SpotlightUi(
+    spotlight: Spotlight<InteractionTarget>,
+    modifier: Modifier = Modifier
+) {
+    Children(
+        interactionModel = spotlight,
+        modifier = modifier
+            .padding(
+                horizontal = 64.dp,
+                vertical = 12.dp
+            ),
+        element = {
+            Element(
+                elementUiModel = it,
+                contentDescription =
+                "${SPOTLIGHT_EXPERIMENT_TEST_HELPER}_${it.element.id}",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(it.element.id) {
+                        detectDragGestures(
+                            onDrag = { change, dragAmount ->
+                                change.consume()
+                                spotlight.onDrag(dragAmount, this)
+                            },
+                            onDragEnd = {
+                                Logger.log("drag", "end")
+                                spotlight.onDragEnd(completionThreshold = 0.2f)
+                            }
+                        )
+                    }
+            )
+        }
+    )
+}
+
+const val SPOTLIGHT_EXPERIMENT_TEST_HELPER = "TheChild"
 

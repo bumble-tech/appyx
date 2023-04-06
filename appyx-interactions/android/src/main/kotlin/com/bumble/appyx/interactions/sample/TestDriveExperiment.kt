@@ -177,7 +177,7 @@ fun <InteractionTarget : Any> TestDriveUi(
                     .offset(targetProps.offset.value.x, targetProps.offset.value.y)
                     .border(2.dp, targetProps.backgroundColor.value)
                     .semantics {
-                        contentDescription = "TheSquare"
+                        contentDescription = TEST_DRIVE_EXPERIMENT_TEST_HELPER
                     }
             ) {
                 Text(
@@ -193,3 +193,5 @@ fun <InteractionTarget : Any> TestDriveUi(
         }
     }
 }
+
+const val TEST_DRIVE_EXPERIMENT_TEST_HELPER = "TheSquare"
