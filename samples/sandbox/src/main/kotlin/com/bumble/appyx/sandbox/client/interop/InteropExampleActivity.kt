@@ -10,6 +10,7 @@ import com.badoo.ribs.core.modality.BuildContext
 import com.bumble.appyx.interop.ribs.InteropActivity
 import com.bumble.appyx.sandbox.client.container.ContainerNode
 import com.bumble.appyx.sandbox.client.interop.parent.RibsParentBuilder
+import com.bumble.appyx.utils.customisations.put
 
 class InteropExampleActivity : InteropActivity() {
 
@@ -27,9 +28,9 @@ class InteropExampleActivity : InteropActivity() {
 
     private fun ribCustomisations(): RibCustomisationDirectory =
         RibCustomisationDirectoryImpl().apply {
-            put(
+            put {
                 ContainerNode.Customisation(name = "Interop ContainerNode customisation")
-            )
+            }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
