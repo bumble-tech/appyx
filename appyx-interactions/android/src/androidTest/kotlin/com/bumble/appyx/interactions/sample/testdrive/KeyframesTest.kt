@@ -1,10 +1,15 @@
 package com.bumble.appyx.interactions.sample.testdrive
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.sample.TestDriveExperiment
 import com.bumble.appyx.interactions.sample.snapshot
 import com.bumble.appyx.interactions.sample.testdrive.helper.createTestDrive
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestName
@@ -98,4 +103,25 @@ class KeyframesTest {
 
         composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
     }
+
+    @OptIn(
+        ExperimentalMaterialApi::class
+    )
+    @Test
+    @Ignore("This test attempts to find flickers and artifacts that were fixed in the past. However the artifacts do not show up when running this test")
+    fun validate_that_no_artefacts_appear_during_animation() {
+        composeTestRule.setContent {
+            TestDriveExperiment()
+        }
+
+        composeTestRule.mainClock.autoAdvance = false
+
+        repeat(30) {
+            repeat(250) {
+                composeTestRule.mainClock.advanceTimeBy(1, true)
+            }
+            composeTestRule.onNodeWithText("Keyframe").performClick()
+        }
+    }
+
 }

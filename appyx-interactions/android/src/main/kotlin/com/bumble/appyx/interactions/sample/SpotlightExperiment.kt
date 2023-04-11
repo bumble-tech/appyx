@@ -15,6 +15,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.Logger
@@ -23,6 +24,9 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.sample.NavTarget.Child2
 import com.bumble.appyx.interactions.sample.NavTarget.Child3
 import com.bumble.appyx.interactions.sample.NavTarget.Child4
+import com.bumble.appyx.interactions.sample.NavTarget.Child5
+import com.bumble.appyx.interactions.sample.NavTarget.Child6
+import com.bumble.appyx.interactions.sample.NavTarget.Child7
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
@@ -42,6 +46,23 @@ fun SpotlightExperiment() {
         Child2,
         Child3,
         Child4,
+        Child5,
+        Child6,
+        Child7,
+        Child1,
+        Child2,
+        Child3,
+        Child4,
+        Child5,
+        Child6,
+        Child7,
+        Child1,
+        Child2,
+        Child3,
+        Child4,
+        Child5,
+        Child6,
+        Child7
     )
     val spotlight = Spotlight(
         model = SpotlightModel(
@@ -99,7 +120,8 @@ fun SpotlightExperiment() {
 @Composable
 fun <InteractionTarget : Any> SpotlightUi(
     spotlight: Spotlight<InteractionTarget>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified
 ) {
     Children(
         interactionModel = spotlight,
@@ -108,14 +130,15 @@ fun <InteractionTarget : Any> SpotlightUi(
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
-        element = {
+        element = { elementUiModel ->
             Element(
-                elementUiModel = it,
+                color = color,
+                elementUiModel = elementUiModel,
                 contentDescription =
-                "${SPOTLIGHT_EXPERIMENT_TEST_HELPER}_${it.element.id}",
+                "${SPOTLIGHT_EXPERIMENT_TEST_HELPER}_${elementUiModel.element.id}",
                 modifier = Modifier
                     .fillMaxSize()
-                    .pointerInput(it.element.id) {
+                    .pointerInput(elementUiModel.element.id) {
                         detectDragGestures(
                             onDrag = { change, dragAmount ->
                                 change.consume()

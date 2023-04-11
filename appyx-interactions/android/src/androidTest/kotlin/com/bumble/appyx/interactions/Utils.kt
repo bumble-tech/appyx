@@ -36,6 +36,7 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupSpotlight(
 
             SpotlightUi(
                 spotlight = spotlight,
+                color = Color.Blue
             )
         }
     }
