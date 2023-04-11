@@ -6,8 +6,8 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class UpdateToKeyframeTest {
 
@@ -34,7 +34,7 @@ class UpdateToKeyframeTest {
         model.operation(Next(mode = Operation.Mode.IMMEDIATE))
         assertTrue(model.output.value is Update)
 
-        model.onSettled(direction = TransitionModel.SettleDirection.COMPLETE)
+        model.relaxExecutionMode()
 
         model.operation(Next(mode = Operation.Mode.KEYFRAME))
         assertTrue(model.output.value is Keyframes)

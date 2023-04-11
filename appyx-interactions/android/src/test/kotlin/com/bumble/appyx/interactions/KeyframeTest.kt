@@ -4,9 +4,9 @@ import com.bumble.appyx.interactions.InteractionTarget.Child1
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
 import com.bumble.appyx.transitionmodel.testdrive.operation.Next
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Test
 
 class KeyframeTest {
 
