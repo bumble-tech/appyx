@@ -3,15 +3,16 @@ package com.bumble.appyx.interactions.core.ui.state
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.combineState
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 
-abstract class BaseUiState<T>(
-    val motionProperties: List<MotionProperty<*, *>>,
-    val coroutineScope: CoroutineScope
+abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
+    val uiContext: UiContext,
+    val motionProperties: List<MotionProperty<*, *>>
 ) {
     abstract val modifier: Modifier
 
@@ -23,26 +24,26 @@ abstract class BaseUiState<T>(
     val isVisible: StateFlow<Boolean>
         get() = combineState(
             motionProperties.map { it.isVisibleFlow },
-            coroutineScope
+            uiContext.coroutineScope
         ) { booleanArray ->
             booleanArray.all { it }
         }
 
     abstract suspend fun snapTo(
         scope: CoroutineScope,
-        uiState: T
+        target: TargetUiState
     )
 
     abstract fun lerpTo(
         scope: CoroutineScope,
-        start: T,
-        end: T,
+        start: TargetUiState,
+        end: TargetUiState,
         fraction: Float
     )
 
     abstract suspend fun animateTo(
         scope: CoroutineScope,
-        uiState: T,
+        target: TargetUiState,
         springSpec: SpringSpec<Float>,
     )
 }

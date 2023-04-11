@@ -8,19 +8,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.graphicsLayer
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ.Target
 
 class RotationZ(
-    value: Float,
-    easing: Easing? = null,
+    uiContext: UiContext,
+    target: Target,
     visibilityThreshold: Float = 1f
 ) : MotionProperty<Float, AnimationVector1D>(
-    animatable = Animatable(value, Float.VectorConverter),
-    easing = easing,
+    uiContext = uiContext,
+    animatable = Animatable(target.value, Float.VectorConverter),
+    easing = target.easing,
     visibilityThreshold = visibilityThreshold
-), Interpolatable<RotationZ> {
+), Interpolatable<Target> {
+
+    class Target(
+        val value: Float,
+        val easing: Easing? = null,
+    )
 
     override val modifier: Modifier
         get() = Modifier.composed {
@@ -30,7 +38,7 @@ class RotationZ(
             }
         }
 
-    override suspend fun lerpTo(start: RotationZ, end: RotationZ, fraction: Float) {
+    override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(
             lerpFloat(
                 start = start.value,
