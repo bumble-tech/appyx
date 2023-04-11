@@ -15,7 +15,7 @@ mvicore = "1.2.6"
 coroutines = "1.6.4"
 kotlin = "1.8.10"
 junit5 = "5.8.2"
-detekt = "1.21.0"
+detekt = "1.22.0"
 dependencyAnalysis = "1.13.1"
 
 [libraries]
@@ -76,7 +76,7 @@ plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-android = "com.android.tools.build:gradle:7.4.2"
 
-detekt-compose = "com.twitter.compose.rules:detekt:0.0.26"
+detekt-compose = "io.nlopez.compose.rules:detekt:0.1.5"
 toolargetool = "com.gu.android:toolargetool:0.3.0"
 
 [plugins]

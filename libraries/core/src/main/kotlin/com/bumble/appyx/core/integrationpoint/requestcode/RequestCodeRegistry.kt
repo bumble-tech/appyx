@@ -28,11 +28,11 @@ class RequestCodeRegistry constructor(
     private val maskHigherBits = BITS_BASE - maskLowerBits
 
     init {
-        if (nbLowerBitsForIds < MIN_NUMBER_OF_BITS) {
-            throw IllegalArgumentException("nbLowerBitsForIds can't be less than $MIN_NUMBER_OF_BITS")
+        require(nbLowerBitsForIds >= MIN_NUMBER_OF_BITS) {
+            "nbLowerBitsForIds can't be less than $MIN_NUMBER_OF_BITS"
         }
-        if (nbLowerBitsForIds > MAX_NUMBER_OF_BITS) {
-            throw IllegalArgumentException("nbLowerBitsForIds can't be larger than $MAX_NUMBER_OF_BITS")
+        require(nbLowerBitsForIds <= MAX_NUMBER_OF_BITS) {
+            "nbLowerBitsForIds can't be larger than $MAX_NUMBER_OF_BITS"
         }
     }
 
