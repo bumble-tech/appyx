@@ -8,7 +8,7 @@ import com.bumble.appyx.interactions.setupInteractionModel
 import com.bumble.appyx.interactions.waitUntilAnimationEnded
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.interpolator.SpotlightSlider
+import com.bumble.appyx.transitionmodel.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

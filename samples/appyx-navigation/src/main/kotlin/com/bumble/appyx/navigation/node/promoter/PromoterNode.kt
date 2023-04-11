@@ -33,7 +33,7 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
-import com.bumble.appyx.transitionmodel.promoter.interpolator.PromoterMotionController
+import com.bumble.appyx.transitionmodel.promoter.ui.PromoterMotionController
 import com.bumble.appyx.transitionmodel.promoter.operation.addFirst
 import kotlinx.parcelize.Parcelize
 

@@ -1,4 +1,4 @@
-package com.bumble.appyx.transitionmodel.testdrive.interpolator
+package com.bumble.appyx.transitionmodel.testdrive.ui
 
 import androidx.compose.ui.graphics.Color
 

@@ -24,7 +24,7 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child3
 import com.bumble.appyx.interactions.sample.NavTarget.Child4
 import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
-import com.bumble.appyx.transitionmodel.promoter.interpolator.PromoterMotionController
+import com.bumble.appyx.transitionmodel.promoter.ui.PromoterMotionController
 import com.bumble.appyx.transitionmodel.promoter.operation.addFirst
 
 

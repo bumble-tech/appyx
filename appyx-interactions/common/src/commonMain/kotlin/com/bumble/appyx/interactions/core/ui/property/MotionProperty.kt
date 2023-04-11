@@ -13,13 +13,11 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.mapState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlin.coroutines.EmptyCoroutineContext
 
 /**
  * Keeps a value change in motion by calculating the rate of change of the wrapped Animatable value
@@ -27,9 +25,9 @@ import kotlin.coroutines.EmptyCoroutineContext
  * rather than zero.
  */
 abstract class MotionProperty<T, V : AnimationVector>(
-    protected val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
+    protected val uiContext: UiContext,
     protected val animatable: Animatable<T, V>,
-    protected val easing: Easing? = null,
+    val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
 ) {
     private var lastVelocity = animatable.velocity
@@ -68,7 +66,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
     open val valueSource: StateFlow<T> = valueFlow
 
     val isVisibleFlow: StateFlow<Boolean>
-        get() = valueSource.mapState(coroutineScope) { value ->
+        get() = valueSource.mapState(uiContext.coroutineScope) { value ->
             visibilityMapper.invoke(value)
         }
 

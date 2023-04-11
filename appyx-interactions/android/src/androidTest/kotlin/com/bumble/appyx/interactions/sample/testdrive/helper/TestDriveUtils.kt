@@ -10,7 +10,7 @@ import com.bumble.appyx.interactions.sample.NavTarget
 import com.bumble.appyx.interactions.setupTestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController
+import com.bumble.appyx.transitionmodel.testdrive.ui.TestDriveMotionController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 

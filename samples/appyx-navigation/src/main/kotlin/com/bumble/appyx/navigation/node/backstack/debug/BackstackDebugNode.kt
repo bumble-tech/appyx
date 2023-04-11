@@ -29,7 +29,7 @@ import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
+import com.bumble.appyx.transitionmodel.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.transitionmodel.backstack.operation.newRoot
 import com.bumble.appyx.transitionmodel.backstack.operation.pop
 import com.bumble.appyx.transitionmodel.backstack.operation.push

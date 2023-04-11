@@ -1,4 +1,4 @@
-package com.bumble.appyx.transitionmodel.spotlight.interpolator
+package com.bumble.appyx.transitionmodel.spotlight.ui.fader
 
 
 // TODO BaseMotionController + dynamic on visibility calculation
