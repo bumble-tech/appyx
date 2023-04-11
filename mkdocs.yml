@@ -80,6 +80,7 @@ extra_css:
 
 plugins:
   - search
+  - macros
 
 # extensions
 markdown_extensions:

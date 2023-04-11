@@ -145,4 +145,8 @@ jobs:
         with:
           python-version: '3.x'
       - run: pip install mkdocs-material
+      - run: pip install macros
       - run: mkdocs build --strict
+        with:
+          distribution: 'zulu'
+          java-version: '11'
