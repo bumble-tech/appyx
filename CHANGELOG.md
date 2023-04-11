@@ -2,8 +2,16 @@
 
 ## Pending changes
 
+-
+
+---
+
+## 1.2.0
+
 - [#393](https://github.com/bumble-tech/appyx/pull/393) – **Breaking change**: Removed non-lazy implementations from `NodeCustomisationDirectory`
 - [#393](https://github.com/bumble-tech/appyx/pull/393) – **Breaking change**: Removed `NodeCustomisationDirectoryImpl#put(vararg values: T)` due to potential uncaught bugs. Please call the reified `put` extension function instead.
+
+<div style="text-align: center"><small>11 Apr 2023</small></div>
 
 ---
 
