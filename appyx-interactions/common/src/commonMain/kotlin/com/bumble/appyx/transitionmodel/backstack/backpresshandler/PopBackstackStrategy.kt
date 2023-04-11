@@ -1,5 +1,6 @@
 package com.bumble.appyx.transitionmodel.backstack.backpresshandler
 
+import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.mapState
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -7,7 +8,10 @@ import com.bumble.appyx.transitionmodel.backstack.operation.Pop
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-class PopBackstackStrategy<InteractionTarget : Any>(val scope: CoroutineScope) :
+class PopBackstackStrategy<InteractionTarget : Any>(
+    val scope: CoroutineScope,
+    val animationSpec: AnimationSpec<Float>? = null
+) :
     BaseBackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>>() {
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy {
@@ -20,7 +24,7 @@ class PopBackstackStrategy<InteractionTarget : Any>(val scope: CoroutineScope) :
         val pop = Pop<InteractionTarget>()
         //todo find a better way to check if operation is applicable
         return if (pop.isApplicable(transitionModel.output.value.currentTargetState)) {
-            interactionModel.operation(Pop())
+            interactionModel.operation(operation = Pop(), animationSpec)
             true
         } else false
     }
