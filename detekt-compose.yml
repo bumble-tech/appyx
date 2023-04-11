@@ -1,5 +1,5 @@
-# Deliberately split from the main configuration as the plugins do not use the twitter compose dependency.
-TwitterCompose:
+# Deliberately split from the main configuration as the plugins do not use the compose dependency.
+Compose:
   CompositionLocalAllowlist:
     active: true
     allowedCompositionLocals: LocalIntegrationPoint,LocalNode
