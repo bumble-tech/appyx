@@ -1,6 +1,6 @@
 package com.bumble.appyx.testing.unit.common.util
 
-import com.bumble.appyx.core.navigation.upnavigation.UpNavigationHandler
+import com.bumble.appyx.navigation.navigation.upnavigation.UpNavigationHandler
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
