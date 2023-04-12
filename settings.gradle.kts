@@ -34,7 +34,6 @@ include(
     ":libraries:testing-ui",
     ":libraries:testing-ui-activity",
     ":libraries:testing-unit-common",
-    ":samples:app",
     ":samples:appyx-navigation",
     ":samples:common",
     ":samples:navigation-compose",
