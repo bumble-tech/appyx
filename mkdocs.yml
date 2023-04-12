@@ -80,7 +80,8 @@ extra_css:
 
 plugins:
   - search
-  - macros
+  - macros:
+      module_name: compose_mpp_sample
 
 # extensions
 markdown_extensions:

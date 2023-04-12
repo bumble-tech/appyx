@@ -16,23 +16,24 @@ def compile_project(project_directory, compile_task):
 
 def copy_files(source_directory, target_directory):
     """Copy files from one directory to another, preserving metadata"""
-    if os.path.exists(target_directory):
-        shutil.rmtree(target_directory)
     shutil.copytree(source_directory, target_directory, copy_function=shutil.copy2)
 
 
-def generate_html(width, height, target_directory, html_file_name):
+def generate_html(width, height, target_directory, html_file_name, classname):
     """Generate HTML code"""
-    return "<iframe " \
+    return "<div class=\"{classname}\">" \
+           "<iframe " \
            "width={width} " \
            "height={height} " \
            "frameBorder=0 " \
            "src=\"{target_directory}/{html_file_name}\">" \
-           "</iframe>".format(
+           "</iframe>"\
+           "</div>".format(
                 width=width,
                 height=height,
                 target_directory=target_directory,
                 html_file_name=html_file_name,
+                classname=classname,
            )
 
 
@@ -48,9 +49,10 @@ def define_env(env):
             height,
             target_directory,
             html_file_name,
+            classname,
     ):
         compile_project(project_directory, compile_task)
         site_target_directory = os.path.join(env.variables.config.site_dir, target_directory)
         copy_files(project_output_directory, site_target_directory)
         html_target_directory = os.path.relpath(site_target_directory, env.variables.config.site_dir)
-        return generate_html(width, height, html_target_directory, html_file_name)
+        return generate_html(width, height, html_target_directory, html_file_name, classname)
