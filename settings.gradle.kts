@@ -24,7 +24,6 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
-    ":libraries:core",
     ":libraries:customisations",
     ":libraries:interop-ribs",
     ":libraries:interop-rx2",
