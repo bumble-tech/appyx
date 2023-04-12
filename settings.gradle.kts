@@ -39,7 +39,6 @@ include(
     ":samples:common",
     ":samples:navigation-compose",
     ":samples:navmodel-samples",
-    ":samples:sandbox",
     ":appyx-interactions:android", ":appyx-interactions:desktop", ":appyx-interactions:common",
     ":appyx-navigation"
 )
