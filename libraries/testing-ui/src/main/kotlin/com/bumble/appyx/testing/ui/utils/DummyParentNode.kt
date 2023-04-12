@@ -1,12 +1,13 @@
 package com.bumble.appyx.testing.ui.utils
 
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.node.node
+import com.bumble.appyx.interactions.core.model.EmptyInteractionModel
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.node
 
-class DummyParentNode<NavTarget : Any> : ParentNode<NavTarget>(
-    navModel = DummyNavModel<NavTarget, Unit>(),
+class DummyParentNode<InteractionTarget : Any> : ParentNode<InteractionTarget>(
+    interactionModel = EmptyInteractionModel(),
     buildContext = BuildContext.root(savedStateMap = null)
 ) {
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext) = node(buildContext) { }
+    override fun resolve(navTarget: InteractionTarget, buildContext: BuildContext) = node(buildContext) { }
 }

@@ -40,7 +40,7 @@ internal class InteropBackPressHandler :
     override val lifecycle: Lifecycle
         get() = nodeLifecycle
 
-    override fun getOnBackPressedDispatcher(): OnBackPressedDispatcher =
-        dispatcher
+    override val onBackPressedDispatcher: OnBackPressedDispatcher
+        get() = dispatcher
 
 }

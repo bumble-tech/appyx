@@ -6,10 +6,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.rule.ActivityTestRule
-import com.bumble.appyx.core.node.LocalNode
-import com.bumble.appyx.core.node.NodeView
-import com.bumble.appyx.core.node.ViewFactory
-import com.bumble.appyx.core.node.build
+import com.bumble.appyx.navigation.node.LocalNode
+import com.bumble.appyx.navigation.node.NodeView
+import com.bumble.appyx.navigation.node.ViewFactory
+import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.testing.ui.utils.DummyParentNode
 import org.junit.rules.TestRule
 import org.junit.runner.Description
