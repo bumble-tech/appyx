@@ -23,8 +23,9 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
     packagingOptions {
-        exclude("META-INF/LICENSE.md")
-        exclude("META-INF/LICENSE-notice.md")
+        resources {
+            excludes += setOf("META-INF/LICENSE.md", "META-INF/LICENSE-notice.md")
+        }
     }
 }
 
