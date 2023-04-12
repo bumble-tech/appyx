@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.bumble.appyx.core.integration.NodeHost
-import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
+import com.bumble.appyx.navigation.integration.NodeHost
+import com.bumble.appyx.navigation.integrationpoint.LocalIntegrationPoint
 
 /**
  * This Composable demonstrates how to add Appyx into Jetpack Compose Navigation.

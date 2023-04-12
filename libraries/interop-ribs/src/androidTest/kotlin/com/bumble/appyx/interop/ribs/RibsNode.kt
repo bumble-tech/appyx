@@ -24,8 +24,8 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import com.bumble.appyx.core.integrationpoint.IntegrationPoint
-import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
+import com.bumble.appyx.navigation.modality.BuildContext
 import kotlinx.parcelize.Parcelize
 import java.util.UUID
 
@@ -96,7 +96,7 @@ class RibsNodeRouter(
 class AppyxNode(
     buildContext: BuildContext,
     private val s: String,
-) : com.bumble.appyx.core.node.Node(
+) : com.bumble.appyx.navigation.node.Node(
     buildContext,
 ) {
     var shouldInterceptBackPress by mutableStateOf(true)

@@ -1,10 +1,10 @@
 package com.bumble.appyx.testing.unit.common.util
 
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.EmptyNodeView
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.NodeView
-import com.bumble.appyx.core.plugin.Plugin
+import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.node.EmptyNodeView
+import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.NodeView
 
 class NodeStub(
     buildContext: BuildContext = BuildContext.root(savedStateMap = null),

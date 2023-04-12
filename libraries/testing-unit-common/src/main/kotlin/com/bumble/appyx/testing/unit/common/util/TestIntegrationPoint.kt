@@ -1,9 +1,9 @@
 package com.bumble.appyx.testing.unit.common.util
 
-import com.bumble.appyx.core.integrationpoint.IntegrationPoint
-import com.bumble.appyx.core.integrationpoint.activitystarter.ActivityStarter
-import com.bumble.appyx.core.integrationpoint.permissionrequester.PermissionRequester
-import com.bumble.appyx.core.navigation.upnavigation.UpNavigationHandler
+import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
+import com.bumble.appyx.navigation.integrationpoint.activitystarter.ActivityStarter
+import com.bumble.appyx.navigation.integrationpoint.permissionrequester.PermissionRequester
+import com.bumble.appyx.navigation.navigation.upnavigation.UpNavigationHandler
 
 class TestIntegrationPoint(
     private val upNavigationHandler: UpNavigationHandler,

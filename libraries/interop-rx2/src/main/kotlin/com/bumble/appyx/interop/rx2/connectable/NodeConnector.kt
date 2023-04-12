@@ -1,12 +1,13 @@
 package com.bumble.appyx.interop.rx2.connectable
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.core.lifecycle.subscribe
+import com.bumble.appyx.navigation.lifecycle.subscribe
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observer
 
-class NodeConnector<Input, Output>(
+class NodeConnector<Input: Any, Output: Any>(
     override val input: Relay<Input> = PublishRelay.create(),
 ) : Connectable<Input, Output> {
 
@@ -54,6 +55,7 @@ class NodeConnector<Input, Output>(
         }
     }
 
+    @SuppressLint("CheckResult")
     private fun switchToExhaust() {
         intake.subscribe { exhaust.accept(it) }
         cacheSubscription.dispose()

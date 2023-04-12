@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.ViewFactory
-import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.interop.ribs.InteropNode.Customisation
 import com.bumble.appyx.interop.ribs.InteropViewImpl.Factory
 import com.bumble.appyx.utils.customisations.NodeCustomisation

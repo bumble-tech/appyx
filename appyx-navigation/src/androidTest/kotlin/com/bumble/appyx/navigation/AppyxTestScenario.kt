@@ -8,12 +8,10 @@ import androidx.test.core.app.ActivityScenario
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.testing.ui.rules.AppyxTestActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-/**
- * TODO: Move to testing module for appyx 2.0
- */
 class AppyxTestScenario<T : Node>(
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule(),
     /** Add decorations like custom theme or CompositionLocalProvider. Do not forget to invoke `content()`. */

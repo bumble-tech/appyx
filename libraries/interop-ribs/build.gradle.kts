@@ -26,7 +26,7 @@ android {
 }
 
 dependencies {
-    api(project(":libraries:core"))
+    api(project(":appyx-navigation"))
     api(libs.ribs.base)
     api(libs.ribs.compose)
 

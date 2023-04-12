@@ -8,23 +8,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.core.composable.Children
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.node.node
-import com.bumble.appyx.navmodel.backstack.BackStack
+import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.node
+import com.bumble.appyx.transitionmodel.backstack.BackStack
+import com.bumble.appyx.transitionmodel.backstack.BackStackModel
+import com.bumble.appyx.transitionmodel.backstack.ui.slider.BackStackSlider
 import kotlinx.parcelize.Parcelize
 
 internal class ComposeNavigationContainerNode(
     buildContext: BuildContext,
     private val onGoogleNavigationClick: () -> Unit,
     private val backStack: BackStack<NavTarget> = BackStack(
-        initialElement = NavTarget.Main,
-        savedStateMap = buildContext.savedStateMap,
+        model = BackStackModel(
+            initialTargets = listOf(NavTarget.Main),
+            savedStateMap = buildContext.savedStateMap
+        ),
+        motionController = { BackStackSlider(it) }
     )
 ) : ParentNode<ComposeNavigationContainerNode.NavTarget>(
-    navModel = backStack,
+    interactionModel = backStack,
     buildContext = buildContext,
 ) {
 
@@ -52,11 +57,7 @@ internal class ComposeNavigationContainerNode(
     override fun View(modifier: Modifier) {
         Children(
             modifier = modifier.fillMaxWidth(),
-            navModel = backStack
-        ) {
-            children<NavTarget> { child ->
-                child()
-            }
-        }
+            interactionModel = backStack
+        )
     }
 }

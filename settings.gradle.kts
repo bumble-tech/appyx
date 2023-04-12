@@ -24,7 +24,6 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
-    ":libraries:core",
     ":libraries:customisations",
     ":libraries:interop-ribs",
     ":libraries:interop-rx2",
@@ -34,12 +33,9 @@ include(
     ":libraries:testing-ui",
     ":libraries:testing-ui-activity",
     ":libraries:testing-unit-common",
-    ":samples:app",
     ":samples:appyx-navigation",
     ":samples:common",
     ":samples:navigation-compose",
-    ":samples:navmodel-samples",
-    ":samples:sandbox",
     ":appyx-interactions:android", ":appyx-interactions:desktop", ":appyx-interactions:common",
     ":appyx-navigation"
 )

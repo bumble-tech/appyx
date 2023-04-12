@@ -1,8 +1,8 @@
 package com.bumble.appyx.testing.unit.common.helper
 
 import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.node.build
+import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.build
 
 fun <N : Node> N.nodeTestHelper() = NodeTestHelper(this)
 
