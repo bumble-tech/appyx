@@ -58,7 +58,6 @@ dependencies {
     implementation(composeBom)
     implementation(project(":libraries:core"))
     implementation(project(":samples:common"))
-    implementation(project(":samples:navmodel-samples"))
     implementation(project(":samples:navigation-compose"))
     implementation(project(":appyx-interactions:common"))
 
