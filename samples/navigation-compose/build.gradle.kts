@@ -43,7 +43,7 @@ dependencies {
     implementation(composeBom)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.compose.material3)
-    debugImplementation(project(":libraries:testing-ui-activity"))
+    debugImplementation(project(":utils:testing-ui-activity"))
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)

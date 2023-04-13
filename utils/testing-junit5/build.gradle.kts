@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    api(project(":libraries:testing-unit-common"))
+    api(project(":utils:testing-unit-common"))
     api(libs.junit.api)
     api(libs.kotlin.coroutines.test.jvm)
 }

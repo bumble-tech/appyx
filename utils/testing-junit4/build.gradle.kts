@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.testing.ui"
+    namespace = "com.bumble.appyx.testing.junit4"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
@@ -25,13 +25,7 @@ android {
 }
 
 dependencies {
-    val composeBom = platform(libs.compose.bom)
-    api(composeBom)
-
-    api(project(":appyx-navigation"))
-    api(project(":libraries:testing-ui-activity"))
-    api(libs.androidx.test.rules)
-    api(libs.compose.ui.test.junit4)
-
-    implementation(libs.androidx.lifecycle.java8)
+    api(project(":utils:testing-unit-common"))
+    api(libs.junit)
+    implementation(libs.kotlin.coroutines.test)
 }

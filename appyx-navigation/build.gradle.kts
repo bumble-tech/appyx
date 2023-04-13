@@ -35,7 +35,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     api(composeBom)
-    api(project(":libraries:customisations"))
+    api(project(":utils:customisations"))
     api(project(":appyx-interactions:common"))
     api(libs.kotlin.coroutines.android)
     api(libs.androidx.lifecycle.common)
@@ -58,5 +58,5 @@ dependencies {
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.compose.foundation)
-    androidTestImplementation(project(":libraries:testing-ui"))
+    androidTestImplementation(project(":utils:testing-ui"))
 }

@@ -68,7 +68,7 @@ allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("com.bumble.appyx:customisations"))
-                .using(project(":libraries:customisations"))
+                .using(project(":utils:customisations"))
                 .because("RIBs uses Appyx customisations as external dependency")
         }
     }
