@@ -17,7 +17,8 @@ docs_dir: documentation
 
 nav:
   - Home: index.md
-  - Appyx Interactions: interactions/index.md
+  - Appyx Interactions:
+    - Overview: interactions/index.md
   - Appyx Components: components/index.md
   - Appyx Navigation: navigation/index.md
   - Releases:
@@ -94,6 +95,7 @@ plugins:
 # extensions
 markdown_extensions:
   - admonition
+  - pymdownx.critic
   - codehilite
   - footnotes
   - meta
