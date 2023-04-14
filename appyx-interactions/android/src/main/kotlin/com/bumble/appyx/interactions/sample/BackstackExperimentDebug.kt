@@ -18,8 +18,8 @@ import com.bumble.appyx.interactions.sample.NavTarget.*
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.BackstackFader
 import com.bumble.appyx.transitionmodel.backstack.operation.pop
+import com.bumble.appyx.transitionmodel.backstack.ui.fader.BackstackFader
 
 
 @ExperimentalMaterialApi

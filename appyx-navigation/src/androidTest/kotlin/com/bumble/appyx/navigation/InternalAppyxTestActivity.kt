@@ -3,12 +3,10 @@ package com.bumble.appyx.navigation
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
+import com.bumble.appyx.testing.ui.rules.AppyxTestActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-/**
- * TODO: Move to testing module for appyx 2.0
- */
 class InternalAppyxTestActivity : AppyxTestActivity() {
 
     private val callback = object : OnBackPressedCallback(handleBackPress.value) {

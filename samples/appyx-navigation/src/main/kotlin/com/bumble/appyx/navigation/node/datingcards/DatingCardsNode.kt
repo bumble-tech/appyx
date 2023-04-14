@@ -18,7 +18,7 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.transitionmodel.cards.Cards
 import com.bumble.appyx.transitionmodel.cards.CardsModel
-import com.bumble.appyx.transitionmodel.cards.interpolator.CardsMotionController
+import com.bumble.appyx.transitionmodel.cards.ui.CardsMotionController
 import kotlinx.parcelize.Parcelize
 
 class DatingCardsNode(

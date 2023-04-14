@@ -1,9 +1,9 @@
 package com.bumble.appyx.interop.rx3.store
 
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.store.RetainedInstanceStore
-import com.bumble.appyx.core.store.get
-import com.bumble.appyx.core.store.getRetainedInstance
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.store.RetainedInstanceStore
+import com.bumble.appyx.navigation.store.get
+import com.bumble.appyx.navigation.store.getRetainedInstance
 import io.reactivex.rxjava3.disposables.Disposable
 
 /**

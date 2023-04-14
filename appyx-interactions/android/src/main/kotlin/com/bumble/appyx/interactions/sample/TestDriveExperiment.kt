@@ -26,6 +26,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.Logger
@@ -33,15 +35,13 @@ import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.NavTarget.Child1
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.testdrive.TestDrive
 import com.bumble.appyx.transitionmodel.testdrive.TestDriveModel
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController
-import com.bumble.appyx.transitionmodel.testdrive.interpolator.TestDriveMotionController.Companion.toUiState
+import com.bumble.appyx.transitionmodel.testdrive.ui.TestDriveMotionController
+import com.bumble.appyx.transitionmodel.testdrive.ui.TestDriveMotionController.Companion.toTargetUiState
 import com.bumble.appyx.transitionmodel.testdrive.operation.next
 
 
@@ -165,15 +165,17 @@ fun <InteractionTarget : Any> TestDriveUi(
                     .collectAsState(null)
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
-        val targetProps = targetState.value?.elementState?.toUiState(
-            uiContext = UiContext(zeroSizeTransitionBounds, rememberCoroutineScope())
-        )
-        targetProps?.let {
+        // FIXME this should be internalised probably
+        val targetUiState = targetState.value?.elementState?.toTargetUiState()
+        targetUiState?.let {
             Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .offset(targetProps.offset.value.x, targetProps.offset.value.y)
-                    .border(2.dp, targetProps.backgroundColor.value)
+                    .offset(targetUiState.position.value.x, targetUiState.position.value.y)
+                    .border(2.dp, targetUiState.backgroundColor.value)
+                    .semantics {
+                        contentDescription = TEST_DRIVE_EXPERIMENT_TEST_HELPER
+                    }
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
@@ -188,3 +190,5 @@ fun <InteractionTarget : Any> TestDriveUi(
         }
     }
 }
+
+const val TEST_DRIVE_EXPERIMENT_TEST_HELPER = "TheSquare"

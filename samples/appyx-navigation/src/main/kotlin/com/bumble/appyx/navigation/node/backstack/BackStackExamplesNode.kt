@@ -23,8 +23,8 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
-import com.bumble.appyx.transitionmodel.backstack.BackstackFader
-import com.bumble.appyx.transitionmodel.backstack.interpolator.BackStackSlider
+import com.bumble.appyx.transitionmodel.backstack.ui.fader.BackstackFader
+import com.bumble.appyx.transitionmodel.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.transitionmodel.backstack.operation.push
 import kotlinx.parcelize.Parcelize
 

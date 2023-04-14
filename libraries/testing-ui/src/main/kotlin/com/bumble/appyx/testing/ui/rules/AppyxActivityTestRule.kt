@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.rule.ActivityTestRule
-import com.bumble.appyx.core.integration.NodeFactory
-import com.bumble.appyx.core.integration.NodeHost
-import com.bumble.appyx.core.node.Node
+import com.bumble.appyx.navigation.integration.NodeFactory
+import com.bumble.appyx.navigation.integration.NodeHost
+import com.bumble.appyx.navigation.node.Node
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement

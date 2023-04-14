@@ -3,7 +3,7 @@ package com.bumble.appyx.testing.ui.rules
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import com.bumble.appyx.core.integrationpoint.NodeActivity
+import com.bumble.appyx.navigation.integrationpoint.NodeActivity
 
 open class AppyxTestActivity : NodeActivity() {
 

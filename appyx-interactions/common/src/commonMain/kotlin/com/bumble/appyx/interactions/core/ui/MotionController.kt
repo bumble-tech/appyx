@@ -15,9 +15,6 @@ import kotlinx.coroutines.flow.map
 
 interface MotionController<InteractionTarget, ModelState> {
 
-    val clipToBounds: Boolean
-        get() = false
-
     val finishedAnimations: Flow<Element<InteractionTarget>>
 
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {

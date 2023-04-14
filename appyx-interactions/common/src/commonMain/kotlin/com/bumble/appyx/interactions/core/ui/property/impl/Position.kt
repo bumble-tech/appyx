@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -20,37 +21,39 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class Position(
-    val initialOffset: DpOffset,
-    easing: Easing? = null,
-    val clipToBounds: Boolean = false,
-    val bounds: TransitionBounds? = null,
-    val displacement: StateFlow<DpOffset> = MutableStateFlow(DpOffset.Zero),
+    uiContext: UiContext,
+    val target: Target,
+    private val displacement: StateFlow<DpOffset> = MutableStateFlow(DpOffset.Zero),
     visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp),
 ) : MotionProperty<DpOffset, AnimationVector2D>(
-    animatable = Animatable(initialOffset, DpOffset.VectorConverter),
-    easing = easing,
+    uiContext = uiContext,
+    animatable = Animatable(target.value, DpOffset.VectorConverter),
+    easing = target.easing,
     visibilityThreshold = visibilityThreshold,
-), Interpolatable<Position> {
+), Interpolatable<Position.Target> {
+
+    class Target(
+        val value: DpOffset,
+        val easing: Easing? = null,
+    )
 
     override val visibilityMapper: (DpOffset) -> Boolean = { displacedValue ->
-        val bounds = bounds
-        if (bounds != null) {
-            val itemOffsetRangeX = calculateItemOffsetRangeX(displacedValue, bounds)
-            val itemOffsetRangeY = calculateItemOffsetRangeY(displacedValue, bounds)
+        val bounds = uiContext.transitionBounds
+        val clipToBounds = uiContext.clipToBounds
 
-            val visibleOffsetRangeX = calculateVisibleOffsetRangeX(bounds, clipToBounds)
-            val visibleOffsetRangeY = calculateVisibleOffsetRangeY(bounds, clipToBounds)
+        val itemOffsetRangeX = calculateItemOffsetRangeX(displacedValue, bounds)
+        val itemOffsetRangeY = calculateItemOffsetRangeY(displacedValue, bounds)
 
-            val isVisible = itemOffsetRangeX.hasIntersection(visibleOffsetRangeX)
-                    && itemOffsetRangeY.hasIntersection(visibleOffsetRangeY)
-            isVisible
-        } else {
-            true
-        }
+        val visibleOffsetRangeX = calculateVisibleOffsetRangeX(bounds, clipToBounds)
+        val visibleOffsetRangeY = calculateVisibleOffsetRangeY(bounds, clipToBounds)
+
+        val isVisible = itemOffsetRangeX.hasIntersection(visibleOffsetRangeX)
+            && itemOffsetRangeY.hasIntersection(visibleOffsetRangeY)
+        isVisible
     }
 
     override val valueSource: StateFlow<DpOffset>
-        get() = displacement.combineState(valueFlow, coroutineScope) { displacement, dpOffset ->
+        get() = displacement.combineState(valueFlow, uiContext.coroutineScope) { displacement, dpOffset ->
             DpOffset(
                 x = dpOffset.x - displacement.x,
                 y = dpOffset.y - displacement.y
@@ -105,7 +108,7 @@ class Position(
             )
         }
 
-    override suspend fun lerpTo(start: Position, end: Position, fraction: Float) {
+    override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(
             lerpDpOffset(
                 start = start.value,

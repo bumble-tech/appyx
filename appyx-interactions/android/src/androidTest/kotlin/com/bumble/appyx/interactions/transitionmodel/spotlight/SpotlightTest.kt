@@ -8,7 +8,7 @@ import com.bumble.appyx.interactions.setupInteractionModel
 import com.bumble.appyx.interactions.waitUntilAnimationEnded
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.interpolator.SpotlightSlider
+import com.bumble.appyx.transitionmodel.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,11 +43,8 @@ class SpotlightTest(private val testParam: TestParam) {
 
     @Test
     fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_false() {
-        createBackStackSlider(
-            initialActiveIndex = 1f,
-            clipToBounds = false
-        )
-        composeTestRule.setupInteractionModel(spotlight, 0.67f)
+        createBackStackSlider(initialActiveIndex = 1f)
+        composeTestRule.setupInteractionModel(spotlight, 0.67f, clipToBounds = false)
         checkInteractionTargetsOnScreen(setOf(NavTarget.Child1, NavTarget.Child2, NavTarget.Child3))
 
         if (testParam.operationMode == Operation.Mode.KEYFRAME) {
@@ -64,11 +61,8 @@ class SpotlightTest(private val testParam: TestParam) {
 
     @Test
     fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_true() {
-        createBackStackSlider(
-            initialActiveIndex = 1f,
-            clipToBounds = true
-        )
-        composeTestRule.setupInteractionModel(spotlight, 0.67f)
+        createBackStackSlider(initialActiveIndex = 1f)
+        composeTestRule.setupInteractionModel(spotlight, 0.67f, clipToBounds = true)
 
         if (testParam.operationMode == Operation.Mode.KEYFRAME) {
             val animationDuration = 1000
@@ -99,7 +93,6 @@ class SpotlightTest(private val testParam: TestParam) {
     private fun createBackStackSlider(
         disableAnimations: Boolean = false,
         initialActiveIndex: Float = 0f,
-        clipToBounds: Boolean = false
     ) {
         spotlight = Spotlight(
             model = SpotlightModel(
@@ -113,7 +106,7 @@ class SpotlightTest(private val testParam: TestParam) {
                 initialActiveIndex = initialActiveIndex,
                 savedStateMap = null
             ),
-            motionController = { SpotlightSlider(uiContext = it, clipToBounds = clipToBounds) },
+            motionController = { SpotlightSlider(uiContext = it) },
             scope = CoroutineScope(Dispatchers.Unconfined),
             disableAnimations = disableAnimations,
         )

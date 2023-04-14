@@ -34,6 +34,7 @@ import kotlin.math.roundToInt
 inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
+    clipToBounds: Boolean = false,
     gestureSpec: GestureSpec = GestureSpec(),
     noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
         children { child, frameModel ->
@@ -60,17 +61,15 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
     Box(
         modifier = modifier
             .fillMaxSize()
-            .composed {
-                val clipToBounds by interactionModel.clipToBounds.collectAsState()
+            .apply {
                 if (clipToBounds) {
                     clipToBounds()
-                } else {
-                    this
                 }
             }
             .onPlaced {
                 uiContext = UiContext(
-                    TransitionBounds(
+                    coroutineScope = coroutineScope,
+                    transitionBounds = TransitionBounds(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
@@ -78,7 +77,7 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
-                    coroutineScope
+                    clipToBounds = clipToBounds
                 )
             }
     ) {

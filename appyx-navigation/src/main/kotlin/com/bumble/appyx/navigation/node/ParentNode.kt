@@ -10,9 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.InteractionModel
@@ -36,7 +34,6 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
 import com.bumble.appyx.transitionmodel.permanent.PermanentInteractionModel
 import com.bumble.appyx.transitionmodel.permanent.operation.addUnique
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -80,14 +77,11 @@ abstract class ParentNode<InteractionTarget : Any>(
         coroutineScope = lifecycleScope,
     )
 
-    private var transitionsInBackgroundJob: Job? = null
-
     @CallSuper
     override fun onBuilt() {
         super.onBuilt()
         childNodeCreationManager.launch(this)
         childNodeLifecycleManager.launch()
-        manageTransitions()
     }
 
     fun childOrCreate(element: Element<InteractionTarget>): ChildEntry.Initialized<InteractionTarget> =
@@ -103,13 +97,11 @@ abstract class ParentNode<InteractionTarget : Any>(
             permanentInteractionModel.addUnique(interactionTarget)
         }
         val scope = rememberCoroutineScope()
-        val child by remember(interactionTarget) {
-            permanentInteractionModel
-                .elements
-                // use WhileSubscribed or Lazy otherwise desynchronisation issue
-                .mapState(scope, SharingStarted.WhileSubscribed()) { elements ->
-                    elements
-                        .all
+        val child by remember(interactionTarget, this) {
+            children
+                .mapState(scope, SharingStarted.WhileSubscribed()) { childrenMap ->
+                    childrenMap
+                        .keys
                         .find { it.interactionTarget == interactionTarget }
                         ?.let { childOrCreate(it) }
                 }
@@ -136,38 +128,6 @@ abstract class ParentNode<InteractionTarget : Any>(
         }
     }
 
-    /**
-     * [NavModel.onTransitionFinished] is invoked by Composable function when animation is finished.
-     * When application is in background, recomposition is paused, so we never invoke the callback.
-     * Because we do not care about animations in background and still want to have
-     * business-logic-driven navigation state change in background, we need to instantly invoke the callback.
-     */
-    private fun manageTransitions() {
-        lifecycle.addObserver(
-            object : DefaultLifecycleObserver {
-                override fun onStart(owner: LifecycleOwner) {
-                    manageTransitionsInForeground()
-                }
-
-                override fun onStop(owner: LifecycleOwner) {
-//                    manageTransitionsInBackground()
-                }
-            }
-        )
-    }
-
-//    private fun manageTransitionsInBackground() {
-//        if (transitionsInBackgroundJob == null) {
-//            transitionsInBackgroundJob = lifecycle.coroutineScope.launch {
-//                transitionModel.elements.collect { elements ->
-//                    elements
-//                        .mapNotNull { if (it.isTransitioning) it.key else null }
-//                        .also { transitionModel.onTransitionFinished(it) }
-//                }
-//            }
-//        }
-//    }
-
     @Composable
     override fun DerivedSetup() {
         InteractionModelSetup(interactionModel = interactionModel)
@@ -187,13 +147,6 @@ abstract class ParentNode<InteractionTarget : Any>(
 
     override fun performUpNavigation(): Boolean =
         interactionModel.handleBackPress() || super.performUpNavigation()
-
-    private fun manageTransitionsInForeground() {
-        transitionsInBackgroundJob?.run {
-            cancel()
-            transitionsInBackgroundJob = null
-        }
-    }
 
     /**
      * attachChild executes provided action e.g. backstack.push(NodeANavTarget) and waits for the specific
@@ -284,12 +237,6 @@ abstract class ParentNode<InteractionTarget : Any>(
     }
 
     // endregion
-
-//    // TODO Investigate how to remove it
-//    @VisibleForTesting
-//    internal fun manageTransitionsInTest() {
-//        manageTransitionsInBackground()
-//    }
 
     companion object {
         const val ATTACH_WORKFLOW_SYNC_TIMEOUT = 5000L
