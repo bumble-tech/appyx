@@ -8,7 +8,6 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Outpu
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.SavedStateMap
-import kotlin.coroutines.EmptyCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlin.coroutines.EmptyCoroutineContext
 
 @SuppressWarnings("UnusedPrivateMember")
 abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
@@ -168,12 +168,13 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                     )
                     updateState(newState)
                     true
+                } else {
+                    Logger.log(
+                        TAG,
+                        "Operation $operation is not applicable on states: $currentState.currentTargetState"
+                    )
+                    false
                 }
-                Logger.log(
-                    TAG,
-                    "Operation $operation is not applicable on states: $currentState.currentTargetState"
-                )
-                false
             }
         }
     }
