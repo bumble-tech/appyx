@@ -20,3 +20,12 @@
 .md-search .md-icon {
     opacity: 0.5;
 }
+
+.compose_mpp_sample {
+    width: fit-content;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	overflow:hidden;
+    line-height: 0;
+}

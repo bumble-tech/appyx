@@ -40,7 +40,8 @@ When updating the documentation, test the generated mkdocs site locally.
 
 ```bash
 pip install mkdocs
-pip install mkdocs mkdocs-material
+pip install mkdocs-material
+pip install mkdocs-macros-plugin
 ```
 
 
