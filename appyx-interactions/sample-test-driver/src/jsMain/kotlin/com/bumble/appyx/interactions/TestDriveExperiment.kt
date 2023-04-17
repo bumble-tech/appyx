@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.sample
+package com.bumble.appyx.interactions
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -19,18 +19,21 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
@@ -42,9 +45,14 @@ import com.bumble.appyx.transitionmodel.testdrive.operation.next
 import com.bumble.appyx.transitionmodel.testdrive.ui.TestDriveMotionController
 import com.bumble.appyx.transitionmodel.testdrive.ui.TestDriveMotionController.Companion.toTargetUiState
 
+enum class NavTarget {
+    Child1
+}
 
 @Composable
-fun TestDriveExperiment() {
+fun TestDriveExperiment(
+    ignoreChildrenVisibility: Boolean = false,
+) {
     val coroutineScope = rememberCoroutineScope()
 
     val model = remember {
@@ -78,19 +86,24 @@ fun TestDriveExperiment() {
 
     InteractionModelSetup(testDrive)
 
+    var size by remember { mutableStateOf(IntSize.Zero) }
     Column(
         Modifier
             .fillMaxWidth()
-            .background(Color.Black),
+            .background(Color.Black)
+            .onSizeChanged { size = it },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TestDriveUi(
             testDrive = testDrive,
             model = model,
+            screenWidthPx = size.width,
+            screenHeightPx = size.height,
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .fillMaxWidth()
                 .fillMaxHeight(0.9f),
+            ignoreChildrenVisibility = ignoreChildrenVisibility,
         )
 
         Row(
@@ -128,6 +141,8 @@ fun TestDriveExperiment() {
 fun <InteractionTarget : Any> TestDriveUi(
     testDrive: TestDrive<InteractionTarget>,
     model: TestDriveModel<InteractionTarget>,
+    screenWidthPx: Int,
+    screenHeightPx: Int,
     modifier: Modifier = Modifier,
     ignoreChildrenVisibility: Boolean = false,
 ) {
@@ -139,7 +154,10 @@ fun <InteractionTarget : Any> TestDriveUi(
             ),
     ) {
         Children(
+            screenWidthPx = screenWidthPx,
+            screenHeightPx = screenHeightPx,
             interactionModel = testDrive,
+            ignoreVisibility = ignoreChildrenVisibility,
         ) { frameModel ->
             Box(
                 modifier = Modifier.size(60.dp)

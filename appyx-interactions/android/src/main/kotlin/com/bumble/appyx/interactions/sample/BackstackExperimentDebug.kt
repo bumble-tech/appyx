@@ -14,7 +14,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.sample.NavTarget.*
+import com.bumble.appyx.interactions.sample.NavTarget.Child1
+import com.bumble.appyx.interactions.sample.NavTarget.Child2
+import com.bumble.appyx.interactions.sample.NavTarget.Child3
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.backstack.BackStack
 import com.bumble.appyx.transitionmodel.backstack.BackStackModel
@@ -50,7 +52,7 @@ fun BackStackExperimentDebug() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(appyx_dark)
+            .background(appyx_dark),
     ) {
 //        KnobControl(onValueChange = {
 //            backStack.setNormalisedProgress(it)

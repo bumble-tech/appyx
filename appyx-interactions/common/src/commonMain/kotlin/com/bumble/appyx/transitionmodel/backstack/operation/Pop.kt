@@ -30,9 +30,9 @@ class Pop<InteractionTarget : Any>(
             stashed = fromState.stashed.dropLast(1)
         )
 
-    override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
+    override fun equals(other: Any?): Boolean = other != null && this::class == other::class
 
-    override fun hashCode(): Int = this.javaClass.hashCode()
+    override fun hashCode(): Int = this::class.hashCode()
 }
 
 fun <InteractionTarget : Any> BackStack<InteractionTarget>.pop(

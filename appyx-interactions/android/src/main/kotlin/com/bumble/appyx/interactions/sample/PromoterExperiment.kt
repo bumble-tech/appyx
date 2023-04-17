@@ -24,8 +24,8 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child3
 import com.bumble.appyx.interactions.sample.NavTarget.Child4
 import com.bumble.appyx.transitionmodel.promoter.Promoter
 import com.bumble.appyx.transitionmodel.promoter.PromoterModel
-import com.bumble.appyx.transitionmodel.promoter.ui.PromoterMotionController
 import com.bumble.appyx.transitionmodel.promoter.operation.addFirst
+import com.bumble.appyx.transitionmodel.promoter.ui.PromoterMotionController
 
 
 @ExperimentalMaterialApi
@@ -56,7 +56,7 @@ fun PromoterExperiment() {
 
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxSize(),
     ) {
         Children(
             interactionModel = promoter,

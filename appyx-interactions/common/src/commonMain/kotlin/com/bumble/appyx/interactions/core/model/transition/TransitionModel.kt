@@ -2,14 +2,15 @@ package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
-import java.io.Serializable
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.serialization.Serializable
 
 interface TransitionModel<InteractionTarget, ModelState> : SavesInstanceState {
 
     val output: StateFlow<Output<ModelState>>
 
-    sealed class Output<ModelState> : Serializable {
+    @Serializable
+    sealed class Output<ModelState> {
         abstract val currentTargetState: ModelState
 
         abstract val lastTargetState: ModelState

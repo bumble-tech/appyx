@@ -42,7 +42,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
                 },
                 savedStateMap = null
             ),
-            motionController = { CardsMotionController(it)  },
+            motionController = { CardsMotionController(it) },
             gestureFactory = { CardsMotionController.Gestures(it) },
             animateSettle = true
         )

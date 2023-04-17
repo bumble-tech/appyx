@@ -71,9 +71,9 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimatingState
 
-    internal abstract fun ModelState.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>>
+    abstract fun ModelState.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>>
 
-    internal abstract fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState
+    abstract fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState
 
     override fun mapUpdate(
         update: Update<ModelState>
@@ -145,7 +145,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                             animations[matchedTargetUiState.element.id] = true
                             updateModeAnimatingState.update { true }
                             Logger.log(
-                                this@BaseMotionController.javaClass.simpleName,
+                                this@BaseMotionController::class.simpleName!!,
                                 "animation for element ${matchedTargetUiState.element.id} is started"
                             )
                         } else {
@@ -154,7 +154,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                             animations[matchedTargetUiState.element.id] = false
                             updateModeAnimatingState.update { animations.any { it.value } }
                             Logger.log(
-                                this@BaseMotionController.javaClass.simpleName,
+                                this@BaseMotionController::class.simpleName!!,
                                 "animation for element ${matchedTargetUiState.element.id} is finished"
                             )
                         }
@@ -174,7 +174,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                 )
             ) {
                 Logger.log(
-                    this@BaseMotionController.javaClass.simpleName,
+                    this@BaseMotionController::class.simpleName!!,
                     "Geometry animateTo (Update) – $targetValue"
                 )
             }
@@ -247,7 +247,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
                     Logger.log(
-                        this@BaseMotionController.javaClass.simpleName,
+                        this@BaseMotionController::class.simpleName!!,
                         "Geometry snapTo (Segment): $targetValue"
                     )
                 }
@@ -261,7 +261,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                             )
                         ) {
                             Logger.log(
-                                this@BaseMotionController.javaClass.simpleName,
+                                this@BaseMotionController::class.simpleName!!,
                                 "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
                             )
                         }

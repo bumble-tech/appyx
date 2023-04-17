@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
@@ -12,12 +13,17 @@ kotlin {
             kotlinOptions.jvmTarget = "11"
         }
     }
+    js(IR) {
+        browser()
+        binaries.executable()
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
             }
         }
         val commonTest by getting {
@@ -42,6 +48,11 @@ kotlin {
             }
         }
         val desktopTest by getting
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("uuid", "9.0.0"))
+            }
+        }
     }
 }
 

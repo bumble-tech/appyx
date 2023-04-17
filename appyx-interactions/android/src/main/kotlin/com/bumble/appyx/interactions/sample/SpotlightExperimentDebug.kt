@@ -22,11 +22,11 @@ import com.bumble.appyx.interactions.sample.NavTarget.Child7
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.spotlight.Spotlight
 import com.bumble.appyx.transitionmodel.spotlight.SpotlightModel
-import com.bumble.appyx.transitionmodel.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.transitionmodel.spotlight.operation.first
 import com.bumble.appyx.transitionmodel.spotlight.operation.last
 import com.bumble.appyx.transitionmodel.spotlight.operation.next
 import com.bumble.appyx.transitionmodel.spotlight.operation.previous
+import com.bumble.appyx.transitionmodel.spotlight.ui.slider.SpotlightSlider
 
 
 @ExperimentalMaterialApi
@@ -59,7 +59,7 @@ fun SpotlightExperimentDebug() {
     Column(
         Modifier
             .fillMaxWidth()
-            .background(appyx_dark)
+            .background(appyx_dark),
     ) {
         KnobControl(onValueChange = {
             spotlight.setNormalisedProgress(it)

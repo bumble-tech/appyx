@@ -13,10 +13,11 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven(url = "https://jitpack.io")
     }
 }
@@ -24,6 +25,11 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
+    ":appyx-interactions:android",
+    ":appyx-interactions:common",
+    ":appyx-interactions:desktop",
+    ":appyx-interactions:sample-test-driver",
+    ":appyx-navigation",
     ":libraries:customisations",
     ":libraries:interop-ribs",
     ":libraries:interop-rx2",
@@ -36,8 +42,6 @@ include(
     ":samples:appyx-navigation",
     ":samples:common",
     ":samples:navigation-compose",
-    ":appyx-interactions:android", ":appyx-interactions:desktop", ":appyx-interactions:common",
-    ":appyx-navigation"
 )
 
 includeBuild("plugins")

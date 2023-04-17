@@ -43,8 +43,4 @@ class DebugProgressInputSource<InteractionTarget, ModelState>(
 //            animatable.snapTo(transitionModel.currentProgress)
 //        }
     }
-
-    private companion object {
-        private val TAG = DebugProgressInputSource::class.java.name
-    }
 }
