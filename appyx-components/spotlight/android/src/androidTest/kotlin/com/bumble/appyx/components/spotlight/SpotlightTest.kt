@@ -41,7 +41,7 @@ class SpotlightTest(private val testParam: TestParam) {
 
     @Test
     fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_false() {
-        createBackStackSlider(initialActiveIndex = 1f)
+        createSpotlightSlider(initialActiveIndex = 1f)
         composeTestRule.setupInteractionModel(spotlight, 0.67f, clipToBounds = false)
         checkInteractionTargetsOnScreen(setOf(NavTarget.Child1, NavTarget.Child2, NavTarget.Child3))
 
@@ -59,7 +59,7 @@ class SpotlightTest(private val testParam: TestParam) {
 
     @Test
     fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_true() {
-        createBackStackSlider(initialActiveIndex = 1f)
+        createSpotlightSlider(initialActiveIndex = 1f)
         composeTestRule.setupInteractionModel(spotlight, 0.67f, clipToBounds = true)
 
         if (testParam.operationMode == Operation.Mode.KEYFRAME) {
@@ -88,7 +88,7 @@ class SpotlightTest(private val testParam: TestParam) {
         )
     }
 
-    private fun createBackStackSlider(
+    private fun createSpotlightSlider(
         disableAnimations: Boolean = false,
         initialActiveIndex: Float = 0f,
     ) {
