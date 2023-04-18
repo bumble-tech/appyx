@@ -33,9 +33,8 @@ android {
 dependencies {
     val composeBom = platform(libs.compose.bom)
 
-    implementation(project(":appyx-interactions:common"))
-    implementation(libs.compose.ui.test.junit4)
-    implementation(libs.junit.api)
+    api(project(":appyx-interactions:common"))
+    api(libs.compose.ui.test.junit4)
     implementation(libs.androidx.test.core)
 
     implementation(composeBom)

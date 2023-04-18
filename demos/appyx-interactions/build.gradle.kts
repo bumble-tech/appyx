@@ -40,10 +40,7 @@ android {
 dependencies {
     val composeBom = platform(libs.compose.bom)
 
-    api(project(":appyx-components:backstack:common"))
-
     implementation(composeBom)
-    implementation(project(":demos:common"))
     implementation(project(":appyx-interactions:android"))
     implementation(project(":appyx-components:spotlight:common"))
     implementation(project(":appyx-components:backstack:common"))
@@ -54,9 +51,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
     implementation(libs.google.material)
-    implementation(libs.coil.compose)
 }

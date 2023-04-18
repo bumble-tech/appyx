@@ -55,8 +55,6 @@ android {
 dependencies {
     val composeBom = platform(libs.compose.bom)
 
-    api(project(":appyx-components:backstack:common"))
-
     implementation(composeBom)
     implementation(project(":appyx-navigation"))
     implementation(project(":demos:common"))
