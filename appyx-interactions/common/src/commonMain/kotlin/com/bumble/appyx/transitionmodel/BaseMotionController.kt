@@ -71,9 +71,9 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     final override fun isAnimating(): StateFlow<Boolean> =
         isAnimatingState
 
-    internal abstract fun ModelState.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>>
+    abstract fun ModelState.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>>
 
-    internal abstract fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState
+    abstract fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState
 
     override fun mapUpdate(
         update: Update<ModelState>

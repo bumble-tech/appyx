@@ -33,11 +33,22 @@ include(
     ":utils:testing-ui",
     ":utils:testing-ui-activity",
     ":utils:testing-unit-common",
-    ":samples:appyx-navigation",
-    ":samples:common",
-    ":samples:navigation-compose",
-    ":appyx-interactions:android", ":appyx-interactions:desktop", ":appyx-interactions:common",
-    ":appyx-navigation"
+    ":demos:appyx-navigation",
+    ":demos:common",
+    ":demos:navigation-compose",
+    ":appyx-interactions:android",
+    ":appyx-interactions:desktop",
+    ":appyx-interactions:common",
+    ":appyx-navigation",
+    ":appyx-components:backstack:common",
+    ":appyx-components:backstack:android",
+    ":appyx-components:spotlight:common",
+    ":appyx-components:spotlight:android",
+    ":appyx-components:demos:common",
+    ":appyx-components:demos:android",
+    ":appyx-components:internal:common",
+    ":appyx-components:internal:android",
+    "demos:appyx-interactions"
 )
 
 includeBuild("plugins")
