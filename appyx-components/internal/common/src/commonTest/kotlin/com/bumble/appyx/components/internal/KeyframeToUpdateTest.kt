@@ -11,7 +11,7 @@ import org.junit.Test
 class KeyframeToUpdateTest {
 
     @Test
-    fun `When all Keyframes finish Then model switches back to update`() {
+    fun When_all_Keyframes_finish_Then_model_switches_back_to_update() {
         val model = TestDriveModel(
             element = InteractionTarget.Child1,
             savedStateMap = null

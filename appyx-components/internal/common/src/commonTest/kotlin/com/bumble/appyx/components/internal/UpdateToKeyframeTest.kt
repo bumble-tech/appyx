@@ -11,7 +11,7 @@ import org.junit.Test
 class UpdateToKeyframeTest {
 
     @Test
-    fun `When animation hasn't settled Then keyframe is interpreted as update`() {
+    fun When_animation_hasn_not_settled_Then_keyframe_is_interpreted_as_update() {
         val model = TestDriveModel(
             element = InteractionTarget.Child1,
             savedStateMap = null
@@ -24,7 +24,7 @@ class UpdateToKeyframeTest {
     }
 
     @Test
-    fun `When animation has settled Then keyframe can be deployed`() {
+    fun When_animation_has_settled_Then_keyframe_can_be_deployed() {
         val model = TestDriveModel(
             element = InteractionTarget.Child1,
             savedStateMap = null
