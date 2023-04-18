@@ -34,6 +34,7 @@ import kotlin.math.roundToInt
 
 @ExperimentalMaterialApi
 @Composable
+@Suppress("MagicNumber")
 fun KnobControl(
     onValueChange: (Float) -> Unit,
     modifier: Modifier = Modifier

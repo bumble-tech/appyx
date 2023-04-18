@@ -33,8 +33,8 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 
 @ExperimentalMaterialApi
 @Composable
-@Suppress("LongMethod")
-fun SpotlightExperiment() {
+@Suppress("LongMethod", "MagicNumber")
+fun SpotlightExperiment(modifier: Modifier = Modifier) {
     val items = listOf(
         NavTarget.Child1,
         NavTarget.Child2,

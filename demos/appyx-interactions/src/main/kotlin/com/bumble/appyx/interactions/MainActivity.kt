@@ -36,6 +36,7 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
+@Suppress("MagicNumber")
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +78,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun Greeting(
+    name: String,
+    modifier: Modifier = Modifier
+) {
+    Text(modifier = modifier, text = "Hello $name!")
 }

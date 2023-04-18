@@ -21,7 +21,7 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 
 @ExperimentalMaterialApi
 @Composable
-fun BackStackExperimentDebug() {
+fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
     val coroutineScope = rememberCoroutineScope()
 
     val backStack = remember {
