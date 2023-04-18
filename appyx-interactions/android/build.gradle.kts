@@ -2,7 +2,6 @@ plugins {
     kotlin("android")
     id("org.jetbrains.compose")
     id("com.android.library")
-    id("appyx-screenshots")
 }
 
 
