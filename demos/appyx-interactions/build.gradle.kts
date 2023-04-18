@@ -49,7 +49,6 @@ dependencies {
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.ui.tooling)
     implementation(libs.compose.ui.ui)
