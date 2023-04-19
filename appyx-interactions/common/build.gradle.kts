@@ -66,3 +66,6 @@ android {
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }
+dependencies {
+    testImplementation("junit:junit:4.13.1")
+}

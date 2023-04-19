@@ -1,8 +1,8 @@
 package com.bumble.appyx.interactions.core.ui.easing
 
 import androidx.compose.animation.core.LinearEasing
-import org.junit.Test
 import kotlin.math.abs
+import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

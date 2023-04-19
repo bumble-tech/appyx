@@ -5,8 +5,8 @@ import com.bumble.appyx.components.internal.testdrive.operation.Next
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Update
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertTrue
 
 class UpdateToKeyframeTest {
 
