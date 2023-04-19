@@ -24,6 +24,23 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
+
+    ":appyx-components:backstack:android",
+    ":appyx-components:backstack:common",
+    ":appyx-components:demos:android",
+    ":appyx-components:demos:common",
+    ":appyx-components:internal:android",
+    ":appyx-components:internal:common",
+    ":appyx-components:spotlight:android",
+    ":appyx-components:spotlight:common",
+    ":appyx-interactions:android",
+    ":appyx-interactions:desktop",
+    ":appyx-interactions:common",
+    ":appyx-navigation",
+    ":demos:appyx-interactions",
+    ":demos:appyx-navigation",
+    ":demos:common",
+    ":demos:navigation-compose",
     ":utils:customisations",
     ":utils:interop-ribs",
     ":utils:interop-rx2",
@@ -33,22 +50,6 @@ include(
     ":utils:testing-ui",
     ":utils:testing-ui-activity",
     ":utils:testing-unit-common",
-    ":demos:appyx-navigation",
-    ":demos:common",
-    ":demos:navigation-compose",
-    ":appyx-interactions:android",
-    ":appyx-interactions:desktop",
-    ":appyx-interactions:common",
-    ":appyx-navigation",
-    ":appyx-components:backstack:common",
-    ":appyx-components:backstack:android",
-    ":appyx-components:spotlight:common",
-    ":appyx-components:spotlight:android",
-    ":appyx-components:demos:common",
-    ":appyx-components:demos:android",
-    ":appyx-components:internal:common",
-    ":appyx-components:internal:android",
-    "demos:appyx-interactions"
 )
 
 includeBuild("plugins")
