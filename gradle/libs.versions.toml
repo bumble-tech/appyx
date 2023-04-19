@@ -13,11 +13,13 @@ composeCompiler = "1.4.4"
 ribs = "0.39.0"
 mvicore = "1.2.6"
 coroutines = "1.6.4"
+serialization-json = "1.5.0"
 kotlin = "1.8.10"
 jvmTarget = "11"
 junit5 = "5.8.2"
 detekt = "1.21.0"
 dependencyAnalysis = "1.13.1"
+uuid = "9.0.0"
 
 [libraries]
 androidx-activity-compose = "androidx.activity:activity-compose:1.7.0"
@@ -55,6 +57,7 @@ kotlin-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines
 kotlin-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 kotlin-coroutines-test-jvm = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test-jvm", version.ref = "coroutines" }
 kotlin-coroutines-rx2 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-rx2", version.ref = "coroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization-json" }
 mvicore-base = { module = "com.github.badoo.mvicore:mvicore", version.ref = "mvicore" }
 mvicore-android = { module = "com.github.badoo.mvicore:mvicore-android", version.ref = "mvicore" }
 mvicore-binder = { module = "com.github.badoo.mvicore:binder", version.ref = "mvicore" }

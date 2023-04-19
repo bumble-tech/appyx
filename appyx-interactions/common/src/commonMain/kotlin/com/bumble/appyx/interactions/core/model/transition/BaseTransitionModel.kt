@@ -19,7 +19,6 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlin.coroutines.EmptyCoroutineContext
 
-@SuppressWarnings("UnusedPrivateMember")
 abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
     protected val scope: CoroutineScope = CoroutineScope(EmptyCoroutineContext + Dispatchers.Unconfined),
     private val key: String = KEY_TRANSITION_MODEL,

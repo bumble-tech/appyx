@@ -111,6 +111,6 @@ class AnimatedProgressController<InteractionTarget : Any, ModelState>(
     }
 
     private companion object {
-        private val TAG = AnimatedProgressController::class.java.name
+        private const val TAG = "AnimatedProgressController"
     }
 }
