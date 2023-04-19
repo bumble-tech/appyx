@@ -18,6 +18,8 @@ import com.bumble.appyx.interactions.core.model.plus
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.permanent.PermanentInteractionModel
+import com.bumble.appyx.interactions.permanent.operation.addUnique
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
@@ -32,8 +34,6 @@ import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
-import com.bumble.appyx.transitionmodel.permanent.PermanentInteractionModel
-import com.bumble.appyx.transitionmodel.permanent.operation.addUnique
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -114,8 +114,8 @@ abstract class ParentNode<InteractionTarget : Any>(
     }
 
     @Composable
-    fun PermanentChild(navTarget: InteractionTarget) {
-        PermanentChild(navTarget) { child -> child() }
+    fun PermanentChild(interactionTarget: InteractionTarget) {
+        PermanentChild(interactionTarget) { child -> child() }
     }
 
     override fun updateLifecycleState(state: Lifecycle.State) {

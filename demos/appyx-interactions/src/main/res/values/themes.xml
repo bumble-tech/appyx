@@ -1,0 +1,18 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Appyx" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/appyx_yellow2</item>
+        <item name="colorPrimaryVariant">@color/appyx_yellow1</item>
+        <item name="colorOnPrimary">@color/appyx_dark</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/appyx_dark</item>
+        <item name="colorSecondaryVariant">@color/appyx_dark</item>
+        <item name="colorOnSecondary">@color/appyx_bright</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/appyx_dark</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>

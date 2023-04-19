@@ -24,20 +24,32 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
-    ":libraries:customisations",
-    ":libraries:interop-ribs",
-    ":libraries:interop-rx2",
-    ":libraries:interop-rx3",
-    ":libraries:testing-junit4",
-    ":libraries:testing-junit5",
-    ":libraries:testing-ui",
-    ":libraries:testing-ui-activity",
-    ":libraries:testing-unit-common",
-    ":samples:appyx-navigation",
-    ":samples:common",
-    ":samples:navigation-compose",
-    ":appyx-interactions:android", ":appyx-interactions:desktop", ":appyx-interactions:common",
-    ":appyx-navigation"
+
+    ":appyx-components:backstack:android",
+    ":appyx-components:backstack:common",
+    ":appyx-components:demos:android",
+    ":appyx-components:demos:common",
+    ":appyx-components:internal:android",
+    ":appyx-components:internal:common",
+    ":appyx-components:spotlight:android",
+    ":appyx-components:spotlight:common",
+    ":appyx-interactions:android",
+    ":appyx-interactions:desktop",
+    ":appyx-interactions:common",
+    ":appyx-navigation",
+    ":demos:appyx-interactions",
+    ":demos:appyx-navigation",
+    ":demos:common",
+    ":demos:navigation-compose",
+    ":utils:customisations",
+    ":utils:interop-ribs",
+    ":utils:interop-rx2",
+    ":utils:interop-rx3",
+    ":utils:testing-junit4",
+    ":utils:testing-junit5",
+    ":utils:testing-ui",
+    ":utils:testing-ui-activity",
+    ":utils:testing-unit-common",
 )
 
 includeBuild("plugins")

@@ -39,22 +39,22 @@ dependencyAnalysis {
 
                     // This is used to add the testing activity to the debug manifest
                     // However since not code is referenced, it is raised as unused.
-                    ":libraries:testing-ui-activity"
+                    ":utils:testing-ui-activity"
                 )
             }
         }
-        project(":libraries:testing-junit4") {
+        project(":utils:testing-junit4") {
             onUnusedDependencies {
                 severity("fail")
                 // Not used by the module, but exposed via api to avoid adding two dependencies.
-                exclude(":libraries:testing-unit-common")
+                exclude(":utils:testing-unit-common")
             }
         }
-        project(":libraries:testing-junit5") {
+        project(":utils:testing-junit5") {
             onUnusedDependencies {
                 severity("fail")
                 // Not used by the module, but exposed via api to avoid adding two dependencies.
-                exclude(":libraries:testing-unit-common")
+                exclude(":utils:testing-unit-common")
             }
         }
     }
@@ -68,7 +68,7 @@ allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("com.bumble.appyx:customisations"))
-                .using(project(":libraries:customisations"))
+                .using(project(":utils:customisations"))
                 .because("RIBs uses Appyx customisations as external dependency")
         }
     }

@@ -1,16 +1,14 @@
 plugins {
-    id("org.jetbrains.compose")
-    id("com.android.application")
-    id("appyx-screenshots")
     kotlin("android")
+    id("org.jetbrains.compose")
+    id("com.android.library")
 }
 
 
 android {
-    namespace = "com.bumble.appyx.interactions"
+    namespace = "com.bumble.appyx.interactions.android"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
-        applicationId = "com.bumble.appyx.interactions"
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
 
@@ -22,22 +20,25 @@ android {
             it.useJUnitPlatform()
         }
     }
+
+    packagingOptions {
+        resources.excludes.apply {
+            add("META-INF/LICENSE.md")
+            add("META-INF/LICENSE-notice.md")
+        }
+    }
 }
 
 dependencies {
     val composeBom = platform(libs.compose.bom)
 
-    implementation(project(":appyx-interactions:common"))
-    implementation(project(":samples:common"))
-    implementation(libs.androidx.activity.compose)
-    implementation(libs.compose.ui.tooling)
+    api(project(":appyx-interactions:common"))
+    api(libs.compose.ui.test.junit4)
+    implementation(libs.androidx.test.core)
 
-
+    implementation(composeBom)
     androidTestImplementation(composeBom)
-    androidTestImplementation(libs.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.test.espresso.core)
 
-    testImplementation(libs.junit.api)
     testRuntimeOnly(libs.junit.engine)
     testRuntimeOnly(libs.junit.vintage)
 

@@ -10,10 +10,10 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 
 @Composable
-fun <NavTarget : Any> ParentNode<NavTarget>.Child(
-    elementUiModel: ElementUiModel<NavTarget>,
+fun <InteractionTarget : Any> ParentNode<InteractionTarget>.Child(
+    elementUiModel: ElementUiModel<InteractionTarget>,
     saveableStateHolder: SaveableStateHolder,
-    decorator: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
+    decorator: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
 ) {
     val navElement = elementUiModel.element
     val childEntry = remember(navElement.id) { childOrCreate(navElement) }
@@ -28,9 +28,9 @@ fun <NavTarget : Any> ParentNode<NavTarget>.Child(
     }
 }
 
-private class ChildRendererImpl<NavTarget : Any>(
+private class ChildRendererImpl<InteractionTarget : Any>(
     private val node: Node,
-    private val elementUiModel: ElementUiModel<NavTarget>
+    private val elementUiModel: ElementUiModel<InteractionTarget>
 ) : ChildRenderer {
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.

@@ -9,9 +9,9 @@ object EmptyNodeView : NodeView {
     override fun View(modifier: Modifier) = Unit
 }
 
-class EmptyParentNodeView<NavTarget : Any> : ParentNodeView<NavTarget> {
+class EmptyParentNodeView<InteractionTarget : Any> : ParentNodeView<InteractionTarget> {
 
     @Composable
-    override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) = Unit
+    override fun ParentNode<InteractionTarget>.NodeView(modifier: Modifier) = Unit
 
 }

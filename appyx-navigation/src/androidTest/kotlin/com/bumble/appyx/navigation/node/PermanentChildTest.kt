@@ -59,10 +59,10 @@ class PermanentChildTest {
 
         var renderPermanentChild by mutableStateOf(true)
 
-        override fun resolve(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+        override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
             node(buildContext) { modifier ->
                 BasicText(
-                    text = navTarget.toString(),
+                    text = interactionTarget.toString(),
                     modifier = modifier.testTag(InteractionTarget::class.java.name),
                 )
             }

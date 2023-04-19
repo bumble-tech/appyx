@@ -9,7 +9,7 @@ kotlin {
     android()
     jvm("desktop") {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
         }
     }
     sourceSets {
@@ -46,6 +46,7 @@ kotlin {
 }
 
 android {
+    namespace = "com.bumble.appyx.interactions.common"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {

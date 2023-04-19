@@ -18,9 +18,9 @@ import kotlinx.coroutines.launch
  * Hosts [LifecycleRegistry] to manage the current node lifecycle
  * and updates lifecycle of children nodes when updated.
  */
-internal class ChildNodeLifecycleManager<NavTarget: Any>(
-    private val interactionModel: InteractionModel<NavTarget, *>,
-    private val children: StateFlow<ChildEntryMap<NavTarget>>,
+internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
+    private val interactionModel: InteractionModel<InteractionTarget, *>,
+    private val children: StateFlow<ChildEntryMap<InteractionTarget>>,
     private val keepMode: ChildEntry.KeepMode,
     private val coroutineScope: CoroutineScope,
 ) {
