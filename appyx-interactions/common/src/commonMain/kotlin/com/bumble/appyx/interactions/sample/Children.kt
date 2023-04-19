@@ -22,7 +22,6 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -33,23 +32,23 @@ import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import kotlin.math.roundToInt
 
 
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> Children(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+    screenWidthPx: Int,
+    screenHeightPx: Int,
+    colors: List<Color>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
-        Element(elementUiModel = it)
+        Element(colors = colors, elementUiModel = it)
     },
 ) {
     val density = LocalDensity.current
     val frames = interactionModel.uiModels.collectAsState(listOf())
     val coroutineScope = rememberCoroutineScope()
-    val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
-    val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
@@ -94,9 +93,10 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
 
 @Composable
 fun Element(
-    color: Color? = Color.Unspecified,
     elementUiModel: ElementUiModel<*>,
     modifier: Modifier = Modifier.fillMaxSize(),
+    colors: List<Color>,
+    color: Color? = Color.Unspecified,
     contentDescription: String? = null
 ) {
     val backgroundColor = remember {

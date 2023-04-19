@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.ui.CardsMotionController
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.sample.Children
+import com.bumble.appyx.interactions.sample.android.Children
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard

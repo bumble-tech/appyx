@@ -20,8 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.promoter.operation.addFirst
 import com.bumble.appyx.components.demos.promoter.ui.PromoterMotionController
-import com.bumble.appyx.interactions.sample.Children
-import com.bumble.appyx.interactions.sample.Element
+import com.bumble.appyx.interactions.sample.android.Children
+import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child2

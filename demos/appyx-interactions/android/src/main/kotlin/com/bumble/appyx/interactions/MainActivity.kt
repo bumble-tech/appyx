@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.DatingCards
 import com.bumble.appyx.components.demos.promoter.PromoterExperiment
-import com.bumble.appyx.components.internal.testdrive.TestDriveExperiment
+import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
 import com.bumble.appyx.interactions.sample.BackStackExperimentDebug
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperimentDebug

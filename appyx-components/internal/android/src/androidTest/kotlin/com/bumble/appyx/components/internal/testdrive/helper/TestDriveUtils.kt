@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.components.internal.testdrive.TestDrive
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
-import com.bumble.appyx.components.internal.testdrive.TestDriveUi
+import com.bumble.appyx.components.internal.testdrive.android.TestDriveUi
 import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget

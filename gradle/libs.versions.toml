@@ -19,7 +19,7 @@ jvmTarget = "11"
 junit5 = "5.8.2"
 detekt = "1.21.0"
 dependencyAnalysis = "1.13.1"
-uuid = "9.0.0"
+uuid = "^8.3.2"
 
 [libraries]
 androidx-activity-compose = "androidx.activity:activity-compose:1.7.0"

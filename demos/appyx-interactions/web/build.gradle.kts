@@ -11,15 +11,11 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(mapOf("path" to ":appyx-interactions:common")))
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material)
                 implementation(project(":appyx-interactions:common"))
-            }
-        }
-        val jsMain by getting  {
-            dependencies {
-                implementation(project(mapOf("path" to ":appyx-interactions:common")))
-                implementation(project(":appyx-interactions:common"))
-
+                implementation(project(":appyx-components:internal:common"))
             }
         }
     }

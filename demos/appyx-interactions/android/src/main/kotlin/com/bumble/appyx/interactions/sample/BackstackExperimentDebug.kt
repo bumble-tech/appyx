@@ -59,7 +59,7 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
             Text("POP")
         }
 
-        Children(
+        com.bumble.appyx.interactions.sample.android.Children(
             modifier = Modifier
                 .padding(
                     horizontal = 64.dp,

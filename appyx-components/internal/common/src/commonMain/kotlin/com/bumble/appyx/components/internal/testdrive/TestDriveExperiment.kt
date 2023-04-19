@@ -2,7 +2,6 @@ package com.bumble.appyx.components.internal.testdrive
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +13,6 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
@@ -40,18 +38,21 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRA
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
-import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
-import com.bumble.appyx.interactions.theme.appyx_dark
 
 
-@ExperimentalMaterialApi
 @Composable
-fun TestDriveExperiment() {
+fun <InteractionTarget : Any> TestDriveExperiment(
+    screenWidthPx: Int,
+    screenHeightPx: Int,
+    colors: List<Color>,
+    element: InteractionTarget,
+    modifier: Modifier = Modifier,
+) {
     val coroutineScope = rememberCoroutineScope()
 
     val model = remember {
         TestDriveModel(
-            element = Child1,
+            element = element,
             savedStateMap = null
         )
     }
@@ -81,11 +82,12 @@ fun TestDriveExperiment() {
     InteractionModelSetup(testDrive)
 
     Column(
-        Modifier
-            .fillMaxWidth()
-            .background(appyx_dark)
+        modifier = modifier,
     ) {
         TestDriveUi(
+            screenWidthPx = screenWidthPx,
+            screenHeightPx = screenHeightPx,
+            colors = colors,
             testDrive = testDrive,
             model = model,
             modifier = Modifier.weight(0.9f)
@@ -122,9 +124,11 @@ fun TestDriveExperiment() {
     }
 }
 
-@ExperimentalMaterialApi
 @Composable
 fun <InteractionTarget : Any> TestDriveUi(
+    screenWidthPx: Int,
+    screenHeightPx: Int,
+    colors: List<Color>,
     testDrive: TestDrive<InteractionTarget>,
     model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier
@@ -137,6 +141,9 @@ fun <InteractionTarget : Any> TestDriveUi(
             )
     ) {
         Children(
+            screenWidthPx = screenWidthPx,
+            screenHeightPx = screenHeightPx,
+            colors = colors,
             interactionModel = testDrive,
         ) { frameModel ->
             Box(
@@ -162,6 +169,7 @@ fun <InteractionTarget : Any> TestDriveUi(
             when (output) {
                 is Keyframes -> output.currentSegmentTargetStateFlow
                     .collectAsState(null)
+
                 is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
             }
         // FIXME this should be internalised probably

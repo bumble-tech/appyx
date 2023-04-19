@@ -117,7 +117,7 @@ fun <InteractionTarget : Any> SpotlightUi(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
-    Children(
+    com.bumble.appyx.interactions.sample.android.Children(
         interactionModel = spotlight,
         modifier = modifier
             .padding(
@@ -125,7 +125,7 @@ fun <InteractionTarget : Any> SpotlightUi(
                 vertical = 12.dp
             ),
         element = { elementUiModel ->
-            Element(
+            com.bumble.appyx.interactions.sample.android.Element(
                 color = color,
                 elementUiModel = elementUiModel,
                 contentDescription =

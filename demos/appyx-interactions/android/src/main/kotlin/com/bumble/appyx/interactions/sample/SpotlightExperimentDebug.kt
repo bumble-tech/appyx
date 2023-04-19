@@ -66,14 +66,14 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
             spotlight.setNormalisedProgress(it)
         })
 
-        Children(
+        com.bumble.appyx.interactions.sample.android.Children(
             modifier = Modifier.padding(
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
             interactionModel = spotlight,
             element = {
-                Element(
+                com.bumble.appyx.interactions.sample.android.Element(
                     elementUiModel = it,
                     modifier = Modifier
                         .fillMaxSize()

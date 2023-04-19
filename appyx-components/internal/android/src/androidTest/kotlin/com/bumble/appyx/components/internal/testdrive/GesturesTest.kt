@@ -5,6 +5,7 @@ import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.components.internal.testdrive.android.TEST_DRIVE_EXPERIMENT_TEST_HELPER
 import com.bumble.appyx.components.internal.testdrive.helper.createTestDrive
 import com.bumble.appyx.interactions.testing.snapshot
 import org.junit.Rule

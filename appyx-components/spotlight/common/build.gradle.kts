@@ -12,6 +12,11 @@ kotlin {
             kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
         }
     }
+    js(IR) {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-components-spotlight-commons"
+        browser()
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {

@@ -14,8 +14,9 @@ kotlin {
         }
     }
     js(IR) {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-interactions-common"
         browser()
-        binaries.executable()
     }
     sourceSets {
         val commonMain by getting {
