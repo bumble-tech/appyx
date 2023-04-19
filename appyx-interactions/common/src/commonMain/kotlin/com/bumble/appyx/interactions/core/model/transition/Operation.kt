@@ -5,7 +5,7 @@ import com.bumble.appyx.interactions.Parcelize
 
 interface Operation<ModelState> : Parcelable {
 
-    fun invoke(state: ModelState): StateTransition<ModelState>
+    operator fun invoke(state: ModelState): StateTransition<ModelState>
 
     enum class Mode {
         /**
