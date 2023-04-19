@@ -12,7 +12,7 @@ version = "1.0-SNAPSHOT"
 kotlin {
     jvm {
         compilations.all {
-            kotlinOptions.jvmTarget = "11"
+            kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
         }
         withJava()
     }
