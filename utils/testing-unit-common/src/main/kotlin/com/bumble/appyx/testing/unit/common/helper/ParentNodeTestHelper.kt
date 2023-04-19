@@ -15,7 +15,10 @@ class ParentNodeTestHelper<InteractionTarget : Any, N : ParentNode<InteractionTa
     node = node
 ) {
 
-    fun <InteractionTarget : Any> assertChildHasLifecycle(interactionTarget: InteractionTarget, state: Lifecycle.State) {
+    fun <InteractionTarget : Any> assertChildHasLifecycle(
+        interactionTarget: InteractionTarget,
+        state: Lifecycle.State
+    ) {
         val childMap = node.children.value
         val key = childMap.keys.find { it.interactionTarget == interactionTarget }
 
