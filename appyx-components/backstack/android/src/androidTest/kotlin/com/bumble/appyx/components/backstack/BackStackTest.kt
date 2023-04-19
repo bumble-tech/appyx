@@ -10,7 +10,7 @@ import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.testing.NavTarget
+import com.bumble.appyx.interactions.testing.InteractionTarget
 import com.bumble.appyx.interactions.testing.setupInteractionModel
 import com.bumble.appyx.interactions.testing.waitUntilAnimationEnded
 import com.bumble.appyx.interactions.testing.waitUntilAnimationStarted
@@ -29,11 +29,11 @@ class BackStackTest(private val testParam: TestParam) {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var backStack: BackStack<NavTarget>
+    private lateinit var backStack: BackStack<InteractionTarget>
 
     companion object {
         data class TestParam(
-            val motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>
+            val motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>
         )
 
         @JvmStatic
@@ -50,9 +50,9 @@ class BackStackTest(private val testParam: TestParam) {
         composeTestRule.setupInteractionModel(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
-        backStack.push(interactionTarget = NavTarget.Child2)
-        backStack.push(interactionTarget = NavTarget.Child3)
-        backStack.push(interactionTarget = NavTarget.Child4)
+        backStack.push(interactionTarget = InteractionTarget.Child2)
+        backStack.push(interactionTarget = InteractionTarget.Child3)
+        backStack.push(interactionTarget = InteractionTarget.Child4)
         backStack.pop(animationSpec = tweenTwoSec)
 
         // all operations finished. advanced time > 2000 (last operation animation spec)
@@ -68,9 +68,9 @@ class BackStackTest(private val testParam: TestParam) {
         composeTestRule.setupInteractionModel(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
-        backStack.push(interactionTarget = NavTarget.Child2)
-        backStack.push(interactionTarget = NavTarget.Child3)
-        backStack.push(interactionTarget = NavTarget.Child4)
+        backStack.push(interactionTarget = InteractionTarget.Child2)
+        backStack.push(interactionTarget = InteractionTarget.Child3)
+        backStack.push(interactionTarget = InteractionTarget.Child4)
         backStack.pop(animationSpec = tweenTwoSec)
 
         // last operation is not finished.  advanced time < 2000 (last operation animation spec)
@@ -84,9 +84,9 @@ class BackStackTest(private val testParam: TestParam) {
         createBackStack(disableAnimations = true, testParam.motionController)
         composeTestRule.setupInteractionModel(backStack)
 
-        backStack.push(interactionTarget = NavTarget.Child2)
-        backStack.push(interactionTarget = NavTarget.Child3)
-        backStack.push(interactionTarget = NavTarget.Child4)
+        backStack.push(interactionTarget = InteractionTarget.Child2)
+        backStack.push(interactionTarget = InteractionTarget.Child3)
+        backStack.push(interactionTarget = InteractionTarget.Child4)
         backStack.pop()
 
         assertEquals(3, backStack.elements.value.all.size)
@@ -101,17 +101,17 @@ class BackStackTest(private val testParam: TestParam) {
         val popSpringSpec = spring<Float>(stiffness = 10f)
 
         backStack.push(
-            interactionTarget = NavTarget.Child2,
+            interactionTarget = InteractionTarget.Child2,
             mode = Operation.Mode.IMMEDIATE,
             animationSpec = pushSpringSpec
         )
         // all subsequent operations will be in IMMEDIATE mode until settled
         backStack.push(
-            interactionTarget = NavTarget.Child3,
+            interactionTarget = InteractionTarget.Child3,
             animationSpec = pushSpringSpec
         )
         backStack.push(
-            interactionTarget = NavTarget.Child4,
+            interactionTarget = InteractionTarget.Child4,
             animationSpec = pushSpringSpec
         )
         backStack.pop(animationSpec = popSpringSpec)
@@ -128,11 +128,11 @@ class BackStackTest(private val testParam: TestParam) {
 
     private fun createBackStack(
         disableAnimations: Boolean,
-        motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>
+        motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>
     ) {
         backStack = BackStack(
             model = BackStackModel(
-                initialTargets = listOf(NavTarget.Child1),
+                initialTargets = listOf(InteractionTarget.Child1),
                 savedStateMap = null
             ),
             motionController = motionController,

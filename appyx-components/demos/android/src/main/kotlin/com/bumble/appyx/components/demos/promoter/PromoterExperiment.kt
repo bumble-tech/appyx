@@ -22,11 +22,11 @@ import com.bumble.appyx.components.demos.promoter.operation.addFirst
 import com.bumble.appyx.components.demos.promoter.ui.PromoterMotionController
 import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.interactions.sample.Element
-import com.bumble.appyx.interactions.sample.NavTarget
-import com.bumble.appyx.interactions.sample.NavTarget.Child1
-import com.bumble.appyx.interactions.sample.NavTarget.Child2
-import com.bumble.appyx.interactions.sample.NavTarget.Child3
-import com.bumble.appyx.interactions.sample.NavTarget.Child4
+import com.bumble.appyx.interactions.sample.InteractionTarget
+import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
+import com.bumble.appyx.interactions.sample.InteractionTarget.Child2
+import com.bumble.appyx.interactions.sample.InteractionTarget.Child3
+import com.bumble.appyx.interactions.sample.InteractionTarget.Child4
 
 
 @ExperimentalMaterialApi
@@ -37,7 +37,7 @@ fun PromoterExperiment() {
     val promoter = remember {
         Promoter(
             scope = coroutineScope,
-            model = PromoterModel<NavTarget>(savedStateMap = null),
+            model = PromoterModel<InteractionTarget>(savedStateMap = null),
             motionController = {
                 PromoterMotionController(
                     uiContext = it,
@@ -83,7 +83,7 @@ fun PromoterExperiment() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(
-                onClick = { promoter.addFirst(NavTarget.values().random()) }
+                onClick = { promoter.addFirst(InteractionTarget.values().random()) }
             ) {
                 Text("Add")
             }

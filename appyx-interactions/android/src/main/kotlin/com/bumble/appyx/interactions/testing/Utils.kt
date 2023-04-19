@@ -46,9 +46,9 @@ fun randomColor(): Color {
 
 
 @Composable
-private fun <NavTarget : Any, ModelState : Any> TestChildrenUi(
+private fun <InteractionTarget : Any, ModelState : Any> TestChildrenUi(
     fraction: Float = 1.0f,
-    interactionModel: BaseInteractionModel<NavTarget, ModelState>,
+    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     clipToBounds: Boolean
 ) {
     BoxWithConstraints {

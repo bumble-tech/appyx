@@ -22,7 +22,7 @@ import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.NavTarget
+import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.InteractionTarget
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
@@ -31,40 +31,40 @@ import kotlinx.parcelize.Parcelize
 
 class BackStackExamplesNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<NavTarget> = BackStack(
+    private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(NavTarget.BackStackPicker),
+            initialTargets = listOf(InteractionTarget.BackStackPicker),
             savedStateMap = buildContext.savedStateMap
         ),
         motionController = { BackStackSlider(it) }
     )
-) : ParentNode<NavTarget>(
+) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
     interactionModel = backStack
 ) {
 
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        object BackStackPicker : NavTarget()
+        object BackStackPicker : InteractionTarget()
 
         @Parcelize
-        object BackStackSlider : NavTarget()
+        object BackStackSlider : InteractionTarget()
 
         @Parcelize
-        object BackStackFader : NavTarget()
+        object BackStackFader : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.BackStackPicker -> node(buildContext) {
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (interactionTarget) {
+            is InteractionTarget.BackStackPicker -> node(buildContext) {
                 BackStackPicker(it)
             }
-            is NavTarget.BackStackFader -> BackStackNode(buildContext, {
+            is InteractionTarget.BackStackFader -> BackStackNode(buildContext, {
                 BackstackFader(
                     it
                 )
             })
-            is NavTarget.BackStackSlider -> BackStackNode(buildContext, {
+            is InteractionTarget.BackStackSlider -> BackStackNode(buildContext, {
                 BackStackSlider(
                     it
                 )
@@ -86,10 +86,10 @@ class BackStackExamplesNode(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 TextButton(text = "BackStack slider") {
-                    backStack.push(NavTarget.BackStackSlider)
+                    backStack.push(InteractionTarget.BackStackSlider)
                 }
                 TextButton(text = "BackStack fader") {
-                    backStack.push(NavTarget.BackStackFader)
+                    backStack.push(InteractionTarget.BackStackFader)
                 }
             }
         }

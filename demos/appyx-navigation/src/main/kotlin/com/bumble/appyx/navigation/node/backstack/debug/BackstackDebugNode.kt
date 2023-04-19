@@ -31,44 +31,44 @@ import com.bumble.appyx.navigation.composable.KnobControl
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode.NavTarget
+import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode.InteractionTarget
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.appyx_dark
 import kotlinx.parcelize.Parcelize
 
 class BackstackDebugNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<NavTarget> = BackStack(
+    private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(NavTarget.Child(1)),
+            initialTargets = listOf(InteractionTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap,
         ),
         motionController = { BackStackSlider(it) }
     )
-) : ParentNode<NavTarget>(
+) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
     interactionModel = backStack
 ) {
 
     init {
-        backStack.push(NavTarget.Child(2))
-        backStack.push(NavTarget.Child(3))
-        backStack.push(NavTarget.Child(4))
-        backStack.push(NavTarget.Child(5))
-        backStack.replace(NavTarget.Child(6))
+        backStack.push(InteractionTarget.Child(2))
+        backStack.push(InteractionTarget.Child(3))
+        backStack.push(InteractionTarget.Child(4))
+        backStack.push(InteractionTarget.Child(5))
+        backStack.replace(InteractionTarget.Child(6))
         backStack.pop()
         backStack.pop()
-        backStack.newRoot(NavTarget.Child(1))
+        backStack.newRoot(InteractionTarget.Child(1))
     }
 
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : NavTarget()
+        class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.Child -> node(buildContext) {
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (interactionTarget) {
+            is InteractionTarget.Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -79,7 +79,7 @@ class BackstackDebugNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = navTarget.index.toString(),
+                        text = interactionTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold

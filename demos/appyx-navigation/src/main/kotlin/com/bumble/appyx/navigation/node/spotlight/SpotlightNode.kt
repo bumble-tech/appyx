@@ -22,48 +22,48 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumble.appyx.components.spotlight.Spotlight
+import com.bumble.appyx.components.spotlight.SpotlightModel
+import com.bumble.appyx.components.spotlight.operation.first
+import com.bumble.appyx.components.spotlight.operation.last
+import com.bumble.appyx.components.spotlight.operation.next
+import com.bumble.appyx.components.spotlight.operation.previous
+import com.bumble.appyx.components.spotlight.operation.updateElements
+import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.spotlight.SpotlightNode.NavTarget
+import com.bumble.appyx.navigation.node.spotlight.SpotlightNode.InteractionTarget
 import com.bumble.appyx.navigation.ui.appyx_dark
-import com.bumble.appyx.components.spotlight.Spotlight
-import com.bumble.appyx.components.spotlight.SpotlightModel
-import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
-import com.bumble.appyx.components.spotlight.operation.first
-import com.bumble.appyx.components.spotlight.operation.last
-import com.bumble.appyx.components.spotlight.operation.next
-import com.bumble.appyx.components.spotlight.operation.previous
-import com.bumble.appyx.components.spotlight.operation.updateElements
 import kotlinx.parcelize.Parcelize
 
 class SpotlightNode(
     buildContext: BuildContext,
-    private val spotlight: Spotlight<NavTarget> = Spotlight(
+    private val spotlight: Spotlight<InteractionTarget> = Spotlight(
         model = SpotlightModel(
-            items = List(7) { NavTarget.Child(it) },
+            items = List(7) { InteractionTarget.Child(it) },
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
         motionController = { SpotlightSlider(it) }
     )
-) : ParentNode<NavTarget>(
+) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
     interactionModel = spotlight
 ) {
-    private val newItems = List(7) { NavTarget.Child(it * 3) }
+    private val newItems = List(7) { InteractionTarget.Child(it * 3) }
 
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : NavTarget()
+        class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.Child -> node(buildContext) {
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (interactionTarget) {
+            is InteractionTarget.Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
@@ -73,7 +73,7 @@ class SpotlightNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = navTarget.index.toString(),
+                        text = interactionTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold

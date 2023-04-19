@@ -41,26 +41,26 @@ import kotlin.random.Random
 
 class BackStackNode(
     buildContext: BuildContext,
-    motionController: (UiContext) -> MotionController<NavTarget, BackStackModel.State<NavTarget>>,
-    private val backStack: BackStack<NavTarget> = BackStack(
+    motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>,
+    private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(NavTarget.Child(1)),
+            initialTargets = listOf(InteractionTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
         motionController = motionController
     )
-) : ParentNode<BackStackNode.NavTarget>(
+) : ParentNode<BackStackNode.InteractionTarget>(
     buildContext = buildContext,
     interactionModel = backStack
 ) {
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : NavTarget()
+        class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.Child -> node(buildContext) {
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (interactionTarget) {
+            is InteractionTarget.Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -71,7 +71,7 @@ class BackStackNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = navTarget.index.toString(),
+                        text = interactionTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -102,16 +102,16 @@ class BackStackNode(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(text = "Push") {
-                    backStack.push(NavTarget.Child(Random.nextInt(20)))
+                    backStack.push(InteractionTarget.Child(Random.nextInt(20)))
                 }
                 TextButton(text = "Pop") {
                     backStack.pop()
                 }
                 TextButton(text = "Replace") {
-                    backStack.replace(NavTarget.Child(Random.nextInt(20)))
+                    backStack.replace(InteractionTarget.Child(Random.nextInt(20)))
                 }
                 TextButton(text = "New root") {
-                    backStack.newRoot(NavTarget.Child(Random.nextInt(20)))
+                    backStack.newRoot(InteractionTarget.Child(Random.nextInt(20)))
                 }
             }
         }

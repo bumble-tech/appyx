@@ -114,8 +114,8 @@ abstract class ParentNode<InteractionTarget : Any>(
     }
 
     @Composable
-    fun PermanentChild(navTarget: InteractionTarget) {
-        PermanentChild(navTarget) { child -> child() }
+    fun PermanentChild(interactionTarget: InteractionTarget) {
+        PermanentChild(interactionTarget) { child -> child() }
     }
 
     override fun updateLifecycleState(state: Lifecycle.State) {

@@ -29,13 +29,13 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
         Spotlight(
             model = SpotlightModel(
                 items = listOf(
-                    NavTarget.Child1,
-                    NavTarget.Child2,
-                    NavTarget.Child3,
-                    NavTarget.Child4,
-                    NavTarget.Child5,
-                    NavTarget.Child6,
-                    NavTarget.Child7
+                    InteractionTarget.Child1,
+                    InteractionTarget.Child2,
+                    InteractionTarget.Child3,
+                    InteractionTarget.Child4,
+                    InteractionTarget.Child5,
+                    InteractionTarget.Child6,
+                    InteractionTarget.Child7
                 ),
                 savedStateMap = null
             ),

@@ -23,8 +23,8 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
 
-sealed class DatingCardsNavTarget {
-    class ProfileCard(val profile: Profile) : DatingCardsNavTarget()
+sealed class DatingCardsInteractionTarget {
+    class ProfileCard(val profile: Profile) : DatingCardsInteractionTarget()
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -37,7 +37,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
         Cards(
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
-                    DatingCardsNavTarget.ProfileCard(it)
+                    DatingCardsInteractionTarget.ProfileCard(it)
                 },
                 savedStateMap = null
             ),
@@ -83,7 +83,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
 
 @Composable
 fun ElementWrapper(
-    elementUiModel: ElementUiModel<DatingCardsNavTarget.ProfileCard>,
+    elementUiModel: ElementUiModel<DatingCardsInteractionTarget.ProfileCard>,
     modifier: Modifier = Modifier
 ) {
 

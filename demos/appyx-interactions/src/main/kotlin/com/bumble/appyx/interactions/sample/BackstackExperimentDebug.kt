@@ -28,7 +28,7 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
         com.bumble.appyx.components.backstack.BackStack(
             scope = coroutineScope,
             model = BackStackModel(
-                initialTargets = listOf(NavTarget.Child1, NavTarget.Child2, NavTarget.Child3),
+                initialTargets = listOf(InteractionTarget.Child1, InteractionTarget.Child2, InteractionTarget.Child3),
                 savedStateMap = null
             ),
             motionController = { com.bumble.appyx.components.backstack.ui.fader.BackstackFader(it) },

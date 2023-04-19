@@ -21,18 +21,18 @@ import com.bumble.appyx.interactions.Logger
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.interactions.sample.Element
-import com.bumble.appyx.interactions.sample.NavTarget
+import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 fun ComposeContentTestRule.createSpotlight(
-    items: List<NavTarget>,
+    items: List<InteractionTarget>,
     animationSpec: AnimationSpec<Float> = tween(
         durationMillis = 1000,
         easing = LinearEasing
     )
-): Spotlight<NavTarget> {
+): Spotlight<InteractionTarget> {
     val model = SpotlightModel(
         items = items,
         savedStateMap = null

@@ -40,7 +40,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRA
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
-import com.bumble.appyx.interactions.sample.NavTarget.Child1
+import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
 import com.bumble.appyx.interactions.theme.appyx_dark
 
 

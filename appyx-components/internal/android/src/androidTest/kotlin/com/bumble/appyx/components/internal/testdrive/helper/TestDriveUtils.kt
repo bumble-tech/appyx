@@ -15,7 +15,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveUi
 import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.NavTarget
+import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -27,9 +27,9 @@ fun ComposeContentTestRule.createTestDrive(
         easing = LinearEasing
     ),
     uiAnimationSpec: SpringSpec<Float> = spring()
-): TestDrive<NavTarget> {
+): TestDrive<InteractionTarget> {
     val model = TestDriveModel(
-        element = NavTarget.Child1,
+        element = InteractionTarget.Child1,
         savedStateMap = null
     )
     return TestDrive(

@@ -34,12 +34,12 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.promoter.PromoterNode.NavTarget
+import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget
 import kotlinx.parcelize.Parcelize
 
 class PromoterNode(
     buildContext: BuildContext,
-    private val promoter: Promoter<NavTarget> = Promoter(
+    private val promoter: Promoter<InteractionTarget> = Promoter(
         model = PromoterModel(
             savedStateMap = buildContext.savedStateMap
         ),
@@ -50,26 +50,26 @@ class PromoterNode(
             )
         }
     )
-) : ParentNode<NavTarget>(
+) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
     interactionModel = promoter
 ) {
 
     init {
-        promoter.addFirst(NavTarget.Child(1))
-        promoter.addFirst(NavTarget.Child(2))
-        promoter.addFirst(NavTarget.Child(3))
-        promoter.addFirst(NavTarget.Child(4))
+        promoter.addFirst(InteractionTarget.Child(1))
+        promoter.addFirst(InteractionTarget.Child(2))
+        promoter.addFirst(InteractionTarget.Child(3))
+        promoter.addFirst(InteractionTarget.Child(4))
     }
 
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : NavTarget()
+        class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.Child -> node(buildContext) {
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (interactionTarget) {
+            is InteractionTarget.Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -80,7 +80,7 @@ class PromoterNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = navTarget.index.toString(),
+                        text = interactionTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -116,7 +116,7 @@ class PromoterNode(
             ) {
                 Button(
                     onClick = {
-                        promoter.addFirst(NavTarget.Child(index))
+                        promoter.addFirst(InteractionTarget.Child(index))
                         index++
                     }
                 ) {

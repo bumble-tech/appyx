@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.testing.NavTarget
+import com.bumble.appyx.interactions.testing.InteractionTarget
 import com.bumble.appyx.interactions.testing.setupInteractionModel
 import com.bumble.appyx.interactions.testing.waitUntilAnimationEnded
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +22,7 @@ class SpotlightTest(private val testParam: TestParam) {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var spotlight: Spotlight<NavTarget>
+    private lateinit var spotlight: Spotlight<InteractionTarget>
 
     companion object {
 
@@ -43,7 +43,7 @@ class SpotlightTest(private val testParam: TestParam) {
     fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_false() {
         createSpotlightSlider(initialActiveIndex = 1f)
         composeTestRule.setupInteractionModel(spotlight, 0.67f, clipToBounds = false)
-        checkInteractionTargetsOnScreen(setOf(NavTarget.Child1, NavTarget.Child2, NavTarget.Child3))
+        checkInteractionTargetsOnScreen(setOf(InteractionTarget.Child1, InteractionTarget.Child2, InteractionTarget.Child3))
 
         if (testParam.operationMode == Operation.Mode.KEYFRAME) {
             val animationDuration = 1000
@@ -54,7 +54,7 @@ class SpotlightTest(private val testParam: TestParam) {
             spotlight.waitUntilAnimationEnded(composeTestRule)
         }
 
-        checkInteractionTargetsOnScreen(setOf(NavTarget.Child5, NavTarget.Child4))
+        checkInteractionTargetsOnScreen(setOf(InteractionTarget.Child5, InteractionTarget.Child4))
     }
 
     @Test
@@ -71,19 +71,19 @@ class SpotlightTest(private val testParam: TestParam) {
             spotlight.waitUntilAnimationEnded(composeTestRule)
         }
 
-        checkInteractionTargetsOnScreen(setOf(NavTarget.Child5))
+        checkInteractionTargetsOnScreen(setOf(InteractionTarget.Child5))
     }
 
-    private fun checkInteractionTargetsOnScreen(interactionTargets: Set<NavTarget>) {
+    private fun checkInteractionTargetsOnScreen(interactionTargets: Set<InteractionTarget>) {
         assertEquals(
             interactionTargets,
             spotlight.elements.value.onScreen.map { it.interactionTarget }.toSet()
         )
     }
 
-    private fun checkInteractionTargetsOffScreen(navTargets: Set<NavTarget>) {
+    private fun checkInteractionTargetsOffScreen(interactionTargets: Set<InteractionTarget>) {
         assertEquals(
-            navTargets,
+            interactionTargets,
             spotlight.elements.value.offScreen.map { it.interactionTarget }.toSet()
         )
     }
@@ -95,11 +95,11 @@ class SpotlightTest(private val testParam: TestParam) {
         spotlight = Spotlight(
             model = SpotlightModel(
                 items = listOf(
-                    NavTarget.Child1,
-                    NavTarget.Child2,
-                    NavTarget.Child3,
-                    NavTarget.Child4,
-                    NavTarget.Child5
+                    InteractionTarget.Child1,
+                    InteractionTarget.Child2,
+                    InteractionTarget.Child3,
+                    InteractionTarget.Child4,
+                    InteractionTarget.Child5
                 ),
                 initialActiveIndex = initialActiveIndex,
                 savedStateMap = null

@@ -9,5 +9,5 @@ class DummyParentNode<InteractionTarget : Any> : ParentNode<InteractionTarget>(
     interactionModel = EmptyInteractionModel(),
     buildContext = BuildContext.root(savedStateMap = null)
 ) {
-    override fun resolve(navTarget: InteractionTarget, buildContext: BuildContext) = node(buildContext) { }
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext) = node(buildContext) { }
 }

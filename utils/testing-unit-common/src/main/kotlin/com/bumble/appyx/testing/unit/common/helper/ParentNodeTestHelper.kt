@@ -15,7 +15,7 @@ class ParentNodeTestHelper<InteractionTarget : Any, N : ParentNode<InteractionTa
     node = node
 ) {
 
-    fun <NavTarget : Any> assertChildHasLifecycle(interactionTarget: NavTarget, state: Lifecycle.State) {
+    fun <InteractionTarget : Any> assertChildHasLifecycle(interactionTarget: InteractionTarget, state: Lifecycle.State) {
         val childMap = node.children.value
         val key = childMap.keys.find { it.interactionTarget == interactionTarget }
 
@@ -27,11 +27,11 @@ class ParentNodeTestHelper<InteractionTarget : Any, N : ParentNode<InteractionTa
                         childNode.lifecycle.currentState
                     )
                 } else {
-                    throw NullPointerException("Child node was not attached for navTarget $interactionTarget")
+                    throw NullPointerException("Child node was not attached for interactionTarget $interactionTarget")
                 }
             }
         } else {
-            throw NullPointerException("No child for navTarget $interactionTarget")
+            throw NullPointerException("No child for interactionTarget $interactionTarget")
         }
     }
 

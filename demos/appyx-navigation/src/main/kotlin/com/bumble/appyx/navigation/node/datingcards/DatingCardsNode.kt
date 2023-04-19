@@ -15,7 +15,7 @@ import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode.NavTarget
+import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode.InteractionTarget
 import com.bumble.appyx.navigation.node.profilecard.ProfileCardNode
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
@@ -23,11 +23,11 @@ import kotlinx.parcelize.Parcelize
 
 class DatingCardsNode(
     buildContext: BuildContext,
-    private val cards: Cards<NavTarget> =
+    private val cards: Cards<InteractionTarget> =
         Cards(
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
-                    NavTarget.ProfileCard(it)
+                    InteractionTarget.ProfileCard(it)
                 },
                 savedStateMap = buildContext.savedStateMap
             ),
@@ -35,18 +35,18 @@ class DatingCardsNode(
             gestureFactory = { CardsMotionController.Gestures(it) },
         )
 
-) : ParentNode<NavTarget>(
+) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
     interactionModel = cards
 ) {
 
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        class ProfileCard(val profile: Profile) : NavTarget()
+        class ProfileCard(val profile: Profile) : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        ProfileCardNode(buildContext, (navTarget as NavTarget.ProfileCard).profile)
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        ProfileCardNode(buildContext, (interactionTarget as InteractionTarget.ProfileCard).profile)
 
     @Composable
     override fun View(modifier: Modifier) {

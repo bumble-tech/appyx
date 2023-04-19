@@ -29,21 +29,21 @@ import kotlinx.parcelize.Parcelize
 
 class PermanentChildNode(
     buildContext: BuildContext,
-) : ParentNode<PermanentChildNode.NavTarget>(
+) : ParentNode<PermanentChildNode.InteractionTarget>(
     buildContext = buildContext,
     interactionModel = PermanentInteractionModel()
 ) {
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        object Child1 : NavTarget()
+        object Child1 : InteractionTarget()
 
         @Parcelize
-        object Child2 : NavTarget()
+        object Child2 : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.Child1 -> node(buildContext) {
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (interactionTarget) {
+            is InteractionTarget.Child1 -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
@@ -61,7 +61,7 @@ class PermanentChildNode(
                     )
                 }
             }
-            is NavTarget.Child2 -> node(buildContext) {
+            is InteractionTarget.Child2 -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
@@ -88,8 +88,8 @@ class PermanentChildNode(
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {
-            PermanentChild(navTarget = NavTarget.Child1)
-            PermanentChild(navTarget = NavTarget.Child2)
+            PermanentChild(interactionTarget = InteractionTarget.Child1)
+            PermanentChild(interactionTarget = InteractionTarget.Child2)
         }
     }
 }

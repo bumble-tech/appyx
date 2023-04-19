@@ -21,26 +21,26 @@ import kotlinx.parcelize.Parcelize
 internal class ComposeNavigationContainerNode(
     buildContext: BuildContext,
     private val onGoogleNavigationClick: () -> Unit,
-    private val backStack: BackStack<NavTarget> = BackStack(
+    private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(NavTarget.Main),
+            initialTargets = listOf(InteractionTarget.Main),
             savedStateMap = buildContext.savedStateMap
         ),
         motionController = { BackStackSlider(it) }
     )
-) : ParentNode<ComposeNavigationContainerNode.NavTarget>(
+) : ParentNode<ComposeNavigationContainerNode.InteractionTarget>(
     interactionModel = backStack,
     buildContext = buildContext,
 ) {
 
-    sealed class NavTarget : Parcelable {
+    sealed class InteractionTarget : Parcelable {
         @Parcelize
-        object Main : NavTarget()
+        object Main : InteractionTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.Main -> node(buildContext) {
+    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (interactionTarget) {
+            is InteractionTarget.Main -> node(buildContext) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
