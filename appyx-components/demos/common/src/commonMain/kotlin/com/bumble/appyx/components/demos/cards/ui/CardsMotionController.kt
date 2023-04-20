@@ -6,9 +6,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.components.demos.cards.CardsModel
+import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.components.demos.cards.operation.VoteLike
 import com.bumble.appyx.components.demos.cards.operation.VotePass
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -20,8 +22,6 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
-import com.bumble.appyx.components.demos.cards.CardsModel
-import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 
 class CardsMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
@@ -128,7 +128,7 @@ class CardsMotionController<InteractionTarget : Any>(
             // the bottom:
             // e.g. 4 = at top of the card, 2 = at the bottom, when voteCardPositionMultiplier = 2
             val dragToProgressFactor = voteCardPositionMultiplier * (2 - verticalRatio)
-            Logger.log("Cards", "delta ${delta.x}")
+            AppyxLogger.d("Cards", "delta ${delta.x}")
 
             return if (delta.x < 0) {
                 Gesture(

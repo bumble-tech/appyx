@@ -12,7 +12,7 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.SystemClock
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.mapState
@@ -147,7 +147,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
             }
         }
 
-        Logger.v("MotionProperty", "Calculated velocity: $velocity")
+        AppyxLogger.v("MotionProperty", "Calculated velocity: $velocity")
         return velocity
     }
 
@@ -157,7 +157,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         block: (Animatable<T, V>.() -> Unit) = {}
     ) {
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
-        Logger.log("MotionProperty", "Starting with initialVelocity = $previousVelocity")
+        AppyxLogger.d("MotionProperty", "Starting with initialVelocity = $previousVelocity")
         _isAnimatingFlow.update {
             targetValue != value
         }
@@ -167,7 +167,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
             initialVelocity = previousVelocity
         ) {
             block(this)
-            Logger.log(
+            AppyxLogger.d(
                 "MotionProperty",
                 "Value = ${animatable.value}, Velocity = ${animatable.velocity})"
             )

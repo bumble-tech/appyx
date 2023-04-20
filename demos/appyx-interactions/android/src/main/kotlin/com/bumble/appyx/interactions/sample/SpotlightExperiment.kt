@@ -26,7 +26,7 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
 
@@ -139,7 +139,7 @@ fun <InteractionTarget : Any> SpotlightUi(
                                 spotlight.onDrag(dragAmount, this)
                             },
                             onDragEnd = {
-                                Logger.log("drag", "end")
+                                AppyxLogger.d("drag", "end")
                                 spotlight.onDragEnd(
                                     completionThreshold = 0.2f,
                                     completeGestureSpec = spring(),

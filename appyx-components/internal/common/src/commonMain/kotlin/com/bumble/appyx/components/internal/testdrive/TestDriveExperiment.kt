@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController
 import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController.Companion.toTargetUiState
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
@@ -156,7 +156,7 @@ fun <InteractionTarget : Any> TestDriveUi(
                                 testDrive.onDrag(dragAmount, this)
                             },
                             onDragEnd = {
-                                Logger.log("drag", "end")
+                                AppyxLogger.d("drag", "end")
                                 testDrive.onDragEnd()
                             }
                         )

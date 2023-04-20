@@ -3,7 +3,7 @@ package com.bumble.appyx.interactions.core.model.progress
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
@@ -64,7 +64,7 @@ class AnimatedProgressController<InteractionTarget : Any, ModelState>(
             val targetValue = if (direction == REVERT) floor(currentProgress).toInt() else ceil(currentProgress).toInt()
             val animationSpec = if (direction == REVERT) revertGestureSpec else completeGestureSpec
 
-            Logger.log(TAG, "Settle ${currentState.progress} to: $targetValue")
+            AppyxLogger.d(TAG, "Settle ${currentState.progress} to: $targetValue")
             animateModel(
                 from = { currentState.progress },
                 target = { targetValue.toFloat() },

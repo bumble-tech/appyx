@@ -1,6 +1,6 @@
 package com.bumble.appyx.interactions.core.model.transition
 
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.Parcelable
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.*
@@ -66,7 +66,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
     private var enforcedMode: Operation.Mode? = null
 
     override fun relaxExecutionMode() {
-        Logger.log("BaseTransitionModel", "Relaxing mode")
+        AppyxLogger.d("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
         removeDestroyedElements()
     }
@@ -121,7 +121,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
             updateState(newState)
             true
         } else {
-            Logger.log(TAG, "Operation $operation is not applicable on state: $baseLine")
+            AppyxLogger.d(TAG, "Operation $operation is not applicable on state: $baseLine")
             false
         }
     }
@@ -152,7 +152,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                         updateState(newState)
                         true
                     } else {
-                        Logger.log(
+                        AppyxLogger.d(
                             TAG,
                             "Operation $operation is not applicable on one or more queued states: $remaining"
                         )
@@ -168,7 +168,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                     updateState(newState)
                     true
                 } else {
-                    Logger.log(
+                    AppyxLogger.d(
                         TAG,
                         "Operation $operation is not applicable on states: $currentState.currentTargetState"
                     )
@@ -188,7 +188,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
             updateState(newState)
             true
         } else {
-            Logger.log(TAG, "Operation $operation is not applicable on state: $baselineState")
+            AppyxLogger.d(TAG, "Operation $operation is not applicable on state: $baselineState")
             false
         }
     }
@@ -196,7 +196,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
     override fun setProgress(progress: Float) {
         when (val currentState = state.value) {
             is Update -> {
-                Logger.log(TAG, "Not in keyframe state, ignoring setProgress")
+                AppyxLogger.d(TAG, "Not in keyframe state, ignoring setProgress")
                 return
             }
             is Keyframes -> {
@@ -213,7 +213,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
     override fun onSettled(direction: SettleDirection, animate: Boolean) {
         when (val currentState = state.value) {
             is Update -> {
-                Logger.log(TAG, "Not in keyframe state, nothing to do")
+                AppyxLogger.d(TAG, "Not in keyframe state, nothing to do")
                 return
             }
             is Keyframes -> {
@@ -231,7 +231,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
 
     private fun updateState(output: Output<ModelState>) {
         // Logger.log(TAG, "Publishing new state ($currentIndex) of queue: ${queue.map { "${it.index}: ${it.javaClass.simpleName}"  }}")
-        Logger.log(TAG, "Publishing new state: $output")
+        AppyxLogger.d(TAG, "Publishing new state: $output")
         state.update { output }
     }
 

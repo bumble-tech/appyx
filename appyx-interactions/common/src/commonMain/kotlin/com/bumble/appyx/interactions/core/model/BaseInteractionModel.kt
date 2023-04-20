@@ -6,7 +6,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
@@ -72,7 +72,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private var transitionBounds: TransitionBounds = zeroSizeTransitionBounds
         set(value) {
             if (value != field) {
-                Logger.log("InteractionModel", "TransitionBounds changed: $value")
+                AppyxLogger.d("InteractionModel", "TransitionBounds changed: $value")
                 field = value
             }
         }
@@ -118,7 +118,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
             motionController.isAnimating()
                 .collect {
                     if (!it) {
-                        Logger.log("InteractionModel", "Finished animating")
+                        AppyxLogger.d("InteractionModel", "Finished animating")
                         onAnimationsFinished()
                     } else {
                         onAnimationsStarted()
@@ -129,7 +129,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         animationFinishedJob = scope.launch {
             motionController.finishedAnimations
                 .collect {
-                    Logger.log("InteractionModel", "$it onAnimation finished")
+                    AppyxLogger.d("InteractionModel", "$it onAnimation finished")
                     model.cleanUpElement(it)
                 }
         }

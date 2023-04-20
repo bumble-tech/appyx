@@ -9,7 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.bumble.appyx.combineState
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
@@ -144,13 +144,13 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                             // animation started
                             animations[matchedTargetUiState.element.id] = true
                             updateModeAnimatingState.update { true }
-                            Logger.log(TAG, "animation for element ${matchedTargetUiState.element.id} is started")
+                            AppyxLogger.d(TAG, "animation for element ${matchedTargetUiState.element.id} is started")
                         } else {
                             // animation finished
                             _finishedAnimations.emit(matchedTargetUiState.element)
                             animations[matchedTargetUiState.element.id] = false
                             updateModeAnimatingState.update { animations.any { it.value } }
-                            Logger.log(TAG, "animation for element ${matchedTargetUiState.element.id} is finished")
+                            AppyxLogger.d(TAG, "animation for element ${matchedTargetUiState.element.id} is finished")
                         }
                     }
             }
@@ -167,7 +167,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                     dampingRatio = currentSpringSpec.dampingRatio
                 )
             ) {
-                Logger.log(TAG, "Geometry animateTo (Update) – $targetValue")
+                AppyxLogger.d(TAG, "Geometry animateTo (Update) – $targetValue")
             }
         }
     }
@@ -237,7 +237,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
-                    Logger.log(TAG, "Geometry snapTo (Segment): $targetValue")
+                    AppyxLogger.d(TAG, "Geometry snapTo (Segment): $targetValue")
                 }
 
                 GeometryBehaviour.ANIMATE -> {
@@ -248,7 +248,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-                            Logger.log(TAG, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
+                            AppyxLogger.d(TAG, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
                         }
                     }
                 }
