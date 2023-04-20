@@ -1,6 +1,7 @@
 package com.bumble.appyx.interactions
 
 import com.bumble.appyx.interactions.AppyxLoggingLevel.DEBUG
+import com.bumble.appyx.interactions.AppyxLoggingLevel.DISABLED
 import com.bumble.appyx.interactions.AppyxLoggingLevel.ERROR
 import com.bumble.appyx.interactions.AppyxLoggingLevel.INFO
 import com.bumble.appyx.interactions.AppyxLoggingLevel.VERBOSE
@@ -8,7 +9,7 @@ import com.bumble.appyx.interactions.AppyxLoggingLevel.WARN
 
 actual object AppyxLogger {
 
-    actual var loggingLevel: Int = 12
+    actual var loggingLevel: Int = DISABLED
 
     actual fun v(tag: String, message: String) {
         if (loggingLevel <= VERBOSE) {
