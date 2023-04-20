@@ -3,7 +3,9 @@ package com.bumble.appyx.interactions.core.model.transition
 import com.bumble.appyx.interactions.Parcelable
 import com.bumble.appyx.interactions.Parcelize
 
-interface Operation<ModelState> : (ModelState) -> StateTransition<ModelState>, Parcelable {
+interface Operation<ModelState> : Parcelable {
+
+    operator fun invoke(state: ModelState): StateTransition<ModelState>
 
     enum class Mode {
         /**
@@ -42,7 +44,7 @@ interface Operation<ModelState> : (ModelState) -> StateTransition<ModelState>, P
         override fun invoke(state: ModelState): StateTransition<ModelState> =
             StateTransition(state, state)
 
-        override fun equals(other: Any?): Boolean = this.javaClass == other?.javaClass
-        override fun hashCode(): Int = this.javaClass.hashCode()
+        override fun equals(other: Any?): Boolean = other != null && (this::class == other::class)
+        override fun hashCode(): Int = this::class.hashCode()
     }
 }

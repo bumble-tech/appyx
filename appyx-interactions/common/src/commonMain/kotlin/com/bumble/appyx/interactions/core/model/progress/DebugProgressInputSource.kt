@@ -45,6 +45,6 @@ class DebugProgressInputSource<InteractionTarget, ModelState>(
     }
 
     private companion object {
-        private val TAG = DebugProgressInputSource::class.java.name
+        private const val TAG = "DebugProgressInputSource"
     }
 }

@@ -136,6 +136,6 @@ class DragProgressController<InteractionTarget : Any, State>(
     }
 
     private companion object {
-        private val TAG = DragProgressController::class.java.name
+        private const val TAG = "DragProgressController"
     }
 }

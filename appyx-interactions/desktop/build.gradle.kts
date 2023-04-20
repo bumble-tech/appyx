@@ -14,7 +14,6 @@ kotlin {
         compilations.all {
             kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
         }
-        withJava()
     }
     sourceSets {
         val jvmMain by getting {

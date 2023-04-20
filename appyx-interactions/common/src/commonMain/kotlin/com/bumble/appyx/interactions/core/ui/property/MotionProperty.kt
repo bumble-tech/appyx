@@ -13,6 +13,7 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.AppyxLogger
+import com.bumble.appyx.interactions.SystemClock
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -92,12 +93,12 @@ abstract class MotionProperty<T, V : AnimationVector>(
     }
 
     private fun calculateVelocity(targetValue: T): T {
-        if (lastTime == 0L) lastTime = System.nanoTime()
+        if (lastTime == 0L) lastTime = SystemClock.nanoTime()
         val converter = animatable.typeConverter
 
         val vec1: AnimationVector = converter.convertToVector(animatable.value)
         val targetVector = converter.convertToVector(targetValue)
-        val time = System.nanoTime()
+        val time = SystemClock.nanoTime()
         val deltaTimeMs = (time - lastTime) / MillisToNanos
         val timeFactor = if (deltaTimeMs > 0) 1000 / deltaTimeMs else 0
         lastTime = time

@@ -144,19 +144,13 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                             // animation started
                             animations[matchedTargetUiState.element.id] = true
                             updateModeAnimatingState.update { true }
-                            AppyxLogger.d(
-                                this@BaseMotionController.javaClass.simpleName,
-                                "animation for element ${matchedTargetUiState.element.id} is started"
-                            )
+                            AppyxLogger.d(TAG, "animation for element ${matchedTargetUiState.element.id} is started")
                         } else {
                             // animation finished
                             _finishedAnimations.emit(matchedTargetUiState.element)
                             animations[matchedTargetUiState.element.id] = false
                             updateModeAnimatingState.update { animations.any { it.value } }
-                            AppyxLogger.d(
-                                this@BaseMotionController.javaClass.simpleName,
-                                "animation for element ${matchedTargetUiState.element.id} is finished"
-                            )
+                            AppyxLogger.d(TAG, "animation for element ${matchedTargetUiState.element.id} is finished")
                         }
                     }
             }
@@ -173,10 +167,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                     dampingRatio = currentSpringSpec.dampingRatio
                 )
             ) {
-                AppyxLogger.d(
-                    this@BaseMotionController.javaClass.simpleName,
-                    "Geometry animateTo (Update) – $targetValue"
-                )
+                AppyxLogger.d(TAG, "Geometry animateTo (Update) – $targetValue")
             }
         }
     }
@@ -246,10 +237,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             when (behaviour) {
                 GeometryBehaviour.SNAP -> {
                     geometry.snapTo(targetValue)
-                    AppyxLogger.d(
-                        this@BaseMotionController.javaClass.simpleName,
-                        "Geometry snapTo (Segment): $targetValue"
-                    )
+                    AppyxLogger.d(TAG, "Geometry snapTo (Segment): $targetValue")
                 }
 
                 GeometryBehaviour.ANIMATE -> {
@@ -260,10 +248,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-                            AppyxLogger.d(
-                                this@BaseMotionController.javaClass.simpleName,
-                                "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue"
-                            )
+                            AppyxLogger.d(TAG, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
                         }
                     }
                 }
@@ -294,6 +279,10 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
 
     private enum class GeometryBehaviour {
         SNAP, ANIMATE
+    }
+
+    private companion object {
+        const val TAG = "BaseMotionController"
     }
 
 }

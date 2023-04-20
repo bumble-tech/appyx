@@ -4,6 +4,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
 import com.bumble.appyx.components.internal.testdrive.helper.createTestDrive
 import com.bumble.appyx.components.internal.testdrive.operation.Next
 import com.bumble.appyx.interactions.core.model.transition.Operation

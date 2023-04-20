@@ -13,10 +13,11 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositoriesMode.set(RepositoriesMode.PREFER_PROJECT)
     repositories {
         google()
         mavenCentral()
+        maven(url = "https://maven.pkg.jetbrains.space/public/p/compose/dev")
         maven(url = "https://jitpack.io")
     }
 }
@@ -24,7 +25,6 @@ dependencyResolutionManagement {
 enableFeaturePreview("VERSION_CATALOGS")
 
 include(
-
     ":appyx-components:backstack:android",
     ":appyx-components:backstack:common",
     ":appyx-components:demos:android",
@@ -37,7 +37,8 @@ include(
     ":appyx-interactions:desktop",
     ":appyx-interactions:common",
     ":appyx-navigation",
-    ":demos:appyx-interactions",
+    ":demos:appyx-interactions:android",
+    ":demos:appyx-interactions:web",
     ":demos:appyx-navigation",
     ":demos:common",
     ":demos:navigation-compose",

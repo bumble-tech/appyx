@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
@@ -12,12 +13,18 @@ kotlin {
             kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
         }
     }
+    js(IR) {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-interactions-common"
+        browser()
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
         val commonTest by getting {
@@ -42,6 +49,11 @@ kotlin {
             }
         }
         val desktopTest by getting
+        val jsMain by getting {
+            dependencies {
+                implementation(npm("uuid", libs.versions.uuid.get()))
+            }
+        }
     }
 }
 

@@ -4,9 +4,9 @@ import com.bumble.appyx.components.internal.InteractionTarget.Child1
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.operation.Next
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class KeyframeTest {
 
