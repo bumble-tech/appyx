@@ -12,7 +12,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
 import com.bumble.appyx.components.demos.testdrive.ui.TargetUiState
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
@@ -37,7 +37,7 @@ class TestDriveMotionController<InteractionTarget : Any>(
     override fun TestDriveModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(element, elementState.toTargetUiState()).also {
-                Logger.log("TestDrive", "Matched $elementState -> UiState: ${it.targetUiState}")
+                AppyxLogger.d("TestDrive", "Matched $elementState -> UiState: ${it.targetUiState}")
             }
         )
 

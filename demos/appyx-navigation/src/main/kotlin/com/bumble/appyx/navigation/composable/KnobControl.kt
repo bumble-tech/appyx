@@ -27,7 +27,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.navigation.ui.appyx_yellow1
 import kotlin.math.roundToInt
 
@@ -50,8 +50,8 @@ fun KnobControl(
     LaunchedEffect(swipeableState.progress) {
         val progress = swipeableState.progress
         val normalisedProgress = progress.from + (progress.to - progress.from) * progress.fraction
-        Logger.log("swipeable", swipeableState.progress.toString())
-        Logger.log("swipeable", normalisedProgress.toString())
+        AppyxLogger.d("swipeable", swipeableState.progress.toString())
+        AppyxLogger.d("swipeable", normalisedProgress.toString())
 
         onValueChange(normalisedProgress)
     }
