@@ -19,8 +19,9 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.sample.android.Children
+import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.theme.appyx_dark
-
 
 @ExperimentalMaterialApi
 @Composable
@@ -66,14 +67,14 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
             spotlight.setNormalisedProgress(it)
         })
 
-        com.bumble.appyx.interactions.sample.android.Children(
+        Children(
             modifier = Modifier.padding(
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
             interactionModel = spotlight,
             element = {
-                com.bumble.appyx.interactions.sample.android.Element(
+                Element(
                     elementUiModel = it,
                     modifier = Modifier
                         .fillMaxSize()
