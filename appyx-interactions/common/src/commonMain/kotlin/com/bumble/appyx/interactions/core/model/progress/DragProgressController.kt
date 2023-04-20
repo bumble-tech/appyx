@@ -3,7 +3,7 @@ package com.bumble.appyx.interactions.core.model.progress
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.COMPLETE
@@ -72,9 +72,9 @@ class DragProgressController<InteractionTarget : Any, State>(
             //  which is not necessarily what we want:
             if (model.operation(operation)) {
                 gesture!!.startProgress = currentProgress
-                Logger.log(TAG, "Gesture operation applied: $operation")
+                AppyxLogger.d(TAG, "Gesture operation applied: $operation")
             } else {
-                Logger.log(TAG, "Gesture operation wasn't applied, releasing it to re-evaluate")
+                AppyxLogger.d(TAG, "Gesture operation wasn't applied, releasing it to re-evaluate")
                 gesture = null
                 return
             }
@@ -90,7 +90,7 @@ class DragProgressController<InteractionTarget : Any, State>(
             if (totalTarget < startProgress + 1) {
                 model.setProgress(totalTarget)
                 val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
-                Logger.log(
+                AppyxLogger.d(
                     TAG,
                     "delta applied forward, new progress: $currentProgress"
                 )
@@ -123,14 +123,14 @@ class DragProgressController<InteractionTarget : Any, State>(
         model.onSettled(direction, false)
         val remainder = gesture!!.partial(dragAmount, totalTarget - (boundary))
         gesture = null
-        Logger.log(TAG, "1 ------")
-        Logger.log(TAG, "initial offset was: $dragAmount")
-        Logger.log(TAG, "initial deltaProgress was: $deltaProgress")
-        Logger.log(TAG, "initial target was: $totalTarget, beyond current segment: $boundary")
-        Logger.log(TAG, "remainder progress: ${totalTarget - boundary}")
-        Logger.log(TAG, "remainder offset: $remainder")
-        Logger.log(TAG, "going back to start, reevaluate")
-        Logger.log(TAG, "2 ------")
+        AppyxLogger.d(TAG, "1 ------")
+        AppyxLogger.d(TAG, "initial offset was: $dragAmount")
+        AppyxLogger.d(TAG, "initial deltaProgress was: $deltaProgress")
+        AppyxLogger.d(TAG, "initial target was: $totalTarget, beyond current segment: $boundary")
+        AppyxLogger.d(TAG, "remainder progress: ${totalTarget - boundary}")
+        AppyxLogger.d(TAG, "remainder offset: $remainder")
+        AppyxLogger.d(TAG, "going back to start, reevaluate")
+        AppyxLogger.d(TAG, "2 ------")
         // TODO without recursion
         return remainder
     }

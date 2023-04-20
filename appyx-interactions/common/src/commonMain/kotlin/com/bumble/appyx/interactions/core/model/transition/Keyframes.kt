@@ -1,6 +1,6 @@
 package com.bumble.appyx.interactions.core.model.transition
 
-import com.bumble.appyx.interactions.Logger
+import com.bumble.appyx.interactions.AppyxLogger
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
@@ -79,10 +79,10 @@ data class Keyframes<ModelState>(
     fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit) {
         val currentProgress = this.progress.toInt()
         val progress = progress.coerceIn(0f, maxProgress)
-        Logger.log("Keyframes", "$progress")
+        AppyxLogger.d("Keyframes", "$progress")
         progressFlow.value = progress
         if (progress.toInt() > currentProgress) {
-            Logger.log("Keyframes", "onTransitionFinished()")
+            AppyxLogger.d("Keyframes", "onTransitionFinished()")
             onTransitionFinished(currentSegment.fromState)
         }
     }
