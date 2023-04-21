@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.testing.junit5"
+    namespace = "com.bumble.appyx.utils.testing.junit5"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {

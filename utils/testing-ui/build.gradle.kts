@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.testing.ui"
+    namespace = "com.bumble.appyx.utils.testing.ui"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
