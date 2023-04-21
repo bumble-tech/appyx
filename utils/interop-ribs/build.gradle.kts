@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.interop.ribs"
+    namespace = "com.bumble.appyx.utils.interop.ribs"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {

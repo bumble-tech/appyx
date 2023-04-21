@@ -8,7 +8,7 @@ import androidx.test.core.app.ActivityScenario
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.testing.ui.rules.AppyxTestActivity
+import com.bumble.appyx.utils.testing.ui.rules.AppyxTestActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 

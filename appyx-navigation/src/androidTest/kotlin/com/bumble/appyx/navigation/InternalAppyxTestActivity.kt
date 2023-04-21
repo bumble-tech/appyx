@@ -3,7 +3,7 @@ package com.bumble.appyx.navigation
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.lifecycleScope
-import com.bumble.appyx.testing.ui.rules.AppyxTestActivity
+import com.bumble.appyx.utils.testing.ui.rules.AppyxTestActivity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.interop.rx3"
+    namespace = "com.bumble.appyx.utils.interop.rx3"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
 
     defaultConfig {
