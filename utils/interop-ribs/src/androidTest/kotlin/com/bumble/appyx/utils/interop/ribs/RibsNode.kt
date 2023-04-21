@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.ribs
+package com.bumble.appyx.utils.interop.ribs
 
 import android.os.Parcelable
 import android.view.ViewGroup

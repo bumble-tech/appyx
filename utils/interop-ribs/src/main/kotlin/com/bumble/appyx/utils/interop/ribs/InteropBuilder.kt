@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.ribs
+package com.bumble.appyx.utils.interop.ribs
 
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
@@ -7,7 +7,7 @@ import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
-import com.bumble.appyx.interop.ribs.InteropNodeImpl.Companion.InteropNodeKey
+import com.bumble.appyx.utils.interop.ribs.InteropNodeImpl.Companion.InteropNodeKey
 
 class InteropBuilder<N : Node>(
     private val nodeFactory: NodeFactory<N>,

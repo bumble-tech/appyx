@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.ribs
+package com.bumble.appyx.utils.interop.ribs
 
 import android.content.Context
 import androidx.activity.OnBackPressedDispatcherOwner
@@ -12,7 +12,7 @@ import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.interop.ribs.InteropView.Dependency
+import com.bumble.appyx.utils.interop.ribs.InteropView.Dependency
 
 interface InteropView : RibView {
 
