@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.rx2.store
+package com.bumble.appyx.utils.interop.rx2.store
 
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.store.RetainedInstanceStore

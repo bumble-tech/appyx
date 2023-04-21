@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.rx2.adapter
+package com.bumble.appyx.utils.interop.rx2.adapter
 
 import io.reactivex.Observable
 import kotlinx.coroutines.flow.Flow

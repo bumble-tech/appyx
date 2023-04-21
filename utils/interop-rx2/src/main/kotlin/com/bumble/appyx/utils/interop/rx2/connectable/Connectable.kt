@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.rx2.connectable
+package com.bumble.appyx.utils.interop.rx2.connectable
 
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.jakewharton.rxrelay2.Relay

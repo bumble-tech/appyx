@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.rx2.plugin
+package com.bumble.appyx.utils.interop.rx2.plugin
 
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.plugin.Destroyable

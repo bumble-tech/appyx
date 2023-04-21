@@ -1,4 +1,4 @@
-package com.bumble.appyx.interop.rx2.connectable
+package com.bumble.appyx.utils.interop.rx2.connectable
 
 import android.annotation.SuppressLint
 import androidx.lifecycle.Lifecycle
