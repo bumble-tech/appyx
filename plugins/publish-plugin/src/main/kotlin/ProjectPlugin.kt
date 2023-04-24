@@ -71,6 +71,9 @@ internal abstract class ProjectPlugin : Plugin<Project> {
                 ?: throw GradleException("'library.version' has not been set")
             from(project.components[getComponentName()])
             groupId = "com.bumble.appyx"
+            if (project.path.contains("utils")) {
+                artifactId = "utils-${project.name}"
+            }
             version = if (project.isSnapshotPublication) {
                 "v${definedVersion.split('.').first()}-SNAPSHOT"
             } else {
