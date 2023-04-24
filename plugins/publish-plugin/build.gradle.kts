@@ -28,5 +28,9 @@ gradlePlugin {
             id = "appyx-publish-java"
             implementationClass = "JavaAppyxPublishPlugin"
         }
+        create("appyx-publish-multiplatform") {
+            id = "appyx-publish-multiplatform"
+            implementationClass = "MultiplatformAppyxPublishPlugin"
+        }
     }
 }
