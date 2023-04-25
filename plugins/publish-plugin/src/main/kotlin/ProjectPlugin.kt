@@ -1,12 +1,17 @@
+import MultiplatformAppyxPublishPlugin.Companion.MULTIPLATFORM
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublicationContainer
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
+import org.gradle.kotlin.dsl.getValue
+import org.gradle.kotlin.dsl.provideDelegate
+import org.gradle.kotlin.dsl.registering
 import org.gradle.plugins.signing.SigningExtension
 
 internal abstract class ProjectPlugin : Plugin<Project> {
@@ -69,7 +74,15 @@ internal abstract class ProjectPlugin : Plugin<Project> {
         create<MavenPublication>("appyxRelease") {
             val definedVersion = project.findProperty("library.version")?.toString()
                 ?: throw GradleException("'library.version' has not been set")
-            from(project.components[getComponentName()])
+            val componentName = getComponentName()
+            if (componentName == MULTIPLATFORM) {
+                val javadocJar by project.tasks.registering(Jar::class) {
+                    archiveClassifier.set("javadoc")
+                }
+                artifact(javadocJar.get())
+            } else {
+                from(project.components[getComponentName()])
+            }
             groupId = "com.bumble.appyx"
             if (project.path.contains("utils")) {
                 artifactId = "utils-${project.name}"
