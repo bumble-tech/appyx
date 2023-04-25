@@ -6,6 +6,10 @@ plugins {
     id("appyx-publish-multiplatform")
 }
 
+publishingPlugin {
+    artifactId = "spotlight"
+}
+
 kotlin {
     android {
         publishLibraryVariants("release")

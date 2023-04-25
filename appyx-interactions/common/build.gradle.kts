@@ -7,6 +7,10 @@ plugins {
     id("appyx-publish-multiplatform")
 }
 
+publishingPlugin {
+    artifactId = "appyx-interactions"
+}
+
 kotlin {
     android {
         publishLibraryVariants("release")
