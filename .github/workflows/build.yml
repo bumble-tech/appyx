@@ -37,8 +37,8 @@ jobs:
       - name: Check publication setup
         run: >
           ./gradlew
-          publishAppyxReleasePublicationToOSSRHRepository
-          publishAppyxReleasePublicationToSonatypeSnapshotRepository
+          publishAllPublicationsToOSSRHRepository
+          publishAllPublicationsToSonatypeSnapshotRepository
           --dry-run
           --no-parallel
       - name: Deploy snapshot
@@ -47,7 +47,7 @@ jobs:
           SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         run: >
           ./gradlew
-          publishAppyxReleasePublicationToSonatypeSnapshotRepository
+          publishAllPublicationsToSonatypeSnapshotRepository
           -Psnapshot=true
           --no-parallel
           -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
