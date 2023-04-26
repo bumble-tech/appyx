@@ -15,7 +15,7 @@ internal class JavaAppyxPublishPlugin : ProjectPlugin() {
     }
 
     override fun PublicationContainer.createPublications(project: Project) {
-        create<MavenPublication>("appyxRelease") {
+        create<MavenPublication>("jvm") {
             val artifactId = project.extensions.getByType(ProjectPluginExtension::class.java).artifactId
             if (artifactId.isNotEmpty()) {
                 this.artifactId = artifactId
