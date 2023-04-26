@@ -3,11 +3,14 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
+    id("appyx-publish-multiplatform")
     id("com.google.devtools.ksp")
 }
 
 kotlin {
-    android()
+    android {
+        publishLibraryVariants("release")
+    }
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()

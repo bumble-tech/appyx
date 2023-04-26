@@ -1,14 +1,14 @@
 import subprocess
 import shutil
 import os
+from urllib.parse import urljoin, urlparse
 
 
-def compile_project(project_directory, compile_task):
+def compile_project(compile_task):
     """Compile a project using Gradle"""
-    process = subprocess.Popen(args=['./gradlew', '--rerun-tasks', compile_task],
+    process = subprocess.Popen(args=['./gradlew', compile_task],
                                stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE,
-                               cwd=project_directory)
+                               stderr=subprocess.PIPE)
     process.communicate()
     if process.returncode != 0:
         raise ChildProcessError
@@ -42,7 +42,6 @@ def define_env(env):
 
     @env.macro
     def compose_mpp_sample(
-            project_directory,
             project_output_directory,
             compile_task,
             width,
@@ -51,8 +50,9 @@ def define_env(env):
             html_file_name,
             classname,
     ):
-        compile_project(project_directory, compile_task)
+        compile_project(compile_task)
         site_target_directory = os.path.join(env.variables.config.site_dir, target_directory)
         copy_files(project_output_directory, site_target_directory)
-        html_target_directory = os.path.relpath(site_target_directory, env.variables.config.site_dir)
+        base_url = urlparse(env.variables.config.site_url).path
+        html_target_directory = urljoin(base_url, os.path.relpath(site_target_directory, env.variables.config.site_dir))
         return generate_html(width, height, html_target_directory, html_file_name, classname)

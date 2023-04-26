@@ -4,7 +4,7 @@
     <application>
 
         <activity
-            android:name="com.bumble.appyx.interop.ribs.AppyxRibsInteropActivity"
+            android:name="com.bumble.appyx.utils.interop.ribs.AppyxRibsInteropActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
     </application>

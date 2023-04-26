@@ -3,21 +3,24 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
+    id("appyx-publish-multiplatform")
     id("com.google.devtools.ksp")
 }
 
 kotlin {
-    android()
+    android {
+        publishLibraryVariants("release")
+    }
     jvm("desktop") {
         compilations.all {
             kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
         }
     }
-    js(IR) {
-        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
-        moduleName = "appyx-components-spotlight-commons"
-        browser()
-    }
+//    js(IR) {
+//        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+//        moduleName = "appyx-components-spotlight-commons"
+//        browser()
+//    }
     sourceSets {
         val commonMain by getting {
             dependencies {

@@ -14,7 +14,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
@@ -61,11 +60,7 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
     Box(
         modifier = modifier
             .fillMaxSize()
-            .apply {
-                if (clipToBounds) {
-                    clipToBounds()
-                }
-            }
+            .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
                 uiContext = UiContext(
                     coroutineScope = coroutineScope,
