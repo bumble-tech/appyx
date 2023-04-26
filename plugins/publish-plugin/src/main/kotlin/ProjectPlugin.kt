@@ -30,10 +30,11 @@ internal abstract class ProjectPlugin : Plugin<Project> {
 
         project.afterEvaluate {
             project.configure<PublishingExtension> {
+                configureRepositories(project)
                 publications {
                     createPublications(project)
                 }
-                configureRepositories(project)
+                configurePublications(project)
             }
 
             project.configure<SigningExtension> {
@@ -50,6 +51,8 @@ internal abstract class ProjectPlugin : Plugin<Project> {
             }
         }
     }
+
+    open fun PublishingExtension.configurePublications(project: Project) = Unit
 
     private fun PublishingExtension.configureRepositories(project: Project) {
         repositories {
@@ -72,10 +75,9 @@ internal abstract class ProjectPlugin : Plugin<Project> {
     }
 
     private fun SigningExtension.configureSigning() {
-        (project.extensions.getByName("publishing") as PublishingExtension).publications.forEach {
-            sign(it)
-        }
         isRequired = true
+
+        sign(project.extensions.getByType(PublishingExtension::class.java).publications)
 
         val inMemoryKey = System.getenv("SIGNING_KEY")
         if (inMemoryKey != null) {

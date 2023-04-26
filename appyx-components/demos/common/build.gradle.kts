@@ -6,10 +6,6 @@ plugins {
     id("appyx-publish-multiplatform")
 }
 
-publishingPlugin {
-    artifactId = "demos"
-}
-
 kotlin {
     android {
         publishLibraryVariants("release")
@@ -27,7 +23,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":appyx-interactions:common"))
+                implementation(project(":appyx-interactions:appyx-interactions"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
