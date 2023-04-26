@@ -9,6 +9,7 @@ pluginManagement {
     plugins {
         kotlin("multiplatform").version("1.8.10")
         id("org.jetbrains.compose").version("1.3.1")
+        id("com.google.devtools.ksp") version("1.8.10-1.0.9") apply false
     }
 }
 
@@ -38,10 +39,11 @@ include(
     ":appyx-interactions:common",
     ":appyx-navigation",
     ":demos:appyx-interactions:android",
-    ":demos:appyx-interactions:web",
+//    ":demos:appyx-interactions:web",
     ":demos:appyx-navigation",
     ":demos:common",
     ":demos:navigation-compose",
+    ":ksp:mutable-ui-processor",
     ":utils:customisations",
     ":utils:interop-ribs",
     ":utils:interop-rx2",

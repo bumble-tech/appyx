@@ -28,7 +28,7 @@ class RotationZ(
     class Target(
         val value: Float,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
 
     override val modifier: Modifier
         get() = Modifier.composed {

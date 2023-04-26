@@ -25,7 +25,7 @@ class Alpha(
     class Target(
         val value: Float,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
 
     override val visibilityMapper: ((Float) -> Boolean) = { alpha ->
         alpha > 0.0f

@@ -7,14 +7,18 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import kotlin.jvm.JvmInline
 
 class GenericFloatProperty(
     uiContext: UiContext,
-    value: Float
+    target: Target
 ) : MotionProperty<Float, AnimationVector1D>(
     uiContext = uiContext,
-    animatable = Animatable(value)
+    animatable = Animatable(target.value)
 ), Interpolatable<GenericFloatProperty> {
+
+    @JvmInline
+    value class Target(val value: Float) :  MotionProperty.Target
 
     override val modifier: Modifier
         get() = Modifier

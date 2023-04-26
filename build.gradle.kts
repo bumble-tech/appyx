@@ -12,6 +12,7 @@ buildscript {
     }
 }
 
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     kotlin("multiplatform") apply false
     kotlin("plugin.serialization") version "1.8.10" apply false

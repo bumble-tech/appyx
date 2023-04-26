@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
 }
 
 kotlin {
@@ -12,11 +13,11 @@ kotlin {
             kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
         }
     }
-    js(IR) {
-        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
-        moduleName = "appyx-components-internal-common"
-        browser()
-    }
+//    js(IR) {
+//        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+//        moduleName = "appyx-components-internal-common"
+//        browser()
+//    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -33,7 +34,10 @@ kotlin {
         }
         val androidMain by getting
         val desktopMain by getting
-        val jsMain by getting
+//        val jsMain by getting
+    }
+    sourceSets.configureEach {
+        kotlin.srcDir("$buildDir/generated/ksp/$name/kotlin/")
     }
 }
 
@@ -45,4 +49,11 @@ android {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
+    add("kspAndroid", project(":ksp:mutable-ui-processor"))
+    add("kspDesktop", project(":ksp:mutable-ui-processor"))
+//    add("kspJs", project(":ksp:mutable-ui-processor"))
 }

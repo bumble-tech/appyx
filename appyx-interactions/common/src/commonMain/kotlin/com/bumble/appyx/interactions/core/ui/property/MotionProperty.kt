@@ -31,6 +31,9 @@ abstract class MotionProperty<T, V : AnimationVector>(
     val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
 ) {
+
+    interface Target
+
     private var lastVelocity = animatable.velocity
 
     /**

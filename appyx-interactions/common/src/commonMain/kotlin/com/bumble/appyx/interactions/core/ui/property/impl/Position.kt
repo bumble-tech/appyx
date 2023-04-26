@@ -35,7 +35,7 @@ class Position(
     class Target(
         val value: DpOffset,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
 
     override val visibilityMapper: (DpOffset) -> Boolean = { displacedValue ->
         val bounds = uiContext.transitionBounds

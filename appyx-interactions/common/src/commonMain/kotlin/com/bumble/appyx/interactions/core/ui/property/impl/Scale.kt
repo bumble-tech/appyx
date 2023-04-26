@@ -28,7 +28,7 @@ class Scale(
     class Target(
         val value: Float,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
 
     override val visibilityMapper: ((Float) -> Boolean) = { scale ->
         scale > 0.0f

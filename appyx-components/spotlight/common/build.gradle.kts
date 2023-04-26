@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
 }
 
 kotlin {
@@ -38,6 +39,9 @@ kotlin {
         }
         val desktopMain by getting
     }
+    sourceSets.configureEach {
+        kotlin.srcDir("$buildDir/generated/ksp/$name/kotlin/")
+    }
 }
 
 android {
@@ -48,4 +52,11 @@ android {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
+    add("kspAndroid", project(":ksp:mutable-ui-processor"))
+    add("kspDesktop", project(":ksp:mutable-ui-processor"))
+//    add("kspJs", project(":ksp:mutable-ui-processor"))
 }
