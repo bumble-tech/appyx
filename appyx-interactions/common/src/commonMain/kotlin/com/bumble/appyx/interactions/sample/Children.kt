@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
@@ -57,13 +56,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .composed {
-                if (clipToBounds) {
-                    clipToBounds()
-                } else {
-                    this
-                }
-            }
+            .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
                 uiContext = UiContext(
                     coroutineScope = coroutineScope,
