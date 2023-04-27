@@ -22,7 +22,7 @@ jobs:
         with:
           cache-read-only: true
           arguments: |
-            publishAppyxReleasePublicationToOSSRHRepository
+            publishAllPublicationsToOSSRHRepository
             --no-parallel
             -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
             -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}

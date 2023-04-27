@@ -1,21 +1,26 @@
-import MultiplatformAppyxPublishPlugin.Companion.MULTIPLATFORM
 import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublicationContainer
 import org.gradle.api.publish.PublishingExtension
 import org.gradle.api.publish.maven.MavenPublication
-import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.configure
-import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.get
-import org.gradle.kotlin.dsl.getValue
-import org.gradle.kotlin.dsl.provideDelegate
-import org.gradle.kotlin.dsl.registering
 import org.gradle.plugins.signing.SigningExtension
 
+
+open class ProjectPluginExtension {
+    var artifactId: String = ""
+}
+
 internal abstract class ProjectPlugin : Plugin<Project> {
+
+    companion object {
+        val Project.isSnapshotPublication: Boolean
+            get() = findProperty("snapshot") == "true"
+    }
+
     override fun apply(project: Project) {
+        project.extensions.create("publishingPlugin", ProjectPluginExtension::class.java)
         project.pluginManager.apply {
             apply("maven-publish")
             apply("signing")
@@ -25,14 +30,18 @@ internal abstract class ProjectPlugin : Plugin<Project> {
 
         project.afterEvaluate {
             project.configure<PublishingExtension> {
-                configurePublishing(project)
+                configureRepositories(project)
+                publications {
+                    createPublications(project)
+                }
+                configurePublications(project)
             }
 
             project.configure<SigningExtension> {
                 configureSigning()
             }
 
-            project.tasks.named("publishAppyxReleasePublicationToSonatypeSnapshotRepository") {
+            project.tasks.named("publishAllPublicationsToSonatypeSnapshotRepository") {
                 val fail = !project.isSnapshotPublication
                 doFirst {
                     if (fail) throw GradleException(
@@ -43,14 +52,9 @@ internal abstract class ProjectPlugin : Plugin<Project> {
         }
     }
 
-    protected abstract fun configureDocAndSources(project: Project)
+    open fun PublishingExtension.configurePublications(project: Project) = Unit
 
-    protected abstract fun getComponentName(): String
-
-    private fun PublishingExtension.configurePublishing(project: Project) {
-        publications {
-            setupPublications(project)
-        }
+    private fun PublishingExtension.configureRepositories(project: Project) {
         repositories {
             fun addMaven(name: String, url: String) {
                 maven {
@@ -70,58 +74,10 @@ internal abstract class ProjectPlugin : Plugin<Project> {
         }
     }
 
-    private fun PublicationContainer.setupPublications(project: Project) {
-        create<MavenPublication>("appyxRelease") {
-            val definedVersion = project.findProperty("library.version")?.toString()
-                ?: throw GradleException("'library.version' has not been set")
-            val componentName = getComponentName()
-            if (componentName == MULTIPLATFORM) {
-                val javadocJar by project.tasks.registering(Jar::class) {
-                    archiveClassifier.set("javadoc")
-                }
-                artifact(javadocJar.get())
-            } else {
-                from(project.components[getComponentName()])
-            }
-            groupId = "com.bumble.appyx"
-            if (project.path.contains("utils")) {
-                artifactId = "utils-${project.name}"
-            }
-            version = if (project.isSnapshotPublication) {
-                "v${definedVersion.split('.').first()}-SNAPSHOT"
-            } else {
-                definedVersion
-            }
-
-            pom {
-                name.set("Appyx")
-                description.set("Appyx")
-                url.set("https://github.com/bumble-tech/appyx")
-                licenses {
-                    license {
-                        name.set("The Apache License, Version 2.0")
-                        url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
-                    }
-                }
-                developers {
-                    developer {
-                        id.set("bumble")
-                        name.set("Bumble")
-                        email.set("appyx@team.bumble.com")
-                    }
-                }
-                scm {
-                    connection.set("scm:git:ssh://github.com/bumble-tech/appyx.git")
-                    developerConnection.set("scm:git:ssh://github.com/bumble-tech/appyx.git")
-                    url.set("https://github.com/bumble-tech/appyx")
-                }
-            }
-        }
-    }
-
     private fun SigningExtension.configureSigning() {
-        sign((project.extensions.getByName("publishing") as PublishingExtension).publications["appyxRelease"])
         isRequired = true
+
+        sign(project.extensions.getByType(PublishingExtension::class.java).publications)
 
         val inMemoryKey = System.getenv("SIGNING_KEY")
         if (inMemoryKey != null) {
@@ -132,11 +88,44 @@ internal abstract class ProjectPlugin : Plugin<Project> {
         }
     }
 
-    private companion object {
+    abstract fun PublicationContainer.createPublications(project: Project)
 
-        val Project.isSnapshotPublication: Boolean
-            get() = findProperty("snapshot") == "true"
-
+    fun MavenPublication.configurePublication(project: Project) {
+        val definedVersion = project.findProperty("library.version")?.toString()
+            ?: throw GradleException("'library.version' has not been set")
+        groupId = "com.bumble.appyx"
+        version = if (project.isSnapshotPublication) {
+            "v${definedVersion.split('.').first()}-SNAPSHOT"
+        } else {
+            definedVersion
+        }
+        pom {
+            name.set("Appyx")
+            description.set("Appyx")
+            url.set("https://github.com/bumble-tech/appyx")
+            licenses {
+                license {
+                    name.set("The Apache License, Version 2.0")
+                    url.set("https://www.apache.org/licenses/LICENSE-2.0.txt")
+                }
+            }
+            developers {
+                developer {
+                    id.set("bumble")
+                    name.set("Bumble")
+                    email.set("appyx@team.bumble.com")
+                }
+            }
+            scm {
+                connection.set("scm:git:ssh://github.com/bumble-tech/appyx.git")
+                developerConnection.set("scm:git:ssh://github.com/bumble-tech/appyx.git")
+                url.set("https://github.com/bumble-tech/appyx")
+            }
+        }
     }
+
+    protected abstract fun configureDocAndSources(project: Project)
+
+    protected abstract fun getComponentName(): String
 
 }

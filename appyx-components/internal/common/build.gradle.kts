@@ -23,7 +23,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                implementation(project(":appyx-interactions:common"))
+                implementation(project(":appyx-interactions:appyx-interactions"))
             }
         }
         val commonTest by getting {

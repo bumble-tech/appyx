@@ -6,6 +6,10 @@ plugins {
     id("appyx-detekt")
 }
 
+publishingPlugin {
+    artifactId = "utils-interop-rx3"
+}
+
 android {
     namespace = "com.bumble.appyx.utils.interop.rx3"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
