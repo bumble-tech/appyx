@@ -19,6 +19,7 @@ import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.permanent.PermanentInteractionModel
+import com.bumble.appyx.interactions.permanent.PermanentModel
 import com.bumble.appyx.interactions.permanent.operation.addUnique
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -58,7 +59,9 @@ abstract class ParentNode<InteractionTarget : Any>(
     plugins = plugins + interactionModel + childAware
 ), Resolver<InteractionTarget> {
 
-    private val permanentInteractionModel = PermanentInteractionModel<InteractionTarget>()
+    private val permanentInteractionModel = PermanentInteractionModel<InteractionTarget>(
+        model = PermanentModel(buildContext.savedStateMap)
+    )
     val interactionModel: InteractionModel<InteractionTarget, *> =
         interactionModel + permanentInteractionModel
 

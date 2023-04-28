@@ -10,9 +10,11 @@ import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.interactions.permanent.PermanentModel.State
 
 class PermanentModel<InteractionTarget : Any>(
-    initialTargets: List<InteractionTarget>,
     savedStateMap: SavedStateMap?,
+    initialTargets: List<InteractionTarget> = emptyList(),
+    key: String = KEY_PERMANENT_TRANSITION_MODEL
 ) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
+    key = key,
     savedStateMap = savedStateMap,
 ) {
 
@@ -36,4 +38,8 @@ class PermanentModel<InteractionTarget : Any>(
     override val initialState = State(
         elements = initialTargets.map { it.asElement() }
     )
+
+    private companion object {
+        private const val KEY_PERMANENT_TRANSITION_MODEL = "PermanentTransitionModel"
+    }
 }
