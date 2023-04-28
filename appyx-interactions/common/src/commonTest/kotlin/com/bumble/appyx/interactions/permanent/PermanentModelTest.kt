@@ -30,16 +30,6 @@ class PermanentModelTest {
 
     @Test
     fun GIVEN_permanent_model_without_savedState_WHEN_created_THEN_state_equals_initial_targets() {
-        val savedStateMap = mutableMapOf<String, Any?>()
-        val permanentModel = PermanentModel<InteractionTarget>(
-            savedStateMap = savedStateMap
-        )
-
-        permanentModel.operation(AddUnique(InteractionTarget.Child1))
-
-        val state = MutableSavedStateMapImpl(savedStateMap) { true }
-        permanentModel.saveInstanceState(state)
-
         val initialTargets = listOf(InteractionTarget.Child2, InteractionTarget.Child3)
 
         val newPermanentModel = PermanentModel(
