@@ -7,6 +7,10 @@ plugins {
     id("appyx-detekt")
 }
 
+publishingPlugin {
+    artifactId = "utils-interop-ribs"
+}
+
 android {
     namespace = "com.bumble.appyx.utils.interop.ribs"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()

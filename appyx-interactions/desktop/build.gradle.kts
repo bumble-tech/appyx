@@ -5,9 +5,6 @@ plugins {
     id("org.jetbrains.compose")
 }
 
-group = "com.example"
-version = "1.0-SNAPSHOT"
-
 
 kotlin {
     jvm {
@@ -18,7 +15,7 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":appyx-interactions:common"))
+                implementation(project(":appyx-interactions:appyx-interactions"))
                 implementation(compose.desktop.currentOs)
             }
         }

@@ -36,7 +36,7 @@ dependencies {
 
     api(composeBom)
     api(project(":utils:customisations"))
-    api(project(":appyx-interactions:common"))
+    api(project(":appyx-interactions:appyx-interactions"))
     api(libs.kotlin.coroutines.android)
     api(libs.androidx.lifecycle.common)
     api(libs.compose.runtime)
