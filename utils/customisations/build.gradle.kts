@@ -5,6 +5,10 @@ plugins {
     id("appyx-detekt")
 }
 
+publishingPlugin {
+    artifactId = "utils-customisations"
+}
+
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8

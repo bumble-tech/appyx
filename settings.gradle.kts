@@ -55,4 +55,10 @@ include(
     ":utils:testing-unit-common",
 )
 
+// do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
+project(":appyx-components:backstack:common").name = "backstack"
+project(":appyx-components:spotlight:common").name = "spotlight"
+project(":appyx-components:demos:common").name = "demos"
+project(":appyx-interactions:common").name = "appyx-interactions"
+
 includeBuild("plugins")

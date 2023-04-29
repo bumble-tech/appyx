@@ -24,7 +24,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":appyx-interactions:common"))
+                api(project(":appyx-interactions:appyx-interactions"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)

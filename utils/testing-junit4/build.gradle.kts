@@ -6,6 +6,10 @@ plugins {
     id("appyx-detekt")
 }
 
+publishingPlugin {
+    artifactId = "utils-testing-junit4"
+}
+
 android {
     namespace = "com.bumble.appyx.utils.testing.junit4"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()

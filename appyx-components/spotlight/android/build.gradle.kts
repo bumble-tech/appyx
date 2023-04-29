@@ -35,8 +35,8 @@ dependencies {
 
     androidTestImplementation(composeBom)
 
-    androidTestImplementation(project("::appyx-components:spotlight:common"))
-    androidTestImplementation(project("::appyx-interactions:android"))
+    androidTestImplementation(project(":appyx-components:spotlight:spotlight"))
+    androidTestImplementation(project(":appyx-interactions:android"))
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.junit.api)
 
