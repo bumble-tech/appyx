@@ -39,9 +39,6 @@ kotlin {
         val desktopMain by getting
 //        val jsMain by getting
     }
-    sourceSets.configureEach {
-        kotlin.srcDir("$buildDir/generated/ksp/$name/kotlin/")
-    }
 }
 
 android {
