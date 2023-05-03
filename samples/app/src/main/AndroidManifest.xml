@@ -3,6 +3,7 @@
 
     <application
         android:allowBackup="true"
+        android:name=".app.DaggerHiltApplication"
         android:icon="@drawable/appyx"
         android:label="@string/app_name"
         android:supportsRtl="true"

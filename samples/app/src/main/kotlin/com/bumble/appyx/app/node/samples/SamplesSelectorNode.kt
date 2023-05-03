@@ -3,10 +3,13 @@ package com.bumble.appyx.app.node.samples
 import android.os.Parcelable
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
@@ -43,6 +46,9 @@ class SamplesSelectorNode(
         object ComposeNavigationScreen : NavTarget()
 
         @Parcelize
+        object DaggerHiltScreen : NavTarget()
+
+        @Parcelize
         object CardsExample : NavTarget()
 
         @Parcelize
@@ -54,6 +60,7 @@ class SamplesSelectorNode(
         object OpenOnboarding : Output()
         object OpenComposeNavigation : Output()
         object OpenInsideTheBackStack: Output()
+        object DaggerHilt: Output()
     }
 
     @ExperimentalUnitApi
@@ -81,6 +88,13 @@ class SamplesSelectorNode(
                 buildContext = buildContext,
                 autoAdvanceDelayMs = 1000
             )
+            is NavTarget.DaggerHiltScreen -> {
+                node(buildContext) {
+                    Box(modifier = Modifier.height(200.dp)) {
+                        Text("Dagger Hilt")
+                    }
+                }
+            }
         }
 
     @Composable
@@ -109,6 +123,9 @@ class SamplesSelectorNode(
             }
             item {
                 InsideTheBackStackItem(decorator)
+            }
+            item {
+                DaggerHiltItem(decorator)
             }
         }
     }
@@ -173,6 +190,20 @@ class SamplesSelectorNode(
         ) {
             PermanentChild(
                 navTarget = NavTarget.CardsExample,
+                decorator = decorator
+            )
+        }
+    }
+
+    @Composable
+    private fun DaggerHiltItem(decorator: @Composable (child: ChildRenderer) -> Unit) {
+        SampleItem(
+            title = "Dating cards NavModel",
+            subtitle = "Swipe right on the NavModel concept",
+            onClick = { outputFunc(Output.DaggerHilt) },
+        ) {
+            PermanentChild(
+                navTarget = NavTarget.DaggerHiltScreen,
                 decorator = decorator
             )
         }
