@@ -32,4 +32,17 @@ class InteropNodeImplTest {
         rule.onNodeWithTag(oldChild).assertExists()
     }
 
+    @Test
+    fun appyx_up_navigation_is_propagated_to_ribs() {
+        var oldChild = ""
+        rule.activityRule.scenario.onActivity {
+            oldChild = it.ribsNode.current()
+            it.ribsNode.push()
+            it.ribsNode.navigateUpFromActiveAppyxChild()
+        }
+
+        // up navigation propagated to RIBs and it pops backstack
+        rule.onNodeWithTag(oldChild).assertExists()
+    }
+
 }

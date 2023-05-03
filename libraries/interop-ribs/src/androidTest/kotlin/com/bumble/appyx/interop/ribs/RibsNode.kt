@@ -48,6 +48,14 @@ class RibsNode(
         return id
     }
 
+    fun navigateUpFromActiveAppyxChild() {
+        children
+            .find { it.isActive }
+            // use Appyx node here, not RIBs!
+            ?.let { (it as? InteropNode<AppyxNode>)?.appyxNode }
+            ?.navigateUp() ?: error("No active child")
+    }
+
     class View(
         androidView: ViewGroup,
         lifecycle: Lifecycle,
