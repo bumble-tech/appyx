@@ -2,7 +2,7 @@
 
 ## Pending changes
 
--
+- [#425](https://github.com/bumble-tech/appyx/pull/425) – **Fixed**: Up navigation should be properly propagated from Appyx to RIBs
 
 ---
 
