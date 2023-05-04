@@ -7,7 +7,6 @@ import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.google.devtools.ksp.processing.CodeGenerator
-import com.google.devtools.ksp.processing.Dependencies
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
@@ -41,10 +40,8 @@ class MutableUiStateProcessor(
 ) : SymbolProcessor {
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val resultFiles = mutableListOf<KSFile>()
-        logger.warn("Processing...")
         val targetType = resolver.getType(MotionProperty.Target::class)
         val symbols = resolver.getSymbolsWithAnnotation(MutableUiStateSpecs::class)
-        logger.warn("- Input symbols: ${symbols.toList()}")
         symbols.forEach { symbol ->
             if (isValidAnnotatedSymbol(symbol)) {
                 val playMode = getPlayMode(resolver, symbol)
@@ -63,10 +60,6 @@ class MutableUiStateProcessor(
                 logger.error("MutableUiStateSpecs annotation should only be used with classes.", symbol)
             }
         }
-        val allFiles = resolver.getAllFiles()
-        logger.warn("- All files: ${allFiles.toList()}")
-        logger.warn("- resultFiles: ${resultFiles.toList()}")
-        logger.warn("- Result: ${resolver.getAllFiles().filterNot { it.validate() }.toList()}")
         return resolver.getAllFiles().filterNot { it.validate() }.toList()
     }
 
@@ -109,7 +102,6 @@ class MutableUiStateProcessor(
             .addImport(IMPORT_COROUTINES, IMPORT_ASYNC, IMPORT_AWAIT_ALL, IMPORT_LAUNCH)
             .addImport(IMPORT_COMPOSE_ANIMATION_CORE, IMPORT_SPRING_SPEC, IMPORT_SPRING)
             .addType(generateMutableUiStateType(classDeclaration, classTypeName, playMode, params))
-//            .addFunction(generateExtensionFunction(classDeclaration, classTypeName, params))
             .build()
 
     private fun Resolver.generateMutableUiStateType(
@@ -120,17 +112,17 @@ class MutableUiStateProcessor(
     ): TypeSpec =
         TypeSpec.classBuilder(MUTABLE_UI_STATE)
             .addModifiers(KModifier.FINAL)
-            .superclass(generateMutableUiStateSuperclass(classDeclaration, classTypeName))
-            .primaryConstructor(generateMutableUiStatePrimaryConstructor(params))
-            .addSuperclassConstructorParameter(generateMutableUiStateSuperClassConstructorParameter(params))
+            .superclass(generateSuperclass(classDeclaration, classTypeName))
+            .primaryConstructor(generatePrimaryConstructor(params))
+            .addSuperclassConstructorParameter(generateSuperClassConstructorParameter(params))
             .addProperties(params.toProperties())
-            .addProperty(generateMutableUiStateModifierProperty(params))
-            .addFunction(generateMutableUiStateAnimateToFunction(classTypeName, playMode, params))
-            .addFunction(generateMutableUiStateSnapToFunction(classTypeName, params))
-            .addFunction(generateMutableUiStateLerpToFunction(classTypeName, params))
+            .addProperty(generateModifierProperty(params))
+            .addFunction(generateAnimateToFunction(classTypeName, playMode, params))
+            .addFunction(generateSnapToFunction(classTypeName, params))
+            .addFunction(generateLerpToFunction(classTypeName, params))
             .build()
 
-    private fun Resolver.generateMutableUiStateSuperclass(classDeclaration: KSClassDeclaration, classTypeName: TypeName) =
+    private fun Resolver.generateSuperclass(classDeclaration: KSClassDeclaration, classTypeName: TypeName) =
         getType(BaseMutableUiState::class)
             .toClassName()
             .parameterizedBy(
@@ -138,13 +130,13 @@ class MutableUiStateProcessor(
                 classTypeName,
             )
 
-    private fun Resolver.generateMutableUiStatePrimaryConstructor(params: List<ParameterSpec>): FunSpec =
+    private fun Resolver.generatePrimaryConstructor(params: List<ParameterSpec>): FunSpec =
         FunSpec.constructorBuilder()
             .addParameter(PARAM_UI_CONTEXT, getTypeName(UiContext::class))
             .addParameters(params)
             .build()
 
-    private fun generateMutableUiStateSuperClassConstructorParameter(params: List<ParameterSpec>) =
+    private fun generateSuperClassConstructorParameter(params: List<ParameterSpec>) =
         CodeBlock.Builder()
             .addStatement("")
             .indent()
@@ -160,7 +152,7 @@ class MutableUiStateProcessor(
                 .build()
         }
 
-    private fun generateMutableUiStateModifierProperty(params: List<ParameterSpec>) =
+    private fun generateModifierProperty(params: List<ParameterSpec>) =
         PropertySpec.builder(PROPERTY_MODIFIER, Modifier::class, KModifier.OVERRIDE)
             .initializer(
                 with(CodeBlock.Builder()) {
@@ -173,7 +165,7 @@ class MutableUiStateProcessor(
             )
             .build()
 
-    private fun Resolver.generateMutableUiStateAnimateToFunction(
+    private fun Resolver.generateAnimateToFunction(
         classTypeName: TypeName,
         playMode: MutableUiStateSpecs.PlayMode,
         params: List<ParameterSpec>,
@@ -229,7 +221,7 @@ class MutableUiStateProcessor(
             build()
         }
 
-    private fun Resolver.generateMutableUiStateSnapToFunction(classTypeName: TypeName, params: List<ParameterSpec>) =
+    private fun Resolver.generateSnapToFunction(classTypeName: TypeName, params: List<ParameterSpec>) =
         FunSpec.builder(FUNCTION_SNAP_TO)
             .addModifiers(KModifier.OVERRIDE, KModifier.SUSPEND)
             .addParameter(PARAM_SCOPE, getTypeName(CoroutineScope::class))
@@ -245,7 +237,7 @@ class MutableUiStateProcessor(
             build()
         }
 
-    private fun Resolver.generateMutableUiStateLerpToFunction(classTypeName: TypeName, params: List<ParameterSpec>) =
+    private fun Resolver.generateLerpToFunction(classTypeName: TypeName, params: List<ParameterSpec>) =
         FunSpec.builder(FUNCTION_LERP_TO)
             .addModifiers(KModifier.OVERRIDE)
             .addParameter(PARAM_SCOPE, getTypeName(CoroutineScope::class))
@@ -266,27 +258,6 @@ class MutableUiStateProcessor(
             addStatement("}")
             build()
         }
-
-    private fun Resolver.generateExtensionFunction(classDeclaration: KSClassDeclaration, classType: TypeName, params: List<ParameterSpec>) =
-        FunSpec.builder(FUNCTION_TO_MUTABLE_STATE)
-            .receiver(classType)
-            .addParameter(PARAM_UI_CONTEXT, getTypeName(UiContext::class))
-            .returns(ClassName(classDeclaration.packageName.asString(), MUTABLE_UI_STATE))
-            .addCode(
-                with(CodeBlock.builder()) {
-                    add("return $MUTABLE_UI_STATE(")
-                    add("\n")
-                    indent()
-                    addStatement("$PARAM_UI_CONTEXT = $PARAM_UI_CONTEXT,")
-                    params.forEach {
-                        addStatement("${it.name} = ${it.type}($PARAM_UI_CONTEXT, ${it.name}),")
-                    }
-                    addStatement(")")
-                    unindent()
-                    build()
-                }
-            )
-            .build()
 
     private companion object {
         const val MUTABLE_UI_STATE = "MutableUiState"
@@ -319,7 +290,6 @@ class MutableUiStateProcessor(
         const val FUNCTION_ANIMATE_TO = "animateTo"
         const val FUNCTION_SNAP_TO = "snapTo"
         const val FUNCTION_LERP_TO = "lerpTo"
-        const val FUNCTION_TO_MUTABLE_STATE = "toMutableState"
     }
 
 }
