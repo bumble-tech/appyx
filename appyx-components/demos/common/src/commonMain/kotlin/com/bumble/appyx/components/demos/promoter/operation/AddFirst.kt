@@ -1,13 +1,13 @@
 package com.bumble.appyx.components.demos.promoter.operation
 
 import androidx.compose.animation.core.AnimationSpec
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
+import com.bumble.appyx.components.demos.promoter.Promoter
+import com.bumble.appyx.components.demos.promoter.PromoterModel
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.components.demos.promoter.Promoter
-import com.bumble.appyx.components.demos.promoter.PromoterModel
+import com.bumble.appyx.utils.multiplatform_common.Parcelize
+import com.bumble.appyx.utils.multiplatform_common.RawValue
 
 @Parcelize
 data class AddFirst<InteractionTarget>(

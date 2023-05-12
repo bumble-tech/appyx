@@ -1,11 +1,11 @@
 package com.bumble.appyx.components.demos.promoter
 
 import com.bumble.appyx.components.demos.promoter.PromoterModel.State.ElementState.DESTROYED
-import com.bumble.appyx.interactions.Parcelable
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform_common.Parcelable
+import com.bumble.appyx.utils.multiplatform_common.Parcelize
 
 class PromoterModel<InteractionTarget : Any>(
     savedStateMap: SavedStateMap?,

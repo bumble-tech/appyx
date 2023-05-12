@@ -1,12 +1,12 @@
 package com.bumble.appyx.components.internal.testdrive
 
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.A
-import com.bumble.appyx.interactions.Parcelable
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform_common.Parcelable
+import com.bumble.appyx.utils.multiplatform_common.Parcelize
 
 class TestDriveModel<InteractionTarget : Any>(
     val element: InteractionTarget,

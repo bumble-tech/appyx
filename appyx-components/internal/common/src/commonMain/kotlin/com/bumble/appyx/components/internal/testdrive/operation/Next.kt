@@ -3,9 +3,9 @@ package com.bumble.appyx.components.internal.testdrive.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.components.internal.testdrive.TestDrive
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform_common.Parcelize
 
 @Parcelize
 data class Next<InteractionTarget>(

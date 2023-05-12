@@ -27,6 +27,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
+                api(project(":utils:multiplatform-common"))
                 implementation(libs.kotlinx.serialization.json)
             }
         }
