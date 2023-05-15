@@ -7,9 +7,9 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
-import com.bumble.appyx.utils.multiplatform_common.Parcelable
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
-import com.bumble.appyx.utils.multiplatform_common.RawValue
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 class CardsModel<InteractionTarget : Any>(
     initialItems: List<InteractionTarget> = listOf(),

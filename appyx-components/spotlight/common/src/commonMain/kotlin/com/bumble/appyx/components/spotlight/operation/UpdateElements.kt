@@ -9,8 +9,8 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.S
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
-import com.bumble.appyx.utils.multiplatform_common.RawValue
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 @Parcelize
 // TODO cleanup SpotlightModel.State.positions if a position doesn't contain more elements

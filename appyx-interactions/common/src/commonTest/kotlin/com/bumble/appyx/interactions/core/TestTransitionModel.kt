@@ -4,9 +4,9 @@ import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.utils.multiplatform_common.Parcelable
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
-import com.bumble.appyx.utils.multiplatform_common.RawValue
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 class TestTransitionModel<InteractionTarget : Any>(
     initialElements: List<InteractionTarget>,

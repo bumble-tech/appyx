@@ -5,8 +5,8 @@ import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.permanent.PermanentInteractionModel
 import com.bumble.appyx.interactions.permanent.PermanentModel
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
-import com.bumble.appyx.utils.multiplatform_common.RawValue
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 @Parcelize
 data class AddUnique<InteractionTarget : Any>(

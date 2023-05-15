@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.core.model.transition
 
-import com.bumble.appyx.utils.multiplatform_common.Parcelable
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 interface Operation<ModelState> : Parcelable {
 

@@ -4,8 +4,8 @@ import com.bumble.appyx.components.demos.promoter.PromoterModel.State.ElementSta
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
-import com.bumble.appyx.utils.multiplatform_common.Parcelable
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PromoterModel<InteractionTarget : Any>(
     savedStateMap: SavedStateMap?,

@@ -9,7 +9,7 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Outpu
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.SavedStateMap
-import com.bumble.appyx.utils.multiplatform_common.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

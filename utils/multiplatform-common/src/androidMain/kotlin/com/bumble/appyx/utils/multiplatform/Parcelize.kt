@@ -1,4 +1,4 @@
-package com.bumble.appyx.utils.multiplatform_common
+package com.bumble.appyx.utils.multiplatform
 
 actual typealias Parcelize = kotlinx.parcelize.Parcelize
 

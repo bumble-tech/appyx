@@ -3,7 +3,7 @@ package com.bumble.appyx.components.demos.cards.operation
 import com.bumble.appyx.components.demos.cards.CardsModel
 import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.PASSED
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
 class VotePass<InteractionTarget>(

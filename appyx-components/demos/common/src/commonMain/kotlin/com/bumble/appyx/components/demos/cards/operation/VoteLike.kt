@@ -6,7 +6,7 @@ import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.VisibleCard
 import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.VisibleCard.TopCard
 import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.VisibleCard.TopCard.TOP_CARD_STATE.STANDARD
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
 class VoteLike<InteractionTarget>(

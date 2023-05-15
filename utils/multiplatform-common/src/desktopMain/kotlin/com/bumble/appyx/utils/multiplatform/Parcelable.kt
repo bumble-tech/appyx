@@ -1,4 +1,4 @@
-package com.bumble.appyx.utils.multiplatform_common
+package com.bumble.appyx.utils.multiplatform
 
 actual annotation class Parcelize
 

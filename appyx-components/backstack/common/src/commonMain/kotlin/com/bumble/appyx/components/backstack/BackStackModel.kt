@@ -6,8 +6,8 @@ import com.bumble.appyx.interactions.core.Elements
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
-import com.bumble.appyx.utils.multiplatform_common.Parcelable
-import com.bumble.appyx.utils.multiplatform_common.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class BackStackModel<InteractionTarget : Any>(
     initialTargets: List<InteractionTarget>,

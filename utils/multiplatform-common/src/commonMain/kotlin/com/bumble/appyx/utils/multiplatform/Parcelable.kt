@@ -1,4 +1,4 @@
-package com.bumble.appyx.utils.multiplatform_common
+package com.bumble.appyx.utils.multiplatform
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.BINARY)
