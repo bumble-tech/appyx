@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.spotlight.ui.slider
 
-import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -18,7 +17,6 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
@@ -35,7 +33,7 @@ class SpotlightSlider<InteractionTarget : Any>(
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
     private val scrollX = GenericFloatProperty(uiContext, 0f) // TODO sync this with the model's initial value rather than assuming 0
-    override val geometryMappings: List<Pair<(State<InteractionTarget>) -> Float, MotionProperty<Float, AnimationVector1D>>> =
+    override val geometryMappings: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
         )
@@ -78,7 +76,7 @@ class SpotlightSlider<InteractionTarget : Any>(
     }
 
     override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
-        targetUiState.toMutableState(uiContext, scrollX.valueFlow, width)
+        targetUiState.toMutableState(uiContext, scrollX.renderValueFlow, width)
 
 
     class Gestures<InteractionTarget>(

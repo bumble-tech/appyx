@@ -1,6 +1,5 @@
-package com.bumble.appyx.components.demos.testdrive.ui
+package com.bumble.appyx.components.internal.testdrive.ui
 
-import com.bumble.appyx.components.internal.testdrive.ui.MutableUiState
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
