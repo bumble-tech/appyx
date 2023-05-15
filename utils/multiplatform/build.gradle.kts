@@ -17,7 +17,7 @@ kotlin {
     }
     js(IR) {
         // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
-        moduleName = "appyx-utils-multiplatform-common"
+        moduleName = "appyx-utils-multiplatform"
         browser()
     }
     sourceSets {
@@ -33,7 +33,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.bumble.appyx.utils.multiplatform_common"
+    namespace = "com.bumble.appyx.utils.multiplatform"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {

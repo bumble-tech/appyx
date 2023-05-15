@@ -51,7 +51,7 @@ include(
     ":utils:testing-ui",
     ":utils:testing-ui-activity",
     ":utils:testing-unit-common",
-    ":utils:multiplatform-common",
+    ":utils:multiplatform",
 )
 
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
