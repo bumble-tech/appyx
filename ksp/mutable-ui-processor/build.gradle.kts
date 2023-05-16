@@ -1,5 +1,6 @@
 plugins {
     kotlin("multiplatform")
+    id("appyx-publish-multiplatform")
     id("org.jetbrains.compose")
 }
 

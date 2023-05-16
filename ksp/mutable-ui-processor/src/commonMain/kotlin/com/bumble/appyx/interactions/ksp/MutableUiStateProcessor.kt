@@ -50,7 +50,7 @@ class MutableUiStateProcessor(
                 val params = classDeclaration.extractTargetTypeParams(targetType)
                 if (params.isNotEmpty()) {
                     resolver.generateMutableUiStateFile(classDeclaration, classTypeName, playMode, params).apply {
-                        writeTo(codeGenerator, kspDependencies(false))
+                        writeTo(codeGenerator, kspDependencies(true))
                         resultFiles.addAll(this.originatingKSFiles())
                     }
                 } else {

@@ -7,9 +7,9 @@ pluginManagement {
         jcenter()
     }
     plugins {
-        kotlin("multiplatform").version("1.8.10")
-        id("org.jetbrains.compose").version("1.3.1")
-        id("com.google.devtools.ksp").version("1.8.0-1.0.8") apply false
+        kotlin("multiplatform")
+        id("org.jetbrains.compose")
+        id("com.google.devtools.ksp")
     }
 }
 

@@ -14,12 +14,13 @@ buildscript {
 
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
-    kotlin("multiplatform") apply false
-    kotlin("plugin.serialization") version "1.8.10" apply false
+    kotlin("multiplatform") version libs.versions.kotlin.get() apply false
+    kotlin("plugin.serialization") version libs.versions.kotlin.get() apply false
     id("appyx-collect-sarif")
     id("com.android.application") version "7.3.0" apply false
+    id("com.google.devtools.ksp") version libs.versions.ksp.get() apply false
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
-    id("org.jetbrains.compose") apply false
+    id("org.jetbrains.compose") version libs.versions.composePlugin.get() apply false
     id("org.jetbrains.kotlin.android") version "1.7.10" apply false
     id("release-dependencies-diff-compare")
     id("release-dependencies-diff-create") apply false
