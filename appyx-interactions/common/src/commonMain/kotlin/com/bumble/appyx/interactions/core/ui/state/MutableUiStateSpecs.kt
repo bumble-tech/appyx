@@ -7,6 +7,6 @@ annotation class MutableUiStateSpecs(
     val playMode: PlayMode = PlayMode.ConcurrentMode
 ) {
     enum class PlayMode {
-        SequenceMode, ConcurrentMode
+        SequentialMode, ConcurrentMode
     }
 }

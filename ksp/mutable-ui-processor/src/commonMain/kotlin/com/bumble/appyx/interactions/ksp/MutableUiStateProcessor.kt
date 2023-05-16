@@ -75,7 +75,7 @@ class MutableUiStateProcessor(
             .filter { playModeType.isAssignableFrom(it.value as KSType) }
             .mapNotNull { it.value?.toString() }
         return when {
-            playModes.count() == 1 && playModes.first().contains(PLAY_MODE_SEQUENCE) -> MutableUiStateSpecs.PlayMode.SequenceMode
+            playModes.count() == 1 && playModes.first().contains(PLAY_MODE_SEQUENTIAL) -> MutableUiStateSpecs.PlayMode.SequentialMode
             playModes.count() == 1 && playModes.first().contains(PLAY_MODE_CONCURRENT) -> MutableUiStateSpecs.PlayMode.ConcurrentMode
             else -> MutableUiStateSpecs.PlayMode.ConcurrentMode
         }
@@ -181,7 +181,7 @@ class MutableUiStateProcessor(
         playMode: MutableUiStateSpecs.PlayMode,
         params: List<ParameterSpec>,
     ) = when (playMode) {
-        MutableUiStateSpecs.PlayMode.SequenceMode -> generateSequentialAnimateToCodeBlock(params)
+        MutableUiStateSpecs.PlayMode.SequentialMode -> generateSequentialAnimateToCodeBlock(params)
         MutableUiStateSpecs.PlayMode.ConcurrentMode -> generateConcurrentAnimateToCodeBlock(params)
     }
 
@@ -262,7 +262,7 @@ class MutableUiStateProcessor(
     private companion object {
         const val MUTABLE_UI_STATE = "MutableUiState"
 
-        const val PLAY_MODE_SEQUENCE = "SequenceMode"
+        const val PLAY_MODE_SEQUENTIAL = "SequentialMode"
         const val PLAY_MODE_CONCURRENT = "ConcurrentMode"
 
         const val GENERATED_COMMENT = "Generated file ... DO NOT EDIT!"
