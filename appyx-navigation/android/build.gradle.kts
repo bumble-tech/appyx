@@ -8,9 +8,8 @@ plugins {
 }
 
 android {
-    namespace = "com.bumble.appyx.navigation"
+    namespace = "com.bumble.appyx.navigation.android"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
-
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
@@ -37,14 +36,15 @@ dependencies {
     api(composeBom)
     api(project(":utils:customisations"))
     api(project(":appyx-interactions:appyx-interactions"))
+    api(project(":appyx-navigation:common"))
     api(libs.kotlin.coroutines.android)
     api(libs.androidx.lifecycle.common)
+
     api(libs.compose.runtime)
     api(libs.compose.ui.tooling)
     api(libs.compose.ui.ui)
     api(libs.androidx.appcompat)
 
-    implementation(composeBom)
     implementation(libs.compose.animation.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)

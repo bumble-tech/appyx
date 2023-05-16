@@ -56,7 +56,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     implementation(composeBom)
-    implementation(project(":appyx-navigation"))
+    implementation(project(":appyx-navigation:common"))
     implementation(project(":demos:common"))
     implementation(project(":appyx-interactions:appyx-interactions"))
     implementation(project(":appyx-components:spotlight:spotlight"))

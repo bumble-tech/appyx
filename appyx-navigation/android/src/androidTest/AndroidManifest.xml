@@ -4,7 +4,7 @@
     <application>
 
         <activity
-            android:name="com.bumble.appyx.navigation.InternalAppyxTestActivity"
+            android:name="InternalAppyxTestActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity

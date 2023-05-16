@@ -29,6 +29,6 @@ android {
 }
 
 dependencies {
-    api(project(":appyx-navigation"))
+    api(project(":appyx-navigation:common"))
     implementation(libs.kotlin.test)
 }
