@@ -80,8 +80,8 @@ abstract class MotionProperty<T, V : AnimationVector>(
      *
      * @see [renderValue]
      */
-    val renderValueFlow: StateFlow<T>
-        get() = displacement.combine(
+    val renderValueFlow: StateFlow<T> =
+        displacement.combine(
             internalValueFlow
         ) { displacement, value ->
             calculateRenderValue(value, displacement)
@@ -108,10 +108,11 @@ abstract class MotionProperty<T, V : AnimationVector>(
     val isAnimating: StateFlow<Boolean>
         get() = _isAnimatingFlow
 
-    val isVisibleFlow: StateFlow<Boolean>
-        get() = renderValueFlow.mapState(uiContext.coroutineScope) { value ->
+    val isVisibleFlow: StateFlow<Boolean> by lazy {
+        renderValueFlow.mapState(uiContext.coroutineScope) { value ->
             visibilityMapper.invoke(value)
         }
+    }
 
     private fun onValueChanged() {
         internalValueFlow.update { internalValue }
