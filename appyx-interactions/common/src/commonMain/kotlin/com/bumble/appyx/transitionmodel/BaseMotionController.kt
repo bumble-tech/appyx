@@ -119,7 +119,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                         springSpec = currentSpringSpec,
                     )
                 } else {
-                    mutableUiState.snapTo(this, matchedTargetUiState.targetUiState)
+                    mutableUiState.snapTo(matchedTargetUiState.targetUiState)
                 }
             }
         }

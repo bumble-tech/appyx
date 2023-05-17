@@ -50,7 +50,7 @@ class MutableUiStateProcessor(
                 val params = classDeclaration.extractTargetTypeParams(targetType)
                 if (params.isNotEmpty()) {
                     resolver.generateMutableUiStateFile(classDeclaration, classTypeName, playMode, params).apply {
-                        writeTo(codeGenerator, kspDependencies(true))
+                        writeTo(codeGenerator, kspDependencies(true, listOf(symbol.containingFile!!)))
                         resultFiles.addAll(this.originatingKSFiles())
                     }
                 } else {
@@ -102,6 +102,7 @@ class MutableUiStateProcessor(
             .addImport(IMPORT_COROUTINES, IMPORT_ASYNC, IMPORT_AWAIT_ALL, IMPORT_LAUNCH)
             .addImport(IMPORT_COMPOSE_ANIMATION_CORE, IMPORT_SPRING_SPEC, IMPORT_SPRING)
             .addType(generateMutableUiStateType(classDeclaration, classTypeName, animationMode, params))
+            .addFunction(generateToMutableStateFunction(classDeclaration, classTypeName, params))
             .build()
 
     private fun Resolver.generateMutableUiStateType(
@@ -111,7 +112,6 @@ class MutableUiStateProcessor(
         params: List<ParameterSpec>
     ): TypeSpec =
         TypeSpec.classBuilder(MUTABLE_UI_STATE)
-            .addModifiers(KModifier.FINAL)
             .superclass(generateSuperclass(classDeclaration, classTypeName))
             .primaryConstructor(generatePrimaryConstructor(params))
             .addSuperclassConstructorParameter(generateSuperClassConstructorParameter(params))
@@ -137,7 +137,7 @@ class MutableUiStateProcessor(
             .build()
 
     private fun generateSuperClassConstructorParameter(params: List<ParameterSpec>) =
-        CodeBlock.Builder()
+        CodeBlock.builder()
             .addStatement("")
             .indent()
             .addStatement("$PARAM_UI_CONTEXT = $PARAM_UI_CONTEXT,")
@@ -155,7 +155,7 @@ class MutableUiStateProcessor(
     private fun generateModifierProperty(params: List<ParameterSpec>) =
         PropertySpec.builder(PROPERTY_MODIFIER, Modifier::class, KModifier.OVERRIDE)
             .initializer(
-                with(CodeBlock.Builder()) {
+                with(CodeBlock.builder()) {
                     addStatement("Modifier")
                     indent()
                     params.forEach { addStatement(".then(${it.name}.modifier)") }
@@ -186,7 +186,7 @@ class MutableUiStateProcessor(
     }
 
     private fun generateSequentialAnimateToCodeBlock(params: List<ParameterSpec>) =
-        with(CodeBlock.Builder()) {
+        with(CodeBlock.builder()) {
             params.forEach {
                 addStatement("${it.name}.$FUNCTION_ANIMATE_TO(")
                 indent()
@@ -199,7 +199,7 @@ class MutableUiStateProcessor(
         }
 
     private fun generateConcurrentAnimateToCodeBlock(params: List<ParameterSpec>) =
-        with(CodeBlock.Builder()) {
+        with(CodeBlock.builder()) {
             indent()
             addStatement("listOf(")
             params.forEach {
@@ -221,16 +221,15 @@ class MutableUiStateProcessor(
             build()
         }
 
-    private fun Resolver.generateSnapToFunction(classTypeName: TypeName, params: List<ParameterSpec>) =
+    private fun generateSnapToFunction(classTypeName: TypeName, params: List<ParameterSpec>) =
         FunSpec.builder(FUNCTION_SNAP_TO)
             .addModifiers(KModifier.OVERRIDE, KModifier.SUSPEND)
-            .addParameter(PARAM_SCOPE, getTypeName(CoroutineScope::class))
             .addParameter(PARAM_TARGET, classTypeName)
             .addCode(generateSnapToCodeBlock(params))
             .build()
 
     private fun generateSnapToCodeBlock(params: List<ParameterSpec>) =
-        with(CodeBlock.Builder()) {
+        with(CodeBlock.builder()) {
             params.forEach {
                 addStatement("${it.name}.$FUNCTION_SNAP_TO($PARAM_TARGET.${it.name}.value)")
             }
@@ -248,7 +247,7 @@ class MutableUiStateProcessor(
             .build()
 
     private fun generateLerpToCodeBlock(params: List<ParameterSpec>) =
-        with(CodeBlock.Builder()) {
+        with(CodeBlock.builder()) {
             addStatement("$PARAM_SCOPE.launch {")
             indent()
             params.forEach {
@@ -258,6 +257,28 @@ class MutableUiStateProcessor(
             addStatement("}")
             build()
         }
+
+    private fun Resolver.generateToMutableStateFunction(classDeclaration: KSClassDeclaration, classTypeName: TypeName, params: List<ParameterSpec>) =
+        FunSpec.builder(FUNCTION_TO_MUTABLE_STATE)
+            .receiver(classTypeName)
+            .returns(ClassName(classDeclaration.packageName.asString(), MUTABLE_UI_STATE))
+            .addParameter(PARAM_UI_CONTEXT, getTypeName(UiContext::class))
+            .addCode(generateToMutableStateCode(params))
+            .build()
+
+    private fun generateToMutableStateCode(params: List<ParameterSpec>) =
+        with(CodeBlock.builder()) {
+            add("return $MUTABLE_UI_STATE(\n")
+            indent()
+            addStatement("$PARAM_UI_CONTEXT = $PARAM_UI_CONTEXT,")
+            params.forEach {
+                addStatement("${it.name} = ${it.type}($PARAM_UI_CONTEXT, ${it.name}),")
+            }
+            unindent()
+            add(")")
+            build()
+        }
+
 
     private companion object {
         const val MUTABLE_UI_STATE = "MutableUiState"
@@ -290,6 +311,7 @@ class MutableUiStateProcessor(
         const val FUNCTION_ANIMATE_TO = "animateTo"
         const val FUNCTION_SNAP_TO = "snapTo"
         const val FUNCTION_LERP_TO = "lerpTo"
+        const val FUNCTION_TO_MUTABLE_STATE = "toMutableState"
     }
 
 }
