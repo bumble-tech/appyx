@@ -38,6 +38,7 @@ import com.bumble.appyx.transitionmodel.BaseMotionController
 @Composable
 @Suppress("LongMethod", "MagicNumber")
 fun SpotlightExperiment(
+    modifier: Modifier = Modifier,
     motionController: (UiContext) -> BaseMotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>, *, *>
 ) {
     val items = listOf(
@@ -76,7 +77,7 @@ fun SpotlightExperiment(
     InteractionModelSetup(spotlight)
 
     Column(
-        Modifier
+        modifier
             .fillMaxWidth()
             .background(appyx_dark)
     ) {
