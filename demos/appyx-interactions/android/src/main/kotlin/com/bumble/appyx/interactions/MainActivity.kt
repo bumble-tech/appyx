@@ -28,9 +28,9 @@ import com.bumble.appyx.components.demos.promoter.PromoterExperiment
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
+import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
 import com.bumble.appyx.interactions.sample.BackStackExperimentDebug
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
-import com.bumble.appyx.interactions.sample.SpotlightExperimentDebug
 import com.bumble.appyx.interactions.theme.AppyxTheme
 import com.bumble.appyx.interactions.theme.appyx_dark
 
@@ -66,8 +66,8 @@ class MainActivity : ComponentActivity() {
                         when (content) {
                             0 -> DatingCards()
                             1 -> SpotlightExperiment { SpotlightSlider(it) }
-                            2 -> SpotlightExperiment { SpotlightSliderRotation(it) }
-                            3 -> BackStackExperimentDebug()
+                            2 -> SpotlightExperiment { SpotlightSliderScale(it) }
+                            3 -> SpotlightExperiment { SpotlightSliderRotation(it) }
                             4 -> TestDriveExperiment()
                             5 -> PromoterExperiment()
                             else -> SpotlightExperiment { SpotlightSlider(it) }

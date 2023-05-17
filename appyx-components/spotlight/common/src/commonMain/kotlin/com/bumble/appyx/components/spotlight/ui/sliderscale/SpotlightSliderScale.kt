@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.spotlight.ui.sliderrotation
+package com.bumble.appyx.components.spotlight.ui.sliderscale
 
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.ui.unit.Dp
@@ -9,15 +9,13 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.C
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
-class SpotlightSliderRotation<InteractionTarget : Any>(
+class SpotlightSliderScale<InteractionTarget : Any>(
     uiContext: UiContext,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
@@ -34,22 +32,16 @@ class SpotlightSliderRotation<InteractionTarget : Any>(
     private val created: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset(0.dp, width)),
         scale = Scale.Target(0f),
-        rotationY = RotationY.Target(0f),
-        alpha = Alpha.Target(1f),
     )
 
     private val standard: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset.Zero),
         scale = Scale.Target(1f),
-        rotationY = RotationY.Target(0f),
-        alpha = Alpha.Target(1f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset(x = 0.dp, y = -height)),
         scale = Scale.Target(0f),
-        rotationY = RotationY.Target(0f),
-        alpha = Alpha.Target(0f),
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {

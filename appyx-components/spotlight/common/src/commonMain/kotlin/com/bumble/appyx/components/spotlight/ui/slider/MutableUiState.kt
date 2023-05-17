@@ -18,9 +18,6 @@ class MutableUiState(
     val position: Position,
     val scale: Scale,
     val alpha: Alpha,
-//        val zIndex: Float = 1f,               FIXME
-//        val aspectRatio: Float = 0.42f,       FIXME
-//        val rotation: Float = 0f,             FIXME
 ) : BaseMutableUiState<MutableUiState, TargetUiState>(
     uiContext = uiContext,
     motionProperties = listOf(scale, alpha, position)
