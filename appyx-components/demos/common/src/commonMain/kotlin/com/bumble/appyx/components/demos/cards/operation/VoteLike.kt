@@ -1,17 +1,17 @@
 package com.bumble.appyx.components.demos.cards.operation
 
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.components.demos.cards.CardsModel
 import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.VisibleCard.BottomCard
 import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.VisibleCard.TopCard
 import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.VisibleCard.TopCard.TOP_CARD_STATE.STANDARD
+import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
 class VoteLike<InteractionTarget>(
     override val mode: Operation.Mode = Operation.Mode.KEYFRAME
-): TopCardOperation<InteractionTarget>() {
+) : TopCardOperation<InteractionTarget>() {
 
     override fun createTargetState(fromState: CardsModel.State<InteractionTarget>): CardsModel.State<InteractionTarget> {
         val votedCards = fromState.votedCards
