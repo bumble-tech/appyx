@@ -13,7 +13,7 @@ import com.bumble.appyx.navigation.integrationpoint.permissionrequester.Permissi
 open class ActivityIntegrationPoint(
     private val activity: Activity,
     savedInstanceState: Bundle?,
-) : IntegrationPoint(savedInstanceState = savedInstanceState) {
+) : AndroidIntegrationPoint(savedInstanceState = savedInstanceState) {
     private val activityBoundary = ActivityBoundary(activity, requestCodeRegistry)
     private val permissionRequestBoundary = PermissionRequestBoundary(activity, requestCodeRegistry)
 
@@ -51,7 +51,7 @@ open class ActivityIntegrationPoint(
     }
 
     companion object {
-        fun getIntegrationPoint(context: Context): IntegrationPoint {
+        fun getIntegrationPoint(context: Context): AndroidIntegrationPoint {
             val activity = context.findActivity<Activity>()
             checkNotNull(activity) {
                 "Could not find an activity from the context: $context"
@@ -61,7 +61,10 @@ open class ActivityIntegrationPoint(
                 "Activity ${activity::class.qualifiedName} does not implement IntegrationPointProvider"
             )
 
-            return integrationPointProvider.appyxIntegrationPoint
+            return integrationPointProvider.appyxIntegrationPoint as? AndroidIntegrationPoint
+                ?: error(
+                    "Activity ${activity::class.qualifiedName} does not provide AndroidIntegrationPoint"
+                )
         }
 
         @Suppress("UNCHECKED_CAST")
