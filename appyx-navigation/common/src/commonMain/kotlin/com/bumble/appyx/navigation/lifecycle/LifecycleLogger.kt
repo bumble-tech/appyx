@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.lifecycle
 
 import android.util.Log
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
+import com.bumble.appyx.navigation.platform.DefaultLifecycleObserver
+import com.bumble.appyx.navigation.platform.LifecycleOwner
 
 internal object LifecycleLogger : DefaultLifecycleObserver {
 

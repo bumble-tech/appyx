@@ -1,9 +1,10 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import com.bumble.appyx.navigation.platform.DefaultLifecycleObserver
+import com.bumble.appyx.navigation.platform.Lifecycle
+import com.bumble.appyx.navigation.platform.LifecycleOwner
+import com.bumble.appyx.navigation.platform.LifecycleRegistry
+
 
 /**
  * Combines multiple lifecycles and provides a minimum of their states.

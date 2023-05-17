@@ -1,9 +1,9 @@
 package com.bumble.appyx.navigation.children
 
-import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.MinimumCombinedLifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.platform.Lifecycle
 import kotlin.reflect.KClass
 import kotlin.reflect.cast
 import kotlin.reflect.safeCast

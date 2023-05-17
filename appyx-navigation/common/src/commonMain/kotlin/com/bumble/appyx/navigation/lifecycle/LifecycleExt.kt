@@ -1,9 +1,9 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
+import com.bumble.appyx.navigation.platform.DefaultLifecycleObserver
+import com.bumble.appyx.navigation.platform.Lifecycle
+import com.bumble.appyx.navigation.platform.LifecycleEventObserver
+import com.bumble.appyx.navigation.platform.LifecycleOwner
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow

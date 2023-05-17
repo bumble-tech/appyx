@@ -1,9 +1,9 @@
 package com.bumble.appyx.navigation.plugin
 
-import androidx.activity.OnBackPressedCallback
-import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.platform.Lifecycle
+import com.bumble.appyx.navigation.platform.OnBackPressedCallback
 
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
     this.plugins.filterIsInstance(P::class.java)

@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import com.bumble.appyx.navigation.platform.Lifecycle
+import com.bumble.appyx.navigation.platform.LifecycleOwner
+import com.bumble.appyx.navigation.platform.LifecycleRegistry
 
 internal class NodeLifecycleImpl(owner: LifecycleOwner) : NodeLifecycle {
 

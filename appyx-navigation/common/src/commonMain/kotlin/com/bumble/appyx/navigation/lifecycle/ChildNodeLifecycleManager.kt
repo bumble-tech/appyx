@@ -1,11 +1,11 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleRegistry
 import com.bumble.appyx.interactions.core.model.InteractionModel
 import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.nodeOrNull
+import com.bumble.appyx.navigation.platform.Lifecycle
+import com.bumble.appyx.navigation.platform.LifecycleRegistry
 import com.bumble.appyx.navigation.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,7 +1,7 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
+import com.bumble.appyx.navigation.platform.Lifecycle
+import com.bumble.appyx.navigation.platform.LifecycleOwner
 
 interface NodeLifecycle : LifecycleOwner {
 
