@@ -66,18 +66,18 @@ class MutableUiStateProcessor(
     private fun isValidAnnotatedSymbol(symbol: KSAnnotated) =
         symbol is KSClassDeclaration
 
-    private fun getPlayMode(resolver: Resolver, symbol: KSAnnotated): MutableUiStateSpecs.PlayMode {
-        val playModeType = resolver.getType(MutableUiStateSpecs.PlayMode::class)
+    private fun getPlayMode(resolver: Resolver, symbol: KSAnnotated): MutableUiStateSpecs.AnimationMode {
+        val animationModeType = resolver.getType(MutableUiStateSpecs.AnimationMode::class)
         val playModes = symbol
             .annotations
             .flatMap { it.arguments }
             .filter { it.value is KSType }
-            .filter { playModeType.isAssignableFrom(it.value as KSType) }
+            .filter { animationModeType.isAssignableFrom(it.value as KSType) }
             .mapNotNull { it.value?.toString() }
         return when {
-            playModes.count() == 1 && playModes.first().contains(PLAY_MODE_SEQUENTIAL) -> MutableUiStateSpecs.PlayMode.SequentialMode
-            playModes.count() == 1 && playModes.first().contains(PLAY_MODE_CONCURRENT) -> MutableUiStateSpecs.PlayMode.ConcurrentMode
-            else -> MutableUiStateSpecs.PlayMode.ConcurrentMode
+            playModes.count() == 1 && playModes.first().contains(PLAY_MODE_SEQUENTIAL) -> MutableUiStateSpecs.AnimationMode.SEQUENTIAL
+            playModes.count() == 1 && playModes.first().contains(PLAY_MODE_CONCURRENT) -> MutableUiStateSpecs.AnimationMode.CONCURRENT
+            else -> MutableUiStateSpecs.AnimationMode.CONCURRENT
         }
     }
 
@@ -94,20 +94,20 @@ class MutableUiStateProcessor(
     private fun Resolver.generateMutableUiStateFile(
         classDeclaration: KSClassDeclaration,
         classTypeName: TypeName,
-        playMode: MutableUiStateSpecs.PlayMode,
+        animationMode: MutableUiStateSpecs.AnimationMode,
         params: List<ParameterSpec>
     ): FileSpec =
         FileSpec.builder(classDeclaration.packageName.asString(), MUTABLE_UI_STATE)
             .addFileComment(GENERATED_COMMENT)
             .addImport(IMPORT_COROUTINES, IMPORT_ASYNC, IMPORT_AWAIT_ALL, IMPORT_LAUNCH)
             .addImport(IMPORT_COMPOSE_ANIMATION_CORE, IMPORT_SPRING_SPEC, IMPORT_SPRING)
-            .addType(generateMutableUiStateType(classDeclaration, classTypeName, playMode, params))
+            .addType(generateMutableUiStateType(classDeclaration, classTypeName, animationMode, params))
             .build()
 
     private fun Resolver.generateMutableUiStateType(
         classDeclaration: KSClassDeclaration,
         classTypeName: TypeName,
-        playMode: MutableUiStateSpecs.PlayMode,
+        animationMode: MutableUiStateSpecs.AnimationMode,
         params: List<ParameterSpec>
     ): TypeSpec =
         TypeSpec.classBuilder(MUTABLE_UI_STATE)
@@ -117,7 +117,7 @@ class MutableUiStateProcessor(
             .addSuperclassConstructorParameter(generateSuperClassConstructorParameter(params))
             .addProperties(params.toProperties())
             .addProperty(generateModifierProperty(params))
-            .addFunction(generateAnimateToFunction(classTypeName, playMode, params))
+            .addFunction(generateAnimateToFunction(classTypeName, animationMode, params))
             .addFunction(generateSnapToFunction(classTypeName, params))
             .addFunction(generateLerpToFunction(classTypeName, params))
             .build()
@@ -167,22 +167,22 @@ class MutableUiStateProcessor(
 
     private fun Resolver.generateAnimateToFunction(
         classTypeName: TypeName,
-        playMode: MutableUiStateSpecs.PlayMode,
+        animationMode: MutableUiStateSpecs.AnimationMode,
         params: List<ParameterSpec>,
     ) = FunSpec.builder(FUNCTION_ANIMATE_TO)
         .addModifiers(KModifier.OVERRIDE, KModifier.SUSPEND)
         .addParameter(PARAM_SCOPE, getTypeName(CoroutineScope::class))
         .addParameter(PARAM_TARGET, classTypeName)
         .addParameter(PARAM_SPRING_SPEC, getClassName(SpringSpec::class).parameterizedBy(getTypeName(Float::class)))
-        .addCode(generateAnimateToCodeBlock(playMode, params))
+        .addCode(generateAnimateToCodeBlock(animationMode, params))
         .build()
 
     private fun generateAnimateToCodeBlock(
-        playMode: MutableUiStateSpecs.PlayMode,
+        animationMode: MutableUiStateSpecs.AnimationMode,
         params: List<ParameterSpec>,
-    ) = when (playMode) {
-        MutableUiStateSpecs.PlayMode.SequentialMode -> generateSequentialAnimateToCodeBlock(params)
-        MutableUiStateSpecs.PlayMode.ConcurrentMode -> generateConcurrentAnimateToCodeBlock(params)
+    ) = when (animationMode) {
+        MutableUiStateSpecs.AnimationMode.SEQUENTIAL -> generateSequentialAnimateToCodeBlock(params)
+        MutableUiStateSpecs.AnimationMode.CONCURRENT -> generateConcurrentAnimateToCodeBlock(params)
     }
 
     private fun generateSequentialAnimateToCodeBlock(params: List<ParameterSpec>) =

@@ -4,9 +4,9 @@ package com.bumble.appyx.interactions.core.ui.state
 @Retention(AnnotationRetention.SOURCE)
 @Suppress("Unused")
 annotation class MutableUiStateSpecs(
-    val playMode: PlayMode = PlayMode.ConcurrentMode
+    val animationMode: AnimationMode = AnimationMode.CONCURRENT
 ) {
-    enum class PlayMode {
-        SequentialMode, ConcurrentMode
+    enum class AnimationMode {
+        CONCURRENT, SEQUENTIAL
     }
 }
