@@ -6,7 +6,7 @@ import com.bumble.appyx.navigation.platform.Lifecycle
 import com.bumble.appyx.navigation.platform.OnBackPressedCallback
 
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
-    this.plugins.filterIsInstance(P::class.java)
+    this.plugins.filterIsInstance<P>()
 
 interface NodeAware<N : Node> : NodeReadyObserver<N> {
     val node: N

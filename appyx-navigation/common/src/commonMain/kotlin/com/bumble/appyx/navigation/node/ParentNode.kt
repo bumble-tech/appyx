@@ -168,7 +168,7 @@ abstract class ParentNode<InteractionTarget : Any>(
             waitForChildAttached<T>()
         }
         checkNotNull(result) {
-            "Expected child of type [${T::class.java}] was not found after executing action. " +
+            "Expected child of type [${T::class}] was not found after executing action. " +
                     "Check that your action actually results in the expected child."
         }
     }

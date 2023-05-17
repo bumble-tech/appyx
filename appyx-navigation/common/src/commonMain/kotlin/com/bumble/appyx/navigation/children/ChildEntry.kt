@@ -9,13 +9,15 @@ sealed class ChildEntry<T> {
     abstract val key: Element<T>
 
     override fun equals(other: Any?): Boolean =
-        other?.javaClass == javaClass && (other as? ChildEntry<*>)?.key == key
+        other != null
+                && other::class == this::class
+                && (other as? ChildEntry<*>)?.key == key
 
     override fun hashCode(): Int =
         key.hashCode()
 
     override fun toString(): String =
-        "$key@${javaClass.simpleName}"
+        "$key@${this::class.simpleName}"
 
     /** All public APIs should return this type of child which is ready to work with. */
     class Initialized<T>(
