@@ -1,7 +1,6 @@
 plugins {
-    id("java-library")
-    id("kotlin")
-    id("appyx-publish-java")
+    kotlin("multiplatform")
+    id("appyx-publish-multiplatform")
     id("appyx-detekt")
 }
 
@@ -9,7 +8,18 @@ publishingPlugin {
     artifactId = "utils-customisations"
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+kotlin {
+    jvm {
+        compilations.all {
+            kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
+        }
+    }
+    js(IR) {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-utils-customisation"
+        browser()
+    }
+    sourceSets {
+        val commonMain by getting
+    }
 }
