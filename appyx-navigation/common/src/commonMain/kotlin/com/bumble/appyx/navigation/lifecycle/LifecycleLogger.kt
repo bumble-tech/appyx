@@ -1,35 +1,36 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import android.util.Log
 import com.bumble.appyx.navigation.platform.DefaultLifecycleObserver
 import com.bumble.appyx.navigation.platform.LifecycleOwner
+import com.bumble.appyx.utils.multiplatform.Logger
 
 internal object LifecycleLogger : DefaultLifecycleObserver {
 
     private const val LOG_TAG = "Lifecycle"
+    private val LOGGER = Logger()
 
     override fun onCreate(owner: LifecycleOwner) {
-        Log.d(LOG_TAG, "${owner.javaClass.simpleName}@${owner.hashCode()} onCreate")
+        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onCreate")
     }
 
     override fun onStart(owner: LifecycleOwner) {
-        Log.d(LOG_TAG, "${owner.javaClass.simpleName}@${owner.hashCode()} onStart")
+        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onStart")
     }
 
     override fun onResume(owner: LifecycleOwner) {
-        Log.d(LOG_TAG, "${owner.javaClass.simpleName}@${owner.hashCode()} onResume")
+        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onResume")
     }
 
     override fun onPause(owner: LifecycleOwner) {
-        Log.d(LOG_TAG, "${owner.javaClass.simpleName}@${owner.hashCode()} onPause")
+        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onPause")
     }
 
     override fun onStop(owner: LifecycleOwner) {
-        Log.d(LOG_TAG, "${owner.javaClass.simpleName}@${owner.hashCode()} onStop")
+        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onStop")
     }
 
     override fun onDestroy(owner: LifecycleOwner) {
-        Log.d(LOG_TAG, "${owner.javaClass.simpleName}@${owner.hashCode()} onDestroy")
+        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onDestroy")
     }
 
 }
