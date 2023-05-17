@@ -4,4 +4,6 @@ interface LifecycleRegistry : Lifecycle {
     fun setCurrentState(state: Lifecycle.State)
 }
 
-interface LifecycleRegistryProvider : (LifecycleOwner) -> LifecycleRegistry
+interface LifecycleRegistryProvider {
+    fun invoke(lifecycleOwner: LifecycleOwner): LifecycleRegistry
+}
