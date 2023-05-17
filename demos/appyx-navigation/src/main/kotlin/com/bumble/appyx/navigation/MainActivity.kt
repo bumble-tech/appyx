@@ -30,7 +30,7 @@ class MainActivity : NodeActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Column {
-                        NodeHost(integrationPoint = appyxIntegrationPoint) {
+                        NodeHost(integrationPoint = appyxV2IntegrationPoint) {
                             ContainerNode(
                                 buildContext = it,
                             )
