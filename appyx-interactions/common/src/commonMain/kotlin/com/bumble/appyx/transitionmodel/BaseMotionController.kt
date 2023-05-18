@@ -1,7 +1,6 @@
 package com.bumble.appyx.transitionmodel
 
 import DefaultAnimationSpec
-import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
@@ -17,7 +16,7 @@ import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.withPrevious
@@ -34,7 +33,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
 ) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<MutableUiState, TargetUiState> {
 
-    open val geometryMappings: List<Pair<(ModelState) -> Float, MotionProperty<Float, AnimationVector1D>>> =
+    open val geometryMappings: List<Pair<(ModelState) -> Float, GenericFloatProperty>> =
         emptyList()
 
     private val coroutineScope = uiContext.coroutineScope
@@ -241,14 +240,14 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                 }
 
                 GeometryBehaviour.ANIMATE -> {
-                    if (geometry.value != targetValue) {
+                    if (geometry.internalValue != targetValue) {
                         geometry.animateTo(
                             targetValue, spring(
                                 stiffness = currentSpringSpec.stiffness,
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-                            AppyxLogger.d(TAG, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
+                            AppyxLogger.d(TAG, "Geometry animateTo (Segment) – ${geometry.internalValue} -> $targetValue")
                         }
                     }
                 }

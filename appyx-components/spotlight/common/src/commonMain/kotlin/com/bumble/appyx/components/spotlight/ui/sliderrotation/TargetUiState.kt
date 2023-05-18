@@ -1,20 +1,24 @@
-package com.bumble.appyx.components.spotlight.ui.slider
+package com.bumble.appyx.components.spotlight.ui.sliderrotation
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.math.cutOffCenter
+import com.bumble.appyx.interactions.core.ui.math.cutOffCenterSigned
+import com.bumble.appyx.interactions.core.ui.math.scaleUpTo
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
-import kotlin.math.abs
 
 class TargetUiState(
     private val positionInList: Int = 0,
     val position: Position.Target,
     val scale: Scale.Target,
+    val rotationY: RotationY.Target,
     val alpha: Alpha.Target,
 ) {
     /**
@@ -32,6 +36,7 @@ class TargetUiState(
             )
         ),
         scale = base.scale,
+        rotationY = base.rotationY,
         alpha = base.alpha,
     )
 
@@ -44,8 +49,8 @@ class TargetUiState(
         uiContext: UiContext,
         scrollX: StateFlow<Float>,
         elementWidth: Dp
-    ): MutableUiState =
-        MutableUiState(
+    ): MutableUiState {
+        return MutableUiState(
             uiContext = uiContext,
             position = Position(
                 uiContext, position,
@@ -53,7 +58,17 @@ class TargetUiState(
                     DpOffset((it * elementWidth.value).dp, 0.dp)
                 },
             ),
-            scale = Scale(uiContext, scale),
+            scale = Scale(uiContext, scale,
+                displacement = scrollX.mapState(uiContext.coroutineScope) { scroll ->
+                    scaleUpTo(cutOffCenter(positionInList.toFloat(), scroll, 0.15f), -0.1f, 1f)
+                }
+            ),
+            rotationY = RotationY(uiContext, rotationY,
+                displacement = scrollX.mapState(uiContext.coroutineScope) { scroll ->
+                    scaleUpTo(cutOffCenterSigned(positionInList.toFloat(), scroll, 0.15f), 15f, 1f)
+                }
+            ),
             alpha = Alpha(uiContext, alpha),
         )
+    }
 }
