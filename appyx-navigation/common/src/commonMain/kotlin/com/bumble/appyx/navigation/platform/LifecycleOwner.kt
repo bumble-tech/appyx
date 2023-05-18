@@ -7,4 +7,6 @@ interface LifecycleOwner {
     val lifecycleScope: CoroutineScope
 }
 
-interface LocalLifecycleOwnerProvider : () -> LifecycleOwner
+fun interface LocalLifecycleOwnerProvider {
+    operator fun invoke(): LifecycleOwner
+}
