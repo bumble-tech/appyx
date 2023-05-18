@@ -14,7 +14,7 @@ class AppyxRibsInteropActivity : InteropActivity() {
 
     override fun createRib(savedInstanceState: Bundle?): Rib =
         RibsNodeBuilder()
-            .build(BuildContext.root(savedInstanceState), appyxIntegrationPoint)
+            .build(BuildContext.root(savedInstanceState), appyxV2IntegrationPoint)
             .also { ribsNode = it }
 
 }

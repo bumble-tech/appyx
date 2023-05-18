@@ -7,18 +7,25 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.jvm.JvmInline
 
 class GenericFloatProperty(
     uiContext: UiContext,
-    target: Target
+    target: Target,
+    displacement: StateFlow<Float> = MutableStateFlow(0f),
 ) : MotionProperty<Float, AnimationVector1D>(
     uiContext = uiContext,
-    animatable = Animatable(target.value)
+    animatable = Animatable(target.value),
+    displacement = displacement
 ), Interpolatable<GenericFloatProperty> {
 
     @JvmInline
     value class Target(val value: Float) :  MotionProperty.Target
+
+    override fun calculateRenderValue(base: Float, displacement: Float): Float =
+        base - displacement
 
     override val modifier: Modifier
         get() = Modifier
@@ -26,8 +33,8 @@ class GenericFloatProperty(
     override suspend fun lerpTo(start: GenericFloatProperty, end: GenericFloatProperty, fraction: Float) {
         snapTo(
             lerpFloat(
-                start = start.value,
-                end = end.value,
+                start = start.internalValue,
+                end = end.internalValue,
                 progress = easingTransform(end.easing, fraction)
             )
         )

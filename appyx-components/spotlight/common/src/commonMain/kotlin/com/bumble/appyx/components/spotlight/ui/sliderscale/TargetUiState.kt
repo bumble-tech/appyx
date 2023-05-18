@@ -1,23 +1,19 @@
-package com.bumble.appyx.components.spotlight.ui.slider
+package com.bumble.appyx.components.spotlight.ui.sliderscale
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.abs
 
-@MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
     val position: Position.Target,
     val scale: Scale.Target,
-    val alpha: Alpha.Target,
 ) {
     /**
      * Take item's own position in the list of elements into account
@@ -34,7 +30,6 @@ class TargetUiState(
             )
         ),
         scale = base.scale,
-        alpha = base.alpha,
     )
 
     /**
@@ -46,8 +41,8 @@ class TargetUiState(
         uiContext: UiContext,
         scrollX: StateFlow<Float>,
         elementWidth: Dp
-    ): MutableUiState =
-        MutableUiState(
+    ): MutableUiState {
+        return MutableUiState(
             uiContext = uiContext,
             position = Position(
                 uiContext, position,
@@ -55,7 +50,11 @@ class TargetUiState(
                     DpOffset((it * elementWidth.value).dp, 0.dp)
                 },
             ),
-            scale = Scale(uiContext, scale),
-            alpha = Alpha(uiContext, alpha),
+            scale = Scale(uiContext, scale,
+                displacement = scrollX.mapState(uiContext.coroutineScope) {
+                    (abs(positionInList - it) - 0.15f).coerceIn(0f, 0.25f)
+                }
+            )
         )
+    }
 }

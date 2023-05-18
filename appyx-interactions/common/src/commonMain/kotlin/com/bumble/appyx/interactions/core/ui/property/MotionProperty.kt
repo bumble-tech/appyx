@@ -17,19 +17,32 @@ import com.bumble.appyx.interactions.SystemClock
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 /**
  * Keeps a value change in motion by calculating the rate of change of the wrapped Animatable value
  * even when snapping. This is used to seamlessly switch to animation with a natural initial velocity
  * rather than zero.
+ *
+ * @param uiContext
+ * @param animatable The backing [Animatable] to animate internal values with.
+ * @param easing The [Easing] function to apply when setting interpolated values.
+ * See [easingTransform].
+ * @param visibilityThreshold The visibility threshold that will be passed to [Animatable]
+ * when animating.
+ * @param displacement A flow of values to apply as a displacement on top of the internal values
+ * that are backed by the internal [Animatable].
  */
 abstract class MotionProperty<T, V : AnimationVector>(
     protected val uiContext: UiContext,
-    protected val animatable: Animatable<T, V>,
+    private val animatable: Animatable<T, V>,
     val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
+    private val displacement: StateFlow<T>
 ) {
 
     interface Target
@@ -45,17 +58,51 @@ abstract class MotionProperty<T, V : AnimationVector>(
     private var lastTime = 0L
 
     /**
-     * Mapper which resolves visibility of the property. If property has no influence on the visibility
-     * do not change default visibilityMapper.
+     * Mapper which resolves the visibility of the property. If property has no influence on the
+     * visibility, it should always return true.
      */
     open val visibilityMapper: ((T) -> Boolean) = { true }
 
-    private val _valueFlow = MutableStateFlow(animatable.value)
-    val valueFlow: StateFlow<T>
-        get() = _valueFlow
+    private val internalValueFlow = MutableStateFlow(animatable.value)
 
-    val value: T
+
+    /**
+     * Contains the unmodified internal value of the [MotionProperty] backed by its [Animatable].
+     * Useful if you need information on animation targets, i.e. what this [MotionProperty] thinks
+     * it should display before that value being modified by any displacements.
+     *
+     * If you need render-ready values (for Modifiers, checking visibility, etc.) then you need
+     * to use [renderValue] instead.
+     */
+    val internalValue: T
         get() = animatable.value
+
+    /**
+     * Contains the render-ready flow of values with displacements already applied.
+     *
+     * @see [renderValue]
+     */
+    val renderValueFlow: StateFlow<T> =
+        displacement.combine(
+            internalValueFlow
+        ) { displacement, value ->
+            calculateRenderValue(value, displacement)
+        }.stateIn(
+            scope = uiContext.coroutineScope,
+            started = SharingStarted.Eagerly,
+            initialValue = internalValueFlow.value
+        )
+
+    /**
+     * @return Should return the result of a subtraction [base - displacement] interpreted for <T>
+     */
+    abstract fun calculateRenderValue(base: T, displacement: T): T
+
+    /**
+     * Render-ready value that contains applied displacements on top of the [internalValue].
+     */
+    val renderValue: T
+        get() = renderValueFlow.value
 
     abstract val modifier: Modifier
 
@@ -63,19 +110,14 @@ abstract class MotionProperty<T, V : AnimationVector>(
     val isAnimating: StateFlow<Boolean>
         get() = _isAnimatingFlow
 
-    /**
-     * Source of the value which will be used to resolve visibility. By default it's animatable
-     * flow but it can be overridden if the motion property visibility depends.
-     */
-    open val valueSource: StateFlow<T> = valueFlow
-
-    val isVisibleFlow: StateFlow<Boolean>
-        get() = valueSource.mapState(uiContext.coroutineScope) { value ->
+    val isVisibleFlow: StateFlow<Boolean> by lazy {
+        renderValueFlow.mapState(uiContext.coroutineScope) { value ->
             visibilityMapper.invoke(value)
         }
+    }
 
     private fun onValueChanged() {
-        _valueFlow.update { value }
+        internalValueFlow.update { internalValue }
     }
 
     /**
@@ -162,7 +204,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         val animationSpec1 = insertVisibilityThreshold(animationSpec)
         AppyxLogger.d("MotionProperty", "Starting with initialVelocity = $previousVelocity")
         _isAnimatingFlow.update {
-            targetValue != value
+            targetValue != internalValue
         }
         val result = animatable.animateTo(
             targetValue = targetValue,
