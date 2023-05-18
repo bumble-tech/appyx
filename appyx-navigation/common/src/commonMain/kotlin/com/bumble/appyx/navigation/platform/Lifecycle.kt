@@ -3,7 +3,7 @@ package com.bumble.appyx.navigation.platform
 import kotlinx.coroutines.CoroutineScope
 
 interface Lifecycle {
-    var currentState: State
+    val currentState: State
 
     val coroutineScope: CoroutineScope
 
@@ -14,6 +14,7 @@ interface Lifecycle {
     enum class State {
         INITIALIZED,
         CREATED,
+        STARTED,
         RESUMED,
         DESTROYED,
     }

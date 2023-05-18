@@ -10,15 +10,6 @@ package com.bumble.appyx.navigation.platform
 interface LifecycleObserver {
 }
 
-interface FullLifecycleObserver : LifecycleObserver {
-    fun onCreate(owner: LifecycleOwner)
-    fun onStart(owner: LifecycleOwner)
-    fun onResume(owner: LifecycleOwner)
-    fun onPause(owner: LifecycleOwner)
-    fun onStop(owner: LifecycleOwner)
-    fun onDestroy(owner: LifecycleOwner)
-}
-
 /**
  * Ported from Androidx.lifecycle
  *
@@ -29,14 +20,17 @@ interface FullLifecycleObserver : LifecycleObserver {
  *
  * If a class implements this interface and in the same time uses OnLifecycleEvent,
  * then annotations will be ignored.
+ *
+ * Note that this port does not include the lifecycle owner that the lifecycle events are associated
+ * with, as this is a complexity that has been avoided at this point.
  */
-interface DefaultLifecycleObserver : FullLifecycleObserver {
-    override fun onCreate(owner: LifecycleOwner) {}
-    override fun onStart(owner: LifecycleOwner) {}
-    override fun onResume(owner: LifecycleOwner) {}
-    override fun onPause(owner: LifecycleOwner) {}
-    override fun onStop(owner: LifecycleOwner) {}
-    override fun onDestroy(owner: LifecycleOwner) {}
+interface DefaultLifecycleObserver : LifecycleObserver {
+    fun onCreate() {}
+    fun onStart() {}
+    fun onResume() {}
+    fun onPause() {}
+    fun onStop() {}
+    fun onDestroy() {}
 }
 
 /**
@@ -56,8 +50,7 @@ fun interface LifecycleEventObserver : LifecycleObserver {
     /**
      * Called when a state transition event happens.
      *
-     * @param source The source of the event
      * @param event The event
      */
-    fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event)
+    fun onStateChanged(event: Lifecycle.Event)
 }
