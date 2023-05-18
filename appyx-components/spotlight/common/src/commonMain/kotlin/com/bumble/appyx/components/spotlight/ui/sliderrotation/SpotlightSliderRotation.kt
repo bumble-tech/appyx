@@ -11,6 +11,7 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.S
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
@@ -25,7 +26,7 @@ class SpotlightSliderRotation<InteractionTarget : Any>(
 ) {
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
-    private val scrollX = GenericFloatProperty(uiContext, 0f) // TODO sync this with the model's initial value rather than assuming 0
+    private val scrollX = GenericFloatProperty(uiContext, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
     override val geometryMappings: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
