@@ -2,5 +2,5 @@ package com.bumble.appyx.navigation.integrationpoint
 
 interface IntegrationPointProvider {
 
-    val appyxIntegrationPoint: IntegrationPoint
+    val appyxV2IntegrationPoint: IntegrationPoint
 }

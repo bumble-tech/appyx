@@ -27,44 +27,50 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.AppyxLogger
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.android.Children
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 
 @ExperimentalMaterialApi
 @Composable
 @Suppress("LongMethod", "MagicNumber")
-fun SpotlightExperiment(modifier: Modifier = Modifier) {
+fun SpotlightExperiment(
+    modifier: Modifier = Modifier,
+    motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
+) {
     val items = listOf(
-        InteractionTarget.Child1,
-        InteractionTarget.Child2,
-        InteractionTarget.Child3,
-        InteractionTarget.Child4,
-        InteractionTarget.Child5,
-        InteractionTarget.Child6,
-        InteractionTarget.Child7,
-        InteractionTarget.Child1,
-        InteractionTarget.Child2,
-        InteractionTarget.Child3,
-        InteractionTarget.Child4,
-        InteractionTarget.Child5,
-        InteractionTarget.Child6,
-        InteractionTarget.Child7,
-        InteractionTarget.Child1,
-        InteractionTarget.Child2,
-        InteractionTarget.Child3,
-        InteractionTarget.Child4,
-        InteractionTarget.Child5,
-        InteractionTarget.Child6,
-        InteractionTarget.Child7,
+        Target.Child1,
+        Target.Child2,
+        Target.Child3,
+        Target.Child4,
+        Target.Child5,
+        Target.Child6,
+        Target.Child7,
+        Target.Child1,
+        Target.Child2,
+        Target.Child3,
+        Target.Child4,
+        Target.Child5,
+        Target.Child6,
+        Target.Child7,
+        Target.Child1,
+        Target.Child2,
+        Target.Child3,
+        Target.Child4,
+        Target.Child5,
+        Target.Child6,
+        Target.Child7,
     )
     val spotlight = Spotlight(
         model = SpotlightModel(
             items = items,
             savedStateMap = null
         ),
-        motionController = { SpotlightSlider(it) },
+        motionController = motionController,
         gestureFactory = { SpotlightSlider.Gestures(it) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )
@@ -72,7 +78,7 @@ fun SpotlightExperiment(modifier: Modifier = Modifier) {
     InteractionModelSetup(spotlight)
 
     Column(
-        Modifier
+        modifier
             .fillMaxWidth()
             .background(appyx_dark)
     ) {
