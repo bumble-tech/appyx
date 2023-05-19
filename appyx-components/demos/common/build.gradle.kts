@@ -4,6 +4,7 @@ plugins {
     id("com.android.library")
     id("kotlin-parcelize")
     id("appyx-publish-multiplatform")
+    id("com.google.devtools.ksp")
 }
 
 kotlin {
@@ -48,4 +49,11 @@ android {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
+    add("kspAndroid", project(":ksp:mutable-ui-processor"))
+    add("kspDesktop", project(":ksp:mutable-ui-processor"))
+    add("kspJs", project(":ksp:mutable-ui-processor"))
 }

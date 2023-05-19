@@ -6,7 +6,9 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 
+@MutableUiStateSpecs
 class TargetUiState(
     val position: Position.Target,
     val alpha: Alpha.Target,
@@ -25,16 +27,4 @@ class TargetUiState(
         position = Position.Target(DpOffset.Zero),
         alpha = alpha
     )
-
-    /**
-     * Take the dynamically changing scroll into account
-     */
-    fun toMutableState(
-        uiContext: UiContext,
-    ): MutableUiState =
-        MutableUiState(
-            uiContext = uiContext,
-            position = Position(uiContext, position),
-            alpha = Alpha(uiContext, alpha),
-        )
 }

@@ -33,7 +33,7 @@ class BackgroundColor(
     class Target(
         val value: Color,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
 
     /**
      * This class currently doesn't support color displacement.

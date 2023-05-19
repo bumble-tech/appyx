@@ -35,7 +35,7 @@ class Position(
     class Target(
         val value: DpOffset,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
 
     override fun calculateRenderValue(base: DpOffset, displacement: DpOffset): DpOffset =
         base - displacement
