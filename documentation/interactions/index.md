@@ -13,7 +13,19 @@ Transitions and gestures act as operations directly on the state itself – the 
 
 ==}
 
-In this sample, an element is transitioned between 4 possible UI stateS:
+In this sample, an element is transitioned between 4 possible UI states:
+
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/appyx-interactions/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:interactions:sample1:web:jsBrowserDistribution",
+        width=512,
+        height=512,
+        target_directory="samples/documentation-interactions-index-1",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
 
 ```kotlin
 // [embed] (possibly a strong spring, to not deal with keyframe/immediate yet)
