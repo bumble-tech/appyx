@@ -143,9 +143,8 @@ fun <InteractionTarget : Any> TestDriveUi(
         Children(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            colors = colors,
             interactionModel = testDrive,
-        ) { elementUiModel ->
+        ) { elementUiModel, content ->
             Box(
                 modifier = Modifier.size(60.dp)
                     .then(elementUiModel.modifier)
@@ -161,7 +160,9 @@ fun <InteractionTarget : Any> TestDriveUi(
                             }
                         )
                     }
-            )
+            ) {
+                content()
+            }
         }
 
         val output = model.output.collectAsState().value
