@@ -17,7 +17,7 @@ In this sample, an element is transitioned between 4 possible UI states:
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/appyx-interactions/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample1/web/build/distributions",
         compile_task=":demos:mkdocs:appyx-interactions:interactions:sample1:web:jsBrowserDistribution",
         width=512,
         height=512,
