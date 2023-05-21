@@ -144,7 +144,7 @@ fun <InteractionTarget : Any> TestDriveUi(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             interactionModel = testDrive,
-        ) { elementUiModel, content ->
+        ) { elementUiModel ->
             Box(
                 modifier = Modifier.size(60.dp)
                     .then(elementUiModel.modifier)
@@ -160,9 +160,7 @@ fun <InteractionTarget : Any> TestDriveUi(
                             }
                         )
                     }
-            ) {
-                content()
-            }
+            )
         }
 
         val output = model.output.collectAsState().value

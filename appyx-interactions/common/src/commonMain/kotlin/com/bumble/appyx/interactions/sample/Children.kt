@@ -44,11 +44,10 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     clipToBounds: Boolean = false,
     childContent: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {},
     childWrapper: @Composable (
-        ElementUiModel<InteractionTarget>,
-        @Composable () -> Unit
-    ) -> Unit = { frameModel, childContent ->
+        ElementUiModel<InteractionTarget>
+    ) -> Unit = { frameModel->
         ChildWrapper(frameModel) {
-            childContent()
+            childContent(frameModel)
         }
     },
 ) {
@@ -84,9 +83,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 elementUiModel.animationContainer()
                 val isVisible by elementUiModel.visibleState.collectAsState()
                 if (isVisible) {
-                    childWrapper.invoke(elementUiModel) {
-                        childContent(elementUiModel)
-                    }
+                    childWrapper.invoke(elementUiModel)
                 }
             }
         }

@@ -33,7 +33,7 @@ fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         modifier = modifier,
         clipToBounds = clipToBounds,
-        childWrapper = { elementUiModel, content ->
+        childWrapper = { elementUiModel ->
             element(elementUiModel)
         },
     )
