@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node
 
-import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
@@ -78,7 +77,6 @@ abstract class ParentNode<InteractionTarget : Any>(
         coroutineScope = lifecycleScope,
     )
 
-    @CallSuper
     override fun onBuilt() {
         super.onBuilt()
         childNodeCreationManager.launch(this)
@@ -202,7 +200,6 @@ abstract class ParentNode<InteractionTarget : Any>(
         // TODO warn unhandled child
     }
 
-    @CallSuper
     // TODO save/restore state properly
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)

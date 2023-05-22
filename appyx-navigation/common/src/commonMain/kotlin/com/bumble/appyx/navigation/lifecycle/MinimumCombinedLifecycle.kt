@@ -40,23 +40,23 @@ internal class MinimumCombinedLifecycle(
                 update()
             }
 
-            override fun onStart(owner: LifecycleOwner) {
+            override fun onStart() {
                 update()
             }
 
-            override fun onResume(owner: LifecycleOwner) {
+            override fun onResume() {
                 update()
             }
 
-            override fun onPause(owner: LifecycleOwner) {
+            override fun onPause() {
                 update()
             }
 
-            override fun onStop(owner: LifecycleOwner) {
+            override fun onStop() {
                 update()
             }
 
-            override fun onDestroy(owner: LifecycleOwner) {
+            override fun onDestroy() {
                 update()
             }
         })

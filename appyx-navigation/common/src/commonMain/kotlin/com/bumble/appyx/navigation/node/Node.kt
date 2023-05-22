@@ -1,7 +1,5 @@
 package com.bumble.appyx.navigation.node
 
-import androidx.annotation.CallSuper
-import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
@@ -12,11 +10,8 @@ import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.Appyx
-import com.bumble.appyx.navigation.BuildConfig
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
-import com.bumble.appyx.navigation.integrationpoint.requestcode.RequestCodeClient
-import com.bumble.appyx.navigation.lifecycle.LifecycleLogger
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
@@ -32,16 +27,17 @@ import com.bumble.appyx.navigation.plugin.UpNavigationHandler
 import com.bumble.appyx.navigation.plugin.plugins
 import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.navigation.store.RetainedInstanceStore
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
 @Suppress("TooManyFunctions")
 @Stable
-open class Node @VisibleForTesting internal constructor(
+open class Node internal constructor(
     private val buildContext: BuildContext,
     val view: NodeView = EmptyNodeView,
     private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = emptyList()
-) : NodeLifecycle, NodeView by view, RequestCodeClient {
+) : NodeLifecycle, NodeView by view {
 
     constructor(
         buildContext: BuildContext,
@@ -49,8 +45,8 @@ open class Node @VisibleForTesting internal constructor(
         plugins: List<Plugin> = emptyList()
     ) : this(buildContext, view, RetainedInstanceStore, plugins)
 
-    @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
-    private val nodeLifecycle = NodeLifecycleImpl(this)
+    val id: String
+        get() = buildContext.identifier
 
     val plugins: List<Plugin> = plugins + listOfNotNull(this as? Plugin)
 
@@ -87,11 +83,6 @@ open class Node @VisibleForTesting internal constructor(
 
     private var wasBuilt = false
 
-    val id: String
-        get() = buildContext.identifier
-
-    override val requestCodeClientId: String = id
-
     init {
         // TODO: expose debug flag
 //        if (BuildConfig.DEBUG) {
@@ -111,7 +102,6 @@ open class Node @VisibleForTesting internal constructor(
         this@Node as T
     }
 
-    @CallSuper
     open fun onBuilt() {
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
@@ -164,7 +154,6 @@ open class Node @VisibleForTesting internal constructor(
         return writer.savedState
     }
 
-    @CallSuper
     protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
         buildContext.onSaveInstanceState(state)
     }
@@ -187,12 +176,11 @@ open class Node @VisibleForTesting internal constructor(
         require(parent != null || isRoot) {
             "Can't navigate up, neither parent nor integration point is presented"
         }
-        if ((parent as Node).performUpNavigation() != true) {
+        if (!(parent as Node).performUpNavigation()) {
             integrationPoint.handleUpNavigation()
         }
     }
 
-    @CallSuper
     protected open fun performUpNavigation(): Boolean =
         handleUpNavigationByPlugins() || (parent as? Node)?.performUpNavigation() == true
 
