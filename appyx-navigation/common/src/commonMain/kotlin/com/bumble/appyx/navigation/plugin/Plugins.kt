@@ -2,8 +2,8 @@ package com.bumble.appyx.navigation.plugin
 
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.platform.Lifecycle
 import com.bumble.appyx.navigation.platform.OnBackPressedCallback
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
 
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
     this.plugins.filterIsInstance<P>()
@@ -17,7 +17,7 @@ interface NodeReadyObserver<N : Node> : Plugin {
 }
 
 interface NodeLifecycleAware : Plugin {
-    fun onCreate(lifecycle: Lifecycle) {}
+    fun onCreate(lifecycle: PlatformLifecycle) {}
 }
 
 interface UpNavigationHandler : Plugin {

@@ -13,9 +13,8 @@ import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
-import com.bumble.appyx.navigation.platform.Lifecycle
-import com.bumble.appyx.navigation.platform.LifecycleEventObserver
-import com.bumble.appyx.navigation.platform.LocalLifecycleOwnerProvider
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
@@ -35,14 +34,14 @@ fun <N : Node> NodeHost(
 ) {
     val node by rememberNode(factory, customisations, integrationPoint)
     DisposableEffect(node) {
-        onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
+        onDispose { node.updateLifecycleState(PlatformLifecycle.State.DESTROYED) }
     }
     node.Compose(modifier = modifier)
     val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle) {
         node.updateLifecycleState(lifecycle.currentState)
-        val observer = LifecycleEventObserver { source, _ ->
-            node.updateLifecycleState(source.lifecycle.currentState)
+        val observer = PlatformLifecycleEventObserver { newState, _ ->
+            node.updateLifecycleState(newState)
         }
         lifecycle.addObserver(observer)
         onDispose { lifecycle.removeObserver(observer) }

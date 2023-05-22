@@ -1,10 +1,10 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.navigation.platform.Lifecycle
-import com.bumble.appyx.navigation.platform.LifecycleOwner
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
 
-interface NodeLifecycle : LifecycleOwner {
+interface NodeLifecycle : PlatformLifecycleOwner {
 
-    fun updateLifecycleState(state: Lifecycle.State)
+    fun updateLifecycleState(state: PlatformLifecycle.State)
 
 }

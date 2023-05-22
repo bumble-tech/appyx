@@ -32,7 +32,7 @@ import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
-import com.bumble.appyx.navigation.platform.Lifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -119,12 +119,12 @@ abstract class ParentNode<InteractionTarget : Any>(
         PermanentChild(interactionTarget) { child -> child() }
     }
 
-    override fun updateLifecycleState(state: Lifecycle.State) {
+    override fun updateLifecycleState(state: PlatformLifecycle.State) {
         super.updateLifecycleState(state)
         childNodeLifecycleManager.propagateLifecycleToChildren(state)
 
         // TODO move to plugins
-        if (state == Lifecycle.State.DESTROYED) {
+        if (state == PlatformLifecycle.State.DESTROYED) {
             interactionModel.destroy()
         }
     }

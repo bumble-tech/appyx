@@ -7,7 +7,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
@@ -22,9 +21,10 @@ import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.platform.DefaultLifecycleObserver
-import com.bumble.appyx.navigation.platform.Lifecycle
-import com.bumble.appyx.navigation.platform.LifecycleOwner
+import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
+import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
 import com.bumble.appyx.navigation.plugin.Destroyable
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
@@ -66,6 +66,13 @@ open class Node @VisibleForTesting internal constructor(
             is AncestryInfo.Root -> null
         }
 
+    override val lifecycle get() = nodeLifecycle.lifecycle
+
+    override val lifecycleScope: CoroutineScope get() = lifecycle.coroutineScope
+
+    @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
+    private val nodeLifecycle = NodeLifecycleImpl(this) // TODO: inject lifecycleRegistryProvider
+
     var integrationPoint: IntegrationPoint = IntegrationPointStub()
         get() {
             return if (isRoot) field
@@ -86,11 +93,12 @@ open class Node @VisibleForTesting internal constructor(
     override val requestCodeClientId: String = id
 
     init {
-        if (BuildConfig.DEBUG) {
-            lifecycle.addObserver(LifecycleLogger)
-        }
-        lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onCreate(owner: LifecycleOwner) {
+        // TODO: expose debug flag
+//        if (BuildConfig.DEBUG) {
+//            lifecycle.addObserver(LifecycleLogger)
+//        }
+        lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
+            override fun onCreate(owner: PlatformLifecycleOwner) {
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
             }
         })
@@ -107,7 +115,7 @@ open class Node @VisibleForTesting internal constructor(
     open fun onBuilt() {
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
-        updateLifecycleState(Lifecycle.State.CREATED)
+        updateLifecycleState(PlatformLifecycle.State.CREATED)
         plugins<NodeReadyObserver<Node>>().forEach { it.init(this) }
         plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
     }
@@ -128,12 +136,9 @@ open class Node @VisibleForTesting internal constructor(
 
     }
 
-    override val lifecycle: Lifecycle
-        get() = nodeLifecycle.lifecycle
-
-    override fun updateLifecycleState(state: Lifecycle.State) {
+    override fun updateLifecycleState(state: PlatformLifecycle.State) {
         if (lifecycle.currentState == state) return
-        if (lifecycle.currentState == Lifecycle.State.DESTROYED && state != Lifecycle.State.DESTROYED) {
+        if (lifecycle.currentState == PlatformLifecycle.State.DESTROYED && state != PlatformLifecycle.State.DESTROYED) {
             Appyx.reportException(
                 IllegalStateException(
                     "Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}"
@@ -142,7 +147,7 @@ open class Node @VisibleForTesting internal constructor(
             return
         }
         nodeLifecycle.updateLifecycleState(state)
-        if (state == Lifecycle.State.DESTROYED) {
+        if (state == PlatformLifecycle.State.DESTROYED) {
             if (!integrationPoint.isChangingConfigurations) {
                 retainedInstanceStore.clearStore(id)
             }

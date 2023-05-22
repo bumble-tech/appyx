@@ -8,7 +8,7 @@ abstract class OnBackPressedCallback(var isEnabled: Boolean) {
 }
 
 interface OnBackPressedDispatcher {
-    fun addCallback(lifecycleOwner: LifecycleOwner, callback: OnBackPressedCallback)
+    fun addCallback(lifecycleOwner: PlatformLifecycleOwner, callback: OnBackPressedCallback)
 }
 
 interface OnBackPressedDispatcherProvider : () -> OnBackPressedDispatcher?

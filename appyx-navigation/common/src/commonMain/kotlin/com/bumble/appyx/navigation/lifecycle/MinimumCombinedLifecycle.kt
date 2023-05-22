@@ -1,9 +1,10 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.navigation.platform.DefaultLifecycleObserver
-import com.bumble.appyx.navigation.platform.Lifecycle
-import com.bumble.appyx.navigation.platform.LifecycleOwner
-import com.bumble.appyx.navigation.platform.LifecycleRegistry
+import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
+import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
+import kotlinx.coroutines.CoroutineScope
 
 
 /**
@@ -15,10 +16,10 @@ import com.bumble.appyx.navigation.platform.LifecycleRegistry
  * - INITIALIZED + DESTROYED -> DESTROYED
  */
 internal class MinimumCombinedLifecycle(
-    vararg lifecycles: Lifecycle,
-) : LifecycleOwner {
-    private val registry = LifecycleRegistry(this)
-    private val lifecycles = ArrayList<Lifecycle>()
+    vararg lifecycles: PlatformLifecycle,
+) : PlatformLifecycleOwner {
+    private val registry = PlatformLifecycleRegistry.create(this)
+    private val lifecycles = ArrayList<PlatformLifecycle>()
 
     init {
         /*
@@ -29,13 +30,13 @@ internal class MinimumCombinedLifecycle(
         lifecycles.sortedBy { it.currentState }.forEach { manage(it) }
     }
 
-    override val lifecycle: Lifecycle
-        get() = registry
+    override val lifecycle: PlatformLifecycle = registry
+    override val lifecycleScope: CoroutineScope = registry.coroutineScope
 
-    fun manage(lifecycle: Lifecycle) {
+    fun manage(lifecycle: PlatformLifecycle) {
         lifecycles += lifecycle
-        lifecycle.addObserver(object : DefaultLifecycleObserver {
-            override fun onCreate(owner: LifecycleOwner) {
+        lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
+            override fun onCreate() {
                 update()
             }
 
@@ -65,8 +66,8 @@ internal class MinimumCombinedLifecycle(
     private fun update() {
         lifecycles
             .minByOrNull { it.currentState }
-            ?.takeIf { it.currentState != Lifecycle.State.INITIALIZED }
-            ?.also { registry.currentState = it.currentState }
+            ?.takeIf { it.currentState != PlatformLifecycle.State.INITIALIZED }
+            ?.also { registry.setCurrentState(it.currentState) }
     }
 
 }

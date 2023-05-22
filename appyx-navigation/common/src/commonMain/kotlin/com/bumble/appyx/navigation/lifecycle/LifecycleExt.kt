@@ -1,30 +1,30 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.navigation.platform.DefaultLifecycleObserver
-import com.bumble.appyx.navigation.platform.Lifecycle
-import com.bumble.appyx.navigation.platform.LifecycleEventObserver
-import com.bumble.appyx.navigation.platform.LifecycleOwner
+import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycleEventObserver
+import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-fun LifecycleOwner.asFlow(): Flow<Lifecycle.State> =
+fun PlatformLifecycleOwner.asFlow(): Flow<PlatformLifecycle.State> =
     lifecycle.asFlow()
 
-fun Lifecycle.asFlow(): Flow<Lifecycle.State> =
+fun PlatformLifecycle.asFlow(): Flow<PlatformLifecycle.State> =
     callbackFlow {
-        val observer = LifecycleEventObserver { source, _ ->
-            trySend(source.lifecycle.currentState)
+        val observer = PlatformLifecycleEventObserver { currentState, _ ->
+            trySend(currentState)
         }
         trySend(currentState)
         addObserver(observer)
         awaitClose { removeObserver(observer) }
     }
 
-internal val Lifecycle.isDestroyed: Boolean
-    get() = currentState == Lifecycle.State.DESTROYED
+internal val PlatformLifecycle.isDestroyed: Boolean
+    get() = currentState == PlatformLifecycle.State.DESTROYED
 
-fun Lifecycle.subscribe(
+fun PlatformLifecycle.subscribe(
     onCreate: () -> Unit = {},
     onStart: () -> Unit = {},
     onResume: () -> Unit = {},
@@ -33,28 +33,28 @@ fun Lifecycle.subscribe(
     onDestroy: () -> Unit = {}
 ) {
     addObserver(
-        object : DefaultLifecycleObserver {
-            override fun onCreate(owner: LifecycleOwner) {
+        object : DefaultPlatformLifecycleObserver {
+            override fun onCreate() {
                 onCreate()
             }
 
-            override fun onStart(owner: LifecycleOwner) {
+            override fun onStart() {
                 onStart()
             }
 
-            override fun onResume(owner: LifecycleOwner) {
+            override fun onResume() {
                 onResume()
             }
 
-            override fun onPause(owner: LifecycleOwner) {
+            override fun onPause() {
                 onPause()
             }
 
-            override fun onStop(owner: LifecycleOwner) {
+            override fun onStop() {
                 onStop()
             }
 
-            override fun onDestroy(owner: LifecycleOwner) {
+            override fun onDestroy() {
                 onDestroy()
             }
         }

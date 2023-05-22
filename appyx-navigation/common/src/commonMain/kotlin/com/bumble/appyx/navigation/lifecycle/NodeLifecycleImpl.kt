@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.navigation.platform.Lifecycle
-import com.bumble.appyx.navigation.platform.LifecycleOwner
-import com.bumble.appyx.navigation.platform.LifecycleRegistry
+import com.bumble.appyx.navigation.platform.PlatformLifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
+import kotlinx.coroutines.CoroutineScope
 
 internal class NodeLifecycleImpl(owner: LifecycleOwner) : NodeLifecycle {
 
