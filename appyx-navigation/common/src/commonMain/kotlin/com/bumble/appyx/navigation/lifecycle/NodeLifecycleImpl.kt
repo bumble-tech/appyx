@@ -1,18 +1,18 @@
 package com.bumble.appyx.navigation.lifecycle
 
 import com.bumble.appyx.navigation.platform.PlatformLifecycle
+import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
 import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
 import kotlinx.coroutines.CoroutineScope
 
-internal class NodeLifecycleImpl(owner: LifecycleOwner) : NodeLifecycle {
+internal class NodeLifecycleImpl(lifecycleOwner: PlatformLifecycleOwner) : NodeLifecycle {
+    private val lifecycleRegistry: PlatformLifecycleRegistry =
+        PlatformLifecycleRegistry.create(lifecycleOwner)
 
-    private val lifecycleRegistry = LifecycleRegistry(owner)
+    override val lifecycle: PlatformLifecycle = lifecycleRegistry
+    override val lifecycleScope: CoroutineScope = lifecycleRegistry.coroutineScope
 
-    override val lifecycle: Lifecycle =
-        lifecycleRegistry
-
-    override fun updateLifecycleState(state: Lifecycle.State) {
-        lifecycleRegistry.currentState = state
+    override fun updateLifecycleState(state: PlatformLifecycle.State) {
+        lifecycleRegistry.setCurrentState(state)
     }
-
 }

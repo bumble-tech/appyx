@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
 import kotlinx.coroutines.CoroutineScope
 
-internal class AndroidPlatformLifecycle(
+class AndroidPlatformLifecycle(
     val androidLifecycle: Lifecycle
 ) : PlatformLifecycle,
     DefaultLifecycleObserver,

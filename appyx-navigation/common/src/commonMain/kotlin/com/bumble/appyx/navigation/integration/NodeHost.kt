@@ -27,6 +27,7 @@ import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
 fun <N : Node> NodeHost(
+    lifecycle: PlatformLifecycle,
     integrationPoint: IntegrationPoint,
     modifier: Modifier = Modifier,
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
@@ -37,7 +38,6 @@ fun <N : Node> NodeHost(
         onDispose { node.updateLifecycleState(PlatformLifecycle.State.DESTROYED) }
     }
     node.Compose(modifier = modifier)
-    val lifecycle = LocalLifecycleOwner.current.lifecycle
     DisposableEffect(lifecycle) {
         node.updateLifecycleState(lifecycle.currentState)
         val observer = PlatformLifecycleEventObserver { newState, _ ->

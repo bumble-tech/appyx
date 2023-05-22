@@ -18,8 +18,6 @@ import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.platform.PlatformLifecycle
-import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
-import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
 import com.bumble.appyx.navigation.plugin.Destroyable
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
@@ -67,7 +65,7 @@ open class Node internal constructor(
     override val lifecycleScope: CoroutineScope get() = lifecycle.coroutineScope
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
-    private val nodeLifecycle = NodeLifecycleImpl(this) // TODO: inject lifecycleRegistryProvider
+    private val nodeLifecycle = NodeLifecycleImpl(this)
 
     var integrationPoint: IntegrationPoint = IntegrationPointStub()
         get() {
@@ -89,7 +87,7 @@ open class Node internal constructor(
 //            lifecycle.addObserver(LifecycleLogger)
 //        }
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
-            override fun onCreate(owner: PlatformLifecycleOwner) {
+            override fun onCreate() {
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
             }
         })
@@ -114,7 +112,6 @@ open class Node internal constructor(
     fun Compose(modifier: Modifier = Modifier) {
         CompositionLocalProvider(
             LocalNode provides this,
-            LocalLifecycleOwner provides this,
         ) {
             DerivedSetup()
             View(modifier)

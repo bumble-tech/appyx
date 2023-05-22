@@ -2,12 +2,14 @@ package com.bumble.appyx.navigation
 
 import androidx.annotation.WorkerThread
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.core.app.ActivityScenario
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.platform.AndroidPlatformLifecycle
 import com.bumble.appyx.utils.testing.ui.rules.AppyxTestActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -25,13 +27,13 @@ class AppyxTestScenario<T : Node>(
         AppyxTestActivity.composableView = { activity ->
             decorator {
                 NodeHost(
+                    lifecycle = AndroidPlatformLifecycle(LocalLifecycleOwner.current.lifecycle),
                     integrationPoint = activity.appyxIntegrationPoint,
-                    factory = { buildContext ->
-                        node = nodeFactory.create(buildContext)
-                        awaitNode.countDown()
-                        node
-                    },
-                )
+                ) { buildContext ->
+                    node = nodeFactory.create(buildContext)
+                    awaitNode.countDown()
+                    node
+                }
             }
         }
         val scenario = ActivityScenario.launch(InternalAppyxTestActivity::class.java)

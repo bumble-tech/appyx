@@ -2,12 +2,14 @@ package com.bumble.appyx.utils.testing.ui.rules
 
 import androidx.annotation.CallSuper
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
 import androidx.test.rule.ActivityTestRule
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.platform.AndroidPlatformLifecycle
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
@@ -44,10 +46,13 @@ open class AppyxActivityTestRule<T : Node>(
     override fun beforeActivityLaunched() {
         AppyxTestActivity.composableView = { activity ->
             decorator {
-                NodeHost(integrationPoint = activity.appyxIntegrationPoint, factory = { buildContext ->
+                NodeHost(
+                    lifecycle = AndroidPlatformLifecycle(LocalLifecycleOwner.current.lifecycle),
+                    integrationPoint = activity.appyxIntegrationPoint
+                ) { buildContext ->
                     node = nodeFactory.create(buildContext)
                     node
-                })
+                }
             }
         }
     }
