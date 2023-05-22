@@ -1,35 +1,38 @@
 package com.bumble.appyx.navigation.lifecycle
 
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.utils.multiplatform.Logger
 
-internal object LifecycleLogger : DefaultPlatformLifecycleObserver {
+internal class LifecycleLogger(private val node: Node) : DefaultPlatformLifecycleObserver {
 
-    private const val LOG_TAG = "Lifecycle"
-    private val LOGGER = Logger()
+    private val logger = Logger()
 
     override fun onCreate() {
-        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onCreate")
+        logger.d(LOG_TAG, "${node::class.simpleName}@${node.hashCode()} onCreate")
     }
 
     override fun onStart() {
-        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onStart")
+        logger.d(LOG_TAG, "${node::class.simpleName}@${node.hashCode()} onStart")
     }
 
     override fun onResume() {
-        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onResume")
+        logger.d(LOG_TAG, "${node::class.simpleName}@${node.hashCode()} onResume")
     }
 
     override fun onPause() {
-        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onPause")
+        logger.d(LOG_TAG, "${node::class.simpleName}@${node.hashCode()} onPause")
     }
 
     override fun onStop() {
-        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onStop")
+        logger.d(LOG_TAG, "${node::class.simpleName}@${node.hashCode()} onStop")
     }
 
     override fun onDestroy() {
-        LOGGER.d(LOG_TAG, "${owner::class.simpleName}@${owner.hashCode()} onDestroy")
+        logger.d(LOG_TAG, "${node::class.simpleName}@${node.hashCode()} onDestroy")
     }
 
+    companion object {
+        private const val LOG_TAG = "Lifecycle"
+    }
 }

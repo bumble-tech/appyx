@@ -84,7 +84,7 @@ open class Node internal constructor(
     init {
         // TODO: expose debug flag
 //        if (BuildConfig.DEBUG) {
-//            lifecycle.addObserver(LifecycleLogger)
+//            lifecycle.addObserver(LifecycleLogger(this))
 //        }
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onCreate() {
