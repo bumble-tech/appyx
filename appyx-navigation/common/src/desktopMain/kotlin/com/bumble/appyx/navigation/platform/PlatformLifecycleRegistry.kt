@@ -80,11 +80,11 @@ actual class PlatformLifecycleRegistry(
     }
 
     actual fun setCurrentState(state: CommonLifecycle.State) {
+        currentState = state
     }
 
     actual companion object {
-        actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry {
-            TODO("Not yet implemented")
-        }
+        actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry =
+            PlatformLifecycleRegistry(owner.lifecycleScope)
     }
 }
