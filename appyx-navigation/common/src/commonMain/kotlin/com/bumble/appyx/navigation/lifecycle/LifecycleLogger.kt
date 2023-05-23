@@ -1,7 +1,6 @@
 package com.bumble.appyx.navigation.lifecycle
 
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.utils.multiplatform.Logger
 
 internal class LifecycleLogger(private val node: Node) : DefaultPlatformLifecycleObserver {

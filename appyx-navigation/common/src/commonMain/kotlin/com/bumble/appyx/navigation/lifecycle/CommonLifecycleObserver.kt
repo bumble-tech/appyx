@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.platform
+package com.bumble.appyx.navigation.lifecycle
 
 /**
  * Ported from Androidx.lifecycle
@@ -7,8 +7,7 @@ package com.bumble.appyx.navigation.platform
  * See Also:
  * Lifecycle - for samples and usage patterns.
  */
-interface PlatformLifecycleObserver {
-}
+interface PlatformLifecycleObserver
 
 /**
  * Ported from Androidx.lifecycle
@@ -34,17 +33,14 @@ interface DefaultPlatformLifecycleObserver : PlatformLifecycleObserver {
 }
 
 /**
- * Class that can receive any lifecycle change and dispatch it to the receiver.
+ * Ported from Androidx.lifecycle
  *
+ * Class that can receive any lifecycle change and dispatch it to the receiver.
  *
  * If a class implements both this interface and
  * [DefaultPlatformLifecycleObserver], then
  * methods of `DefaultLifecycleObserver` will be called first, and then followed by the call
  * of [PlatformLifecycleEventObserver.onStateChanged]
- *
- *
- * If a class implements this interface and in the same time uses [OnLifecycleEvent], then
- * annotations will be ignored.
  */
 fun interface PlatformLifecycleEventObserver : PlatformLifecycleObserver {
     /**
@@ -52,5 +48,5 @@ fun interface PlatformLifecycleEventObserver : PlatformLifecycleObserver {
      *
      * @param event The event
      */
-    fun onStateChanged(newState: PlatformLifecycle.State, event: PlatformLifecycle.Event)
+    fun onStateChanged(newState: CommonLifecycle.State, event: CommonLifecycle.Event)
 }

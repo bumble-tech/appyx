@@ -1,11 +1,11 @@
-package com.bumble.appyx.navigation.platform
+package com.bumble.appyx.navigation.lifecycle
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-interface PlatformLifecycle {
+interface CommonLifecycle {
     val currentState: State
 
     val coroutineScope: CoroutineScope

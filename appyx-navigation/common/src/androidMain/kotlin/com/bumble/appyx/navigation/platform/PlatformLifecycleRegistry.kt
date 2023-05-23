@@ -4,11 +4,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycleOwner
+import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
+import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
 
 actual class PlatformLifecycleRegistry(
     val androidLifecycleRegistry: LifecycleRegistry
-) : PlatformLifecycle, androidx.lifecycle.DefaultLifecycleObserver,
+) : CommonLifecycle, androidx.lifecycle.DefaultLifecycleObserver,
     androidx.lifecycle.LifecycleEventObserver {
 
     private val managedDefaultLifecycleObservers: MutableList<DefaultPlatformLifecycleObserver> =
@@ -16,10 +21,10 @@ actual class PlatformLifecycleRegistry(
     private val managedLifecycleEventObservers: MutableList<PlatformLifecycleEventObserver> =
         ArrayList()
 
-    override val currentState: PlatformLifecycle.State
+    override val currentState: CommonLifecycle.State
         get() = androidLifecycleRegistry.currentState.toCommonState()
 
-    actual fun setCurrentState(state: PlatformLifecycle.State) {
+    actual fun setCurrentState(state: CommonLifecycle.State) {
         androidLifecycleRegistry.currentState = state.toAndroidState()
     }
 
@@ -77,11 +82,11 @@ actual class PlatformLifecycleRegistry(
     }
 
     actual companion object {
-        actual fun create(owner: PlatformLifecycleOwner): PlatformLifecycleRegistry =
+        actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry =
             PlatformLifecycleRegistry(LifecycleRegistry(object : LifecycleOwner {
                 override val lifecycle: Lifecycle
                     get() = when (val platformLifecycle = owner.lifecycle) {
-                        is AndroidPlatformLifecycle -> platformLifecycle.androidLifecycle
+                        is AndroidLifecycle -> platformLifecycle.androidLifecycle
                         is PlatformLifecycleRegistry -> platformLifecycle.androidLifecycleRegistry
                         else -> throw (IllegalStateException(
                             "Unable to get android lifecycle from $platformLifecycle provided by $owner"

@@ -1,17 +1,13 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
-import com.bumble.appyx.navigation.platform.PlatformLifecycle
-import com.bumble.appyx.navigation.platform.PlatformLifecycleEventObserver
-import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-fun PlatformLifecycleOwner.asFlow(): Flow<PlatformLifecycle.State> =
+fun CommonLifecycleOwner.asFlow(): Flow<CommonLifecycle.State> =
     lifecycle.asFlow()
 
-fun PlatformLifecycle.asFlow(): Flow<PlatformLifecycle.State> =
+fun CommonLifecycle.asFlow(): Flow<CommonLifecycle.State> =
     callbackFlow {
         val observer = PlatformLifecycleEventObserver { currentState, _ ->
             trySend(currentState)
@@ -21,10 +17,10 @@ fun PlatformLifecycle.asFlow(): Flow<PlatformLifecycle.State> =
         awaitClose { removeObserver(observer) }
     }
 
-internal val PlatformLifecycle.isDestroyed: Boolean
-    get() = currentState == PlatformLifecycle.State.DESTROYED
+internal val CommonLifecycle.isDestroyed: Boolean
+    get() = currentState == CommonLifecycle.State.DESTROYED
 
-fun PlatformLifecycle.subscribe(
+fun CommonLifecycle.subscribe(
     onCreate: () -> Unit = {},
     onStart: () -> Unit = {},
     onResume: () -> Unit = {},

@@ -1,8 +1,8 @@
 package com.bumble.appyx.utils.testing.unit.common.helper
 
 import com.bumble.appyx.navigation.children.nodeOrNull
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.platform.PlatformLifecycle
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
@@ -17,7 +17,7 @@ class ParentNodeTestHelper<InteractionTarget : Any, N : ParentNode<InteractionTa
 
     fun <InteractionTarget : Any> assertChildHasLifecycle(
         interactionTarget: InteractionTarget,
-        state: PlatformLifecycle.State
+        state: CommonLifecycle.State
     ) {
         val childMap = node.children.value
         val key = childMap.keys.find { it.interactionTarget == interactionTarget }

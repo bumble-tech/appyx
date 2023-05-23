@@ -1,8 +1,5 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
-import com.bumble.appyx.navigation.platform.PlatformLifecycle
-import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
 import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
 import kotlinx.coroutines.CoroutineScope
 
@@ -16,10 +13,10 @@ import kotlinx.coroutines.CoroutineScope
  * - INITIALIZED + DESTROYED -> DESTROYED
  */
 internal class MinimumCombinedLifecycle(
-    vararg lifecycles: PlatformLifecycle,
-) : PlatformLifecycleOwner {
+    vararg lifecycles: CommonLifecycle,
+) : CommonLifecycleOwner {
     private val registry = PlatformLifecycleRegistry.create(this)
-    private val lifecycles = ArrayList<PlatformLifecycle>()
+    private val lifecycles = ArrayList<CommonLifecycle>()
 
     init {
         /*
@@ -30,10 +27,10 @@ internal class MinimumCombinedLifecycle(
         lifecycles.sortedBy { it.currentState }.forEach { manage(it) }
     }
 
-    override val lifecycle: PlatformLifecycle = registry
+    override val lifecycle: CommonLifecycle = registry
     override val lifecycleScope: CoroutineScope = registry.coroutineScope
 
-    fun manage(lifecycle: PlatformLifecycle) {
+    fun manage(lifecycle: CommonLifecycle) {
         lifecycles += lifecycle
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onCreate() {
@@ -66,7 +63,7 @@ internal class MinimumCombinedLifecycle(
     private fun update() {
         lifecycles
             .minByOrNull { it.currentState }
-            ?.takeIf { it.currentState != PlatformLifecycle.State.INITIALIZED }
+            ?.takeIf { it.currentState != CommonLifecycle.State.INITIALIZED }
             ?.also { registry.setCurrentState(it.currentState) }
     }
 

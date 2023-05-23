@@ -1,9 +1,12 @@
 package com.bumble.appyx.navigation.platform
 
-expect class PlatformLifecycleRegistry : PlatformLifecycle {
-    fun setCurrentState(state: PlatformLifecycle.State)
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycleOwner
+
+expect class PlatformLifecycleRegistry : CommonLifecycle {
+    fun setCurrentState(state: CommonLifecycle.State)
 
     companion object {
-        fun create(owner: PlatformLifecycleOwner): PlatformLifecycleRegistry
+        fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry
     }
 }

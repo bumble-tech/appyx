@@ -19,7 +19,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.integrationpoint.LocalIntegrationPoint
-import com.bumble.appyx.navigation.platform.AndroidPlatformLifecycle
+import com.bumble.appyx.navigation.platform.AndroidLifecycle
 
 /**
  * This Composable demonstrates how to add Appyx into Jetpack Compose Navigation.
@@ -70,7 +70,7 @@ internal fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: 
 @Composable
 internal fun AppyxRoute(onGoogleNavigationClick: () -> Unit) {
     NodeHost(
-        lifecycle = AndroidPlatformLifecycle(LocalLifecycleOwner.current.lifecycle),
+        lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
         integrationPoint = LocalIntegrationPoint.current
     ) {
         ComposeNavigationContainerNode(

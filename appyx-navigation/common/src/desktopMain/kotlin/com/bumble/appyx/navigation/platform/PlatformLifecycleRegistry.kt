@@ -1,56 +1,61 @@
 package com.bumble.appyx.navigation.platform
 
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycleOwner
+import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
+import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
 
 
 actual class PlatformLifecycleRegistry(
     lifecycleCoroutineScope: CoroutineScope,
-) : PlatformLifecycle {
+) : CommonLifecycle {
 
     private val managedDefaultLifecycleObservers: MutableList<DefaultPlatformLifecycleObserver> =
         ArrayList()
     private val managedLifecycleEventObservers: MutableList<PlatformLifecycleEventObserver> =
         ArrayList()
 
-    private var _currentState: PlatformLifecycle.State = PlatformLifecycle.State.INITIALIZED
-    override var currentState: PlatformLifecycle.State
+    private var _currentState: CommonLifecycle.State = CommonLifecycle.State.INITIALIZED
+    override var currentState: CommonLifecycle.State
         get() = _currentState
         set(value) {
             when (value) {
-                PlatformLifecycle.State.INITIALIZED -> Unit
-                PlatformLifecycle.State.CREATED -> {
+                CommonLifecycle.State.INITIALIZED -> Unit
+                CommonLifecycle.State.CREATED -> {
                     managedDefaultLifecycleObservers.forEach { it.onCreate() }
                     managedLifecycleEventObservers.forEach {
                         it.onStateChanged(
                             value,
-                            PlatformLifecycle.Event.ON_CREATE
+                            CommonLifecycle.Event.ON_CREATE
                         )
                     }
                 }
-                PlatformLifecycle.State.STARTED -> {
+                CommonLifecycle.State.STARTED -> {
                     managedDefaultLifecycleObservers.forEach { it.onStart() }
                     managedLifecycleEventObservers.forEach {
                         it.onStateChanged(
                             value,
-                            PlatformLifecycle.Event.ON_START
+                            CommonLifecycle.Event.ON_START
                         )
                     }
                 }
-                PlatformLifecycle.State.RESUMED -> {
+                CommonLifecycle.State.RESUMED -> {
                     managedDefaultLifecycleObservers.forEach { it.onResume() }
                     managedLifecycleEventObservers.forEach {
                         it.onStateChanged(
                             value,
-                            PlatformLifecycle.Event.ON_RESUME
+                            CommonLifecycle.Event.ON_RESUME
                         )
                     }
                 }
-                PlatformLifecycle.State.DESTROYED -> {
+                CommonLifecycle.State.DESTROYED -> {
                     managedDefaultLifecycleObservers.forEach { it.onDestroy() }
                     managedLifecycleEventObservers.forEach {
                         it.onStateChanged(
                             value,
-                            PlatformLifecycle.Event.ON_DESTROY
+                            CommonLifecycle.Event.ON_DESTROY
                         )
                     }
                 }
@@ -74,11 +79,11 @@ actual class PlatformLifecycleRegistry(
         }
     }
 
-    actual fun setCurrentState(state: PlatformLifecycle.State) {
+    actual fun setCurrentState(state: CommonLifecycle.State) {
     }
 
     actual companion object {
-        actual fun create(owner: PlatformLifecycleOwner): PlatformLifecycleRegistry {
+        actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry {
             TODO("Not yet implemented")
         }
     }

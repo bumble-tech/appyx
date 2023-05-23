@@ -9,7 +9,7 @@ import androidx.test.core.app.ActivityScenario
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.platform.AndroidPlatformLifecycle
+import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.utils.testing.ui.rules.AppyxTestActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -27,7 +27,7 @@ class AppyxTestScenario<T : Node>(
         AppyxTestActivity.composableView = { activity ->
             decorator {
                 NodeHost(
-                    lifecycle = AndroidPlatformLifecycle(LocalLifecycleOwner.current.lifecycle),
+                    lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                     integrationPoint = activity.appyxIntegrationPoint,
                 ) { buildContext ->
                     node = nodeFactory.create(buildContext)

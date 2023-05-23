@@ -9,7 +9,7 @@ import androidx.test.rule.ActivityTestRule
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.platform.AndroidPlatformLifecycle
+import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
@@ -47,7 +47,7 @@ open class AppyxActivityTestRule<T : Node>(
         AppyxTestActivity.composableView = { activity ->
             decorator {
                 NodeHost(
-                    lifecycle = AndroidPlatformLifecycle(LocalLifecycleOwner.current.lifecycle),
+                    lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                     integrationPoint = activity.appyxIntegrationPoint
                 ) { buildContext ->
                     node = nodeFactory.create(buildContext)

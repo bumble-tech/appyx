@@ -12,12 +12,12 @@ import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
-import com.bumble.appyx.navigation.platform.PlatformLifecycle
 import com.bumble.appyx.navigation.plugin.Destroyable
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
@@ -103,7 +103,7 @@ open class Node internal constructor(
     open fun onBuilt() {
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
-        updateLifecycleState(PlatformLifecycle.State.CREATED)
+        updateLifecycleState(CommonLifecycle.State.CREATED)
         plugins<NodeReadyObserver<Node>>().forEach { it.init(this) }
         plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
     }
@@ -123,9 +123,9 @@ open class Node internal constructor(
 
     }
 
-    override fun updateLifecycleState(state: PlatformLifecycle.State) {
+    override fun updateLifecycleState(state: CommonLifecycle.State) {
         if (lifecycle.currentState == state) return
-        if (lifecycle.currentState == PlatformLifecycle.State.DESTROYED && state != PlatformLifecycle.State.DESTROYED) {
+        if (lifecycle.currentState == CommonLifecycle.State.DESTROYED && state != CommonLifecycle.State.DESTROYED) {
             Appyx.reportException(
                 IllegalStateException(
                     "Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}"
@@ -134,7 +134,7 @@ open class Node internal constructor(
             return
         }
         nodeLifecycle.updateLifecycleState(state)
-        if (state == PlatformLifecycle.State.DESTROYED) {
+        if (state == CommonLifecycle.State.DESTROYED) {
             if (!integrationPoint.isChangingConfigurations) {
                 retainedInstanceStore.clearStore(id)
             }

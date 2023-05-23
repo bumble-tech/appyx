@@ -4,8 +4,6 @@ import com.bumble.appyx.interactions.core.model.InteractionModel
 import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.nodeOrNull
-import com.bumble.appyx.navigation.platform.PlatformLifecycle
-import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
 import com.bumble.appyx.navigation.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +23,7 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
     private val coroutineScope: CoroutineScope,
 ) {
 
-    private val lifecycleState = MutableStateFlow(PlatformLifecycle.State.INITIALIZED)
+    private val lifecycleState = MutableStateFlow(CommonLifecycle.State.INITIALIZED)
 
     /**
      * Propagates the parent lifecycle to children.
@@ -37,7 +35,7 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
      * Otherwise a child node lifecycle might be updated before the parent.
      * It leads to incorrect registration order of back handlers.
      */
-    fun propagateLifecycleToChildren(state: PlatformLifecycle.State) {
+    fun propagateLifecycleToChildren(state: CommonLifecycle.State) {
         lifecycleState.value = state
     }
 
@@ -58,24 +56,24 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
                     children
                         .value
                         .values
-                        .forEach { entry -> entry.setState(PlatformLifecycle.State.DESTROYED) }
+                        .forEach { entry -> entry.setState(CommonLifecycle.State.DESTROYED) }
                 }
                 .collect { (parentLifecycleState, screenState, children) ->
                     screenState.onScreen.forEach { key ->
                         val childState =
-                            minOf(parentLifecycleState, PlatformLifecycle.State.RESUMED)
+                            minOf(parentLifecycleState, CommonLifecycle.State.RESUMED)
                         children.current[key]?.setState(childState)
                     }
 
                     screenState.offScreen.forEach { key ->
                         if (keepMode == ChildEntry.KeepMode.KEEP) {
                             val childState =
-                                minOf(parentLifecycleState, PlatformLifecycle.State.CREATED)
+                                minOf(parentLifecycleState, CommonLifecycle.State.CREATED)
                             children.current[key]?.setState(childState)
                         } else {
                             // Look up in the previous because in the current it is already suspended
                             // and does not have a reference to the node
-                            children.previous?.get(key)?.setState(PlatformLifecycle.State.DESTROYED)
+                            children.previous?.get(key)?.setState(CommonLifecycle.State.DESTROYED)
                         }
                     }
 
@@ -83,14 +81,14 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
                         val removedKeys = children.previous.keys - children.current.keys
                         removedKeys.forEach { key ->
                             val removedChild = children.previous[key]
-                            removedChild?.setState(PlatformLifecycle.State.DESTROYED)
+                            removedChild?.setState(CommonLifecycle.State.DESTROYED)
                         }
                     }
                 }
         }
     }
 
-    private fun ChildEntry<*>.setState(state: PlatformLifecycle.State) {
+    private fun ChildEntry<*>.setState(state: CommonLifecycle.State) {
         nodeOrNull?.updateLifecycleState(state)
     }
 

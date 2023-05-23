@@ -10,11 +10,11 @@ import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
-import com.bumble.appyx.navigation.platform.PlatformLifecycle
-import com.bumble.appyx.navigation.platform.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
@@ -27,7 +27,7 @@ import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
 fun <N : Node> NodeHost(
-    lifecycle: PlatformLifecycle,
+    lifecycle: CommonLifecycle,
     integrationPoint: IntegrationPoint,
     modifier: Modifier = Modifier,
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
@@ -35,7 +35,7 @@ fun <N : Node> NodeHost(
 ) {
     val node by rememberNode(factory, customisations, integrationPoint)
     DisposableEffect(node) {
-        onDispose { node.updateLifecycleState(PlatformLifecycle.State.DESTROYED) }
+        onDispose { node.updateLifecycleState(CommonLifecycle.State.DESTROYED) }
     }
     node.Compose(modifier = modifier)
     DisposableEffect(lifecycle) {

@@ -1,9 +1,9 @@
 package com.bumble.appyx.navigation.children
 
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.MinimumCombinedLifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.platform.PlatformLifecycle
 import kotlin.reflect.KClass
 import kotlin.reflect.cast
 import kotlin.reflect.safeCast
@@ -15,7 +15,7 @@ internal sealed class ChildAwareCallbackInfo {
     class Single<T : Any>(
         private val child: KClass<T>,
         private val callback: ChildCallback<T>,
-        private val parentLifecycle: PlatformLifecycle,
+        private val parentLifecycle: CommonLifecycle,
     ) : ChildAwareCallbackInfo() {
 
         fun onNewNodeAppeared(newNode: Node) {
@@ -43,7 +43,7 @@ internal sealed class ChildAwareCallbackInfo {
         private val child1: KClass<T1>,
         private val child2: KClass<T2>,
         private val callback: ChildrenCallback<T1, T2>,
-        private val parentLifecycle: PlatformLifecycle,
+        private val parentLifecycle: CommonLifecycle,
     ) : ChildAwareCallbackInfo() {
 
         fun onNewNodeAppeared(

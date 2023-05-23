@@ -16,7 +16,7 @@ import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.integrationpoint.NodeActivity
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.container.ContainerNode
-import com.bumble.appyx.navigation.platform.AndroidPlatformLifecycle
+import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 
 @ExperimentalUnitApi
@@ -33,7 +33,7 @@ class MainActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Column {
                         NodeHost(
-                            AndroidPlatformLifecycle(LocalLifecycleOwner.current.lifecycle),
+                            AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                             integrationPoint = appyxIntegrationPoint
                         ) {
                             ContainerNode(
