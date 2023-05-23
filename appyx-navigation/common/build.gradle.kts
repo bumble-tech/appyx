@@ -40,6 +40,7 @@ kotlin {
             dependencies {
                 api(libs.androidx.appcompat)
                 api(libs.androidx.core)
+                implementation(libs.androidx.activity.compose)
             }
         }
         val androidTest by getting {

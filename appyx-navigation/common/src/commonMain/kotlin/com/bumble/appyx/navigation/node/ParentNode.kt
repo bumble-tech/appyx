@@ -31,6 +31,7 @@ import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
+import com.bumble.appyx.navigation.platform.PlatformBackHandler
 import com.bumble.appyx.navigation.platform.PlatformLifecycle
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -139,7 +140,7 @@ abstract class ParentNode<InteractionTarget : Any>(
         val canHandleBack = interactionModel
             .canHandeBackPress()
             .collectAsState(initial = false)
-        BackHandler(canHandleBack.value) {
+        PlatformBackHandler(canHandleBack.value) {
             interactionModel.handleBackPress()
         }
     }
