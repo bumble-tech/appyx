@@ -6,7 +6,6 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.platform.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.platform.PlatformLifecycle
-import com.bumble.appyx.navigation.platform.PlatformLifecycleOwner
 import com.bumble.appyx.navigation.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,7 +93,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
 
     private fun PlatformLifecycle.removeWhenDestroyed(info: ChildAwareCallbackInfo) {
         addObserver(object : DefaultPlatformLifecycleObserver {
-            override fun onDestroy(owner: PlatformLifecycleOwner) {
+            override fun onDestroy() {
                 callbacks.remove(info)
             }
         })
