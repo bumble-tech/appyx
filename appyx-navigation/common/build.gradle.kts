@@ -28,7 +28,7 @@ kotlin {
                 api(project(":utils:multiplatform"))
                 implementation(libs.kotlinx.serialization.json)
                 implementation(project(":utils:customisations"))
-                implementation(project(":appyx-interactions:appyx-interactions"))
+                api(project(":appyx-interactions:appyx-interactions"))
             }
         }
         val commonTest by getting {

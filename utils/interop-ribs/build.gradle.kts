@@ -30,7 +30,7 @@ android {
 }
 
 dependencies {
-    api(project(":appyx-navigation:common"))
+    api(project(":appyx-navigation:android"))
     api(libs.ribs.base)
     api(libs.ribs.compose)
 

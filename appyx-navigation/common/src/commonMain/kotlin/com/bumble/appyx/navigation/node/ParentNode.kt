@@ -108,7 +108,7 @@ abstract class ParentNode<InteractionTarget : Any>(
 
 
         child?.let {
-            decorator(child = PermanentChildRender(it.node))
+            decorator(PermanentChildRender(it.node))
         }
     }
 
