@@ -2,6 +2,7 @@ package com.bumble.appyx.components.spotlight.model
 
 import com.bumble.appyx.components.spotlight.InteractionTarget.Child1
 import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
+import com.bumble.appyx.components.spotlight.InteractionTarget.Child3
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.Next
 import com.bumble.appyx.components.spotlight.operation.UpdateElements
@@ -36,7 +37,7 @@ class SpotlightModelTest {
     }
 
     @Test
-    fun GIVEN_empty_spotlight_WHEN_updated_with_element_THEN_state_contains_element_and_sets_index() {
+    fun GIVEN_empty_spotlight_WHEN_updated_with_element_THEN_state_contains_elements() {
         val spotlight = SpotlightModel(
             items = listOf(),
             savedStateMap = null
@@ -56,10 +57,45 @@ class SpotlightModelTest {
             expected = newElements,
             actual = spotlight.elements.value.map { it.interactionTarget }.toList(),
         )
+    }
+
+    @Test
+    fun GIVEN_empty_spotlight_WHEN_updated_with_element_THEN_sets_provided_active_index() {
+        val spotlight = SpotlightModel(
+            items = listOf(),
+            savedStateMap = null
+        )
+
+        val newElements = listOf(Child1, Child2)
+        val newActiveIndex = 1f
+
+        spotlight.operation(
+            UpdateElements(
+                items = newElements,
+                initialActiveIndex = newActiveIndex
+            )
+        )
 
         assertEquals(
             expected = newActiveIndex,
             actual = spotlight.output.value.currentTargetState.activeIndex,
+        )
+    }
+
+    @Test
+    fun GIVEN_spotlight_WHEN_updated_with_elements_different_size_THEN_state_contains_element() {
+        val spotlight = SpotlightModel(
+            items = listOf(Child1),
+            savedStateMap = null
+        )
+
+        val newElements = listOf(Child2, Child3)
+
+        spotlight.operation(UpdateElements(items = newElements))
+
+        assertEquals(
+            expected = newElements,
+            actual = spotlight.elements.value.map { it.interactionTarget }.toList(),
         )
     }
 }

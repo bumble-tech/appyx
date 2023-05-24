@@ -31,15 +31,15 @@ class UpdateElements<InteractionTarget : Any>(
         val newSize = max(positions.size, items.size)
         val newPositions = ArrayList<Position<InteractionTarget>>(newSize)
         for (i in 0 until newSize) {
-            val elementForPosition =
+            val elementsForPosition =
                 mutableMapOf<Element<InteractionTarget>, SpotlightModel.State.ElementState>()
             if (i < positions.size) {
-                elementForPosition += positions[i].elements
+                elementsForPosition += positions[i].elements
             }
             if (i < items.size) {
-                elementForPosition += (items[i].asElement() to CREATED)
+                elementsForPosition += (items[i].asElement() to CREATED)
             }
-            newPositions.add(i, Position(elements = elementForPosition))
+            newPositions.add(i, Position(elements = elementsForPosition))
         }
         return baseLineState.copy(positions = newPositions)
     }
