@@ -3,7 +3,7 @@ package com.bumble.appyx.navigation.plugin
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.platform.OnBackPressedCallback
+import com.bumble.appyx.navigation.plugin.BackPressHandler.OnBackPressedCallback
 
 inline fun <reified P : Plugin> Node.plugins(): List<P> =
     this.plugins.filterIsInstance<P>()
@@ -49,4 +49,9 @@ interface BackPressHandler : Plugin {
             if (isEnabled) callback.handleOnBackPressed()
             isEnabled
         }
+
+    interface OnBackPressedCallback {
+        val isEnabled: Boolean
+        fun handleOnBackPressed()
+    }
 }
