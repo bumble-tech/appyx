@@ -62,7 +62,11 @@ class TargetUiState(
             ),
             scale = Scale(uiContext, scale,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { scroll ->
-                    scaleUpTo(cutOffCenter(positionInList.toFloat(), scroll, 0.15f), -0.1f, 1f)
+                    scaleUpTo(
+                        cutOffCenter(positionInList.toFloat(), scroll, 0.15f),
+                        Scale.Target.Scale(scaleX = -0.1f, scaleY = -0.1f),
+                        1f
+                    )
                 }
             ),
             rotationY = RotationY(uiContext, rotationY,

@@ -31,15 +31,15 @@ class CardsMotionController<InteractionTarget : Any>(
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
     private val hidden = TargetUiState(
-        scale = Scale.Target(0f)
+        scale = Scale.Target(Scale.Target.Scale(0f, 0f))
     )
 
     private val bottom = TargetUiState(
-        scale = Scale.Target(0.85f)
+        scale = Scale.Target(Scale.Target.Scale(0.85f, 0.85f))
     )
 
     private val top = TargetUiState(
-        scale = Scale.Target(1f),
+        scale = Scale.Target(Scale.Target.Scale(1f, 1f)),
         zIndex = ZIndex.Target(1f),
     )
 
@@ -50,7 +50,7 @@ class CardsMotionController<InteractionTarget : Any>(
                 y = 0.dp
             )
         ),
-        scale = Scale.Target(1f),
+        scale = Scale.Target(Scale.Target.Scale(1f, 1f)),
         zIndex = ZIndex.Target(2f),
         rotationZ = RotationZ.Target(-45f)
     )
@@ -62,7 +62,7 @@ class CardsMotionController<InteractionTarget : Any>(
                 y = 0.dp
             )
         ),
-        scale = Scale.Target(1f),
+        scale = Scale.Target(Scale.Target.Scale(1f, 1f)),
         zIndex = ZIndex.Target(2f),
         rotationZ = RotationZ.Target(45f)
     )

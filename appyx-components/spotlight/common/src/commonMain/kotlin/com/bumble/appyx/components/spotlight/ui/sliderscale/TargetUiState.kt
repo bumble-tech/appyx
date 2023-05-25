@@ -54,7 +54,10 @@ class TargetUiState(
             ),
             scale = Scale(uiContext, scale,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
-                    (abs(positionInList - it) - 0.15f).coerceIn(0f, 0.25f)
+                    Scale.Target.Scale(
+                        scaleX = (abs(positionInList - it) - 0.15f).coerceIn(0f, 0.25f),
+                        scaleY = (abs(positionInList - it) - 0.15f).coerceIn(0f, 0.25f)
+                    )
                 }
             )
         )

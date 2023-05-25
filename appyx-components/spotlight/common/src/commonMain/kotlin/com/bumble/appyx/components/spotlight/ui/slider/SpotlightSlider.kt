@@ -40,19 +40,19 @@ class SpotlightSlider<InteractionTarget : Any>(
 
     private val created: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset(0.dp, width)),
-        scale = Scale.Target(0f),
+        scale = Scale.Target(Scale.Target.Scale(0f, 0f)),
         alpha = Alpha.Target(1f),
     )
 
     private val standard: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset.Zero),
-        scale = Scale.Target(1f),
+        scale = Scale.Target(Scale.Target.Scale(1f, 1f)),
         alpha = Alpha.Target(1f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset(x = 0.dp, y = -height)),
-        scale = Scale.Target(0f),
+        scale = Scale.Target(Scale.Target.Scale(0f, 0f)),
         alpha = Alpha.Target(0f),
     )
 
