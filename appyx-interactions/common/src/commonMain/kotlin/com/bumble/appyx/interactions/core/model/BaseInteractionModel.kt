@@ -61,7 +61,11 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     private var motionControllerObserverJob: Job? = null
-    private var _motionController: MotionController<InteractionTarget, ModelState>? = null
+
+    private val _motionControllerFlow =
+        MutableStateFlow<MotionController<InteractionTarget, ModelState>?>(null)
+    val motionControllerFlow: StateFlow<MotionController<InteractionTarget, ModelState>?> =
+        _motionControllerFlow
 
     private var _gestureFactory: GestureFactory<InteractionTarget, ModelState> =
         gestureFactory(zeroSizeTransitionBounds)
@@ -105,6 +109,14 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
                 .elements
                 .collect {
                     _elements.emit(InteractionModel.Elements(offScreen = it))
+                }
+        }
+        scope.launch {
+            _motionControllerFlow
+                .collect { motionController ->
+                    if (motionController != null) {
+                        onMotionControllerReady(motionController)
+                    }
                 }
         }
     }
@@ -166,8 +178,8 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     override fun updateContext(uiContext: UiContext) {
         if (this.transitionBounds != uiContext.transitionBounds) {
             this.transitionBounds = uiContext.transitionBounds
-            _motionController = motionController(uiContext).also {
-                onMotionControllerReady(it)
+            _motionControllerFlow.update {
+                motionController(uiContext)
             }
             _gestureFactory = gestureFactory(transitionBounds)
         }
@@ -220,7 +232,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float>? = null
     ) {
-        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _motionController?.overrideAnimationSpec(
+        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _motionControllerFlow.value?.overrideAnimationSpec(
             animationSpec
         )
         val animatedSource = animated
