@@ -14,6 +14,7 @@ import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.LifecycleLogger
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
@@ -25,6 +26,7 @@ import com.bumble.appyx.navigation.plugin.UpNavigationHandler
 import com.bumble.appyx.navigation.plugin.plugins
 import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.navigation.store.RetainedInstanceStore
+import com.bumble.appyx.utils.multiplatform.BuildFlags
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
 
@@ -82,10 +84,9 @@ open class Node internal constructor(
     private var wasBuilt = false
 
     init {
-        // TODO: expose debug flag
-//        if (BuildConfig.DEBUG) {
-//            lifecycle.addObserver(LifecycleLogger(this))
-//        }
+        if (BuildFlags.DEBUG) {
+            lifecycle.addObserver(LifecycleLogger(this))
+        }
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onCreate() {
                 if (!wasBuilt) error("onBuilt was not invoked for $this")
