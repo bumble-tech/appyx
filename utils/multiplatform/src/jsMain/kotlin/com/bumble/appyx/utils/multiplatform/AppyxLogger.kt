@@ -1,11 +1,11 @@
-package com.bumble.appyx.interactions
+package com.bumble.appyx.utils.multiplatform
 
-import com.bumble.appyx.interactions.AppyxLoggingLevel.DEBUG
-import com.bumble.appyx.interactions.AppyxLoggingLevel.DISABLED
-import com.bumble.appyx.interactions.AppyxLoggingLevel.ERROR
-import com.bumble.appyx.interactions.AppyxLoggingLevel.INFO
-import com.bumble.appyx.interactions.AppyxLoggingLevel.VERBOSE
-import com.bumble.appyx.interactions.AppyxLoggingLevel.WARN
+import com.bumble.appyx.utils.multiplatform.AppyxLoggingLevel.DEBUG
+import com.bumble.appyx.utils.multiplatform.AppyxLoggingLevel.DISABLED
+import com.bumble.appyx.utils.multiplatform.AppyxLoggingLevel.ERROR
+import com.bumble.appyx.utils.multiplatform.AppyxLoggingLevel.INFO
+import com.bumble.appyx.utils.multiplatform.AppyxLoggingLevel.VERBOSE
+import com.bumble.appyx.utils.multiplatform.AppyxLoggingLevel.WARN
 
 actual object AppyxLogger {
 

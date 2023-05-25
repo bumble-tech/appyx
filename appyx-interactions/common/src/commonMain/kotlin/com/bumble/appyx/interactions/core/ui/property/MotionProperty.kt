@@ -12,10 +12,10 @@ import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.SystemClock
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.mapState
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update

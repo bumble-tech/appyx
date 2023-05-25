@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions
+package com.bumble.appyx.utils.multiplatform
 
 
 object AppyxLoggingLevel {

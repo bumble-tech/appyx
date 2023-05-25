@@ -26,7 +26,11 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
             }
         }
-        val androidMain by getting
+        val androidMain by getting {
+            dependencies {
+                api(libs.androidx.appcompat)
+            }
+        }
         val desktopMain by getting
         val jsMain by getting
     }

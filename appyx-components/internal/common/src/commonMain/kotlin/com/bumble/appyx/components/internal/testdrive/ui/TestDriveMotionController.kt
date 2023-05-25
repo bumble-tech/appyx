@@ -5,14 +5,13 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.components.demos.testdrive.ui.TargetUiState
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.A
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.B
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
-import com.bumble.appyx.components.demos.testdrive.ui.TargetUiState
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
@@ -25,6 +24,7 @@ import com.bumble.appyx.transitionmodel.testdrive.ui.md_light_blue_500
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_light_green_500
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_red_500
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_yellow_500
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlin.math.abs
 
 class TestDriveMotionController<InteractionTarget : Any>(
