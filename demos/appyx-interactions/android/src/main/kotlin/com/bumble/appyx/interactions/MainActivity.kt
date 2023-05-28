@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -29,7 +30,7 @@ import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperimen
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
-import com.bumble.appyx.interactions.sample.BackStackExperimentDebug
+import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.theme.AppyxTheme
 import com.bumble.appyx.interactions.theme.appyx_dark
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
                         }
                         when (content) {
                             0 -> DatingCards()
-                            1 -> SpotlightExperiment { SpotlightSlider(it) }
+                            1 -> SpotlightExperiment(orientation = Orientation.Vertical, reverseOrientation = true) { SpotlightStack3D(it) }
                             2 -> SpotlightExperiment { SpotlightSliderScale(it) }
                             3 -> SpotlightExperiment { SpotlightSliderRotation(it) }
                             4 -> TestDriveExperiment()
