@@ -163,5 +163,17 @@ fun <InteractionTarget : Any> SpotlightUi(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SpotlightExperimentInVertical(
+    motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
+) {
+    SpotlightExperiment(
+        orientation = Orientation.Vertical,
+        reverseOrientation = true,
+        motionController = motionController
+    )
+}
+
 const val SPOTLIGHT_EXPERIMENT_TEST_HELPER = "TheChild"
 
