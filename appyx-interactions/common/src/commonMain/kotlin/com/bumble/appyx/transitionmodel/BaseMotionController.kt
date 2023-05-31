@@ -263,8 +263,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         val fromValue = fieldOfState(segment.fromState)
         val targetValue = fieldOfState(segment.targetState)
 
-        // If the viewpoint value was updated via a GEOMETRY operation mode, then it was applied both to the
-        // start and end values (see [BaseTransitionModel.updateGeometry()], and they should be the same.
+        // If the viewpoint value was updated via a IMPOSED operation mode, then it was applied both to the
+        // start and end values (see [BaseTransitionModel.impose()], and they should be the same.
         // This means that even though we have a Segment, the interpolation is working on some other part of
         // the ModelState, not the viewpoint, and we should still consider the viewpoint value as a separate concern,
         // that we need to animate.
