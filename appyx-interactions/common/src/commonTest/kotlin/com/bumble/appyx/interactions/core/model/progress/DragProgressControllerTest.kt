@@ -8,7 +8,6 @@ import com.bumble.appyx.InteractionTarget.Child2
 import com.bumble.appyx.interactions.core.TestGestures
 import com.bumble.appyx.interactions.core.TestTransitionModel
 import kotlin.test.Test
-import kotlin.test.assertFails
 import kotlin.test.asserter
 
 class DragProgressControllerTest {
@@ -31,4 +30,5 @@ class DragProgressControllerTest {
             asserter.fail("No exception expected but $any")
         }
     }
+
 }
