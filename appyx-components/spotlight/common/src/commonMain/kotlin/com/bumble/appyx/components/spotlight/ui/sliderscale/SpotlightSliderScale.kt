@@ -24,7 +24,10 @@ class SpotlightSliderScale<InteractionTarget : Any>(
 ) {
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
-    private val scrollX = GenericFloatProperty(uiContext, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
+    private val scrollX = GenericFloatProperty(
+        uiContext,
+        Target(0f)
+    ) // TODO sync this with the model's initial value rather than assuming 0
     override val geometryMappings: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
@@ -32,17 +35,17 @@ class SpotlightSliderScale<InteractionTarget : Any>(
 
     private val created: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset(0.dp, width)),
-        scale = Scale.Target(0f),
+        scale = Scale.Target(value = Scale.Target.Scale(0f, 0f)),
     )
 
     private val standard: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset.Zero),
-        scale = Scale.Target(1f),
+        scale = Scale.Target(value = Scale.Target.Scale(1f, 1f)),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
         position = Position.Target(DpOffset(x = 0.dp, y = -height)),
-        scale = Scale.Target(0f),
+        scale = Scale.Target(value = Scale.Target.Scale(0f, 0f)),
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
@@ -64,7 +67,10 @@ class SpotlightSliderScale<InteractionTarget : Any>(
         }
     }
 
-    override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
+    override fun mutableUiStateFor(
+        uiContext: UiContext,
+        targetUiState: TargetUiState
+    ): MutableUiState =
         targetUiState.toMutableState(uiContext, scrollX.renderValueFlow, width)
 }
 

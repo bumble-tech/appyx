@@ -1,5 +1,6 @@
 package com.bumble.appyx.interactions.core.ui.math
 
+import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import kotlin.math.abs
 import kotlin.math.sign
 
@@ -28,3 +29,14 @@ fun cutOffCenterSigned(ownValue: Float, movingValue: Float, halfCenterRange: Flo
 
 fun scaleUpTo(v: Float, scale: Float, slope: Float) =
     (slope * scale * v).coerceIn(-abs(scale), abs(scale))
+
+fun scaleUpTo(
+    v: Float,
+    scale: Scale.Target.Scale,
+    slope: Float
+) =
+    Scale.Target.Scale(
+        scaleX = (slope * scale.scaleX * v).coerceIn(-abs(scale.scaleX), abs(scale.scaleX)),
+        scaleY = (slope * scale.scaleY * v).coerceIn(-abs(scale.scaleY), abs(scale.scaleY))
+    )
+
