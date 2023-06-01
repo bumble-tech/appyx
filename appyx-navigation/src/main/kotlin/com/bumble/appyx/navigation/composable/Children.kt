@@ -36,11 +36,11 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
     clipToBounds: Boolean = false,
     gestureSpec: GestureSpec = GestureSpec(),
     noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
-        children { child, frameModel ->
+        children { child, elementUiModel ->
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
-                    key = frameModel.element,
+                    key = elementUiModel.element,
                     gestureSpec = gestureSpec
                 )
             )

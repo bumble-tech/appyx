@@ -108,8 +108,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         update: Update<ModelState>
     ) {
         LaunchedEffect(update, this) {
-            // make sure to use scope created by Launched effect as this scope should be cancelled
-            // when associated FrameModel cease to exist
+            // Make sure to use the scope created by LaunchedEffect as this scope should be cancelled
+            // when the associated ElementUiModel ceases to exist
             launch {
                 if (update.animate) {
                     mutableUiState.animateTo(
@@ -130,8 +130,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         matchedTargetUiState: MatchedTargetUiState<InteractionTarget, TargetUiState>
     ) {
         LaunchedEffect(this) {
-            // make sure to use scope created by Launched effect as this scope should be cancelled
-            // when associated FrameModel cease to exist
+            // Make sure to use the scope created by LaunchedEffect as this scope should be cancelled
+            // when the associated ElementUiModel ceases to exist
             launch {
                 mutableUiState.isAnimating
                     .distinctUntilChanged()

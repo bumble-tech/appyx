@@ -145,11 +145,11 @@ fun <InteractionTarget : Any> TestDriveUi(
             screenHeightPx = screenHeightPx,
             colors = colors,
             interactionModel = testDrive,
-        ) { frameModel ->
+        ) { elementUiModel ->
             Box(
                 modifier = Modifier.size(60.dp)
-                    .then(frameModel.modifier)
-                    .pointerInput(frameModel.element.id) {
+                    .then(elementUiModel.modifier)
+                    .pointerInput(elementUiModel.element.id) {
                         detectDragGestures(
                             onDrag = { change, dragAmount ->
                                 change.consume()
