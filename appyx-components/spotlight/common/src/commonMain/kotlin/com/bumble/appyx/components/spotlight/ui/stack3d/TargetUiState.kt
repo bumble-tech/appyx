@@ -5,9 +5,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.math.clamp
+import com.bumble.appyx.interactions.core.ui.math.smoothstep
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
+import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
@@ -40,6 +43,7 @@ class TargetUiState(
         scrollX: StateFlow<Float>,
         itemWidth: Dp,
         itemHeight: Dp,
+        itemsInStack: Int = 3,
     ): MutableUiState {
         return MutableUiState(
             uiContext = uiContext,
@@ -71,7 +75,7 @@ class TargetUiState(
                 uiContext = uiContext,
                 target = alpha,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
-                    clamp(it, 0f, 1f) + clamp(-it - 3f, 0f, 1f)
+                    clamp(it, 0f, 1f) + clamp(-it - itemsInStack, 0f, 1f)
                 },
             ),
             zIndex = ZIndex(
@@ -80,24 +84,5 @@ class TargetUiState(
                 displacement = scrollX.mapState(uiContext.coroutineScope) { -it }
             ),
         )
-    }
-
-    private companion object {
-
-        /**
-         * Based on the OpenGL Shading Language clamp function.
-         * https://registry.khronos.org/OpenGL-Refpages/gl4/html/clamp.xhtml
-         */
-        fun clamp(x: Float, min: Float, max: Float): Float =
-            x.coerceIn(min, max)
-
-        /**
-         * Based on the OpenGL Shading Language smoothstep function.
-         * https://registry.khronos.org/OpenGL-Refpages/gl4/html/smoothstep.xhtml
-         */
-        fun smoothstep(edge0: Float, edge1: Float, x: Float): Float =
-            clamp((x - edge0) / (edge1 - edge0), 0f, 1f).run {
-                this * this * (3f - 2f * this)
-            }
     }
 }

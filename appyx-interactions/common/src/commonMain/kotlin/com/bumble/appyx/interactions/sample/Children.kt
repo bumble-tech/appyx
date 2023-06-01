@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
@@ -100,7 +101,6 @@ fun Element(
     Box(
         modifier = Modifier
             .then(elementUiModel.modifier)
-            .shadow(8.dp, shape = RoundedCornerShape(5))
             .clip(RoundedCornerShape(5))
             .then(if (color == null) Modifier else Modifier.background(backgroundColor))
             .then(modifier)
@@ -109,6 +109,7 @@ fun Element(
                 contentDescription?.let { this.contentDescription = it }
             }
     ) {
+
         Text(
             text = elementUiModel.element.interactionTarget.toString(),
             fontSize = 21.sp,
