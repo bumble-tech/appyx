@@ -3,36 +3,30 @@ package com.bumble.appyx.components.demos.cards
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.ui.CardsMotionController
+import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.sample.android.Children
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
+import kotlin.math.roundToInt
 
 sealed class DatingCardsInteractionTarget {
     class ProfileCard(val profile: Profile) : DatingCardsInteractionTarget()
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
     val density = LocalDensity.current
-
-    val coroutineScope = rememberCoroutineScope()
     val cards = remember {
         Cards(
             model = CardsModel(
@@ -41,7 +35,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
                 },
                 savedStateMap = null
             ),
-            motionController = { CardsMotionController(it)  },
+            motionController = { CardsMotionController(it) },
             gestureFactory = { CardsMotionController.Gestures(it) },
             animateSettle = true
         )
@@ -49,49 +43,35 @@ fun DatingCards(modifier: Modifier = Modifier) {
 
     InteractionModelSetup(cards)
 
-    Children(
+    DraggableChildren(
         modifier = modifier
             .fillMaxSize()
             .background(appyx_dark)
             .padding(16.dp),
+        screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
+        screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         interactionModel = cards,
-        element = {
-            ElementWrapper(
-                elementUiModel = it,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(it.element.id) {
-                        detectDragGestures(
-                            onDragStart = { position -> cards.onStartDrag(position) },
-                            onDrag = { change, dragAmount ->
-                                change.consume()
-                                cards.onDrag(dragAmount, density)
-                            },
-                            onDragEnd = {
-                                cards.onDragEnd(
-                                    completionThreshold = 0.15f,
-                                    completeGestureSpec = spring(stiffness = Spring.StiffnessLow),
-                                    revertGestureSpec = spring(stiffness = Spring.StiffnessMedium)
-                                )
-                            }
-                        )
-                    }
+        onDragStart = { position -> cards.onStartDrag(position) },
+        onDrag = { change, dragAmount, _ ->
+            change.consume()
+            cards.onDrag(dragAmount, density)
+            true
+        },
+        onDragEnd = {
+            cards.onDragEnd(
+                completionThreshold = 0.15f,
+                completeGestureSpec = spring(stiffness = Spring.StiffnessLow),
+                revertGestureSpec = spring(stiffness = Spring.StiffnessMedium)
             )
+        },
+
+        ) { elementUiModel ->
+        Box(
+            modifier = modifier
+                .then(elementUiModel.modifier)
+                .then(modifier)
+        ) {
+            ProfileCard(profile = elementUiModel.element.interactionTarget.profile)
         }
-    )
-}
-
-@Composable
-fun ElementWrapper(
-    elementUiModel: ElementUiModel<DatingCardsInteractionTarget.ProfileCard>,
-    modifier: Modifier = Modifier
-) {
-
-    Box(
-        modifier = modifier
-            .then(elementUiModel.modifier)
-            .then(modifier)
-    ) {
-        ProfileCard(profile = elementUiModel.element.interactionTarget.profile)
     }
 }

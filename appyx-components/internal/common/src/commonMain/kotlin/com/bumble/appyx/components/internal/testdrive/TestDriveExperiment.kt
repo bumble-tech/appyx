@@ -3,7 +3,6 @@ package com.bumble.appyx.components.internal.testdrive
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,7 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
@@ -31,13 +30,12 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController
 import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController.Companion.toTargetUiState
-import com.bumble.appyx.interactions.AppyxLogger
+import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.Children
 
 
 @Composable
@@ -61,9 +59,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
             scope = coroutineScope,
             model = model,
             progressAnimationSpec =
-            spring(stiffness = Spring.StiffnessLow)
-//                tween(200, easing = LinearEasing)
-            ,
+            spring(stiffness = Spring.StiffnessLow),
             animateSettle = true,
             motionController = {
                 TestDriveMotionController(
@@ -133,6 +129,8 @@ fun <InteractionTarget : Any> TestDriveUi(
     model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier
 ) {
+    val density = LocalDensity.current
+
     Box(
         modifier
             .padding(
@@ -140,27 +138,26 @@ fun <InteractionTarget : Any> TestDriveUi(
                 vertical = 12.dp
             )
     ) {
-        Children(
+        DraggableChildren(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            colors = colors,
             interactionModel = testDrive,
-        ) { frameModel ->
+            onDrag = { change, dragAmount, elementBoundingBox ->
+                if (elementBoundingBox.contains(change.position)) {
+                    change.consume()
+                    testDrive.onDrag(dragAmount, density)
+                    true
+                } else {
+                    change.consume()
+                    testDrive.onDragEnd()
+                    false
+                }
+            },
+            onDragEnd = { testDrive.onDragEnd() },
+        ) { elementUiModel ->
             Box(
                 modifier = Modifier.size(60.dp)
-                    .then(frameModel.modifier)
-                    .pointerInput(frameModel.element.id) {
-                        detectDragGestures(
-                            onDrag = { change, dragAmount ->
-                                change.consume()
-                                testDrive.onDrag(dragAmount, this)
-                            },
-                            onDragEnd = {
-                                AppyxLogger.d("drag", "end")
-                                testDrive.onDragEnd()
-                            }
-                        )
-                    }
+                    .then(elementUiModel.modifier)
             )
         }
 
