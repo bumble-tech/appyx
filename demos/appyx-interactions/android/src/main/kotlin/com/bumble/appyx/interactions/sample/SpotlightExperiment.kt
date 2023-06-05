@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.sample
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -40,6 +41,8 @@ import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 @Suppress("LongMethod", "MagicNumber")
 fun SpotlightExperiment(
     modifier: Modifier = Modifier,
+    orientation: Orientation = Orientation.Horizontal,
+    reverseOrientation: Boolean = false,
     motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
 ) {
     val items = listOf(
@@ -71,7 +74,7 @@ fun SpotlightExperiment(
             savedStateMap = null
         ),
         motionController = motionController,
-        gestureFactory = { SpotlightSlider.Gestures(it) },
+        gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
     )
 
@@ -125,6 +128,7 @@ fun <InteractionTarget : Any> SpotlightUi(
     color: Color = Color.Unspecified
 ) {
     Children(
+        clipToBounds = false,
         interactionModel = spotlight,
         modifier = modifier
             .padding(
@@ -157,6 +161,18 @@ fun <InteractionTarget : Any> SpotlightUi(
                     }
             )
         }
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SpotlightExperimentInVertical(
+    motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
+) {
+    SpotlightExperiment(
+        orientation = Orientation.Vertical,
+        reverseOrientation = true,
+        motionController = motionController
     )
 }
 
