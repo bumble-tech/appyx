@@ -8,6 +8,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -22,6 +23,7 @@ class RotationY(
     target: Target,
     visibilityThreshold: Float = 1f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
+    private val origin: TransformOrigin = TransformOrigin.Center,
 ) : MotionProperty<Float, AnimationVector1D>(
     uiContext = uiContext,
     animatable = Animatable(target.value, Float.VectorConverter),
@@ -32,6 +34,7 @@ class RotationY(
 
     class Target(
         val value: Float,
+        val origin: TransformOrigin = TransformOrigin.Center,
         val easing: Easing? = null,
     ) : MotionProperty.Target
 
@@ -43,6 +46,7 @@ class RotationY(
             val value by renderValueFlow.collectAsState()
             this.graphicsLayer {
                 rotationY = value
+                transformOrigin = origin
             }
         }
 

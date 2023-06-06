@@ -90,7 +90,8 @@ class SpotlightSlider<InteractionTarget : Any>(
 
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
-        private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
+        private val orientation: Orientation = Orientation.Horizontal,
+        private val reverseOrientation: Boolean = false,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
         private val width = transitionBounds.widthPx
         private val height = transitionBounds.heightPx
@@ -102,13 +103,13 @@ class SpotlightSlider<InteractionTarget : Any>(
             Orientation.Horizontal -> {
                 when (dragHorizontalDirection(delta)) {
                     Drag.HorizontalDirection.LEFT -> Gesture(
-                        operation = Next(KEYFRAME),
+                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) * -1 },
                         partial = { offset, progress -> offset.copy(x = progress * width * -1) }
                     )
 
                     else -> Gesture(
-                        operation = Previous(KEYFRAME),
+                        operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) },
                         partial = { offset, partial -> offset.copy(x = partial * width) }
                     )
@@ -118,14 +119,14 @@ class SpotlightSlider<InteractionTarget : Any>(
             Orientation.Vertical -> {
                 when (dragVerticalDirection(delta)) {
                     Drag.VerticalDirection.DOWN -> Gesture(
-                        operation = Next(KEYFRAME),
+                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.y / height) * -1 },
                         partial = { offset, partial -> offset.copy(y = partial * height * -1) }
                     )
 
                     else ->
                         Gesture(
-                            operation = Previous(KEYFRAME),
+                            operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
                             dragToProgress = { offset -> (offset.y / height) },
                             partial = { offset, partial -> offset.copy(y = partial * height) }
                         )

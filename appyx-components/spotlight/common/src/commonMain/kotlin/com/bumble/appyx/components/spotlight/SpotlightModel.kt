@@ -24,9 +24,11 @@ class SpotlightModel<InteractionTarget : Any>(
         val positions: @RawValue List<Position<InteractionTarget>>,
         val activeIndex: Float
     ) : Parcelable {
+
+        @Parcelize
         data class Position<InteractionTarget>(
             val elements: Map<Element<InteractionTarget>, ElementState> = mapOf()
-        )
+        ) : Parcelable
 
         enum class ElementState {
             CREATED, STANDARD, DESTROYED
