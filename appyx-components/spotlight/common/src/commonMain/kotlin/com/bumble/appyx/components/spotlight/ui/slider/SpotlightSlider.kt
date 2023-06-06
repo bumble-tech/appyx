@@ -15,8 +15,11 @@ import com.bumble.appyx.components.spotlight.operation.Previous
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
+import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
@@ -32,7 +35,10 @@ class SpotlightSlider<InteractionTarget : Any>(
 ) {
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
-    private val scrollX = GenericFloatProperty(uiContext, GenericFloatProperty.Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
+    private val scrollX = GenericFloatProperty(
+        uiContext,
+        GenericFloatProperty.Target(0f)
+    ) // TODO sync this with the model's initial value rather than assuming 0
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
@@ -75,7 +81,10 @@ class SpotlightSlider<InteractionTarget : Any>(
         }
     }
 
-    override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
+    override fun mutableUiStateFor(
+        uiContext: UiContext,
+        targetUiState: TargetUiState
+    ): MutableUiState =
         targetUiState.toMutableState(uiContext, scrollX.renderValueFlow, width)
 
 
@@ -90,42 +99,40 @@ class SpotlightSlider<InteractionTarget : Any>(
         override fun createGesture(
             delta: Offset,
             density: Density
-        ): Gesture<InteractionTarget, State<InteractionTarget>> {
-            return when (orientation) {
-                Orientation.Horizontal -> if (delta.x < 0) {
-                    Gesture(
+        ): Gesture<InteractionTarget, State<InteractionTarget>> = when (orientation) {
+            Orientation.Horizontal -> {
+                when (dragHorizontalDirection(delta)) {
+                    Drag.HorizontalDirection.LEFT -> Gesture(
                         operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) * -1 },
                         partial = { offset, progress -> offset.copy(x = progress * width * -1) }
                     )
-                } else {
-                    Gesture(
+
+                    else -> Gesture(
                         operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) },
                         partial = { offset, partial -> offset.copy(x = partial * width) }
                     )
                 }
+            }
 
-                Orientation.Vertical -> if (delta.y < 0) {
-                    Gesture(
+            Orientation.Vertical -> {
+                when (dragVerticalDirection(delta)) {
+                    Drag.VerticalDirection.DOWN -> Gesture(
                         operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.y / height) * -1 },
                         partial = { offset, partial -> offset.copy(y = partial * height * -1) }
                     )
-                } else {
-                    Gesture(
-                        operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
-                        dragToProgress = { offset -> (offset.y / height) },
-                        partial = { offset, partial -> offset.copy(y = partial * height) }
-                    )
+
+                    else ->
+                        Gesture(
+                            operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
+                            dragToProgress = { offset -> (offset.y / height) },
+                            partial = { offset, partial -> offset.copy(y = partial * height) }
+                        )
                 }
             }
         }
     }
-
-
-    operator fun DpOffset.times(multiplier: Int) =
-        DpOffset(x * multiplier, y * multiplier)
-
 }
 
