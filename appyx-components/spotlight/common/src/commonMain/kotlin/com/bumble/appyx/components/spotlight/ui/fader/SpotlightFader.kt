@@ -1,76 +1,62 @@
 package com.bumble.appyx.components.spotlight.ui.fader
 
+import DefaultAnimationSpec
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.SpringSpec
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.ui.unit.Dp
+import com.bumble.appyx.components.spotlight.SpotlightModel
+import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
+import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
+import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
+import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.transitionmodel.BaseMotionController
 
-// TODO BaseMotionController + dynamic on visibility calculation
-//class SpotlightFader<InteractionTarget : Any>(
-//    transitionParams: TransitionParams
-//) : Interpolator<InteractionTarget, SpotlightModel.State<InteractionTarget>> {
-//
-//    class Props(
-//        val alpha: Alpha,
-//        override val isVisible: Boolean
-//    ) : BaseProps
-//
-//    private val visible = Props(
-//        alpha = Alpha(1f),
-//        isVisible = true
-//    )
-//
-//    private val hidden = Props(
-//        alpha = Alpha(0f),
-//        isVisible = false
-//    )
-//
-//    // TODO Migrate to BaseMotionController
-//
-//    fun SpotlightModel.State.ElementState.isVisible() =
-//        when (this) {
-//            CREATED -> false
-//            STANDARD -> true
-//            DESTROYED -> false
-//        }
-//
-//    private fun <InteractionTarget> SpotlightModel.State<InteractionTarget>.toProps(): List<MatchedProps<InteractionTarget, SpotlightFader.Props>> {
-//        return positions.flatMapIndexed { index, position ->
-//            position.elements.map {
-//                val isVisible =
-//                    it.value.isVisible() && (activeIndex - activeWindow / 2 <= index && index <= activeIndex + activeWindow / 2)
-//                val target = if (isVisible) visible else hidden
-//                MatchedProps(
-//                    element = it.key,
-//                    props = Props(
-//                        alpha = target.alpha,
-//                        isVisible = true
-//                    )
-//                )
-//            }
-//        }
-//    }
-//
-//    override fun mapSegment(
-//        segment: Segment<SpotlightModel.State<InteractionTarget>>,
-//        segmentProgress: Float
-//    ): List<FrameModel<InteractionTarget>> {
-//        val (fromState, targetState) = segment.navTransition
-//        val fromProps = fromState.toProps()
-//        val targetProps = targetState.toProps()
-//
-//        // TODO: use a map instead of find
-//        return targetProps.map { t1 ->
-//            val t0 = fromProps.find { it.element.id == t1.element.id }!!
-//            val alpha = lerpFloat(t0.props.alpha.value, t1.props.alpha.value, segmentProgress)
-//
-//            FrameModel(
-//                navElement = t1.element,
-//                modifier = Modifier
-//                    .alpha(alpha),
-//                progress = segmentProgress,
-//                state = resolveNavElementVisibility(t0.props, t1.props, segmentProgress)
-//            )
-//        }
-//    }
-//
-//    override fun mapUpdate(update: Update<SpotlightModel.State<InteractionTarget>>): List<FrameModel<InteractionTarget>> {
-//        TODO("Not yet implemented")
-//    }
-//}
+
+class SpotlightFader<InteractionTarget : Any>(
+    uiContext: UiContext,
+    defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
+) : BaseMotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+    uiContext = uiContext,
+    defaultAnimationSpec = defaultAnimationSpec
+) {
+    private val hidden: TargetUiState = TargetUiState(
+        alpha = Alpha.Target(0f),
+    )
+
+    private val visible: TargetUiState = TargetUiState(
+        alpha = Alpha.Target(1f),
+    )
+
+    override fun SpotlightModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+        return positions.flatMapIndexed { index, position ->
+            position.elements.map {
+                MatchedTargetUiState(
+                    element = it.key,
+                    targetUiState = TargetUiState(
+                        base = if (index == activeIndex.toInt()) {
+                            when (it.value) {
+                                CREATED -> hidden
+                                STANDARD -> visible
+                                DESTROYED -> hidden
+                            }
+                        } else {
+                            hidden
+                        }
+                    )
+                )
+            }
+        }
+    }
+
+    override fun mutableUiStateFor(
+        uiContext: UiContext,
+        targetUiState: TargetUiState
+    ): MutableUiState =
+        targetUiState.toMutableState(uiContext)
+}
+
