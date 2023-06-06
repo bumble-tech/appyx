@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.core.ui.easing
 
 import androidx.compose.animation.core.Easing
-import com.bumble.appyx.interactions.core.ui.helper.mapFloat
+import com.bumble.appyx.interactions.core.ui.math.mapFloat
 
 /**
  * Expects two params such that: 0 <= min < max <= 1

@@ -32,7 +32,7 @@ class Scale(
     class Target(
         val value: Float,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
 
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement

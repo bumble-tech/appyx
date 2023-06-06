@@ -29,7 +29,9 @@ import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
+import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
+import com.bumble.appyx.interactions.sample.SpotlightExperimentInVertical
 import com.bumble.appyx.interactions.theme.AppyxTheme
 import com.bumble.appyx.interactions.theme.appyx_dark
 
@@ -65,7 +67,7 @@ class MainActivity : ComponentActivity() {
                         }
                         when (content) {
                             1 -> DatingCards()
-                            2 -> SpotlightExperiment { SpotlightSlider(it) }
+                            2 -> SpotlightExperimentInVertical { SpotlightStack3D(it) }
                             3 -> SpotlightExperiment { SpotlightSliderScale(it) }
                             4 -> SpotlightExperiment { SpotlightSliderRotation(it) }
                             5 -> SpotlightExperiment { SpotlightFader(it) }

@@ -32,8 +32,8 @@ class SpotlightSlider<InteractionTarget : Any>(
 ) {
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
-    private val scrollX = GenericFloatProperty(uiContext, 0f) // TODO sync this with the model's initial value rather than assuming 0
-    override val geometryMappings: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
+    private val scrollX = GenericFloatProperty(uiContext, GenericFloatProperty.Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
+    override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
         )
@@ -81,7 +81,8 @@ class SpotlightSlider<InteractionTarget : Any>(
 
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
-        private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
+        private val orientation: Orientation = Orientation.Horizontal,
+        private val reverseOrientation: Boolean = false,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
         private val width = transitionBounds.widthPx
         private val height = transitionBounds.heightPx
@@ -93,13 +94,13 @@ class SpotlightSlider<InteractionTarget : Any>(
             return when (orientation) {
                 Orientation.Horizontal -> if (delta.x < 0) {
                     Gesture(
-                        operation = Next(KEYFRAME),
+                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) * -1 },
                         partial = { offset, progress -> offset.copy(x = progress * width * -1) }
                     )
                 } else {
                     Gesture(
-                        operation = Previous(KEYFRAME),
+                        operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
                         dragToProgress = { offset -> (offset.x / width) },
                         partial = { offset, partial -> offset.copy(x = partial * width) }
                     )
@@ -107,13 +108,13 @@ class SpotlightSlider<InteractionTarget : Any>(
 
                 Orientation.Vertical -> if (delta.y < 0) {
                     Gesture(
-                        operation = Next(KEYFRAME),
+                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.y / height) * -1 },
                         partial = { offset, partial -> offset.copy(y = partial * height * -1) }
                     )
                 } else {
                     Gesture(
-                        operation = Previous(KEYFRAME),
+                        operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
                         dragToProgress = { offset -> (offset.y / height) },
                         partial = { offset, partial -> offset.copy(y = partial * height) }
                     )

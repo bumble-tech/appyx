@@ -45,6 +45,8 @@ abstract class MotionProperty<T, V : AnimationVector>(
     private val displacement: StateFlow<T>
 ) {
 
+    interface Target
+
     private var lastVelocity = animatable.velocity
 
     /**

@@ -18,6 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
@@ -72,12 +74,12 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 )
             }
     ) {
-        frames.value.forEach { frameModel ->
-            key(frameModel.element.id) {
-                frameModel.animationContainer()
-                val isVisible by frameModel.visibleState.collectAsState()
+        frames.value.forEach { elementUiModel ->
+            key(elementUiModel.element.id) {
+                elementUiModel.animationContainer()
+                val isVisible by elementUiModel.visibleState.collectAsState()
                 if (isVisible) {
-                    element.invoke(frameModel)
+                    element.invoke(elementUiModel)
                 }
             }
         }
@@ -107,6 +109,7 @@ fun Element(
                 contentDescription?.let { this.contentDescription = it }
             }
     ) {
+
         Text(
             text = elementUiModel.element.interactionTarget.toString(),
             fontSize = 21.sp,

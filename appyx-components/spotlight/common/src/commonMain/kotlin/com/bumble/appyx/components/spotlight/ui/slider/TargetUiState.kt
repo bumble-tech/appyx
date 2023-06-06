@@ -7,10 +7,12 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
+import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.abs
 
+@MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
     val position: Position.Target,
