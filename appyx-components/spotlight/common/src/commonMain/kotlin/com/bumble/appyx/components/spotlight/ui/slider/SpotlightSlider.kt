@@ -132,11 +132,6 @@ class SpotlightSlider<InteractionTarget : Any>(
                 }
             }
         }
-
-
-        operator fun DpOffset.times(multiplier: Int) =
-            DpOffset(x * multiplier, y * multiplier)
-
     }
 }
 
