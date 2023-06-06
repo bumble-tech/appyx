@@ -57,25 +57,21 @@ class TestDriveMotionController<InteractionTarget : Any>(
 
         private val a = TargetUiState(
             position = Position.Target(offsetA),
-            rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val b = TargetUiState(
             position = Position.Target(offsetB),
-            rotationZ = RotationZ.Target(90f),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val c = TargetUiState(
             position = Position.Target(offsetC),
-            rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val d = TargetUiState(
             position = Position.Target(offsetD),
-            rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }

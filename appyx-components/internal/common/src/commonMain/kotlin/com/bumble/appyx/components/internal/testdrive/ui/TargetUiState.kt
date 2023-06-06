@@ -9,6 +9,5 @@ import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 @MutableUiStateSpecs
 class TargetUiState(
     val position: Position.Target,
-    val rotationZ: RotationZ.Target,
     val backgroundColor: BackgroundColor.Target,
 )
