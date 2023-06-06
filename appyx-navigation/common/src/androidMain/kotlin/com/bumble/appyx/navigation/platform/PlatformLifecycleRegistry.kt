@@ -1,5 +1,6 @@
 package com.bumble.appyx.navigation.platform
 
+import android.app.Activity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -12,9 +13,12 @@ import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
 
 actual class PlatformLifecycleRegistry(
-    val androidLifecycleRegistry: LifecycleRegistry
+    androidOwner: LifecycleOwner
 ) : CommonLifecycle, androidx.lifecycle.DefaultLifecycleObserver,
     androidx.lifecycle.LifecycleEventObserver {
+
+    private var lifecycleOwner: LifecycleOwner? = androidOwner
+    private val androidLifecycleRegistry = LifecycleRegistry(androidOwner)
 
     private val managedDefaultLifecycleObservers: MutableList<DefaultPlatformLifecycleObserver> =
         ArrayList()
@@ -79,11 +83,14 @@ actual class PlatformLifecycleRegistry(
 
     override fun onDestroy(owner: LifecycleOwner) {
         managedDefaultLifecycleObservers.forEach { it.onDestroy() }
+        if ((owner as? Activity)?.isFinishing == true) {
+            lifecycleOwner = null
+        }
     }
 
     actual companion object {
         actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry =
-            PlatformLifecycleRegistry(LifecycleRegistry(object : LifecycleOwner {
+            PlatformLifecycleRegistry(object : LifecycleOwner {
                 override val lifecycle: Lifecycle
                     get() = when (val platformLifecycle = owner.lifecycle) {
                         is AndroidLifecycle -> platformLifecycle.androidLifecycle
@@ -92,6 +99,6 @@ actual class PlatformLifecycleRegistry(
                             "Unable to get android lifecycle from $platformLifecycle provided by $owner"
                         ))
                     }
-            }))
+            })
     }
 }
