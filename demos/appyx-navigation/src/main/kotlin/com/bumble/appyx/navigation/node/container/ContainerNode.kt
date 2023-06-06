@@ -16,6 +16,8 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
+import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -57,7 +59,10 @@ class ContainerNode(
         object DatingCards : InteractionTarget()
 
         @Parcelize
-        object SpotlightExperiment : InteractionTarget()
+        object SpotlightSlider : InteractionTarget()
+
+        @Parcelize
+        object SpotlightFader : InteractionTarget()
 
         @Parcelize
         object SpotlightExperimentDebug : InteractionTarget()
@@ -80,7 +85,14 @@ class ContainerNode(
             }
             is InteractionTarget.PermanentChild -> PermanentChildNode(buildContext)
             is InteractionTarget.DatingCards -> DatingCardsNode(buildContext)
-            is InteractionTarget.SpotlightExperiment -> SpotlightNode(buildContext)
+            is InteractionTarget.SpotlightSlider -> SpotlightNode(
+                buildContext,
+                { SpotlightSlider(it) }
+            )
+            is InteractionTarget.SpotlightFader -> SpotlightNode(
+                buildContext,
+                { SpotlightFader(it) }
+            )
             is InteractionTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
             is InteractionTarget.BackStack -> BackStackExamplesNode(buildContext)
             is InteractionTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
@@ -105,8 +117,11 @@ class ContainerNode(
                 TextButton(text = "Dating Cards") {
                     backStack.push(InteractionTarget.DatingCards)
                 }
-                TextButton(text = "Spotlight") {
-                    backStack.push(InteractionTarget.SpotlightExperiment)
+                TextButton(text = "Spotlight Slider") {
+                    backStack.push(InteractionTarget.SpotlightSlider)
+                }
+                TextButton(text = "Spotlight Fader") {
+                    backStack.push(InteractionTarget.SpotlightFader)
                 }
                 TextButton(text = "Spotlight Debug") {
                     backStack.push(InteractionTarget.SpotlightExperimentDebug)

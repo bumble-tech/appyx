@@ -29,7 +29,8 @@ import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
-import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
+import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -42,13 +43,14 @@ import kotlinx.parcelize.Parcelize
 
 class SpotlightNode(
     buildContext: BuildContext,
+    motionController: (UiContext) -> MotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>>,
     private val spotlight: Spotlight<InteractionTarget> = Spotlight(
         model = SpotlightModel(
             items = List(7) { InteractionTarget.Child(it) },
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { SpotlightSlider(it) }
+        motionController = motionController
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
