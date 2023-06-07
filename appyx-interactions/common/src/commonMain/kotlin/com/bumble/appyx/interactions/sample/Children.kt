@@ -18,8 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
@@ -48,7 +46,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     },
 ) {
     val density = LocalDensity.current
-    val frames = interactionModel.uiModels.collectAsState(listOf())
+    val elementUiModels = interactionModel.uiModels.collectAsState(listOf())
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
@@ -74,7 +72,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 )
             }
     ) {
-        frames.value.forEach { elementUiModel ->
+        elementUiModels.value.forEach { elementUiModel ->
             key(elementUiModel.element.id) {
                 elementUiModel.animationContainer()
                 val isVisible by elementUiModel.visibleState.collectAsState()

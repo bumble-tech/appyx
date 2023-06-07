@@ -118,7 +118,7 @@ class SpotlightSlider<InteractionTarget : Any>(
 
             Orientation.Vertical -> {
                 when (dragVerticalDirection(delta)) {
-                    Drag.VerticalDirection.DOWN -> Gesture(
+                    Drag.VerticalDirection.UP -> Gesture(
                         operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
                         dragToProgress = { offset -> (offset.y / height) * -1 },
                         partial = { offset, partial -> offset.copy(y = partial * height * -1) }

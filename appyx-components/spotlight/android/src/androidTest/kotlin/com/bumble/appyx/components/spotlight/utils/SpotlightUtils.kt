@@ -94,11 +94,7 @@ fun <InteractionTarget : Any> SpotlightUi(
                             },
                             onDragEnd = {
                                 AppyxLogger.d("drag", "end")
-                                spotlight.onDragEnd(
-                                    completionThreshold = 0.2f,
-                                    completeGestureSpec = spring(),
-                                    revertGestureSpec = spring(),
-                                )
+                                spotlight.onDragEnd()
                             }
                         )
                     }
