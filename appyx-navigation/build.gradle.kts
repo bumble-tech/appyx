@@ -45,7 +45,6 @@ dependencies {
     api(libs.androidx.appcompat)
 
     implementation(composeBom)
-    implementation(libs.compose.animation.core)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.foundation.layout)

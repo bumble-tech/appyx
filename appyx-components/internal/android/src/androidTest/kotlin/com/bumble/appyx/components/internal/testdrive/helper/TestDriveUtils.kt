@@ -6,7 +6,6 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -15,10 +14,10 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.components.internal.testdrive.TestDrive
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveUi
-import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController
+import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget
-import com.bumble.appyx.interactions.sample.colors
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +53,6 @@ fun ComposeContentTestRule.createTestDrive(
     ).also { setupTestDrive(it, model) }
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
     testDrive: TestDrive<InteractionTarget>,
     testDriveModel: TestDriveModel<InteractionTarget>,
@@ -69,9 +67,9 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
             TestDriveUi(
                 screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
                 screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-                colors = colors,
                 testDrive = testDrive,
-                model = testDriveModel
+                model = testDriveModel,
+                gestureValidator = permissiveValidator,
             )
         }
     }
