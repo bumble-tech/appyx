@@ -18,7 +18,6 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveUi
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget
-import com.bumble.appyx.interactions.sample.colors
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -69,7 +68,6 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
             TestDriveUi(
                 screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
                 screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-                colors = colors,
                 testDrive = testDrive,
                 model = testDriveModel
             )
