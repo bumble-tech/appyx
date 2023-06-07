@@ -69,7 +69,7 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
                 screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
                 testDrive = testDrive,
                 model = testDriveModel,
-                isValidGesture = permissiveValidator,
+                gestureValidator = permissiveValidator,
             )
         }
     }

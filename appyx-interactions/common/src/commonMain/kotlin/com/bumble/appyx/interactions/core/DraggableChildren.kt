@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
-import com.bumble.appyx.interactions.core.gesture.defaultValidator
+import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -34,7 +34,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    isValidGesture: GestureValidator = defaultValidator,
+    gestureValidator: GestureValidator = defaultValidator,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -72,7 +72,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                     detectDragGesturesOrCancellation(
                         onDragStart = { position -> interactionModel.onStartDrag(position) },
                         onDrag = { change, dragAmount ->
-                            if (isValidGesture(change.position, elementBoundingBox)) {
+                            if (gestureValidator.isGestureValid(change.position, elementBoundingBox)) {
                                 change.consume()
                                 interactionModel.onDrag(dragAmount, density)
                                 true

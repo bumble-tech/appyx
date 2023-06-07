@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.ui.CardsMotionController
 import com.bumble.appyx.interactions.core.DraggableChildren
-import com.bumble.appyx.interactions.core.gesture.permissiveValidator
+import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
@@ -49,7 +49,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         interactionModel = cards,
-        isValidGesture = permissiveValidator,
+        gestureValidator = permissiveValidator,
     ) { elementUiModel ->
         Box(
             modifier = modifier
