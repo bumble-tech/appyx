@@ -30,6 +30,8 @@ import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController.Companion.toTargetUiState
 import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.gesture.GestureValidator
+import com.bumble.appyx.interactions.core.gesture.defaultValidator
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
@@ -123,7 +125,8 @@ fun <InteractionTarget : Any> TestDriveUi(
     screenHeightPx: Int,
     testDrive: TestDrive<InteractionTarget>,
     model: TestDriveModel<InteractionTarget>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    isValidGesture: GestureValidator = defaultValidator,
 ) {
     Box(
         modifier
@@ -136,6 +139,7 @@ fun <InteractionTarget : Any> TestDriveUi(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             interactionModel = testDrive,
+            isValidGesture = isValidGesture,
         ) { elementUiModel ->
             Box(
                 modifier = Modifier.size(60.dp)
