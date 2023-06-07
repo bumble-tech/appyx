@@ -97,6 +97,7 @@ class SpotlightSlider<InteractionTarget : Any>(
         private val height = transitionBounds.heightPx
 
         override fun createGesture(
+            state: State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, State<InteractionTarget>> = when (orientation) {

@@ -35,10 +35,13 @@ class DragProgressController<InteractionTarget : Any, State>(
     }
 
     override fun onDrag(dragAmount: Offset, density: Density) {
-        gestureFactory().createGesture(dragAmount, density)
         if (_gestureFactory == null) {
             _gestureFactory = { dragAmount ->
-                gestureFactory().createGesture(dragAmount, density)
+                gestureFactory().createGesture(
+                    state = model.output.value.currentTargetState,
+                    delta = dragAmount,
+                    density = density
+                )
             }
         }
         consumeDrag(dragAmount)

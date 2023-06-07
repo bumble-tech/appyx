@@ -118,6 +118,7 @@ class CardsMotionController<InteractionTarget : Any>(
         }
 
         override fun createGesture(
+            state: CardsModel.State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, CardsModel.State<InteractionTarget>> {
