@@ -93,8 +93,8 @@ class SpotlightSlider<InteractionTarget : Any>(
         private val orientation: Orientation = Orientation.Horizontal,
         private val reverseOrientation: Boolean = false,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
-        private val width = transitionBounds.widthPx
-        private val height = transitionBounds.heightPx
+        private val width = transitionBounds.widthPx.toFloat()
+        private val height = transitionBounds.heightPx.toFloat()
 
         override fun createGesture(
             state: State<InteractionTarget>,
@@ -105,14 +105,12 @@ class SpotlightSlider<InteractionTarget : Any>(
                 when (dragHorizontalDirection(delta)) {
                     Drag.HorizontalDirection.LEFT -> Gesture(
                         operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
-                        dragToProgress = { offset -> (offset.x / width) * -1 },
-                        partial = { offset, progress -> offset.copy(x = progress * width * -1) }
+                        axis = Offset(-width, 0f)
                     )
 
                     else -> Gesture(
                         operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
-                        dragToProgress = { offset -> (offset.x / width) },
-                        partial = { offset, partial -> offset.copy(x = partial * width) }
+                        axis = Offset(width, 0f)
                     )
                 }
             }
@@ -121,15 +119,13 @@ class SpotlightSlider<InteractionTarget : Any>(
                 when (dragVerticalDirection(delta)) {
                     Drag.VerticalDirection.UP -> Gesture(
                         operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
-                        dragToProgress = { offset -> (offset.y / height) * -1 },
-                        partial = { offset, partial -> offset.copy(y = partial * height * -1) }
+                        axis = Offset(-height, 0f)
                     )
 
                     else ->
                         Gesture(
                             operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
-                            dragToProgress = { offset -> (offset.y / height) },
-                            partial = { offset, partial -> offset.copy(y = partial * height) }
+                            axis = Offset(height, 0f)
                         )
                 }
             }
