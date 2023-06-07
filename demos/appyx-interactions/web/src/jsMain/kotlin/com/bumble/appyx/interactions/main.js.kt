@@ -66,7 +66,6 @@ fun main() {
                     TestDriveExperiment(
                         screenWidthPx = size.width,
                         screenHeightPx = size.height,
-                        colors = colors,
                         element = InteractionTarget.Child1,
                         modifier = Modifier.fillMaxSize().background(Color.Black),
                     )

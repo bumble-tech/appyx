@@ -1,7 +1,5 @@
 package com.bumble.appyx.components.demos.cards
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +12,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.ui.CardsMotionController
 import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.gesture.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
@@ -26,7 +25,6 @@ sealed class DatingCardsInteractionTarget {
 
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
-    val density = LocalDensity.current
     val cards = remember {
         Cards(
             model = CardsModel(
@@ -51,21 +49,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         interactionModel = cards,
-        onDragStart = { position -> cards.onStartDrag(position) },
-        onDrag = { change, dragAmount, _ ->
-            change.consume()
-            cards.onDrag(dragAmount, density)
-            true
-        },
-        onDragEnd = {
-            cards.onDragEnd(
-                completionThreshold = 0.15f,
-                completeGestureSpec = spring(stiffness = Spring.StiffnessLow),
-                revertGestureSpec = spring(stiffness = Spring.StiffnessMedium)
-            )
-        },
-
-        ) { elementUiModel ->
+        isValidGesture = permissiveValidator,
+    ) { elementUiModel ->
         Box(
             modifier = modifier
                 .then(elementUiModel.modifier)

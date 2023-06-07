@@ -22,14 +22,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.internal.testdrive.operation.next
-import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController
-import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController.Companion.toTargetUiState
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController.Companion.toTargetUiState
 import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
@@ -42,7 +41,6 @@ import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 fun <InteractionTarget : Any> TestDriveExperiment(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
     element: InteractionTarget,
     modifier: Modifier = Modifier,
 ) {
@@ -83,7 +81,6 @@ fun <InteractionTarget : Any> TestDriveExperiment(
         TestDriveUi(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            colors = colors,
             testDrive = testDrive,
             model = model,
             modifier = Modifier.weight(0.9f)
@@ -124,13 +121,10 @@ fun <InteractionTarget : Any> TestDriveExperiment(
 fun <InteractionTarget : Any> TestDriveUi(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
     testDrive: TestDrive<InteractionTarget>,
     model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier
 ) {
-    val density = LocalDensity.current
-
     Box(
         modifier
             .padding(
@@ -142,18 +136,6 @@ fun <InteractionTarget : Any> TestDriveUi(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             interactionModel = testDrive,
-            onDrag = { change, dragAmount, elementBoundingBox ->
-                if (elementBoundingBox.contains(change.position)) {
-                    change.consume()
-                    testDrive.onDrag(dragAmount, density)
-                    true
-                } else {
-                    change.consume()
-                    testDrive.onDragEnd()
-                    false
-                }
-            },
-            onDragEnd = { testDrive.onDragEnd() },
         ) { elementUiModel ->
             Box(
                 modifier = Modifier.size(60.dp)

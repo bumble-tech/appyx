@@ -13,14 +13,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import com.bumble.appyx.interactions.core.gesture.GestureValidator
+import com.bumble.appyx.interactions.core.gesture.defaultValidator
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -34,9 +34,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    onDragStart: (Offset) -> Unit = { },
-    onDragEnd: () -> Unit = { },
-    onDrag: (change: PointerInputChange, dragAmount: Offset, elementBoundingBox: Rect) -> Boolean,
+    isValidGesture: GestureValidator = defaultValidator,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit,
 ) {
     val density = LocalDensity.current
@@ -72,9 +70,19 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                 .fillMaxSize()
                 .pointerInput(interactionModel) {
                     detectDragGesturesOrCancellation(
-                        onDragStart = onDragStart,
-                        onDrag = { change, dragAmount -> onDrag(change, dragAmount, elementBoundingBox) },
-                        onDragEnd = onDragEnd,
+                        onDragStart = { position -> interactionModel.onStartDrag(position) },
+                        onDrag = { change, dragAmount ->
+                            if (isValidGesture(change.position, elementBoundingBox)) {
+                                change.consume()
+                                interactionModel.onDrag(dragAmount, density)
+                                true
+                            } else {
+                                change.consume()
+                                interactionModel.onDragEnd()
+                                false
+                            }
+                        },
+                        onDragEnd = { interactionModel.onDragEnd() },
                     )
                 }
         ) {
