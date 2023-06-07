@@ -136,14 +136,12 @@ class CardsMotionController<InteractionTarget : Any>(
             return if (dragHorizontalDirection(delta) == Drag.HorizontalDirection.LEFT) {
                 Gesture(
                     operation = VotePass(Operation.Mode.KEYFRAME),
-                    dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) * -1 },
-                    partial = { offset, progress -> offset.copy(x = progress * width * -1) }
+                    axis = Offset(-dragToProgressFactor * width, 0f)
                 )
             } else {
                 Gesture(
                     operation = VoteLike(Operation.Mode.KEYFRAME),
-                    dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) },
-                    partial = { offset, progress -> offset.copy(x = progress * width) }
+                    axis = Offset(dragToProgressFactor * width, 0f)
                 )
             }
         }
