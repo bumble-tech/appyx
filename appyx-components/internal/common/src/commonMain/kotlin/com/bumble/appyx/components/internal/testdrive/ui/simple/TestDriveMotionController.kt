@@ -15,10 +15,17 @@ import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.Drag
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.E
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.N
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.NE
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.NW
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.S
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.SE
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.SW
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.W
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragDirection
+import com.bumble.appyx.interactions.core.ui.gesture.dragCompassDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -83,38 +90,44 @@ class TestDriveMotionController<InteractionTarget : Any>(
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val width = offsetB.x - offsetA.x
+        private val widthDp = offsetB.x - offsetA.x
+        private val heightDp = offsetD.y - offsetA.y
 
-        private val height = offsetD.y - offsetA.y
+        override fun createGesture(
+            state: TestDriveModel.State<InteractionTarget>,
+            delta: Offset,
+            density: Density
+        ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
+            val width = with(density) { widthDp.toPx() }
+            val height = with(density) { heightDp.toPx() }
 
-        override fun createGesture(delta: Offset, density: Density): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-            val width = with(density) { width.toPx() }
-            val height = with(density) { height.toPx() }
-
-            return when (dragDirection(delta)) {
-                Drag.Direction.RIGHT -> Gesture(
-                    operation = MoveTo(B),
-                    dragToProgress = { offset -> (offset.x / width) },
-                    partial = { offset, partial -> offset.copy(x = partial * width) }
-                )
-                Drag.Direction.DOWN ->
-                    Gesture(
-                        operation = MoveTo(C),
-                        dragToProgress = { offset -> (offset.y / height) },
-                        partial = { offset, partial -> offset.copy(y = partial * height) }
-                    )
-                Drag.Direction.LEFT -> Gesture(
-                        operation = MoveTo(D),
-                        dragToProgress = { offset -> (offset.x / width) * -1 },
-                        partial = { offset, progress -> offset.copy(x = progress * width * -1) }
-                    )
-                Drag.Direction.UP ->
-                    Gesture(
-                        operation = MoveTo(A),
-                        dragToProgress = { offset -> (offset.y / height) * -1 },
-                        partial = { offset, partial -> offset.copy(y = partial * height * -1) }
-                    )
+            val direction = dragCompassDirection(delta)
+            return when (state.elementState) {
+                A -> when (direction) {
+                    E -> Gesture(MoveTo(B), Offset(width, 0f))
+                    SE -> Gesture(MoveTo(C), Offset(width, height))
+                    S -> Gesture(MoveTo(D), Offset(0f, height))
+                    else -> Gesture.Noop()
                 }
+                B -> when (direction) {
+                    S -> Gesture(MoveTo(C), Offset(0f, height))
+                    SW -> Gesture(MoveTo(D), Offset(-width, height))
+                    W -> Gesture(MoveTo(A), Offset(-width, 0f))
+                    else -> Gesture.Noop()
+                }
+                C -> when (direction) {
+                    W -> Gesture(MoveTo(D), Offset(-width, 0f))
+                    NW -> Gesture(MoveTo(A), Offset(-width, -height))
+                    N -> Gesture(MoveTo(B), Offset(0f, -height))
+                    else -> Gesture.Noop()
+                }
+                D -> when (direction) {
+                    N -> Gesture(MoveTo(A), Offset(0f, -height))
+                    NE -> Gesture(MoveTo(B), Offset(width, -height))
+                    E -> Gesture(MoveTo(C), Offset(width, 0f))
+                    else -> Gesture.Noop()
+                }
+            }
         }
     }
 }
