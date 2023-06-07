@@ -19,9 +19,8 @@ open class Gesture<InteractionTarget, ModelState>(
         dragToProgress = { offset -> proportionOf(offset, axis) },
         partial = { offset, remainder ->
             val p = proportionOf(offset, axis)
-            val aligned = axis * p
-            val spent = aligned * (1 - remainder)
-            val ret = offset - spent
+            val remp = remainder / p
+            val ret = offset * remp
             ret
         }
     )
