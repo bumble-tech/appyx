@@ -41,11 +41,14 @@ class TestTransitionModel<InteractionTarget : Any>(
 class TestGestures<InteractionTarget : Any>(
     private val target: InteractionTarget,
 ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
-    override fun createGesture(delta: Offset, density: Density): Gesture<InteractionTarget, State<InteractionTarget>> =
+    override fun createGesture(
+        state: State<InteractionTarget>,
+        delta: Offset,
+        density: Density
+    ): Gesture<InteractionTarget, State<InteractionTarget>> =
         Gesture(
             operation = TestOperation(target),
-            dragToProgress = { _ -> 0f },
-            partial = { offset, _ -> offset }
+            axis = Offset(100f, 100f)
         )
 }
 
