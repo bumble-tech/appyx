@@ -15,17 +15,17 @@ import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.E
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.N
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.NE
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.NW
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.S
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.SE
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.SW
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.CompassDirection.W
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.RIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UP
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPLEFT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNRIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNLEFT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.LEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragCompassDirection
+import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -101,30 +101,30 @@ class TestDriveMotionController<InteractionTarget : Any>(
             val width = with(density) { widthDp.toPx() }
             val height = with(density) { heightDp.toPx() }
 
-            val direction = dragCompassDirection(delta)
+            val direction = dragDirection8(delta)
             return when (state.elementState) {
                 A -> when (direction) {
-                    E -> Gesture(MoveTo(B), Offset(width, 0f))
-                    SE -> Gesture(MoveTo(C), Offset(width, height))
-                    S -> Gesture(MoveTo(D), Offset(0f, height))
+                    RIGHT -> Gesture(MoveTo(B), Offset(width, 0f))
+                    DOWNRIGHT -> Gesture(MoveTo(C), Offset(width, height))
+                    DOWN -> Gesture(MoveTo(D), Offset(0f, height))
                     else -> Gesture.Noop()
                 }
                 B -> when (direction) {
-                    S -> Gesture(MoveTo(C), Offset(0f, height))
-                    SW -> Gesture(MoveTo(D), Offset(-width, height))
-                    W -> Gesture(MoveTo(A), Offset(-width, 0f))
+                    DOWN -> Gesture(MoveTo(C), Offset(0f, height))
+                    DOWNLEFT -> Gesture(MoveTo(D), Offset(-width, height))
+                    LEFT -> Gesture(MoveTo(A), Offset(-width, 0f))
                     else -> Gesture.Noop()
                 }
                 C -> when (direction) {
-                    W -> Gesture(MoveTo(D), Offset(-width, 0f))
-                    NW -> Gesture(MoveTo(A), Offset(-width, -height))
-                    N -> Gesture(MoveTo(B), Offset(0f, -height))
+                    LEFT -> Gesture(MoveTo(D), Offset(-width, 0f))
+                    UPLEFT -> Gesture(MoveTo(A), Offset(-width, -height))
+                    UP -> Gesture(MoveTo(B), Offset(0f, -height))
                     else -> Gesture.Noop()
                 }
                 D -> when (direction) {
-                    N -> Gesture(MoveTo(A), Offset(0f, -height))
-                    NE -> Gesture(MoveTo(B), Offset(width, -height))
-                    E -> Gesture(MoveTo(C), Offset(width, 0f))
+                    UP -> Gesture(MoveTo(A), Offset(0f, -height))
+                    UPRIGHT -> Gesture(MoveTo(B), Offset(width, -height))
+                    RIGHT -> Gesture(MoveTo(C), Offset(width, 0f))
                     else -> Gesture.Noop()
                 }
             }
