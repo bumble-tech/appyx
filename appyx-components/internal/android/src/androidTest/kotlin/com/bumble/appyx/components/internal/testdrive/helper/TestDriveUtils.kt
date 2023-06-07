@@ -15,7 +15,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDrive
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveUi
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController
-import com.bumble.appyx.interactions.core.gesture.permissiveValidator
+import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.theme.appyx_dark
