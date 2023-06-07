@@ -35,7 +35,7 @@ class SpotlightTest(private val testParam: TestParam) {
         fun data() = arrayOf(
             TestParam(operationMode = Operation.Mode.IMMEDIATE),
             TestParam(operationMode = Operation.Mode.KEYFRAME),
-            TestParam(operationMode = Operation.Mode.GEOMETRY)
+            TestParam(operationMode = Operation.Mode.IMPOSED)
         )
     }
 

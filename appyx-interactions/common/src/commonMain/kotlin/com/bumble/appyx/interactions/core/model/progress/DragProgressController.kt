@@ -106,7 +106,9 @@ class DragProgressController<InteractionTarget : Any, State>(
         } else {
             // TODO without recursion
             val remainder = consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
-            consumeDrag(remainder)
+            if (dragAmount != remainder) {
+                consumeDrag(remainder)
+            }
         }
     }
 

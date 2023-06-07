@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.DatingCards
 import com.bumble.appyx.components.demos.promoter.PromoterExperiment
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
+import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
@@ -58,20 +57,22 @@ class MainActivity : ComponentActivity() {
                                 .padding(4.dp),
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            Button({ content = 0 }) { Text("1") }
-                            Button({ content = 1 }) { Text("2") }
-                            Button({ content = 2 }) { Text("3") }
-                            Button({ content = 3 }) { Text("4") }
-                            Button({ content = 4 }) { Text("5") }
-                            Button({ content = 5 }) { Text("6") }
+                            Button({ content = 1 }) { Text("1") }
+                            Button({ content = 2 }) { Text("2") }
+                            Button({ content = 3 }) { Text("3") }
+                            Button({ content = 4 }) { Text("4") }
+                            Button({ content = 5 }) { Text("5") }
+                            Button({ content = 6 }) { Text("6") }
+                            Button({ content = 7 }) { Text("7") }
                         }
                         when (content) {
-                            0 -> DatingCards()
-                            1 -> SpotlightExperimentInVertical { SpotlightStack3D(it) }
-                            2 -> SpotlightExperiment { SpotlightSliderScale(it) }
-                            3 -> SpotlightExperiment { SpotlightSliderRotation(it) }
-                            4 -> TestDriveExperiment()
-                            5 -> PromoterExperiment()
+                            1 -> DatingCards()
+                            2 -> SpotlightExperimentInVertical { SpotlightStack3D(it) }
+                            3 -> SpotlightExperiment { SpotlightSliderScale(it) }
+                            4 -> SpotlightExperiment { SpotlightSliderRotation(it) }
+                            5 -> SpotlightExperiment { SpotlightFader(it) }
+                            6 -> TestDriveExperiment()
+                            7 -> PromoterExperiment()
                             else -> SpotlightExperiment { SpotlightSlider(it) }
                         }
                     }
@@ -81,10 +82,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    Text(modifier = modifier, text = "Hello $name!")
-}

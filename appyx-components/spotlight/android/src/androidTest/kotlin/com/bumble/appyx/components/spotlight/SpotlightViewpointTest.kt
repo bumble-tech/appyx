@@ -20,7 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestName
 
-class SpotlightGeometryTest {
+class SpotlightViewpointTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -29,7 +29,7 @@ class SpotlightGeometryTest {
     var nameRule = TestName()
 
     @Test
-    fun when_keyframe_operation_then_scroll_using_geometry() {
+    fun when_keyframe_operation_then_scroll_using_viewpoint() {
         val spotlight = composeTestRule.createSpotlight(
             items = listOf(Child1, Child2, Child3)
         )
@@ -49,7 +49,7 @@ class SpotlightGeometryTest {
     }
 
     @Test
-    fun when_update__operation_then_scroll_using_geometry() {
+    fun when_update__operation_then_scroll_using_viewpoint() {
         val spotlight = composeTestRule.createSpotlight(
             items = listOf(Child1, Child2, Child3)
         )
@@ -88,7 +88,7 @@ class SpotlightGeometryTest {
                 moveBy(Offset(-200f, 0f), 500L)
             }
             .performTouchInput {
-                composeTestRule.snapshot("${this@SpotlightGeometryTest.javaClass.simpleName}_${nameRule.methodName}")
+                composeTestRule.snapshot("${this@SpotlightViewpointTest.javaClass.simpleName}_${nameRule.methodName}")
                 up()
             }
     }
