@@ -74,12 +74,12 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 )
             }
     ) {
-        frames.value.forEach { frameModel ->
-            key(frameModel.element.id) {
-                frameModel.animationContainer()
-                val isVisible by frameModel.visibleState.collectAsState()
+        frames.value.forEach { elementUiModel ->
+            key(elementUiModel.element.id) {
+                elementUiModel.animationContainer()
+                val isVisible by elementUiModel.visibleState.collectAsState()
                 if (isVisible) {
-                    element.invoke(frameModel)
+                    element.invoke(elementUiModel)
                 }
             }
         }

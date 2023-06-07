@@ -104,8 +104,8 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                 enforcedMode = IMMEDIATE
                 createUpdate(operation)
             }
-            GEOMETRY -> {
-                updateGeometry(operation)
+            IMPOSED -> {
+                impose(operation)
             }
             KEYFRAME -> {
                 createSegment(operation)
@@ -126,7 +126,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
         }
     }
 
-    private fun updateGeometry(operation: Operation<ModelState>): Boolean {
+    private fun impose(operation: Operation<ModelState>): Boolean {
         return when (val currentState = state.value) {
             is Keyframes -> {
                 with(currentState) {

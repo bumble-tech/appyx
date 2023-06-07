@@ -14,8 +14,10 @@ import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
@@ -130,7 +132,7 @@ class CardsMotionController<InteractionTarget : Any>(
             val dragToProgressFactor = voteCardPositionMultiplier * (2 - verticalRatio)
             AppyxLogger.d("Cards", "delta ${delta.x}")
 
-            return if (delta.x < 0) {
+            return if (dragHorizontalDirection(delta) == Drag.HorizontalDirection.LEFT) {
                 Gesture(
                     operation = VotePass(Operation.Mode.KEYFRAME),
                     dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) * -1 },

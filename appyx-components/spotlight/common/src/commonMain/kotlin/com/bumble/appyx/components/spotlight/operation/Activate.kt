@@ -10,7 +10,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 @Parcelize
 class Activate<InteractionTarget : Any>(
     private val index: Float,
-    override val mode: Operation.Mode = Operation.Mode.GEOMETRY
+    override val mode: Operation.Mode = Operation.Mode.IMPOSED
 ) : BaseOperation<SpotlightModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
@@ -29,7 +29,7 @@ class Activate<InteractionTarget : Any>(
 fun <InteractionTarget : Any> Spotlight<InteractionTarget>.activate(
     index: Float,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-    mode: Operation.Mode = Operation.Mode.GEOMETRY
+    mode: Operation.Mode = Operation.Mode.IMPOSED
 ) {
     operation(Activate(index, mode), animationSpec)
 }
