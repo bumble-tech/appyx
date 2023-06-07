@@ -20,43 +20,37 @@ import kotlinx.coroutines.flow.StateFlow
 class Padding(
     uiContext: UiContext,
     target: Target,
-    displacement: StateFlow<Target.PaddingValue> = MutableStateFlow(Target.PaddingValue()),
-    visibilityThreshold: Target.PaddingValue = Target.PaddingValue(1.dp, 1.dp, 1.dp, 1.dp),
-) : MotionProperty<Padding.Target.PaddingValue, AnimationVector4D>(
+    displacement: StateFlow<Target> = MutableStateFlow(Target()),
+    visibilityThreshold: Target = Target(1.dp, 1.dp, 1.dp, 1.dp),
+) : MotionProperty<Padding.Target, AnimationVector4D>(
     uiContext = uiContext,
-    animatable = Animatable(target.value, Target.PaddingValue.VectorConverter),
+    animatable = Animatable(target, Target.VectorConverter),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
     displacement = displacement
 ), Interpolatable<Padding.Target> {
 
     class Target(
-        val value: PaddingValue = PaddingValue(),
+        val top: Dp = 0.dp,
+        val bottom: Dp = 0.dp,
+        val start: Dp = 0.dp,
+        val end: Dp = 0.dp,
         val easing: Easing? = null,
     ) : MotionProperty.Target {
 
-
-        class PaddingValue(
-            val top: Dp = 0.dp,
-            val bottom: Dp = 0.dp,
-            val start: Dp = 0.dp,
-            val end: Dp = 0.dp
-        ) {
-
-            companion object {
-                val VectorConverter: TwoWayConverter<PaddingValue, AnimationVector4D> =
-                    TwoWayConverter(
-                        convertToVector = {
-                            AnimationVector4D(
-                                it.top.value,
-                                it.bottom.value,
-                                it.start.value,
-                                it.end.value
-                            )
-                        },
-                        convertFromVector = { PaddingValue(it.v1.dp, it.v2.dp, it.v3.dp, it.v4.dp) }
-                    )
-            }
+        companion object {
+            val VectorConverter: TwoWayConverter<Target, AnimationVector4D> =
+                TwoWayConverter(
+                    convertToVector = {
+                        AnimationVector4D(
+                            it.top.value,
+                            it.bottom.value,
+                            it.start.value,
+                            it.end.value
+                        )
+                    },
+                    convertFromVector = { Target(it.v1.dp, it.v2.dp, it.v3.dp, it.v4.dp) }
+                )
         }
     }
 
@@ -72,9 +66,9 @@ class Padding(
         }
 
     override fun calculateRenderValue(
-        base: Target.PaddingValue,
-        displacement: Target.PaddingValue
-    ) = Target.PaddingValue(
+        base: Target,
+        displacement: Target
+    ) = Target(
         top = base.top + displacement.top,
         bottom = base.bottom + displacement.bottom,
         start = base.start + displacement.start,
@@ -83,29 +77,29 @@ class Padding(
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         val paddingTop = lerp(
-            start = start.value.top,
-            stop = end.value.top,
+            start = start.top,
+            stop = end.top,
             fraction = easingTransform(end.easing, fraction)
         )
 
         val paddingBottom = lerp(
-            start = start.value.bottom,
-            stop = end.value.bottom,
+            start = start.bottom,
+            stop = end.bottom,
             fraction = easingTransform(end.easing, fraction)
         )
         val paddingStart = lerp(
-            start = start.value.start,
-            stop = end.value.start,
+            start = start.start,
+            stop = end.start,
             fraction = easingTransform(end.easing, fraction)
         )
 
         val paddingEnd = lerp(
-            start = start.value.end,
-            stop = end.value.end,
+            start = start.end,
+            stop = end.end,
             fraction = easingTransform(end.easing, fraction)
         )
         snapTo(
-            Target.PaddingValue(paddingTop, paddingBottom, paddingStart, paddingEnd)
+            Target(paddingTop, paddingBottom, paddingStart, paddingEnd)
         )
     }
 }
