@@ -1,6 +1,7 @@
 package com.bumble.appyx.interactions.core.ui.gesture
 
 import androidx.compose.ui.geometry.Offset
+import com.bumble.appyx.interactions.core.ui.math.angleDegrees
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.atan
@@ -45,31 +46,8 @@ interface Drag {
  * - 12 o'clock = 0 degrees
  * - 3 o'clock = 90 degrees
  */
-fun dragAngleDegrees(delta: Offset): Double  {
-    val (x, y) = delta
-    val deg = when {
-        x == 0f -> when {
-            y > 0 -> 90.0
-            y < 0 -> 270.0
-            else -> 0.0
-        }
-        y == 0f -> when {
-            x > 0 -> 0.0
-            x < 0 -> 180.0
-            else -> 0.0
-        }
-        else -> {
-            val deg = atan(y / x) * 180.0 / PI
-            when {
-                x < 0 -> 180 + deg
-                y < 0 -> 360 + deg
-                else -> deg
-            }
-        }
-    }
-
-    return (deg + 90) % 360
-}
+fun dragAngleDegrees(delta: Offset): Double  =
+    angleDegrees(delta)
 
 /**
  * The dominant direction of the drag (LEFT, RIGHT, UP, DOWN)
