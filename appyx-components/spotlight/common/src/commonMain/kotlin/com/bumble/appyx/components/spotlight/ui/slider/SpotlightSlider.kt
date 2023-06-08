@@ -12,7 +12,6 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.D
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.operation.Next
 import com.bumble.appyx.components.spotlight.operation.Previous
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag
@@ -104,12 +103,12 @@ class SpotlightSlider<InteractionTarget : Any>(
             Orientation.Horizontal -> {
                 when (dragHorizontalDirection(delta)) {
                     Drag.HorizontalDirection.LEFT -> Gesture(
-                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
+                        operation = if (reverseOrientation) Previous() else Next(),
                         axis = Offset(-width, 0f)
                     )
 
                     else -> Gesture(
-                        operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
+                        operation = if (reverseOrientation) Next() else Previous(),
                         axis = Offset(width, 0f)
                     )
                 }
@@ -118,13 +117,13 @@ class SpotlightSlider<InteractionTarget : Any>(
             Orientation.Vertical -> {
                 when (dragVerticalDirection(delta)) {
                     Drag.VerticalDirection.UP -> Gesture(
-                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
+                        operation = if (reverseOrientation) Previous() else Next(),
                         axis = Offset(-height, 0f)
                     )
 
                     else ->
                         Gesture(
-                            operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
+                            operation = if (reverseOrientation) Next() else Previous(),
                             axis = Offset(height, 0f)
                         )
                 }

@@ -11,7 +11,6 @@ import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.InvisibleCa
 import com.bumble.appyx.components.demos.cards.operation.VoteLike
 import com.bumble.appyx.components.demos.cards.operation.VotePass
 import com.bumble.appyx.interactions.AppyxLogger
-import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag
@@ -135,12 +134,12 @@ class CardsMotionController<InteractionTarget : Any>(
 
             return if (dragHorizontalDirection(delta) == Drag.HorizontalDirection.LEFT) {
                 Gesture(
-                    operation = VotePass(Operation.Mode.KEYFRAME),
+                    operation = VotePass(),
                     axis = Offset(-dragToProgressFactor * width, 0f)
                 )
             } else {
                 Gesture(
-                    operation = VoteLike(Operation.Mode.KEYFRAME),
+                    operation = VoteLike(),
                     axis = Offset(dragToProgressFactor * width, 0f)
                 )
             }
