@@ -11,7 +11,7 @@ import com.bumble.appyx.interactions.permanent.PermanentModel
 @Parcelize
 data class AddUnique<InteractionTarget : Any>(
     private val interactionTarget: @RawValue InteractionTarget,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<PermanentModel.State<InteractionTarget>>() {
 
 

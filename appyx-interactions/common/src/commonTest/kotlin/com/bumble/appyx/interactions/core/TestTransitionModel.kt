@@ -55,7 +55,7 @@ class TestGestures<InteractionTarget : Any>(
 @Parcelize
 class TestOperation<InteractionTarget : Any>(
     private val interactionTarget: @RawValue InteractionTarget,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<State<InteractionTarget>>() {
     override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
         baseLineState

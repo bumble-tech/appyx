@@ -9,7 +9,7 @@ import com.bumble.appyx.components.spotlight.SpotlightModel
 
 @Parcelize
 class Next<InteractionTarget>(
-    override val mode: Operation.Mode = Operation.Mode.IMPOSED
+    override var mode: Operation.Mode = Operation.Mode.IMPOSED
 ) : BaseOperation<SpotlightModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =

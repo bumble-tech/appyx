@@ -10,7 +10,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 @Parcelize
 data class MoveTo<InteractionTarget>(
     private val elementState: TestDriveModel.State.ElementState,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<TestDriveModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: TestDriveModel.State<InteractionTarget>): Boolean =

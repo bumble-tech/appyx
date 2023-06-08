@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.COMPLETE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.REVERT
@@ -62,6 +63,7 @@ class DragProgressController<InteractionTarget : Any, State>(
 
         requireNotNull(gesture)
         val operation = gesture!!.operation
+        operation.mode = KEYFRAME
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
         require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
         val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
