@@ -8,8 +8,10 @@ import com.bumble.appyx.components.backstack.BackStackModel.State
 import com.bumble.appyx.components.backstack.operation.Pop
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -25,21 +27,21 @@ class BackstackParallax<InteractionTarget : Any>(
 
     private val left = TargetUiState(
         elementWidth = width,
-        offsetPercent = -1f,
+        offsetMultiplier = -1f,
     )
     private val right = TargetUiState(
         elementWidth = width,
-        offsetPercent = 1f,
+        offsetMultiplier = 1f,
     )
 
     private val bottom = TargetUiState(
         elementWidth = width,
-        offsetPercent = -0.2f,
+        offsetMultiplier = -0.2f,
     )
 
     private val top = TargetUiState(
         elementWidth = width,
-        offsetPercent = 0f,
+        offsetMultiplier = 0f,
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
@@ -76,24 +78,20 @@ class BackstackParallax<InteractionTarget : Any>(
     class Gestures<InteractionTarget : Any>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
-        private val widthRight = transitionBounds.screenWidthDp
+        private val width = transitionBounds.screenWidthDp
 
         override fun createGesture(
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, State<InteractionTarget>> {
 
-            val widthRight = with(density) { widthRight.toPx() }
+            val widthRight = with(density) { width.toPx() }
 
-            return if (delta.x > 0) {
+            return if  (dragHorizontalDirection(delta) == Drag.HorizontalDirection.RIGHT) {
                 Gesture(
                     operation = Pop(),
-                    dragToProgress = { offset ->
-                        (offset.x.coerceAtMost(widthRight) / widthRight)
-                    },
-                    partial = { offset, partial ->
-                        offset.copy(x = partial * widthRight)
-                    }
+                    dragToProgress = { offset -> (offset.x / widthRight) },
+                    partial = { offset, partial -> offset.copy(x = partial * widthRight) },
                 )
             } else {
                 Gesture.Noop()

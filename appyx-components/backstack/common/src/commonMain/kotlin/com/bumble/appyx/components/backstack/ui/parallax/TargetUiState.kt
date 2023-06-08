@@ -13,11 +13,11 @@ class TargetUiState(
 
     constructor(
         elementWidth: Float,
-        offsetPercent: Float,
+        offsetMultiplier: Float,
     ) : this(
         position = Position.Target(
             DpOffset(
-                x = (offsetPercent * elementWidth).dp,
+                x = (offsetMultiplier.coerceIn(-0.5f, 1.5f) * elementWidth).dp,
                 y = 0.dp
             )
         ),
