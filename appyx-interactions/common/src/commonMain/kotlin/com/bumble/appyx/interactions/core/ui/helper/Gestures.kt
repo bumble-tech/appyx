@@ -1,4 +1,3 @@
-
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -8,7 +7,6 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 
 // TODO consider where to keep these
 
@@ -21,7 +19,6 @@ val DefaultAnimationSpec: SpringSpec<Float> = spring()
 fun <InteractionTarget : Any, ModelState : Any> Modifier.gestureModifier(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     key: Any,
-    gestureSpec: GestureSpec = GestureSpec()
 ) = this.composed {
 
     val density = LocalDensity.current
@@ -33,13 +30,7 @@ fun <InteractionTarget : Any, ModelState : Any> Modifier.gestureModifier(
                 change.consume()
                 interactionModel.onDrag(dragAmount, density)
             },
-            onDragEnd = {
-                interactionModel.onDragEnd(
-                    completionThreshold = gestureSpec.completionThreshold,
-                    completeGestureSpec = gestureSpec.completeGestureSpec,
-                    revertGestureSpec = gestureSpec.revertGestureSpec
-                )
-            }
+            onDragEnd = { interactionModel.onDragEnd() }
         )
     }
 }

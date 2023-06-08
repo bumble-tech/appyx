@@ -1,5 +1,7 @@
 package com.bumble.appyx.interactions.core
 
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.Parcelable
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.RawValue
@@ -7,6 +9,8 @@ import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.core.ui.gesture.Gesture
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 class TestTransitionModel<InteractionTarget : Any>(
     initialElements: List<InteractionTarget>,
@@ -32,6 +36,17 @@ class TestTransitionModel<InteractionTarget : Any>(
 
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         setOf()
+}
+
+class TestGestures<InteractionTarget : Any>(
+    private val target: InteractionTarget,
+) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
+    override fun createGesture(delta: Offset, density: Density): Gesture<InteractionTarget, State<InteractionTarget>> =
+        Gesture(
+            operation = TestOperation(target),
+            dragToProgress = { _ -> 0f },
+            partial = { offset, _ -> offset }
+        )
 }
 
 @Parcelize

@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.sample
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.AppyxLogger
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.android.Children
@@ -40,6 +42,8 @@ import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 @Suppress("LongMethod", "MagicNumber")
 fun SpotlightExperiment(
     modifier: Modifier = Modifier,
+    orientation: Orientation = Orientation.Horizontal,
+    reverseOrientation: Boolean = false,
     motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
 ) {
     val items = listOf(
@@ -71,8 +75,13 @@ fun SpotlightExperiment(
             savedStateMap = null
         ),
         motionController = motionController,
-        gestureFactory = { SpotlightSlider.Gestures(it) },
-        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
+        gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
+        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
+        gestureSettleConfig = GestureSettleConfig(
+            completionThreshold = 0.2f,
+            completeGestureSpec = spring(),
+            revertGestureSpec = spring(),
+        ),
     )
 
     InteractionModelSetup(spotlight)
@@ -125,6 +134,7 @@ fun <InteractionTarget : Any> SpotlightUi(
     color: Color = Color.Unspecified
 ) {
     Children(
+        clipToBounds = false,
         interactionModel = spotlight,
         modifier = modifier
             .padding(
@@ -147,16 +157,24 @@ fun <InteractionTarget : Any> SpotlightUi(
                             },
                             onDragEnd = {
                                 AppyxLogger.d("drag", "end")
-                                spotlight.onDragEnd(
-                                    completionThreshold = 0.2f,
-                                    completeGestureSpec = spring(),
-                                    revertGestureSpec = spring(),
-                                )
+                                spotlight.onDragEnd()
                             }
                         )
                     }
             )
         }
+    )
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun SpotlightExperimentInVertical(
+    motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
+) {
+    SpotlightExperiment(
+        orientation = Orientation.Vertical,
+        reverseOrientation = true,
+        motionController = motionController
     )
 }
 

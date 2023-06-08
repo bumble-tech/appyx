@@ -8,6 +8,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
@@ -47,7 +48,11 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
-    override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    final override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    final override val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
+        completeGestureSpec = defaultAnimationSpec,
+        revertGestureSpec = defaultAnimationSpec,
+    ),
     private val backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModelState> = DontHandleBackPress(),
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
@@ -86,7 +91,8 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val drag = DragProgressController(
         model = model,
         gestureFactory = { _gestureFactory },
-        defaultAnimationSpec = defaultAnimationSpec
+        defaultAnimationSpec = defaultAnimationSpec,
+        gestureSettleConfig = gestureSettleConfig,
     )
 
     private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
@@ -253,26 +259,22 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    override fun onDragEnd(
-        completionThreshold: Float,
-        completeGestureSpec: AnimationSpec<Float>,
-        revertGestureSpec: AnimationSpec<Float>
-    ) {
+    override fun onDragEnd() {
         if (!_isAnimating.value) {
             drag.onDragEnd()
-            settle(completionThreshold, revertGestureSpec, completeGestureSpec)
+            settle(gestureSettleConfig)
         }
     }
 
-    private fun settle(
-        completionThreshold: Float = 0.5f,
-        completeGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-        revertGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    ) {
+    private fun settle(gestureSettleConfig: GestureSettleConfig) {
         if (isDebug) {
             debug?.settle()
         } else {
-            animated?.settle(completionThreshold, completeGestureSpec, revertGestureSpec)
+            animated?.settle(
+                completionThreshold = gestureSettleConfig.completionThreshold,
+                completeGestureSpec = gestureSettleConfig.completeGestureSpec,
+                revertGestureSpec = gestureSettleConfig.revertGestureSpec,
+            )
         }
     }
 

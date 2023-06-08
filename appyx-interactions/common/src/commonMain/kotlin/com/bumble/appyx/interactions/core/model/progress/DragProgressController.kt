@@ -4,6 +4,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.AppyxLogger
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.COMPLETE
@@ -14,7 +15,8 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 class DragProgressController<InteractionTarget : Any, State>(
     private val model: TransitionModel<InteractionTarget, State>,
     private val gestureFactory: () -> GestureFactory<InteractionTarget, State>,
-    override val defaultAnimationSpec: AnimationSpec<Float>
+    override val defaultAnimationSpec: AnimationSpec<Float>,
+    override val gestureSettleConfig: GestureSettleConfig,
 ) : Draggable {
 
     // TODO get rid of this
@@ -42,11 +44,7 @@ class DragProgressController<InteractionTarget : Any, State>(
         consumeDrag(dragAmount)
     }
 
-    override fun onDragEnd(
-        completionThreshold: Float,
-        completeGestureSpec: AnimationSpec<Float>,
-        revertGestureSpec: AnimationSpec<Float>
-    ) {
+    override fun onDragEnd() {
         _gestureFactory = null
     }
 
@@ -108,7 +106,9 @@ class DragProgressController<InteractionTarget : Any, State>(
         } else {
             // TODO without recursion
             val remainder = consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
-            consumeDrag(remainder)
+            if (dragAmount != remainder) {
+                consumeDrag(remainder)
+            }
         }
     }
 

@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.internal.testdrive.ui
+package com.bumble.appyx.components.internal.testdrive.ui.rotation
 
 import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
@@ -18,6 +18,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_light_blue_500
@@ -56,21 +57,25 @@ class TestDriveMotionController<InteractionTarget : Any>(
 
         private val a = TargetUiState(
             position = Position.Target(offsetA),
+            rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val b = TargetUiState(
             position = Position.Target(offsetB),
+            rotationZ = RotationZ.Target(90f),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val c = TargetUiState(
             position = Position.Target(offsetC),
+            rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val d = TargetUiState(
             position = Position.Target(offsetD),
+            rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }

@@ -1,6 +1,4 @@
-package com.bumble.appyx.interactions.core.ui.helper
-
-import com.bumble.appyx.interactions.core.ui.math.lerpFloat
+package com.bumble.appyx.interactions.core.ui.math
 
 
 /**
