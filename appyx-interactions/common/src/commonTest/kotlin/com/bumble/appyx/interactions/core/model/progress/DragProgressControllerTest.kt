@@ -7,6 +7,7 @@ import com.bumble.appyx.InteractionTarget.Child1
 import com.bumble.appyx.InteractionTarget.Child2
 import com.bumble.appyx.interactions.core.TestGestures
 import com.bumble.appyx.interactions.core.TestTransitionModel
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import kotlin.test.Test
 import kotlin.test.asserter
 
@@ -23,6 +24,7 @@ class DragProgressControllerTest {
             model = TestTransitionModel(items),
             gestureFactory = { gestureFactory },
             defaultAnimationSpec = DefaultAnimationSpec,
+            gestureSettleConfig = GestureSettleConfig(),
         )
         try {
             dragProgressController.onDrag(Offset(-12f, 0f), Density(1f))

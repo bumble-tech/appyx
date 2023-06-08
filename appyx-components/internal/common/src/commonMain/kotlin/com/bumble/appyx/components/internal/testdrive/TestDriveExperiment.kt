@@ -3,7 +3,6 @@ package com.bumble.appyx.components.internal.testdrive
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,28 +22,27 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.internal.testdrive.operation.next
-import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController
-import com.bumble.appyx.components.internal.testdrive.ui.TestDriveMotionController.Companion.toTargetUiState
-import com.bumble.appyx.interactions.AppyxLogger
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController.Companion.toTargetUiState
+import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.gesture.GestureValidator
+import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.Children
 
 
 @Composable
 fun <InteractionTarget : Any> TestDriveExperiment(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
     element: InteractionTarget,
     modifier: Modifier = Modifier,
 ) {
@@ -61,9 +59,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
             scope = coroutineScope,
             model = model,
             progressAnimationSpec =
-            spring(stiffness = Spring.StiffnessLow)
-//                tween(200, easing = LinearEasing)
-            ,
+            spring(stiffness = Spring.StiffnessLow),
             animateSettle = true,
             motionController = {
                 TestDriveMotionController(
@@ -87,7 +83,6 @@ fun <InteractionTarget : Any> TestDriveExperiment(
         TestDriveUi(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            colors = colors,
             testDrive = testDrive,
             model = model,
             modifier = Modifier.weight(0.9f)
@@ -128,10 +123,10 @@ fun <InteractionTarget : Any> TestDriveExperiment(
 fun <InteractionTarget : Any> TestDriveUi(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
     testDrive: TestDrive<InteractionTarget>,
     model: TestDriveModel<InteractionTarget>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    gestureValidator: GestureValidator = defaultValidator,
 ) {
     Box(
         modifier
@@ -140,27 +135,15 @@ fun <InteractionTarget : Any> TestDriveUi(
                 vertical = 12.dp
             )
     ) {
-        Children(
+        DraggableChildren(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            colors = colors,
             interactionModel = testDrive,
+            gestureValidator = gestureValidator,
         ) { elementUiModel ->
             Box(
                 modifier = Modifier.size(60.dp)
                     .then(elementUiModel.modifier)
-                    .pointerInput(elementUiModel.element.id) {
-                        detectDragGestures(
-                            onDrag = { change, dragAmount ->
-                                change.consume()
-                                testDrive.onDrag(dragAmount, this)
-                            },
-                            onDragEnd = {
-                                AppyxLogger.d("drag", "end")
-                                testDrive.onDragEnd()
-                            }
-                        )
-                    }
             )
         }
 

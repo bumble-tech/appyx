@@ -10,7 +10,6 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.Cards
 import com.bumble.appyx.components.demos.cards.CardsModel
 import com.bumble.appyx.components.demos.cards.ui.CardsMotionController
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -50,14 +49,12 @@ class DatingCardsNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-
         Children(
             modifier = modifier
                 .fillMaxSize()
                 .background(appyx_dark)
                 .padding(16.dp),
             interactionModel = cards,
-            gestureSpec = GestureSpec(completionThreshold = 0.15f)
         )
     }
 }
