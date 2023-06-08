@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,7 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackstackFader
+import com.bumble.appyx.components.backstack.ui.parallax.BackstackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -43,6 +45,8 @@ class BackStackExamplesNode(
     interactionModel = backStack
 ) {
 
+    private val padding = mutableStateOf(16)
+
     sealed class InteractionTarget : Parcelable {
         @Parcelize
         object BackStackPicker : InteractionTarget()
@@ -52,6 +56,9 @@ class BackStackExamplesNode(
 
         @Parcelize
         object BackStackFader : InteractionTarget()
+
+        @Parcelize
+        object BackstackParallax : InteractionTarget()
     }
 
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
@@ -69,6 +76,14 @@ class BackStackExamplesNode(
                     it
                 )
             })
+            is InteractionTarget.BackstackParallax -> BackStackNode(
+                buildContext = buildContext,
+                motionController = { BackstackParallax(uiContext = it) },
+                gestureFactory = { BackstackParallax.Gestures(it) },
+                isMaxSize = true
+            ).also {
+                padding.value = 0
+            }
         }
 
     @Composable
@@ -91,6 +106,9 @@ class BackStackExamplesNode(
                 TextButton(text = "BackStack fader") {
                     backStack.push(InteractionTarget.BackStackFader)
                 }
+                TextButton(text = "BackStack parallax") {
+                    backStack.push(InteractionTarget.BackstackParallax)
+                }
             }
         }
     }
@@ -102,7 +120,7 @@ class BackStackExamplesNode(
             modifier = Modifier
                 .fillMaxSize()
                 .background(appyx_dark)
-                .padding(16.dp),
+                .padding(padding.value.dp),
         )
     }
 }
