@@ -55,7 +55,9 @@ class DragProgressController<InteractionTarget : Any, State>(
     private fun consumeDrag(dragAmount: Offset) {
         val currentState = model.output.value
         require(dragAmount.isValid()) { "dragAmount is NaN" }
-        require(dragAmount.getDistance() > 0f) { "dragAmount distance is 0" }
+        if (dragAmount.getDistanceSquared() == 0f) {
+            return
+        }
         requireNotNull(_gestureFactory) { "This should have been set already in this class" }
         if (gesture == null) {
             gesture = _gestureFactory!!.invoke(dragAmount)
