@@ -45,15 +45,11 @@ class BackstackParallax<InteractionTarget : Any>(
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
-        val stashed = if (stashed.isNotEmpty()) {
-            stashed.mapIndexed { index, element ->
-                MatchedTargetUiState(
-                    element = element,
-                    targetUiState = if (index == stashed.size - 1) bottom else left,
-                )
-            }
-        } else {
-            emptyList()
+        val stashed = stashed.mapIndexed { index, element ->
+            MatchedTargetUiState(
+                element = element,
+                targetUiState = if (index == stashed.size - 1) bottom else left,
+            )
         }
 
         return stashed + listOf(
