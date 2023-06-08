@@ -35,7 +35,7 @@ import com.bumble.appyx.transitionmodel.testdrive.ui.md_light_green_500
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_red_500
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_yellow_500
 
-class TestDriveMotionController<InteractionTarget : Any>(
+class TestDriveSimpleMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
