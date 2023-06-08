@@ -73,7 +73,8 @@ class DragProgressController<InteractionTarget : Any, State>(
         if (gesture!!.startProgress == null) {
             // TODO internally this will always apply it to the end of a Keyframes queue,
             //  which is not necessarily what we want:
-            if (model.operation(operation)) {
+            if (model.canApply(operation)) {
+                model.operation(operation)
                 gesture!!.startProgress = currentProgress
                 AppyxLogger.d(TAG, "Gesture operation applied: $operation")
             } else {
