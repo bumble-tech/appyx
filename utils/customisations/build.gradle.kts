@@ -32,7 +32,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.bumble.appyx.utils.multiplatform"
+    namespace = "com.bumble.appyx.utils.customisation"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
