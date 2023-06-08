@@ -1,8 +1,10 @@
 package com.bumble.appyx.navigation.integration
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +21,10 @@ import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
+data class ScreenSize(val widthDp: Int, val heightDp: Int)
+
+val LocalScreenSize = compositionLocalOf { ScreenSize(0, 0) }
+
 /**
  * Composable function to host [Node].
  *
@@ -29,22 +35,25 @@ import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 fun <N : Node> NodeHost(
     lifecycle: CommonLifecycle,
     integrationPoint: IntegrationPoint,
+    screenSize: ScreenSize,
     modifier: Modifier = Modifier,
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
     factory: NodeFactory<N>
 ) {
-    val node by rememberNode(factory, customisations, integrationPoint)
-    DisposableEffect(node) {
-        onDispose { node.updateLifecycleState(CommonLifecycle.State.DESTROYED) }
-    }
-    node.Compose(modifier = modifier)
-    DisposableEffect(lifecycle) {
-        node.updateLifecycleState(lifecycle.currentState)
-        val observer = PlatformLifecycleEventObserver { newState, _ ->
-            node.updateLifecycleState(newState)
+    CompositionLocalProvider(LocalScreenSize provides screenSize) {
+        val node by rememberNode(factory, customisations, integrationPoint)
+        DisposableEffect(node) {
+            onDispose { node.updateLifecycleState(CommonLifecycle.State.DESTROYED) }
         }
-        lifecycle.addObserver(observer)
-        onDispose { lifecycle.removeObserver(observer) }
+        node.Compose(modifier = modifier)
+        DisposableEffect(lifecycle) {
+            node.updateLifecycleState(lifecycle.currentState)
+            val observer = PlatformLifecycleEventObserver { newState, _ ->
+                node.updateLifecycleState(newState)
+            }
+            lifecycle.addObserver(observer)
+            onDispose { lifecycle.removeObserver(observer) }
+        }
     }
 }
 

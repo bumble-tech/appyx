@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.composable
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -17,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.model.removedElements
@@ -25,6 +23,7 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.node.ParentNode
 import gestureModifier
 import kotlin.math.roundToInt
@@ -50,8 +49,8 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
 
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
-    val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
-    val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
+    val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).roundToInt()
+    val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).roundToInt()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
@@ -89,7 +88,6 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
     private val interactionModel: BaseInteractionModel<InteractionTarget, NavState>
 ) {
 
-    @SuppressLint("ComposableNaming")
     @Composable
     fun ParentNode<InteractionTarget>.children(
         block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
