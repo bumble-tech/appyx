@@ -104,7 +104,9 @@ class DragProgressController<InteractionTarget : Any, State>(
                 // TODO without recursion
                 val remainder =
                     consumePartial(COMPLETE, dragAmount, totalTarget, deltaProgress, startProgress + 1)
-                consumeDrag(remainder)
+                if (remainder.getDistanceSquared() > 0) {
+                    consumeDrag(remainder)
+                }
             }
 
             // Case: we went back to or beyond the start,
