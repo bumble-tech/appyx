@@ -14,7 +14,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
  */
 @Parcelize
 class Pop<InteractionTarget : Any>(
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<State<InteractionTarget>>() {
     override fun isApplicable(state: State<InteractionTarget>): Boolean =
         state.stashed.isNotEmpty()

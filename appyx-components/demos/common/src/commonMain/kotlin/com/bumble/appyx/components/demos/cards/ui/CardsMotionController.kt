@@ -11,7 +11,6 @@ import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.InvisibleCa
 import com.bumble.appyx.components.demos.cards.operation.VoteLike
 import com.bumble.appyx.components.demos.cards.operation.VotePass
 import com.bumble.appyx.interactions.AppyxLogger
-import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag
@@ -118,6 +117,7 @@ class CardsMotionController<InteractionTarget : Any>(
         }
 
         override fun createGesture(
+            state: CardsModel.State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, CardsModel.State<InteractionTarget>> {
@@ -134,15 +134,13 @@ class CardsMotionController<InteractionTarget : Any>(
 
             return if (dragHorizontalDirection(delta) == Drag.HorizontalDirection.LEFT) {
                 Gesture(
-                    operation = VotePass(Operation.Mode.KEYFRAME),
-                    dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) * -1 },
-                    partial = { offset, progress -> offset.copy(x = progress * width * -1) }
+                    operation = VotePass(),
+                    completeAt = Offset(-dragToProgressFactor * width, 0f)
                 )
             } else {
                 Gesture(
-                    operation = VoteLike(Operation.Mode.KEYFRAME),
-                    dragToProgress = { offset -> offset.x / (dragToProgressFactor * width) },
-                    partial = { offset, progress -> offset.copy(x = progress * width) }
+                    operation = VoteLike(),
+                    completeAt = Offset(dragToProgressFactor * width, 0f)
                 )
             }
         }

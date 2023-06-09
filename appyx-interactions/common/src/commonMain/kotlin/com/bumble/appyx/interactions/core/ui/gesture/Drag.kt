@@ -1,26 +1,25 @@
 package com.bumble.appyx.interactions.core.ui.gesture
 
 import androidx.compose.ui.geometry.Offset
-import kotlin.math.PI
+import com.bumble.appyx.interactions.core.ui.math.angleDegrees
 import kotlin.math.abs
-import kotlin.math.atan
 
 interface Drag {
 
-    enum class Direction {
-        LEFT, RIGHT, UP, DOWN
+    enum class VerticalDirection {
+        UP, DOWN
     }
 
     enum class HorizontalDirection {
         LEFT, RIGHT
     }
 
-    enum class VerticalDirection {
-        UP, DOWN
+    enum class Direction4 {
+        UP, DOWN, LEFT, RIGHT
     }
 
-    enum class CompassDirection {
-        N, NE, E, SE, S, SW, W, NW
+    enum class Direction8 {
+        UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT, UPLEFT
     }
 
     enum class ClockDirection(val digit: Int) {
@@ -45,41 +44,8 @@ interface Drag {
  * - 12 o'clock = 0 degrees
  * - 3 o'clock = 90 degrees
  */
-fun dragAngleDegrees(delta: Offset): Double  {
-    val (x, y) = delta
-    val deg = when {
-        x == 0f -> when {
-            y > 0 -> 90.0
-            y < 0 -> 270.0
-            else -> 0.0
-        }
-        y == 0f -> when {
-            x > 0 -> 0.0
-            x < 0 -> 180.0
-            else -> 0.0
-        }
-        else -> {
-            val deg = atan(y / x) * 180.0 / PI
-            when {
-                x < 0 -> 180 + deg
-                y < 0 -> 360 + deg
-                else -> deg
-            }
-        }
-    }
-
-    return (deg + 90) % 360
-}
-
-/**
- * The dominant direction of the drag (LEFT, RIGHT, UP, DOWN)
- */
-fun dragDirection(delta: Offset) =
-    if (abs(delta.x) > abs(delta.y)) {
-        if (delta.x < 0) Drag.Direction.LEFT else Drag.Direction.RIGHT
-    } else {
-        if (delta.y < 0) Drag.Direction.UP else Drag.Direction.DOWN
-    }
+fun dragAngleDegrees(delta: Offset): Float  =
+    angleDegrees(delta)
 
 /**
  * The horizontal aspect of the drag (LEFT or RIGHT), regardless of the dominant direction
@@ -94,20 +60,30 @@ fun dragVerticalDirection(delta: Offset): Drag.VerticalDirection =
     if (delta.y < 0) Drag.VerticalDirection.UP else Drag.VerticalDirection.DOWN
 
 /**
- * The drag direction interpreted on the compass
+ * The dominant direction of the drag of 4 possible directions
  */
-fun dragCompassDirection(delta: Offset): Drag.CompassDirection {
+fun dragDirection4(delta: Offset) =
+    if (abs(delta.x) > abs(delta.y)) {
+        if (delta.x < 0) Drag.Direction4.LEFT else Drag.Direction4.RIGHT
+    } else {
+        if (delta.y < 0) Drag.Direction4.UP else Drag.Direction4.DOWN
+    }
+
+/**
+ * The dominant direction of the drag of 8 possible directions
+ */
+fun dragDirection8(delta: Offset): Drag.Direction8 {
     val angle = dragAngleDegrees(delta)
     return when {
-        (0.0..22.5).contains(angle) -> Drag.CompassDirection.N
-        (22.5..67.5).contains(angle) -> Drag.CompassDirection.NE
-        (67.5..112.5).contains(angle) -> Drag.CompassDirection.E
-        (112.5..157.5).contains(angle) -> Drag.CompassDirection.SE
-        (157.5..202.5).contains(angle) -> Drag.CompassDirection.S
-        (202.5..247.5).contains(angle) -> Drag.CompassDirection.SW
-        (247.5..292.5).contains(angle) -> Drag.CompassDirection.W
-        (292.5..337.5).contains(angle) -> Drag.CompassDirection.NW
-        else -> Drag.CompassDirection.N
+        (0.0..22.5).contains(angle) -> Drag.Direction8.UP
+        (22.5..67.5).contains(angle) -> Drag.Direction8.UPRIGHT
+        (67.5..112.5).contains(angle) -> Drag.Direction8.RIGHT
+        (112.5..157.5).contains(angle) -> Drag.Direction8.DOWNRIGHT
+        (157.5..202.5).contains(angle) -> Drag.Direction8.DOWN
+        (202.5..247.5).contains(angle) -> Drag.Direction8.DOWNLEFT
+        (247.5..292.5).contains(angle) -> Drag.Direction8.LEFT
+        (292.5..337.5).contains(angle) -> Drag.Direction8.UPLEFT
+        else -> Drag.Direction8.UP
     }
 }
 

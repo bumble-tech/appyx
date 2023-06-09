@@ -10,7 +10,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 @Parcelize
 class Activate<InteractionTarget : Any>(
     private val index: Float,
-    override val mode: Operation.Mode = Operation.Mode.IMPOSED
+    override var mode: Operation.Mode = Operation.Mode.IMPOSED
 ) : BaseOperation<SpotlightModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
