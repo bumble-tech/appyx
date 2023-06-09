@@ -15,7 +15,7 @@ interface ParentNodeView<InteractionTarget : Any> : NodeView {
     @Composable
     override fun View(modifier: Modifier) {
         val node = LocalNode.current as? ParentNode<InteractionTarget>
-            ?: error("${this::class.qualifiedName} is not provided to the appropriate ParentNode")
+            ?: error("${this::class} is not provided to the appropriate ParentNode")
         node.NodeView(modifier = modifier)
     }
 }

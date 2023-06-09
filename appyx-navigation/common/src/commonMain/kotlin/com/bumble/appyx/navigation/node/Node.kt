@@ -129,7 +129,7 @@ open class Node internal constructor(
         if (lifecycle.currentState == CommonLifecycle.State.DESTROYED && state != CommonLifecycle.State.DESTROYED) {
             Appyx.reportException(
                 IllegalStateException(
-                    "Trying to change lifecycle state of already destroyed node ${this::class.qualifiedName}"
+                    "Trying to change lifecycle state of already destroyed node ${this::class}"
                 )
             )
             return
