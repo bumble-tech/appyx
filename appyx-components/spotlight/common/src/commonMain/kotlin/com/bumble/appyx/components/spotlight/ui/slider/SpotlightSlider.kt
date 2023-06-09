@@ -104,12 +104,12 @@ class SpotlightSlider<InteractionTarget : Any>(
                 when (dragHorizontalDirection(delta)) {
                     Drag.HorizontalDirection.LEFT -> Gesture(
                         operation = if (reverseOrientation) Previous() else Next(),
-                        axis = Offset(-width, 0f)
+                        completeAt = Offset(-width, 0f)
                     )
 
                     else -> Gesture(
                         operation = if (reverseOrientation) Next() else Previous(),
-                        axis = Offset(width, 0f)
+                        completeAt = Offset(width, 0f)
                     )
                 }
             }
@@ -118,13 +118,13 @@ class SpotlightSlider<InteractionTarget : Any>(
                 when (dragVerticalDirection(delta)) {
                     Drag.VerticalDirection.UP -> Gesture(
                         operation = if (reverseOrientation) Previous() else Next(),
-                        axis = Offset(0f, -height)
+                        completeAt = Offset(0f, -height)
                     )
 
                     else ->
                         Gesture(
                             operation = if (reverseOrientation) Next() else Previous(),
-                            axis = Offset(0f, height)
+                            completeAt = Offset(0f, height)
                         )
                 }
             }

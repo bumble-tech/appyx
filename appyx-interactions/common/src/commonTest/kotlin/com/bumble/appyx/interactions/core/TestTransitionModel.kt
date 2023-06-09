@@ -48,7 +48,7 @@ class TestGestures<InteractionTarget : Any>(
     ): Gesture<InteractionTarget, State<InteractionTarget>> =
         Gesture(
             operation = TestOperation(target),
-            axis = Offset(100f, 100f)
+            completeAt = Offset(100f, 100f)
         )
 }
 

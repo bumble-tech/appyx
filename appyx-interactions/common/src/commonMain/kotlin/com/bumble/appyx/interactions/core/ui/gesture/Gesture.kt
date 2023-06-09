@@ -13,12 +13,12 @@ open class Gesture<InteractionTarget, ModelState> internal constructor(
 
     constructor(
         operation: Operation<ModelState>,
-        axis: Offset,
+        completeAt: Offset,
     ) : this(
         operation = operation,
-        dragToProgress = { offset -> proportionOf(offset, axis) },
+        dragToProgress = { offset -> proportionOf(offset, completeAt) },
         partial = { offset, remainder ->
-            val p = proportionOf(offset, axis)
+            val p = proportionOf(offset, completeAt)
             val remp = remainder / p
             val ret = offset * remp
             ret
