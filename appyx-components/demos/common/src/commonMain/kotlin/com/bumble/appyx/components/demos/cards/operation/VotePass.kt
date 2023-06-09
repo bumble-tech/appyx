@@ -7,7 +7,7 @@ import com.bumble.appyx.components.demos.cards.CardsModel.State.Card.InvisibleCa
 
 @Parcelize
 class VotePass<InteractionTarget>(
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : TopCardOperation<InteractionTarget>() {
 
     override fun createTargetState(fromState: CardsModel.State<InteractionTarget>): CardsModel.State<InteractionTarget> {

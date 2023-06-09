@@ -18,7 +18,7 @@ import com.bumble.appyx.components.backstack.BackStackModel.State
 @Parcelize
 data class Replace<InteractionTarget : Any>(
     private val interactionTarget: @RawValue InteractionTarget,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<State<InteractionTarget>>() {
     override fun isApplicable(state: State<InteractionTarget>): Boolean =
         interactionTarget != state.active.interactionTarget

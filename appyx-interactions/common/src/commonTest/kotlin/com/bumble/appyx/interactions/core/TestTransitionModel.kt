@@ -41,18 +41,21 @@ class TestTransitionModel<InteractionTarget : Any>(
 class TestGestures<InteractionTarget : Any>(
     private val target: InteractionTarget,
 ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
-    override fun createGesture(delta: Offset, density: Density): Gesture<InteractionTarget, State<InteractionTarget>> =
+    override fun createGesture(
+        state: State<InteractionTarget>,
+        delta: Offset,
+        density: Density
+    ): Gesture<InteractionTarget, State<InteractionTarget>> =
         Gesture(
             operation = TestOperation(target),
-            dragToProgress = { _ -> 0f },
-            partial = { offset, _ -> offset }
+            completeAt = Offset(100f, 100f)
         )
 }
 
 @Parcelize
 class TestOperation<InteractionTarget : Any>(
     private val interactionTarget: @RawValue InteractionTarget,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<State<InteractionTarget>>() {
     override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
         baseLineState

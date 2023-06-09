@@ -27,8 +27,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.internal.testdrive.operation.next
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveMotionController.Companion.toTargetUiState
+import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController
+import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController.Companion.toTargetUiState
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
 import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
@@ -58,11 +59,10 @@ fun <InteractionTarget : Any> TestDriveExperiment(
         TestDrive(
             scope = coroutineScope,
             model = model,
-            progressAnimationSpec =
-            spring(stiffness = Spring.StiffnessLow),
+            progressAnimationSpec = spring(stiffness = Spring.StiffnessLow),
             animateSettle = true,
             motionController = {
-                TestDriveMotionController(
+                TestDriveRotationMotionController(
                     it,
                     uiAnimationSpec = spring(
                         stiffness = Spring.StiffnessLow,
@@ -71,7 +71,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
                     ),
                 )
             },
-            gestureFactory = { TestDriveMotionController.Gestures(it) }
+            gestureFactory = { TestDriveSimpleMotionController.Gestures(it) }
         )
     }
 
