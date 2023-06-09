@@ -34,21 +34,15 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     api(composeBom)
-    api(project(":utils:customisations"))
-    api(project(":appyx-interactions:appyx-interactions"))
     api(project(":appyx-navigation:common"))
-    api(libs.kotlin.coroutines.android)
-    api(libs.androidx.lifecycle.common)
+    runtimeOnly(libs.kotlin.coroutines.android)
+    implementation(libs.androidx.lifecycle.common)
 
     api(libs.compose.runtime)
     api(libs.compose.ui.tooling)
-    api(libs.compose.ui.ui)
     api(libs.androidx.appcompat)
 
-    implementation(libs.compose.animation.core)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.compose.foundation.layout)
 
     androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.test.espresso.core)

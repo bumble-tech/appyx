@@ -27,7 +27,7 @@ kotlin {
                 api(compose.material)
                 api(project(":utils:multiplatform"))
                 implementation(libs.kotlinx.serialization.json)
-                implementation(project(":utils:customisations"))
+                api(project(":utils:customisations"))
                 api(project(":appyx-interactions:appyx-interactions"))
             }
         }
