@@ -8,7 +8,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
@@ -27,6 +26,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
 import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -73,14 +73,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
 
     private var animationChangesJob: Job? = null
     private var animationFinishedJob: Job? = null
-
-    private var transitionBounds: TransitionBounds = zeroSizeTransitionBounds
-        set(value) {
-            if (value != field) {
-                AppyxLogger.d("InteractionModel", "TransitionBounds changed: $value")
-                field = value
-            }
-        }
+    private var uiContext: UiContext? = null
 
     private var _isAnimating = MutableStateFlow(false)
     val isAnimating: StateFlow<Boolean> = _isAnimating
@@ -170,12 +163,12 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     override fun updateContext(uiContext: UiContext) {
-        if (this.transitionBounds != uiContext.transitionBounds) {
-            this.transitionBounds = uiContext.transitionBounds
+        if (this.uiContext != uiContext) {
+            AppyxLogger.d("InteractionModel", "new uiContext supplied: $uiContext")
             _motionController = motionController(uiContext).also {
                 onMotionControllerReady(it)
             }
-            _gestureFactory = gestureFactory(transitionBounds)
+            _gestureFactory = gestureFactory(uiContext.transitionBounds)
         }
     }
 
