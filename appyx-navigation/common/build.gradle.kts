@@ -35,6 +35,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test"))
 
+                implementation(libs.kotlin.test)
                 implementation(libs.kotlin.coroutines.test)
                 implementation(libs.junit)
             }

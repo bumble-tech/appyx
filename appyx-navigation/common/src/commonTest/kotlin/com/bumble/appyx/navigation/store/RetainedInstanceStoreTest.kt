@@ -1,32 +1,34 @@
 package com.bumble.appyx.navigation.store
 
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertSame
-import org.junit.Assert.assertTrue
-import org.junit.Test
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertSame
+import kotlin.test.assertTrue
 
+@Suppress("TestFunctionName")
 class RetainedInstanceStoreTest {
 
-    private val identifier = "identifier"
+    private val storeId = "storeId"
+    private val key = "key"
     private val store = RetainedInstanceStoreImpl()
 
     @Test
-    fun `GIVEN object stored WHEN get with same identifier THEN same instance is retrieved`() {
+    fun GIVEN_object_stored_WHEN_get_with_same_identifier_THEN_same_instance_is_retrieved() {
         val obj = Any()
-        store.get(identifier) { obj }
+        store.get(storeId, key) { obj }
 
-        val retrieved = store.get(identifier) { Any() }
+        val retrieved = store.get(storeId, key) { Any() }
 
         assertSame(obj, retrieved)
     }
 
     @Test
-    fun `GIVEN object stored WHEN get with same identifier THEN factory not called`() {
+    fun GIVEN_object_stored_WHEN_get_with_same_identifier_THEN_factory_not_called() {
         var factoryCalled = false
-        store.get(identifier) { Any() }
+        store.get(storeId, key) { Any() }
 
-        store.get(identifier) {
+        store.get(storeId, key) {
             factoryCalled = true
             Any()
         }
@@ -34,68 +36,70 @@ class RetainedInstanceStoreTest {
         assertFalse(factoryCalled)
     }
 
+    // This test requires reflection so can only be executed in JVM builds.
+    // TODO: move to desktop or android only tests, not common test
+//    @Test
+//    fun GIVEN_two_objects_with_different_types_stored_WHEN_get_with_same_identifier_THEN_both_objects_returned() {
+//        store.get(storeId, key) { 1 }
+//        store.get(storeId, key) { 2L }
+//
+//        val integerValue = store.get(storeId, key) { 5 }
+//        val longValue = store.get(storeId, key) { 6L }
+//
+//        assertEquals(1, integerValue)
+//        assertEquals(2L, longValue)
+//    }
+
     @Test
-    fun `GIVEN two objects with different types stored WHEN get with same identifier THEN both objects returned`() {
-        store.get(identifier) { 1 }
-        store.get(identifier) { 2L }
+    fun GIVEN_two_objects_stored_with_same_type_AND_different_keys_WHEN_get_with_same_identifier_THEN_both_objects_returned() {
+        store.get(storeId = storeId, key = "1") { 1 }
+        store.get(storeId = storeId, key = "2") { 2 }
 
-        val integerValue = store.get(identifier) { 5 }
-        val longValue = store.get(identifier) { 6L }
-
-        assertEquals(1, integerValue)
-        assertEquals(2L, longValue)
-    }
-
-    @Test
-    fun `GIVEN two objects stored with same type AND different keys WHEN get with same identifier THEN both objects returned`() {
-        store.get(storeId = identifier, key = "1") { 1 }
-        store.get(storeId = identifier, key = "2") { 2 }
-
-        val integerValue1 = store.get(storeId = identifier, key = "1") { 5 }
-        val integerValue2 = store.get(storeId = identifier, key = "2") { 6L }
+        val integerValue1 = store.get(storeId = storeId, key = "1") { 5 }
+        val integerValue2 = store.get(storeId = storeId, key = "2") { 6 }
 
         assertEquals(1, integerValue1)
         assertEquals(2, integerValue2)
     }
 
     @Test
-    fun `GIVEN object stored WHEN clearStore with same identifier THEN object is disposed`() {
+    fun GIVEN_object_stored_WHEN_clearStore_with_same_identifier_THEN_object_is_disposed() {
         val obj = Any()
         var disposed = false
-        store.get(identifier, disposer = { disposed = true }) { obj }
+        store.get(storeId, key = key, disposer = { disposed = true }) { obj }
 
-        store.clearStore(identifier)
+        store.clearStore(storeId)
 
         assertTrue(disposed)
     }
 
     @Test
-    fun `GIVEN object stored WHEN clearStore with different identifier THEN object is not disposed`() {
+    fun GIVEN_object_stored_WHEN_clearStore_with_different_identifier_THEN_object_is_not_disposed() {
         val obj = Any()
         val otherIdentifier = "other"
         var disposed = false
-        store.get(identifier) { obj }
-        store.get(otherIdentifier, disposer = { disposed = true }) { obj }
+        store.get(storeId, key) { obj }
+        store.get(otherIdentifier, key, disposer = { disposed = true }) { obj }
 
-        store.clearStore(identifier)
+        store.clearStore(storeId)
 
         assertFalse(disposed)
     }
 
     @Test
-    fun `GIVEN object stored before WHEN checking if same instance retained by store id with same owner THEN expect true`() {
+    fun GIVEN_object_stored_before_WHEN_checking_if_same_instance_retained_by_store_id_with_same_owner_THEN_expect_true() {
         val obj = Any()
-        store.get(identifier) { obj }
+        store.get(storeId, key) { obj }
 
-        val isRetained = store.isRetainedByStoreId(identifier, obj)
+        val isRetained = store.isRetainedByStoreId(storeId, obj)
 
         assertTrue(isRetained)
     }
 
     @Test
-    fun `GIVEN object stored before WHEN checking if same instance retained by store id with different owner THEN expect false`() {
+    fun GIVEN_object_stored_before_WHEN_checking_if_same_instance_retained_by_store_id_with_different_owner_THEN_expect_false() {
         val obj = Any()
-        store.get(identifier) { obj }
+        store.get(storeId, key) { obj }
 
         val isRetained = store.isRetainedByStoreId("different-identifier", obj)
 
@@ -103,40 +107,40 @@ class RetainedInstanceStoreTest {
     }
 
     @Test
-    fun `GIVEN object stored before WHEN checking if different instance retained by store id with same owner THEN expect false`() {
+    fun GIVEN_object_stored_before_WHEN_checking_if_different_instance_retained_by_store_id_with_same_owner_THEN_expect_false() {
         val obj = Any()
         val otherObj = Any()
-        store.get(identifier) { obj }
+        store.get(storeId, key) { obj }
 
-        val isRetained = store.isRetainedByStoreId(identifier, otherObj)
-
-        assertFalse(isRetained)
-    }
-
-    @Test
-    fun `GIVEN object stored before AND then removed WHEN checking if same instance retained by store id with same owner THEN expect false`() {
-        val obj = Any()
-        store.get(identifier) { obj }
-        store.clearStore(identifier)
-
-        val isRetained = store.isRetainedByStoreId(identifier, obj)
+        val isRetained = store.isRetainedByStoreId(storeId, otherObj)
 
         assertFalse(isRetained)
     }
 
     @Test
-    fun `GIVEN no object stored WHEN checking if instance retained by store id THEN expect false`() {
+    fun GIVEN_object_stored_before_AND_then_removed_WHEN_checking_if_same_instance_retained_by_store_id_with_same_owner_THEN_expect_false() {
         val obj = Any()
+        store.get(storeId, key) { obj }
+        store.clearStore(storeId)
 
-        val isRetained = store.isRetainedByStoreId(identifier, obj)
+        val isRetained = store.isRetainedByStoreId(storeId, obj)
 
         assertFalse(isRetained)
     }
 
     @Test
-    fun `GIVEN object stored before WHEN checking if same instance retained THEN expect true`() {
+    fun GIVEN_no_object_stored_WHEN_checking_if_instance_retained_by_store_id_THEN_expect_false() {
         val obj = Any()
-        store.get(identifier) { obj }
+
+        val isRetained = store.isRetainedByStoreId(storeId, obj)
+
+        assertFalse(isRetained)
+    }
+
+    @Test
+    fun GIVEN_object_stored_before_WHEN_checking_if_same_instance_retained_THEN_expect_true() {
+        val obj = Any()
+        store.get(storeId, key) { obj }
 
         val isRetained = store.isRetained(obj)
 
@@ -144,10 +148,10 @@ class RetainedInstanceStoreTest {
     }
 
     @Test
-    fun `GIVEN object stored before WHEN checking if different instance retained THEN expect false`() {
+    fun GIVEN_object_stored_before_WHEN_checking_if_different_instance_retained_THEN_expect_false() {
         val obj = Any()
         val otherObj = Any()
-        store.get(identifier) { obj }
+        store.get(storeId, key) { obj }
 
         val isRetained = store.isRetained(otherObj)
 
@@ -155,10 +159,10 @@ class RetainedInstanceStoreTest {
     }
 
     @Test
-    fun `GIVEN object stored before AND then removed WHEN checking if same instance retained THEN expect false`() {
+    fun GIVEN_object_stored_before_AND_then_removed_WHEN_checking_if_same_instance_retained_THEN_expect_false() {
         val obj = Any()
-        store.get(identifier) { obj }
-        store.clearStore(identifier)
+        store.get(storeId, key) { obj }
+        store.clearStore(storeId)
 
         val isRetained = store.isRetained(obj)
 
@@ -166,7 +170,7 @@ class RetainedInstanceStoreTest {
     }
 
     @Test
-    fun `GIVEN no object stored WHEN checking if instance retained THEN expect false`() {
+    fun GIVEN_no_object_stored_WHEN_checking_if_instance_retained_THEN_expect_false() {
         val obj = Any()
 
         val isRetained = store.isRetained(obj)
