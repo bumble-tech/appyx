@@ -44,7 +44,7 @@ interface Drag {
  * - 12 o'clock = 0 degrees
  * - 3 o'clock = 90 degrees
  */
-fun dragAngleDegrees(delta: Offset): Double  =
+fun dragAngleDegrees(delta: Offset): Float  =
     angleDegrees(delta)
 
 /**

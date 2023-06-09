@@ -11,7 +11,7 @@ import kotlin.math.cos
  * - 12 o'clock = 0 degrees
  * - 3 o'clock = 90 degrees
  */
-fun angleDegrees(vector: Offset): Double  {
+fun angleDegrees(vector: Offset): Float  {
     val (x, y) = vector
     val deg = when {
         x == 0f -> when {
@@ -34,7 +34,7 @@ fun angleDegrees(vector: Offset): Double  {
         }
     }
 
-    return (deg + 90) % 360
+    return (deg.toFloat() + 90) % 360
 }
 
 fun scalarComponentOf(v1: Offset, v2: Offset): Float {
