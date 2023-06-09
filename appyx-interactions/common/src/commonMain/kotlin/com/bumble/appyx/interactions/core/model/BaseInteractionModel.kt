@@ -164,6 +164,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
 
     override fun updateContext(uiContext: UiContext) {
         if (this.uiContext != uiContext) {
+            this.uiContext = uiContext
             AppyxLogger.d("InteractionModel", "new uiContext supplied: $uiContext")
             _motionController = motionController(uiContext).also {
                 onMotionControllerReady(it)
