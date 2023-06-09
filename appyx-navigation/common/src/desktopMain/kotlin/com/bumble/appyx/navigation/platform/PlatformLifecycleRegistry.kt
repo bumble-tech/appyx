@@ -18,50 +18,8 @@ actual class PlatformLifecycleRegistry(
         ArrayList()
 
     private var _currentState: CommonLifecycle.State = CommonLifecycle.State.INITIALIZED
-    override var currentState: CommonLifecycle.State
+    override val currentState: CommonLifecycle.State
         get() = _currentState
-        set(value) {
-            when (value) {
-                CommonLifecycle.State.INITIALIZED -> Unit
-                CommonLifecycle.State.CREATED -> {
-                    managedDefaultLifecycleObservers.forEach { it.onCreate() }
-                    managedLifecycleEventObservers.forEach {
-                        it.onStateChanged(
-                            value,
-                            CommonLifecycle.Event.ON_CREATE
-                        )
-                    }
-                }
-                CommonLifecycle.State.STARTED -> {
-                    managedDefaultLifecycleObservers.forEach { it.onStart() }
-                    managedLifecycleEventObservers.forEach {
-                        it.onStateChanged(
-                            value,
-                            CommonLifecycle.Event.ON_START
-                        )
-                    }
-                }
-                CommonLifecycle.State.RESUMED -> {
-                    managedDefaultLifecycleObservers.forEach { it.onResume() }
-                    managedLifecycleEventObservers.forEach {
-                        it.onStateChanged(
-                            value,
-                            CommonLifecycle.Event.ON_RESUME
-                        )
-                    }
-                }
-                CommonLifecycle.State.DESTROYED -> {
-                    managedDefaultLifecycleObservers.forEach { it.onDestroy() }
-                    managedLifecycleEventObservers.forEach {
-                        it.onStateChanged(
-                            value,
-                            CommonLifecycle.Event.ON_DESTROY
-                        )
-                    }
-                }
-            }
-            _currentState = value
-        }
 
     override val coroutineScope: CoroutineScope = lifecycleCoroutineScope
 
@@ -80,7 +38,46 @@ actual class PlatformLifecycleRegistry(
     }
 
     actual fun setCurrentState(state: CommonLifecycle.State) {
-        currentState = state
+        when (state) {
+            CommonLifecycle.State.INITIALIZED -> Unit
+            CommonLifecycle.State.CREATED -> {
+                managedDefaultLifecycleObservers.forEach { it.onCreate() }
+                managedLifecycleEventObservers.forEach {
+                    it.onStateChanged(
+                        state,
+                        CommonLifecycle.Event.ON_CREATE
+                    )
+                }
+            }
+            CommonLifecycle.State.STARTED -> {
+                managedDefaultLifecycleObservers.forEach { it.onStart() }
+                managedLifecycleEventObservers.forEach {
+                    it.onStateChanged(
+                        state,
+                        CommonLifecycle.Event.ON_START
+                    )
+                }
+            }
+            CommonLifecycle.State.RESUMED -> {
+                managedDefaultLifecycleObservers.forEach { it.onResume() }
+                managedLifecycleEventObservers.forEach {
+                    it.onStateChanged(
+                        state,
+                        CommonLifecycle.Event.ON_RESUME
+                    )
+                }
+            }
+            CommonLifecycle.State.DESTROYED -> {
+                managedDefaultLifecycleObservers.forEach { it.onDestroy() }
+                managedLifecycleEventObservers.forEach {
+                    it.onStateChanged(
+                        state,
+                        CommonLifecycle.Event.ON_DESTROY
+                    )
+                }
+            }
+        }
+        _currentState = state
     }
 
     actual companion object {
