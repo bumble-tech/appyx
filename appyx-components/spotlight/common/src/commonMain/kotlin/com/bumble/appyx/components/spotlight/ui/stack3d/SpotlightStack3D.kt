@@ -12,7 +12,6 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -27,10 +26,10 @@ class SpotlightStack3D<InteractionTarget : Any>(
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
 
-    private val scrollX = GenericFloatProperty(uiContext, GenericFloatProperty.Target(0f))
+    private val scrollY = GenericFloatProperty(uiContext, GenericFloatProperty.Target(0f))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollX
+            { state: State<InteractionTarget> -> state.activeIndex } to scrollY
         )
 
     private val created: TargetUiState = TargetUiState(
@@ -81,7 +80,7 @@ class SpotlightStack3D<InteractionTarget : Any>(
     ): MutableUiState =
         targetUiState.toMutableState(
             uiContext = uiContext,
-            scrollX = scrollX.renderValueFlow.mapState(uiContext.coroutineScope) { it - targetUiState.positionInList },
+            scrollX = scrollY.renderValueFlow.mapState(uiContext.coroutineScope) { it - targetUiState.positionInList },
             itemWidth = width,
             itemHeight = height,
         )

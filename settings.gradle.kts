@@ -39,6 +39,7 @@ include(
     ":appyx-interactions:common",
     ":appyx-navigation",
     ":demos:appyx-interactions:android",
+    ":demos:appyx-interactions:desktop",
     ":demos:appyx-interactions:web",
     ":demos:appyx-navigation",
     ":demos:common",
