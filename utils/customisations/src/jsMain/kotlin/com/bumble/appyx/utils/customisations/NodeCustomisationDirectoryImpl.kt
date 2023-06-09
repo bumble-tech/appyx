@@ -2,8 +2,8 @@ package com.bumble.appyx.utils.customisations
 
 import kotlin.reflect.KClass
 
-actual open class NodeCustomisationDirectoryImpl(
-    override val parent: NodeCustomisationDirectory? = null
+actual open class NodeCustomisationDirectoryImpl actual constructor(
+    override val parent: NodeCustomisationDirectory?
 ) : MutableNodeCustomisationDirectory {
 
     override fun <T : NodeCustomisation> put(key: KClass<T>, value: T) {
