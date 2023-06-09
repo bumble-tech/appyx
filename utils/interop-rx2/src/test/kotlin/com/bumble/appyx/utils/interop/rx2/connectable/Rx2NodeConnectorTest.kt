@@ -1,16 +1,15 @@
 package com.bumble.appyx.utils.interop.rx2.connectable
 
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Lifecycle.State.CREATED
-import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LifecycleRegistry
+import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
+import com.bumble.appyx.navigation.platform.toCommonState
 import com.bumble.appyx.utils.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output1
 import com.bumble.appyx.utils.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output2
 import com.bumble.appyx.utils.interop.rx2.connectable.Rx2NodeConnectorTest.Output.Output3
-import com.bumble.appyx.utils.interop.rx2.connectable.NodeConnector
 import io.reactivex.observers.TestObserver
+import kotlinx.coroutines.CoroutineScope
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.RepeatedTest
@@ -19,30 +18,30 @@ import java.util.concurrent.CyclicBarrier
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
+import kotlin.coroutines.EmptyCoroutineContext
 
 class Rx2NodeConnectorTest {
 
     private val firstTestObserver = TestObserver<Output>()
     private val secondTestObserver = TestObserver<Output>()
     private var lifecycleState = CREATED
-    private val lifecycle = object : Lifecycle() {
 
-        private val lifecycleOwner = object : LifecycleOwner {
-            override val lifecycle: Lifecycle = LifecycleRegistry(this)
-        }
+    private val lifecycle = object : CommonLifecycle {
 
-        override fun addObserver(observer: LifecycleObserver) {
+        override val currentState: CommonLifecycle.State
+            get() = lifecycleState.toCommonState()
+
+        override val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
+
+        override fun addObserver(observer: PlatformLifecycleObserver) {
             if (lifecycleState == CREATED) {
-                (observer as DefaultLifecycleObserver).onCreate(lifecycleOwner)
+                (observer as DefaultPlatformLifecycleObserver).onCreate()
             }
         }
 
-        override fun removeObserver(observer: LifecycleObserver) {
-            // Deliberately empty
+        override fun removeObserver(observer: PlatformLifecycleObserver) {
+            // NO-OP
         }
-
-        override val currentState: State
-            get() = lifecycleState
     }
 
     sealed class Output {
