@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -53,10 +54,13 @@ private fun Event(
     Row(modifier = modifier.fillMaxWidth()) {
         Text(
             text = time,
+            textAlign = TextAlign.End,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = Color.DarkGray,
-            modifier = modifier.requiredWidth(80.dp),
+            modifier = modifier
+                .requiredWidth(80.dp)
+                .padding(end = 8.dp),
         )
         Text(
             text = event,

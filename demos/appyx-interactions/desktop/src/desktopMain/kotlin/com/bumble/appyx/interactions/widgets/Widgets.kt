@@ -68,8 +68,8 @@ fun Widgets(
     LaunchedEffect(events) {
         events.collect {
             when (it) {
-                Events.OnLeftClicked -> spotlight.previous()
-                Events.OnRightClicked -> spotlight.next()
+                Events.OnUpClicked -> spotlight.previous()
+                Events.OnDownClicked -> spotlight.next()
             }
         }
     }

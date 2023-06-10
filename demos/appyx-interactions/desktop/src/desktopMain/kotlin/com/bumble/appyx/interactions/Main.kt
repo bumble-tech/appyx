@@ -43,8 +43,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 sealed class Events {
-    object OnLeftClicked : Events()
-    object OnRightClicked : Events()
+    object OnUpClicked : Events()
+    object OnDownClicked : Events()
 }
 
 fun main() = application {
@@ -124,13 +124,13 @@ private fun onKeyEvent(
     coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob()),
 ): Boolean =
     when {
-        keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.DirectionLeft -> {
-            coroutineScope.launch { events.send(Events.OnLeftClicked) }
+        keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.DirectionUp -> {
+            coroutineScope.launch { events.send(Events.OnUpClicked) }
             true
         }
 
-        keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.DirectionRight -> {
-            coroutineScope.launch { events.send(Events.OnRightClicked) }
+        keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.DirectionDown -> {
+            coroutineScope.launch { events.send(Events.OnDownClicked) }
             true
         }
 
