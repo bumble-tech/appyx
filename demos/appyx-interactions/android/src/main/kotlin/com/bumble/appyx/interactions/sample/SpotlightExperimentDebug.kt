@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
+import com.bumble.appyx.components.spotlight.gestures.Gestures
 import com.bumble.appyx.components.spotlight.operation.first
 import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.operation.next
@@ -41,7 +42,7 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
                 savedStateMap = null
             ),
             motionController = { SpotlightSlider(it) },
-            gestureFactory = { SpotlightSlider.Gestures(it) },
+            gestureFactory = { Gestures(it) },
             isDebug = true
         )
     }
