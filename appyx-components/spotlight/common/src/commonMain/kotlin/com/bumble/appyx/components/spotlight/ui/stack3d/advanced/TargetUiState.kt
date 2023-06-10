@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.spotlight.ui.stack3d
+package com.bumble.appyx.components.spotlight.ui.stack3d.advanced
 
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.Dp
@@ -10,7 +10,6 @@ import com.bumble.appyx.interactions.core.ui.math.smoothstep
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
@@ -43,7 +42,7 @@ class TargetUiState(
         scrollX: StateFlow<Float>,
         itemWidth: Dp,
         itemHeight: Dp,
-        itemsInStack: Int = 3,
+        itemsInStack: Int,
     ): MutableUiState {
         return MutableUiState(
             uiContext = uiContext,

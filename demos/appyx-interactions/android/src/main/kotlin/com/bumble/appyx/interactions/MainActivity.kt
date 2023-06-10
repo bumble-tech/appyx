@@ -29,7 +29,7 @@ import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
-import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
+import com.bumble.appyx.components.spotlight.ui.stack3d.simple.SpotlightStack3D
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperimentInVertical
 import com.bumble.appyx.interactions.theme.AppyxTheme
