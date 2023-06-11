@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.Density
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.COMPLETE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.REVERT
@@ -35,10 +36,13 @@ class DragProgressController<InteractionTarget : Any, State>(
     }
 
     override fun onDrag(dragAmount: Offset, density: Density) {
-        gestureFactory().createGesture(dragAmount, density)
         if (_gestureFactory == null) {
             _gestureFactory = { dragAmount ->
-                gestureFactory().createGesture(dragAmount, density)
+                gestureFactory().createGesture(
+                    state = model.output.value.currentTargetState,
+                    delta = dragAmount,
+                    density = density
+                )
             }
         }
         consumeDrag(dragAmount)
@@ -51,7 +55,9 @@ class DragProgressController<InteractionTarget : Any, State>(
     private fun consumeDrag(dragAmount: Offset) {
         val currentState = model.output.value
         require(dragAmount.isValid()) { "dragAmount is NaN" }
-        require(dragAmount.getDistance() > 0f) { "dragAmount distance is 0" }
+        if (dragAmount.getDistanceSquared() == 0f) {
+            return
+        }
         requireNotNull(_gestureFactory) { "This should have been set already in this class" }
         if (gesture == null) {
             gesture = _gestureFactory!!.invoke(dragAmount)
@@ -59,6 +65,7 @@ class DragProgressController<InteractionTarget : Any, State>(
 
         requireNotNull(gesture)
         val operation = gesture!!.operation
+        operation.mode = KEYFRAME
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
         require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
         val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
@@ -68,7 +75,8 @@ class DragProgressController<InteractionTarget : Any, State>(
         if (gesture!!.startProgress == null) {
             // TODO internally this will always apply it to the end of a Keyframes queue,
             //  which is not necessarily what we want:
-            if (model.operation(operation)) {
+            if (model.canApply(operation)) {
+                model.operation(operation)
                 gesture!!.startProgress = currentProgress
                 AppyxLogger.d(TAG, "Gesture operation applied: $operation")
             } else {
@@ -98,7 +106,9 @@ class DragProgressController<InteractionTarget : Any, State>(
                 // TODO without recursion
                 val remainder =
                     consumePartial(COMPLETE, dragAmount, totalTarget, deltaProgress, startProgress + 1)
-                consumeDrag(remainder)
+                if (remainder.getDistanceSquared() > 0) {
+                    consumeDrag(remainder)
+                }
             }
 
             // Case: we went back to or beyond the start,

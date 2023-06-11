@@ -10,18 +10,18 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 @Parcelize
 data class MoveTo<InteractionTarget>(
     private val elementState: TestDriveModel.State.ElementState,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<TestDriveModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: TestDriveModel.State<InteractionTarget>): Boolean =
-        state.elementState.next() == elementState
+        true
 
     override fun createFromState(baseLineState: TestDriveModel.State<InteractionTarget>): TestDriveModel.State<InteractionTarget> =
         baseLineState
 
     override fun createTargetState(fromState: TestDriveModel.State<InteractionTarget>): TestDriveModel.State<InteractionTarget> =
         fromState.copy(
-            elementState = fromState.elementState.next()
+            elementState = elementState
         )
 }
 

@@ -33,7 +33,7 @@ interface Operation<ModelState> : Parcelable {
         IMPOSED,
     }
 
-    val mode: Mode
+    var mode: Mode
 
     fun isApplicable(state: ModelState): Boolean
 
@@ -41,8 +41,7 @@ interface Operation<ModelState> : Parcelable {
     @Parcelize
     class Noop<ModelState> : Operation<ModelState> {
 
-        override val mode: Mode
-            get() = Mode.IMMEDIATE
+        override var mode: Mode = Mode.IMMEDIATE
 
         override fun isApplicable(state: ModelState): Boolean =
             false

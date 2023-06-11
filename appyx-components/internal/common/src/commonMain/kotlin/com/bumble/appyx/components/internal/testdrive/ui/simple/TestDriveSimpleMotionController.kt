@@ -15,10 +15,17 @@ import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.Drag
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.RIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UP
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPLEFT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNRIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNLEFT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.LEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragDirection
+import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -28,7 +35,7 @@ import com.bumble.appyx.transitionmodel.testdrive.ui.md_light_green_500
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_red_500
 import com.bumble.appyx.transitionmodel.testdrive.ui.md_yellow_500
 
-class TestDriveMotionController<InteractionTarget : Any>(
+class TestDriveSimpleMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
@@ -87,37 +94,44 @@ class TestDriveMotionController<InteractionTarget : Any>(
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val width = offsetB.x - offsetA.x
-        private val height = offsetD.y - offsetA.y
+        private val widthDp = offsetB.x - offsetA.x
+        private val heightDp = offsetD.y - offsetA.y
 
-        override fun createGesture(delta: Offset, density: Density): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-            val width = with(density) { width.toPx() }
-            val height = with(density) { height.toPx() }
+        override fun createGesture(
+            state: TestDriveModel.State<InteractionTarget>,
+            delta: Offset,
+            density: Density
+        ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
+            val width = with(density) { widthDp.toPx() }
+            val height = with(density) { heightDp.toPx() }
 
-            return when (dragDirection(delta)) {
-                Drag.Direction.RIGHT -> Gesture(
-                    operation = MoveTo(B),
-                    dragToProgress = { offset -> (offset.x / width) },
-                    partial = { offset, partial -> offset.copy(x = partial * width) }
-                )
-                Drag.Direction.DOWN ->
-                    Gesture(
-                        operation = MoveTo(C),
-                        dragToProgress = { offset -> (offset.y / height) },
-                        partial = { offset, partial -> offset.copy(y = partial * height) }
-                    )
-                Drag.Direction.LEFT -> Gesture(
-                        operation = MoveTo(D),
-                        dragToProgress = { offset -> (offset.x / width) * -1 },
-                        partial = { offset, progress -> offset.copy(x = progress * width * -1) }
-                    )
-                Drag.Direction.UP ->
-                    Gesture(
-                        operation = MoveTo(A),
-                        dragToProgress = { offset -> (offset.y / height) * -1 },
-                        partial = { offset, partial -> offset.copy(y = partial * height * -1) }
-                    )
+            val direction = dragDirection8(delta)
+            return when (state.elementState) {
+                A -> when (direction) {
+                    RIGHT -> Gesture(MoveTo(B), Offset(width, 0f))
+                    DOWNRIGHT -> Gesture(MoveTo(C), Offset(width, height))
+                    DOWN -> Gesture(MoveTo(D), Offset(0f, height))
+                    else -> Gesture.Noop()
                 }
+                B -> when (direction) {
+                    DOWN -> Gesture(MoveTo(C), Offset(0f, height))
+                    DOWNLEFT -> Gesture(MoveTo(D), Offset(-width, height))
+                    LEFT -> Gesture(MoveTo(A), Offset(-width, 0f))
+                    else -> Gesture.Noop()
+                }
+                C -> when (direction) {
+                    LEFT -> Gesture(MoveTo(D), Offset(-width, 0f))
+                    UPLEFT -> Gesture(MoveTo(A), Offset(-width, -height))
+                    UP -> Gesture(MoveTo(B), Offset(0f, -height))
+                    else -> Gesture.Noop()
+                }
+                D -> when (direction) {
+                    UP -> Gesture(MoveTo(A), Offset(0f, -height))
+                    UPRIGHT -> Gesture(MoveTo(B), Offset(width, -height))
+                    RIGHT -> Gesture(MoveTo(C), Offset(width, 0f))
+                    else -> Gesture.Noop()
+                }
+            }
         }
     }
 }

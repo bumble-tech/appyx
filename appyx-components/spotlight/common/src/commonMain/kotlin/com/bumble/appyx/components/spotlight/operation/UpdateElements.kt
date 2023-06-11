@@ -20,7 +20,7 @@ import kotlin.math.max
 class UpdateElements<InteractionTarget : Any>(
     private val items: @RawValue List<InteractionTarget>,
     private val initialActiveIndex: Float? = null,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<SpotlightModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
