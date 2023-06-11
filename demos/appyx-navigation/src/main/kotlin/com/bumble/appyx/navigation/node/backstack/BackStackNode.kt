@@ -108,7 +108,7 @@ class BackStackNode(
                     .background(appyx_dark)
                     .then(
                         if (isMaxSize) {
-                            Modifier.padding(bottom = 16.dp,)
+                            Modifier.padding(bottom = 16.dp)
                         } else {
                             Modifier.padding(16.dp)
                         }
