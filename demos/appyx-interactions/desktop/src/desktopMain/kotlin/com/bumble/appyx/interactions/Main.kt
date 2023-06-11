@@ -37,6 +37,7 @@ import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.bumble.appyx.interactions.widgets.Widgets
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -121,7 +122,7 @@ private fun FrameWindowScope.TitleBar(
 private fun onKeyEvent(
     keyEvent: KeyEvent,
     events: Channel<Events>,
-    coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob()),
+    coroutineScope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
 ): Boolean =
     when {
         keyEvent.type == KeyEventType.KeyDown && keyEvent.key == Key.DirectionUp -> {
