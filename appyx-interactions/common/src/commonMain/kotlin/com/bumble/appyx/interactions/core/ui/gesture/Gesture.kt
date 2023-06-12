@@ -2,13 +2,26 @@ package com.bumble.appyx.interactions.core.ui.gesture
 
 import androidx.compose.ui.geometry.Offset
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.core.ui.math.proportionOf
 
-open class Gesture<InteractionTarget, ModelState>(
+open class Gesture<InteractionTarget, ModelState> internal constructor(
     val operation: Operation<ModelState>,
     val dragToProgress: (Offset) -> Float,
     val partial: (Offset, Float) -> Offset
 ) {
     var startProgress: Float? = null
+
+    constructor(
+        operation: Operation<ModelState>,
+        completeAt: Offset,
+    ) : this(
+        operation = operation,
+        dragToProgress = { offset -> proportionOf(offset, completeAt) },
+        partial = { offset, remainder ->
+            val totalProgress = proportionOf(offset, completeAt)
+            offset * (remainder / totalProgress)
+        }
+    )
 
     class Noop<InteractionTarget, ModelState> : Gesture<InteractionTarget, ModelState>(
         operation = Operation.Noop(),

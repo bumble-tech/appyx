@@ -12,7 +12,6 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.D
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.operation.Next
 import com.bumble.appyx.components.spotlight.operation.Previous
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag
@@ -93,25 +92,24 @@ class SpotlightSlider<InteractionTarget : Any>(
         private val orientation: Orientation = Orientation.Horizontal,
         private val reverseOrientation: Boolean = false,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
-        private val width = transitionBounds.widthPx
-        private val height = transitionBounds.heightPx
+        private val width = transitionBounds.widthPx.toFloat()
+        private val height = transitionBounds.heightPx.toFloat()
 
         override fun createGesture(
+            state: State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, State<InteractionTarget>> = when (orientation) {
             Orientation.Horizontal -> {
                 when (dragHorizontalDirection(delta)) {
                     Drag.HorizontalDirection.LEFT -> Gesture(
-                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
-                        dragToProgress = { offset -> (offset.x / width) * -1 },
-                        partial = { offset, progress -> offset.copy(x = progress * width * -1) }
+                        operation = if (reverseOrientation) Previous() else Next(),
+                        completeAt = Offset(-width, 0f)
                     )
 
                     else -> Gesture(
-                        operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
-                        dragToProgress = { offset -> (offset.x / width) },
-                        partial = { offset, partial -> offset.copy(x = partial * width) }
+                        operation = if (reverseOrientation) Next() else Previous(),
+                        completeAt = Offset(width, 0f)
                     )
                 }
             }
@@ -119,16 +117,14 @@ class SpotlightSlider<InteractionTarget : Any>(
             Orientation.Vertical -> {
                 when (dragVerticalDirection(delta)) {
                     Drag.VerticalDirection.UP -> Gesture(
-                        operation = if (reverseOrientation) Previous(KEYFRAME) else Next(KEYFRAME),
-                        dragToProgress = { offset -> (offset.y / height) * -1 },
-                        partial = { offset, partial -> offset.copy(y = partial * height * -1) }
+                        operation = if (reverseOrientation) Previous() else Next(),
+                        completeAt = Offset(0f, -height)
                     )
 
                     else ->
                         Gesture(
-                            operation = if (reverseOrientation) Next(KEYFRAME) else Previous(KEYFRAME),
-                            dragToProgress = { offset -> (offset.y / height) },
-                            partial = { offset, partial -> offset.copy(y = partial * height) }
+                            operation = if (reverseOrientation) Next() else Previous(),
+                            completeAt = Offset(0f, height)
                         )
                 }
             }

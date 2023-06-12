@@ -3,14 +3,22 @@ package com.bumble.appyx.interactions.core.ui.gesture
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 
-interface GestureFactory<InteractionTarget, State> {
+interface GestureFactory<InteractionTarget, ModelState> {
 
     fun onStartDrag(position: Offset) {}
 
-    fun createGesture(delta: Offset, density: Density): Gesture<InteractionTarget, State>
+    fun createGesture(
+        state: ModelState,
+        delta: Offset,
+        density: Density
+    ): Gesture<InteractionTarget, ModelState>
 
-    class Noop<InteractionTarget, State> : GestureFactory<InteractionTarget, State> {
-        override fun createGesture(delta: Offset, density: Density): Gesture<InteractionTarget, State> =
+    class Noop<InteractionTarget, ModelState> : GestureFactory<InteractionTarget, ModelState> {
+        override fun createGesture(
+            state: ModelState,
+            delta: Offset,
+            density: Density
+        ): Gesture<InteractionTarget, ModelState> =
             Gesture.Noop()
     }
 }
