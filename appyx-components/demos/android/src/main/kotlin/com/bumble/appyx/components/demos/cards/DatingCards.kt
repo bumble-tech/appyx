@@ -11,6 +11,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.ui.CardsMotionController
+import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
