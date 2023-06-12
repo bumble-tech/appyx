@@ -50,7 +50,8 @@ def define_env(env):
             html_file_name,
             classname,
     ):
-        compile_project(compile_task)
+        if not os.path.exists(project_output_directory):
+            compile_project(compile_task)
         site_target_directory = os.path.join(env.variables.config.site_dir, target_directory)
         copy_files(project_output_directory, site_target_directory)
         base_url = urlparse(env.variables.config.site_url).path
