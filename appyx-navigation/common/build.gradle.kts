@@ -47,17 +47,11 @@ kotlin {
                 implementation(libs.androidx.activity.compose)
             }
         }
-        val androidTest by getting {
-            dependencies {
-                implementation(libs.junit)
-            }
-        }
         val desktopMain by getting {
             dependencies {
                 api(compose.preview)
             }
         }
-        val desktopTest by getting
         val jsMain by getting {
             dependencies {
                 implementation(npm("uuid", libs.versions.uuid.get()))
