@@ -41,9 +41,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     childContent: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {},
-    childWrapper: @Composable (
-        ElementUiModel<InteractionTarget>
-    ) -> Unit = { frameModel->
+    childWrapper: @Composable (ElementUiModel<InteractionTarget>) -> Unit = { frameModel->
         ChildWrapper(frameModel) {
             childContent(frameModel)
         }
