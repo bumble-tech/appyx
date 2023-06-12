@@ -10,12 +10,13 @@ import com.bumble.appyx.components.demos.puzzle15.Puzzle15Model
 import com.bumble.appyx.components.demos.puzzle15.Puzzle15Model.Tile
 import com.bumble.appyx.components.demos.puzzle15.operation.Swap
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
-import kotlin.math.abs
 
 class Puzzle15MotionController(
     uiContext: UiContext,
@@ -47,41 +48,35 @@ class Puzzle15MotionController(
         targetUiState.toMutableState(uiContext)
 
     class Gestures : GestureFactory<Tile, Puzzle15Model.State> {
+
         override fun createGesture(
+            state: Puzzle15Model.State,
             delta: Offset,
             density: Density
         ): Gesture<Tile, Puzzle15Model.State> {
             val distance = with(density) { 60.dp.toPx() }
-            return if (abs(delta.x) > abs(delta.y)) {
-                if (delta.x < 0) {
-                    Gesture(
-                        operation = Swap(direction = Swap.Direction.Right),
-                        dragToProgress = { offset -> (offset.x / distance) * -1 },
-                        partial = { offset, progress -> offset.copy(x = progress * distance * -1) }
-                    )
-                } else {
-                    Gesture(
-                        operation = Swap(direction = Swap.Direction.Left),
-                        dragToProgress = { offset -> (offset.x / distance) },
-                        partial = { offset, partial -> offset.copy(x = partial * distance) }
-                    )
-                }
-            } else {
-                if (delta.y < 0) {
-                    Gesture(
-                        operation = Swap(direction = Swap.Direction.Down),
-                        dragToProgress = { offset -> (offset.y / distance) * -1 },
-                        partial = { offset, partial -> offset.copy(y = partial * distance * -1) }
-                    )
-                } else {
-                    Gesture(
-                        operation = Swap(direction = Swap.Direction.Up),
-                        dragToProgress = { offset -> (offset.y / distance) },
-                        partial = { offset, partial -> offset.copy(y = partial * distance) }
-                    )
-                }
-            }
+            return when (dragDirection4(delta)) {
+                Drag.Direction4.UP -> Gesture(
+                    operation = Swap(Swap.Direction.Down),
+                    completeAt = Offset(0f, -distance)
+                )
 
+                Drag.Direction4.LEFT -> Gesture(
+                    operation = Swap(Swap.Direction.Right),
+                    completeAt = Offset(-distance, 0f)
+                )
+
+                Drag.Direction4.RIGHT -> Gesture(
+                    operation = Swap(Swap.Direction.Left),
+                    completeAt = Offset(distance, 0f)
+                )
+
+                Drag.Direction4.DOWN -> Gesture(
+                    operation = Swap(Swap.Direction.Up),
+                    completeAt = Offset(0f, distance)
+                )
+
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 
 @Parcelize
 class Shuffle(
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<Puzzle15Model.State>() {
 
     override fun createFromState(baseLineState: Puzzle15Model.State): Puzzle15Model.State =
