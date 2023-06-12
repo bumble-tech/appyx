@@ -18,6 +18,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackstackFader
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -52,6 +53,9 @@ class BackStackExamplesNode(
 
         @Parcelize
         object BackStackFader : InteractionTarget()
+
+        @Parcelize
+        object BackStack3D : InteractionTarget()
     }
 
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
@@ -66,6 +70,11 @@ class BackStackExamplesNode(
             })
             is InteractionTarget.BackStackSlider -> BackStackNode(buildContext, {
                 BackStackSlider(
+                    it
+                )
+            })
+            is InteractionTarget.BackStack3D -> BackStackNode(buildContext, {
+                BackStack3D(
                     it
                 )
             })
@@ -90,6 +99,9 @@ class BackStackExamplesNode(
                 }
                 TextButton(text = "BackStack fader") {
                     backStack.push(InteractionTarget.BackStackFader)
+                }
+                TextButton(text = "BackStack 3D") {
+                    backStack.push(InteractionTarget.BackStack3D)
                 }
             }
         }
