@@ -2,7 +2,6 @@ package com.bumble.appyx.components.backstack.ui.parallax
 
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 
@@ -22,10 +21,4 @@ class TargetUiState(
             )
         ),
     )
-
-    fun toMutableState(uiContext: UiContext): MutableUiState =
-        MutableUiState(
-            uiContext = uiContext,
-            position = Position(uiContext, position),
-        )
 }
