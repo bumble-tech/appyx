@@ -52,9 +52,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
         gestureValidator = permissiveValidator,
     ) { elementUiModel ->
         Box(
-            modifier = modifier
-                .then(elementUiModel.modifier)
-                .then(modifier)
+            modifier = elementUiModel.modifier
         ) {
             ProfileCard(profile = elementUiModel.element.interactionTarget.profile)
         }
