@@ -47,7 +47,9 @@ import kotlin.random.Random
 class BackStackNode(
     buildContext: BuildContext,
     motionController: (UiContext) -> MotionController<InteractionTarget, State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = { GestureFactory.Noop() },
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
     private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
