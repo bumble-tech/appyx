@@ -21,12 +21,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
-import com.bumble.appyx.components.spotlight.gestures.Gestures
 import com.bumble.appyx.components.spotlight.operation.first
 import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
+import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
@@ -75,7 +75,7 @@ fun SpotlightExperiment(
             savedStateMap = null
         ),
         motionController = motionController,
-        gestureFactory = { Gestures(it, orientation, reverseOrientation) },
+        gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
         gestureSettleConfig = GestureSettleConfig(
             completionThreshold = 0.2f,
