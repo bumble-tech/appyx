@@ -1,120 +1,175 @@
-# Appyx Interactions
+# Appyx Interactions – Overview
 
 A state-driven motion kit for Compose Multiplatform.
 
 
+## About the samples
+
+All samples are done with Appyx + Compose multiplatform, embedded as web targets. You can find them in the main GitHub repository under `:demos:mkdocs:appyx-interactions`.
+
+
 ## State-driven motion
 
-{==
+Try this interactive sample! You can either:
 
-Appyx has a state-driven approach to ui and motion. State is the single source of truth: the UI is not mutated directly, but only as a result of the state changing.
-
-Transitions and gestures act as operations directly on the state itself – the UI only follows.
-
-==}
-
-In this sample, an element is transitioned between 4 possible UI states:
+- press the `Next` button, or
+- 👆 drag the element to move it to its next state.
 
 {{
     compose_mpp_sample(
         project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample1/web/build/distributions",
         compile_task=":demos:mkdocs:appyx-interactions:interactions:sample1:web:jsBrowserDistribution",
         width=512,
-        height=512,
+        height=384,
         target_directory="samples/documentation-interactions-index-1",
         html_file_name="index.html",
         classname="compose_mpp_sample",
     )
 }}
 
-```kotlin
-// [embed] (possibly a strong spring, to not deal with keyframe/immediate yet)
-```
 
-It’s backed by a model which can be in 4 possible states:
+How does this work?
+
+{==
+
+Appyx has a state-driven approach to UI and motion:
+
+- The Model & its UI representation are separated.
+- The Model is an abstract representation that knows nothing of the UI.
+- The UI is a function of the Model, and is not mutated directly.
+- The Model is the single source of truth. To change the UI, we change the Model.
+- All transitions and even gestures are implemented as operations acting on the Model directly.
+
+==}
+
+
+Let's see some of the backing code for the above example. Our model here can be in 4 possible states:
 
 ```kotlin
-enum class ElementState {
-  A, B, C, D
+/* Code is shortened for demonstration purposes */
+class TestDriveModel {
+
+    @Parcelize
+    data class State(
+        val elementState: ElementState
+    ) : Parcelable {
+        
+        enum class ElementState {
+            A, B, C, D;
+        }
+    }
 }
 ```
 
-And the corresponding UI states:
+This model is then mapped to the corresponding UI states:
 
 ```kotlin
-// Top-left corner, red
+@MutableUiStateSpecs
+class TargetUiState(
+    val position: Position.Target,
+    val backgroundColor: BackgroundColor.Target,
+)
+
+// Top-left corner, A
 private val uiStateA = TargetUiState(
-  position = Position.Target(DpOffset(0.dp, 0.dp)),
-  backgroundColor = BackgroundColor.Target(md_red_500),
+    position = Position.Target(DpOffset(0.dp, 0.dp)),
+    backgroundColor = BackgroundColor.Target(Color(0xFFFFC629))
 )
 
-// Top-right corner, green
+// Top-right corner, B
 private val uiStateB = TargetUiState(
-  position = Position.Target(DpOffset(200.dp, 0.dp)),
-  backgroundColor = BackgroundColor.Target(md_light_green_500)
+    position = Position.Target(DpOffset(320.dp, 0.dp)),
+    backgroundColor = BackgroundColor.Target(Color(0xFF353535))
 )
 
-// Bottom-right corner, yellow
+// Bottom-right corner, C
 private val uiStateC = TargetUiState(
-  position = Position.Target(DpOffset(200.dp, 300.dp)),
-  backgroundColor = BackgroundColor.Target(md_yellow_500)
+    position = Position.Target(DpOffset(320.dp, 180.dp)),
+    backgroundColor = BackgroundColor.Target(Color(0xFFFE9763))
 )
 
-// Bottom-left corner, blue
+// Bottom-left corner, D
 private val uiStateD = TargetUiState(
-  position = Position.Target(DpOffset(0.dp, 300.dp)),
-  backgroundColor = BackgroundColor.Target(md_light_blue_500)
+    position = Position.Target(DpOffset(0.dp, 180.dp)),
+    backgroundColor = BackgroundColor.Target(Color(0xFF855353))
 )
+
+fun ElementState.toTargetUiState(): TargetUiState =
+    when (this) {
+        A -> uiStateA
+        B -> uiStateB
+        C -> uiStateC
+        D -> uiStateD
+    }
 ```
 
-Let's now add an additional UI property for rotation! 
+## Playing with the UI representation
+
+Let's spice up the UI representation a bit! Let's see what happens if we also associate rotation-related values with the target UI states:
 
 ```kotlin
-// Top-left corner, red + no rotation
+@MutableUiStateSpecs
+class TargetUiState(
+    val position: Position.Target,
+    val rotationZ: RotationZ.Target, // <-- +Rotation
+    val backgroundColor: BackgroundColor.Target,
+)
+
 private val uiStateA = TargetUiState(
-  /* ... */
-  rotationZ = RotationZ(0f)
+    position = Position.Target(DpOffset(0.dp, 0.dp)),
+    rotationZ = RotationZ.Target(0f), // <-- +Rotation
+    backgroundColor = BackgroundColor.Target(Color(0xFFFFC629))
 )
 
-// Top-right corner, green + a full rotation
+// Top-right corner, B
 private val uiStateB = TargetUiState(
-  /* ... */
-  rotationZ = RotationZ(360f)
+    position = Position.Target(DpOffset(320.dp, 0.dp)),
+    rotationZ = RotationZ.Target(180f), // <-- +Rotation
+    backgroundColor = BackgroundColor.Target(Color(0xFF353535))
 )
 
-// Bottom-right corner, yellow + half rotation
+// Bottom-right corner, C
 private val uiStateC = TargetUiState(
-  /* ... */
-  rotationZ = RotationZ(180f)
+    position = Position.Target(DpOffset(320.dp, 180.dp)),
+    rotationZ = RotationZ.Target(270f), // <-- +Rotation
+    backgroundColor = BackgroundColor.Target(Color(0xFFFE9763))
 )
 
-// Bottom-left corner, blue + 3/4 rotation
+// Bottom-left corner, D
 private val uiStateD = TargetUiState(
-  /* ... */
-  rotationZ = RotationZ(270f)
+    position = Position.Target(DpOffset(0.dp, 180.dp)),
+    rotationZ = RotationZ.Target(540f), // <-- +Rotation
+    backgroundColor = BackgroundColor.Target(Color(0xFF855353))
 )
 ```
 
-Adding the new UI properties will result in the following sample with no additional effort:
+Adding this new UI property will result in the below sample **with no additional effort**. Notice how you can still drag the element to its next state, and now the rotation is also animated automatically:
 
-```kotlin
-[embed]
-```
 
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample2/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:interactions:sample2:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-interactions-index-2",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
 
 
 ## Gestures
 
 {==
 
-State changes in Appyx always result in the same exact transition regardless of whether they’re triggered by a button press (business logic in general) or dragging (UI interaction in general).
+Regardless of whether a specific state change is triggered by a button press (business logic in general) or gestures (UI interaction in general), in Appyx both cases result in the same exact visual outcome.
 
 ==}
 
-**Try it**: both of the above examples can be manipulated by dragging as well!
+If you haven't tried it yet, check how both of the above examples can be manipulated by dragging as well!
 
-The second example demonstrates the power of the gesture working on the model rather than the UI. No change is required in the gesture handling – when the state is translated to UI properties, all additional UI parameters will be automatically transitioned along with the gesture.
-
+The second example demonstrates the power of Appyx's approach to gesture handling: the gesture changes the model, rather than the UI. When the state is translated to UI properties any and all additional UI parameters we added (rotation in this case) are automatically transitioned along with the gesture – no change is required in the gesture handling in client code.
 
 You can find more information in [Gestures](gestures.md).
 
@@ -129,29 +184,39 @@ Appyx supports two main operation modes: `Keyframe` and `Immediate`. The main di
 ==}
 
 You can achieve a very different effect by spamming the buttons a few times:
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample3/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:interactions:sample3:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-interactions-index-3",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
 
-```kotlin
-// [embed] (testdrive?) (two buttons)
-```
+In `KEYFRAME` mode the current transition isn’t interrupted, and it will be guaranteed to finish before any additional transitions. New states are enqueued for execution afterwards. The overall execution progress speeds up proportionally to the size of enqueued operations.
 
-In `Keyframe` mode the current transition isn’t interrupted, and it will be guaranteed to finish first. New states resulting from the applied operations are enqueued for execution afterwards. The overall execution progress speeds up proportionally to the size of enqueued operations.
-
-In `Immediate` mode the current transition is interrupted and will not be finished. New operations overwrite the current target state, resulting in the UI dynamically changing course always towards the latest one.
-
-(i) A `Keyframe` transition can always be interrupted by an `Immediate` one, switching the mode. The opposite is not true: resuming `Keyframe` mode is only possible after the last `Immediate` mode operation settles on its target UI state.
-
-
-
-
-## Relevant classes
-
-```kotlin
-// [diagram of model+ui layer]
-```
+In `IMMEDIATE` mode the current transition is interrupted and will not be finished. New operations overwrite the current target state, resulting in the UI dynamically changing course always towards the latest one.
 
 
-* TransitionModel – Defines the abstract description of state and its changes
-    * Operation
-    * ModelState
-* MotionController – Translates the model to UI
-* InteractionModel – packages the above as a high level component
+
+## What to use Appyx interactions for
+
+**Generally speaking**:
+
+1. You can create just about any component that you can describe with abstract states
+2. Which then you can dress up with various UI representations
+3. And manipulate with gestures
+
+
+**You can find our packaged examples in `appyx-components`**
+
+Many of them are deployed as artifacts you can pull into your codebase too. You can also create your own ones. Some use-cases include:
+
+- Navigation (back stack, pager, dialogs, complex ui interactions)
+- Desktop widgets, file browsers / photo albums
+- Simple games (puzzle, card game, etc.)
+
+

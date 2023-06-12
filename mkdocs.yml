@@ -10,7 +10,7 @@ repo_url: https://github.com/bumble-tech/appyx
 edit_uri: ""
 
 # Copyright
-copyright: Copyright &copy; 2022 - 2022 Bumble
+copyright: Copyright &copy; 2022 - 2023 Bumble
 
 # Navigation
 docs_dir: documentation
@@ -19,6 +19,13 @@ nav:
   - Home: index.md
   - Appyx Interactions:
     - Overview: interactions/index.md
+    - Using components: interactions/usage.md
+    - Creating your own:
+      - Interaction model: interactions/interactionmodel.md
+      - Transition model: interactions/transitionmodel.md
+      - Operations: interactions/operations.md
+      - UI representation: interactions/uirepresentation.md
+      - Gestures: interactions/gestures.md
   - Appyx Components: components/index.md
   - Appyx Navigation: navigation/index.md
   - Releases:
@@ -107,4 +114,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.smartsymbols
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
