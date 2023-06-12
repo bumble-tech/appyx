@@ -28,6 +28,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.AppyxLogger
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.android.Children
@@ -75,7 +76,12 @@ fun SpotlightExperiment(
         ),
         motionController = motionController,
         gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
-        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4)
+        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
+        gestureSettleConfig = GestureSettleConfig(
+            completionThreshold = 0.2f,
+            completeGestureSpec = spring(),
+            revertGestureSpec = spring(),
+        ),
     )
 
     InteractionModelSetup(spotlight)
@@ -151,11 +157,7 @@ fun <InteractionTarget : Any> SpotlightUi(
                             },
                             onDragEnd = {
                                 AppyxLogger.d("drag", "end")
-                                spotlight.onDragEnd(
-                                    completionThreshold = 0.2f,
-                                    completeGestureSpec = spring(),
-                                    revertGestureSpec = spring(),
-                                )
+                                spotlight.onDragEnd()
                             }
                         )
                     }

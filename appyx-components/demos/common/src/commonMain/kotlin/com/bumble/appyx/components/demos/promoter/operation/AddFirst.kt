@@ -12,7 +12,7 @@ import com.bumble.appyx.components.demos.promoter.PromoterModel
 @Parcelize
 data class AddFirst<InteractionTarget>(
     private val element: @RawValue InteractionTarget,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<PromoterModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: PromoterModel.State<InteractionTarget>): Boolean =
