@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +14,6 @@ import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.DatingCards
-import com.bumble.appyx.components.demos.promoter.PromoterExperiment
+import com.bumble.appyx.components.demos.puzzle15.Puzzle15
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
@@ -71,7 +69,7 @@ class MainActivity : ComponentActivity() {
                             2 -> SpotlightExperiment { SpotlightSliderScale(it) }
                             3 -> SpotlightExperiment { SpotlightSliderRotation(it) }
                             4 -> TestDriveExperiment()
-                            5 -> PromoterExperiment()
+                            5 -> Puzzle15()
                             else -> SpotlightExperiment { SpotlightSlider(it) }
                         }
                     }
@@ -79,12 +77,4 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
-
-@Composable
-fun Greeting(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    Text(modifier = modifier, text = "Hello $name!")
 }
