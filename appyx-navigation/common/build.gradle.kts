@@ -34,10 +34,6 @@ kotlin {
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test"))
-
-                implementation(libs.kotlin.test)
-                implementation(libs.kotlin.coroutines.test)
-                implementation(libs.junit)
             }
         }
         val androidMain by getting {
@@ -67,19 +63,11 @@ android {
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-    testOptions {
-        unitTests.all {
-            // interface method default implementation
-            it.exclude("**/*\$DefaultImpls.class")
-        }
     }
 }
