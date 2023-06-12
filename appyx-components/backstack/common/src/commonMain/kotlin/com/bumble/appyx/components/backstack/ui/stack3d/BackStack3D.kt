@@ -1,11 +1,19 @@
 package com.bumble.appyx.components.backstack.ui.stack3d
 
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.times
-import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.BackStackModel.State
+import com.bumble.appyx.components.backstack.operation.Pop
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.Drag
+import com.bumble.appyx.interactions.core.ui.gesture.Gesture
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
@@ -16,7 +24,7 @@ import com.bumble.appyx.transitionmodel.BaseMotionController
 class BackStack3D<InteractionTarget : Any>(
     uiContext: UiContext,
     private val itemsInStack: Int = 3,
-) : BaseMotionController<InteractionTarget, BackStackModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
 ) {
     private val height = uiContext.transitionBounds.heightDp
@@ -45,7 +53,7 @@ class BackStack3D<InteractionTarget : Any>(
             zIndex = ZIndex.Target(-stackIndex.toFloat()),
         )
 
-    override fun BackStackModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         created.mapIndexed { _, element -> MatchedTargetUiState(element, incoming) } +
                 listOf(active).map { MatchedTargetUiState(it, topMost) } +
                 stashed.mapIndexed { index, element -> MatchedTargetUiState(element, stacked(stashed.size - index)) } +
@@ -54,4 +62,25 @@ class BackStack3D<InteractionTarget : Any>(
     override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
+    class Gestures<InteractionTarget : Any>(
+        transitionBounds: TransitionBounds,
+    ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
+        private val height = transitionBounds.screenHeightDp
+        override fun createGesture(
+            state: State<InteractionTarget>,
+            delta: Offset,
+            density: Density,
+        ): Gesture<InteractionTarget, State<InteractionTarget>> {
+            val heightInPx = with(density) { height.toPx() }
+
+            return if (dragVerticalDirection(delta) == Drag.VerticalDirection.DOWN) {
+                Gesture(
+                    operation = Pop(),
+                    completeAt = Offset(x = 0f, y = heightInPx)
+                )
+            } else {
+                Gesture.Noop()
+            }
+        }
+    }
 }
