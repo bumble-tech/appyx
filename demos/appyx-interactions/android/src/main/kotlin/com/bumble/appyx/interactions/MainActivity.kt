@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
                             Button({ content = 7 }) { Text("7") }
                         }
                         when (content) {
-                            1 -> Puzzle15()
+                            1 -> DatingCards()
                             2 -> SpotlightExperimentInVertical { SpotlightStack3D(it) }
                             3 -> SpotlightExperiment { SpotlightSliderScale(it) }
                             4 -> SpotlightExperiment { SpotlightSliderRotation(it) }
