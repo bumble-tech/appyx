@@ -1,19 +1,18 @@
 package com.bumble.appyx.navigation.platform
 
 import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
 
 class AndroidLifecycle(
-    val androidLifecycle: Lifecycle
-) : CommonLifecycle,
+    val androidLifecycle: androidx.lifecycle.Lifecycle
+) : Lifecycle,
     DefaultLifecycleObserver,
     LifecycleEventObserver {
 
@@ -22,7 +21,7 @@ class AndroidLifecycle(
     private val managedLifecycleEventObservers: MutableList<PlatformLifecycleEventObserver> =
         ArrayList()
 
-    override val currentState: CommonLifecycle.State
+    override val currentState: Lifecycle.State
         get() = androidLifecycle.currentState.toCommonState()
 
     override val coroutineScope: CoroutineScope =
@@ -70,7 +69,7 @@ class AndroidLifecycle(
         managedDefaultLifecycleObservers.forEach { it.onDestroy() }
     }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+    override fun onStateChanged(source: LifecycleOwner, event: androidx.lifecycle.Lifecycle.Event) {
         val commonEvent = event.toCommonEvent()
         managedLifecycleEventObservers.forEach {
             it.onStateChanged(

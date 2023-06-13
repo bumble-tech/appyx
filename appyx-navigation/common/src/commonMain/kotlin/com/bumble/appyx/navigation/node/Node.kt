@@ -12,8 +12,8 @@ import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.LifecycleLogger
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
@@ -104,7 +104,7 @@ open class Node internal constructor(
     open fun onBuilt() {
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
-        updateLifecycleState(CommonLifecycle.State.CREATED)
+        updateLifecycleState(Lifecycle.State.CREATED)
         plugins<NodeReadyObserver<Node>>().forEach { it.init(this) }
         plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
     }
@@ -124,9 +124,9 @@ open class Node internal constructor(
 
     }
 
-    override fun updateLifecycleState(state: CommonLifecycle.State) {
+    override fun updateLifecycleState(state: Lifecycle.State) {
         if (lifecycle.currentState == state) return
-        if (lifecycle.currentState == CommonLifecycle.State.DESTROYED && state != CommonLifecycle.State.DESTROYED) {
+        if (lifecycle.currentState == Lifecycle.State.DESTROYED && state != Lifecycle.State.DESTROYED) {
             Appyx.reportException(
                 IllegalStateException(
                     "Trying to change lifecycle state of already destroyed node ${this::class}"
@@ -135,7 +135,7 @@ open class Node internal constructor(
             return
         }
         nodeLifecycle.updateLifecycleState(state)
-        if (state == CommonLifecycle.State.DESTROYED) {
+        if (state == Lifecycle.State.DESTROYED) {
             if (!integrationPoint.isChangingConfigurations) {
                 retainedInstanceStore.clearStore(id)
             }

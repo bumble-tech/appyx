@@ -4,10 +4,10 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-fun CommonLifecycleOwner.asFlow(): Flow<CommonLifecycle.State> =
+fun CommonLifecycleOwner.asFlow(): Flow<Lifecycle.State> =
     lifecycle.asFlow()
 
-fun CommonLifecycle.asFlow(): Flow<CommonLifecycle.State> =
+fun Lifecycle.asFlow(): Flow<Lifecycle.State> =
     callbackFlow {
         val observer = PlatformLifecycleEventObserver { currentState, _ ->
             trySend(currentState)
@@ -17,10 +17,10 @@ fun CommonLifecycle.asFlow(): Flow<CommonLifecycle.State> =
         awaitClose { removeObserver(observer) }
     }
 
-internal val CommonLifecycle.isDestroyed: Boolean
-    get() = currentState == CommonLifecycle.State.DESTROYED
+internal val Lifecycle.isDestroyed: Boolean
+    get() = currentState == Lifecycle.State.DESTROYED
 
-fun CommonLifecycle.subscribe(
+fun Lifecycle.subscribe(
     onCreate: () -> Unit = {},
     onStart: () -> Unit = {},
     onResume: () -> Unit = {},

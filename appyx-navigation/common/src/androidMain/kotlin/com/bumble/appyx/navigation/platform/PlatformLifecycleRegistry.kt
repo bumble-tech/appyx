@@ -1,20 +1,19 @@
 package com.bumble.appyx.navigation.platform
 
 import android.app.Activity
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.coroutineScope
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.CommonLifecycleOwner
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
 
 actual class PlatformLifecycleRegistry(
     androidOwner: LifecycleOwner
-) : CommonLifecycle, androidx.lifecycle.DefaultLifecycleObserver,
+) : Lifecycle, androidx.lifecycle.DefaultLifecycleObserver,
     androidx.lifecycle.LifecycleEventObserver {
 
     private var lifecycleOwner: LifecycleOwner? = androidOwner
@@ -25,10 +24,10 @@ actual class PlatformLifecycleRegistry(
     private val managedLifecycleEventObservers: MutableList<PlatformLifecycleEventObserver> =
         ArrayList()
 
-    override val currentState: CommonLifecycle.State
+    override val currentState: Lifecycle.State
         get() = androidLifecycleRegistry.currentState.toCommonState()
 
-    actual fun setCurrentState(state: CommonLifecycle.State) {
+    actual fun setCurrentState(state: Lifecycle.State) {
         androidLifecycleRegistry.currentState = state.toAndroidState()
     }
 
@@ -52,7 +51,7 @@ actual class PlatformLifecycleRegistry(
         }
     }
 
-    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+    override fun onStateChanged(source: LifecycleOwner, event: androidx.lifecycle.Lifecycle.Event) {
         val commonEvent = event.toCommonEvent()
         managedLifecycleEventObservers.forEach {
             it.onStateChanged(
@@ -91,7 +90,7 @@ actual class PlatformLifecycleRegistry(
     actual companion object {
         actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry =
             PlatformLifecycleRegistry(object : LifecycleOwner {
-                override val lifecycle: Lifecycle
+                override val lifecycle: androidx.lifecycle.Lifecycle
                     get() = when (val platformLifecycle = owner.lifecycle) {
                         is AndroidLifecycle -> platformLifecycle.androidLifecycle
                         is PlatformLifecycleRegistry -> platformLifecycle.androidLifecycleRegistry

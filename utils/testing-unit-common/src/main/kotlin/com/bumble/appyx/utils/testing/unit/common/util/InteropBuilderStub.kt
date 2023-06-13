@@ -1,7 +1,7 @@
 package com.bumble.appyx.utils.testing.unit.common.util
 
 import com.bumble.appyx.navigation.builder.Builder
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import kotlin.test.assertEquals
@@ -36,7 +36,7 @@ class InteropBuilderStub<P>(
         assertTrue(lastNode != null, "Has not created any node")
     }
 
-    fun assertLastNodeState(state: CommonLifecycle.State) {
+    fun assertLastNodeState(state: Lifecycle.State) {
         assertCreatedNode()
         assertEquals(state, lastNode!!.lifecycle.currentState)
     }

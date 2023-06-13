@@ -28,7 +28,7 @@ import com.bumble.appyx.navigation.children.ChildrenCallback
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.composable.ChildRenderer
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
@@ -118,12 +118,12 @@ abstract class ParentNode<InteractionTarget : Any>(
         PermanentChild(interactionTarget) { child -> child() }
     }
 
-    override fun updateLifecycleState(state: CommonLifecycle.State) {
+    override fun updateLifecycleState(state: Lifecycle.State) {
         super.updateLifecycleState(state)
         childNodeLifecycleManager.propagateLifecycleToChildren(state)
 
         // TODO move to plugins
-        if (state == CommonLifecycle.State.DESTROYED) {
+        if (state == Lifecycle.State.DESTROYED) {
             interactionModel.destroy()
         }
     }

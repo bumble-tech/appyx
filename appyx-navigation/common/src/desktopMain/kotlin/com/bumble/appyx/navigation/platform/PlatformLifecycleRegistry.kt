@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.platform
 
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.CommonLifecycleOwner
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
@@ -10,15 +10,15 @@ import kotlinx.coroutines.CoroutineScope
 
 actual class PlatformLifecycleRegistry(
     lifecycleCoroutineScope: CoroutineScope,
-) : CommonLifecycle {
+) : Lifecycle {
 
     private val managedDefaultLifecycleObservers: MutableList<DefaultPlatformLifecycleObserver> =
         ArrayList()
     private val managedLifecycleEventObservers: MutableList<PlatformLifecycleEventObserver> =
         ArrayList()
 
-    private var _currentState: CommonLifecycle.State = CommonLifecycle.State.INITIALIZED
-    override val currentState: CommonLifecycle.State
+    private var _currentState: Lifecycle.State = Lifecycle.State.INITIALIZED
+    override val currentState: Lifecycle.State
         get() = _currentState
 
     override val coroutineScope: CoroutineScope = lifecycleCoroutineScope
@@ -37,42 +37,42 @@ actual class PlatformLifecycleRegistry(
         }
     }
 
-    actual fun setCurrentState(state: CommonLifecycle.State) {
+    actual fun setCurrentState(state: Lifecycle.State) {
         when (state) {
-            CommonLifecycle.State.INITIALIZED -> Unit
-            CommonLifecycle.State.CREATED -> {
+            Lifecycle.State.INITIALIZED -> Unit
+            Lifecycle.State.CREATED -> {
                 managedDefaultLifecycleObservers.forEach { it.onCreate() }
                 managedLifecycleEventObservers.forEach {
                     it.onStateChanged(
                         state,
-                        CommonLifecycle.Event.ON_CREATE
+                        Lifecycle.Event.ON_CREATE
                     )
                 }
             }
-            CommonLifecycle.State.STARTED -> {
+            Lifecycle.State.STARTED -> {
                 managedDefaultLifecycleObservers.forEach { it.onStart() }
                 managedLifecycleEventObservers.forEach {
                     it.onStateChanged(
                         state,
-                        CommonLifecycle.Event.ON_START
+                        Lifecycle.Event.ON_START
                     )
                 }
             }
-            CommonLifecycle.State.RESUMED -> {
+            Lifecycle.State.RESUMED -> {
                 managedDefaultLifecycleObservers.forEach { it.onResume() }
                 managedLifecycleEventObservers.forEach {
                     it.onStateChanged(
                         state,
-                        CommonLifecycle.Event.ON_RESUME
+                        Lifecycle.Event.ON_RESUME
                     )
                 }
             }
-            CommonLifecycle.State.DESTROYED -> {
+            Lifecycle.State.DESTROYED -> {
                 managedDefaultLifecycleObservers.forEach { it.onDestroy() }
                 managedLifecycleEventObservers.forEach {
                     it.onStateChanged(
                         state,
-                        CommonLifecycle.Event.ON_DESTROY
+                        Lifecycle.Event.ON_DESTROY
                     )
                 }
             }

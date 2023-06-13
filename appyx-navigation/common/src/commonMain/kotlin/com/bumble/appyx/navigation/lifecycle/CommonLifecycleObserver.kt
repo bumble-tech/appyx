@@ -48,5 +48,5 @@ fun interface PlatformLifecycleEventObserver : PlatformLifecycleObserver {
      *
      * @param event The event
      */
-    fun onStateChanged(newState: CommonLifecycle.State, event: CommonLifecycle.Event)
+    fun onStateChanged(newState: Lifecycle.State, event: Lifecycle.Event)
 }

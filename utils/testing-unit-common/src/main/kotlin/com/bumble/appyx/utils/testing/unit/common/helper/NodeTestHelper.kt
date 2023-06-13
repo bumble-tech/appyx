@@ -1,6 +1,6 @@
 package com.bumble.appyx.utils.testing.unit.common.helper
 
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 
@@ -15,8 +15,8 @@ open class NodeTestHelper<N : Node>(private val node: N) {
         node.build()
     }
 
-    fun moveTo(state: CommonLifecycle.State) {
-        require(state != CommonLifecycle.State.INITIALIZED) {
+    fun moveTo(state: Lifecycle.State) {
+        require(state != Lifecycle.State.INITIALIZED) {
             "Can't move to INITIALIZED state"
         }
         node.updateLifecycleState(state)
@@ -25,16 +25,16 @@ open class NodeTestHelper<N : Node>(private val node: N) {
     /**
      * moves the Node to the desired state and then returns to the original state if possible
      */
-    fun moveToStateAndCheck(state: CommonLifecycle.State, block: (N) -> Unit) {
-        require(state != CommonLifecycle.State.INITIALIZED) { "Can't move to INITIALIZED state" }
+    fun moveToStateAndCheck(state: Lifecycle.State, block: (N) -> Unit) {
+        require(state != Lifecycle.State.INITIALIZED) { "Can't move to INITIALIZED state" }
 
         val returnTo =
             when (val current = nodeLifecycle.currentState) {
-                CommonLifecycle.State.DESTROYED -> error("Can't move from DESTROYED state")
-                CommonLifecycle.State.INITIALIZED -> CommonLifecycle.State.DESTROYED
-                CommonLifecycle.State.CREATED,
-                CommonLifecycle.State.STARTED,
-                CommonLifecycle.State.RESUMED -> current
+                Lifecycle.State.DESTROYED -> error("Can't move from DESTROYED state")
+                Lifecycle.State.INITIALIZED -> Lifecycle.State.DESTROYED
+                Lifecycle.State.CREATED,
+                Lifecycle.State.STARTED,
+                Lifecycle.State.RESUMED -> current
             }
 
         moveTo(state)

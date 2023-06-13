@@ -1,8 +1,7 @@
 package com.bumble.appyx.utils.interop.rx3.connectable
 
-import androidx.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import com.bumble.appyx.navigation.platform.toCommonState
 import com.bumble.appyx.utils.interop.rx3.connectable.Rx3NodeConnectorTest.Output.Output1
@@ -24,17 +23,18 @@ internal class Rx3NodeConnectorTest {
 
     private val firstTestObserver = TestObserver<Output>()
     private val secondTestObserver = TestObserver<Output>()
-    private var lifecycleState = Lifecycle.State.CREATED
+    private var lifecycleState = androidx.lifecycle.Lifecycle.State.CREATED
 
-    private val lifecycle = object : CommonLifecycle {
+    private val lifecycle = object :
+        Lifecycle {
 
-        override val currentState: CommonLifecycle.State
+        override val currentState: Lifecycle.State
             get() = lifecycleState.toCommonState()
 
         override val coroutineScope: CoroutineScope = CoroutineScope(EmptyCoroutineContext)
 
         override fun addObserver(observer: PlatformLifecycleObserver) {
-            if (lifecycleState == Lifecycle.State.CREATED) {
+            if (lifecycleState == androidx.lifecycle.Lifecycle.State.CREATED) {
                 (observer as DefaultPlatformLifecycleObserver).onCreate()
             }
         }

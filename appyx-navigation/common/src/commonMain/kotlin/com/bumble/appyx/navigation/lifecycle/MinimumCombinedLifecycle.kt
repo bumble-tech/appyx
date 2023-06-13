@@ -13,10 +13,10 @@ import kotlinx.coroutines.CoroutineScope
  * - INITIALIZED + DESTROYED -> DESTROYED
  */
 internal class MinimumCombinedLifecycle(
-    vararg lifecycles: CommonLifecycle,
+    vararg lifecycles: Lifecycle,
 ) : CommonLifecycleOwner {
     private val registry = PlatformLifecycleRegistry.create(this)
-    private val lifecycles = ArrayList<CommonLifecycle>()
+    private val lifecycles = ArrayList<Lifecycle>()
 
     init {
         /*
@@ -27,10 +27,10 @@ internal class MinimumCombinedLifecycle(
         lifecycles.sortedBy { it.currentState }.forEach { manage(it) }
     }
 
-    override val lifecycle: CommonLifecycle = registry
+    override val lifecycle: Lifecycle = registry
     override val lifecycleScope: CoroutineScope = registry.coroutineScope
 
-    fun manage(lifecycle: CommonLifecycle) {
+    fun manage(lifecycle: Lifecycle) {
         lifecycles += lifecycle
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onCreate() {
@@ -63,7 +63,7 @@ internal class MinimumCombinedLifecycle(
     private fun update() {
         lifecycles
             .minByOrNull { it.currentState }
-            ?.takeIf { it.currentState != CommonLifecycle.State.INITIALIZED }
+            ?.takeIf { it.currentState != Lifecycle.State.INITIALIZED }
             ?.also { registry.setCurrentState(it.currentState) }
     }
 

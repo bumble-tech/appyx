@@ -5,7 +5,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 
-interface CommonLifecycle {
+interface Lifecycle {
     val currentState: State
 
     val coroutineScope: CoroutineScope

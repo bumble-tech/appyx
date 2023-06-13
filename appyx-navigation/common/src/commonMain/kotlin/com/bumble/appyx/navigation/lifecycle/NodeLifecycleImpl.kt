@@ -7,10 +7,10 @@ internal class NodeLifecycleImpl(lifecycleOwner: CommonLifecycleOwner) : NodeLif
     private val lifecycleRegistry: PlatformLifecycleRegistry =
         PlatformLifecycleRegistry.create(lifecycleOwner)
 
-    override val lifecycle: CommonLifecycle = lifecycleRegistry
+    override val lifecycle: Lifecycle = lifecycleRegistry
     override val lifecycleScope: CoroutineScope = lifecycleRegistry.coroutineScope
 
-    override fun updateLifecycleState(state: CommonLifecycle.State) {
+    override fun updateLifecycleState(state: Lifecycle.State) {
         lifecycleRegistry.setCurrentState(state)
     }
 }

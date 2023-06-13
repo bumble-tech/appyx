@@ -1,7 +1,7 @@
 package com.bumble.appyx.utils.interop.rx3.connectable
 
 import android.annotation.SuppressLint
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.subscribe
 import com.jakewharton.rxrelay3.PublishRelay
 import com.jakewharton.rxrelay3.Relay
@@ -30,7 +30,7 @@ class NodeConnector<Input, Output : Any>(
 
     }
 
-    override fun onCreate(lifecycle: CommonLifecycle) {
+    override fun onCreate(lifecycle: Lifecycle) {
         lifecycle.subscribe(onCreate = { flushOutputCache() })
     }
 

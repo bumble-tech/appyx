@@ -23,7 +23,7 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
     private val coroutineScope: CoroutineScope,
 ) {
 
-    private val lifecycleState = MutableStateFlow(CommonLifecycle.State.INITIALIZED)
+    private val lifecycleState = MutableStateFlow(Lifecycle.State.INITIALIZED)
 
     /**
      * Propagates the parent lifecycle to children.
@@ -35,7 +35,7 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
      * Otherwise a child node lifecycle might be updated before the parent.
      * It leads to incorrect registration order of back handlers.
      */
-    fun propagateLifecycleToChildren(state: CommonLifecycle.State) {
+    fun propagateLifecycleToChildren(state: Lifecycle.State) {
         lifecycleState.value = state
     }
 
@@ -56,24 +56,24 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
                     children
                         .value
                         .values
-                        .forEach { entry -> entry.setState(CommonLifecycle.State.DESTROYED) }
+                        .forEach { entry -> entry.setState(Lifecycle.State.DESTROYED) }
                 }
                 .collect { (parentLifecycleState, screenState, children) ->
                     screenState.onScreen.forEach { key ->
                         val childState =
-                            minOf(parentLifecycleState, CommonLifecycle.State.RESUMED)
+                            minOf(parentLifecycleState, Lifecycle.State.RESUMED)
                         children.current[key]?.setState(childState)
                     }
 
                     screenState.offScreen.forEach { key ->
                         if (keepMode == ChildEntry.KeepMode.KEEP) {
                             val childState =
-                                minOf(parentLifecycleState, CommonLifecycle.State.CREATED)
+                                minOf(parentLifecycleState, Lifecycle.State.CREATED)
                             children.current[key]?.setState(childState)
                         } else {
                             // Look up in the previous because in the current it is already suspended
                             // and does not have a reference to the node
-                            children.previous?.get(key)?.setState(CommonLifecycle.State.DESTROYED)
+                            children.previous?.get(key)?.setState(Lifecycle.State.DESTROYED)
                         }
                     }
 
@@ -81,14 +81,14 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
                         val removedKeys = children.previous.keys - children.current.keys
                         removedKeys.forEach { key ->
                             val removedChild = children.previous[key]
-                            removedChild?.setState(CommonLifecycle.State.DESTROYED)
+                            removedChild?.setState(Lifecycle.State.DESTROYED)
                         }
                     }
                 }
         }
     }
 
-    private fun ChildEntry<*>.setState(state: CommonLifecycle.State) {
+    private fun ChildEntry<*>.setState(state: Lifecycle.State) {
         nodeOrNull?.updateLifecycleState(state)
     }
 

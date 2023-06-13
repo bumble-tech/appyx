@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -35,7 +35,7 @@ val LocalScreenSize = compositionLocalOf { ScreenSize(0.dp, 0.dp) }
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
 fun <N : Node> NodeHost(
-    lifecycle: CommonLifecycle,
+    lifecycle: Lifecycle,
     integrationPoint: IntegrationPoint,
     screenSize: ScreenSize,
     modifier: Modifier = Modifier,
@@ -45,7 +45,7 @@ fun <N : Node> NodeHost(
     CompositionLocalProvider(LocalScreenSize provides screenSize) {
         val node by rememberNode(factory, customisations, integrationPoint)
         DisposableEffect(node) {
-            onDispose { node.updateLifecycleState(CommonLifecycle.State.DESTROYED) }
+            onDispose { node.updateLifecycleState(Lifecycle.State.DESTROYED) }
         }
         node.Compose(modifier = modifier)
         DisposableEffect(lifecycle) {

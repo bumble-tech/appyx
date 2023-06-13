@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.children
 
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -19,7 +19,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
     private lateinit var children: StateFlow<Map<out Element<*>, ChildEntry<*>>>
-    private lateinit var lifecycle: CommonLifecycle
+    private lateinit var lifecycle: Lifecycle
     private lateinit var coroutineScope: CoroutineScope
 
     override lateinit var node: N
@@ -91,7 +91,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         }
     }
 
-    private fun CommonLifecycle.removeWhenDestroyed(info: ChildAwareCallbackInfo) {
+    private fun Lifecycle.removeWhenDestroyed(info: ChildAwareCallbackInfo) {
         addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onDestroy() {
                 callbacks.remove(info)
