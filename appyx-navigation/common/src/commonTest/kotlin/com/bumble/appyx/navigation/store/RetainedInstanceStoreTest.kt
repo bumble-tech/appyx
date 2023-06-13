@@ -1,5 +1,6 @@
 package com.bumble.appyx.navigation.store
 
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -36,18 +37,20 @@ class RetainedInstanceStoreTest {
         assertFalse(factoryCalled)
     }
 
-@Ignore(This test requires reflection so can only be executed in JVM builds. TODO: move to desktop or android only tests, not common test")
-@Test
-//    fun GIVEN_two_objects_with_different_types_stored_WHEN_get_with_same_identifier_THEN_both_objects_returned() {
-//        store.get(storeId, key) { 1 }
-//        store.get(storeId, key) { 2L }
-//
-//        val integerValue = store.get(storeId, key) { 5 }
-//        val longValue = store.get(storeId, key) { 6L }
-//
-//        assertEquals(1, integerValue)
-//        assertEquals(2L, longValue)
-//    }
+    // This test requires reflection so can only be executed in JVM builds.
+    // TODO: move to desktop or android only tests, not common test
+    @Ignore
+    @Test
+    fun GIVEN_two_objects_with_different_types_stored_WHEN_get_with_same_identifier_THEN_both_objects_returned() {
+        store.get(storeId, key) { 1 }
+        store.get(storeId, key) { 2L }
+
+        val integerValue = store.get(storeId, key) { 5 }
+        val longValue = store.get(storeId, key) { 6L }
+
+        assertEquals(1, integerValue)
+        assertEquals(2L, longValue)
+    }
 
     @Test
     fun GIVEN_two_objects_stored_with_same_type_AND_different_keys_WHEN_get_with_same_identifier_THEN_both_objects_returned() {
