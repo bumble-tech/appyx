@@ -61,6 +61,6 @@ project(":appyx-components:backstack:common").name = "backstack"
 project(":appyx-components:spotlight:common").name = "spotlight"
 project(":appyx-components:demos:common").name = "demos"
 project(":appyx-interactions:common").name = "appyx-interactions"
-project(":appyx-components:demos:web").name = "puzzle-15-web"
+project(":appyx-components:demos:web").name = "demos-web"
 
 includeBuild("plugins")

@@ -16,7 +16,7 @@ class Shuffle(
     override fun createTargetState(fromState: Puzzle15Model.State): Puzzle15Model.State {
         val newBoard = fromState.items.shuffled()
         val emptyTile =
-            newBoard.find { it.interactionTarget.value.isEmpty() }
+            newBoard.find { it.interactionTarget == Puzzle15Model.Tile.EmptyTile }
         val index = newBoard.indexOf(emptyTile)
         return fromState.copy(
             items = newBoard,

@@ -27,10 +27,10 @@ import com.bumble.appyx.components.demos.puzzle15.Puzzle15
 import com.bumble.appyx.components.demos.puzzle15.Puzzle15Model
 import com.bumble.appyx.components.demos.puzzle15.operation.Shuffle
 import com.bumble.appyx.components.demos.puzzle15.operation.Swap
-import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.Down
-import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.Left
-import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.Right
-import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.Up
+import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.DOWN
+import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.LEFT
+import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.RIGHT
+import com.bumble.appyx.components.demos.puzzle15.operation.Swap.Direction.UP
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
@@ -62,10 +62,10 @@ fun Puzzle15Ui(
             println("Getting event: $it")
             if (it.type == KeyEventType.KeyDown) {
                 when (it.key) {
-                    Key.DirectionLeft -> puzzle15.operation(Swap(Right))
-                    Key.DirectionUp -> puzzle15.operation(Swap(Down))
-                    Key.DirectionDown -> puzzle15.operation(Swap(Up))
-                    Key.DirectionRight -> puzzle15.operation(Swap(Left))
+                    Key.DirectionLeft -> puzzle15.operation(Swap(RIGHT))
+                    Key.DirectionUp -> puzzle15.operation(Swap(DOWN))
+                    Key.DirectionDown -> puzzle15.operation(Swap(UP))
+                    Key.DirectionRight -> puzzle15.operation(Swap(LEFT))
                 }
             }
             false
@@ -82,7 +82,7 @@ fun Puzzle15Ui(
                 colors = colors,
                 interactionModel = puzzle15,
             ) { elementUiModel ->
-                if (elementUiModel.element.interactionTarget.value.isEmpty()) {
+                if (elementUiModel.element.interactionTarget == Puzzle15Model.Tile.EmptyTile) {
                     Box(
                         modifier = Modifier.size(60.dp)
                             .then(
@@ -120,7 +120,7 @@ fun Puzzle15Ui(
                                 }
                         ) {
                             Text(
-                                text = elementUiModel.element.interactionTarget.value,
+                                text = elementUiModel.element.interactionTarget.textValue(),
                                 modifier = Modifier.align(Alignment.Center),
                                 fontSize = 24.sp,
                             )
@@ -134,7 +134,7 @@ fun Puzzle15Ui(
                                 )
                         ) {
                             Text(
-                                text = elementUiModel.element.interactionTarget.value,
+                                text = elementUiModel.element.interactionTarget.textValue(),
                                 modifier = Modifier.align(Alignment.Center),
                                 fontSize = 24.sp,
                             )
@@ -147,22 +147,22 @@ fun Puzzle15Ui(
         Column {
             Row {
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = Down)) }
+                    onClick = { puzzle15.operation(Swap(direction = DOWN)) }
                 ) {
                     Text("^")
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = Left)) }
+                    onClick = { puzzle15.operation(Swap(direction = LEFT)) }
                 ) {
                     Text(">")
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = Up)) }
+                    onClick = { puzzle15.operation(Swap(direction = UP)) }
                 ) {
                     Text("\u2304")
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = Right)) }
+                    onClick = { puzzle15.operation(Swap(direction = RIGHT)) }
                 ) {
                     Text("<")
                 }
@@ -175,3 +175,23 @@ fun Puzzle15Ui(
         }
     }
 }
+
+private fun Puzzle15Model.Tile.textValue() =
+    when (this) {
+        Puzzle15Model.Tile.Tile1 -> "1"
+        Puzzle15Model.Tile.Tile2 -> "2"
+        Puzzle15Model.Tile.Tile3 -> "3"
+        Puzzle15Model.Tile.Tile4 -> "4"
+        Puzzle15Model.Tile.Tile5 -> "5"
+        Puzzle15Model.Tile.Tile6 -> "6"
+        Puzzle15Model.Tile.Tile7 -> "7"
+        Puzzle15Model.Tile.Tile8 -> "8"
+        Puzzle15Model.Tile.Tile9 -> "9"
+        Puzzle15Model.Tile.Tile10 -> "10"
+        Puzzle15Model.Tile.Tile11 -> "11"
+        Puzzle15Model.Tile.Tile12 -> "12"
+        Puzzle15Model.Tile.Tile13 -> "13"
+        Puzzle15Model.Tile.Tile14 -> "14"
+        Puzzle15Model.Tile.Tile15 -> "15"
+        Puzzle15Model.Tile.EmptyTile -> ""
+    }

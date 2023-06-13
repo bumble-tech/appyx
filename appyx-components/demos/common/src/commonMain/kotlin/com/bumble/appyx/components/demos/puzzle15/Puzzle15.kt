@@ -21,7 +21,7 @@ class Puzzle15(
             it
         )
     },
-    gestureFactory: (TransitionBounds) -> GestureFactory<Tile, Puzzle15Model.State> = { Puzzle15MotionController.Gestures() },
+    gestureFactory: (TransitionBounds) -> GestureFactory<Tile, Puzzle15Model.State> = { bounds -> Puzzle15MotionController.Gestures(bounds) },
     animationSpec: AnimationSpec<Float> = spring(),
     animateSettle: Boolean = false,
 ) : BaseInteractionModel<Tile, Puzzle15Model.State>(

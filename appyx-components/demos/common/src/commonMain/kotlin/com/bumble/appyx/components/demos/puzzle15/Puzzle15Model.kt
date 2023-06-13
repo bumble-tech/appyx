@@ -14,7 +14,24 @@ class Puzzle15Model(
 ) : BaseTransitionModel<Tile, Puzzle15Model.State>(
     savedStateMap = savedStateMap
 ) {
-    data class Tile(val value: String)
+    enum class Tile {
+        Tile1,
+        Tile2,
+        Tile3,
+        Tile4,
+        Tile5,
+        Tile6,
+        Tile7,
+        Tile8,
+        Tile9,
+        Tile10,
+        Tile11,
+        Tile12,
+        Tile13,
+        Tile14,
+        Tile15,
+        EmptyTile,
+    }
 
     @Parcelize
     data class State(
@@ -22,23 +39,10 @@ class Puzzle15Model(
         val emptyTileIndex: Int
     ) : Parcelable
 
-    private fun createItems(): List<Tile> {
-        val items = mutableListOf<Tile>()
-        repeat(16) {
-            if (it == 0) {
-                items.add(Tile(""))
-            } else {
-                items.add(Tile(it.toString()))
-            }
-        }
-
-        return items.shuffled()
-    }
-
     override val initialState: State
         get() {
-            val items = createItems()
-            val emptyTile = items.find { it.value.isEmpty() }
+            val items = Tile.values().toList().shuffled()
+            val emptyTile = items.find { it == Tile.EmptyTile }
             val index = items.indexOf(emptyTile)
             return State(
                 items = items.map { it.asElement() },

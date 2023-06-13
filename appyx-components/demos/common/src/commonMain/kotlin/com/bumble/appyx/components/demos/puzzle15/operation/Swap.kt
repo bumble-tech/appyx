@@ -2,7 +2,6 @@ package com.bumble.appyx.components.demos.puzzle15.operation
 
 import com.bumble.appyx.components.demos.puzzle15.Puzzle15Model
 import com.bumble.appyx.components.demos.puzzle15.Puzzle15Model.Tile
-import com.bumble.appyx.interactions.Parcelable
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
@@ -19,7 +18,7 @@ class Swap(
 
     override fun createTargetState(fromState: Puzzle15Model.State): Puzzle15Model.State {
         val newItems = fromState.swap(direction)
-        val emptyTile = newItems.find { it.interactionTarget.value.isEmpty() }
+        val emptyTile = newItems.find { it.interactionTarget == Tile.EmptyTile }
         val index = newItems.indexOf(emptyTile)
         return fromState.copy(
             items = newItems,
@@ -51,23 +50,16 @@ class Swap(
 
     private fun offsetForDirection(direction: Direction) =
         when (direction) {
-            Direction.Left -> -1
-            Direction.Up -> -4
-            Direction.Right -> 1
-            Direction.Down -> 4
+            Direction.LEFT -> -1
+            Direction.UP -> -4
+            Direction.RIGHT -> 1
+            Direction.DOWN -> 4
         }
 
-    sealed class Direction : Parcelable {
-        @Parcelize
-        object Left : Direction()
-
-        @Parcelize
-        object Up : Direction()
-
-        @Parcelize
-        object Right : Direction()
-
-        @Parcelize
-        object Down : Direction()
+    enum class Direction {
+        LEFT,
+        UP,
+        RIGHT,
+        DOWN,
     }
 }
