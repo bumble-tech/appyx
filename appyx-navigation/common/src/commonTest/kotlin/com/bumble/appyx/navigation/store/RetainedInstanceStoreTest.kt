@@ -36,9 +36,8 @@ class RetainedInstanceStoreTest {
         assertFalse(factoryCalled)
     }
 
-    // This test requires reflection so can only be executed in JVM builds.
-    // TODO: move to desktop or android only tests, not common test
-//    @Test
+@Ignore(This test requires reflection so can only be executed in JVM builds. TODO: move to desktop or android only tests, not common test")
+@Test
 //    fun GIVEN_two_objects_with_different_types_stored_WHEN_get_with_same_identifier_THEN_both_objects_returned() {
 //        store.get(storeId, key) { 1 }
 //        store.get(storeId, key) { 2L }
