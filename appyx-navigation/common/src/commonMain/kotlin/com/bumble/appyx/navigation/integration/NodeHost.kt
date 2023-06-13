@@ -11,6 +11,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.lifecycle.CommonLifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
@@ -21,9 +23,9 @@ import com.bumble.appyx.navigation.state.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
-data class ScreenSize(val widthDp: Int, val heightDp: Int)
+data class ScreenSize(val widthDp: Dp, val heightDp: Dp)
 
-val LocalScreenSize = compositionLocalOf { ScreenSize(0, 0) }
+val LocalScreenSize = compositionLocalOf { ScreenSize(0.dp, 0.dp) }
 
 /**
  * Composable function to host [Node].

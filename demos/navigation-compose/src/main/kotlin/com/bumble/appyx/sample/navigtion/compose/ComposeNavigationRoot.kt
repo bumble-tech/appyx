@@ -75,8 +75,8 @@ internal fun AppyxRoute(onGoogleNavigationClick: () -> Unit) {
         lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
         integrationPoint = LocalIntegrationPoint.current,
         screenSize = ScreenSize(
-            LocalConfiguration.current.screenWidthDp,
-            LocalConfiguration.current.screenWidthDp
+            LocalConfiguration.current.screenWidthDp.dp,
+            LocalConfiguration.current.screenHeightDp.dp,
         ),
     ) {
         ComposeNavigationContainerNode(

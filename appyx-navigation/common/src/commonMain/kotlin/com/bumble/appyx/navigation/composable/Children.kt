@@ -49,8 +49,8 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
 
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
-    val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).roundToInt()
-    val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).roundToInt()
+    val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
+    val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {

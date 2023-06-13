@@ -6,6 +6,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.test.junit4.ComposeTestRule
 import androidx.compose.ui.test.junit4.createEmptyComposeRule
+import androidx.compose.ui.unit.dp
 import androidx.test.core.app.ActivityScenario
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
@@ -32,8 +33,8 @@ class AppyxTestScenario<T : Node>(
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                     integrationPoint = activity.appyxIntegrationPoint,
                     screenSize = ScreenSize(
-                        LocalConfiguration.current.screenWidthDp,
-                        LocalConfiguration.current.screenWidthDp
+                        LocalConfiguration.current.screenWidthDp.dp,
+                        LocalConfiguration.current.screenHeightDp.dp,
                     ),
                 ) { buildContext ->
                     node = nodeFactory.create(buildContext)
