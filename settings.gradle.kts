@@ -30,6 +30,7 @@ include(
     ":appyx-components:backstack:common",
     ":appyx-components:demos:android",
     ":appyx-components:demos:common",
+    ":appyx-components:demos:web",
     ":appyx-components:internal:android",
     ":appyx-components:internal:common",
     ":appyx-components:spotlight:android",
@@ -60,5 +61,6 @@ project(":appyx-components:backstack:common").name = "backstack"
 project(":appyx-components:spotlight:common").name = "spotlight"
 project(":appyx-components:demos:common").name = "demos"
 project(":appyx-interactions:common").name = "appyx-interactions"
+project(":appyx-components:demos:web").name = "demos-web"
 
 includeBuild("plugins")
