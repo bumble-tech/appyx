@@ -12,14 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bumble.appyx.navigation.integration.NodeHost
-import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integrationpoint.LocalIntegrationPoint
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 
@@ -74,10 +72,6 @@ internal fun AppyxRoute(onGoogleNavigationClick: () -> Unit) {
     NodeHost(
         lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
         integrationPoint = LocalIntegrationPoint.current,
-        screenSize = ScreenSize(
-            LocalConfiguration.current.screenWidthDp.dp,
-            LocalConfiguration.current.screenHeightDp.dp,
-        ),
     ) {
         ComposeNavigationContainerNode(
             buildContext = it,
