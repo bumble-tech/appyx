@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.components.backstack.BackStack
-import com.bumble.appyx.components.backstack.BackStackModel
-import com.bumble.appyx.components.backstack.operation.push
-import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.components.stable.backstack.BackStack
+import com.bumble.appyx.components.stable.backstack.BackStackModel
+import com.bumble.appyx.components.stable.backstack.operation.push
+import com.bumble.appyx.components.stable.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node

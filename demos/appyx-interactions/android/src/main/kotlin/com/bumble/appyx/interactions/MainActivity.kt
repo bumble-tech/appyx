@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.demos.cards.DatingCards
 import com.bumble.appyx.components.demos.puzzle15.Puzzle15
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
-import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
-import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
-import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
-import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
-import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
+import com.bumble.appyx.components.stable.spotlight.ui.fader.SpotlightFader
+import com.bumble.appyx.components.stable.spotlight.ui.slider.SpotlightSlider
+import com.bumble.appyx.components.stable.spotlight.ui.sliderrotation.SpotlightSliderRotation
+import com.bumble.appyx.components.stable.spotlight.ui.sliderscale.SpotlightSliderScale
+import com.bumble.appyx.components.stable.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperimentInVertical
 import com.bumble.appyx.interactions.theme.AppyxTheme

@@ -42,9 +42,9 @@ dependencies {
 
     implementation(composeBom)
     implementation(project(":appyx-interactions:android"))
-    implementation(project(":appyx-components:spotlight:spotlight"))
-    implementation(project(":appyx-components:backstack:backstack"))
-    implementation(project(":appyx-components:internal:android"))
+    implementation(project(":appyx-components:stable:spotlight:spotlight"))
+    implementation(project(":appyx-components:stable:backstack:backstack"))
+    implementation(project(":appyx-components:internal:test-drive:android"))
     implementation(project(":appyx-components:demos:android"))
 
     implementation(libs.androidx.activity.compose)

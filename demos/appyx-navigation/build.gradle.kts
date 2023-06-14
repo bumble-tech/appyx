@@ -59,8 +59,8 @@ dependencies {
     implementation(project(":appyx-navigation"))
     implementation(project(":demos:common"))
     implementation(project(":appyx-interactions:appyx-interactions"))
-    implementation(project(":appyx-components:spotlight:spotlight"))
-    implementation(project(":appyx-components:backstack:backstack"))
+    implementation(project(":appyx-components:stable:spotlight:spotlight"))
+    implementation(project(":appyx-components:stable:backstack:backstack"))
     implementation(project(":appyx-components:demos:demos"))
 
     implementation(libs.androidx.activity.compose)
