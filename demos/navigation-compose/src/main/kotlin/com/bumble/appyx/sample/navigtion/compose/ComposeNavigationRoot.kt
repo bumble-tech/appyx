@@ -12,12 +12,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.integrationpoint.LocalIntegrationPoint
+import com.bumble.appyx.navigation.platform.AndroidLifecycle
 
 /**
  * This Composable demonstrates how to add Appyx into Jetpack Compose Navigation.
@@ -67,7 +69,10 @@ internal fun GoogleRoute(modifier: Modifier = Modifier, onAppyxNavigationClick: 
 
 @Composable
 internal fun AppyxRoute(onGoogleNavigationClick: () -> Unit) {
-    NodeHost(integrationPoint = LocalIntegrationPoint.current) {
+    NodeHost(
+        lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
+        integrationPoint = LocalIntegrationPoint.current,
+    ) {
         ComposeNavigationContainerNode(
             buildContext = it,
             onGoogleNavigationClick = onGoogleNavigationClick

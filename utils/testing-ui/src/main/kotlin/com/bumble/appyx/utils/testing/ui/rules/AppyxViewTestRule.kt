@@ -10,7 +10,6 @@ import com.bumble.appyx.navigation.node.LocalNode
 import com.bumble.appyx.navigation.node.NodeView
 import com.bumble.appyx.navigation.node.ViewFactory
 import com.bumble.appyx.navigation.node.build
-import com.bumble.appyx.utils.testing.ui.rules.AppyxTestActivity
 import com.bumble.appyx.utils.testing.ui.utils.DummyParentNode
 import org.junit.rules.TestRule
 import org.junit.runner.Description

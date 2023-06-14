@@ -37,7 +37,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     api(composeBom)
-    api(project(":appyx-navigation"))
+    implementation(project(":appyx-navigation:android"))
     api(project(":appyx-components:backstack:backstack"))
     api(libs.compose.ui.ui)
 

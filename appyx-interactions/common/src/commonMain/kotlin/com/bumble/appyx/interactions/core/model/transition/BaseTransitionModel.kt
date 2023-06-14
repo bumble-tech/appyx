@@ -1,6 +1,5 @@
 package com.bumble.appyx.interactions.core.model.transition
 
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.GEOMETRY
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
@@ -9,6 +8,7 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Outpu
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
