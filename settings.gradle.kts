@@ -28,10 +28,10 @@ enableFeaturePreview("VERSION_CATALOGS")
 include(
     ":appyx-components:stable:backstack:android",
     ":appyx-components:stable:backstack:common",
-    ":appyx-components:internal:test-drive:android",
-    ":appyx-components:internal:test-drive:common",
     ":appyx-components:stable:spotlight:android",
     ":appyx-components:stable:spotlight:common",
+    ":appyx-components:internal:test-drive:android",
+    ":appyx-components:internal:test-drive:common",
     ":appyx-components:experimental:cards:android",
     ":appyx-components:experimental:cards:common",
     ":appyx-components:experimental:promoter:android",
