@@ -36,6 +36,7 @@ class BackstackParallax<InteractionTarget : Any>(
     private val bottom = TargetUiState(
         elementWidth = width,
         offsetMultiplier = -0.2f,
+        overlayAlpha = 0.7f,
     )
 
     private val top = TargetUiState(
