@@ -28,13 +28,17 @@ enableFeaturePreview("VERSION_CATALOGS")
 include(
     ":appyx-components:stable:backstack:android",
     ":appyx-components:stable:backstack:common",
-    ":appyx-components:demos:android",
-    ":appyx-components:demos:common",
-    ":appyx-components:demos:web",
     ":appyx-components:internal:test-drive:android",
     ":appyx-components:internal:test-drive:common",
     ":appyx-components:stable:spotlight:android",
     ":appyx-components:stable:spotlight:common",
+    ":appyx-components:experimental:cards:android",
+    ":appyx-components:experimental:cards:common",
+    ":appyx-components:experimental:promoter:android",
+    ":appyx-components:experimental:promoter:common",
+    ":appyx-components:experimental:puzzle15:android",
+    ":appyx-components:experimental:puzzle15:common",
+    ":appyx-components:experimental:puzzle15:web",
     ":appyx-interactions:android",
     ":appyx-interactions:desktop",
     ":appyx-interactions:common",
@@ -59,8 +63,10 @@ include(
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
 project(":appyx-components:stable:backstack:common").name = "backstack"
 project(":appyx-components:stable:spotlight:common").name = "spotlight"
-project(":appyx-components:demos:common").name = "demos"
 project(":appyx-interactions:common").name = "appyx-interactions"
-project(":appyx-components:demos:web").name = "demos-web"
+project(":appyx-components:experimental:cards:common").name = "cards"
+project(":appyx-components:experimental:promoter:common").name = "promoter"
+project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"
+project(":appyx-components:internal:test-drive:common").name = "test-drive"
 
 includeBuild("plugins")

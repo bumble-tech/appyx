@@ -1,13 +1,12 @@
 plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
-    id("appyx-screenshots")
     kotlin("android")
 }
 
 
 android {
-    namespace = "com.bumble.appyx.internal.testdrive.android"
+    namespace = "com.bumble.appyx.components.experimental.puzzle15"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
@@ -32,8 +31,11 @@ android {
 dependencies {
     val composeBom = platform(libs.compose.bom)
 
-    implementation(project(":appyx-components:internal:test-drive:test-drive"))
-    implementation(project(":appyx-interactions:android"))
+    api(project(":appyx-interactions:android"))
+    api(project(":demos:common"))
+
+    implementation(project(":appyx-interactions:appyx-interactions"))
+    implementation(project(":appyx-components:experimental:puzzle15:puzzle15"))
     implementation(composeBom)
     androidTestImplementation(libs.compose.ui.test.junit4)
 
