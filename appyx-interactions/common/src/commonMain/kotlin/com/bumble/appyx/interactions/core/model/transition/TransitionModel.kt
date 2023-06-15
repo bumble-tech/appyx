@@ -32,6 +32,9 @@ interface TransitionModel<InteractionTarget, ModelState> : SavesInstanceState {
         overrideMode: Operation.Mode? = null
     ): Boolean
 
+    fun canApply(operation: Operation<ModelState>): Boolean =
+        operation.isApplicable(output.value.currentTargetState)
+
     fun setProgress(progress: Float)
 
     fun onSettled(direction: SettleDirection, animate: Boolean = false)
