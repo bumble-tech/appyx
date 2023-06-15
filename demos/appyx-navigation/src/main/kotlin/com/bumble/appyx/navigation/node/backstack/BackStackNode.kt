@@ -51,6 +51,7 @@ class BackStackNode(
         GestureFactory.Noop()
     },
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
+    private val isMaxSize: Boolean = false,
     private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(InteractionTarget.Child(1)),
@@ -77,7 +78,13 @@ class BackStackNode(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(5))
+                        .then(
+                            if (isMaxSize) {
+                                Modifier
+                            } else {
+                                Modifier.clip(RoundedCornerShape(5))
+                            }
+                        )
                         .background(backgroundColor)
                         .padding(24.dp)
                         .gestureModifier(backStack, interactionTarget.index.toString())
@@ -105,7 +112,13 @@ class BackStackNode(
                     .weight(0.9f)
                     .fillMaxSize()
                     .background(appyx_dark)
-                    .padding(16.dp),
+                    .then(
+                        if (isMaxSize) {
+                            Modifier.padding(bottom = 16.dp)
+                        } else {
+                            Modifier.padding(16.dp)
+                        }
+                    ),
             )
             Row(
                 modifier = Modifier
