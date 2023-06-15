@@ -6,8 +6,8 @@ import androidx.compose.animation.core.Easing
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.draw.drawWithContent
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -15,10 +15,9 @@ import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class ColorOverlay(
+class Shadow(
     uiContext: UiContext,
     target: Target,
-    val color: Color = Color.Black,
     visibilityThreshold: Float = 0.01f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
 ) : MotionProperty<Float, AnimationVector1D>(
@@ -27,7 +26,7 @@ class ColorOverlay(
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
     displacement = displacement
-), Interpolatable<ColorOverlay.Target> {
+), Interpolatable<Shadow.Target> {
 
     class Target(
         val value: Float,
@@ -41,15 +40,7 @@ class ColorOverlay(
 
     override val modifier: Modifier
         get() = Modifier.composed {
-            val alpha = renderValueFlow.collectAsState().value
-            if (alpha > 0) {
-                this.drawWithContent {
-                    drawContent()
-                    drawRect(color.copy(alpha = alpha))
-                }
-            } else {
-                this
-            }
+            this.shadow(elevation = renderValueFlow.collectAsState().value.dp, clip = false)
         }
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {

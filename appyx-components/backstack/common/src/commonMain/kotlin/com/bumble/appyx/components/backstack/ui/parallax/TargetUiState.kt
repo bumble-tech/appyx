@@ -4,19 +4,23 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
+import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 
 @Suppress("unused", "MemberVisibilityCanBePrivate")
 @MutableUiStateSpecs
 class TargetUiState(
     val position: Position.Target = Position.Target(DpOffset.Zero),
+    val shadow: Shadow.Target,
     val colorOverlay: ColorOverlay.Target,
 ) {
 
     constructor(
         elementWidth: Float,
         offsetMultiplier: Float,
-        overlayAlpha: Float = 0f,
+        colorOverlay: ColorOverlay.Target = ColorOverlay.Target(0f),
+        shadow: Shadow.Target = Shadow.Target(0f),
     ) : this(
         position = Position.Target(
             DpOffset(
@@ -24,6 +28,7 @@ class TargetUiState(
                 y = 0.dp
             ),
         ),
-        colorOverlay = ColorOverlay.Target(overlayAlpha),
+        colorOverlay = colorOverlay,
+        shadow = shadow,
     )
 }

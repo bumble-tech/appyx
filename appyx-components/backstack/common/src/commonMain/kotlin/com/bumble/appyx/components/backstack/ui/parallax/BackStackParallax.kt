@@ -1,6 +1,7 @@
 package com.bumble.appyx.components.backstack.ui.parallax
 
 import DefaultAnimationSpec
+import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -12,6 +13,8 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
+import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
+import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -23,6 +26,7 @@ class BackstackParallax<InteractionTarget : Any>(
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
     private val width = uiContext.transitionBounds.widthDp.value
+    private val slowInFastOutEasing = CubicBezierEasing(1f, 0f, 1f, 0f)
 
     private val left = TargetUiState(
         elementWidth = width,
@@ -31,17 +35,19 @@ class BackstackParallax<InteractionTarget : Any>(
     private val right = TargetUiState(
         elementWidth = width,
         offsetMultiplier = 1f,
+        shadow = Shadow.Target(value = 0f, easing = slowInFastOutEasing),
     )
 
     private val bottom = TargetUiState(
         elementWidth = width,
         offsetMultiplier = -0.2f,
-        overlayAlpha = 0.7f,
+        colorOverlay = ColorOverlay.Target(0.7f),
     )
 
     private val top = TargetUiState(
         elementWidth = width,
         offsetMultiplier = 0f,
+        shadow = Shadow.Target(25f),
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
