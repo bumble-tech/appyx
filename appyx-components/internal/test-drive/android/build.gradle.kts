@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    namespace = "com.bumble.appyx.internal.testdrive.android"
+    namespace = "com.bumble.appyx.components.testdrive"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()

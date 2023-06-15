@@ -6,8 +6,8 @@ import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child3
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child4
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child5
 import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.components.stable.backstack.BackStackModel
-import com.bumble.appyx.components.stable.backstack.operation.NewRoot
+import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.operation.NewRoot
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

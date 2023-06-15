@@ -12,18 +12,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.window.Window
-import com.bumble.appyx.components.internal.testdrive.TestDriveExperiment
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_amber_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_blue_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_blue_grey_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_cyan_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_grey_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_indigo_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_light_blue_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_light_green_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_lime_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_pink_500
-import com.bumble.appyx.transitionmodel.testdrive.ui.md_teal_500
+import com.bumble.appyx.components.testdrive.TestDriveExperiment
+import com.bumble.appyx.components.testdrive.ui.md_amber_500
+import com.bumble.appyx.components.testdrive.ui.md_blue_500
+import com.bumble.appyx.components.testdrive.ui.md_blue_grey_500
+import com.bumble.appyx.components.testdrive.ui.md_cyan_500
+import com.bumble.appyx.components.testdrive.ui.md_grey_500
+import com.bumble.appyx.components.testdrive.ui.md_indigo_500
+import com.bumble.appyx.components.testdrive.ui.md_light_blue_500
+import com.bumble.appyx.components.testdrive.ui.md_light_green_500
+import com.bumble.appyx.components.testdrive.ui.md_lime_500
+import com.bumble.appyx.components.testdrive.ui.md_pink_500
+import com.bumble.appyx.components.testdrive.ui.md_teal_500
 import org.jetbrains.skiko.wasm.onWasmReady
 
 val manatee = Color(0xFF8D99AE)

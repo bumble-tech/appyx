@@ -1,7 +1,7 @@
 package com.bumble.appyx.components.stable.backstack.operation
 
-import com.bumble.appyx.components.stable.backstack.BackStackModel
-import com.bumble.appyx.components.stable.backstack.operation.Replace
+import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.operation.Replace
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child1
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child2
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child3

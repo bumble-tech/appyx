@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    namespace = "com.bumble.appyx.components.stable.spotlight"
+    namespace = "com.bumble.appyx.components.spotlight"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()

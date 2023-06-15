@@ -1,9 +1,9 @@
 package com.bumble.appyx.components.stable.backstack.restore
 
-import com.bumble.appyx.components.stable.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child1
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child2
-import com.bumble.appyx.components.stable.backstack.operation.Push
+import com.bumble.appyx.components.backstack.operation.Push
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import kotlin.test.Test
 import kotlin.test.assertEquals

@@ -6,7 +6,7 @@ plugins {
 
 
 android {
-    namespace = "com.bumble.appyx.components.stable.backstack"
+    namespace = "com.bumble.appyx.components.backstack"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
