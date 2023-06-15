@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    namespace = "com.bumble.appyx.components.testdrive"
+    namespace = "com.bumble.appyx.components.testdrive.android"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
@@ -30,16 +30,7 @@ android {
 }
 
 dependencies {
-    val composeBom = platform(libs.compose.bom)
-
     implementation(project(":appyx-components:internal:test-drive:test-drive"))
     implementation(project(":appyx-interactions:android"))
-    implementation(composeBom)
-    androidTestImplementation(libs.compose.ui.test.junit4)
 
-    androidTestImplementation(libs.junit.api)
-    testRuntimeOnly(libs.junit.engine)
-    testRuntimeOnly(libs.junit.vintage)
-
-    androidTestImplementation(libs.compose.ui.test.manifest)
 }

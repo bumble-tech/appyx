@@ -1,10 +1,10 @@
-package com.bumble.appyx.components.testdrive
+package com.bumble.appyx.components.testdrive.android
 
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.bumble.appyx.components.testdrive.helper.createTestDrive
+import com.bumble.appyx.components.testdrive.android.helper.createTestDrive
 import com.bumble.appyx.components.testdrive.operation.Next
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.testing.snapshot

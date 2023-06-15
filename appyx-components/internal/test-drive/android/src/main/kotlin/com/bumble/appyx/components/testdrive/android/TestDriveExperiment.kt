@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.testdrive
+package com.bumble.appyx.components.testdrive.android
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize

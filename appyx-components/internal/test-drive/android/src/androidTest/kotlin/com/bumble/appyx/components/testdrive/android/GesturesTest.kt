@@ -1,11 +1,12 @@
-package com.bumble.appyx.components.testdrive
+package com.bumble.appyx.components.testdrive.android
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.components.testdrive.helper.createTestDrive
+import com.bumble.appyx.components.testdrive.TEST_DRIVE_EXPERIMENT_TEST_HELPER
+import com.bumble.appyx.components.testdrive.android.helper.createTestDrive
 import com.bumble.appyx.interactions.testing.snapshot
 import org.junit.Rule
 import org.junit.Test

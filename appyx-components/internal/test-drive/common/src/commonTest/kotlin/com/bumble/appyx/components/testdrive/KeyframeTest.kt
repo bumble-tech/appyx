@@ -11,7 +11,7 @@ class KeyframeTest {
     @Test
     fun When_in_a_segment_I_can_enqueue_more_segments() {
         val model = TestDriveModel(
-            element = Child1,
+            element = InteractionTarget.Child1,
             savedStateMap = null
         )
 

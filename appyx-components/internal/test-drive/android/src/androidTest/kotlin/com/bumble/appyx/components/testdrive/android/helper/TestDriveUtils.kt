@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.testdrive.helper
+package com.bumble.appyx.components.testdrive.android.helper
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.LinearEasing

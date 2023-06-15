@@ -1,7 +1,7 @@
-package com.bumble.appyx.components.testdrive
+package com.bumble.appyx.components.testdrive.android
 
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.bumble.appyx.components.testdrive.helper.createTestDrive
+import com.bumble.appyx.components.testdrive.android.helper.createTestDrive
 import com.bumble.appyx.components.testdrive.operation.Next
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.testing.snapshot
@@ -9,7 +9,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestName
 
-class UpdateTest {
+class UpdateToKeyframesTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
@@ -18,7 +18,7 @@ class UpdateTest {
     var nameRule = TestName()
 
     @Test
-    fun basic_behaviour_one_update() {
+    fun when_update_not_settled_keyframe_is_update() {
         val testDrive = composeTestRule.createTestDrive()
         composeTestRule.mainClock.autoAdvance = false
 
@@ -26,23 +26,35 @@ class UpdateTest {
             operation = Next(Operation.Mode.IMMEDIATE)
         )
 
-        composeTestRule.mainClock.advanceTimeBy(100)
+        composeTestRule.mainClock.advanceTimeBy(50)
+
+        testDrive.operation(
+            operation = Next(Operation.Mode.KEYFRAME)
+        )
+
+        composeTestRule.mainClock.advanceTimeBy(50)
 
         composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
     }
 
     @Test
-    fun basic_behaviour_multiple() {
+    fun when_animation_settles_go_back_to_keyframe_mode() {
         val testDrive = composeTestRule.createTestDrive()
         composeTestRule.mainClock.autoAdvance = false
 
-        repeat(3) {
-            testDrive.operation(
-                operation = Next(Operation.Mode.IMMEDIATE)
-            )
-            composeTestRule.mainClock.advanceTimeBy(50)
-        }
+        testDrive.operation(
+            operation = Next(Operation.Mode.IMMEDIATE)
+        )
+
+        composeTestRule.mainClock.advanceTimeBy(1000)
+
+        testDrive.operation(
+            operation = Next(Operation.Mode.KEYFRAME)
+        )
+
+        composeTestRule.mainClock.advanceTimeBy(500)
 
         composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
     }
+
 }

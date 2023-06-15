@@ -1,8 +1,8 @@
-package com.bumble.appyx.components.testdrive
+package com.bumble.appyx.components.testdrive.android
 
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.test.junit4.createComposeRule
-import com.bumble.appyx.components.testdrive.helper.createTestDrive
+import com.bumble.appyx.components.testdrive.android.helper.createTestDrive
 import com.bumble.appyx.components.testdrive.operation.Next
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.testing.snapshot

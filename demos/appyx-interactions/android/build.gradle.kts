@@ -41,7 +41,6 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     implementation(composeBom)
-    implementation(project(":appyx-interactions:android"))
     implementation(project(":appyx-components:stable:spotlight:spotlight"))
     implementation(project(":appyx-components:stable:backstack:backstack"))
     implementation(project(":appyx-components:internal:test-drive:android"))
