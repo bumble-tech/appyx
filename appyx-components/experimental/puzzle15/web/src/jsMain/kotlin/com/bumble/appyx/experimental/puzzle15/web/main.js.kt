@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.window.Window
-import com.bumble.appyx.components.demos.puzzle15.ui.Puzzle15Ui
+import com.bumble.appyx.components.experimental.puzzle15.ui.Puzzle15Ui
 import org.jetbrains.skiko.wasm.onWasmReady
 
 val manatee = Color(0xFF8D99AE)

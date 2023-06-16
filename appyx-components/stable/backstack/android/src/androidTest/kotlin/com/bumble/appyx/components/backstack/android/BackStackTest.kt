@@ -1,8 +1,10 @@
-package com.bumble.appyx.components.backstack
+package com.bumble.appyx.components.backstack.android
 
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.test.junit4.createComposeRule
+import com.bumble.appyx.components.backstack.BackStack
+import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackstackFader

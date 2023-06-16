@@ -1,12 +1,12 @@
-package com.bumble.appyx.components.spotlight
+package com.bumble.appyx.components.spotlight.android
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.performTouchInput
 import com.bumble.appyx.components.spotlight.operation.next
-import com.bumble.appyx.components.spotlight.utils.SPOTLIGHT_EXPERIMENT_TEST_HELPER
-import com.bumble.appyx.components.spotlight.utils.createSpotlight
+import com.bumble.appyx.components.spotlight.android.utils.SPOTLIGHT_EXPERIMENT_TEST_HELPER
+import com.bumble.appyx.components.spotlight.android.utils.createSpotlight
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child2

@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.spotlight.utils
+package com.bumble.appyx.components.spotlight.android.utils
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.LinearEasing

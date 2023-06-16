@@ -67,6 +67,7 @@ project(":appyx-interactions:common").name = "appyx-interactions"
 project(":appyx-components:experimental:cards:common").name = "cards"
 project(":appyx-components:experimental:promoter:common").name = "promoter"
 project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"
+project(":appyx-components:experimental:puzzle15:web").name = "puzzle15-web"
 project(":appyx-components:internal:test-drive:common").name = "test-drive"
 
 includeBuild("plugins")

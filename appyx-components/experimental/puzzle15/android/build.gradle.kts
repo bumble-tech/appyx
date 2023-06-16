@@ -6,7 +6,7 @@ plugins {
 
 
 android {
-    namespace = "com.bumble.appyx.components.experimental.puzzle15"
+    namespace = "com.bumble.appyx.components.experimental.puzzle15.android"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()

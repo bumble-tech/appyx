@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.experimental.cards
+package com.bumble.appyx.components.experimental.cards.android
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,6 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.components.experimental.cards.Cards
+import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsMotionController
 import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator

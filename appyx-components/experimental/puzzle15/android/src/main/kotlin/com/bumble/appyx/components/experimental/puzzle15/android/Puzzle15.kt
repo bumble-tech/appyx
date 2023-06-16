@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.experimental.puzzle15
+package com.bumble.appyx.components.experimental.puzzle15.android
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize

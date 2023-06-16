@@ -1,7 +1,9 @@
-package com.bumble.appyx.components.spotlight
+package com.bumble.appyx.components.spotlight.android
 
 import androidx.compose.animation.core.tween
 import androidx.compose.ui.test.junit4.createComposeRule
+import com.bumble.appyx.components.spotlight.Spotlight
+import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.model.transition.Operation

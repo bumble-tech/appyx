@@ -1,4 +1,4 @@
-package com.bumble.appyx.components.experimental.promoter
+package com.bumble.appyx.components.experimental.promoter.android
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -18,6 +18,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.components.experimental.promoter.Promoter
+import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
 import com.bumble.appyx.components.experimental.promoter.ui.PromoterMotionController
 import com.bumble.appyx.interactions.sample.android.Children
