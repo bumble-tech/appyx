@@ -26,7 +26,7 @@ class BackstackParallax<InteractionTarget : Any>(
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
     private val width = uiContext.transitionBounds.widthDp.value
-    private val slowInFastOutEasing = CubicBezierEasing(1f, 0f, 1f, 0f)
+    private val slowOutFastInEasing = CubicBezierEasing(1f, 0f, 1f, 0f)
 
     private val left = TargetUiState(
         elementWidth = width,
@@ -35,7 +35,7 @@ class BackstackParallax<InteractionTarget : Any>(
     private val right = TargetUiState(
         elementWidth = width,
         offsetMultiplier = 1f,
-        shadow = Shadow.Target(value = 0f, easing = slowInFastOutEasing),
+        shadow = Shadow.Target(value = 0f, easing = slowOutFastInEasing),
     )
 
     private val bottom = TargetUiState(
