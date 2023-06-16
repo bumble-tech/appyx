@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.android.DatingCards
 import com.bumble.appyx.components.experimental.puzzle15.android.Puzzle15
-import com.bumble.appyx.components.testdrive.android.TestDriveExperiment
+import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
 import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
