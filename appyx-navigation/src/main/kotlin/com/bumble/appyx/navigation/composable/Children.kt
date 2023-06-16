@@ -112,7 +112,7 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
         visibleFrames.value
             .forEach { uiModel ->
                 key(uiModel.element.id) {
-                    uiModel.animationContainer()
+                    uiModel.persistedContainer()
                     val isVisible by uiModel.visibleState.collectAsState()
                     if (isVisible) {
                         Child(

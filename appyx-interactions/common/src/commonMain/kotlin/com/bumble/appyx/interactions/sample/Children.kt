@@ -74,7 +74,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     ) {
         elementUiModels.value.forEach { elementUiModel ->
             key(elementUiModel.element.id) {
-                elementUiModel.animationContainer()
+                elementUiModel.persistedContainer()
                 val isVisible by elementUiModel.visibleState.collectAsState()
                 if (isVisible) {
                     element.invoke(elementUiModel)

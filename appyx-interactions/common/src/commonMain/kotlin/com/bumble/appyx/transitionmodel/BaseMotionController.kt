@@ -3,6 +3,7 @@ package com.bumble.appyx.transitionmodel
 import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -91,7 +92,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             ElementUiModel(
                 element = t1.element,
                 visibleState = mutableUiState.isVisible,
-                animationContainer = @Composable {
+                persistedContainer = @Composable {
+                    Box(modifier = mutableUiState.visibilityModifier)
                     observeElementAnimationChanges(mutableUiState, t1)
                     manageAnimations(mutableUiState, t1, update)
                 },
@@ -199,7 +201,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             ElementUiModel(
                 element = t1.element,
                 visibleState = mutableUiState.isVisible,
-                animationContainer = @Composable {
+                persistedContainer = @Composable {
+                    Box(modifier = mutableUiState.visibilityModifier)
                     interpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
                 },
                 modifier = mutableUiState.modifier,

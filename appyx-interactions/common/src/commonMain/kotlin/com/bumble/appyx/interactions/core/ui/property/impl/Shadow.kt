@@ -36,8 +36,6 @@ class Shadow(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val visibilityMapper: ((Float) -> Boolean) = { true }
-
     override val modifier: Modifier
         get() = Modifier.composed {
             this.shadow(elevation = renderValueFlow.collectAsState().value.dp, clip = false)
