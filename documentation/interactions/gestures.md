@@ -117,7 +117,7 @@ class Gestures<InteractionTarget> : GestureFactory<InteractionTarget, SomeModel.
         state: SomeModel.State<InteractionTarget>,
         delta: Offset,
         density: Density
-    ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
+    ): Gesture<InteractionTarget, SomeModel.State<InteractionTarget>> {
         TODO()
     }
 }
