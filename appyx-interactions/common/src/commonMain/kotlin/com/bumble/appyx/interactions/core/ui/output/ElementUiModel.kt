@@ -16,7 +16,7 @@ data class ElementUiModel<InteractionTarget>(
      * not present in the composition and therefore we can't update MotionProperties, and because
      * MotionProperties are not updated element can never enter composition even when it should.
      */
-    val persistedContainer: @Composable () -> Unit,
+    val persistentContainer: @Composable () -> Unit,
     val modifier: Modifier,
     val progress: Flow<Float>
 )

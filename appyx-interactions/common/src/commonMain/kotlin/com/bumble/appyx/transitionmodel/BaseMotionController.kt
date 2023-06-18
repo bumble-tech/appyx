@@ -92,7 +92,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             ElementUiModel(
                 element = t1.element,
                 visibleState = mutableUiState.isVisible,
-                persistedContainer = @Composable {
+                persistentContainer = @Composable {
                     Box(modifier = mutableUiState.visibilityModifier)
                     observeElementAnimationChanges(mutableUiState, t1)
                     manageAnimations(mutableUiState, t1, update)
@@ -201,7 +201,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             ElementUiModel(
                 element = t1.element,
                 visibleState = mutableUiState.isVisible,
-                persistedContainer = @Composable {
+                persistentContainer = @Composable {
                     Box(modifier = mutableUiState.visibilityModifier)
                     interpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
                 },
