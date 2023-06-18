@@ -56,8 +56,8 @@ class BackStackTest(private val testParam: TestParam) {
         backStack.push(interactionTarget = InteractionTarget.Child4)
         backStack.pop(animationSpec = tweenTwoSec)
 
-        // all operations finished. advanced time > 2000 (last operation animation spec)
-        composeTestRule.mainClock.advanceTimeBy(2100)
+        // all operations finished
+        composeTestRule.waitForIdle()
 
         Assert.assertEquals(3, backStack.elements.value.all.size)
     }
