@@ -55,12 +55,13 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
      * available space by applying fillMaxSize().
      */
     val visibilityModifier: Modifier
-        get() = modifier
-            .fillMaxSize()
+        get() = Modifier
             .graphicsLayer {
                 // Making sure that this modifier is invisible
                 alpha = 0f
             }
+            .then(modifier)
+            .fillMaxSize()
             .onPlaced { coordinates ->
                 if (uiContext.clipToBounds) {
                     val boundsInParent = coordinates.boundsInParent()
