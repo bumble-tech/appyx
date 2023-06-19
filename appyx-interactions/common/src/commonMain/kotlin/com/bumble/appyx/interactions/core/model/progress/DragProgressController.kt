@@ -48,7 +48,7 @@ class DragProgressController<InteractionTarget : Any, State>(
         consumeDrag(dragAmount)
     }
 
-    override fun onDragEnd() {
+    override fun onDragEnd(onSettled: (() -> Unit)?) {
         _gestureFactory = null
     }
 

@@ -253,14 +253,14 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    override fun onDragEnd() {
+    override fun onDragEnd(onSettled: (() -> Unit)?) {
         if (!_isAnimating.value) {
-            drag.onDragEnd()
-            settle(gestureSettleConfig)
+            drag.onDragEnd(null)
+            settle(gestureSettleConfig, onSettled)
         }
     }
 
-    private fun settle(gestureSettleConfig: GestureSettleConfig) {
+    private fun settle(gestureSettleConfig: GestureSettleConfig, onSettled: (() -> Unit)?) {
         if (isDebug) {
             debug?.settle()
         } else {
@@ -268,6 +268,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
                 completionThreshold = gestureSettleConfig.completionThreshold,
                 completeGestureSpec = gestureSettleConfig.completeGestureSpec,
                 revertGestureSpec = gestureSettleConfig.revertGestureSpec,
+                onSettled = onSettled,
             )
         }
     }

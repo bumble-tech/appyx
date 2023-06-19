@@ -14,10 +14,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInRoot
@@ -97,24 +95,20 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                                                     true
                                                 } else {
                                                     change.consume()
-                                                    interactionModel.onDragEnd()
+                                                    interactionModel.onDragEnd {
+                                                        offsetCenter = transformedBoundingBox.center - localBoundingBox.center
+                                                    }
                                                     false
                                                 }
                                             },
                                             onDragEnd = {
-                                                interactionModel.onDragEnd()
-                                                offsetCenter = transformedBoundingBox.center - localBoundingBox.center
+                                                interactionModel.onDragEnd {
+                                                    offsetCenter = transformedBoundingBox.center - localBoundingBox.center
+                                                }
                                             },
                                         )
                                     }
                                     .offset { -offsetCenter.round() }
-                                    .drawBehind {
-                                        drawRect(
-                                            color = Color.Red.copy(alpha = 0.3f),
-                                            topLeft = transformedBoundingBox.topLeft,
-                                            size = transformedBoundingBox.size,
-                                        )
-                                    }
                                     .then(elementUiModel.modifier)
                                     .onPlaced {
                                         transformedBoundingBox = it.boundsInParent().run { inflate(maxDimension) }
