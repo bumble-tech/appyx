@@ -66,57 +66,53 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                     clipToBounds = clipToBounds
                 )
             }
+            .fillMaxSize()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            elementUiModels.value.forEach { elementUiModel ->
-                key(elementUiModel.element.id) {
-                    var transformedBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
-                    var localBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
-                    var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
-                    val isVisible by elementUiModel.visibleState.collectAsState()
-                    elementUiModel.persistentContainer()
-                    if (isVisible) {
-                        element.invoke(
-                            elementUiModel.copy(
-                                modifier = Modifier
-                                    .offset { offsetCenter.round() }
-                                    .pointerInput(interactionModel) {
-                                        detectDragGesturesOrCancellation(
-                                            onDragStart = { position ->
-                                                interactionModel.onStartDrag(position)
-                                            },
-                                            onDrag = { change, dragAmount ->
-                                                if (gestureValidator.isGestureValid(change.position, transformedBoundingBox.translate(-offsetCenter))) {
-                                                    change.consume()
-                                                    interactionModel.onDrag(dragAmount, density)
-                                                    true
-                                                } else {
-                                                    change.consume()
-                                                    interactionModel.onDragEnd {
-                                                        offsetCenter = transformedBoundingBox.center - localBoundingBox.center
-                                                    }
-                                                    false
-                                                }
-                                            },
-                                            onDragEnd = {
+        elementUiModels.value.forEach { elementUiModel ->
+            key(elementUiModel.element.id) {
+                var transformedBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
+                var localBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
+                var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
+                val isVisible by elementUiModel.visibleState.collectAsState()
+                elementUiModel.persistentContainer()
+                if (isVisible) {
+                    element.invoke(
+                        elementUiModel.copy(
+                            modifier = Modifier
+                                .offset { offsetCenter.round() }
+                                .pointerInput(interactionModel) {
+                                    detectDragGesturesOrCancellation(
+                                        onDragStart = { position ->
+                                            interactionModel.onStartDrag(position)
+                                        },
+                                        onDrag = { change, dragAmount ->
+                                            if (gestureValidator.isGestureValid(change.position, transformedBoundingBox.translate(-offsetCenter))) {
+                                                change.consume()
+                                                interactionModel.onDrag(dragAmount, density)
+                                                true
+                                            } else {
+                                                change.consume()
                                                 interactionModel.onDragEnd {
                                                     offsetCenter = transformedBoundingBox.center - localBoundingBox.center
                                                 }
-                                            },
-                                        )
-                                    }
-                                    .offset { -offsetCenter.round() }
-                                    .then(elementUiModel.modifier)
-                                    .onPlaced {
-                                        transformedBoundingBox = it.boundsInParent().run { inflate(maxDimension) }
-                                        localBoundingBox = Rect(0f, 0f, it.size.width.toFloat(), it.size.height.toFloat())
-                                    }
-                            )
+                                                false
+                                            }
+                                        },
+                                        onDragEnd = {
+                                            interactionModel.onDragEnd {
+                                                offsetCenter = transformedBoundingBox.center - localBoundingBox.center
+                                            }
+                                        },
+                                    )
+                                }
+                                .offset { -offsetCenter.round() }
+                                .then(elementUiModel.modifier)
+                                .onPlaced {
+                                    transformedBoundingBox = it.boundsInParent().run { inflate(maxDimension) }
+                                    localBoundingBox = Rect(0f, 0f, it.size.width.toFloat(), it.size.height.toFloat())
+                                }
                         )
-                    }
+                    )
                 }
             }
         }
