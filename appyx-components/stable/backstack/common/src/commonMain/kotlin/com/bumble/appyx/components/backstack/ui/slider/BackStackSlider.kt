@@ -33,7 +33,7 @@ class BackStackSlider<InteractionTarget : Any>(
             stashed.mapIndexed { index, element ->
                 MatchedTargetUiState(
                     element,
-                    visible.toOutsideLeft(index + 1, -width)
+                    visible.toOutsideLeft(index + 1, width)
                 )
             } +
             destroyed.mapIndexed { index, element ->
