@@ -142,7 +142,7 @@ fun <InteractionTarget : Any> ModelUi(
         }
     )
 
-    DraggableChildren(
+    Children(
         interactionModel = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
@@ -152,8 +152,8 @@ fun <InteractionTarget : Any> ModelUi(
             modifier = Modifier.size(60.dp)
                 .then(elementUiModel.modifier)
                 .pointerInput(elementUiModel.element.id) {
-                    detectTapGestures {  }
                     detectDragGestures(
+                        onDragStart = { position -> testDrive.onStartDrag(position) },
                         onDrag = { change, dragAmount ->
                             change.consume()
                             testDrive.onDrag(dragAmount, this)
