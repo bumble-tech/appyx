@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,12 +14,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.round
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
@@ -64,40 +69,59 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                 )
             }
     ) {
-        var elementBoundingBox by remember { mutableStateOf(Rect.Zero) }
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .pointerInput(interactionModel) {
-                    detectDragGesturesOrCancellation(
-                        onDragStart = { position -> interactionModel.onStartDrag(position) },
-                        onDrag = { change, dragAmount ->
-                            if (gestureValidator.isGestureValid(change.position, elementBoundingBox)) {
-                                change.consume()
-                                interactionModel.onDrag(dragAmount, density)
-                                true
-                            } else {
-                                change.consume()
-                                interactionModel.onDragEnd()
-                                false
-                            }
-                        },
-                        onDragEnd = { interactionModel.onDragEnd() },
-                    )
-                }
         ) {
             elementUiModels.value.forEach { elementUiModel ->
                 key(elementUiModel.element.id) {
-                    elementUiModel.persistentContainer()
+                    var transformedBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
+                    var localBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
+                    var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
                     val isVisible by elementUiModel.visibleState.collectAsState()
+                    elementUiModel.persistentContainer()
                     if (isVisible) {
                         element.invoke(
                             elementUiModel.copy(
-                                modifier = elementUiModel.modifier.onPlaced {
-                                    elementBoundingBox = it.boundsInParent()
-                                        .run { inflate(maxDimension) }
-                                }
-                            ))
+                                modifier = Modifier
+                                    .offset { offsetCenter.round() }
+                                    .pointerInput(interactionModel) {
+                                        detectDragGesturesOrCancellation(
+                                            onDragStart = { position ->
+                                                interactionModel.onStartDrag(position)
+                                            },
+                                            onDrag = { change, dragAmount ->
+                                                if (gestureValidator.isGestureValid(change.position, transformedBoundingBox.translate(-offsetCenter))) {
+                                                    change.consume()
+                                                    interactionModel.onDrag(dragAmount, density)
+                                                    true
+                                                } else {
+                                                    change.consume()
+                                                    interactionModel.onDragEnd()
+                                                    false
+                                                }
+                                            },
+                                            onDragEnd = {
+                                                interactionModel.onDragEnd()
+                                                offsetCenter = transformedBoundingBox.center - localBoundingBox.center
+                                            },
+                                        )
+                                    }
+                                    .offset { -offsetCenter.round() }
+                                    .drawBehind {
+                                        drawRect(
+                                            color = Color.Red.copy(alpha = 0.3f),
+                                            topLeft = transformedBoundingBox.topLeft,
+                                            size = transformedBoundingBox.size,
+                                        )
+                                    }
+                                    .then(elementUiModel.modifier)
+                                    .onPlaced {
+                                        transformedBoundingBox = it.boundsInParent().run { inflate(maxDimension) }
+                                        localBoundingBox = Rect(0f, 0f, it.size.width.toFloat(), it.size.height.toFloat())
+                                    }
+                            )
+                        )
                     }
                 }
             }
