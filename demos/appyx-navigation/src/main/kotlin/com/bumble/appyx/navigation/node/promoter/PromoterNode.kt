@@ -24,10 +24,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.components.demos.promoter.Promoter
-import com.bumble.appyx.components.demos.promoter.PromoterModel
-import com.bumble.appyx.components.demos.promoter.operation.addFirst
-import com.bumble.appyx.components.demos.promoter.ui.PromoterMotionController
+import com.bumble.appyx.components.experimental.promoter.Promoter
+import com.bumble.appyx.components.experimental.promoter.PromoterModel
+import com.bumble.appyx.components.experimental.promoter.operation.addFirst
+import com.bumble.appyx.components.experimental.promoter.ui.PromoterMotionController
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
