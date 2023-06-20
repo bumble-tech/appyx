@@ -73,12 +73,17 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
 
     abstract fun ModelState.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>>
 
-    abstract fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState
+    abstract fun mutableUiStateFor(
+        uiContext: UiContext,
+        targetUiState: TargetUiState
+    ): MutableUiState
 
     override fun mapUpdate(
         update: Update<ModelState>
     ): List<ElementUiModel<InteractionTarget>> {
         val matchedTargetUiStates = update.currentTargetState.toUiTargets()
+
+        cleanUpCacheForDestroyedElements(matchedTargetUiStates)
 
         coroutineScope.launch {
             updateViewpoint(update)
@@ -100,6 +105,19 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                 modifier = mutableUiState.modifier,
                 progress = MutableStateFlow(1f),
             )
+        }
+    }
+
+    private fun cleanUpCacheForDestroyedElements(
+        matchedTargetUiStates: List<MatchedTargetUiState<InteractionTarget, TargetUiState>>
+    ) {
+        val availableIds = matchedTargetUiStates.map { it.element.id }
+        val iterator = mutableUiStateCache.keys.iterator()
+        while (iterator.hasNext()) {
+            val key = iterator.next()
+            if (!availableIds.contains(key)) {
+                iterator.remove()
+            }
         }
     }
 
@@ -181,6 +199,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         val (fromState, targetState) = segment.stateTransition
         val fromTargetUiState = fromState.toUiTargets()
         val toTargetUiState = targetState.toUiTargets()
+
+        cleanUpCacheForDestroyedElements(toTargetUiState)
 
         coroutineScope.launch {
             segmentProgress.collect {
