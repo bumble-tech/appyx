@@ -15,8 +15,9 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 implementation(project(":appyx-interactions:appyx-interactions"))
-                implementation(project(":appyx-components:internal:common"))
-                implementation(project(":appyx-components:demos:demos"))
+                implementation(project(":appyx-components:internal:test-drive:test-drive"))
+                implementation(project(":appyx-components:experimental:cards:cards"))
+                implementation(project(":appyx-components:experimental:promoter:promoter"))
             }
         }
     }

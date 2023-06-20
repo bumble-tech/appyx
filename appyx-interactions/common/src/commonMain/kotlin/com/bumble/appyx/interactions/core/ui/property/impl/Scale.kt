@@ -40,10 +40,6 @@ class Scale(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val visibilityMapper: ((Float) -> Boolean) = { scale ->
-        scale > 0.0f
-    }
-
     override val modifier: Modifier
         get() = Modifier.composed {
             with(renderValueFlow.collectAsState().value) {
