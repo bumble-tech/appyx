@@ -34,7 +34,7 @@ class MainActivity : NodeActivity() {
                     Column {
                         NodeHost(
                             AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                            integrationPoint = appyxIntegrationPoint,
+                            integrationPoint = appyxV2IntegrationPoint,
                         ) {
                             ContainerNode(
                                 buildContext = it,

@@ -28,7 +28,7 @@ class AppyxTestScenario<T : Node>(
             decorator {
                 NodeHost(
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                    integrationPoint = activity.appyxIntegrationPoint,
+                    integrationPoint = activity.appyxV2IntegrationPoint,
                 ) { buildContext ->
                     node = nodeFactory.create(buildContext)
                     awaitNode.countDown()

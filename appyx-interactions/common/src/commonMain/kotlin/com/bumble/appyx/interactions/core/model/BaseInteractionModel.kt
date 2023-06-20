@@ -25,6 +25,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
 import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlinx.coroutines.CoroutineScope
@@ -47,7 +48,11 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
-    override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    final override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
+    final override val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
+        completeGestureSpec = defaultAnimationSpec,
+        revertGestureSpec = defaultAnimationSpec,
+    ),
     private val backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModelState> = DontHandleBackPress(),
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
@@ -68,14 +73,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
 
     private var animationChangesJob: Job? = null
     private var animationFinishedJob: Job? = null
-
-    private var transitionBounds: TransitionBounds = zeroSizeTransitionBounds
-        set(value) {
-            if (value != field) {
-                AppyxLogger.d("InteractionModel", "TransitionBounds changed: $value")
-                field = value
-            }
-        }
+    private var uiContext: UiContext? = null
 
     private var _isAnimating = MutableStateFlow(false)
     val isAnimating: StateFlow<Boolean> = _isAnimating
@@ -86,7 +84,8 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val drag = DragProgressController(
         model = model,
         gestureFactory = { _gestureFactory },
-        defaultAnimationSpec = defaultAnimationSpec
+        defaultAnimationSpec = defaultAnimationSpec,
+        gestureSettleConfig = gestureSettleConfig,
     )
 
     private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
@@ -164,12 +163,13 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     }
 
     override fun updateContext(uiContext: UiContext) {
-        if (this.transitionBounds != uiContext.transitionBounds) {
-            this.transitionBounds = uiContext.transitionBounds
+        if (this.uiContext != uiContext) {
+            this.uiContext = uiContext
+            AppyxLogger.d("InteractionModel", "new uiContext supplied: $uiContext")
             _motionController = motionController(uiContext).also {
                 onMotionControllerReady(it)
             }
-            _gestureFactory = gestureFactory(transitionBounds)
+            _gestureFactory = gestureFactory(uiContext.transitionBounds)
         }
     }
 
@@ -253,26 +253,22 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    override fun onDragEnd(
-        completionThreshold: Float,
-        completeGestureSpec: AnimationSpec<Float>,
-        revertGestureSpec: AnimationSpec<Float>
-    ) {
+    override fun onDragEnd() {
         if (!_isAnimating.value) {
             drag.onDragEnd()
-            settle(completionThreshold, revertGestureSpec, completeGestureSpec)
+            settle(gestureSettleConfig)
         }
     }
 
-    private fun settle(
-        completionThreshold: Float = 0.5f,
-        completeGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-        revertGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    ) {
+    private fun settle(gestureSettleConfig: GestureSettleConfig) {
         if (isDebug) {
             debug?.settle()
         } else {
-            animated?.settle(completionThreshold, completeGestureSpec, revertGestureSpec)
+            animated?.settle(
+                completionThreshold = gestureSettleConfig.completionThreshold,
+                completeGestureSpec = gestureSettleConfig.completeGestureSpec,
+                revertGestureSpec = gestureSettleConfig.revertGestureSpec,
+            )
         }
     }
 

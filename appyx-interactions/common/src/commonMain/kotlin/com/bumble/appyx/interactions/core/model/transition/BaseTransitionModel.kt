@@ -1,8 +1,8 @@
 package com.bumble.appyx.interactions.core.model.transition
 
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.GEOMETRY
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMPOSED
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Output
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection
@@ -106,8 +106,8 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                 enforcedMode = IMMEDIATE
                 createUpdate(operation)
             }
-            GEOMETRY -> {
-                updateGeometry(operation)
+            IMPOSED -> {
+                impose(operation)
             }
             KEYFRAME -> {
                 createSegment(operation)
@@ -128,7 +128,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
         }
     }
 
-    private fun updateGeometry(operation: Operation<ModelState>): Boolean {
+    private fun impose(operation: Operation<ModelState>): Boolean {
         return when (val currentState = state.value) {
             is Keyframes -> {
                 with(currentState) {

@@ -8,7 +8,7 @@ import com.bumble.appyx.navigation.integrationpoint.IntegrationPointProvider
 
 abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
 
-    override lateinit var appyxIntegrationPoint: ActivityIntegrationPoint
+    override lateinit var appyxV2IntegrationPoint: ActivityIntegrationPoint
 
     protected open fun createAppyxIntegrationPoint(savedInstanceState: Bundle?) =
         ActivityIntegrationPoint(
@@ -19,13 +19,13 @@ abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
     override fun onCreate(savedInstanceState: Bundle?) {
         // super.onCreate() creates RIB with AppyxNode inside. It's important to have
         // appyxIntegrationPoint ready before we create a root node
-        appyxIntegrationPoint = createAppyxIntegrationPoint(savedInstanceState)
+        appyxV2IntegrationPoint = createAppyxIntegrationPoint(savedInstanceState)
         super.onCreate(savedInstanceState)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        appyxIntegrationPoint.onActivityResult(requestCode, resultCode, data)
+        appyxV2IntegrationPoint.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onRequestPermissionsResult(
@@ -34,12 +34,12 @@ abstract class InteropActivity : RibActivity(), IntegrationPointProvider {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        appyxIntegrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        appyxV2IntegrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        appyxIntegrationPoint.onSaveInstanceState(outState)
+        appyxV2IntegrationPoint.onSaveInstanceState(outState)
     }
 
 }

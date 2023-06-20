@@ -1,9 +1,16 @@
 package com.bumble.appyx.interactions.core
 
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.unit.Density
+import com.bumble.appyx.interactions.Parcelable
+import com.bumble.appyx.interactions.Parcelize
+import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.core.ui.gesture.Gesture
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue
@@ -34,10 +41,24 @@ class TestTransitionModel<InteractionTarget : Any>(
         setOf()
 }
 
+class TestGestures<InteractionTarget : Any>(
+    private val target: InteractionTarget,
+) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
+    override fun createGesture(
+        state: State<InteractionTarget>,
+        delta: Offset,
+        density: Density
+    ): Gesture<InteractionTarget, State<InteractionTarget>> =
+        Gesture(
+            operation = TestOperation(target),
+            completeAt = Offset(100f, 100f)
+        )
+}
+
 @Parcelize
 class TestOperation<InteractionTarget : Any>(
     private val interactionTarget: @RawValue InteractionTarget,
-    override val mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : BaseOperation<State<InteractionTarget>>() {
     override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
         baseLineState

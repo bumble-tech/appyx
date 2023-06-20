@@ -46,7 +46,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     },
 ) {
     val density = LocalDensity.current
-    val frames = interactionModel.uiModels.collectAsState(listOf())
+    val elementUiModels = interactionModel.uiModels.collectAsState(listOf())
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
@@ -72,12 +72,12 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 )
             }
     ) {
-        frames.value.forEach { frameModel ->
-            key(frameModel.element.id) {
-                frameModel.animationContainer()
-                val isVisible by frameModel.visibleState.collectAsState()
+        elementUiModels.value.forEach { elementUiModel ->
+            key(elementUiModel.element.id) {
+                elementUiModel.animationContainer()
+                val isVisible by elementUiModel.visibleState.collectAsState()
                 if (isVisible) {
-                    element.invoke(frameModel)
+                    element.invoke(elementUiModel)
                 }
             }
         }
@@ -107,6 +107,7 @@ fun Element(
                 contentDescription?.let { this.contentDescription = it }
             }
     ) {
+
         Text(
             text = elementUiModel.element.interactionTarget.toString(),
             fontSize = 21.sp,

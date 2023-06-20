@@ -36,39 +36,39 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             _children.update { restoredMap }
             savedStateMap = null
         }
-        syncNavModelWithChildren(parentNode)
+        syncInteractionModelWithChildren(parentNode)
     }
 
-    private fun syncNavModelWithChildren(parentNode: ParentNode<InteractionTarget>) {
+    private fun syncInteractionModelWithChildren(parentNode: ParentNode<InteractionTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
             parentNode.interactionModel.elements.collect { state ->
-                val navModelKeepKeys: Set<Element<InteractionTarget>>
-                val navModelSuspendKeys: Set<Element<InteractionTarget>>
-                val navModelKeys: Set<Element<InteractionTarget>>
+                val interactionModelKeepKeys: Set<Element<InteractionTarget>>
+                val interactionModelSuspendKeys: Set<Element<InteractionTarget>>
+                val interactionModelKeys: Set<Element<InteractionTarget>>
                 when (keepMode) {
                     ChildEntry.KeepMode.KEEP -> {
-                        navModelKeepKeys =
+                        interactionModelKeepKeys =
                             (state.onScreen + state.offScreen)
-                        navModelSuspendKeys = emptySet()
-                        navModelKeys = navModelKeepKeys
+                        interactionModelSuspendKeys = emptySet()
+                        interactionModelKeys = interactionModelKeepKeys
                     }
                     ChildEntry.KeepMode.SUSPEND -> {
-                        navModelKeepKeys =
+                        interactionModelKeepKeys =
                             state.onScreen
-                        navModelSuspendKeys =
+                        interactionModelSuspendKeys =
                             state.offScreen
-                        navModelKeys = navModelKeepKeys + navModelSuspendKeys
+                        interactionModelKeys = interactionModelKeepKeys + interactionModelSuspendKeys
                     }
                 }
-                updateChildren(navModelKeys, navModelKeepKeys, navModelSuspendKeys)
+                updateChildren(interactionModelKeys, interactionModelKeepKeys, interactionModelSuspendKeys)
             }
         }
     }
 
     private fun updateChildren(
-        navModelElements: Set<Element<InteractionTarget>>,
-        navModelKeepElements: Set<Element<InteractionTarget>>,
-        navModelSuspendElements: Set<Element<InteractionTarget>>,
+        interactionModelElements: Set<Element<InteractionTarget>>,
+        interactionModelKeepElements: Set<Element<InteractionTarget>>,
+        interactionModelSuspendElements: Set<Element<InteractionTarget>>,
     ) {
         _children.update { map ->
             val localElements = map.keys
@@ -78,10 +78,10 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             val localSuspendedKeys = map.entries.mapNotNullToSet { entry ->
                 entry.key.takeIf { entry.value is ChildEntry.Suspended }
             }
-            val newElements = navModelElements - localElements
-            val removedElements = localElements - navModelElements
-            val keepElements = localSuspendedKeys.intersect(navModelKeepElements)
-            val suspendElements = localKeptElements.intersect(navModelSuspendElements)
+            val newElements = interactionModelElements - localElements
+            val removedElements = localElements - interactionModelElements
+            val keepElements = localSuspendedKeys.intersect(interactionModelKeepElements)
+            val suspendElements = localKeptElements.intersect(interactionModelSuspendElements)
             val noKeysChanges = newElements.isEmpty() && removedElements.isEmpty()
             val noSuspendChanges = keepElements.isEmpty() && suspendElements.isEmpty()
             if (noKeysChanges && noSuspendChanges) {
@@ -90,7 +90,7 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             val mutableMap = map.toMutableMap()
             newElements.forEach { key ->
                 val shouldSuspend =
-                    keepMode == ChildEntry.KeepMode.SUSPEND && navModelSuspendElements.contains(key)
+                    keepMode == ChildEntry.KeepMode.SUSPEND && interactionModelSuspendElements.contains(key)
                 mutableMap[key] =
                     childEntry(
                         key = key,

@@ -1,7 +1,6 @@
 package com.bumble.appyx.transitionmodel
 
 import DefaultAnimationSpec
-import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
@@ -16,7 +15,7 @@ import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -34,16 +33,16 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
 ) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<MutableUiState, TargetUiState> {
 
-    open val geometryMappings: List<Pair<(ModelState) -> Float, MotionProperty<Float, AnimationVector1D>>> =
+    open val viewpointDimensions: List<Pair<(ModelState) -> Float, GenericFloatProperty>> =
         emptyList()
 
     private val coroutineScope = uiContext.coroutineScope
     private val mutableUiStateCache: MutableMap<String, MutableUiState> = mutableMapOf()
     private val animations: MutableMap<String, Boolean> = mutableMapOf()
-    private val geometryModeAnimatingState: StateFlow<Boolean>
-        get() = if (geometryMappings.isNotEmpty()) {
+    private val viewpointIsAnimating: StateFlow<Boolean>
+        get() = if (viewpointDimensions.isNotEmpty()) {
             combineState(
-                geometryMappings.map { it.second.isAnimating },
+                viewpointDimensions.map { it.second.isAnimating },
                 uiContext.coroutineScope
             ) { values ->
                 values.any { it }
@@ -51,13 +50,13 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         } else {
             MutableStateFlow(false)
         }
-    private val updateModeAnimatingState = MutableStateFlow(false)
+    private val updateIsAnimating = MutableStateFlow(false)
     private val isAnimatingState: StateFlow<Boolean>
-        get() = updateModeAnimatingState.combineState(
-            geometryModeAnimatingState,
+        get() = updateIsAnimating.combineState(
+            viewpointIsAnimating,
             uiContext.coroutineScope
-        ) { isGeometryAnimating, isUpdateAnimating ->
-            isGeometryAnimating || isUpdateAnimating
+        ) { b1, b2 ->
+            b1 || b2
         }
 
     protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
@@ -81,7 +80,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         val matchedTargetUiStates = update.currentTargetState.toUiTargets()
 
         coroutineScope.launch {
-            updateGeometry(update)
+            updateViewpoint(update)
         }
 
         // TODO: use a map instead of find
@@ -109,8 +108,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         update: Update<ModelState>
     ) {
         LaunchedEffect(update, this) {
-            // make sure to use scope created by Launched effect as this scope should be cancelled
-            // when associated FrameModel cease to exist
+            // Make sure to use the scope created by LaunchedEffect as this scope should be cancelled
+            // when the associated ElementUiModel ceases to exist
             launch {
                 if (update.animate) {
                     mutableUiState.animateTo(
@@ -119,7 +118,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                         springSpec = currentSpringSpec,
                     )
                 } else {
-                    mutableUiState.snapTo(this, matchedTargetUiState.targetUiState)
+                    mutableUiState.snapTo(matchedTargetUiState.targetUiState)
                 }
             }
         }
@@ -131,8 +130,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         matchedTargetUiState: MatchedTargetUiState<InteractionTarget, TargetUiState>
     ) {
         LaunchedEffect(this) {
-            // make sure to use scope created by Launched effect as this scope should be cancelled
-            // when associated FrameModel cease to exist
+            // Make sure to use the scope created by LaunchedEffect as this scope should be cancelled
+            // when the associated ElementUiModel ceases to exist
             launch {
                 mutableUiState.isAnimating
                     .distinctUntilChanged()
@@ -143,13 +142,13 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                         if (current && !previous) {
                             // animation started
                             animations[matchedTargetUiState.element.id] = true
-                            updateModeAnimatingState.update { true }
+                            updateIsAnimating.update { true }
                             AppyxLogger.d(TAG, "animation for element ${matchedTargetUiState.element.id} is started")
                         } else {
                             // animation finished
                             _finishedAnimations.emit(matchedTargetUiState.element)
                             animations[matchedTargetUiState.element.id] = false
-                            updateModeAnimatingState.update { animations.any { it.value } }
+                            updateIsAnimating.update { animations.any { it.value } }
                             AppyxLogger.d(TAG, "animation for element ${matchedTargetUiState.element.id} is finished")
                         }
                     }
@@ -157,17 +156,17 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         }
     }
 
-    private suspend fun updateGeometry(update: Update<ModelState>) {
-        geometryMappings.forEach { (fieldOfState, geometry) ->
+    private suspend fun updateViewpoint(update: Update<ModelState>) {
+        viewpointDimensions.forEach { (fieldOfState, viewpointDimension) ->
             val targetValue = fieldOfState(update.currentTargetState)
-            geometry.animateTo(
+            viewpointDimension.animateTo(
                 targetValue,
                 spring(
                     stiffness = currentSpringSpec.stiffness,
                     dampingRatio = currentSpringSpec.dampingRatio
                 )
             ) {
-                AppyxLogger.d(TAG, "Geometry animateTo (Update) – $targetValue")
+                AppyxLogger.d(TAG, "Viewpoint animateTo (Update) – $targetValue")
             }
         }
     }
@@ -183,7 +182,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
 
         coroutineScope.launch {
             segmentProgress.collect {
-                updateGeometry(segment, it)
+                updateViewpoint(segment, it)
             }
         }
 
@@ -223,32 +222,32 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         }
     }
 
-    private suspend fun updateGeometry(
+    private suspend fun updateViewpoint(
         segment: Segment<ModelState>,
         segmentProgress: Float
     ) {
-        geometryMappings.forEach { (fieldOfState, geometry) ->
-            val (behaviour, targetValue) = geometryTargetValue(
+        viewpointDimensions.forEach { (fieldOfState, viewpointDimension) ->
+            val (behaviour, targetValue) = viewpointTargetValue(
                 segment,
                 segmentProgress,
                 fieldOfState
             )
 
             when (behaviour) {
-                GeometryBehaviour.SNAP -> {
-                    geometry.snapTo(targetValue)
-                    AppyxLogger.d(TAG, "Geometry snapTo (Segment): $targetValue")
+                ViewpointBehaviour.SNAP -> {
+                    viewpointDimension.snapTo(targetValue)
+                    AppyxLogger.d(TAG, "Viewpoint snapTo (Segment): $targetValue")
                 }
 
-                GeometryBehaviour.ANIMATE -> {
-                    if (geometry.value != targetValue) {
-                        geometry.animateTo(
+                ViewpointBehaviour.ANIMATE -> {
+                    if (viewpointDimension.internalValue != targetValue) {
+                        viewpointDimension.animateTo(
                             targetValue, spring(
                                 stiffness = currentSpringSpec.stiffness,
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-                            AppyxLogger.d(TAG, "Geometry animateTo (Segment) – ${geometry.value} -> $targetValue")
+                            AppyxLogger.d(TAG, "Viewpoint animateTo (Segment) – ${viewpointDimension.internalValue} -> $targetValue")
                         }
                     }
                 }
@@ -256,28 +255,28 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         }
     }
 
-    private fun geometryTargetValue(
+    private fun viewpointTargetValue(
         segment: Segment<ModelState>,
         segmentProgress: Float,
         fieldOfState: (ModelState) -> Float
-    ): Pair<GeometryBehaviour, Float> {
+    ): Pair<ViewpointBehaviour, Float> {
         val fromValue = fieldOfState(segment.fromState)
         val targetValue = fieldOfState(segment.targetState)
 
-        // If the geometry value was inserted via a GEOMETRY operation mode, then it was applied both to the
-        // start and end values (see [BaseTransitionModel.updateGeometry()], and they should be the same.
+        // If the viewpoint value was updated via a IMPOSED operation mode, then it was applied both to the
+        // start and end values (see [BaseTransitionModel.impose()], and they should be the same.
         // This means that even though we have a Segment, the interpolation is working on some other part of
-        // the ModelState, not the geometry, and we should still consider the geometry value as a separate concern,
+        // the ModelState, not the viewpoint, and we should still consider the viewpoint value as a separate concern,
         // that we need to animate.
-        return if (fromValue == targetValue) GeometryBehaviour.ANIMATE to targetValue
-        // If the geometry value was added via a KEYFRAME operation mode, then the relevant value
+        return if (fromValue == targetValue) ViewpointBehaviour.ANIMATE to targetValue
+        // If the viewpoint target value was updated via a KEYFRAME operation mode, then the relevant value
         // will be different for the targetValue.
-        // This means that the Segment was specifically created to interpolate the geometry value (probably a gesture)
+        // This means that the Segment was specifically created to interpolate the viewpoint value (probably a gesture)
         // and that it's important to follow the interpolation by snapping.
-        else GeometryBehaviour.SNAP to lerpFloat(fromValue, targetValue, segmentProgress)
+        else ViewpointBehaviour.SNAP to lerpFloat(fromValue, targetValue, segmentProgress)
     }
 
-    private enum class GeometryBehaviour {
+    private enum class ViewpointBehaviour {
         SNAP, ANIMATE
     }
 

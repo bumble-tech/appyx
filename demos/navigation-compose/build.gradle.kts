@@ -38,7 +38,7 @@ dependencies {
 
     api(composeBom)
     implementation(project(":appyx-navigation:android"))
-    api(project(":appyx-components:backstack:backstack"))
+    api(project(":appyx-components:stable:backstack:backstack"))
     api(libs.compose.ui.ui)
 
     implementation(composeBom)

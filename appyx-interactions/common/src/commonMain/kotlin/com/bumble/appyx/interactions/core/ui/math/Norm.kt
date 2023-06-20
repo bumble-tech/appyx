@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui.helper
+package com.bumble.appyx.interactions.core.ui.math
 
 
 /**

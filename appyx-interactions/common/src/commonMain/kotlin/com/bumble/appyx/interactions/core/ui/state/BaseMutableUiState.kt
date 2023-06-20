@@ -30,7 +30,6 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
         }
 
     abstract suspend fun snapTo(
-        scope: CoroutineScope,
         target: TargetUiState
     )
 

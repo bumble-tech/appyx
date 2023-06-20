@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
@@ -23,19 +22,23 @@ import kotlinx.coroutines.flow.StateFlow
 class Position(
     uiContext: UiContext,
     val target: Target,
-    private val displacement: StateFlow<DpOffset> = MutableStateFlow(DpOffset.Zero),
+    displacement: StateFlow<DpOffset> = MutableStateFlow(DpOffset.Zero),
     visibilityThreshold: DpOffset = DpOffset(1.dp, 1.dp),
 ) : MotionProperty<DpOffset, AnimationVector2D>(
     uiContext = uiContext,
     animatable = Animatable(target.value, DpOffset.VectorConverter),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
+    displacement = displacement
 ), Interpolatable<Position.Target> {
 
     class Target(
         val value: DpOffset,
         val easing: Easing? = null,
-    )
+    ) : MotionProperty.Target
+
+    override fun calculateRenderValue(base: DpOffset, displacement: DpOffset): DpOffset =
+        base - displacement
 
     override val visibilityMapper: (DpOffset) -> Boolean = { displacedValue ->
         val bounds = uiContext.transitionBounds
@@ -51,14 +54,6 @@ class Position(
             && itemOffsetRangeY.hasIntersection(visibleOffsetRangeY)
         isVisible
     }
-
-    override val valueSource: StateFlow<DpOffset>
-        get() = displacement.combineState(valueFlow, uiContext.coroutineScope) { displacement, dpOffset ->
-            DpOffset(
-                x = dpOffset.x - displacement.x,
-                y = dpOffset.y - displacement.y
-            )
-        }
 
     private fun calculateItemOffsetRangeX(
         displacedValue: DpOffset,
@@ -101,10 +96,10 @@ class Position(
 
     override val modifier: Modifier
         get() = Modifier.composed {
-            val displacedValue = valueSource.collectAsState()
+            val value = renderValueFlow.collectAsState()
             this.offset(
-                x = displacedValue.value.x,
-                y = displacedValue.value.y
+                x = value.value.x,
+                y = value.value.y
             )
         }
 

@@ -174,12 +174,12 @@ open class Node internal constructor(
         require(parent != null || isRoot) {
             "Can't navigate up, neither parent nor integration point is presented"
         }
-        if (!(parent as Node).performUpNavigation()) {
+        if ((parent as? Node)?.performUpNavigation() != true) {
             integrationPoint.handleUpNavigation()
         }
     }
 
-    protected open fun performUpNavigation(): Boolean =
+    open fun performUpNavigation(): Boolean =
         handleUpNavigationByPlugins() || (parent as? Node)?.performUpNavigation() == true
 
     private fun handleUpNavigationByPlugins(): Boolean =

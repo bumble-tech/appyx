@@ -21,7 +21,6 @@ import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.model.removedElements
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSpec
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.node.ParentNode
@@ -33,14 +32,12 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    gestureSpec: GestureSpec = GestureSpec(),
     noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
-        children { child, frameModel ->
+        children { child, elementUiModel ->
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
-                    key = frameModel.element,
-                    gestureSpec = gestureSpec
+                    key = elementUiModel.element,
                 )
             )
         }
