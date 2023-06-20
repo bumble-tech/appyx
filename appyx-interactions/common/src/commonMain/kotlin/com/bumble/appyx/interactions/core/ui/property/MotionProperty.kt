@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.SystemClock
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -56,12 +55,6 @@ abstract class MotionProperty<T, V : AnimationVector>(
      */
     private var previousVelocity = animatable.velocity
     private var lastTime = 0L
-
-    /**
-     * Mapper which resolves the visibility of the property. If property has no influence on the
-     * visibility, it should always return true.
-     */
-    open val visibilityMapper: ((T) -> Boolean) = { true }
 
     private val internalValueFlow = MutableStateFlow(animatable.value)
 
@@ -110,11 +103,14 @@ abstract class MotionProperty<T, V : AnimationVector>(
     val isAnimating: StateFlow<Boolean>
         get() = _isAnimatingFlow
 
-    val isVisibleFlow: StateFlow<Boolean> by lazy {
-        renderValueFlow.mapState(uiContext.coroutineScope) { value ->
-            visibilityMapper.invoke(value)
-        }
-    }
+
+    /**
+     * Visibility of the element is calculated based on the element bounds relative to the container
+     * where transition happen in case of clipToBounds = true or rootBounds in case of clipToBounds = true.
+     * This property should be overridden if the value of MotionProperty affect visibility. For instance,
+     * Alpha motion property - regardless of element bounds the element is invisible if alpha = 0f.
+     */
+    open val isVisibleFlow: StateFlow<Boolean>? = null
 
     private fun onValueChanged() {
         internalValueFlow.update { internalValue }
