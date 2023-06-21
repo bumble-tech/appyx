@@ -15,17 +15,17 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":appyx-interactions:appyx-interactions"))
-                implementation(project(":appyx-components:spotlight:spotlight"))
+                implementation(project(":appyx-components:stable:spotlight:spotlight"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
                 implementation(libs.kotlin.coroutines.core)
+                implementation(libs.kotlin.coroutines.swing)
             }
         }
         val desktopMain by getting {
             dependencies {
                 implementation(compose.desktop.currentOs)
-                implementation(project(":appyx-interactions:desktop"))
             }
         }
     }
