@@ -21,6 +21,8 @@ import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
@@ -30,6 +32,8 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 
+private val defaultExtraTouch = 48f.dp
+
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
@@ -38,11 +42,13 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = defaultValidator,
+    gestureExtraTouchArea: Dp = defaultExtraTouch,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit,
 ) {
     val density = LocalDensity.current
     val elementUiModels = interactionModel.uiModels.collectAsState(listOf())
     val coroutineScope = rememberCoroutineScope()
+    val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
@@ -103,7 +109,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                                 .then(elementUiModel.modifier)
                                 .onPlaced {
                                     val localCenter = Offset(it.size.width.toFloat(), it.size.height.toFloat()) / 2f
-                                    transformedBoundingBox = it.boundsInParent().run { inflate(maxDimension) }
+                                    transformedBoundingBox = it.boundsInParent().inflate(gestureExtraTouchAreaPx)
                                     offsetCenter = transformedBoundingBox.center - localCenter
                                 }
                         )
