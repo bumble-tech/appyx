@@ -53,6 +53,7 @@ android {
 }
 
 dependencies {
+    implementation(project(mapOf("path" to ":appyx-components:modal:modal")))
     val composeBom = platform(libs.compose.bom)
 
     implementation(composeBom)

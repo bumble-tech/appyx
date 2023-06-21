@@ -21,6 +21,7 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
+import com.bumble.appyx.navigation.node.modal.ModalExamplesNode
 import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.navigation.node.container.ContainerNode.InteractionTarget
 import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode
@@ -69,6 +70,9 @@ class ContainerNode(
         object BackStack : InteractionTarget()
 
         @Parcelize
+        object Modal : InteractionTarget()
+
+        @Parcelize
         object PromoterExperiment : InteractionTarget()
     }
 
@@ -84,6 +88,7 @@ class ContainerNode(
             is InteractionTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
             is InteractionTarget.BackStack -> BackStackExamplesNode(buildContext)
             is InteractionTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
+            is InteractionTarget.Modal -> ModalExamplesNode(buildContext)
             is InteractionTarget.PromoterExperiment -> PromoterNode(buildContext)
         }
 
@@ -122,6 +127,9 @@ class ContainerNode(
                 }
                 TextButton(text = "Permanent Child") {
                     backStack.push(InteractionTarget.PermanentChild)
+                }
+                TextButton(text = "Modal") {
+                    backStack.push(InteractionTarget.Modal)
                 }
             }
         }

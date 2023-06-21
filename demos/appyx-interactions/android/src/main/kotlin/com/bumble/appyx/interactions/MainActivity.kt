@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
@@ -25,11 +26,13 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.android.DatingCards
 import com.bumble.appyx.components.experimental.puzzle15.android.Puzzle15
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
+import com.bumble.appyx.components.modal.ui.ModalMotionController
 import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
 import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
+import com.bumble.appyx.interactions.sample.ModalExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.sample.SpotlightExperimentInVertical
 import com.bumble.appyx.interactions.theme.AppyxTheme
@@ -50,20 +53,21 @@ class MainActivity : ComponentActivity() {
                     color = appyx_dark
                 ) {
                     var content by remember { mutableStateOf(1) }
+
                     Column {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(4.dp),
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Button({ content = 1 }) { Text("1") }
-                            Button({ content = 2 }) { Text("2") }
-                            Button({ content = 3 }) { Text("3") }
-                            Button({ content = 4 }) { Text("4") }
-                            Button({ content = 5 }) { Text("5") }
-                            Button({ content = 6 }) { Text("6") }
-                            Button({ content = 7 }) { Text("7") }
+                        LazyRow {
+                            items(count = 8, itemContent = { item ->
+                                when (item) {
+                                    0 -> Button({ content = 1 }) { Text("1") }
+                                    1 -> Button({ content = 2 }) { Text("2") }
+                                    2 -> Button({ content = 3 }) { Text("3") }
+                                    3 -> Button({ content = 4 }) { Text("4") }
+                                    4 -> Button({ content = 5 }) { Text("5") }
+                                    5 -> Button({ content = 6 }) { Text("6") }
+                                    6 -> Button({ content = 7 }) { Text("7") }
+                                    7 -> Button({ content = 8 }) { Text("8") }
+                                }
+                            })
                         }
                         when (content) {
                             1 -> DatingCards()
@@ -73,6 +77,7 @@ class MainActivity : ComponentActivity() {
                             5 -> SpotlightExperiment { SpotlightFader(it) }
                             6 -> TestDriveExperiment()
                             7 -> Puzzle15()
+                            8 -> ModalExperiment { ModalMotionController(it) }
                             else -> SpotlightExperiment { SpotlightSlider(it) }
                         }
                     }

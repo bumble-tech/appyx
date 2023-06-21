@@ -38,6 +38,8 @@ include(
     ":appyx-components:experimental:cards:common",
     ":appyx-components:modal:android",
     ":appyx-components:modal:common",
+    ":appyx-components:modal:android",
+    ":appyx-components:modal:common",
     ":appyx-components:experimental:promoter:android",
     ":appyx-components:experimental:promoter:common",
     ":appyx-components:experimental:puzzle15:android",
