@@ -53,7 +53,6 @@ android {
 }
 
 dependencies {
-    implementation(project(mapOf("path" to ":appyx-components:modal:modal")))
     val composeBom = platform(libs.compose.bom)
 
     implementation(composeBom)
@@ -62,6 +61,7 @@ dependencies {
     implementation(project(":appyx-interactions:appyx-interactions"))
     implementation(project(":appyx-components:stable:spotlight:spotlight"))
     implementation(project(":appyx-components:stable:backstack:backstack"))
+    implementation(project(":appyx-components:modal:modal"))
     implementation(project(":appyx-components:experimental:cards:cards"))
     implementation(project(":appyx-components:experimental:promoter:promoter"))
 
