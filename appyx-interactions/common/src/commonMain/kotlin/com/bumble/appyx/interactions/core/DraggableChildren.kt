@@ -71,7 +71,6 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
         elementUiModels.value.forEach { elementUiModel ->
             key(elementUiModel.element.id) {
                 var transformedBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
-                var localBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
                 var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
                 val isVisible by elementUiModel.visibleState.collectAsState()
                 elementUiModel.persistentContainer()
@@ -91,25 +90,21 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                                                 interactionModel.onDrag(dragAmount, density)
                                                 true
                                             } else {
-                                                change.consume()
-                                                interactionModel.onDragEnd {
-                                                    offsetCenter = transformedBoundingBox.center - localBoundingBox.center
-                                                }
+                                                interactionModel.onDragEnd()
                                                 false
                                             }
                                         },
                                         onDragEnd = {
-                                            interactionModel.onDragEnd {
-                                                offsetCenter = transformedBoundingBox.center - localBoundingBox.center
-                                            }
+                                            interactionModel.onDragEnd()
                                         },
                                     )
                                 }
                                 .offset { -offsetCenter.round() }
                                 .then(elementUiModel.modifier)
                                 .onPlaced {
+                                    val localCenter = Offset(it.size.width.toFloat(), it.size.height.toFloat()) / 2f
                                     transformedBoundingBox = it.boundsInParent().run { inflate(maxDimension) }
-                                    localBoundingBox = Rect(0f, 0f, it.size.width.toFloat(), it.size.height.toFloat())
+                                    offsetCenter = transformedBoundingBox.center - localCenter
                                 }
                         )
                     )

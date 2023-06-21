@@ -56,7 +56,6 @@ class AnimatedProgressController<InteractionTarget : Any, ModelState>(
         completionThreshold: Float = 0.5f,
         completeGestureSpec: AnimationSpec<Float> = spring(),
         revertGestureSpec: AnimationSpec<Float> = spring(),
-        onSettled: (() -> Unit)?,
     ) {
         val currentState = model.output.value
         if (currentState is Keyframes<ModelState>) {
@@ -76,7 +75,6 @@ class AnimatedProgressController<InteractionTarget : Any, ModelState>(
                         direction = direction,
                         animate = animateSettle
                     )
-                    onSettled?.invoke()
                 }
             )
         }
