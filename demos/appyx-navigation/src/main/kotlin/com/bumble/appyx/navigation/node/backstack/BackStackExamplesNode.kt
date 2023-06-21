@@ -20,6 +20,8 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackstackFader
 import com.bumble.appyx.components.backstack.ui.parallax.BackstackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -59,6 +61,9 @@ class BackStackExamplesNode(
 
         @Parcelize
         object BackstackParallax : InteractionTarget()
+
+        @Parcelize
+        object BackStack3D : InteractionTarget()
     }
 
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
@@ -84,6 +89,12 @@ class BackStackExamplesNode(
             ).also {
                 padding.value = 0
             }
+            is InteractionTarget.BackStack3D -> BackStackNode(
+                buildContext = buildContext,
+                motionController = { BackStack3D(it) },
+                gestureFactory = { BackStack3D.Gestures(it) },
+                gestureSettleConfig = GestureSettleConfig(completionThreshold = 0.2f),
+            )
         }
 
     @Composable
@@ -108,6 +119,9 @@ class BackStackExamplesNode(
                 }
                 TextButton(text = "BackStack parallax") {
                     backStack.push(InteractionTarget.BackstackParallax)
+                }
+                TextButton(text = "BackStack 3D") {
+                    backStack.push(InteractionTarget.BackStack3D)
                 }
             }
         }
