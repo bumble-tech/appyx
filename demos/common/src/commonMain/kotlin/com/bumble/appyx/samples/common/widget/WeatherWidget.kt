@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.widgets
+package com.bumble.appyx.samples.common.widget
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -11,8 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -21,6 +21,7 @@ fun WeatherWidget(
     currentTemperature: Float,
     lowTemperature: Float,
     highTemperature: Float,
+    painter: Painter,
     modifier: Modifier = Modifier,
 ) {
     Widget(
@@ -28,7 +29,7 @@ fun WeatherWidget(
             .fillMaxWidth()
     ) {
         Image(
-            painter = painterResource("sky.png"),
+            painter = painter,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()

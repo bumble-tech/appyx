@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
@@ -24,6 +25,9 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.sample.Children
+import com.bumble.appyx.samples.common.widget.CalendarWidget
+import com.bumble.appyx.samples.common.widget.TimerWidget
+import com.bumble.appyx.samples.common.widget.WeatherWidget
 import kotlinx.coroutines.flow.Flow
 
 enum class WidgetsType {
@@ -135,6 +139,7 @@ private fun WidgetTypeElement(
                 currentTemperature = 22.3f,
                 lowTemperature = 16.7f,
                 highTemperature = 31.4f,
+                painterResource("sky.png"),
                 modifier = Modifier
                     .then(elementUiModel.modifier)
                     .then(modifier)

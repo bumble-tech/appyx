@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.widgets
+package com.bumble.appyx.samples.common.widget
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
