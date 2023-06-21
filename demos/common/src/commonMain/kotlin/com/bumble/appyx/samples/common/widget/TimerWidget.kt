@@ -79,5 +79,12 @@ fun TimerWidget(
     }
 }
 
-private fun Long.formatted() =
-    String.format("%02d", this)
+// JS doesn't have support for String.format
+private fun Long.formatted(): String =
+    toString().run {
+        if (length < 2) {
+            "0$this"
+        } else {
+            this
+        }
+    }
