@@ -60,7 +60,7 @@ class AnimatedProgressController<InteractionTarget : Any, ModelState>(
         val currentState = model.output.value
         if (currentState is Keyframes<ModelState>) {
             val currentProgress = currentState.progress
-            val direction : TransitionModel.SettleDirection = if (currentProgress % 1 < completionThreshold) REVERT else COMPLETE
+            val direction: TransitionModel.SettleDirection = if (currentProgress % 1 < completionThreshold) REVERT else COMPLETE
             val targetValue = if (direction == REVERT) floor(currentProgress).toInt() else ceil(currentProgress).toInt()
             val animationSpec = if (direction == REVERT) revertGestureSpec else completeGestureSpec
 

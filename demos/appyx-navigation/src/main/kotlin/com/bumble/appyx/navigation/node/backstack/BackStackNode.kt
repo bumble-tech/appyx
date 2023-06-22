@@ -21,12 +21,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.BackStackModel.State
 import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.operation.replace
 import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -35,23 +39,31 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
+import gestureModifier
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 
 
 class BackStackNode(
     buildContext: BuildContext,
-    motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>,
+    motionController: (UiContext) -> MotionController<InteractionTarget, State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
+    gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
+    private val isMaxSize: Boolean = false,
     private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(InteractionTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = motionController
+        motionController = motionController,
+        gestureFactory = gestureFactory,
+        gestureSettleConfig = gestureSettleConfig,
     )
 ) : ParentNode<BackStackNode.InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    interactionModel = backStack,
 ) {
     sealed class InteractionTarget : Parcelable {
         @Parcelize
@@ -66,9 +78,16 @@ class BackStackNode(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(5))
+                        .then(
+                            if (isMaxSize) {
+                                Modifier
+                            } else {
+                                Modifier.clip(RoundedCornerShape(5))
+                            }
+                        )
                         .background(backgroundColor)
                         .padding(24.dp)
+                        .gestureModifier(backStack, interactionTarget.index.toString())
                 ) {
                     Text(
                         text = interactionTarget.index.toString(),
@@ -88,12 +107,19 @@ class BackStackNode(
                 .background(appyx_dark)
         ) {
             Children(
+                clipToBounds = true,
                 interactionModel = backStack,
                 modifier = Modifier
                     .weight(0.9f)
                     .fillMaxSize()
                     .background(appyx_dark)
-                    .padding(16.dp),
+                    .then(
+                        if (isMaxSize) {
+                            Modifier.padding(bottom = 16.dp)
+                        } else {
+                            Modifier.padding(16.dp)
+                        }
+                    ),
             )
             Row(
                 modifier = Modifier

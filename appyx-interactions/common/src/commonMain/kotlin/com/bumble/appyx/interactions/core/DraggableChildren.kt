@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -13,12 +14,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.round
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
@@ -26,6 +31,8 @@ import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+
+private val defaultExtraTouch = 48f.dp
 
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
@@ -35,11 +42,13 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = defaultValidator,
+    gestureExtraTouchArea: Dp = defaultExtraTouch,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit,
 ) {
     val density = LocalDensity.current
     val elementUiModels = interactionModel.uiModels.collectAsState(listOf())
     val coroutineScope = rememberCoroutineScope()
+    val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
@@ -63,42 +72,48 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                     clipToBounds = clipToBounds
                 )
             }
+            .fillMaxSize()
     ) {
-        var elementBoundingBox by remember { mutableStateOf(Rect.Zero) }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(interactionModel) {
-                    detectDragGesturesOrCancellation(
-                        onDragStart = { position -> interactionModel.onStartDrag(position) },
-                        onDrag = { change, dragAmount ->
-                            if (gestureValidator.isGestureValid(change.position, elementBoundingBox)) {
-                                change.consume()
-                                interactionModel.onDrag(dragAmount, density)
-                                true
-                            } else {
-                                change.consume()
-                                interactionModel.onDragEnd()
-                                false
-                            }
-                        },
-                        onDragEnd = { interactionModel.onDragEnd() },
-                    )
-                }
-        ) {
-            elementUiModels.value.forEach { elementUiModel ->
-                key(elementUiModel.element.id) {
-                    elementUiModel.animationContainer()
-                    val isVisible by elementUiModel.visibleState.collectAsState()
-                    if (isVisible) {
-                        element.invoke(
-                            elementUiModel.copy(
-                                modifier = elementUiModel.modifier.onPlaced {
-                                    elementBoundingBox = it.boundsInParent()
-                                        .run { inflate(maxDimension) }
+        elementUiModels.value.forEach { elementUiModel ->
+            key(elementUiModel.element.id) {
+                var transformedBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
+                var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
+                val isVisible by elementUiModel.visibleState.collectAsState()
+                elementUiModel.persistentContainer()
+                if (isVisible) {
+                    element.invoke(
+                        elementUiModel.copy(
+                            modifier = Modifier
+                                .offset { offsetCenter.round() }
+                                .pointerInput(interactionModel) {
+                                    detectDragGesturesOrCancellation(
+                                        onDragStart = { position ->
+                                            interactionModel.onStartDrag(position)
+                                        },
+                                        onDrag = { change, dragAmount ->
+                                            if (gestureValidator.isGestureValid(change.position, transformedBoundingBox.translate(-offsetCenter))) {
+                                                change.consume()
+                                                interactionModel.onDrag(dragAmount, density)
+                                                true
+                                            } else {
+                                                interactionModel.onDragEnd()
+                                                false
+                                            }
+                                        },
+                                        onDragEnd = {
+                                            interactionModel.onDragEnd()
+                                        },
+                                    )
                                 }
-                            ))
-                    }
+                                .offset { -offsetCenter.round() }
+                                .then(elementUiModel.modifier)
+                                .onPlaced {
+                                    val localCenter = Offset(it.size.width.toFloat(), it.size.height.toFloat()) / 2f
+                                    transformedBoundingBox = it.boundsInParent().inflate(gestureExtraTouchAreaPx)
+                                    offsetCenter = transformedBoundingBox.center - localCenter
+                                }
+                        )
+                    )
                 }
             }
         }

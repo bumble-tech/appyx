@@ -10,46 +10,62 @@ repo_url: https://github.com/bumble-tech/appyx
 edit_uri: ""
 
 # Copyright
-copyright: Copyright &copy; 2022 - 2022 Bumble
+copyright: Copyright &copy; 2022 - 2023 Bumble
 
 # Navigation
 docs_dir: documentation
 
 nav:
-  - Overview: index.md
-  - News & updates: news.md
+  - Home: index.md
+  - Appyx Interactions:
+    - Overview: interactions/index.md
+    - Using components: interactions/usage.md
+    - Creating your own:
+      - Interaction model: interactions/interactionmodel.md
+      - Transition model: interactions/transitionmodel.md
+      - Operations: interactions/operations.md
+      - UI representation: interactions/uirepresentation.md
+      - Gestures: interactions/gestures.md
+  - Appyx Components: components/index.md
+  - Appyx Navigation: navigation/index.md
   - Releases:
-      - Downloads: releases/downloads.md
-      - Changelog: releases/changelog.md
-  - Using Appyx:
-      - Quick start guide: how-to-use-appyx/quick-start.md
-      - Codelabs: how-to-use-appyx/codelabs.md
-      - Coding challenges: how-to-use-appyx/coding-challenges.md
-      - Sample apps: how-to-use-appyx/sample-apps.md
-  - Navigation:
-      - Model-driven navigation: navigation/model-driven-navigation.md
-      - NavModel:
-          - Overview: navmodel/index.md
-          - Back stack: navmodel/backstack.md
-          - Spotlight: navmodel/spotlight.md
-          - Cards: navmodel/cards.md
-          - Tiles: navmodel/tiles.md
-          - Promoter: navmodel/promoter.md
-          - Writing your own: navmodel/custom.md
-      - Composable navigation: navigation/composable-navigation.md
-      - Implicit navigation: navigation/implicit-navigation.md
-      - Explicit navigation: navigation/explicit-navigation.md
-      - Deep linking: navigation/deep-linking.md
-  - UI:
-      - Children: ui/children-view.md
-      - Transitions: ui/transitions.md
-  - App:
-      - Structuring your app navigation: apps/structure.md
-      - Lifecycle: apps/lifecycle.md
-      - Plugins: apps/plugins.md
-      - ChildAware API: apps/childaware.md
-      - Configuration changes: apps/configuration.md
-  - FAQ: faq.md
+    - Downloads: releases/downloads.md
+    - Changelog: releases/changelog.md
+  - 1.x:
+    - Overview: 1.x/index.md
+    - News & updates: 1.x/news.md
+    - Releases:
+      - Downloads: 1.x/releases/downloads.md
+      - Changelog: 1.x/releases/changelog.md
+    - Using Appyx:
+        - Quick start guide: 1.x/how-to-use-appyx/quick-start.md
+        - Codelabs: 1.x/how-to-use-appyx/codelabs.md
+        - Coding challenges: 1.x/how-to-use-appyx/coding-challenges.md
+        - Sample apps: 1.x/how-to-use-appyx/sample-apps.md
+    - Navigation:
+        - Model-driven navigation: 1.x/navigation/model-driven-navigation.md
+        - NavModel:
+            - Overview: 1.x/navmodel/index.md
+            - Back stack: 1.x/navmodel/backstack.md
+            - Spotlight: 1.x/navmodel/spotlight.md
+            - Cards: 1.x/navmodel/cards.md
+            - Tiles: 1.x/navmodel/tiles.md
+            - Promoter: 1.x/navmodel/promoter.md
+            - Writing your own: 1.x/navmodel/custom.md
+        - Composable navigation: 1.x/navigation/composable-navigation.md
+        - Implicit navigation: 1.x/navigation/implicit-navigation.md
+        - Explicit navigation: 1.x/navigation/explicit-navigation.md
+        - Deep linking: 1.x/navigation/deep-linking.md
+    - UI:
+        - Children: 1.x/ui/children-view.md
+        - Transitions: 1.x/ui/transitions.md
+    - App:
+        - Structuring your app navigation: 1.x/apps/structure.md
+        - Lifecycle: 1.x/apps/lifecycle.md
+        - Plugins: 1.x/apps/plugins.md
+        - ChildAware API: 1.x/apps/childaware.md
+        - Configuration changes: 1.x/apps/configuration.md
+    - FAQ: 1.x/faq.md
 
 
 # theme configuration
@@ -86,6 +102,7 @@ plugins:
 # extensions
 markdown_extensions:
   - admonition
+  - pymdownx.critic
   - codehilite
   - footnotes
   - meta
@@ -97,4 +114,8 @@ markdown_extensions:
   - pymdownx.inlinehilite
   - pymdownx.magiclink
   - pymdownx.smartsymbols
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
