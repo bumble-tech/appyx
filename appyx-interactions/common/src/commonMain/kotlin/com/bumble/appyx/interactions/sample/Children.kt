@@ -37,11 +37,13 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
-        Element(colors = colors, elementUiModel = it)
+    childContent: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {},
+    childWrapper: @Composable (ElementUiModel<InteractionTarget>) -> Unit = { frameModel->
+        ChildWrapper(frameModel) {
+            childContent(frameModel)
+        }
     },
 ) {
     val density = LocalDensity.current
@@ -76,7 +78,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                     elementUiModel.persistentContainer()
                     val isVisible by elementUiModel.visibleState.collectAsState()
                     if (isVisible) {
-                        element.invoke(elementUiModel)
+                        childWrapper.invoke(elementUiModel)
                     }
                 }
             }
@@ -84,7 +86,26 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
 }
 
 @Composable
-fun Element(
+fun ChildWrapper(
+    elementUiModel: ElementUiModel<*>,
+    modifier: Modifier = Modifier.fillMaxSize(),
+    contentDescription: String? = null,
+    content: @Composable () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .then(elementUiModel.modifier)
+            .then(modifier)
+            .semantics {
+                contentDescription?.let { this.contentDescription = it }
+            }
+    ) {
+        content()
+    }
+}
+
+@Composable
+fun SampleElement(
     elementUiModel: ElementUiModel<*>,
     modifier: Modifier = Modifier.fillMaxSize(),
     colors: List<Color>,

@@ -4,6 +4,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.lerp
 
+fun lerpInt(start: Int, end: Int, progress: Float): Int =
+    (start + progress * (end - start)).toInt()
+
 fun lerpFloat(start: Float, end: Float, progress: Float): Float =
     start + progress * (end - start)
 
