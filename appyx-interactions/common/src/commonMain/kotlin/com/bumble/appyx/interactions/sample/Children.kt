@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
@@ -64,7 +63,6 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
-                        containerBoundsInRoot = it.boundsInRoot(),
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),

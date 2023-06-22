@@ -18,7 +18,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -65,7 +64,6 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
-                        containerBoundsInRoot = it.boundsInRoot(),
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
