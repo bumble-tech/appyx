@@ -45,7 +45,6 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             AppyxTheme {
-                AppyxLogger.loggingLevel = AppyxLoggingLevel.DEBUG
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = appyx_dark
@@ -66,7 +65,6 @@ class MainActivity : ComponentActivity() {
                             Button({ content = 6 }) { Text("6") }
                             Button({ content = 7 }) { Text("7") }
                         }
-                        AppyxLogger.loggingLevel = AppyxLoggingLevel.DEBUG
                         when (content) {
                             1 -> DatingCards()
                             2 -> SpotlightExperimentInVertical { SpotlightStack3D(it) }

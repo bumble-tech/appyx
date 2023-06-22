@@ -73,12 +73,6 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     private lateinit var targetUiStateResolver: TargetUiStateResolver<TargetUiState, MutableUiState>
 
     override fun onCreated() {
-        // Infer which TargetUiStateResolver should be used:
-        //  * if all viewpointDimensions are keyframe-based -> apply dimension value to guess the two TargetUiState
-        //    needed to interpolate that dimension. Also consider how should we interpolate between different
-        //    dimensions when many are used.
-        //  * if none viewpointDimensions is keyframe-based -> business as usual
-        //  * otherwise we have a mix of them -> throw exception
         targetUiStateResolver = viewpointDimensions.infer()
     }
 
@@ -101,16 +95,13 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             scope = scope,
             target = targetUiState,
             springSpec = currentSpringSpec,
-        ).also {
-            AppyxLogger.d("mutableUiState", "animateTo")
-        }
+        )
     }
 
 
     override fun mapUpdate(
         update: Update<ModelState>
     ): List<ElementUiModel<InteractionTarget>> {
-        AppyxLogger.d("BaseMotionController", "mapUpdate -> toUiTargets [${update.currentTargetState} = ${update.lastTargetState}]")
         val matchedTargetUiStates = update.currentTargetState.toUiTargets()
 
         cleanUpCacheForDestroyedElements(matchedTargetUiStates)
@@ -166,12 +157,9 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                         scope = this,
                         targetUiState = matchedTargetUiState.targetUiState,
                         springSpec = currentSpringSpec,
-                    ).also {
-                        AppyxLogger.d("mutableUiState", "animateTo")
-                    }
+                    )
                 } else {
                     mutableUiState.snapTo(matchedTargetUiState.targetUiState)
-                    AppyxLogger.d("mutableUiState", "snapTo")
                 }
             }
         }
@@ -230,7 +218,6 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         initialProgress: Float
     ): List<ElementUiModel<InteractionTarget>> {
         val (fromState, targetState) = segment.stateTransition
-        AppyxLogger.d("BaseMotionController", "mapUpdate -> toUiTargets")
         val fromTargetUiState = fromState.toUiTargets()
         val toTargetUiState = targetState.toUiTargets()
 
@@ -278,7 +265,6 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         LaunchedEffect(progress) {
             val lerpInfo = targetUiStateResolver.resolveLerpInfo(from.targetUiState, to.targetUiState, progress)
             mutableUiState.lerpTo(coroutineScope, lerpInfo.from, lerpInfo.to, lerpInfo.fraction)
-            AppyxLogger.d("mutableUiState", "lerpTo (interpolateUiState) $progress")
         }
     }
 
@@ -296,7 +282,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             when (behaviour) {
                 ViewpointBehaviour.SNAP -> {
                     viewpointDimension.snapTo(targetValue)
-//                    AppyxLogger.d(TAG, "Viewpoint snapTo (Segment): $targetValue")
+                    AppyxLogger.d(TAG, "Viewpoint snapTo (Segment): $targetValue")
                 }
 
                 ViewpointBehaviour.ANIMATE -> {
@@ -307,7 +293,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-//                            AppyxLogger.d(TAG, "Viewpoint animateTo (Segment) – ${viewpointDimension.internalValue} -> $targetValue")
+                            AppyxLogger.d(TAG, "Viewpoint animateTo (Segment) – ${viewpointDimension.internalValue} -> $targetValue")
                         }
                     }
                 }

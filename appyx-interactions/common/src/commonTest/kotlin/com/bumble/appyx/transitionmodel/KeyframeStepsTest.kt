@@ -127,6 +127,11 @@ class KeyframeStepsTest {
         val scale: Scale.Target
     )
 
+    private fun lerp(from: TargetUiState, to: TargetUiState, fraction: Float) =
+        TargetUiState(
+            scale = from.scale.lerpTo(to.scale, fraction),
+        )
+
     private class MutableUiState(
         uiContext: UiContext,
         val scale: Scale,

@@ -262,20 +262,6 @@ class MutableUiStateProcessor(
             .addCode(generateToMutableStateCode(params))
             .build()
 
-    private fun Resolver.generateLerpTargetStateFunction(classDeclaration: KSClassDeclaration, classTypeName: TypeName, params: List<ParameterSpec>) =
-        TypeSpec
-            .companionObjectBuilder(MUTABLE_UI_STATE)
-            .addFunction(
-                FunSpec.builder(FUNCTION_LERP_TARGET_STATE)
-                    .receiver(classTypeName)
-                    .returns(ClassName(classDeclaration.packageName.asString(), MUTABLE_UI_STATE))
-                    .addParameter(PARAM_UI_CONTEXT, getTypeName(UiContext::class))
-                    .addCode(generateToMutableStateCode(params))
-                    .build()
-            )
-            .build()
-
-
     private fun generateToMutableStateCode(params: List<ParameterSpec>) =
         with(CodeBlock.builder()) {
             add("return $MUTABLE_UI_STATE(\n")
@@ -322,9 +308,6 @@ class MutableUiStateProcessor(
         const val FUNCTION_SNAP_TO = "snapTo"
         const val FUNCTION_LERP_TO = "lerpTo"
         const val FUNCTION_TO_MUTABLE_STATE = "toMutableState"
-        const val FUNCTION_LERP_TARGET_STATE = "lerpTargetState"
-
-
     }
 
 }

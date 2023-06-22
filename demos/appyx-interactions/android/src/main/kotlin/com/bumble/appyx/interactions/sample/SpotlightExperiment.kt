@@ -54,20 +54,20 @@ fun SpotlightExperiment(
         Target.Child5,
         Target.Child6,
         Target.Child7,
-//        Target.Child1,
-//        Target.Child2,
-//        Target.Child3,
-//        Target.Child4,
-//        Target.Child5,
-//        Target.Child6,
-//        Target.Child7,
-//        Target.Child1,
-//        Target.Child2,
-//        Target.Child3,
-//        Target.Child4,
-//        Target.Child5,
-//        Target.Child6,
-//        Target.Child7,
+        Target.Child1,
+        Target.Child2,
+        Target.Child3,
+        Target.Child4,
+        Target.Child5,
+        Target.Child6,
+        Target.Child7,
+        Target.Child1,
+        Target.Child2,
+        Target.Child3,
+        Target.Child4,
+        Target.Child5,
+        Target.Child6,
+        Target.Child7,
     )
     val spotlight = Spotlight(
         model = SpotlightModel(
@@ -104,7 +104,6 @@ fun SpotlightExperiment(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Button(onClick = {
-                AppyxLogger.d("SpotlightExperiment", "New")
                 spotlight.updateElements(
                     items,
                     animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
@@ -112,28 +111,16 @@ fun SpotlightExperiment(
             }) {
                 Text("New")
             }
-            Button(onClick = {
-                AppyxLogger.d("SpotlightExperiment", "First")
-                spotlight.first()
-            }) {
+            Button(onClick = { spotlight.first() }) {
                 Text("First")
             }
-            Button(onClick = {
-                AppyxLogger.d("SpotlightExperiment", "Prev")
-                spotlight.previous()
-            }) {
+            Button(onClick = { spotlight.previous() }) {
                 Text("Prev")
             }
-            Button(onClick = {
-                AppyxLogger.d("SpotlightExperiment", "Next")
-                spotlight.next()
-            }) {
+            Button(onClick = { spotlight.next() }) {
                 Text("Next")
             }
-            Button(onClick = {
-                AppyxLogger.d("SpotlightExperiment", "Last")
-                spotlight.last()
-            }) {
+            Button(onClick = { spotlight.last() }) {
                 Text("Last")
             }
         }

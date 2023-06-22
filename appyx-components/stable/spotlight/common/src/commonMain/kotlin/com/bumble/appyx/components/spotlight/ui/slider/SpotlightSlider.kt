@@ -28,7 +28,6 @@ import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.transitionmodel.FieldOfStateType
 import com.bumble.appyx.transitionmodel.mapTo
 
-
 class SpotlightSlider<InteractionTarget : Any>(
     uiContext: UiContext,
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL

@@ -14,9 +14,4 @@ class TargetUiState(
     val scale: Scale.Target,
     val alpha: Alpha.Target,
     val zIndex: ZIndex.Target,
-) {
-    override fun toString(): String =
-        StringBuilder().apply {
-            append("[effectiveIndex: ${effectiveIndex.value}, position: ${position.value}, scale: ${scale.value}, alpha: ${alpha.value}, zIndex: ${zIndex.value}]")
-        }.toString()
-}
+)
