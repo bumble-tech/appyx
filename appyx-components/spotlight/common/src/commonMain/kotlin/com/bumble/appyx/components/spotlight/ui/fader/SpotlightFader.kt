@@ -1,16 +1,11 @@
 package com.bumble.appyx.components.spotlight.ui.fader
 
 import DefaultAnimationSpec
-import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.animation.core.spring
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.ui.unit.Dp
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
-import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState

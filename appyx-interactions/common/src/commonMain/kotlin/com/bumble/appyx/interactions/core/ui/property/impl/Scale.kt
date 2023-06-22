@@ -32,7 +32,17 @@ class Scale(
     class Target(
         val value: Float,
         val easing: Easing? = null,
-    ) : MotionProperty.Target
+    ) : MotionProperty.Target<Target> {
+        override fun lerpTo(end: Target, fraction: Float): Target =
+            Target(
+                value = lerpFloat(
+                    start = value,
+                    end = end.value,
+                    progress = fraction,
+                ),
+                easing = end.easing,
+            )
+    }
 
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement

@@ -23,7 +23,7 @@ class RotationY(
     target: Target,
     visibilityThreshold: Float = 1f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
-    private val origin: TransformOrigin = TransformOrigin.Center,
+    private val origin: TransformOrigin = target.origin,
 ) : MotionProperty<Float, AnimationVector1D>(
     uiContext = uiContext,
     animatable = Animatable(target.value, Float.VectorConverter),
@@ -36,7 +36,17 @@ class RotationY(
         val value: Float,
         val origin: TransformOrigin = TransformOrigin.Center,
         val easing: Easing? = null,
-    ) : MotionProperty.Target
+    ) : MotionProperty.Target<Target> {
+        override fun lerpTo(end: Target, fraction: Float): Target =
+            Target(
+                value = lerpFloat(
+                    start = value,
+                    end = end.value,
+                    progress = fraction,
+                ),
+                easing = end.easing,
+            )
+    }
 
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement

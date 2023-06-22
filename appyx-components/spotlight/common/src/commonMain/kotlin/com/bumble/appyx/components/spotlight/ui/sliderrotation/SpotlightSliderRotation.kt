@@ -17,6 +17,8 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.ViewpointType
+import com.bumble.appyx.transitionmodel.mapTo
 
 class SpotlightSliderRotation<InteractionTarget : Any>(
     uiContext: UiContext,
@@ -27,9 +29,9 @@ class SpotlightSliderRotation<InteractionTarget : Any>(
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
     private val scrollX = GenericFloatProperty(uiContext, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
-    override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
+    override val viewpointDimensions: List<ViewpointType<State<InteractionTarget>, Nothing?>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollX
+            { state: State<InteractionTarget> -> state.activeIndex } mapTo scrollX
         )
 
     private val created: TargetUiState = TargetUiState(

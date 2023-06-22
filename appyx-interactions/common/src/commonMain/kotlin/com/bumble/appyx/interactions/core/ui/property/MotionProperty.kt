@@ -45,7 +45,9 @@ abstract class MotionProperty<T, V : AnimationVector>(
     private val displacement: StateFlow<T>
 ) {
 
-    interface Target
+    interface Target<Target> {
+        fun lerpTo(end: Target, fraction: Float): Target
+    }
 
     private var lastVelocity = animatable.velocity
 
@@ -63,7 +65,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
      */
     open val visibilityMapper: ((T) -> Boolean) = { true }
 
-    private val internalValueFlow = MutableStateFlow(animatable.value)
+    private val internalValueFlow = MutableStateFlow(internalValue)
 
 
     /**

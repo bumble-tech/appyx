@@ -5,10 +5,10 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.unit.Dp
 import com.bumble.appyx.components.demos.cards.ui.MutableUiState
 import com.bumble.appyx.components.demos.cards.ui.TargetUiState
+import com.bumble.appyx.components.demos.promoter.PromoterModel
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
-import com.bumble.appyx.components.demos.promoter.PromoterModel
 
 @Suppress("TransitionPropertiesLabel")
 class PromoterMotionController<InteractionTarget : Any>(

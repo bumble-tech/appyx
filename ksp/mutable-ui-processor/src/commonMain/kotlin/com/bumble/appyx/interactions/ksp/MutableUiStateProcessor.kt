@@ -101,18 +101,17 @@ class MutableUiStateProcessor(
             .addFileComment(GENERATED_COMMENT)
             .addImport(IMPORT_COROUTINES, IMPORT_ASYNC, IMPORT_AWAIT_ALL, IMPORT_LAUNCH)
             .addImport(IMPORT_COMPOSE_ANIMATION_CORE, IMPORT_SPRING_SPEC, IMPORT_SPRING)
-            .addType(generateMutableUiStateType(classDeclaration, classTypeName, animationMode, params))
+            .addType(generateMutableUiStateType(classTypeName, animationMode, params))
             .addFunction(generateToMutableStateFunction(classDeclaration, classTypeName, params))
             .build()
 
     private fun Resolver.generateMutableUiStateType(
-        classDeclaration: KSClassDeclaration,
         classTypeName: TypeName,
         animationMode: MutableUiStateSpecs.AnimationMode,
         params: List<ParameterSpec>
     ): TypeSpec =
         TypeSpec.classBuilder(MUTABLE_UI_STATE)
-            .superclass(generateSuperclass(classDeclaration, classTypeName))
+            .superclass(generateSuperclass(classTypeName))
             .primaryConstructor(generatePrimaryConstructor(params))
             .addSuperclassConstructorParameter(generateSuperClassConstructorParameter(params))
             .addProperties(params.toProperties())
@@ -122,13 +121,10 @@ class MutableUiStateProcessor(
             .addFunction(generateLerpToFunction(classTypeName, params))
             .build()
 
-    private fun Resolver.generateSuperclass(classDeclaration: KSClassDeclaration, classTypeName: TypeName) =
+    private fun Resolver.generateSuperclass(classTypeName: TypeName) =
         getType(BaseMutableUiState::class)
             .toClassName()
-            .parameterizedBy(
-                ClassName(classDeclaration.packageName.asString(), MUTABLE_UI_STATE),
-                classTypeName,
-            )
+            .parameterizedBy(classTypeName)
 
     private fun Resolver.generatePrimaryConstructor(params: List<ParameterSpec>): FunSpec =
         FunSpec.constructorBuilder()
@@ -266,6 +262,20 @@ class MutableUiStateProcessor(
             .addCode(generateToMutableStateCode(params))
             .build()
 
+    private fun Resolver.generateLerpTargetStateFunction(classDeclaration: KSClassDeclaration, classTypeName: TypeName, params: List<ParameterSpec>) =
+        TypeSpec
+            .companionObjectBuilder(MUTABLE_UI_STATE)
+            .addFunction(
+                FunSpec.builder(FUNCTION_LERP_TARGET_STATE)
+                    .receiver(classTypeName)
+                    .returns(ClassName(classDeclaration.packageName.asString(), MUTABLE_UI_STATE))
+                    .addParameter(PARAM_UI_CONTEXT, getTypeName(UiContext::class))
+                    .addCode(generateToMutableStateCode(params))
+                    .build()
+            )
+            .build()
+
+
     private fun generateToMutableStateCode(params: List<ParameterSpec>) =
         with(CodeBlock.builder()) {
             add("return $MUTABLE_UI_STATE(\n")
@@ -312,6 +322,9 @@ class MutableUiStateProcessor(
         const val FUNCTION_SNAP_TO = "snapTo"
         const val FUNCTION_LERP_TO = "lerpTo"
         const val FUNCTION_TO_MUTABLE_STATE = "toMutableState"
+        const val FUNCTION_LERP_TARGET_STATE = "lerpTargetState"
+
+
     }
 
 }

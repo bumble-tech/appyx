@@ -17,6 +17,8 @@ interface MotionController<InteractionTarget, ModelState> {
 
     val finishedAnimations: Flow<Element<InteractionTarget>>
 
+    fun onCreated()
+
     fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         // TODO remove default once all implementations have been migrated to BaseMotionController
     }

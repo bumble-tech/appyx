@@ -15,6 +15,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Target
 import com.bumble.appyx.interactions.core.ui.toPx
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,12 +31,22 @@ class Position(
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
     displacement = displacement
-), Interpolatable<Position.Target> {
+), Interpolatable<Target> {
 
     class Target(
         val value: DpOffset,
         val easing: Easing? = null,
-    ) : MotionProperty.Target
+    ) : MotionProperty.Target<Target> {
+        override fun lerpTo(end: Target, fraction: Float): Target =
+            Target(
+                value = lerpDpOffset(
+                    start = value,
+                    end = end.value,
+                    progress = fraction,
+                ),
+                easing = end.easing,
+            )
+    }
 
     override fun calculateRenderValue(base: DpOffset, displacement: DpOffset): DpOffset =
         base - displacement
@@ -51,7 +62,7 @@ class Position(
         val visibleOffsetRangeY = calculateVisibleOffsetRangeY(bounds, clipToBounds)
 
         val isVisible = itemOffsetRangeX.hasIntersection(visibleOffsetRangeX)
-            && itemOffsetRangeY.hasIntersection(visibleOffsetRangeY)
+                && itemOffsetRangeY.hasIntersection(visibleOffsetRangeY)
         isVisible
     }
 
@@ -112,5 +123,4 @@ class Position(
             )
         )
     }
-
 }

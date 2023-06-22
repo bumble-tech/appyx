@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 
-abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
+abstract class BaseMutableUiState<TargetUiState>(
     val uiContext: UiContext,
-    val motionProperties: List<MotionProperty<*, *>>
+    private val motionProperties: List<MotionProperty<*, *>>
 ) {
     abstract val modifier: Modifier
 

@@ -25,6 +25,9 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.FieldOfStateType
+import com.bumble.appyx.transitionmodel.mapTo
+
 
 class SpotlightSlider<InteractionTarget : Any>(
     uiContext: UiContext,
@@ -38,9 +41,9 @@ class SpotlightSlider<InteractionTarget : Any>(
         uiContext,
         GenericFloatProperty.Target(0f)
     ) // TODO sync this with the model's initial value rather than assuming 0
-    override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
+    override val viewpointDimensions: List<Triple<FieldOfStateType<State<InteractionTarget>>, GenericFloatProperty, Nothing?>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollX
+            { state: State<InteractionTarget> -> state.activeIndex } mapTo scrollX
         )
 
     private val created: TargetUiState = TargetUiState(

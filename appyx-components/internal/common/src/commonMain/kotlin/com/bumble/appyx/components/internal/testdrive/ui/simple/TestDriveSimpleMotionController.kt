@@ -15,14 +15,14 @@ import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNLEFT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNRIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.LEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.RIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UP
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPLEFT
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNRIGHT
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNLEFT
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.LEFT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
@@ -109,18 +109,21 @@ class TestDriveSimpleMotionController<InteractionTarget : Any>(
                     DOWN -> Gesture(MoveTo(D), Offset(0f, height))
                     else -> Gesture.Noop()
                 }
+
                 B -> when (direction) {
                     DOWN -> Gesture(MoveTo(C), Offset(0f, height))
                     DOWNLEFT -> Gesture(MoveTo(D), Offset(-width, height))
                     LEFT -> Gesture(MoveTo(A), Offset(-width, 0f))
                     else -> Gesture.Noop()
                 }
+
                 C -> when (direction) {
                     LEFT -> Gesture(MoveTo(D), Offset(-width, 0f))
                     UPLEFT -> Gesture(MoveTo(A), Offset(-width, -height))
                     UP -> Gesture(MoveTo(B), Offset(0f, -height))
                     else -> Gesture.Noop()
                 }
+
                 D -> when (direction) {
                     UP -> Gesture(MoveTo(A), Offset(0f, -height))
                     UPRIGHT -> Gesture(MoveTo(B), Offset(width, -height))
