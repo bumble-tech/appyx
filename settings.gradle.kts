@@ -51,6 +51,7 @@ include(
     ":demos:mkdocs:appyx-interactions:interactions:sample1:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample2:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample3:web",
+    ":demos:mkdocs:appyx-components:backstack:fader:web",
     ":ksp:mutable-ui-processor",
     ":utils:customisations",
     ":utils:interop-ribs",
