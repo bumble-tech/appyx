@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.core
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -12,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
@@ -20,6 +22,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextAlign.Companion
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
@@ -42,7 +46,17 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
-    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit,
+    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = { elementUiModel ->
+        Box(
+            modifier = Modifier.fillMaxSize()
+                .then(elementUiModel.modifier)
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.Center),
+                text = "Customise this composable",
+            )
+        }
+                                                                       },
 ) {
     val density = LocalDensity.current
     val elementUiModels by interactionModel.uiModels.collectAsState()

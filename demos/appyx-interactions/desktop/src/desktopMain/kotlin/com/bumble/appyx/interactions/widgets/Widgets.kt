@@ -21,6 +21,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.interactions.Events
+import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -95,7 +96,7 @@ private fun WidgetsUi(
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
 ) {
-    Children(
+    DraggableChildren(
         clipToBounds = false,
         interactionModel = spotlight,
         modifier = modifier
@@ -111,17 +112,6 @@ private fun WidgetsUi(
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(240.dp)
-                    .pointerInput(elementUiModel.element.id) {
-                        detectDragGestures(
-                            onDrag = { change, dragAmount ->
-                                change.consume()
-                                spotlight.onDrag(dragAmount, this)
-                            },
-                            onDragEnd = {
-                                spotlight.onDragEnd()
-                            }
-                        )
-                    }
             )
         }
     )
