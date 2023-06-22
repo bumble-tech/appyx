@@ -40,5 +40,8 @@ compose.desktop {
             packageName = "AppyxDesktop"
             packageVersion = properties["library.version"].toString().split("-")[0]
         }
+        buildTypes.release.proguard {
+            configurationFiles.from(project.file("proguard-rules.pro"))
+        }
     }
 }
