@@ -117,18 +117,6 @@ fun ModelUi(
                         shape = RoundedCornerShape(8)
                     )
                     .then(elementUiModel.modifier)
-//                .pointerInput(elementUiModel.element.id) {
-//                    detectDragGestures(
-//                        onDragStart = { position -> backStack.onStartDrag(position) },
-//                        onDrag = { change, dragAmount ->
-//                            change.consume()
-//                            backStack.onDrag(dragAmount, this)
-//                        },
-//                        onDragEnd = {
-//                            backStack.onDragEnd()
-//                        }
-//                    )
-//                },
             ) {
                 Text(
                     modifier = Modifier.align(Alignment.Center),
