@@ -21,6 +21,8 @@ The back stack also supports different back press strategies (see further down b
 
 ### Fader
 
+Class: `BackStackFader`
+
 {{
     compose_mpp_sample(
         project_output_directory="demos/mkdocs/appyx-components/backstack/fader/web/build/distributions",

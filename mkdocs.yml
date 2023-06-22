@@ -29,6 +29,7 @@ nav:
   - Appyx Components:
     - Overview: components/index.md
     - Back stack: components/backstack.md
+    - Spotlight: components/spotlight.md
   - Appyx Navigation: navigation/index.md
   - Releases:
     - Downloads: releases/downloads.md

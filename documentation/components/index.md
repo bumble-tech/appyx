@@ -26,6 +26,12 @@ Check [its own page for more details](backstack.md).
     )
 }}
 
+### Spotlight
+
+A view pager-like component, with multiple visualisations.
+
+Check [its own page for more details](spotlight.md).
+
 
 ## Experimental
 
