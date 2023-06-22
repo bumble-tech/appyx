@@ -90,11 +90,6 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
         block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
     ) {
 
-        val framesFlow = remember {
-            this@ChildrenTransitionScope.interactionModel.uiModels
-        }
-
-        val visibleFrames = framesFlow.collectAsState(initial = emptyList())
         val saveableStateHolder = rememberSaveableStateHolder()
 
         LaunchedEffect(this@ChildrenTransitionScope.interactionModel) {
@@ -107,7 +102,9 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
                 }
         }
 
-        visibleFrames.value
+        val uiModels by this@ChildrenTransitionScope.interactionModel.uiModels.collectAsState()
+
+        uiModels
             .forEach { uiModel ->
                 key(uiModel.element.id) {
                     uiModel.persistentContainer()

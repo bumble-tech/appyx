@@ -45,7 +45,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     },
 ) {
     val density = LocalDensity.current
-    val elementUiModels = interactionModel.uiModels.collectAsState(listOf())
+    val elementUiModels by interactionModel.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
@@ -70,15 +70,16 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 )
             }
     ) {
-        elementUiModels.value.forEach { elementUiModel ->
-            key(elementUiModel.element.id) {
-                elementUiModel.persistentContainer()
-                val isVisible by elementUiModel.visibleState.collectAsState()
-                if (isVisible) {
-                    element.invoke(elementUiModel)
+        elementUiModels
+            .forEach { elementUiModel ->
+                key(elementUiModel.element.id) {
+                    elementUiModel.persistentContainer()
+                    val isVisible by elementUiModel.visibleState.collectAsState()
+                    if (isVisible) {
+                        element.invoke(elementUiModel)
+                    }
                 }
             }
-        }
     }
 }
 
