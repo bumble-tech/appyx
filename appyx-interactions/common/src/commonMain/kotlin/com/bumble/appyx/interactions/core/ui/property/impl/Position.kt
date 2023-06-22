@@ -10,13 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Position.Target
-import com.bumble.appyx.interactions.core.ui.toPx
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -50,60 +48,6 @@ class Position(
 
     override fun calculateRenderValue(base: DpOffset, displacement: DpOffset): DpOffset =
         base - displacement
-
-    override val visibilityMapper: (DpOffset) -> Boolean = { displacedValue ->
-        val bounds = uiContext.transitionBounds
-        val clipToBounds = uiContext.clipToBounds
-
-        val itemOffsetRangeX = calculateItemOffsetRangeX(displacedValue, bounds)
-        val itemOffsetRangeY = calculateItemOffsetRangeY(displacedValue, bounds)
-
-        val visibleOffsetRangeX = calculateVisibleOffsetRangeX(bounds, clipToBounds)
-        val visibleOffsetRangeY = calculateVisibleOffsetRangeY(bounds, clipToBounds)
-
-        val isVisible = itemOffsetRangeX.hasIntersection(visibleOffsetRangeX)
-                && itemOffsetRangeY.hasIntersection(visibleOffsetRangeY)
-        isVisible
-    }
-
-    private fun calculateItemOffsetRangeX(
-        displacedValue: DpOffset,
-        bounds: TransitionBounds
-    ): ClosedRange<Int> {
-        val displacedValueXPx = displacedValue.x.toPx(bounds.density)
-        return (displacedValueXPx..(displacedValueXPx + bounds.widthPx))
-    }
-
-    private fun calculateItemOffsetRangeY(
-        displacedValue: DpOffset,
-        bounds: TransitionBounds
-    ): ClosedRange<Int> {
-        val displacedValueYPx = displacedValue.y.toPx(bounds.density)
-        return (displacedValueYPx..(displacedValueYPx + bounds.heightPx))
-    }
-
-    private fun calculateVisibleOffsetRangeX(bounds: TransitionBounds, clipToBounds: Boolean) =
-        if (clipToBounds) {
-            (0)..(bounds.widthPx)
-        } else {
-            (-bounds.containerOffsetXPx)..(bounds.screenWidthPx - bounds.containerOffsetXPx)
-        }
-
-    private fun calculateVisibleOffsetRangeY(bounds: TransitionBounds, clipToBounds: Boolean) =
-        if (clipToBounds) {
-            (0)..(bounds.heightPx)
-        } else {
-            (-bounds.containerOffsetYPx)..(bounds.screenHeightPx - bounds.containerOffsetYPx)
-        }
-
-
-    // If one range ends where another starts we consider them as non-intersected
-    private fun <T : Comparable<T>> ClosedRange<T>.hasIntersection(another: ClosedRange<T>): Boolean =
-        when {
-            isEmpty() || another.isEmpty() -> false
-            endInclusive <= another.start || start >= another.endInclusive -> false
-            else -> true
-        }
 
     override val modifier: Modifier
         get() = Modifier.composed {

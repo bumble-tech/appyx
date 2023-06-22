@@ -12,6 +12,7 @@ import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha.Target
+import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -43,12 +44,13 @@ class Alpha(
             )
     }
 
+    override val isVisibleFlow: StateFlow<Boolean> =
+        renderValueFlow.mapState(uiContext.coroutineScope) {
+            it > 0f
+        }
+
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
-
-    override val visibilityMapper: ((Float) -> Boolean) = { alpha ->
-        alpha > 0.0f
-    }
 
     override val modifier: Modifier
         get() = Modifier.composed {

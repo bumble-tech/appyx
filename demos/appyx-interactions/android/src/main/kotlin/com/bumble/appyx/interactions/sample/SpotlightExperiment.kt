@@ -31,7 +31,7 @@ import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.android.Children
+import com.bumble.appyx.interactions.sample.android.SampleChildren
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -146,7 +146,7 @@ fun <InteractionTarget : Any> SpotlightUi(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
-    Children(
+    SampleChildren(
         clipToBounds = false,
         interactionModel = spotlight,
         modifier = modifier

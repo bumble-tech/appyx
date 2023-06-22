@@ -22,8 +22,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.components.demos.cards.DatingCards
-import com.bumble.appyx.components.demos.promoter.PromoterExperiment
+import com.bumble.appyx.components.experimental.cards.android.DatingCards
+import com.bumble.appyx.components.experimental.puzzle15.android.Puzzle15
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
 import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
@@ -74,7 +74,7 @@ class MainActivity : ComponentActivity() {
                             4 -> SpotlightExperiment { SpotlightSliderRotation(it) }
                             5 -> SpotlightExperiment { SpotlightFader(it) }
                             6 -> TestDriveExperiment()
-                            7 -> PromoterExperiment()
+                            7 -> Puzzle15()
                             else -> SpotlightExperiment { SpotlightSlider(it) }
                         }
                     }
