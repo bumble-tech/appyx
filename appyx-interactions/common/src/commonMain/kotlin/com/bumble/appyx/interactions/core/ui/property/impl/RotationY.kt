@@ -23,7 +23,7 @@ class RotationY(
     target: Target,
     visibilityThreshold: Float = 1f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
-    private val origin: TransformOrigin = TransformOrigin.Center,
+    private val origin: TransformOrigin = target.origin,
 ) : MotionProperty<Float, AnimationVector1D>(
     uiContext = uiContext,
     animatable = Animatable(target.value, Float.VectorConverter),

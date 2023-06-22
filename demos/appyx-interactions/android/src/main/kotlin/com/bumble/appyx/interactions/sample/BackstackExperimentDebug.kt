@@ -18,7 +18,7 @@ import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.ui.fader.BackstackFader
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.sample.android.Children
+import com.bumble.appyx.interactions.sample.android.SampleChildren
 import com.bumble.appyx.interactions.theme.appyx_dark
 
 
@@ -62,7 +62,7 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
             Text("POP")
         }
 
-        Children(
+        SampleChildren(
             modifier = Modifier
                 .padding(
                     horizontal = 64.dp,

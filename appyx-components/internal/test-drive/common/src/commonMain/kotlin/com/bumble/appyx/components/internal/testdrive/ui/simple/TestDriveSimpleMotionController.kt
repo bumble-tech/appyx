@@ -57,28 +57,32 @@ class TestDriveSimpleMotionController<InteractionTarget : Any>(
 
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
-                A -> a
-                B -> b
-                C -> c
-                D -> d
+                A -> uiStateA
+                B -> uiStateB
+                C -> uiStateC
+                D -> uiStateD
             }
 
-        private val a = TargetUiState(
+        // Top-left corner, red
+        private val uiStateA = TargetUiState(
             position = Position.Target(offsetA),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
-        private val b = TargetUiState(
+        // Top-right corner, green
+        private val uiStateB = TargetUiState(
             position = Position.Target(offsetB),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
-        private val c = TargetUiState(
+        // Bottom-right corner, yellow
+        private val uiStateC = TargetUiState(
             position = Position.Target(offsetC),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
-        private val d = TargetUiState(
+        // Bottom-left corner, blue
+        private val uiStateD = TargetUiState(
             position = Position.Target(offsetD),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )

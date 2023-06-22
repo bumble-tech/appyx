@@ -1,38 +1,58 @@
 plugins {
+    kotlin("multiplatform")
+    id("org.jetbrains.compose")
     id("com.android.library")
-    id("kotlin-android")
     id("kotlin-parcelize")
-    id("appyx-lint")
-    id("appyx-detekt")
+    id("appyx-publish-multiplatform")
+}
+
+kotlin {
+    android {
+        publishLibraryVariants("release")
+    }
+    jvm("desktop") {
+        compilations.all {
+            kotlinOptions.jvmTarget = libs.versions.jvmTarget.get()
+        }
+    }
+    js(IR) {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-demos-commons"
+        browser()
+    }
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material)
+            }
+        }
+        val commonTest by getting {
+            dependencies {
+                implementation(kotlin("test"))
+            }
+        }
+        val androidMain by getting {
+            dependencies {
+                implementation(libs.coil.compose)
+            }
+        }
+        val androidTest by getting {
+            dependencies {
+                implementation(libs.junit)
+            }
+        }
+        val desktopMain by getting
+    }
 }
 
 android {
-    namespace = "com.bumble.appyx.samples.common"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
     defaultConfig {
         minSdk = libs.versions.androidMinSdk.get().toInt()
         targetSdk = libs.versions.androidTargetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-}
-
-dependencies {
-    val composeBom = platform(libs.compose.bom)
-
-    api(composeBom)
-    api(libs.compose.ui.ui)
-
-    implementation(composeBom)
-    implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.ui.tooling)
-    implementation(libs.coil.compose)
 }
