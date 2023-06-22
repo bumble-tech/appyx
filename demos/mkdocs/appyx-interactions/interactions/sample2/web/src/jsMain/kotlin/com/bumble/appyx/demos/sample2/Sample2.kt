@@ -38,6 +38,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.sample2.InteractionTarget
 import com.bumble.appyx.demos.sample2.InteractionTarget.Child1
+import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.sample.Children
@@ -141,26 +142,17 @@ fun <InteractionTarget : Any> ModelUi(
         }
     )
 
-    Children(
+    DraggableChildren(
         interactionModel = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
         modifier = modifier.zIndex(2f)
-    ) { elementUiModel ->
+    )
+    { elementUiModel ->
         Box(
-            modifier = Modifier.size(60.dp)
+            modifier = Modifier
+                .size(60.dp)
                 .then(elementUiModel.modifier)
-                .pointerInput(elementUiModel.element.id) {
-                    detectDragGestures(
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            testDrive.onDrag(dragAmount, this)
-                        },
-                        onDragEnd = {
-                            testDrive.onDragEnd()
-                        }
-                    )
-                },
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),

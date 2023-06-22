@@ -142,27 +142,16 @@ fun <InteractionTarget : Any> ModelUi(
         }
     )
 
-    Children(
+    DraggableChildren(
         interactionModel = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
         modifier = modifier.zIndex(2f)
     ) { elementUiModel ->
         Box(
-            modifier = Modifier.size(60.dp)
+            modifier = Modifier
+                .size(60.dp)
                 .then(elementUiModel.modifier)
-                .pointerInput(elementUiModel.element.id) {
-                    detectDragGestures(
-                        onDragStart = { position -> testDrive.onStartDrag(position) },
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            testDrive.onDrag(dragAmount, this)
-                        },
-                        onDragEnd = {
-                            testDrive.onDragEnd()
-                        }
-                    )
-                },
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
