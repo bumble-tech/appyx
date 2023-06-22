@@ -80,7 +80,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
         return boundsInParent.overlaps(containerRect)
     }
 
-    // if element is invisible boundsInRoot will have width == 0 or height == 0 or both
+    // If element is invisible boundsInWindow will have width == 0 or height == 0 or both
     private fun LayoutCoordinates.isVisibleInWindow(): Boolean {
         val boundsInWindow = this.boundsInWindow()
         return (boundsInWindow.width > 0f && boundsInWindow.height > 0f)
