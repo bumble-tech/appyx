@@ -18,11 +18,11 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.RIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UP
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
+import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPLEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNRIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNLEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.LEFT
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPLEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
