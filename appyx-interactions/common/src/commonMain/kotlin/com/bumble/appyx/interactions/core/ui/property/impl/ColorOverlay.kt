@@ -37,8 +37,6 @@ class ColorOverlay(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val visibilityMapper: ((Float) -> Boolean) = { true }
-
     override val modifier: Modifier
         get() = Modifier.composed {
             val alpha = renderValueFlow.collectAsState().value

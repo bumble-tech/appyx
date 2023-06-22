@@ -2,6 +2,7 @@
   --md-primary-fg-color:        #1F2126;
   --md-primary-fg-color--light: #FFC629;
   --md-primary-fg-color--dark:  #FFC629;
+  --md-typeset-mark-color:      #FFC62933;
 }
 
 .md-header {
@@ -21,6 +22,14 @@
     opacity: 0.5;
 }
 
+.critic {
+  font-family: inherit;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 0.1em;
+}
+
 .compose_mpp_sample {
     width: fit-content;
 	-moz-border-radius: 10px;
@@ -28,4 +37,5 @@
 	border-radius: 10px;
 	overflow:hidden;
     line-height: 0;
+    margin: auto;
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.BackStackModel.State
 import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
@@ -29,6 +30,7 @@ import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.Children
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -44,9 +46,11 @@ import kotlin.random.Random
 
 class BackStackNode(
     buildContext: BuildContext,
-    motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> =
-        { GestureFactory.Noop() },
+    motionController: (UiContext) -> MotionController<InteractionTarget, State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
+    gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
     private val isMaxSize: Boolean = false,
     private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
@@ -55,6 +59,7 @@ class BackStackNode(
         ),
         motionController = motionController,
         gestureFactory = gestureFactory,
+        gestureSettleConfig = gestureSettleConfig,
     )
 ) : ParentNode<BackStackNode.InteractionTarget>(
     buildContext = buildContext,
@@ -102,6 +107,7 @@ class BackStackNode(
                 .background(appyx_dark)
         ) {
             Children(
+                clipToBounds = true,
                 interactionModel = backStack,
                 modifier = Modifier
                     .weight(0.9f)

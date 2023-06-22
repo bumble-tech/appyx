@@ -9,6 +9,7 @@ import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,9 +18,10 @@ class BackStack<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     val model: BackStackModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> = { GestureFactory.Noop() },
-    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> = PopBackstackStrategy(scope),
     animationSpec: AnimationSpec<Float> = spring(),
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> = { GestureFactory.Noop() },
+    gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
+    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> = PopBackstackStrategy(scope),
     disableAnimations: Boolean = false,
     isDebug: Boolean = false
 ) : BaseInteractionModel<InteractionTarget, BackStackModel.State<InteractionTarget>>(
@@ -27,6 +29,7 @@ class BackStack<InteractionTarget : Any>(
     model = model,
     motionController = motionController,
     gestureFactory = gestureFactory,
+    gestureSettleConfig = gestureSettleConfig,
     backPressStrategy = backPressStrategy,
     defaultAnimationSpec = animationSpec,
     disableAnimations = disableAnimations,

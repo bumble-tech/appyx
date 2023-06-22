@@ -89,14 +89,15 @@ actual class PlatformLifecycleRegistry(
 
     actual companion object {
         actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry =
-            PlatformLifecycleRegistry {
-                when (val platformLifecycle = owner.lifecycle) {
-                    is AndroidLifecycle -> platformLifecycle.androidLifecycle
-                    is PlatformLifecycleRegistry -> platformLifecycle.androidLifecycleRegistry
-                    else -> throw (IllegalStateException(
-                        "Unable to get android lifecycle from $platformLifecycle provided by $owner"
-                    ))
-                }
-            }
+            PlatformLifecycleRegistry(object : LifecycleOwner {
+                override val lifecycle: androidx.lifecycle.Lifecycle
+                    get() = when (val platformLifecycle = owner.lifecycle) {
+                        is AndroidLifecycle -> platformLifecycle.androidLifecycle
+                        is PlatformLifecycleRegistry -> platformLifecycle.androidLifecycleRegistry
+                        else -> throw (IllegalStateException(
+                            "Unable to get android lifecycle from $platformLifecycle provided by $owner"
+                        ))
+                    }
+            })
     }
 }

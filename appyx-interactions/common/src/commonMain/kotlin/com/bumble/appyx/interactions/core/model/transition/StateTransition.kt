@@ -1,6 +1,6 @@
 package com.bumble.appyx.interactions.core.model.transition
 
-data class StateTransition<State>(
-    val fromState: State,
-    val targetState: State
+data class StateTransition<ModelState>(
+    val fromState: ModelState,
+    val targetState: ModelState
 )

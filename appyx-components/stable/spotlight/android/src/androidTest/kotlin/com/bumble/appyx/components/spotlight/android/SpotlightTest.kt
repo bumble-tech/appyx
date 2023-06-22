@@ -56,6 +56,8 @@ class SpotlightTest(private val testParam: TestParam) {
             spotlight.waitUntilAnimationEnded(composeTestRule)
         }
 
+        composeTestRule.waitForIdle()
+
         checkInteractionTargetsOnScreen(setOf(InteractionTarget.Child5, InteractionTarget.Child4))
     }
 
@@ -72,6 +74,8 @@ class SpotlightTest(private val testParam: TestParam) {
             spotlight.last(mode = testParam.operationMode)
             spotlight.waitUntilAnimationEnded(composeTestRule)
         }
+
+        composeTestRule.waitForIdle()
 
         checkInteractionTargetsOnScreen(setOf(InteractionTarget.Child5))
     }
