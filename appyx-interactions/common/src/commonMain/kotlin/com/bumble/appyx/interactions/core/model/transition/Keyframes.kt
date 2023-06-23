@@ -39,9 +39,6 @@ data class Keyframes<ModelState>(
         (if (progress == maxProgress) (progress - 1) else progress).toInt()
     }.distinctUntilChanged()
 
-    val currentSegmentFlow = currentIndexFlow.map {
-        queue[it]
-    }
     val currentSegmentTargetStateFlow = currentIndexFlow.map {
         queue[it].targetState
     }

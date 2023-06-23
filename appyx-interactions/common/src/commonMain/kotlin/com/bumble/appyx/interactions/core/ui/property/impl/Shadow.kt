@@ -12,6 +12,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.Shadow.Target
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -26,12 +27,22 @@ class Shadow(
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
     displacement = displacement
-), Interpolatable<Shadow.Target> {
+), Interpolatable<Target> {
 
     class Target(
         val value: Float,
         val easing: Easing? = null,
-    ) : MotionProperty.Target
+    ) : MotionProperty.Target<Target> {
+        override fun lerpTo(end: Target, fraction: Float): Target =
+            Target(
+                value = lerpFloat(
+                    start = value,
+                    end = end.value,
+                    progress = fraction,
+                ),
+                easing = end.easing,
+            )
+    }
 
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement

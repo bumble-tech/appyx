@@ -10,9 +10,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.math.lerpInt
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -36,7 +34,17 @@ class RoundedCorners(
     class Target(
         val value: Int,
         val easing: Easing? = null,
-    ) : MotionProperty.Target
+    ) : MotionProperty.Target<Target> {
+        override fun lerpTo(end: Target, fraction: Float): Target =
+            Target(
+                value = lerpInt(
+                    start = value,
+                    end = end.value,
+                    progress = fraction,
+                ),
+                easing = end.easing,
+            )
+    }
 
     override fun calculateRenderValue(base: Int, displacement: Int): Int =
         base - displacement

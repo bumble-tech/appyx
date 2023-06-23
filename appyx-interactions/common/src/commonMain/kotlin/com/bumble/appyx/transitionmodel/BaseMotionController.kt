@@ -20,7 +20,9 @@ import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.transitionmodel.TargetUiStateResolver.Companion.infer
 import com.bumble.appyx.withPrevious
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,12 +31,15 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+typealias FieldOfStateType<ModelState> = (ModelState) -> Float
+typealias ViewpointType<ModelState, KeyframeSteps> = Triple<FieldOfStateType<ModelState>, GenericFloatProperty, KeyframeSteps?>
+
 abstract class BaseMotionController<InteractionTarget : Any, ModelState, MutableUiState, TargetUiState>(
     private val uiContext: UiContext,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<MutableUiState, TargetUiState> {
+) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<TargetUiState> {
 
-    open val viewpointDimensions: List<Pair<(ModelState) -> Float, GenericFloatProperty>> =
+    open val viewpointDimensions: List<ViewpointType<ModelState, KeyframeSteps<TargetUiState>?>> =
         emptyList()
 
     private val coroutineScope = uiContext.coroutineScope
@@ -60,10 +65,17 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             b1 || b2
         }
 
-    protected var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
+    private var currentSpringSpec: SpringSpec<Float> = defaultAnimationSpec
 
     private val _finishedAnimations = MutableSharedFlow<Element<InteractionTarget>>()
     override val finishedAnimations: Flow<Element<InteractionTarget>> = _finishedAnimations
+
+    private lateinit var targetUiStateResolver: TargetUiStateResolver<TargetUiState, MutableUiState>
+
+    override fun onCreated() {
+        targetUiStateResolver = viewpointDimensions.infer()
+    }
+
     override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         currentSpringSpec = springSpec
     }
@@ -77,6 +89,15 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState
+
+    open suspend fun MutableUiState.mutableAnimateTo(scope: CoroutineScope, targetUiState: TargetUiState, springSpec: SpringSpec<Float>) {
+        animateTo(
+            scope = scope,
+            target = targetUiState,
+            springSpec = currentSpringSpec,
+        )
+    }
+
 
     override fun mapUpdate(
         update: Update<ModelState>
@@ -132,9 +153,9 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             // when the associated ElementUiModel ceases to exist
             launch {
                 if (update.animate) {
-                    mutableUiState.animateTo(
+                    mutableUiState.mutableAnimateTo(
                         scope = this,
-                        target = matchedTargetUiState.targetUiState,
+                        targetUiState = matchedTargetUiState.targetUiState,
                         springSpec = currentSpringSpec,
                     )
                 } else {
@@ -216,7 +237,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             }
             // Synchronously, immediately apply current interpolated value before the new mutable state
             // reaches composition. This is to avoid jumping between default & current value.
-            mutableUiState.lerpTo(coroutineScope, t0.targetUiState, t1.targetUiState, initialProgress)
+            val lerpInfo = targetUiStateResolver.resolveLerpInfo(t0.targetUiState, t1.targetUiState, initialProgress)
+            mutableUiState.lerpTo(coroutineScope, lerpInfo.from, lerpInfo.to, lerpInfo.fraction)
 
             ElementUiModel(
                 element = t1.element,
@@ -241,7 +263,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     ) {
         val progress by segmentProgress.collectAsState(initialProgress)
         LaunchedEffect(progress) {
-            mutableUiState.lerpTo(coroutineScope, from.targetUiState, to.targetUiState, progress)
+            val lerpInfo = targetUiStateResolver.resolveLerpInfo(from.targetUiState, to.targetUiState, progress)
+            mutableUiState.lerpTo(coroutineScope, lerpInfo.from, lerpInfo.to, lerpInfo.fraction)
         }
     }
 
@@ -308,3 +331,9 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     }
 
 }
+
+infix fun <ModelState> FieldOfStateType<ModelState>.mapTo(property: GenericFloatProperty): ViewpointType<ModelState, Nothing?> =
+    Triple(this, property, null)
+
+infix fun <ModelState, KeyframeSteps> Triple<FieldOfStateType<ModelState>, GenericFloatProperty, Nothing?>.keyframeWith(axisKeyframes: KeyframeSteps): ViewpointType<ModelState, KeyframeSteps> =
+    Triple(first, second, axisKeyframes)

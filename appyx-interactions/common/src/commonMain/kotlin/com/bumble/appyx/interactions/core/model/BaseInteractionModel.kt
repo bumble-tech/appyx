@@ -167,6 +167,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
             this.uiContext = uiContext
             AppyxLogger.d("InteractionModel", "new uiContext supplied: $uiContext")
             _motionController = motionController(uiContext).also {
+                it.onCreated()
                 onMotionControllerReady(it)
             }
             _gestureFactory = gestureFactory(uiContext.transitionBounds)

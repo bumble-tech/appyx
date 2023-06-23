@@ -20,9 +20,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 
-abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
+abstract class BaseMutableUiState<TargetUiState>(
     val uiContext: UiContext,
-    val motionProperties: List<MotionProperty<*, *>>
+    private val motionProperties: List<MotionProperty<*, *>>
 ) {
 
     private val containerRect = Rect(

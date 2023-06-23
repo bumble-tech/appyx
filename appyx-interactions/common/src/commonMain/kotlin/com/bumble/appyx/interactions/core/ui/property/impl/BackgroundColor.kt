@@ -33,7 +33,17 @@ class BackgroundColor(
     class Target(
         val value: Color,
         val easing: Easing? = null,
-    ) : MotionProperty.Target
+    ) : MotionProperty.Target<Target> {
+        override fun lerpTo(end: Target, fraction: Float): Target =
+            Target(
+                value = lerpColor(
+                    start = value,
+                    stop = end.value,
+                    fraction = fraction,
+                ),
+                easing = end.easing,
+            )
+    }
 
     /**
      * This class currently doesn't support color displacement.
@@ -58,6 +68,4 @@ class BackgroundColor(
             )
         )
     }
-
-
 }
