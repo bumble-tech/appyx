@@ -31,7 +31,6 @@ suspend fun MutableUiState.mutableAnimateTo(
                 targetUiState.effectiveIndex.value,
                 spring(springSpec.dampingRatio, springSpec.stiffness),
             ) {
-
                 val newTarget = keyframeSteps.lerpTargetUiState(this.value, ::lerp)
                 motionPropertiesFlow.update {
                     arrayListOf(

@@ -60,13 +60,13 @@ class SpotlightStack3D<InteractionTarget : Any>(
 
     private val yAxisKeyframes =
         keyframeSteps(
-            -1.0f to { destroyed },
-            0.0f to { _ -> topMost() },
-            1.0f to { fraction -> stacked(fraction) },
-            1.5f to { fraction -> stacked(fraction, extraYOffset = 0.05f) },
-            2.0f to { fraction -> stacked(fraction) },
-            3.0f to { fraction -> stacked(fraction) },
-            4.0f to { fraction -> stacked(fraction, alpha = 0f) },
+            -1.0f to destroyed,
+            0.0f to topMost(),
+            1.0f to stacked(1.0f),
+            1.5f to stacked(1.5f, extraYOffset = 0.05f),
+            2.0f to stacked(2.0f),
+            3.0f to stacked(3.0f),
+            4.0f to stacked(4.0f, alpha = 0f),
             effectiveIndexAccessor = { it.effectiveIndex.value },
         )
 

@@ -2,7 +2,7 @@ package com.bumble.appyx.transitionmodel
 
 data class KeyframeStep<TargetUiState>(
     val step: Float,
-    val inferTargetUiState: (Float) -> TargetUiState,
+    val targetUiState: TargetUiState,
 )
 
 data class KeyframeSteps<TargetUiState>(
@@ -12,7 +12,7 @@ data class KeyframeSteps<TargetUiState>(
 )
 
 fun <TargetUiState> keyframeSteps(
-    vararg steps: Pair<Float, (Float) -> TargetUiState>,
+    vararg steps: Pair<Float, TargetUiState>,
     effectiveIndexAccessor: (TargetUiState) -> Float,
     calculateEffectiveIndex: (Float, Float) -> Float = { scroll, index -> (index - scroll) },
 ) = KeyframeSteps(

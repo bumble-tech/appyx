@@ -22,10 +22,10 @@ class KeyframeStepsTest {
     fun WHEN_non_monotonic_sequence_of_steps_is_provided_THEN_exception_is_thrown() {
         assertFailsWith<IllegalArgumentException> {
             keyframeSteps(
-                -1f to { TargetUiState(Scale.Target(it)) },
-                0f to { TargetUiState(Scale.Target(it)) },
-                2.1f to { TargetUiState(Scale.Target(it)) },
-                2f to { TargetUiState(Scale.Target(it)) },
+                -1f to TargetUiState(Scale.Target(-1f)),
+                0f to TargetUiState(Scale.Target(0f)),
+                2.1f to TargetUiState(Scale.Target(2.1f)),
+                2f to TargetUiState(Scale.Target(2f)),
                 effectiveIndexAccessor = { it.scale.value },
                 calculateEffectiveIndex = { axisValue, _ -> axisValue },
             )
@@ -37,7 +37,7 @@ class KeyframeStepsTest {
         val keyframeSteps = keyframeSteps()
         val fromStep = keyframeSteps.getFromStep(0.3f)
         assertEquals(0f, fromStep.step)
-        assertEquals(0.25f, fromStep.inferTargetUiState(0f).scale.value)
+        assertEquals(0.25f, fromStep.targetUiState.scale.value)
     }
 
     @Test
@@ -45,7 +45,7 @@ class KeyframeStepsTest {
         val keyframeSteps = keyframeSteps()
         val fromStep = keyframeSteps.getFromStep(-2f)
         assertEquals(-1f, fromStep.step)
-        assertEquals(0f, fromStep.inferTargetUiState(0f).scale.value)
+        assertEquals(0f, fromStep.targetUiState.scale.value)
     }
 
     @Test
@@ -53,7 +53,7 @@ class KeyframeStepsTest {
         val keyframeSteps = keyframeSteps()
         val fromStep = keyframeSteps.getFromStep(3f)
         assertEquals(2f, fromStep.step)
-        assertEquals(0.75f, fromStep.inferTargetUiState(0f).scale.value)
+        assertEquals(0.75f, fromStep.targetUiState.scale.value)
     }
 
     @Test
@@ -61,7 +61,7 @@ class KeyframeStepsTest {
         val keyframeSteps = keyframeSteps()
         val fromStep = keyframeSteps.getToStep(0.3f)
         assertEquals(1f, fromStep.step)
-        assertEquals(1f, fromStep.inferTargetUiState(0f).scale.value)
+        assertEquals(1f, fromStep.targetUiState.scale.value)
     }
 
     @Test
@@ -69,7 +69,7 @@ class KeyframeStepsTest {
         val keyframeSteps = keyframeSteps()
         val fromStep = keyframeSteps.getToStep(-2f)
         assertEquals(-1f, fromStep.step)
-        assertEquals(0f, fromStep.inferTargetUiState(0f).scale.value)
+        assertEquals(0f, fromStep.targetUiState.scale.value)
     }
 
     @Test
@@ -77,7 +77,7 @@ class KeyframeStepsTest {
         val keyframeSteps = keyframeSteps()
         val fromStep = keyframeSteps.getToStep(3f)
         assertEquals(2f, fromStep.step)
-        assertEquals(0.75f, fromStep.inferTargetUiState(0f).scale.value)
+        assertEquals(0.75f, fromStep.targetUiState.scale.value)
     }
 
     @Test
@@ -115,10 +115,10 @@ class KeyframeStepsTest {
 
     private fun keyframeSteps() =
         keyframeSteps(
-            -1f to { TargetUiState(Scale.Target(0f)) },
-            0f to { TargetUiState(Scale.Target(0.25f)) },
-            1f to { TargetUiState(Scale.Target(1f)) },
-            2f to { TargetUiState(Scale.Target(0.75f)) },
+            -1f to TargetUiState(Scale.Target(0f)),
+            0f to TargetUiState(Scale.Target(0.25f)),
+            1f to TargetUiState(Scale.Target(1f)),
+            2f to TargetUiState(Scale.Target(0.75f)),
             effectiveIndexAccessor = { it.scale.value },
             calculateEffectiveIndex = { axisValue, _ -> axisValue }
         )

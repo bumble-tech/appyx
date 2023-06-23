@@ -1,7 +1,5 @@
 package com.bumble.appyx.transitionmodel
 
-import com.bumble.appyx.interactions.AppyxLogger
-
 internal fun <TargetUiState> List<KeyframeStep<TargetUiState>>.validateSteps() {
     if (hasNonMonotonicSequence()) {
         throw IllegalArgumentException("Keyframe steps should be increase monotonically.")
@@ -15,9 +13,7 @@ fun <TargetUiState> KeyframeSteps<TargetUiState>.getFromStep(fraction: Float): K
     steps.lastOrNull { it.step <= fraction } ?: steps.first()
 
 fun <TargetUiState> KeyframeSteps<TargetUiState>.getFromTargetUiState(scroll: Float, index: Float): TargetUiState =
-    calculateEffectiveIndex(scroll, index).let { fraction ->
-        getFromStep(fraction).inferTargetUiState(fraction)
-    }
+    calculateEffectiveIndex(scroll, index).let { fraction -> getFromStep(fraction).targetUiState }
 
 fun <TargetUiState> KeyframeSteps<TargetUiState>.getToStep(fraction: Float): KeyframeStep<TargetUiState> =
     steps.firstOrNull { fraction < it.step } ?: steps.last()
@@ -25,25 +21,25 @@ fun <TargetUiState> KeyframeSteps<TargetUiState>.getToStep(fraction: Float): Key
 fun <TargetUiState> KeyframeSteps<TargetUiState>.lerpTargetUiState(
     fraction: Float,
     lerpTargetUiState: (TargetUiState, TargetUiState, Float) -> TargetUiState,
-): TargetUiState {
+): TargetUiState =
+    lerpTargetUiState(
+        fraction = fraction,
+        mapWithLerp = { from, to, lerpFraction -> lerpTargetUiState(from, to, lerpFraction) },
+        mapFrom = { from -> from }
+    )
+
+fun <TargetUiState, T> KeyframeSteps<TargetUiState>.lerpTargetUiState(
+    fraction: Float,
+    mapWithLerp: (from: TargetUiState, to: TargetUiState, lerpFraction: Float) -> T,
+    mapFrom: (from: TargetUiState) -> T,
+): T {
     val fromStep = getFromStep(fraction)
     val toStep = getToStep(fraction)
     val stepsDiff = toStep.step - fromStep.step
     return if (stepsDiff != 0f) {
         val lerpFraction = (fraction - fromStep.step) / stepsDiff
-        if (lerpFraction != 0f && lerpFraction != 1f) {
-            val from = fromStep.inferTargetUiState(fraction)
-            val to = toStep.inferTargetUiState(fraction)
-            lerpTargetUiState(from, to, lerpFraction).also {
-                AppyxLogger.d("KeyframeSteps", "lerpFraction -> $lerpFraction")
-                AppyxLogger.d("KeyframeSteps", "from -> $from")
-                AppyxLogger.d("KeyframeSteps", "to -> $to")
-                AppyxLogger.d("KeyframeSteps", "it -> $it")
-            }
-        } else {
-            fromStep.inferTargetUiState(fraction)
-        }
+        mapWithLerp(fromStep.targetUiState, toStep.targetUiState, lerpFraction)
     } else {
-        fromStep.inferTargetUiState(fraction)
+        mapFrom(fromStep.targetUiState)
     }
 }
