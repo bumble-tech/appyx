@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.widgets
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
@@ -11,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.Spotlight
@@ -25,7 +23,6 @@ import com.bumble.appyx.interactions.core.DraggableChildren
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.samples.common.widget.CalendarWidget
 import com.bumble.appyx.samples.common.widget.TimerWidget
 import com.bumble.appyx.samples.common.widget.WeatherWidget
@@ -106,7 +103,7 @@ private fun WidgetsUi(
             ),
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        childWrapper = { elementUiModel ->
+        element = { elementUiModel ->
             WidgetTypeElement(
                 elementUiModel = elementUiModel,
                 modifier = Modifier
