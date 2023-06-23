@@ -30,7 +30,7 @@ import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController.Companion.toTargetUiState
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
-import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
@@ -135,7 +135,7 @@ fun <InteractionTarget : Any> TestDriveUi(
                 vertical = 12.dp
             )
     ) {
-        DraggableChildren(
+        DraggableAppyxComponent(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             appyxComponent = testDrive,

@@ -22,7 +22,7 @@ import com.bumble.appyx.components.backstack.ui.parallax.BackstackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -129,7 +129,7 @@ class BackStackExamplesNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Children(
+        AppyxComponent(
             appyxComponent = backStack,
             modifier = Modifier
                 .fillMaxSize()

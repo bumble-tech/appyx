@@ -29,7 +29,7 @@ import gestureModifier
 import kotlin.math.roundToInt
 
 @Composable
-inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
+inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,

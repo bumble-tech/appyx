@@ -16,7 +16,7 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -129,7 +129,7 @@ class ContainerNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Children(
+        AppyxComponent(
             appyxComponent = backStack,
             modifier = modifier
                 .fillMaxSize()
