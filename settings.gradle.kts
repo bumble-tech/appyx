@@ -10,8 +10,6 @@ pluginManagement {
         kotlin("multiplatform")
         id("org.jetbrains.compose")
         id("com.google.devtools.ksp")
-        id("com.android.library") version "7.4.0"
-        id("org.jetbrains.kotlin.android") version "1.7.21"
     }
 }
 
@@ -36,10 +34,8 @@ include(
     ":appyx-components:internal:test-drive:common",
     ":appyx-components:experimental:cards:android",
     ":appyx-components:experimental:cards:common",
-    ":appyx-components:modal:android",
-    ":appyx-components:modal:common",
-    ":appyx-components:modal:android",
-    ":appyx-components:modal:common",
+    ":appyx-components:experimental:modal:android",
+    ":appyx-components:experimental:modal:common",
     ":appyx-components:experimental:promoter:android",
     ":appyx-components:experimental:promoter:common",
     ":appyx-components:experimental:puzzle15:android",
@@ -72,7 +68,7 @@ include(
 
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
 project(":appyx-components:stable:backstack:common").name = "backstack"
-project(":appyx-components:modal:common").name = "modal"
+project(":appyx-components:experimental:modal:common").name = "modal"
 project(":appyx-components:stable:spotlight:common").name = "spotlight"
 project(":appyx-interactions:common").name = "appyx-interactions"
 project(":appyx-components:experimental:cards:common").name = "cards"

@@ -44,7 +44,7 @@ dependencies {
     implementation(project(":appyx-interactions:android"))
     implementation(project(":appyx-components:stable:spotlight:spotlight"))
     implementation(project(":appyx-components:stable:backstack:backstack"))
-    implementation(project(":appyx-components:modal:modal"))
+    implementation(project(":appyx-components:experimental:modal:modal"))
     implementation(project(":appyx-components:internal:test-drive:android"))
     implementation(project(":appyx-components:experimental:cards:android"))
     implementation(project(":appyx-components:experimental:puzzle15:android"))
