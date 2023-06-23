@@ -4,10 +4,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class EmptyInteractionModel<InteractionTarget : Any> : InteractionModel<InteractionTarget, Any> {
+class EmptyAppyxComponent<InteractionTarget : Any> : AppyxComponent<InteractionTarget, Any> {
 
-    override val elements: StateFlow<InteractionModel.Elements<InteractionTarget>>
-        get() = MutableStateFlow(InteractionModel.Elements())
+    override val elements: StateFlow<AppyxComponent.Elements<InteractionTarget>>
+        get() = MutableStateFlow(AppyxComponent.Elements())
 
     override fun onAddedToComposition(scope: CoroutineScope) = Unit
 

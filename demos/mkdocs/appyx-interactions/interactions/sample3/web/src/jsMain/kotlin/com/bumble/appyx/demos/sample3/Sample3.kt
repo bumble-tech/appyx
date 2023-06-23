@@ -4,9 +4,7 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,7 +31,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.LinearGradientShader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -51,8 +48,7 @@ import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.Children
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
 enum class InteractionTarget {
     Child1
@@ -79,7 +75,7 @@ fun Sample3(
         )
     }
 
-    InteractionModelSetup(testDrive)
+    AppyxComponentSetup(testDrive)
 
     val output = model.output.collectAsState().value
     val currentTarget: State<TestDriveModel.State<InteractionTarget>?> =
@@ -190,7 +186,7 @@ fun <InteractionTarget : Any> ModelUi(
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     DraggableChildren(
-        interactionModel = testDrive,
+        appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
         modifier = modifier.zIndex(2f)

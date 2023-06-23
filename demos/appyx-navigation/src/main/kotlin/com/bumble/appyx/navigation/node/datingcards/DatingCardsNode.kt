@@ -36,7 +36,7 @@ class DatingCardsNode(
 
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = cards
+    appyxComponent = cards
 ) {
 
     sealed class InteractionTarget : Parcelable {
@@ -54,7 +54,7 @@ class DatingCardsNode(
                 .fillMaxSize()
                 .background(appyx_dark)
                 .padding(16.dp),
-            interactionModel = cards,
+            appyxComponent = cards,
         )
     }
 }

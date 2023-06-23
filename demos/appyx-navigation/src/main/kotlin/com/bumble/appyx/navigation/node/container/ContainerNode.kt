@@ -44,7 +44,7 @@ class ContainerNode(
 
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    appyxComponent = backStack
 ) {
     sealed class InteractionTarget : Parcelable {
         @Parcelize
@@ -130,7 +130,7 @@ class ContainerNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            interactionModel = backStack,
+            appyxComponent = backStack,
             modifier = modifier
                 .fillMaxSize()
         )

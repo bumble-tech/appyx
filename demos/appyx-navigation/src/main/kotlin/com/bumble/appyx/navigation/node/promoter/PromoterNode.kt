@@ -52,7 +52,7 @@ class PromoterNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = promoter
+    appyxComponent = promoter
 ) {
 
     init {
@@ -98,7 +98,7 @@ class PromoterNode(
                 .fillMaxSize()
         ) {
             Children(
-                interactionModel = promoter,
+                appyxComponent = promoter,
                 modifier = Modifier
                     .weight(0.9f)
                     .padding(

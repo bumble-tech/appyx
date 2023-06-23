@@ -37,7 +37,7 @@ import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
 
 @Composable
@@ -75,7 +75,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
         )
     }
 
-    InteractionModelSetup(testDrive)
+    AppyxComponentSetup(testDrive)
 
     Column(
         modifier = modifier,
@@ -138,7 +138,7 @@ fun <InteractionTarget : Any> TestDriveUi(
         DraggableChildren(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            interactionModel = testDrive,
+            appyxComponent = testDrive,
             gestureValidator = gestureValidator,
         ) { elementUiModel ->
             Box(

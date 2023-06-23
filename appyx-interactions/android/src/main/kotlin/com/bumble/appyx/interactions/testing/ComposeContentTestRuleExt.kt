@@ -1,15 +1,15 @@
 package com.bumble.appyx.interactions.testing
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 
-fun BaseInteractionModel<*, *>.waitUntilAnimationStarted(rule: ComposeContentTestRule) {
+fun BaseAppyxComponent<*, *>.waitUntilAnimationStarted(rule: ComposeContentTestRule) {
     rule.mainClock.advanceTimeUntil {
         isAnimating.value
     }
 }
 
-fun BaseInteractionModel<*, *>.waitUntilAnimationEnded(rule: ComposeContentTestRule) {
+fun BaseAppyxComponent<*, *>.waitUntilAnimationEnded(rule: ComposeContentTestRule) {
     rule.mainClock.advanceTimeUntil {
         !isAnimating.value
     }

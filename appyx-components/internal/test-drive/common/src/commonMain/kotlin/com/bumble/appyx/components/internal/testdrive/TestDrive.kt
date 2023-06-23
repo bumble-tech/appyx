@@ -2,7 +2,7 @@ package com.bumble.appyx.components.internal.testdrive
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -18,7 +18,7 @@ open class TestDrive<InteractionTarget : Any>(
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> = { GestureFactory.Noop() },
     progressAnimationSpec: AnimationSpec<Float> = spring(),
     animateSettle: Boolean = false
-) : BaseInteractionModel<InteractionTarget, TestDriveModel.State<InteractionTarget>>(
+) : BaseAppyxComponent<InteractionTarget, TestDriveModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
     motionController = motionController,

@@ -49,7 +49,7 @@ class SpotlightDebugNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = spotlight
+    appyxComponent = spotlight
 ) {
 
     init {
@@ -99,7 +99,7 @@ class SpotlightDebugNode(
                 spotlight.setNormalisedProgress(it)
             })
             Children(
-                interactionModel = spotlight,
+                appyxComponent = spotlight,
                 modifier = Modifier.padding(
                     horizontal = 64.dp,
                     vertical = 12.dp

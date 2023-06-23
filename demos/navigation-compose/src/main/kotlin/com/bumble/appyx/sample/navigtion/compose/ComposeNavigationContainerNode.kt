@@ -29,7 +29,7 @@ internal class ComposeNavigationContainerNode(
         motionController = { BackStackSlider(it) }
     )
 ) : ParentNode<ComposeNavigationContainerNode.InteractionTarget>(
-    interactionModel = backStack,
+    appyxComponent = backStack,
     buildContext = buildContext,
 ) {
 
@@ -57,7 +57,7 @@ internal class ComposeNavigationContainerNode(
     override fun View(modifier: Modifier) {
         Children(
             modifier = modifier.fillMaxWidth(),
-            interactionModel = backStack
+            appyxComponent = backStack
         )
     }
 }

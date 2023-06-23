@@ -5,7 +5,7 @@ import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.permanent.PermanentInteractionModel
+import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.interactions.permanent.PermanentModel
 
 @Parcelize
@@ -27,7 +27,7 @@ data class AddUnique<InteractionTarget : Any>(
         )
 }
 
-fun <InteractionTarget : Any> PermanentInteractionModel<InteractionTarget>.addUnique(
+fun <InteractionTarget : Any> PermanentAppyxComponent<InteractionTarget>.addUnique(
     interactionTarget: InteractionTarget
 ) {
     operation(operation = AddUnique(interactionTarget))

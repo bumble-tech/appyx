@@ -52,7 +52,7 @@ class SpotlightNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = spotlight
+    appyxComponent = spotlight
 ) {
     private val newItems = List(7) { InteractionTarget.Child(it * 3) }
 
@@ -90,7 +90,7 @@ class SpotlightNode(
                 .background(appyx_dark)
         ) {
             Children(
-                interactionModel = spotlight,
+                appyxComponent = spotlight,
                 modifier = Modifier
                     .padding(
                         horizontal = 64.dp,

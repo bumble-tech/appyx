@@ -47,7 +47,7 @@ class BackstackDebugNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    appyxComponent = backStack
 ) {
 
     init {
@@ -100,7 +100,7 @@ class BackstackDebugNode(
                 backStack.setNormalisedProgress(it)
             })
             Children(
-                interactionModel = backStack,
+                appyxComponent = backStack,
                 modifier = Modifier
                     .fillMaxSize()
                     .background(appyx_dark)

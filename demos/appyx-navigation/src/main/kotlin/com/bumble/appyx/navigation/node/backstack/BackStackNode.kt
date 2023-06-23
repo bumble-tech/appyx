@@ -63,7 +63,7 @@ class BackStackNode(
     )
 ) : ParentNode<BackStackNode.InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack,
+    appyxComponent = backStack,
 ) {
     sealed class InteractionTarget : Parcelable {
         @Parcelize
@@ -108,7 +108,7 @@ class BackStackNode(
         ) {
             Children(
                 clipToBounds = true,
-                interactionModel = backStack,
+                appyxComponent = backStack,
                 modifier = Modifier
                     .weight(0.9f)
                     .fillMaxSize()

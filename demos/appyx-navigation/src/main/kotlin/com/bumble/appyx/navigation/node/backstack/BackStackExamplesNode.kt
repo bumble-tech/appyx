@@ -44,7 +44,7 @@ class BackStackExamplesNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    appyxComponent = backStack
 ) {
 
     private val padding = mutableStateOf(16)
@@ -130,7 +130,7 @@ class BackStackExamplesNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            interactionModel = backStack,
+            appyxComponent = backStack,
             modifier = Modifier
                 .fillMaxSize()
                 .background(appyx_dark)

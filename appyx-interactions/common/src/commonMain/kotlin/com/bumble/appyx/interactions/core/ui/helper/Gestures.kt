@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 
 // TODO consider where to keep these
 
@@ -17,7 +17,7 @@ val DefaultAnimationSpec: SpringSpec<Float> = spring()
 @Composable
 @Suppress("UnnecessaryComposedModifier")
 fun <InteractionTarget : Any, ModelState : Any> Modifier.gestureModifier(
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     key: Any,
 ) = this.composed {
 
@@ -25,12 +25,12 @@ fun <InteractionTarget : Any, ModelState : Any> Modifier.gestureModifier(
 
     pointerInput(key) {
         detectDragGestures(
-            onDragStart = { position -> interactionModel.onStartDrag(position) },
+            onDragStart = { position -> appyxComponent.onStartDrag(position) },
             onDrag = { change, dragAmount ->
                 change.consume()
-                interactionModel.onDrag(dragAmount, density)
+                appyxComponent.onDrag(dragAmount, density)
             },
-            onDragEnd = { interactionModel.onDragEnd() }
+            onDragEnd = { appyxComponent.onDragEnd() }
         )
     }
 }
