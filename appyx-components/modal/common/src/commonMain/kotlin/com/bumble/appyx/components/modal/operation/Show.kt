@@ -9,7 +9,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 
 @Parcelize
 class Show<InteractionTarget : Any>(
-    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) : BaseOperation<ModalModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: ModalModel.State<InteractionTarget>) =
@@ -28,7 +28,7 @@ class Show<InteractionTarget : Any>(
 
 fun <InteractionTarget : Any> Modal<InteractionTarget>.show(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-    mode: Operation.Mode = Operation.Mode.KEYFRAME
+    mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) {
     operation(
         operation = Show(

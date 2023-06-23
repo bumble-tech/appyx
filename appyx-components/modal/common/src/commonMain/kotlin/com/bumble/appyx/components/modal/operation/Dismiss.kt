@@ -9,7 +9,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 
 @Parcelize
 class Dismiss<InteractionTarget : Any>(
-    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) : BaseOperation<ModalModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: ModalModel.State<InteractionTarget>) = state.modal != null || state.fullScreen != null
@@ -41,7 +41,7 @@ class Dismiss<InteractionTarget : Any>(
 
 fun <InteractionTarget : Any> Modal<InteractionTarget>.dismiss(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-    mode: Operation.Mode = Operation.Mode.KEYFRAME
+    mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) {
     operation(
         operation = Dismiss(

@@ -1,15 +1,16 @@
 package com.bumble.appyx.components.modal.ui
 
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.*
+import com.bumble.appyx.interactions.core.ui.property.impl.Height
+import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 
 @MutableUiStateSpecs
 class TargetUiState(
-    val width: Width.Target,
     val height: Height.Target,
     val position: Position.Target,
-    val corner: BackgroundCorner.Target,
+    val corner: RoundedCorners.Target,
 ) {
 
     fun toMutableState(
@@ -17,9 +18,8 @@ class TargetUiState(
     ): MutableUiState =
         MutableUiState(
             uiContext = uiContext,
-            width = Width(uiContext, width),
             height = Height(uiContext, height),
             position = Position(uiContext, position),
-            corner = BackgroundCorner(uiContext, corner),
+            corner = RoundedCorners(uiContext, corner),
         )
 }

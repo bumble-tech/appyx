@@ -7,11 +7,15 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.modal.ModalModel
 import com.bumble.appyx.components.modal.operation.FullScreen
 import com.bumble.appyx.components.modal.operation.Revert
-import com.bumble.appyx.components.modal.operation.Show
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.*
-import com.bumble.appyx.interactions.core.ui.property.impl.*
+import com.bumble.appyx.interactions.core.ui.gesture.Gesture
+import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
+import com.bumble.appyx.interactions.core.ui.gesture.Drag
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.property.impl.Height
+import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -25,33 +29,29 @@ class ModalMotionController<InteractionTarget : Any>(
 
     private val createdState: TargetUiState =
         TargetUiState(
-            width = Width.Target(0f),
             height = Height.Target(0f),
             position = Position.Target(DpOffset(0.dp, 0.dp)),
-            corner = BackgroundCorner.Target(40f),
+            corner = RoundedCorners.Target(16),
         )
     private val modalState: TargetUiState =
         TargetUiState(
-            width = Width.Target(0.7f),
             height = Height.Target(0.5f),
             position = Position.Target(DpOffset(0.dp, height * 0.5f)),
-            corner = BackgroundCorner.Target(40f),
+            corner = RoundedCorners.Target(16),
         )
 
     private val fullScreenState: TargetUiState =
         TargetUiState(
-            width = Width.Target(1f),
             height = Height.Target(1f),
             position = Position.Target(DpOffset(0.dp, 0.dp)),
-            corner = BackgroundCorner.Target(0.1f),
+            corner = RoundedCorners.Target(0),
         )
     
     private val destroyedState: TargetUiState =
         TargetUiState(
-            width = Width.Target(1f),
             height = Height.Target(1f),
             position = Position.Target(DpOffset(width, 0.dp)),
-            corner = BackgroundCorner.Target(0.1f),
+            corner = RoundedCorners.Target(0),
         )
 
     override fun ModalModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
@@ -66,36 +66,28 @@ class ModalMotionController<InteractionTarget : Any>(
         targetUiState: TargetUiState
     ): MutableUiState = targetUiState.toMutableState(uiContext)
 
-    class ModalGestures<InteractionTarget : Any>(
+    class Gestures<InteractionTarget : Any>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, ModalModel.State<InteractionTarget>> {
         private val height = transitionBounds.heightPx.toFloat()
-        private val width = transitionBounds.widthPx.toFloat()
 
         override fun createGesture(
             state: ModalModel.State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, ModalModel.State<InteractionTarget>> =
-            when (dragDirection4(delta)) {
-                Drag.Direction4.UP -> Gesture(
+            when (dragVerticalDirection(delta)) {
+                Drag.VerticalDirection.UP -> Gesture(
                     operation = FullScreen(),
                     completeAt = Offset(0f, -height)
                 )
-                Drag.Direction4.DOWN -> Gesture(
+
+                Drag.VerticalDirection.DOWN -> Gesture(
                     operation = Revert(),
                     completeAt = Offset(0f, height)
                 )
-                Drag.Direction4.RIGHT -> Gesture(
-                    operation = Show(),
-                    completeAt = Offset(width, 0f)
-                )
-                else -> {
-                    Gesture(
-                        operation = Revert(),
-                        completeAt = Offset(0f, height)
-                    )
-                }
+
+                else -> Gesture.Noop()
             }
     }
 }

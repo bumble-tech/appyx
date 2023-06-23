@@ -12,7 +12,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 @Parcelize
 class Add<InteractionTarget : Any>(
     private val interactionTarget: @RawValue InteractionTarget,
-    override var mode: Operation.Mode = Operation.Mode.KEYFRAME
+    override var mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) : BaseOperation<ModalModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: ModalModel.State<InteractionTarget>) = true
@@ -28,7 +28,7 @@ class Add<InteractionTarget : Any>(
 fun <InteractionTarget : Any> Modal<InteractionTarget>.add(
     item: InteractionTarget,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
-    mode: Operation.Mode = Operation.Mode.KEYFRAME
+    mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) {
     operation(
         operation = Add(
