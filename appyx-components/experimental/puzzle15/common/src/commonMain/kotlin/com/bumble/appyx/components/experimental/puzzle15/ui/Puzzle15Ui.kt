@@ -79,7 +79,6 @@ fun Puzzle15Ui(
             Children(
                 screenWidthPx = screenWidthPx,
                 screenHeightPx = screenHeightPx,
-                colors = colors,
                 interactionModel = puzzle15,
             ) { elementUiModel ->
                 if (elementUiModel.element.interactionTarget == Puzzle15Model.Tile.EmptyTile) {

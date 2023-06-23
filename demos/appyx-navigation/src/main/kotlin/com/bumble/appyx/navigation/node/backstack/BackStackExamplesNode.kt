@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
-import com.bumble.appyx.components.backstack.ui.fader.BackstackFader
+import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.components.backstack.ui.parallax.BackstackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
@@ -72,7 +72,7 @@ class BackStackExamplesNode(
                 BackStackPicker(it)
             }
             is InteractionTarget.BackStackFader -> BackStackNode(buildContext, {
-                BackstackFader(
+                BackStackFader(
                     it
                 )
             })
