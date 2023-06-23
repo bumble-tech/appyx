@@ -14,6 +14,9 @@ class Destroy<InteractionTarget : Any>(
 
     override fun isApplicable(state: ModalModel.State<InteractionTarget>) = true
 
+    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) =
+        baseLineState
+
     override fun createTargetState(fromState: ModalModel.State<InteractionTarget>) =
         fromState.copy(
             created = emptyList(),
@@ -24,9 +27,6 @@ class Destroy<InteractionTarget : Any>(
                 fromState.fullScreen
             ),
         )
-
-    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) =
-        baseLineState
 }
 
 fun <InteractionTarget : Any> Modal<InteractionTarget>.destroyAll(

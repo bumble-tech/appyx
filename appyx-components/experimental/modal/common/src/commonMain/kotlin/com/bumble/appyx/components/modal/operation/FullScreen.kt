@@ -14,14 +14,14 @@ class FullScreen<InteractionTarget : Any>(
 
     override fun isApplicable(state: ModalModel.State<InteractionTarget>) = state.modal != null
 
-    override fun createTargetState(fromState: ModalModel.State<InteractionTarget>): ModalModel.State<InteractionTarget> =
+    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) =
+        baseLineState
+
+    override fun createTargetState(fromState: ModalModel.State<InteractionTarget>) =
         fromState.copy(
             modal = null,
             fullScreen = fromState.modal
         )
-
-    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>): ModalModel.State<InteractionTarget> =
-        baseLineState
 }
 
 fun <InteractionTarget : Any> Modal<InteractionTarget>.fullScreen(

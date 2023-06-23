@@ -15,13 +15,13 @@ class Revert<InteractionTarget : Any>(
     override fun isApplicable(state: ModalModel.State<InteractionTarget>) =
         state.fullScreen != null || state.modal != null
 
+    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) = baseLineState
+
     override fun createTargetState(fromState: ModalModel.State<InteractionTarget>) =
         fromState.copy(
             modal = fromState.fullScreen,
             fullScreen = fromState.modal
         )
-
-    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) = baseLineState
 }
 
 fun <InteractionTarget : Any> Modal<InteractionTarget>.revert(

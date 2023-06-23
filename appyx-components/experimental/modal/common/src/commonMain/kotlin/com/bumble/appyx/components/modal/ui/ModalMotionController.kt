@@ -5,6 +5,7 @@ import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.modal.ModalModel
+import com.bumble.appyx.components.modal.operation.Dismiss
 import com.bumble.appyx.components.modal.operation.FullScreen
 import com.bumble.appyx.components.modal.operation.Revert
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -31,13 +32,13 @@ class ModalMotionController<InteractionTarget : Any>(
         TargetUiState(
             height = Height.Target(0f),
             position = Position.Target(DpOffset(0.dp, 0.dp)),
-            corner = RoundedCorners.Target(16),
+            corner = RoundedCorners.Target(8),
         )
     private val modalState: TargetUiState =
         TargetUiState(
             height = Height.Target(0.5f),
             position = Position.Target(DpOffset(0.dp, height * 0.5f)),
-            corner = RoundedCorners.Target(16),
+            corner = RoundedCorners.Target(8),
         )
 
     private val fullScreenState: TargetUiState =
@@ -46,7 +47,7 @@ class ModalMotionController<InteractionTarget : Any>(
             position = Position.Target(DpOffset(0.dp, 0.dp)),
             corner = RoundedCorners.Target(0),
         )
-    
+
     private val destroyedState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
@@ -83,7 +84,7 @@ class ModalMotionController<InteractionTarget : Any>(
                 )
 
                 Drag.VerticalDirection.DOWN -> Gesture(
-                    operation = Revert(),
+                    operation = if (state.fullScreen == null) Dismiss() else Revert(),
                     completeAt = Offset(0f, height)
                 )
 

@@ -12,7 +12,10 @@ class Dismiss<InteractionTarget : Any>(
     override var mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) : BaseOperation<ModalModel.State<InteractionTarget>>() {
 
-    override fun isApplicable(state: ModalModel.State<InteractionTarget>) = state.modal != null || state.fullScreen != null
+    override fun isApplicable(state: ModalModel.State<InteractionTarget>) =
+        state.modal != null || state.fullScreen != null
+
+    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) = baseLineState
 
     override fun createTargetState(fromState: ModalModel.State<InteractionTarget>) =
         if (fromState.created.isNotEmpty()) {
@@ -35,8 +38,6 @@ class Dismiss<InteractionTarget : Any>(
                 )
             )
         }
-
-    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) = baseLineState
 }
 
 fun <InteractionTarget : Any> Modal<InteractionTarget>.dismiss(

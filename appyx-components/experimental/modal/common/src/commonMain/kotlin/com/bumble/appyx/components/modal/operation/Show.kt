@@ -15,15 +15,15 @@ class Show<InteractionTarget : Any>(
     override fun isApplicable(state: ModalModel.State<InteractionTarget>) =
         state.created.isNotEmpty()
 
-    override fun createTargetState(fromState: ModalModel.State<InteractionTarget>): ModalModel.State<InteractionTarget> =
+    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) = baseLineState
+
+    override fun createTargetState(fromState: ModalModel.State<InteractionTarget>) =
         fromState.copy(
             created = fromState.created.dropLast(1),
             modal = fromState.created.last(),
             fullScreen = null,
             destroyed = fromState.destroyed + listOfNotNull(fromState.modal, fromState.fullScreen)
         )
-
-    override fun createFromState(baseLineState: ModalModel.State<InteractionTarget>) = baseLineState
 }
 
 fun <InteractionTarget : Any> Modal<InteractionTarget>.show(

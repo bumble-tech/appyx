@@ -26,6 +26,7 @@ import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 @Composable
 @Suppress("LongMethod", "MagicNumber")
 fun ModalExperiment(
+    modifier: Modifier = Modifier,
     motionController: (UiContext) -> BaseMotionController<Target, ModalModel.State<Target>, *, *>
 ) {
     val items = listOf(
