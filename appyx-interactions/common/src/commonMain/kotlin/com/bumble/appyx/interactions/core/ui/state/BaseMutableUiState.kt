@@ -10,6 +10,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.layout.onPlaced
 import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -36,9 +37,10 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
 
     abstract val modifier: Modifier
 
-    private val _isBoundsVisible = MutableStateFlow(false)
+    private val isBoundsVisible = MutableStateFlow(false)
+    private val isVisibleInParent = MutableStateFlow(false)
     private val visibilitySources: Iterable<StateFlow<Boolean>> =
-        motionProperties.mapNotNull { it.isVisibleFlow } + _isBoundsVisible
+        motionProperties.mapNotNull { it.isVisibleFlow } + isBoundsVisible
 
     val isVisible: StateFlow<Boolean>
         get() = combineState(
@@ -63,14 +65,25 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
             }
             .then(modifier)
             .fillMaxSize()
+            .layout { measurable, constraints ->
+                val placeable = measurable.measure(constraints)
+                layout(placeable.width, placeable.height) {
+                    placeable.place(0, 0)
+                    if (uiContext.clipToBounds) {
+                        isBoundsVisible.update {
+                            isVisibleInParent.value && placeable.width > 0f && placeable.height > 0f
+                        }
+                    } else {
+                        isBoundsVisible.update {
+                            placeable.width > 0f && placeable.height > 0f
+                        }
+                    }
+                }
+            }
             .onPlaced { coordinates ->
                 if (uiContext.clipToBounds) {
-                    _isBoundsVisible.update {
-                        coordinates.isVisibleInParent() && coordinates.isVisibleInWindow()
-                    }
-                } else {
-                    _isBoundsVisible.update {
-                        coordinates.isVisibleInWindow()
+                    isVisibleInParent.update {
+                        coordinates.isVisibleInParent()
                     }
                 }
             }
