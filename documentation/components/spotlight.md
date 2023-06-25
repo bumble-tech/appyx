@@ -74,6 +74,20 @@ classname="compose_mpp_sample",
 
 ### Fader
 
+Class: `SpotlightFader`
+
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/spotlight/fader/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:spotlight:fader:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-spotlight-fader",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
 ### Custom
 
 You can always create your own visualisations for Appyx components. Find more info in [UI representation](../interactions/uirepresentation.md).

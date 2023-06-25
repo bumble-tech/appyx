@@ -59,6 +59,7 @@ include(
     ":demos:mkdocs:appyx-components:spotlight:sliderscale:web",
     ":demos:mkdocs:appyx-components:spotlight:sliderrotation:web",
     ":demos:mkdocs:appyx-components:spotlight:stack3d:web",
+    ":demos:mkdocs:appyx-components:spotlight:fader:web",
     ":demos:mkdocs:appyx-components:common",
     ":ksp:mutable-ui-processor",
     ":utils:customisations",

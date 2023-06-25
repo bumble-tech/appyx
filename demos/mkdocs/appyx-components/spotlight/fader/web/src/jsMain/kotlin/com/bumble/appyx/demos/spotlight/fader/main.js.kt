@@ -1,4 +1,4 @@
-package com.bumble.appyx.demos.spotlight.sliderrotation
+package com.bumble.appyx.demos.spotlight.fader
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,14 +27,14 @@ fun main() {
                     .onSizeChanged { size = it }
             ) {
                 if (size != IntSize.Zero) {
-                    SpotlightSliderRotationSample(
+                    SpotlightFaderSample(
                         screenWidthPx = size.width,
                         screenHeightPx = size.height,
                         modifier = Modifier
                             .fillMaxSize()
                             .background(color_dark)
                             .padding(
-                                horizontal = 85.dp,
+                                horizontal = 60.dp,
                                 vertical = 16.dp
                             )
                     )
