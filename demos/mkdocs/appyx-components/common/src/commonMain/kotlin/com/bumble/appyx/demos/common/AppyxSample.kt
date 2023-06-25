@@ -6,12 +6,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -24,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.demos.common.InteractionTarget.Element
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.sample.Children
 import kotlin.random.Random
 
@@ -45,16 +43,28 @@ fun AppyxWebSample(
 ) {
     InteractionModelSetup(interactionModel)
 
-    Box(
+    Column(
         modifier = modifier,
+        horizontalAlignment = CenterHorizontally,
     ) {
-        ModelUi(
+        Children(
+            interactionModel = interactionModel,
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            interactionModel = interactionModel,
-            isMaxSize = isChildMaxSize,
-        )
-        Controls(actions = actions)
+            modifier = Modifier.weight(0.8f)
+        ) { elementUiModel ->
+            ModalUi(elementUiModel = elementUiModel, isChildMaxSize = isChildMaxSize)
+        }
+        Row(
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.1f),
+        ) {
+            actions.forEach { entry ->
+                Action(text = entry.key, action = entry.value)
+            }
+        }
     }
 }
 
@@ -73,70 +83,43 @@ val colors = listOf(
 )
 
 @Composable
-fun ModelUi(
-    screenWidthPx: Int,
-    screenHeightPx: Int,
-    interactionModel: BaseInteractionModel<InteractionTarget, Any>,
-    isMaxSize: Boolean,
-    modifier: Modifier = Modifier.fillMaxSize()
+fun ModalUi(
+    elementUiModel: ElementUiModel<InteractionTarget>,
+    isChildMaxSize: Boolean,
+    modifier: Modifier = Modifier
 ) {
-    Children(
-        interactionModel = interactionModel,
-        screenWidthPx = screenWidthPx,
-        screenHeightPx = screenHeightPx,
+    Box(
         modifier = modifier
-    ) { elementUiModel ->
-        Box(Modifier.fillMaxSize()) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .fillMaxHeight(0.8f)
-                    .fillMaxWidth(if (!isMaxSize) 0.3f else 1f)
-                    .then(elementUiModel.modifier)
-                    .background(
-                        color = when (val target = elementUiModel.element.interactionTarget) {
-                            is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
-                        },
-                        shape = RoundedCornerShape(if (!isMaxSize) 8 else 0)
-                    )
-            ) {
-                Text(
-                    modifier = Modifier.align(Alignment.Center),
-                    text = elementUiModel.element.interactionTarget.toString(),
-                    fontSize = 12.sp,
-                    color = Color.White
-                )
-            }
-        }
+            .fillMaxSize()
+            .then(elementUiModel.modifier)
+            .background(
+                color = when (val target = elementUiModel.element.interactionTarget) {
+                    is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
+                },
+                shape = RoundedCornerShape(if (!isChildMaxSize) 8 else 0)
+            )
+    ) {
+        Text(
+            modifier = Modifier.align(Alignment.Center),
+            text = elementUiModel.element.interactionTarget.toString(),
+            fontSize = 12.sp,
+            color = Color.White
+        )
     }
 }
 
 @Composable
-private fun Controls(
-    actions: Map<String, () -> Unit>,
-    modifier: Modifier = Modifier.fillMaxSize()
+private fun Action(
+    text: String,
+    action: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = CenterHorizontally
+    Box(
+        modifier = modifier
+            .background(color_primary, shape = RoundedCornerShape(4.dp))
+            .clickable { action.invoke() }
+            .padding(horizontal = 18.dp, vertical = 9.dp)
     ) {
-        Row(
-            horizontalArrangement = Arrangement.Center
-        ) {
-            actions.keys.forEachIndexed { index, actionText ->
-                Box(
-                    modifier = Modifier
-                        .background(color_primary, shape = RoundedCornerShape(4.dp))
-                        .clickable { actions.getValue(actionText).invoke() }
-                        .padding(horizontal = 18.dp, vertical = 9.dp)
-                ) {
-                    Text(actionText)
-                }
-                if (index != 0 || index != actions.size - 1) {
-                    Spacer(modifier = Modifier.width(16.dp))
-                }
-            }
-        }
+        Text(text)
     }
 }

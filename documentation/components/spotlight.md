@@ -11,6 +11,18 @@ It's great for flows or tabbed containers.
 
 Class: `SpotlightSlider`
 
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-spotlight-slider",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
 
 ### Slider + scale
 
