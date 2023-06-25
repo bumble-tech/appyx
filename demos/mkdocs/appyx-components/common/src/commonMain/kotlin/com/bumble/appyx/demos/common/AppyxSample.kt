@@ -40,6 +40,7 @@ fun AppyxWebSample(
     screenHeightPx: Int,
     interactionModel: BaseInteractionModel<InteractionTarget, Any>,
     actions: Map<String, () -> Unit>,
+    isChildMaxSize: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     InteractionModelSetup(interactionModel)
@@ -51,6 +52,7 @@ fun AppyxWebSample(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             interactionModel = interactionModel,
+            isMaxSize = isChildMaxSize,
         )
         Controls(actions = actions)
     }
@@ -75,6 +77,7 @@ fun ModelUi(
     screenWidthPx: Int,
     screenHeightPx: Int,
     interactionModel: BaseInteractionModel<InteractionTarget, Any>,
+    isMaxSize: Boolean,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     Children(
@@ -88,13 +91,13 @@ fun ModelUi(
                 modifier = Modifier
                     .align(Alignment.TopCenter)
                     .fillMaxHeight(0.8f)
-                    .fillMaxWidth(0.30f)
+                    .fillMaxWidth(if (!isMaxSize) 0.3f else 1f)
                     .then(elementUiModel.modifier)
                     .background(
                         color = when (val target = elementUiModel.element.interactionTarget) {
                             is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
                         },
-                        shape = RoundedCornerShape(8)
+                        shape = RoundedCornerShape(if (!isMaxSize) 8 else 0)
                     )
             ) {
                 Text(

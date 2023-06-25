@@ -31,6 +31,20 @@ classname="compose_mpp_sample",
 
 ### Parallax
 
+Class: `BackStackParallax`
+
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-backstack-parallax",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
 ### 3D stack
 
 ### Fader
