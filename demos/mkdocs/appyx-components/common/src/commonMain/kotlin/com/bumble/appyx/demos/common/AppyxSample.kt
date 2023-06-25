@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -51,7 +52,7 @@ fun AppyxWebSample(
             interactionModel = interactionModel,
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            modifier = Modifier.weight(0.8f)
+            modifier = Modifier.weight(0.9f)
         ) { elementUiModel ->
             ModalUi(elementUiModel = elementUiModel, isChildMaxSize = isChildMaxSize)
         }
@@ -90,7 +91,8 @@ fun ModalUi(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize()
+            .fillMaxHeight(0.8f)
+            .fillMaxWidth()
             .then(elementUiModel.modifier)
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {

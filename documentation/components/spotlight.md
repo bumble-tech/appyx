@@ -26,6 +26,20 @@ classname="compose_mpp_sample",
 
 ### Slider + scale
 
+Class: `SpotlightSliderScale`
+
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderscale/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:spotlight:sliderscale:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-spotlight-sliderscale",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
 ### Slider + rotation
 
 ### 3D stack

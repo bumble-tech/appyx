@@ -1,4 +1,4 @@
-package com.bumble.appyx.demos.spotlight.slider
+package com.bumble.appyx.demos.spotlight.sliderscale
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,7 +27,7 @@ fun main() {
                     .onSizeChanged { size = it }
             ) {
                 if (size != IntSize.Zero) {
-                    SpotlightSliderSample(
+                    SpotlightSliderScaleSample(
                         screenWidthPx = size.width,
                         screenHeightPx = size.height,
                         modifier = Modifier
