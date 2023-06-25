@@ -10,8 +10,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInWindow
-import androidx.compose.ui.layout.layout
-import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.onGloballyPositioned
 import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -37,10 +36,9 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
 
     abstract val modifier: Modifier
 
-    private val isBoundsVisible = MutableStateFlow(false)
-    private val isVisibleInParent = MutableStateFlow(false)
+    private val _isBoundsVisible = MutableStateFlow(false)
     private val visibilitySources: Iterable<StateFlow<Boolean>> =
-        motionProperties.mapNotNull { it.isVisibleFlow } + isBoundsVisible
+        motionProperties.mapNotNull { it.isVisibleFlow } + _isBoundsVisible
 
     val isVisible: StateFlow<Boolean>
         get() = combineState(
@@ -65,25 +63,14 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
             }
             .then(modifier)
             .fillMaxSize()
-            .layout { measurable, constraints ->
-                val placeable = measurable.measure(constraints)
-                layout(placeable.width, placeable.height) {
-                    placeable.place(0, 0)
-                    if (uiContext.clipToBounds) {
-                        isBoundsVisible.update {
-                            isVisibleInParent.value && placeable.width > 0f && placeable.height > 0f
-                        }
-                    } else {
-                        isBoundsVisible.update {
-                            placeable.width > 0f && placeable.height > 0f
-                        }
-                    }
-                }
-            }
-            .onPlaced { coordinates ->
+            .onGloballyPositioned { coordinates ->
                 if (uiContext.clipToBounds) {
-                    isVisibleInParent.update {
-                        coordinates.isVisibleInParent()
+                    _isBoundsVisible.update {
+                        coordinates.isVisibleInParent() && coordinates.isVisibleInWindow()
+                    }
+                } else {
+                    _isBoundsVisible.update {
+                        coordinates.isVisibleInWindow()
                     }
                 }
             }
@@ -96,7 +83,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
     // If element is invisible boundsInWindow will have width == 0 or height == 0 or both
     private fun LayoutCoordinates.isVisibleInWindow(): Boolean {
         val boundsInWindow = this.boundsInWindow()
-        return (boundsInWindow.width > 0f && boundsInWindow.height > 0f)
+        return boundsInWindow.width > 0f && boundsInWindow.height > 0f
     }
 
     val isAnimating: Flow<Boolean>
