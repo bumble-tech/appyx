@@ -54,6 +54,7 @@ include(
     ":demos:mkdocs:appyx-components:backstack:fader:web",
     ":demos:mkdocs:appyx-components:backstack:slider:web",
     ":demos:mkdocs:appyx-components:backstack:parallax:web",
+    ":demos:mkdocs:appyx-components:backstack:stack3d:web",
     ":demos:mkdocs:appyx-components:common",
     ":ksp:mutable-ui-processor",
     ":utils:customisations",
