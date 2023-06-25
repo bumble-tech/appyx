@@ -58,6 +58,20 @@ classname="compose_mpp_sample",
 
 ### 3D stack
 
+Class: `SpotlightStack3D`
+
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/spotlight/stack3d/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:spotlight:stack3d:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-spotlight-stack3d",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
 ### Fader
 
 ### Custom
