@@ -16,8 +16,6 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 implementation(project(":appyx-interactions:appyx-interactions"))
-                implementation(project(":appyx-components:stable:backstack:backstack"))
-                implementation(project(":demos:mkdocs:appyx-components:common"))
             }
         }
     }

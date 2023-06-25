@@ -15,6 +15,20 @@ The back stack also supports different back press strategies (see further down b
 
 ### Slider
 
+Class: `BackStackSlider`
+
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/backstack/slider/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:backstack:slider:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-backstack-slider",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
 ### Parallax
 
 ### 3D stack

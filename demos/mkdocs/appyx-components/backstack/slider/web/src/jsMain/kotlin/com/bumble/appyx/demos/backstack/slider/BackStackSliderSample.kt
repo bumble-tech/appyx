@@ -1,4 +1,4 @@
-package com.bumble.appyx.demos.backstack.fader
+package com.bumble.appyx.demos.backstack.slider
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -8,14 +8,14 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
-import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
-import com.bumble.appyx.demos.common.AppyxWebSample
-import com.bumble.appyx.demos.common.InteractionTarget
+import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.demos.common.AppyxWebSample
+import com.bumble.appyx.demos.common.InteractionTarget
 
 @Composable
-fun BackStackFaderSample(
+fun BackStackSliderSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
@@ -31,7 +31,7 @@ fun BackStackFaderSample(
         BackStack(
             scope = coroutineScope,
             model = model,
-            motionController = { BackStackFader(it) },
+            motionController = { BackStackSlider(it) },
             gestureFactory = { GestureFactory.Noop() }
         )
     val actions = mapOf(
