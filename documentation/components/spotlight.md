@@ -42,6 +42,20 @@ classname="compose_mpp_sample",
 
 ### Slider + rotation
 
+Class: `SpotlightSliderRotation`
+
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderrotation/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:spotlight:sliderrotation:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-spotlight-sliderrotation",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
 ### 3D stack
 
 ### Fader
