@@ -4,11 +4,11 @@
 
 {==
 
-A component packaged together with Appyx is called an `InteractionModel`. 
+A component packaged together with Appyx is called an `AppyxComponent`. 
 
 ==}
 
-## Using InteractionModels
+## Using AppyxComponents
 
 If you're solely interested in using already created components, you don't need to learn about the internals of them. This page introduces the minimum information to get them into your Compose-based projects.
 
@@ -17,14 +17,14 @@ If you're solely interested in using already created components, you don't need 
 
 ``` mermaid
 flowchart TB
-  O[Operation] --> I[InteractionModel] --> |Modifier| C(["@Composable"]);
+  O[Operation] --> I[AppyxComponent] --> |Modifier| C(["@Composable"]);
   C --> |Gesture| O
   B([Business logic]) --> O
 ```
 
 Where:
 
-* `InteractionModel` – The packaged component; its output will result in `@Composable` elements with animated `Modifiers`
+* `AppyxComponent` – The packaged component; its output will result in `@Composable` elements with animated `Modifiers`
 * `Operation` – Allows to change the state of the component. It can be triggered programmatically or by gestures. Both options are specific to the component implementation.
 
 
@@ -35,8 +35,8 @@ This section shows a generic approach that should be applicable to most componen
 ```kotlin
 @Composable
 fun SomeComposable() {
-    val interactionModel = remember {
-        SomeInteractionModel(
+    val appyxComponent = remember {
+        SomeAppyxComponent(
             // List of elements, initial state, etc. go in the model:
             model = SomeTransitionModel(/*...*/),
             
@@ -60,15 +60,15 @@ fun SomeComposable() {
 }
 ```
 
-## Rendering the InteractionModel
+## Rendering the AppyxComponent
 
-You can render your component with the `Children` composable. Make sure to apply `elementUiModel.modifier`  if you override the optional `element` rendering.
+You can render your component with the `AppyxComponent` composable. Make sure to apply `elementUiModel.modifier`  if you override the optional `element` rendering.
 
 ```kotlin
 @Composable
 fun SomeComposable() {
-    Children(
-        interactionModel = yourModel,
+    AppyxComponent(
+        appyxComponent = yourComponent,
         clipToBounds = false,
         modifier = Modifier,
         element = { elementUiModel ->
@@ -81,7 +81,7 @@ fun SomeComposable() {
 }
 ```
 
-You can also make use of the `DraggableChildren` composable, if you have components that allow gestures to control them:
+You can also make use of the `DraggableAppyxComponent` composable, if you have components that allow gestures to control them:
 
 ```kotlin
 @Composable
@@ -90,7 +90,7 @@ fun SomeComposable() {
         modifier = Modifier,
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-        interactionModel = yourModel,
+        appyxComponent = yourComponent,
         gestureValidator = permissiveValidator,
     ) { elementUiModel ->
         YourElementComposable(
@@ -101,7 +101,7 @@ fun SomeComposable() {
 }
 ```
 
-## Interacting with the InteractionModel
+## Interacting with the AppyxComponent
 
 How you use your model will depend on the specific component. However, typically, you will have a high level API to trigger changes, such as:
 

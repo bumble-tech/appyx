@@ -26,7 +26,7 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.operation.replace
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.composable.KnobControl
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -47,7 +47,7 @@ class BackstackDebugNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    appyxComponent = backStack
 ) {
 
     init {
@@ -99,8 +99,8 @@ class BackstackDebugNode(
             KnobControl(onValueChange = {
                 backStack.setNormalisedProgress(it)
             })
-            Children(
-                interactionModel = backStack,
+            AppyxComponent(
+                appyxComponent = backStack,
                 modifier = Modifier
                     .fillMaxSize()
                     .background(appyx_dark)

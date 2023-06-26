@@ -287,15 +287,15 @@ GestureSettleConfig(
 )
 ```
 
-## Configuring gestures in the InteractionModel
+## Configuring gestures in the AppyxComponent
 
-You can connect your gesture detection to your [Interaction model](interactionmodel.md) in client code such as:
+You can connect your gesture detection to your [AppyxComponent](appyxcomponent.md) in client code such as:
 
 ```kotlin
 @Composable
 fun SomeComposable() {
-    val interactionModel = remember {
-        SomeInteractionModel(
+    val appyxComponent = remember {
+        SomeAppyxComponent(
             // Required
             model = SomeTransitionModel(/*...*/),
             motionController = { SomeMotionController(/*...*/) } ,

@@ -22,15 +22,13 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextAlign.Companion
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -38,8 +36,8 @@ import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 private val defaultExtraTouch = 48f.dp
 
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     screenWidthPx: Int,
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
@@ -59,13 +57,13 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                                                                        },
 ) {
     val density = LocalDensity.current
-    val elementUiModels by interactionModel.uiModels.collectAsState()
+    val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
-        uiContext?.let { interactionModel.updateContext(it) }
+        uiContext?.let { appyxComponent.updateContext(it) }
     }
     Box(
         modifier = modifier
@@ -102,10 +100,10 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                             elementUiModel.copy(
                                 modifier = Modifier
                                     .offset { offsetCenter.round() }
-                                    .pointerInput(interactionModel) {
+                                    .pointerInput(appyxComponent) {
                                         detectDragGesturesOrCancellation(
                                             onDragStart = { position ->
-                                                interactionModel.onStartDrag(position)
+                                                appyxComponent.onStartDrag(position)
                                             },
                                             onDrag = { change, dragAmount ->
                                                 if (gestureValidator.isGestureValid(
@@ -114,15 +112,15 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableChildren(
                                                     )
                                                 ) {
                                                     change.consume()
-                                                    interactionModel.onDrag(dragAmount, density)
+                                                    appyxComponent.onDrag(dragAmount, density)
                                                     true
                                                 } else {
-                                                    interactionModel.onDragEnd()
+                                                    appyxComponent.onDragEnd()
                                                     false
                                                 }
                                             },
                                             onDragEnd = {
-                                                interactionModel.onDragEnd()
+                                                appyxComponent.onDragEnd()
                                             },
                                         )
                                     }

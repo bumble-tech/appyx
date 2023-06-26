@@ -31,7 +31,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -52,7 +52,7 @@ class SpotlightNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = spotlight
+    appyxComponent = spotlight
 ) {
     private val newItems = List(7) { InteractionTarget.Child(it * 3) }
 
@@ -89,8 +89,8 @@ class SpotlightNode(
                 .fillMaxSize()
                 .background(appyx_dark)
         ) {
-            Children(
-                interactionModel = spotlight,
+            AppyxComponent(
+                appyxComponent = spotlight,
                 modifier = Modifier
                     .padding(
                         horizontal = 64.dp,

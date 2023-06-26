@@ -1,6 +1,6 @@
 # Appyx Interactions – Overview
 
-A state-driven motion kit for Compose Multiplatform.
+A gesture-driven component kit for Compose Multiplatform.
 
 
 ## About the samples
@@ -211,7 +211,7 @@ In `IMMEDIATE` mode the current transition is interrupted and will not be finish
 3. And manipulate with gestures
 
 
-**You can find our packaged examples in `appyx-components`**
+**You can find our packaged examples in [Appyx components](../components/index.md)**
 
 Many of them are deployed as artifacts you can pull into your codebase too. You can also create your own ones. Some use-cases include:
 

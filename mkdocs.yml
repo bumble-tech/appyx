@@ -21,7 +21,7 @@ nav:
     - Overview: interactions/index.md
     - Using components: interactions/usage.md
     - Creating your own:
-      - Interaction model: interactions/interactionmodel.md
+      - Component overview: interactions/appyxcomponent.md
       - Transition model: interactions/transitionmodel.md
       - Operations: interactions/operations.md
       - UI representation: interactions/uirepresentation.md

@@ -30,7 +30,7 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.demos.backstack.fader.InteractionTarget.Element
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.Children
 import kotlin.random.Random
 
@@ -61,7 +61,7 @@ fun BackStackFaderSample(
         )
     }
 
-    InteractionModelSetup(backStack)
+    AppyxComponentSetup(backStack)
 
     Box(
         modifier = modifier,
@@ -99,7 +99,7 @@ fun ModelUi(
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
     Children(
-        interactionModel = backStack,
+        appyxComponent = backStack,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
         modifier = modifier

@@ -26,7 +26,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -34,7 +34,7 @@ import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> Children(
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     screenWidthPx: Int,
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
@@ -47,12 +47,12 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     },
 ) {
     val density = LocalDensity.current
-    val elementUiModels by interactionModel.uiModels.collectAsState()
+    val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
-        uiContext?.let { interactionModel.updateContext(it) }
+        uiContext?.let { appyxComponent.updateContext(it) }
     }
     Box(
         modifier = modifier

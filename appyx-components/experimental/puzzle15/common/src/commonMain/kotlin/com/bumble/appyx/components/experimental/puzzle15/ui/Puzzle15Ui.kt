@@ -32,7 +32,7 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.RIGHT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.UP
 import com.bumble.appyx.interactions.AppyxLogger
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.Children
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -55,7 +55,7 @@ fun Puzzle15Ui(
         )
     }
 
-    InteractionModelSetup(puzzle15)
+    AppyxComponentSetup(puzzle15)
 
     Column(
         modifier = modifier.onKeyEvent {
@@ -79,7 +79,7 @@ fun Puzzle15Ui(
             Children(
                 screenWidthPx = screenWidthPx,
                 screenHeightPx = screenHeightPx,
-                interactionModel = puzzle15,
+                appyxComponent = puzzle15,
             ) { elementUiModel ->
                 if (elementUiModel.element.interactionTarget == Puzzle15Model.Tile.EmptyTile) {
                     Box(
