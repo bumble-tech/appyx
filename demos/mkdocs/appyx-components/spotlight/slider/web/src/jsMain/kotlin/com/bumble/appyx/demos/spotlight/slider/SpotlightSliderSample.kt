@@ -12,7 +12,6 @@ import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 @Composable
 fun SpotlightSliderSample(
@@ -33,7 +32,7 @@ fun SpotlightSliderSample(
             scope = coroutineScope,
             model = model,
             motionController = { SpotlightSlider(it) },
-            gestureFactory = { GestureFactory.Noop() }
+            gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     val actions = mapOf(
         "Prev" to { spotlight.previous() },

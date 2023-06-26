@@ -8,11 +8,11 @@ import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
+import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 @Composable
 fun SpotlightSliderRotationSample(
@@ -33,7 +33,7 @@ fun SpotlightSliderRotationSample(
             scope = coroutineScope,
             model = model,
             motionController = { SpotlightSliderRotation(it) },
-            gestureFactory = { GestureFactory.Noop() }
+            gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     val actions = mapOf(
         "Prev" to { spotlight.previous() },

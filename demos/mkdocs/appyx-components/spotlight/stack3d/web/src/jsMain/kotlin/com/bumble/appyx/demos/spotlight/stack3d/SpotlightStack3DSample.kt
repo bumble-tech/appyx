@@ -1,5 +1,6 @@
 package com.bumble.appyx.demos.spotlight.stack3d
 
+import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -8,11 +9,11 @@ import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
+import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 @Composable
 fun SpotlightStack3DSample(
@@ -33,7 +34,13 @@ fun SpotlightStack3DSample(
             scope = coroutineScope,
             model = model,
             motionController = { SpotlightStack3D(it) },
-            gestureFactory = { GestureFactory.Noop() }
+            gestureFactory = {
+                SpotlightSlider.Gestures(
+                    transitionBounds = it,
+                    orientation = Orientation.Vertical,
+                    reverseOrientation = true,
+                )
+            }
         )
     val actions = mapOf(
         "Prev" to { spotlight.previous() },
