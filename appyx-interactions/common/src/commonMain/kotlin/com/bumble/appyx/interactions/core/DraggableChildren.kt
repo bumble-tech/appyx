@@ -20,7 +20,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
@@ -58,7 +57,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                                                                        },
 ) {
     val density = LocalDensity.current
-    val elementUiModels = appyxComponent.uiModels.collectAsState(listOf())
+    val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
@@ -77,7 +76,6 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
-                        containerBoundsInRoot = it.boundsInRoot(),
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
@@ -86,48 +84,61 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
             }
             .fillMaxSize()
     ) {
-        elementUiModels.value.forEach { elementUiModel ->
-            key(elementUiModel.element.id) {
-                var transformedBoundingBox by remember(elementUiModel.element.id) { mutableStateOf(Rect.Zero) }
-                var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
-                val isVisible by elementUiModel.visibleState.collectAsState()
-                elementUiModel.persistentContainer()
-                if (isVisible) {
-                    element.invoke(
-                        elementUiModel.copy(
-                            modifier = Modifier
-                                .offset { offsetCenter.round() }
-                                .pointerInput(appyxComponent) {
-                                    detectDragGesturesOrCancellation(
-                                        onDragStart = { position ->
-                                            appyxComponent.onStartDrag(position)
-                                        },
-                                        onDrag = { change, dragAmount ->
-                                            if (gestureValidator.isGestureValid(change.position, transformedBoundingBox.translate(-offsetCenter))) {
-                                                change.consume()
-                                                appyxComponent.onDrag(dragAmount, density)
-                                                true
-                                            } else {
-                                                appyxComponent.onDragEnd()
-                                                false
-                                            }
-                                        },
-                                        onDragEnd = {
-                                            appyxComponent.onDragEnd()
-                                        },
-                                    )
-                                }
-                                .offset { -offsetCenter.round() }
-                                .then(elementUiModel.modifier)
-                                .onPlaced {
-                                    val localCenter = Offset(it.size.width.toFloat(), it.size.height.toFloat()) / 2f
-                                    transformedBoundingBox = it.boundsInParent().inflate(gestureExtraTouchAreaPx)
-                                    offsetCenter = transformedBoundingBox.center - localCenter
-                                }
+        elementUiModels
+            .forEach { elementUiModel ->
+                key(elementUiModel.element.id) {
+                    var transformedBoundingBox by remember(elementUiModel.element.id) {
+                        mutableStateOf(
+                            Rect.Zero
                         )
-                    )
+                    }
+                    var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
+                    val isVisible by elementUiModel.visibleState.collectAsState()
+                    elementUiModel.persistentContainer()
+                    if (isVisible) {
+                        element.invoke(
+                            elementUiModel.copy(
+                                modifier = Modifier
+                                    .offset { offsetCenter.round() }
+                                    .pointerInput(appyxComponent) {
+                                        detectDragGesturesOrCancellation(
+                                            onDragStart = { position ->
+                                                appyxComponent.onStartDrag(position)
+                                            },
+                                            onDrag = { change, dragAmount ->
+                                                if (gestureValidator.isGestureValid(
+                                                        change.position,
+                                                        transformedBoundingBox.translate(-offsetCenter)
+                                                    )
+                                                ) {
+                                                    change.consume()
+                                                    appyxComponent.onDrag(dragAmount, density)
+                                                    true
+                                                } else {
+                                                    appyxComponent.onDragEnd()
+                                                    false
+                                                }
+                                            },
+                                            onDragEnd = {
+                                                appyxComponent.onDragEnd()
+                                            },
+                                        )
+                                    }
+                                    .offset { -offsetCenter.round() }
+                                    .then(elementUiModel.modifier)
+                                    .onPlaced {
+                                        val localCenter = Offset(
+                                            it.size.width.toFloat(),
+                                            it.size.height.toFloat()
+                                        ) / 2f
+                                        transformedBoundingBox =
+                                            it.boundsInParent().inflate(gestureExtraTouchAreaPx)
+                                        offsetCenter = transformedBoundingBox.center - localCenter
+                                    }
+                            )
+                        )
+                    }
                 }
             }
-        }
     }
 }
