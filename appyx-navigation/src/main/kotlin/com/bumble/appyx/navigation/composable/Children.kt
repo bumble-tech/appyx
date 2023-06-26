@@ -15,7 +15,6 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
@@ -65,7 +64,6 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
-                        containerBoundsInRoot = it.boundsInRoot(),
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
@@ -92,11 +90,6 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
         block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
     ) {
 
-        val framesFlow = remember {
-            this@ChildrenTransitionScope.interactionModel.uiModels
-        }
-
-        val visibleFrames = framesFlow.collectAsState(initial = emptyList())
         val saveableStateHolder = rememberSaveableStateHolder()
 
         LaunchedEffect(this@ChildrenTransitionScope.interactionModel) {
@@ -109,7 +102,9 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
                 }
         }
 
-        visibleFrames.value
+        val uiModels by this@ChildrenTransitionScope.interactionModel.uiModels.collectAsState()
+
+        uiModels
             .forEach { uiModel ->
                 key(uiModel.element.id) {
                     uiModel.persistentContainer()
