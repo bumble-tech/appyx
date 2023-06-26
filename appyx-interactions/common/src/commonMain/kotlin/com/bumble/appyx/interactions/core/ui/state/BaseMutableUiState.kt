@@ -40,13 +40,12 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
     private val visibilitySources: Iterable<StateFlow<Boolean>> =
         motionProperties.mapNotNull { it.isVisibleFlow } + _isBoundsVisible
 
-    val isVisible: StateFlow<Boolean>
-        get() = combineState(
-            visibilitySources,
-            uiContext.coroutineScope
-        ) { booleanArray ->
-            booleanArray.all { it }
-        }
+    val isVisible: StateFlow<Boolean> = combineState(
+        visibilitySources,
+        uiContext.coroutineScope
+    ) { booleanArray ->
+        booleanArray.all { it }
+    }
 
     /**
      * This modifier duplicates original modifier, and will be placed on the dummy compose view
@@ -86,8 +85,8 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
         return boundsInWindow.width > 0f && boundsInWindow.height > 0f
     }
 
-    val isAnimating: Flow<Boolean>
-        get() = combine(motionProperties.map { it.isAnimating }) { booleanArray ->
+    val isAnimating: Flow<Boolean> =
+        combine(motionProperties.map { it.isAnimating }) { booleanArray ->
             booleanArray.any { it }
         }
 
