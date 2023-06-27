@@ -23,7 +23,7 @@ fun SpotlightSliderSample(
     val model = remember {
         SpotlightModel<InteractionTarget>(
             items = List(7) { InteractionTarget.Element(it) },
-            initialActiveIndex = 0f,
+            initialActiveIndex = 1f,
             savedStateMap = null
         )
     }
