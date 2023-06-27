@@ -5,7 +5,7 @@ import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-interface InteractionModel<InteractionTarget : Any, ModelState : Any> : SavesInstanceState {
+interface AppyxComponent<InteractionTarget : Any, ModelState : Any> : SavesInstanceState {
 
     class Elements<InteractionTarget> private constructor(
         val onScreen: Set<Element<InteractionTarget>>,

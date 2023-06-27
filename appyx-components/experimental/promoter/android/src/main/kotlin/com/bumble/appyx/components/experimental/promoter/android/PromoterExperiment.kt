@@ -62,7 +62,7 @@ fun PromoterExperiment() {
             .fillMaxSize()
     ) {
         SampleChildren(
-            interactionModel = promoter,
+            appyxComponent = promoter,
             modifier = Modifier
                 .weight(0.9f)
                 .padding(

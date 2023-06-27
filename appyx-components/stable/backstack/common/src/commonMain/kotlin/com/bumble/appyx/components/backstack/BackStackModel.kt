@@ -39,6 +39,13 @@ class BackStackModel<InteractionTarget : Any>(
         val destroyed: Elements<InteractionTarget> = listOf(),
     ) : Parcelable
 
+    constructor(
+        initialTarget: InteractionTarget,
+        savedStateMap: SavedStateMap?,
+    ) : this(
+        initialTargets = listOf(initialTarget),
+        savedStateMap = savedStateMap
+    )
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         (created + active + stashed + destroyed).toSet()
 

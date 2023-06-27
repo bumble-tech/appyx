@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.model.InteractionModel
+import com.bumble.appyx.interactions.core.model.AppyxComponent
 import com.bumble.appyx.interactions.core.model.plus
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.permanent.PermanentInteractionModel
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.interactions.permanent.PermanentModel
 import com.bumble.appyx.interactions.permanent.operation.addUnique
 import com.bumble.appyx.navigation.Appyx
@@ -47,7 +47,7 @@ import kotlin.reflect.KClass
 @Suppress("TooManyFunctions")
 @Stable
 abstract class ParentNode<InteractionTarget : Any>(
-    interactionModel: InteractionModel<InteractionTarget, *>,
+    appyxComponent: AppyxComponent<InteractionTarget, *>,
     buildContext: BuildContext,
     view: ParentNodeView<InteractionTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
@@ -56,14 +56,14 @@ abstract class ParentNode<InteractionTarget : Any>(
 ) : Node(
     view = view,
     buildContext = buildContext,
-    plugins = plugins + interactionModel + childAware
+    plugins = plugins + appyxComponent + childAware
 ), Resolver<InteractionTarget> {
 
-    private val permanentInteractionModel = PermanentInteractionModel<InteractionTarget>(
+    private val permanentAppyxComponent = PermanentAppyxComponent<InteractionTarget>(
         model = PermanentModel(buildContext.savedStateMap)
     )
-    val interactionModel: InteractionModel<InteractionTarget, *> =
-        interactionModel + permanentInteractionModel
+    val appyxComponent: AppyxComponent<InteractionTarget, *> =
+        appyxComponent + permanentAppyxComponent
 
     private val childNodeCreationManager = ChildNodeCreationManager<InteractionTarget>(
         savedStateMap = buildContext.savedStateMap,
@@ -74,7 +74,7 @@ abstract class ParentNode<InteractionTarget : Any>(
         get() = childNodeCreationManager.children
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
-        interactionModel = this.interactionModel,
+        appyxComponent = this.appyxComponent,
         children = children,
         keepMode = childKeepMode,
         coroutineScope = lifecycleScope,
@@ -97,7 +97,7 @@ abstract class ParentNode<InteractionTarget : Any>(
     ) {
 
         LaunchedEffect(interactionTarget) {
-            permanentInteractionModel.addUnique(interactionTarget)
+            permanentAppyxComponent.addUnique(interactionTarget)
         }
         val scope = rememberCoroutineScope()
         val child by remember(interactionTarget, this) {
@@ -127,29 +127,29 @@ abstract class ParentNode<InteractionTarget : Any>(
 
         // TODO move to plugins
         if (state == Lifecycle.State.DESTROYED) {
-            interactionModel.destroy()
+            appyxComponent.destroy()
         }
     }
 
     @Composable
     override fun DerivedSetup() {
-        InteractionModelSetup(interactionModel = interactionModel)
+        AppyxComponentSetup(appyxComponent = appyxComponent)
         BackHandler()
     }
 
     @Composable
     private fun BackHandler() {
         //todo support delegating to plugins
-        val canHandleBack = interactionModel
+        val canHandleBack = appyxComponent
             .canHandeBackPress()
             .collectAsState(initial = false)
         BackHandler(canHandleBack.value) {
-            interactionModel.handleBackPress()
+            appyxComponent.handleBackPress()
         }
     }
 
     override fun performUpNavigation(): Boolean =
-        interactionModel.handleBackPress() || super.performUpNavigation()
+        appyxComponent.handleBackPress() || super.performUpNavigation()
 
     /**
      * attachChild executes provided action e.g. backstack.push(NodeANavTarget) and waits for the specific

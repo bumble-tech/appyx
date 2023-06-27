@@ -30,14 +30,14 @@ import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController.Companion.toTargetUiState
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
-import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
 
 @Composable
@@ -75,7 +75,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
         )
     }
 
-    InteractionModelSetup(testDrive)
+    AppyxComponentSetup(testDrive)
 
     Column(
         modifier = modifier,
@@ -135,10 +135,10 @@ fun <InteractionTarget : Any> TestDriveUi(
                 vertical = 12.dp
             )
     ) {
-        DraggableChildren(
+        DraggableAppyxComponent(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
-            interactionModel = testDrive,
+            appyxComponent = testDrive,
             gestureValidator = gestureValidator,
         ) { elementUiModel ->
             Box(

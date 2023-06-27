@@ -9,7 +9,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.hasTestTag
-import com.bumble.appyx.interactions.core.model.EmptyInteractionModel
+import com.bumble.appyx.interactions.core.model.EmptyAppyxComponent
 import com.bumble.appyx.navigation.AppyxTestScenario
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -51,7 +51,7 @@ class PermanentChildTest {
         buildContext: BuildContext,
     ) : ParentNode<InteractionTarget>(
         buildContext = buildContext,
-        interactionModel = EmptyInteractionModel(),
+        appyxComponent = EmptyAppyxComponent(),
     ) {
 
         @Parcelize

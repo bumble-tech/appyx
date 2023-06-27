@@ -8,7 +8,7 @@ import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.testing.InteractionTarget
-import com.bumble.appyx.interactions.testing.setupInteractionModel
+import com.bumble.appyx.interactions.testing.setupAppyxComponent
 import com.bumble.appyx.interactions.testing.waitUntilAnimationEnded
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -44,7 +44,7 @@ class SpotlightTest(private val testParam: TestParam) {
     @Test
     fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_false() {
         createSpotlightSlider(initialActiveIndex = 1f)
-        composeTestRule.setupInteractionModel(spotlight, 0.67f, clipToBounds = false)
+        composeTestRule.setupAppyxComponent(spotlight, 0.67f, clipToBounds = false)
         checkInteractionTargetsOnScreen(setOf(InteractionTarget.Child1, InteractionTarget.Child2, InteractionTarget.Child3))
 
         if (testParam.operationMode == Operation.Mode.KEYFRAME) {
@@ -64,7 +64,7 @@ class SpotlightTest(private val testParam: TestParam) {
     @Test
     fun spotlight_calculates_visible_elements_correctly_when_clipToBounds_is_true() {
         createSpotlightSlider(initialActiveIndex = 1f)
-        composeTestRule.setupInteractionModel(spotlight, 0.67f, clipToBounds = true)
+        composeTestRule.setupAppyxComponent(spotlight, 0.67f, clipToBounds = true)
 
         if (testParam.operationMode == Operation.Mode.KEYFRAME) {
             val animationDuration = 1000

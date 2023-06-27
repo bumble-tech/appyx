@@ -3,7 +3,7 @@ package com.bumble.appyx.interactions.core.model
 import com.bumble.appyx.withPrevious
 import kotlinx.coroutines.flow.map
 
-fun <InteractionTarget : Any, ModelState : Any> InteractionModel<InteractionTarget, ModelState>.removedElements() =
+fun <InteractionTarget : Any, ModelState : Any> AppyxComponent<InteractionTarget, ModelState>.removedElements() =
     this
         .elements
         .withPrevious()

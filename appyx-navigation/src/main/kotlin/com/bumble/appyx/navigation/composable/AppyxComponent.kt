@@ -15,11 +15,10 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.layout.boundsInRoot
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.model.removedElements
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -29,15 +28,15 @@ import gestureModifier
 import kotlin.math.roundToInt
 
 @Composable
-inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxComponent(
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
         children { child, elementUiModel ->
             child(
                 modifier = Modifier.gestureModifier(
-                    interactionModel = interactionModel,
+                    appyxComponent = appyxComponent,
                     key = elementUiModel.element,
                 )
             )
@@ -52,7 +51,7 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
-        uiContext?.let { interactionModel.updateContext(it) }
+        uiContext?.let { appyxComponent.updateContext(it) }
     }
     Box(
         modifier = modifier
@@ -65,7 +64,6 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
-                        containerBoundsInRoot = it.boundsInRoot(),
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
@@ -75,7 +73,7 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
     ) {
         block(
             ChildrenTransitionScope(
-                interactionModel = interactionModel
+                appyxComponent = appyxComponent
             )
         )
     }
@@ -83,7 +81,7 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
 }
 
 class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
-    private val interactionModel: BaseInteractionModel<InteractionTarget, NavState>
+    private val appyxComponent: BaseAppyxComponent<InteractionTarget, NavState>
 ) {
 
     @SuppressLint("ComposableNaming")
@@ -92,15 +90,10 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
         block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
     ) {
 
-        val framesFlow = remember {
-            this@ChildrenTransitionScope.interactionModel.uiModels
-        }
-
-        val visibleFrames = framesFlow.collectAsState(initial = emptyList())
         val saveableStateHolder = rememberSaveableStateHolder()
 
-        LaunchedEffect(this@ChildrenTransitionScope.interactionModel) {
-            this@ChildrenTransitionScope.interactionModel
+        LaunchedEffect(this@ChildrenTransitionScope.appyxComponent) {
+            this@ChildrenTransitionScope.appyxComponent
                 .removedElements()
                 .collect { deletedKeys ->
                     deletedKeys.forEach { navKey ->
@@ -109,7 +102,9 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
                 }
         }
 
-        visibleFrames.value
+        val uiModels by this@ChildrenTransitionScope.appyxComponent.uiModels.collectAsState()
+
+        uiModels
             .forEach { uiModel ->
                 key(uiModel.element.id) {
                     uiModel.persistentContainer()
