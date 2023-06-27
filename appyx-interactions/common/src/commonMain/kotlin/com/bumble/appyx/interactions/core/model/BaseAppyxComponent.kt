@@ -43,7 +43,7 @@ import kotlinx.coroutines.launch
 
 
 // TODO save/restore state
-open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
+open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
@@ -57,7 +57,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
     private val isDebug: Boolean = false
-) : InteractionModel<InteractionTarget, ModelState>,
+) : AppyxComponent<InteractionTarget, ModelState>,
     HasDefaultAnimationSpec<Float>,
     Draggable,
     UiContextAware {
@@ -93,9 +93,9 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     val uiModels: StateFlow<List<ElementUiModel<InteractionTarget>>> = _uiModels
 
     private var elementsJob: Job
-    private val _elements: MutableStateFlow<InteractionModel.Elements<InteractionTarget>> =
-        MutableStateFlow(InteractionModel.Elements(offScreen = model.elements.value))
-    override val elements: StateFlow<InteractionModel.Elements<InteractionTarget>> = _elements
+    private val _elements: MutableStateFlow<AppyxComponent.Elements<InteractionTarget>> =
+        MutableStateFlow(AppyxComponent.Elements(offScreen = model.elements.value))
+    override val elements: StateFlow<AppyxComponent.Elements<InteractionTarget>> = _elements
 
     init {
         // Before motionController is ready we consider all elements as off-screen
@@ -103,7 +103,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
             model
                 .elements
                 .collect {
-                    _elements.emit(InteractionModel.Elements(offScreen = it))
+                    _elements.emit(AppyxComponent.Elements(offScreen = it))
                 }
         }
     }
@@ -117,7 +117,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
             motionController.isAnimating()
                 .collect {
                     if (!it) {
-                        AppyxLogger.d("InteractionModel", "Finished animating")
+                        AppyxLogger.d("AppyxComponent", "Finished animating")
                         onAnimationsFinished()
                     } else {
                         onAnimationsStarted()
@@ -128,7 +128,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
         animationFinishedJob = scope.launch {
             motionController.finishedAnimations
                 .collect {
-                    AppyxLogger.d("InteractionModel", "$it onAnimation finished")
+                    AppyxLogger.d("AppyxComponent", "$it onAnimation finished")
                     model.cleanUpElement(it)
                 }
         }
@@ -165,7 +165,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
     override fun updateContext(uiContext: UiContext) {
         if (this.uiContext != uiContext) {
             this.uiContext = uiContext
-            AppyxLogger.d("InteractionModel", "new uiContext supplied: $uiContext")
+            AppyxLogger.d("AppyxComponent", "new uiContext supplied: $uiContext")
             _motionController = motionController(uiContext).also {
                 onMotionControllerReady(it)
             }
@@ -201,7 +201,7 @@ open class BaseInteractionModel<InteractionTarget : Any, ModelState : Any>(
                                 offScreen.add(element)
                             }
                         }
-                        InteractionModel.Elements(
+                        AppyxComponent.Elements(
                             onScreen = onScreen,
                             offScreen = offScreen
                         ) to elementUiModels

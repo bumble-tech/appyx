@@ -5,7 +5,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +24,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.LinearGradientShader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -36,12 +34,10 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.next
-import com.bumble.appyx.demos.sample2.InteractionTarget
 import com.bumble.appyx.demos.sample2.InteractionTarget.Child1
-import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.Children
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
 enum class InteractionTarget {
     Child1
@@ -64,7 +60,7 @@ fun Sample2(
         )
     }
 
-    InteractionModelSetup(testDrive)
+    AppyxComponentSetup(testDrive)
 
     Box(
         modifier = modifier,
@@ -142,8 +138,8 @@ fun <InteractionTarget : Any> ModelUi(
         }
     )
 
-    DraggableChildren(
-        interactionModel = testDrive,
+    DraggableAppyxComponent(
+        appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
         modifier = modifier.zIndex(2f)

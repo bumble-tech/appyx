@@ -1,6 +1,6 @@
 package com.bumble.appyx.interactions.permanent
 
-import com.bumble.appyx.interactions.core.model.InteractionModel
+import com.bumble.appyx.interactions.core.model.AppyxComponent
 import com.bumble.appyx.interactions.core.model.progress.InstantProgressController
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
@@ -13,16 +13,16 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class PermanentInteractionModel<InteractionTarget : Any>(
+class PermanentAppyxComponent<InteractionTarget : Any>(
     val model: PermanentModel<InteractionTarget>,
     val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-) : InteractionModel<InteractionTarget, State<InteractionTarget>> {
+) : AppyxComponent<InteractionTarget, State<InteractionTarget>> {
 
     private val instant = InstantProgressController(model = model)
 
-    override val elements: StateFlow<InteractionModel.Elements<InteractionTarget>>
+    override val elements: StateFlow<AppyxComponent.Elements<InteractionTarget>>
         get() = model.elements.mapState(scope) { elements ->
-            InteractionModel.Elements(onScreen = elements)
+            AppyxComponent.Elements(onScreen = elements)
         }
 
     override fun onAddedToComposition(scope: CoroutineScope) = Unit

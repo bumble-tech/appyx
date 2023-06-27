@@ -13,7 +13,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.testing.InteractionTarget
-import com.bumble.appyx.interactions.testing.setupInteractionModel
+import com.bumble.appyx.interactions.testing.setupAppyxComponent
 import com.bumble.appyx.interactions.testing.waitUntilAnimationEnded
 import com.bumble.appyx.interactions.testing.waitUntilAnimationStarted
 import kotlinx.coroutines.CoroutineScope
@@ -48,7 +48,7 @@ class BackStackTest(private val testParam: TestParam) {
     @Test
     fun backStack_with_animations_enabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
         createBackStack(disableAnimations = false, testParam.motionController)
-        composeTestRule.setupInteractionModel(backStack)
+        composeTestRule.setupAppyxComponent(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
         backStack.push(interactionTarget = InteractionTarget.Child2)
@@ -66,7 +66,7 @@ class BackStackTest(private val testParam: TestParam) {
     @Test
     fun backStack_with_animations_enabled_does_not_clean_up_in_keyframe_mode_when_element_is_used() {
         createBackStack(disableAnimations = false, testParam.motionController)
-        composeTestRule.setupInteractionModel(backStack)
+        composeTestRule.setupAppyxComponent(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
         backStack.push(interactionTarget = InteractionTarget.Child2)
@@ -83,7 +83,7 @@ class BackStackTest(private val testParam: TestParam) {
     @Test
     fun backStack_with_animations_disabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
         createBackStack(disableAnimations = true, testParam.motionController)
-        composeTestRule.setupInteractionModel(backStack)
+        composeTestRule.setupAppyxComponent(backStack)
 
         backStack.push(interactionTarget = InteractionTarget.Child2)
         backStack.push(interactionTarget = InteractionTarget.Child3)
@@ -96,7 +96,7 @@ class BackStackTest(private val testParam: TestParam) {
     @Test
     fun backStack_with_animations_enabled_cleans_destroyed_element_in_immediate_mode_when_animation_finished() {
         createBackStack(disableAnimations = false, testParam.motionController)
-        composeTestRule.setupInteractionModel(backStack)
+        composeTestRule.setupAppyxComponent(backStack)
 
         val pushSpringSpec = spring<Float>()
         val popSpringSpec = spring<Float>(stiffness = 10f)

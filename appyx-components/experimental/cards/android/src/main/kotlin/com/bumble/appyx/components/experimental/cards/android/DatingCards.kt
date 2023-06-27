@@ -13,9 +13,9 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsMotionController
-import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
@@ -41,16 +41,16 @@ fun DatingCards(modifier: Modifier = Modifier) {
         )
     }
 
-    InteractionModelSetup(cards)
+    AppyxComponentSetup(cards)
 
-    DraggableChildren(
+    DraggableAppyxComponent(
         modifier = modifier
             .fillMaxSize()
             .background(appyx_dark)
             .padding(16.dp),
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-        interactionModel = cards,
+        appyxComponent = cards,
         gestureValidator = permissiveValidator,
     ) { elementUiModel ->
         Box(

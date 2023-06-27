@@ -25,9 +25,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.demos.common.InteractionTarget.Element
-import com.bumble.appyx.interactions.core.DraggableChildren
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlin.random.Random
 
@@ -50,12 +50,12 @@ enum class ChildSize {
 fun AppyxWebSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    interactionModel: BaseInteractionModel<InteractionTarget, Any>,
+    appyxComponent: BaseAppyxComponent<InteractionTarget, Any>,
     actions: Map<String, () -> Unit>,
     childSize: ChildSize = ChildSize.SMALL,
     modifier: Modifier = Modifier,
 ) {
-    InteractionModelSetup(interactionModel)
+    AppyxComponentSetup(appyxComponent)
 
     Column(
         modifier = modifier,
@@ -76,8 +76,8 @@ fun AppyxWebSample(
                     ChildSize.MAX -> 0.dp
                 }
             )) {
-                DraggableChildren(
-                    interactionModel = interactionModel,
+                DraggableAppyxComponent(
+                    appyxComponent = appyxComponent,
                     screenWidthPx = screenWidthPx,
                     screenHeightPx = screenHeightPx,
                 ) { elementUiModel ->

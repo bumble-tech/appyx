@@ -19,9 +19,9 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.interactions.Events
-import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.samples.common.widget.CalendarWidget
 import com.bumble.appyx.samples.common.widget.TimerWidget
@@ -76,7 +76,7 @@ fun Widgets(
         }
     }
 
-    InteractionModelSetup(spotlight)
+    AppyxComponentSetup(spotlight)
 
     WidgetsUi(
         modifier = modifier,
@@ -93,9 +93,9 @@ private fun WidgetsUi(
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
 ) {
-    DraggableChildren(
+    DraggableAppyxComponent(
         clipToBounds = false,
-        interactionModel = spotlight,
+        appyxComponent = spotlight,
         modifier = modifier
             .padding(
                 horizontal = 64.dp,

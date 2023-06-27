@@ -17,7 +17,7 @@ import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.ChildSize
 import com.bumble.appyx.demos.common.InteractionTarget
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Operation
 
 @Composable
@@ -65,7 +65,7 @@ fun SpotlightStack3DSample(
     AppyxWebSample(
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        interactionModel = spotlight.unsafeCast<BaseInteractionModel<InteractionTarget, Any>>(),
+        appyxComponent = spotlight.unsafeCast<BaseAppyxComponent<InteractionTarget, Any>>(),
         actions = actions,
         childSize = ChildSize.MEDIUM,
         modifier = modifier,

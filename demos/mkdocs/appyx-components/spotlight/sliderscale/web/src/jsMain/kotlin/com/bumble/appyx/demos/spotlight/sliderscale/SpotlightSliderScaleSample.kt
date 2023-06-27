@@ -12,7 +12,7 @@ import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderscale.SpotlightSliderScale
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.InteractionTarget
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 
 @Composable
 fun SpotlightSliderScaleSample(
@@ -42,7 +42,7 @@ fun SpotlightSliderScaleSample(
     AppyxWebSample(
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        interactionModel = spotlight.unsafeCast<BaseInteractionModel<InteractionTarget, Any>>(),
+        appyxComponent = spotlight.unsafeCast<BaseAppyxComponent<InteractionTarget, Any>>(),
         actions = actions,
         modifier = modifier,
     )
