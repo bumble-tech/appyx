@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node.permanentchild
 
-import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,8 +24,8 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.appyx_dark
-import kotlinx.parcelize.Parcelize
-
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PermanentChildNode(
     buildContext: BuildContext,

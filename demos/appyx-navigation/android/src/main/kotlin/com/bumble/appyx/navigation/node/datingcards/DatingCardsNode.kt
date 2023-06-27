@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node.datingcards
 
-import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,7 +17,8 @@ import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode.InteractionT
 import com.bumble.appyx.navigation.node.profilecard.ProfileCardNode
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
-import kotlinx.parcelize.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class DatingCardsNode(
     buildContext: BuildContext,

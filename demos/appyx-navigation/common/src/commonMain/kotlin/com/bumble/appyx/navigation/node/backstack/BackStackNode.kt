@@ -1,14 +1,14 @@
-package com.bumble.appyx.navigation.node.backstack.debug
+package com.bumble.appyx.navigation.node.backstack
 
-import android.os.Parcelable
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -20,49 +20,55 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.BackStackModel.State
 import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.operation.replace
-import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.Children
-import com.bumble.appyx.navigation.composable.KnobControl
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode.InteractionTarget
 import com.bumble.appyx.navigation.node.node
+import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
-import kotlinx.parcelize.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import gestureModifier
+import kotlinx.serialization.Serializable
+import kotlin.random.Random
 
-class BackstackDebugNode(
+
+class BackStackNode(
     buildContext: BuildContext,
+    motionController: (UiContext) -> MotionController<InteractionTarget, State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
+    gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
+    private val isMaxSize: Boolean = false,
     private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(InteractionTarget.Child(1)),
-            savedStateMap = buildContext.savedStateMap,
+            savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { BackStackSlider(it) }
+        motionController = motionController,
+        gestureFactory = gestureFactory,
+        gestureSettleConfig = gestureSettleConfig,
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<BackStackNode.InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    interactionModel = backStack,
 ) {
-
-    init {
-        backStack.push(InteractionTarget.Child(2))
-        backStack.push(InteractionTarget.Child(3))
-        backStack.push(InteractionTarget.Child(4))
-        backStack.push(InteractionTarget.Child(5))
-        backStack.replace(InteractionTarget.Child(6))
-        backStack.pop()
-        backStack.pop()
-        backStack.newRoot(InteractionTarget.Child(1))
-    }
-
     sealed class InteractionTarget : Parcelable {
         @Parcelize
+        @Serializable
         class Child(val index: Int) : InteractionTarget()
     }
 
@@ -74,9 +80,16 @@ class BackstackDebugNode(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .clip(RoundedCornerShape(5))
+                        .then(
+                            if (isMaxSize) {
+                                Modifier
+                            } else {
+                                Modifier.clip(RoundedCornerShape(5))
+                            }
+                        )
                         .background(backgroundColor)
                         .padding(24.dp)
+                        .gestureModifier(backStack, interactionTarget.index.toString())
                 ) {
                     Text(
                         text = interactionTarget.index.toString(),
@@ -88,7 +101,6 @@ class BackstackDebugNode(
             }
         }
 
-    @ExperimentalMaterialApi
     @Composable
     override fun View(modifier: Modifier) {
         Column(
@@ -96,16 +108,41 @@ class BackstackDebugNode(
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {
-            KnobControl(onValueChange = {
-                backStack.setNormalisedProgress(it)
-            })
             Children(
+                clipToBounds = true,
                 interactionModel = backStack,
                 modifier = Modifier
+                    .weight(0.9f)
                     .fillMaxSize()
                     .background(appyx_dark)
-                    .padding(16.dp),
+                    .then(
+                        if (isMaxSize) {
+                            Modifier.padding(bottom = 16.dp)
+                        } else {
+                            Modifier.padding(16.dp)
+                        }
+                    ),
             )
+            Row(
+                modifier = Modifier
+                    .weight(0.1f)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                TextButton(text = "Push") {
+                    backStack.push(InteractionTarget.Child(Random.nextInt(20)))
+                }
+                TextButton(text = "Pop") {
+                    backStack.pop()
+                }
+                TextButton(text = "Replace") {
+                    backStack.replace(InteractionTarget.Child(Random.nextInt(20)))
+                }
+                TextButton(text = "New root") {
+                    backStack.newRoot(InteractionTarget.Child(Random.nextInt(20)))
+                }
+            }
         }
     }
 }
+

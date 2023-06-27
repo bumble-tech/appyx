@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node.container
 
-import android.os.Parcelable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,14 +22,14 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
 import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.navigation.node.container.ContainerNode.InteractionTarget
-import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.node.permanentchild.PermanentChildNode
 import com.bumble.appyx.navigation.node.promoter.PromoterNode
 import com.bumble.appyx.navigation.node.spotlight.SpotlightNode
 import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode
 import com.bumble.appyx.navigation.ui.TextButton
-import kotlinx.parcelize.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class ContainerNode(
     buildContext: BuildContext,
@@ -53,8 +52,8 @@ class ContainerNode(
         @Parcelize
         object PermanentChild : InteractionTarget()
 
-        @Parcelize
-        object DatingCards : InteractionTarget()
+//        @Parcelize
+//        object DatingCards : InteractionTarget()
 
         @Parcelize
         object SpotlightExperiment : InteractionTarget()
@@ -78,8 +77,9 @@ class ContainerNode(
             is InteractionTarget.Selector -> node(buildContext) { modifier ->
                 Selector(modifier)
             }
+
             is InteractionTarget.PermanentChild -> PermanentChildNode(buildContext)
-            is InteractionTarget.DatingCards -> DatingCardsNode(buildContext)
+//            is InteractionTarget.DatingCards -> DatingCardsNode(buildContext)
             is InteractionTarget.SpotlightExperiment -> SpotlightNode(buildContext)
             is InteractionTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
             is InteractionTarget.BackStack -> BackStackExamplesNode(buildContext)
@@ -102,9 +102,9 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                TextButton(text = "Dating Cards") {
-                    backStack.push(InteractionTarget.DatingCards)
-                }
+//                TextButton(text = "Dating Cards") {
+//                    backStack.push(InteractionTarget.DatingCards)
+//                }
                 TextButton(text = "Spotlight") {
                     backStack.push(InteractionTarget.SpotlightExperiment)
                 }

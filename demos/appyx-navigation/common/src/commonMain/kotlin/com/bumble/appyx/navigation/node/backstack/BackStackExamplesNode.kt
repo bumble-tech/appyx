@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node.backstack
 
-import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,7 +29,8 @@ import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.Interact
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
-import kotlinx.parcelize.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 
 class BackStackExamplesNode(

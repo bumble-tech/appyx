@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node.promoter
 
-import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +34,8 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget
-import kotlinx.parcelize.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PromoterNode(
     buildContext: BuildContext,
