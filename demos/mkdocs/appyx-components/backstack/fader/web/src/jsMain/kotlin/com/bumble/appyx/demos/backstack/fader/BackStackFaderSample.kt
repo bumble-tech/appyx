@@ -1,5 +1,7 @@
 package com.bumble.appyx.demos.backstack.fader
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -10,6 +12,7 @@ import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.demos.common.AppyxWebSample
+import com.bumble.appyx.demos.common.ChildSize
 import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
@@ -32,7 +35,8 @@ fun BackStackFaderSample(
             scope = coroutineScope,
             model = model,
             motionController = { BackStackFader(it) },
-            gestureFactory = { GestureFactory.Noop() }
+            gestureFactory = { GestureFactory.Noop() },
+            animationSpec = spring(stiffness = Spring.StiffnessVeryLow * 2),
         )
     val actions = mapOf(
         "Pop" to { backStack.pop() },
@@ -43,6 +47,7 @@ fun BackStackFaderSample(
         screenHeightPx = screenHeightPx,
         interactionModel = backStack.unsafeCast<BaseInteractionModel<InteractionTarget, Any>>(),
         actions = actions,
+        childSize = ChildSize.MAX,
         modifier = modifier,
     )
 }

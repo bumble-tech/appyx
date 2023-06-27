@@ -1,5 +1,7 @@
 package com.bumble.appyx.demos.backstack.slider
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -12,6 +14,7 @@ import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.demos.common.AppyxWebSample
+import com.bumble.appyx.demos.common.ChildSize
 import com.bumble.appyx.demos.common.InteractionTarget
 
 @Composable
@@ -32,7 +35,8 @@ fun BackStackSliderSample(
             scope = coroutineScope,
             model = model,
             motionController = { BackStackSlider(it) },
-            gestureFactory = { GestureFactory.Noop() }
+            gestureFactory = { GestureFactory.Noop() },
+            animationSpec = spring(stiffness = Spring.StiffnessVeryLow),
         )
     val actions = mapOf(
         "Pop" to { backStack.pop() },
@@ -43,6 +47,7 @@ fun BackStackSliderSample(
         screenHeightPx = screenHeightPx,
         interactionModel = backStack.unsafeCast<BaseInteractionModel<InteractionTarget, Any>>(),
         actions = actions,
+        childSize = ChildSize.MAX,
         modifier = modifier,
     )
 }

@@ -1,5 +1,7 @@
 package com.bumble.appyx.demos.backstack.stack3d
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -11,6 +13,7 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.model.BaseInteractionModel
 import com.bumble.appyx.demos.common.AppyxWebSample
+import com.bumble.appyx.demos.common.ChildSize
 import com.bumble.appyx.demos.common.InteractionTarget
 
 @Composable
@@ -31,7 +34,8 @@ fun BackStack3DSample(
             scope = coroutineScope,
             model = model,
             motionController = { BackStack3D(it) },
-            gestureFactory = { BackStack3D.Gestures(it) }
+            gestureFactory = { BackStack3D.Gestures(it) },
+            animationSpec = spring(stiffness = Spring.StiffnessVeryLow * 2),
         )
     val actions = mapOf(
         "Pop" to { backStack.pop() },
@@ -42,6 +46,7 @@ fun BackStack3DSample(
         screenHeightPx = screenHeightPx,
         interactionModel = backStack.unsafeCast<BaseInteractionModel<InteractionTarget, Any>>(),
         actions = actions,
+        childSize = ChildSize.MEDIUM,
         modifier = modifier,
     )
 }
