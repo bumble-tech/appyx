@@ -47,10 +47,10 @@ enum class ChildSize {
 }
 
 @Composable
-fun AppyxWebSample(
+fun <InteractionTarget : Any, ModelState: Any> AppyxWebSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    appyxComponent: BaseAppyxComponent<InteractionTarget, Any>,
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     actions: Map<String, () -> Unit>,
     childSize: ChildSize = ChildSize.SMALL,
     modifier: Modifier = Modifier,
@@ -121,7 +121,7 @@ val colors = listOf(
 )
 
 @Composable
-fun ModalUi(
+fun <InteractionTarget : Any> ModalUi(
     elementUiModel: ElementUiModel<InteractionTarget>,
     isChildMaxSize: Boolean,
     modifier: Modifier = Modifier
@@ -133,6 +133,7 @@ fun ModalUi(
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {
                     is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
+                    else -> { Color.Cyan }
                 },
                 shape = RoundedCornerShape(if (isChildMaxSize) 0 else 8)
             )

@@ -12,7 +12,6 @@ import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.InteractionTarget
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 
 @Composable
 fun SpotlightSliderRotationSample(
@@ -42,7 +41,7 @@ fun SpotlightSliderRotationSample(
     AppyxWebSample(
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        appyxComponent = spotlight.unsafeCast<BaseAppyxComponent<InteractionTarget, Any>>(),
+        appyxComponent = spotlight,
         actions = actions,
         modifier = modifier,
     )

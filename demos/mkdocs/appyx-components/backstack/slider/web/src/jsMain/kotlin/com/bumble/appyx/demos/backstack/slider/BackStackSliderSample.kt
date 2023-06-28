@@ -11,11 +11,10 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.ChildSize
 import com.bumble.appyx.demos.common.InteractionTarget
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 @Composable
 fun BackStackSliderSample(
@@ -45,7 +44,7 @@ fun BackStackSliderSample(
     AppyxWebSample(
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        appyxComponent = backStack.unsafeCast<BaseAppyxComponent<InteractionTarget, Any>>(),
+        appyxComponent = backStack,
         actions = actions,
         childSize = ChildSize.MAX,
         modifier = modifier,

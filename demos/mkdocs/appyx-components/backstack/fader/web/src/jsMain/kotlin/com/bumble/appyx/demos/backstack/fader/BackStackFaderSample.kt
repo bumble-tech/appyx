@@ -30,14 +30,13 @@ fun BackStackFaderSample(
             savedStateMap = null
         )
     }
-    val backStack =
-        BackStack(
-            scope = coroutineScope,
-            model = model,
-            motionController = { BackStackFader(it) },
-            gestureFactory = { GestureFactory.Noop() },
-            animationSpec = spring(stiffness = Spring.StiffnessVeryLow * 2),
-        )
+    val backStack = BackStack(
+        scope = coroutineScope,
+        model = model,
+        motionController = { BackStackFader(it) },
+        gestureFactory = { GestureFactory.Noop() },
+        animationSpec = spring(stiffness = Spring.StiffnessVeryLow * 2),
+    )
     val actions = mapOf(
         "Pop" to { backStack.pop() },
         "Push" to { backStack.push(InteractionTarget.Element()) }
@@ -45,7 +44,7 @@ fun BackStackFaderSample(
     AppyxWebSample(
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        appyxComponent = backStack.unsafeCast<BaseAppyxComponent<InteractionTarget, Any>>(),
+        appyxComponent = backStack,
         actions = actions,
         childSize = ChildSize.MAX,
         modifier = modifier,
