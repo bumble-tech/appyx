@@ -1,7 +1,7 @@
 plugins {
+    id("org.jetbrains.compose")
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-parcelize")
+    kotlin("android")
     id("appyx-publish-android")
     id("appyx-lint")
     id("appyx-detekt")
