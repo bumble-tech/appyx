@@ -64,7 +64,7 @@ open class Node internal constructor(
 
     override val lifecycle get() = nodeLifecycle.lifecycle
 
-    override val lifecycleScope: CoroutineScope get() = lifecycle.coroutineScope
+    override val lifecycleScope: CoroutineScope by lazy { lifecycle.coroutineScope }
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
