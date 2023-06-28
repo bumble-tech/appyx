@@ -14,7 +14,6 @@ import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.ChildSize
 import com.bumble.appyx.demos.common.InteractionTarget
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 
 @Composable
