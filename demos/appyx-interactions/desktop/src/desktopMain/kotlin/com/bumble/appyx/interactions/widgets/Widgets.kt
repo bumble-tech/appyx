@@ -105,18 +105,17 @@ private fun WidgetsUi(
             ),
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        colors = emptyList(),
-        element = { elementUiModel ->
-            WidgetTypeElement(
-                elementUiModel = elementUiModel,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .requiredHeight(240.dp)
-                    .pointerInput(elementUiModel.element.id) {
-                        detectDragGestures(
-                            onDrag = { change, dragAmount ->
-                                change.consume()
-                                spotlight.onDrag(dragAmount, this)
+    ) { elementUiModel ->
+        WidgetTypeElement(
+            elementUiModel = elementUiModel,
+            modifier = Modifier
+                .fillMaxWidth()
+                .requiredHeight(240.dp)
+                .pointerInput(elementUiModel.element.id) {
+                    detectDragGestures(
+                        onDrag = { change, dragAmount ->
+                            change.consume()
+                            spotlight.onDrag(dragAmount, this)
                             },
                             onDragEnd = {
                                 spotlight.onDragEnd()
@@ -125,7 +124,6 @@ private fun WidgetsUi(
                     }
             )
         }
-    )
 }
 
 @Composable
