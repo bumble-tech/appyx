@@ -20,10 +20,10 @@ import com.bumble.appyx.components.modal.ModalModel
 import com.bumble.appyx.components.modal.operation.add
 import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalMotionController
-import com.bumble.appyx.interactions.core.DraggableChildren
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -52,7 +52,7 @@ fun ModalExperiment(
         ),
     )
 
-    InteractionModelSetup(modal)
+    AppyxComponentSetup(modal)
 
     Column(
         modifier
@@ -84,11 +84,11 @@ fun <InteractionTarget : Any> ModalUi(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
-    DraggableChildren(
+    DraggableAppyxComponent(
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         clipToBounds = false,
-        interactionModel = modal,
+        appyxComponent = modal,
         modifier = modifier,
         element = { elementUiModel ->
             Element(

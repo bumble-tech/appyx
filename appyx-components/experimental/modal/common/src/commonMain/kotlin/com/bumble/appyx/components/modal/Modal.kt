@@ -3,7 +3,7 @@ package com.bumble.appyx.components.modal
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.components.modal.backpresshandler.RevertBackPressHandler
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -19,7 +19,9 @@ class Modal<InteractionTarget : Any>(
     model: ModalModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, ModalModel.State<InteractionTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModalModel.State<InteractionTarget>> = { GestureFactory.Noop() },
-    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModalModel.State<InteractionTarget>> = RevertBackPressHandler(scope),
+    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModalModel.State<InteractionTarget>> = RevertBackPressHandler(
+        scope
+    ),
     animationSpec: AnimationSpec<Float> = spring(),
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completionThreshold = 0.2f,
@@ -28,7 +30,7 @@ class Modal<InteractionTarget : Any>(
     ),
     disableAnimations: Boolean = false,
     isDebug: Boolean = false,
-) : BaseInteractionModel<InteractionTarget, ModalModel.State<InteractionTarget>>(
+) : BaseAppyxComponent<InteractionTarget, ModalModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
     motionController = motionController,

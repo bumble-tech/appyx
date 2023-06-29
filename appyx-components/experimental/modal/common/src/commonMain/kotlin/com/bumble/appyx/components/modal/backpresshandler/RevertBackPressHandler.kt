@@ -21,7 +21,7 @@ class RevertBackPressHandler<InteractionTarget : Any>(
 
     override fun handleBackPress(): Boolean {
         return if (canHandleBackPress.value) {
-            interactionModel.operation(operation = Revert(), animationSpec)
+            appyxComponent.operation(operation = Revert(), animationSpec)
             true
         } else false
     }
