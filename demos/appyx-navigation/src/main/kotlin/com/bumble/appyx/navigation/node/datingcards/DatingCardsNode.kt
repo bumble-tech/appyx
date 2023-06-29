@@ -10,7 +10,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsMotionController
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -36,7 +36,7 @@ class DatingCardsNode(
 
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = cards
+    appyxComponent = cards
 ) {
 
     sealed class InteractionTarget : Parcelable {
@@ -49,12 +49,12 @@ class DatingCardsNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Children(
+        AppyxComponent(
             modifier = modifier
                 .fillMaxSize()
                 .background(appyx_dark)
                 .padding(16.dp),
-            interactionModel = cards,
+            appyxComponent = cards,
         )
     }
 }

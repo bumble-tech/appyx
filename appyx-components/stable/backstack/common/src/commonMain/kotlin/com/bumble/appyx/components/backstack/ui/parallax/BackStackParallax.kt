@@ -78,21 +78,19 @@ class BackstackParallax<InteractionTarget : Any>(
         targetUiState.toMutableState(uiContext)
 
     class Gestures<InteractionTarget : Any>(
-        transitionBounds: TransitionBounds,
+        private val transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
-        private val width = transitionBounds.screenWidthDp
 
         override fun createGesture(
             state: State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, State<InteractionTarget>> {
-            val widthRight = with(density) { width.toPx() }
 
             return if  (dragHorizontalDirection(delta) == Drag.HorizontalDirection.RIGHT) {
                 Gesture(
                     operation = Pop(),
-                    completeAt = Offset(x = widthRight, y = 0f),
+                    completeAt = Offset(x = transitionBounds.widthPx.toFloat(), y = 0f),
                 )
             } else {
                 Gesture.Noop()

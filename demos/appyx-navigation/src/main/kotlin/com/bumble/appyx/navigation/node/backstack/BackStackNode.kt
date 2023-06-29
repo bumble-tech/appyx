@@ -32,7 +32,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -63,7 +63,7 @@ class BackStackNode(
     )
 ) : ParentNode<BackStackNode.InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack,
+    appyxComponent = backStack,
 ) {
     sealed class InteractionTarget : Parcelable {
         @Parcelize
@@ -106,9 +106,9 @@ class BackStackNode(
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {
-            Children(
+            AppyxComponent(
                 clipToBounds = true,
-                interactionModel = backStack,
+                appyxComponent = backStack,
                 modifier = Modifier
                     .weight(0.9f)
                     .fillMaxSize()

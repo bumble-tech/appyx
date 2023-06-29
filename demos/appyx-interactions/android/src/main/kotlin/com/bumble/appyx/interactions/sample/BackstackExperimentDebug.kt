@@ -68,7 +68,7 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
                     horizontal = 64.dp,
                     vertical = 12.dp
                 ),
-            interactionModel = backStack,
+            appyxComponent = backStack,
         )
     }
 }

@@ -26,6 +26,7 @@ def generate_html(width, height, target_directory, html_file_name, classname):
            "width={width} " \
            "height={height} " \
            "frameBorder=0 " \
+           "scrolling=\"no\" " \
            "src=\"{target_directory}/{html_file_name}\">" \
            "</iframe>"\
            "</div>".format(
