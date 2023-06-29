@@ -30,7 +30,20 @@ nav:
     - Overview: components/index.md
     - Back stack: components/backstack.md
     - Spotlight: components/spotlight.md
-  - Appyx Navigation: navigation/index.md
+  - Appyx Navigation:
+    - Overview: navigation/index.md
+    - Navigation:
+        - Model-driven navigation: navigation/navigation/model-driven-navigation.md
+        - Composable navigation: navigation/navigation/composable-navigation.md
+        - Implicit navigation: navigation/navigation/implicit-navigation.md
+        - Explicit navigation: navigation/navigation/explicit-navigation.md
+        - Deep linking: navigation/navigation/deep-linking.md
+    - App:
+        - Structuring your app navigation: navigation/apps/structure.md
+        - Lifecycle: navigation/apps/lifecycle.md
+        - Plugins: navigation/apps/plugins.md
+        - ChildAware API: navigation/apps/childaware.md
+        - Configuration changes: navigation/apps/configuration.md
   - Releases:
     - Downloads: releases/downloads.md
     - Changelog: releases/changelog.md
