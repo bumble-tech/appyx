@@ -5,6 +5,7 @@ Transitions, gestures, navigation for Jetpack Compose
 
 [https://github.com/bumble-tech/appyx](https://github.com/bumble-tech/appyx)
 
+
 ## Appyx Interactions
 
 [A gesture-driven component kit for Compose Multiplatform.](interactions/index.md)
@@ -18,6 +19,11 @@ Transitions, gestures, navigation for Jetpack Compose
 ## Appyx Navigation
 
 An Android navigation library for Jetpack Compose that depends on **Appyx Interactions** for its transitions and gesture-based navigation. It allows you to use any **Appyx Components** for navigation.
+
+
+## 2.x migration guide
+
+If you used Appyx 1.x before, you can find a [summary of differences](2.x/migrationguide.md) here.
 
 
 ## 1.x documentation

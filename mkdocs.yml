@@ -34,6 +34,8 @@ nav:
   - Releases:
     - Downloads: releases/downloads.md
     - Changelog: releases/changelog.md
+  - 2.x:
+      Migration guide: 2.x/migrationguide.md
   - 1.x:
     - Overview: 1.x/index.md
     - News & updates: 1.x/news.md
