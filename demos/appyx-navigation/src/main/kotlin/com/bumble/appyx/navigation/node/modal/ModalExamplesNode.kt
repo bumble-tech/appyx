@@ -24,7 +24,7 @@ import com.bumble.appyx.components.modal.operation.revert
 import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalMotionController
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -47,7 +47,7 @@ class ModalExamplesNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = modal
+    appyxComponent = modal
 ) {
 
     sealed class InteractionTarget : Parcelable {
@@ -82,8 +82,8 @@ class ModalExamplesNode(
                 .background(appyx_dark),
             verticalArrangement = Arrangement.Bottom
         ) {
-            Children(
-                interactionModel = modal,
+            AppyxComponent(
+                appyxComponent = modal,
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(0.9f)
