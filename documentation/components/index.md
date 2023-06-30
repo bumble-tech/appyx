@@ -32,6 +32,18 @@ A view pager-like component, with multiple visualisations.
 
 Check [its own page for more details](spotlight.md).
 
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-slider",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
+
 
 ## Experimental
 
