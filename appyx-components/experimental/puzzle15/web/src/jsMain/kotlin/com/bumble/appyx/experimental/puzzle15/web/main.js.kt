@@ -46,7 +46,6 @@ fun main() {
                 Puzzle15Ui(
                     screenWidthPx = size.width,
                     screenHeightPx = size.height,
-                    colors = colors,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Black)

@@ -13,4 +13,6 @@ interface Draggable : HasDefaultAnimationSpec<Float> {
     fun onDrag(dragAmount: Offset, density: Density)
 
     fun onDragEnd()
+
+    fun isDragging(): Boolean
 }

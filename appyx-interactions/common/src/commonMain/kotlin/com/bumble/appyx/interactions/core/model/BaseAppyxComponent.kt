@@ -260,6 +260,8 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
+    override fun isDragging(): Boolean = drag.isDragging()
+
     private fun settle(gestureSettleConfig: GestureSettleConfig) {
         if (isDebug) {
             debug?.settle()
