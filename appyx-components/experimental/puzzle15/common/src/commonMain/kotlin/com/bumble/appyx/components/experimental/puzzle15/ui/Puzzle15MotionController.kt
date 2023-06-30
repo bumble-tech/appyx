@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.experimental.puzzle15.ui
 
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -15,6 +14,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
