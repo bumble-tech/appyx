@@ -1,12 +1,15 @@
 package com.bumble.appyx.components.experimental.puzzle15.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -40,7 +43,8 @@ import com.bumble.appyx.interactions.sample.Children
 fun Puzzle15Ui(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
+    colors: List<Color> = emptyList(),
+    accentColor: Color = Color.Cyan,
     modifier: Modifier = Modifier,
 ) {
     println("Hello Puzzle15")
@@ -75,6 +79,7 @@ fun Puzzle15Ui(
         Box(
             modifier = Modifier
                 .size(240.dp)
+                .border(4.dp, accentColor)
         ) {
             Children(
                 screenWidthPx = screenWidthPx,
@@ -143,31 +148,36 @@ fun Puzzle15Ui(
             }
         }
 
-        Column {
-            Row {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = DOWN)) }
+                    onClick = { puzzle15.operation(Swap(direction = DOWN)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
                     Text("^")
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = LEFT)) }
+                    onClick = { puzzle15.operation(Swap(direction = LEFT)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
                     Text(">")
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = UP)) }
+                    onClick = { puzzle15.operation(Swap(direction = UP)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text("\u2304")
+                    Text("v")
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = RIGHT)) }
+                    onClick = { puzzle15.operation(Swap(direction = RIGHT)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
                     Text("<")
                 }
             }
             Button(
-                onClick = { puzzle15.operation(Shuffle()) }
+                onClick = { puzzle15.operation(Shuffle()) },
+                colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
             ) {
                 Text("New Game")
             }
