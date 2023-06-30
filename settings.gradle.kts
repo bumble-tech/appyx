@@ -45,6 +45,7 @@ include(
     ":demos:appyx-interactions:android",
     ":demos:appyx-interactions:desktop",
     ":demos:appyx-interactions:web",
+    ":demos:appyx-interactions:shared",
     ":demos:appyx-navigation",
     ":demos:common",
     ":demos:navigation-compose",
