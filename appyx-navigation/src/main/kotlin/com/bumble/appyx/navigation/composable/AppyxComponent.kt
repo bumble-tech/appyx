@@ -15,13 +15,11 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
-import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.model.removedElements
-import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -70,11 +68,6 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
                     ),
                     clipToBounds = clipToBounds
                 )
-            }
-            .onPointerEvent {
-                if (it.type == PointerEventType.Release && appyxComponent.isDragging()) {
-                    appyxComponent.onDragEnd()
-                }
             }
     ) {
         block(
