@@ -9,11 +9,16 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
@@ -31,7 +36,6 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.LEFT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.RIGHT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.UP
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.Children
 
@@ -105,17 +109,35 @@ fun Puzzle15Ui(
                                 .then(
                                     elementUiModel.modifier
                                         .background(color = Color.White)
-                                ).pointerInput(elementUiModel.element.id) {
-                                    detectDragGestures(
-                                        onDrag = { change, dragAmount ->
-                                            change.consume()
-                                            puzzle15.onDrag(dragAmount, this)
-                                        },
-                                        onDragEnd = {
-                                            AppyxLogger.d("drag", "end")
-                                            puzzle15.onDragEnd()
+                                )
+                                .composed {
+                                    var isDragging by remember { mutableStateOf(false) }
+                                    DisposableEffect(Unit) {
+                                        onDispose {
+                                            if (isDragging) {
+                                                puzzle15.onDragEnd()
+                                            }
                                         }
-                                    )
+                                    }
+                                    pointerInput(elementUiModel.element.id) {
+                                        detectDragGestures(
+                                            onDragStart = {
+                                                isDragging = true
+                                            },
+                                            onDragCancel = {
+                                                isDragging = false
+                                            },
+                                            onDrag = { change, dragAmount ->
+                                                change.consume()
+                                                isDragging = true
+                                                puzzle15.onDrag(dragAmount, this)
+                                            },
+                                            onDragEnd = {
+                                                isDragging = false
+                                                puzzle15.onDragEnd()
+                                            }
+                                        )
+                                    }
                                 }
                         ) {
                             Text(

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -15,6 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -54,7 +56,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                 text = "Customise this composable",
             )
         }
-                                                                       },
+    },
 ) {
     val density = LocalDensity.current
     val elementUiModels by appyxComponent.uiModels.collectAsState()
@@ -100,29 +102,43 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                             elementUiModel.copy(
                                 modifier = Modifier
                                     .offset { offsetCenter.round() }
-                                    .pointerInput(appyxComponent) {
-                                        detectDragGesturesOrCancellation(
-                                            onDragStart = { position ->
-                                                appyxComponent.onStartDrag(position)
-                                            },
-                                            onDrag = { change, dragAmount ->
-                                                if (gestureValidator.isGestureValid(
-                                                        change.position,
-                                                        transformedBoundingBox.translate(-offsetCenter)
-                                                    )
-                                                ) {
-                                                    change.consume()
-                                                    appyxComponent.onDrag(dragAmount, density)
-                                                    true
-                                                } else {
+                                    .composed {
+                                        var isDragging by remember { mutableStateOf(false) }
+                                        DisposableEffect(Unit) {
+                                            onDispose {
+                                                if (isDragging) {
                                                     appyxComponent.onDragEnd()
-                                                    false
                                                 }
-                                            },
-                                            onDragEnd = {
-                                                appyxComponent.onDragEnd()
-                                            },
-                                        )
+                                            }
+                                        }
+                                        pointerInput(appyxComponent) {
+                                            detectDragGesturesOrCancellation(
+                                                onDragStart = { position ->
+                                                    isDragging = true
+                                                    appyxComponent.onStartDrag(position)
+                                                },
+                                                onDrag = { change, dragAmount ->
+                                                    if (gestureValidator.isGestureValid(
+                                                            change.position,
+                                                            transformedBoundingBox.translate(-offsetCenter)
+                                                        )
+                                                    ) {
+                                                        change.consume()
+                                                        isDragging = true
+                                                        appyxComponent.onDrag(dragAmount, density)
+                                                        true
+                                                    } else {
+                                                        isDragging = false
+                                                        appyxComponent.onDragEnd()
+                                                        false
+                                                    }
+                                                },
+                                                onDragEnd = {
+                                                    isDragging = false
+                                                    appyxComponent.onDragEnd()
+                                                },
+                                            )
+                                        }
                                     }
                                     .offset { -offsetCenter.round() }
                                     .then(elementUiModel.modifier)

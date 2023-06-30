@@ -254,10 +254,9 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     }
 
     override fun onDragEnd() {
-        if (!_isAnimating.value) {
-            drag.onDragEnd()
-            settle(gestureSettleConfig)
-        }
+        // TODO sometimes drag is started in animated mode and can not be ended
+        drag.onDragEnd()
+        settle(gestureSettleConfig)
     }
 
     private fun settle(gestureSettleConfig: GestureSettleConfig) {
