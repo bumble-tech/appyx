@@ -140,7 +140,7 @@ abstract class ParentNode<InteractionTarget : Any>(
         val canHandleBack = interactionModel
             .canHandeBackPress()
             .collectAsState(initial = false)
-        PlatformBackHandler(canHandleBack.value) {
+        PlatformBackHandler(enabled = canHandleBack.value) {
             interactionModel.handleBackPress()
         }
     }

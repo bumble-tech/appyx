@@ -15,7 +15,7 @@ import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 /**
  * Composable function to host [Node].
  *
- * Aligns lifecycle and manages state restoration.
+ * This wrapper uses [LocalConfiguration] to provide [ScreenSize] automatically.
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
