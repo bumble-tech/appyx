@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.experimental.puzzle15.ui
 
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -15,6 +14,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -50,34 +50,36 @@ class Puzzle15MotionController(
     ): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
-    class Gestures(private val bounds: TransitionBounds) :
-        GestureFactory<Tile, Puzzle15Model.State> {
+    class Gestures(
+        bounds: TransitionBounds,
+    ) : GestureFactory<Tile, Puzzle15Model.State> {
+
+        private val cellSize: Float = bounds.widthPx / 4f
 
         override fun createGesture(
             state: Puzzle15Model.State,
             delta: Offset,
             density: Density
         ): Gesture<Tile, Puzzle15Model.State> {
-            val distance = (bounds.widthPx / 4).toFloat()
             return when (dragDirection4(delta)) {
                 Drag.Direction4.UP -> Gesture(
                     operation = Swap(Swap.Direction.DOWN),
-                    completeAt = Offset(0f, -distance)
+                    completeAt = Offset(0f, -cellSize)
                 )
 
                 Drag.Direction4.LEFT -> Gesture(
                     operation = Swap(Swap.Direction.RIGHT),
-                    completeAt = Offset(-distance, 0f)
+                    completeAt = Offset(-cellSize, 0f)
                 )
 
                 Drag.Direction4.RIGHT -> Gesture(
                     operation = Swap(Swap.Direction.LEFT),
-                    completeAt = Offset(distance, 0f)
+                    completeAt = Offset(cellSize, 0f)
                 )
 
                 Drag.Direction4.DOWN -> Gesture(
                     operation = Swap(Swap.Direction.UP),
-                    completeAt = Offset(0f, distance)
+                    completeAt = Offset(0f, cellSize)
                 )
 
             }

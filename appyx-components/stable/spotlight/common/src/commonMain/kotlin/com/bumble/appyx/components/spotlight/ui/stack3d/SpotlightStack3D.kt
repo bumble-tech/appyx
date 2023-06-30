@@ -11,7 +11,6 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -23,7 +22,6 @@ class SpotlightStack3D<InteractionTarget : Any>(
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
 ) {
-    private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
 
     private val scrollY = GenericFloatProperty(uiContext, GenericFloatProperty.Target(0f))
@@ -33,7 +31,6 @@ class SpotlightStack3D<InteractionTarget : Any>(
         )
 
     private val created: TargetUiState = TargetUiState(
-        rotationX = RotationX.Target(0f),
         position = Position.Target(DpOffset(0.dp, height)),
         scale = Scale.Target(2.5f),
         alpha = Alpha.Target(0f),
@@ -41,7 +38,6 @@ class SpotlightStack3D<InteractionTarget : Any>(
     )
 
     private val standard: TargetUiState = TargetUiState(
-        rotationX = RotationX.Target(0f),
         position = Position.Target(DpOffset.Zero),
         scale = Scale.Target(1f),
         alpha = Alpha.Target(1f),
@@ -49,7 +45,6 @@ class SpotlightStack3D<InteractionTarget : Any>(
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        rotationX = RotationX.Target(0f),
         position = Position.Target(DpOffset(0.dp, -height)),
         scale = Scale.Target(0.25f),
         alpha = Alpha.Target(0f),
@@ -81,7 +76,6 @@ class SpotlightStack3D<InteractionTarget : Any>(
         targetUiState.toMutableState(
             uiContext = uiContext,
             scrollX = scrollY.renderValueFlow.mapState(uiContext.coroutineScope) { it - targetUiState.positionInList },
-            itemWidth = width,
             itemHeight = height,
         )
 }

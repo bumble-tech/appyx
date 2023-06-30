@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onPlaced
@@ -29,6 +30,7 @@ import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -81,6 +83,11 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                     ),
                     clipToBounds = clipToBounds
                 )
+            }
+            .onPointerEvent {
+                if (it.type == PointerEventType.Release) {
+                    appyxComponent.onRelease()
+                }
             }
             .fillMaxSize()
     ) {
