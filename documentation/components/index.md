@@ -2,11 +2,18 @@
 
 ## Overview
 
-Appyx components come in two major groups: Stable and Experimental.
+With Appyx, you can:
+
+- Create your own components using [Appyx interactions](../interactions/appyxcomponent.md), or
+- You can use the ones published by us.  
+
+This section focuses on the latter. Published components come in two major groups: Stable and Experimental.
+
 
 ## Stable
 
 Stable components are ones you can depend on in your project. We maintain them and keep their APIs stable. They might receive non-API breaking updates (e.g. new operations, or additional visualisations).
+
 
 ### Back stack
 

@@ -1,6 +1,6 @@
 # Structuring your app navigation
 
-As seen in [Composable navigation](../navigation/composable-navigation.md), you can make `NavModels` composable. 
+As seen in [Composable navigation](../navigation/composable-navigation.md), you can make `AppyxComponents` composable. 
 
 To achieve this, Appyx offers the `Node` class as the structural element.
 
@@ -38,7 +38,7 @@ You can go as granular or as high-level as it fits you. This allows to keep the 
 
 <img src="https://i.imgur.com/hKvOs3w.gif" width="450">
 
-`Nodes` offer the structure – `NavModels` add dynamism to it.
+`Nodes` offer the structure – `AppyxComponents` add dynamism to it.
 
 Read more in [Composable navigation](../navigation/composable-navigation.md)
 
@@ -60,8 +60,8 @@ React to dynamically added child nodes in the tree: [ChildAware API](childaware.
 A summary of Appyx's approach to structuring applications:
 
 - Compose your app out of `Nodes` with their own lifecycles and state
-- Navigation is local, composed of individual pieces of `NavModels`
+- Navigation is local, composed of individual pieces of `AppyxComponents`
 - Navigation is stateful
 - Navigation is unit-testable
-- You're free to implement your own navigable components by utilising `NavModels`
+- You're free to implement your own navigable components by utilising `AppyxComponents`
 - Avoid global navigation concerns, like shared modules needing to know about the application, or the application needing to know about all its possible modules

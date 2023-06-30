@@ -41,7 +41,7 @@ class RootNode(
     backStack: BackStack<NavTarget>
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    navModel = backStack,
+    appyxComponent = backStack,
 ) {
     
     suspend fun attachOnboarding(): OnboardingNode {
@@ -79,7 +79,7 @@ Let's break down what happens here:
 
 ## Step 2 – `Onboarding` → `O1`
 
-Unlike `Root`, `Onboarding` uses [Spotlight](../navmodel/spotlight.md) instead of [BackStack](../navmodel/backstack.md) as a `NavModel`, so navigation to the first screen is slightly different:  
+Unlike `Root`, `Onboarding` uses [Spotlight](../AppyxComponent/spotlight.md) instead of [BackStack](../AppyxComponent/backstack.md) as an `AppyxComponent`, so navigation to the first screen is slightly different:  
 
 ```kotlin
 class OnboardingNode(
@@ -87,7 +87,7 @@ class OnboardingNode(
     spotlight: Spotlight<NavTarget>
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    navModel = spotlight,
+    appyxComponent = spotlight,
 ) {
 
     suspend fun attachO1(): O1Node {

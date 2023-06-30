@@ -93,7 +93,7 @@ You can read more about it [here](https://developer.android.com/guide/navigation
 
 ⚠️ Note: `OnBackPressedCallback` are invoked in the following order:
 1. From children to parents. Render order of children matters! The last rendered child will be the first to handle back press.
-2. Direct order of plugins within a node. Plugins are invoked in order they appears in `Node(plugins = ...)` before the NavModel. 
+2. Direct order of plugins within a node. Plugins are invoked in order they appears in `Node(plugins = ...)` before the AppyxComponent. 
 
 
 ## Using Plugins 
