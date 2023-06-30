@@ -268,6 +268,23 @@ For example, the vector between `A` and `C` is `Offset(width, height)` as the ge
 Note that while you're not strictly required to match this offset with how an element moves on the screen, it's recommended to do so – otherwise the UX will be confusing in most cases.
 
 
+## Drag prediction
+
+The target UI state can be rendered immediately upon starting a drag. Note how the target state here matches not only the position, but the scale and the rotation too.
+
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-interactions/gestures/dragprediction/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:gestures:dragprediction:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-gestures-drag-prediction",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
+
+
 ## Settling incomplete gestures
 
 When releasing the drag before reaching the target, the operation is settled. Depending on how far the gesture got, it might be:
