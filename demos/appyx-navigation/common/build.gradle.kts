@@ -27,14 +27,14 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material3)
-                api(project(":utils:multiplatform"))
                 implementation(libs.kotlinx.serialization.json)
-                api(project(":utils:customisations"))
                 api(project(":appyx-interactions:appyx-interactions"))
                 api(project(":appyx-navigation:common"))
-                implementation(project(":appyx-components:stable:backstack:backstack"))
+                api(project(":utils:customisations"))
+                api(project(":utils:multiplatform"))
                 implementation(project(":appyx-components:experimental:cards:cards"))
                 implementation(project(":appyx-components:experimental:promoter:promoter"))
+                implementation(project(":appyx-components:stable:backstack:backstack"))
                 implementation(project(":appyx-components:stable:spotlight:spotlight"))
             }
         }
@@ -47,8 +47,8 @@ kotlin {
             dependencies {
                 api(libs.androidx.appcompat)
                 api(libs.androidx.core)
-                implementation(libs.coil.compose)
                 implementation(libs.androidx.activity.compose)
+                implementation(libs.coil.compose)
             }
         }
         val desktopMain by getting {
