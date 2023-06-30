@@ -1,6 +1,6 @@
 package com.bumble.appyx.interactions.core.model.progress
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.InteractionTarget.Child1

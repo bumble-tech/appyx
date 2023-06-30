@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.core.model
 
-import DefaultAnimationSpec
-import DisableAnimations
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
@@ -137,7 +137,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     override fun onAddedToComposition(scope: CoroutineScope) {
         animationScope = scope
         createAnimatedInputSource(scope)
-        createdDebugInputSource(scope)
+        createdDebugInputSource()
     }
 
     override fun onRemovedFromComposition() {
@@ -155,10 +155,9 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         )
     }
 
-    private fun createdDebugInputSource(scope: CoroutineScope) {
+    private fun createdDebugInputSource() {
         debug = DebugProgressInputSource(
             transitionModel = model,
-            coroutineScope = scope
         )
     }
 

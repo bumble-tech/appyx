@@ -39,7 +39,7 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
-import gestureModifier
+import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 

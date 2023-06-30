@@ -40,10 +40,8 @@ import com.bumble.appyx.interactions.sample.Children
 fun Puzzle15Ui(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
     modifier: Modifier = Modifier,
 ) {
-    println("Hello Puzzle15")
     val coroutineScope = rememberCoroutineScope()
 
     val model = remember { Puzzle15Model(savedStateMap = null) }
@@ -59,7 +57,6 @@ fun Puzzle15Ui(
 
     Column(
         modifier = modifier.onKeyEvent {
-            println("Getting event: $it")
             if (it.type == KeyEventType.KeyDown) {
                 when (it.key) {
                     Key.DirectionLeft -> puzzle15.operation(Swap(RIGHT))

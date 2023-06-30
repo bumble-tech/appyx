@@ -1,6 +1,6 @@
 package com.bumble.appyx.components.backstack.ui.parallax
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset

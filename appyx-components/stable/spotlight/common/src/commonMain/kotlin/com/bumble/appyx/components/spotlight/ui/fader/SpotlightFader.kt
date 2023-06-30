@@ -1,6 +1,6 @@
 package com.bumble.appyx.components.spotlight.ui.fader
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
