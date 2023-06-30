@@ -281,11 +281,25 @@ This can be configured in `GestureSettleConfig`, along with animation specs of c
 
 ```kotlin
 GestureSettleConfig(
-    completionThreshold = 0.5f,
+    completionThreshold = 0.2f, // the default is 0.5f
     completeGestureSpec = spring(),
     revertGestureSpec = spring(),
 )
 ```
+
+Here's an example that uses a `completionThreshold` value of `0.15f` (15%). Notice that now you can release the drag much closer to the starting point and it will still complete the animation:
+
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-interactions/gestures/incompletedrag/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:gestures:incompletedrag:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-interactions-gestures-incomplete-drag",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
 
 ## Configuring gestures in the AppyxComponent
 

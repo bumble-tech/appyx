@@ -1,6 +1,6 @@
 # Composable navigation
 
-[AppyxComponents](../AppyxComponent/index.md) in Appyx are composable. 
+[AppyxComponents](../../components/index.md) in Appyx are composable. 
 
 As a single `AppyxComponent` won't be enough for the whole of your whole app, you can use many in a composable way. That is, any managed element of a `AppyxComponent` can also host its own `AppyxComponent`.
 

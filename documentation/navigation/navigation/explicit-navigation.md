@@ -79,7 +79,7 @@ Let's break down what happens here:
 
 ## Step 2 – `Onboarding` → `O1`
 
-Unlike `Root`, `Onboarding` uses [Spotlight](../AppyxComponent/spotlight.md) instead of [BackStack](../AppyxComponent/backstack.md) as an `AppyxComponent`, so navigation to the first screen is slightly different:  
+Unlike `Root`, `Onboarding` uses [Spotlight](../../components/spotlight.md) instead of [BackStack](../../components/backstack.md) as an `AppyxComponent`, so navigation to the first screen is slightly different:  
 
 ```kotlin
 class OnboardingNode(
