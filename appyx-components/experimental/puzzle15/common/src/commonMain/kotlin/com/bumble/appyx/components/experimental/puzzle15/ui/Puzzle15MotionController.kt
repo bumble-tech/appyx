@@ -50,34 +50,36 @@ class Puzzle15MotionController(
     ): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
-    class Gestures(private val bounds: TransitionBounds) :
-        GestureFactory<Tile, Puzzle15Model.State> {
+    class Gestures(
+        bounds: TransitionBounds,
+    ) : GestureFactory<Tile, Puzzle15Model.State> {
+
+        private val cellSize: Float = bounds.widthPx / 4f
 
         override fun createGesture(
             state: Puzzle15Model.State,
             delta: Offset,
             density: Density
         ): Gesture<Tile, Puzzle15Model.State> {
-            val distance = (bounds.widthPx / 4).toFloat()
             return when (dragDirection4(delta)) {
                 Drag.Direction4.UP -> Gesture(
                     operation = Swap(Swap.Direction.DOWN),
-                    completeAt = Offset(0f, -distance)
+                    completeAt = Offset(0f, -cellSize)
                 )
 
                 Drag.Direction4.LEFT -> Gesture(
                     operation = Swap(Swap.Direction.RIGHT),
-                    completeAt = Offset(-distance, 0f)
+                    completeAt = Offset(-cellSize, 0f)
                 )
 
                 Drag.Direction4.RIGHT -> Gesture(
                     operation = Swap(Swap.Direction.LEFT),
-                    completeAt = Offset(distance, 0f)
+                    completeAt = Offset(cellSize, 0f)
                 )
 
                 Drag.Direction4.DOWN -> Gesture(
                     operation = Swap(Swap.Direction.UP),
-                    completeAt = Offset(0f, distance)
+                    completeAt = Offset(0f, cellSize)
                 )
 
             }

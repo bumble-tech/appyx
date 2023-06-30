@@ -43,7 +43,6 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
         }
     }
 ) {
-
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
