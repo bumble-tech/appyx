@@ -1,6 +1,6 @@
 package com.bumble.appyx.components.experimental.puzzle15.ui
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density

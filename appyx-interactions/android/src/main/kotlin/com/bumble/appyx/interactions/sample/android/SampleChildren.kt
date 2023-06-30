@@ -1,6 +1,5 @@
 package com.bumble.appyx.interactions.sample.android
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +41,7 @@ fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
 @Composable
 fun Element(
     elementUiModel: ElementUiModel<*>,
-    modifier: Modifier = Modifier.fillMaxSize(),
+    modifier: Modifier = Modifier,
     color: Color? = Color.Unspecified,
     contentDescription: String? = null
 ) {

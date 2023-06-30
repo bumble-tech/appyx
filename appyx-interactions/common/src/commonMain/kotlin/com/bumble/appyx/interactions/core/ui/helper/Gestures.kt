@@ -1,3 +1,5 @@
+package com.bumble.appyx.interactions.core.ui.helper
+
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.gestures.detectDragGestures

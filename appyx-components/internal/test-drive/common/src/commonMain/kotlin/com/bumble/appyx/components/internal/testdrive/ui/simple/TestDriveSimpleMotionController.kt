@@ -1,6 +1,6 @@
 package com.bumble.appyx.components.internal.testdrive.ui.simple
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -13,7 +13,6 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
 import com.bumble.appyx.interactions.AppyxLogger
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.RIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UP
@@ -91,9 +90,7 @@ class TestDriveSimpleMotionController<InteractionTarget : Any>(
     override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
-    class Gestures<InteractionTarget>(
-        transitionBounds: TransitionBounds,
-    ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
+    class Gestures<InteractionTarget> : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
         private val widthDp = offsetB.x - offsetA.x
         private val heightDp = offsetD.y - offsetA.y
 

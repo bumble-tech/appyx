@@ -23,7 +23,7 @@ class KeyframeTest {
         val output = model.output.value
         assertTrue(output is Keyframes)
 
-        (output as Keyframes<InteractionTarget>).let {
+        (output as Keyframes<*>).let {
             assertEquals(0, output.currentIndex)
             assertEquals(0.5f, output.progress)
         }

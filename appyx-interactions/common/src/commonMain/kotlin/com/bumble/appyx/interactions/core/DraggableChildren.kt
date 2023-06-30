@@ -54,7 +54,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                 text = "Customise this composable",
             )
         }
-                                                                       },
+    },
 ) {
     val density = LocalDensity.current
     val elementUiModels by appyxComponent.uiModels.collectAsState()

@@ -1,4 +1,4 @@
-package com.bumble.appyx.demos
+package com.bumble.appyx.experimental.puzzle15.web
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.focusable
@@ -19,20 +19,6 @@ import androidx.compose.ui.window.Window
 import com.bumble.appyx.components.experimental.puzzle15.ui.Puzzle15Ui
 import org.jetbrains.skiko.wasm.onWasmReady
 
-val manatee = Color(0xFF8D99AE)
-val silver_sand = Color(0xFFBDC6D1)
-val sizzling_red = Color(0xFFF05D5E)
-val atomic_tangerine = Color(0xFFF0965D)
-val appyx_dark = Color(0xFF1F2126)
-
-val colors = listOf(
-    manatee,
-    sizzling_red,
-    atomic_tangerine,
-    silver_sand,
-    appyx_dark
-)
-
 fun main() {
     onWasmReady {
         Window("Puzzle15") {
@@ -46,7 +32,6 @@ fun main() {
                 Puzzle15Ui(
                     screenWidthPx = size.width,
                     screenHeightPx = size.height,
-                    colors = colors,
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Black)

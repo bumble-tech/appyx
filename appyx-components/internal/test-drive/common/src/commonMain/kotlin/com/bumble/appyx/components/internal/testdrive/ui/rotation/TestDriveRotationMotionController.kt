@@ -1,6 +1,6 @@
 package com.bumble.appyx.components.internal.testdrive.ui.rotation
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
