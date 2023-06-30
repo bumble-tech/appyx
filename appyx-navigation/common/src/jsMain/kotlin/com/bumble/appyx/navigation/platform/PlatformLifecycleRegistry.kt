@@ -6,10 +6,9 @@ import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.MainScope
 
-actual class PlatformLifecycleRegistry(
-    lifecycleCoroutineScope: CoroutineScope,
-) : Lifecycle {
+actual class PlatformLifecycleRegistry : Lifecycle {
 
     private val managedDefaultLifecycleObservers: MutableList<DefaultPlatformLifecycleObserver> =
         ArrayList()
@@ -62,7 +61,7 @@ actual class PlatformLifecycleRegistry(
             _currentState = value
         }
 
-    override val coroutineScope: CoroutineScope = lifecycleCoroutineScope
+    override val coroutineScope: CoroutineScope by lazy { MainScope() }
 
     override fun addObserver(observer: PlatformLifecycleObserver) {
         when (observer) {
@@ -84,6 +83,6 @@ actual class PlatformLifecycleRegistry(
 
     actual companion object {
         actual fun create(owner: CommonLifecycleOwner): PlatformLifecycleRegistry =
-            PlatformLifecycleRegistry(owner.lifecycleScope)
+            PlatformLifecycleRegistry()
     }
 }

@@ -90,6 +90,7 @@ class SpotlightNode(
                 .background(appyx_dark)
         ) {
             Children(
+                parent = this@SpotlightNode,
                 interactionModel = spotlight,
                 modifier = Modifier
                     .padding(

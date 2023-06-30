@@ -29,7 +29,7 @@ actual fun PlatformBackHandler(
     // Safely update the current `onBack` lambda when a new one is provided
     val currentOnBack by rememberUpdatedState(onBack)
     // Remember in Composition a back callback that calls the `onBack` lambda
-    val backCallback = remember {
+    val backCallback = remember<OnBackPressedCallback> {
         object : OnBackPressedCallback(enabled) {
             override fun handleOnBackPressed() {
                 currentOnBack()

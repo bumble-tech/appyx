@@ -28,12 +28,13 @@ import gestureModifier
 import kotlin.math.roundToInt
 
 @Composable
-inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
+fun <InteractionTarget : Any, ModelState : Any> Children(
+    parent: ParentNode<InteractionTarget>,
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
-        children { child, elementUiModel ->
+    block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
+        parent.children { child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget> ->
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
@@ -43,7 +44,6 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
         }
     }
 ) {
-
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
@@ -78,7 +78,25 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
             )
         )
     }
+}
 
+@Composable
+inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
+    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+    modifier: Modifier = Modifier,
+    clipToBounds: Boolean = false,
+    noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
+        children { child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget> ->
+            child(
+                modifier = Modifier.gestureModifier(
+                    interactionModel = interactionModel,
+                    key = elementUiModel.element,
+                )
+            )
+        }
+    }
+) {
+    Children(this, interactionModel, modifier, clipToBounds, block)
 }
 
 class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(

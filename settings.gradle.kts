@@ -43,6 +43,7 @@ include(
     ":appyx-interactions:common",
     ":appyx-navigation:android",
     ":appyx-navigation:desktop",
+    ":appyx-navigation:web",
     ":appyx-navigation:common",
     ":demos:appyx-interactions:android",
     ":demos:appyx-interactions:desktop",
@@ -50,6 +51,7 @@ include(
     ":demos:appyx-navigation:common",
     ":demos:appyx-navigation:android",
     ":demos:appyx-navigation:desktop",
+    ":demos:appyx-navigation:web",
     ":demos:common",
     ":demos:navigation-compose",
     ":demos:mkdocs:appyx-interactions:interactions:sample1:web",
@@ -77,5 +79,6 @@ project(":appyx-components:experimental:promoter:common").name = "promoter"
 project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"
 project(":appyx-components:experimental:puzzle15:web").name = "puzzle15-web"
 project(":appyx-components:internal:test-drive:common").name = "test-drive"
+project(":demos:appyx-navigation:web").name = "navigation-web"
 
 includeBuild("plugins")

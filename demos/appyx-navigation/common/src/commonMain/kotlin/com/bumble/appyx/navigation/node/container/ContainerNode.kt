@@ -103,7 +103,7 @@ class ContainerNode(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 //                TextButton(text = "Dating Cards") {
-//                    backStack.push(InteractionTarget.DatingCards)
+////                    backStack.push(InteractionTarget.DatingCards)
 //                }
                 TextButton(text = "Spotlight") {
                     backStack.push(InteractionTarget.SpotlightExperiment)
@@ -130,6 +130,7 @@ class ContainerNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
+            parent = this,
             interactionModel = backStack,
             modifier = modifier
                 .fillMaxSize()

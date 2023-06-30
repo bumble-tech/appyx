@@ -98,6 +98,7 @@ class PromoterNode(
                 .fillMaxSize()
         ) {
             Children(
+                parent = this@PromoterNode,
                 interactionModel = promoter,
                 modifier = Modifier
                     .weight(0.9f)
