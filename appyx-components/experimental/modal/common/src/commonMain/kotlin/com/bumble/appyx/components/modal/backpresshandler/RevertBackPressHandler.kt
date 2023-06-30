@@ -9,7 +9,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
 class RevertBackPressHandler<InteractionTarget : Any>(
-    val scope: CoroutineScope,
+    private val scope: CoroutineScope,
     val animationSpec: AnimationSpec<Float>? = null
 ) : BaseBackPressHandlerStrategy<InteractionTarget, ModalModel.State<InteractionTarget>>() {
 

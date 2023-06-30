@@ -78,10 +78,10 @@ data class Keyframes<ModelState>(
 
     fun setProgress(progress: Float, onTransitionFinished: (ModelState) -> Unit) {
         val currentProgress = this.progress.toInt()
-        val progress = progress.coerceIn(0f, maxProgress)
-        AppyxLogger.d("Keyframes", "$progress")
-        progressFlow.value = progress
-        if (progress.toInt() > currentProgress) {
+        val coercedProgress = progress.coerceIn(0f, maxProgress)
+        AppyxLogger.d("Keyframes", "$coercedProgress")
+        progressFlow.value = coercedProgress
+        if (coercedProgress.toInt() > currentProgress) {
             AppyxLogger.d("Keyframes", "onTransitionFinished()")
             onTransitionFinished(currentSegment.fromState)
         }

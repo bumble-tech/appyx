@@ -25,7 +25,6 @@ class ModalMotionController<InteractionTarget : Any>(
 ) : BaseMotionController<InteractionTarget, ModalModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val width = uiContext.transitionBounds.widthDp
     private val height = uiContext.transitionBounds.heightDp
 
     private val createdState: TargetUiState =

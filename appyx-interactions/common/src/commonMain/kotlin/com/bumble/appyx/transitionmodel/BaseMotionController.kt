@@ -1,6 +1,6 @@
 package com.bumble.appyx.transitionmodel
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 abstract class BaseMotionController<InteractionTarget : Any, ModelState, MutableUiState, TargetUiState>(
     private val uiContext: UiContext,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<MutableUiState, TargetUiState> {
+) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<TargetUiState> {
 
     open val viewpointDimensions: List<Pair<(ModelState) -> Float, GenericFloatProperty>> =
         emptyList()

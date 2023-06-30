@@ -1,6 +1,6 @@
 package com.bumble.appyx.components.experimental.promoter.ui
 
-import DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.unit.Dp
 import com.bumble.appyx.components.experimental.cards.ui.MutableUiState
