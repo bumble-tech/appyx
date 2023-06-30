@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.internal.testdrive.ui.rotation
 
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -15,6 +14,7 @@ import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ

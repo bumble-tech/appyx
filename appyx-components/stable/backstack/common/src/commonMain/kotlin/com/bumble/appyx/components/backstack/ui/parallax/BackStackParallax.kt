@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.backstack.ui.parallax
 
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
@@ -13,6 +12,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -87,7 +87,7 @@ class BackstackParallax<InteractionTarget : Any>(
             density: Density
         ): Gesture<InteractionTarget, State<InteractionTarget>> {
 
-            return if  (dragHorizontalDirection(delta) == Drag.HorizontalDirection.RIGHT) {
+            return if (dragHorizontalDirection(delta) == Drag.HorizontalDirection.RIGHT) {
                 Gesture(
                     operation = Pop(),
                     completeAt = Offset(x = transitionBounds.widthPx.toFloat(), y = 0f),

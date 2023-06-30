@@ -1,7 +1,5 @@
 package com.bumble.appyx.interactions.core.model
 
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
@@ -27,6 +25,8 @@ import com.bumble.appyx.interactions.core.ui.context.UiContextAware
 import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -229,6 +229,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
             animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(
                 operation
             )
+
             else -> animatedSource.operation(operation, animationSpec ?: defaultAnimationSpec)
         }
     }
