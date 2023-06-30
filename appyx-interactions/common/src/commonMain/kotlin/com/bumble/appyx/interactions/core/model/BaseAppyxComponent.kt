@@ -49,7 +49,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
     final override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    final override val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
+    protected val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completeGestureSpec = defaultAnimationSpec,
         revertGestureSpec = defaultAnimationSpec,
     ),
@@ -85,7 +85,6 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         model = model,
         gestureFactory = { _gestureFactory },
         defaultAnimationSpec = defaultAnimationSpec,
-        gestureSettleConfig = gestureSettleConfig,
     )
 
     private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
