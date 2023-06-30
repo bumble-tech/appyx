@@ -32,8 +32,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun <N : Node> NodeHost(
     windowState: WindowState,
-    modifier: Modifier = Modifier,
     onBackPressedEvents: Flow<Unit>,
+    modifier: Modifier = Modifier,
     integrationPoint: IntegrationPoint = remember { MainIntegrationPoint() },
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
     factory: NodeFactory<N>
