@@ -74,8 +74,8 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 )
             }
             .onPointerEvent {
-                if (it.type == PointerEventType.Release && appyxComponent.isDragging()) {
-                    appyxComponent.onDragEnd()
+                if (it.type == PointerEventType.Release) {
+                    appyxComponent.onRelease()
                 }
             }
     ) {

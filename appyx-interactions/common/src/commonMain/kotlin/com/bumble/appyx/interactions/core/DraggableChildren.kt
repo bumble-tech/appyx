@@ -85,8 +85,8 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                 )
             }
             .onPointerEvent {
-                if (it.type == PointerEventType.Release && appyxComponent.isDragging()) {
-                    appyxComponent.onDragEnd()
+                if (it.type == PointerEventType.Release) {
+                    appyxComponent.onRelease()
                 }
             }
             .fillMaxSize()

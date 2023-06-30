@@ -13,7 +13,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 
-class DragProgressController<InteractionTarget : Any, State>(
+internal class DragProgressController<InteractionTarget : Any, State>(
     private val model: TransitionModel<InteractionTarget, State>,
     private val gestureFactory: () -> GestureFactory<InteractionTarget, State>,
     override val defaultAnimationSpec: AnimationSpec<Float>,
@@ -52,7 +52,7 @@ class DragProgressController<InteractionTarget : Any, State>(
         _gestureFactory = null
     }
 
-    override fun isDragging(): Boolean = _gestureFactory != null
+    fun isDragging(): Boolean = _gestureFactory != null
 
     private fun consumeDrag(dragAmount: Offset) {
         val currentState = model.output.value
