@@ -12,11 +12,15 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun App() {
     MaterialTheme {
-        BackStackParallaxSample(
-            screenHeightPx = 1280,
-            screenWidthPx = 720,
-            modifier = Modifier.fillMaxSize(),
-        )
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            BackStackParallaxSample(
+                screenHeightPx = constraints.maxHeight,
+                screenWidthPx = constraints.maxWidth,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
     }
 }
 

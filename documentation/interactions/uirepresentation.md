@@ -183,5 +183,8 @@ dependencies {
     add("kspAndroid", project(":ksp:mutable-ui-processor"))
     add("kspDesktop", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
+    add("kspIosX64", project(":ksp:mutable-ui-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
 }
 ```

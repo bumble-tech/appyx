@@ -17,7 +17,7 @@ kotlin {
         version = "1.0.0"
         summary = "Some description for the Shared Module"
         homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "14.1"
+        ios.deploymentTarget = "17.0"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "shared"
@@ -36,8 +36,6 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(project(":appyx-components:stable:spotlight:spotlight"))
                 implementation(project(":appyx-components:stable:backstack:backstack"))
-                implementation(project(":appyx-interactions:appyx-interactions"))
-                implementation(project(":appyx-components:internal:test-drive:test-drive"))
             }
         }
         val androidMain by getting {
@@ -78,4 +76,18 @@ android {
     kotlin {
         jvmToolchain(11)
     }
+}
+
+compose.experimental {
+    uikit.application {
+        projectName = "Appyx"
+        bundleIdPrefix = "com.bumble.appyx"
+    }
+}
+
+dependencies {
+    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
+    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
+    add("kspIosX64", project(":ksp:mutable-ui-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
 }
