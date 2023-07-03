@@ -15,6 +15,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
+import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -42,19 +43,21 @@ class BackstackParallax<InteractionTarget : Any>(
         elementWidth = width,
         offsetMultiplier = -0.2f,
         colorOverlay = ColorOverlay.Target(0.7f),
+        zIndex = ZIndex.Target(1f),
     )
 
     private val top = TargetUiState(
         elementWidth = width,
         offsetMultiplier = 0f,
         shadow = Shadow.Target(25f),
+        zIndex = ZIndex.Target(2f),
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         val stashed = stashed.mapIndexed { index, element ->
             MatchedTargetUiState(
                 element = element,
-                targetUiState = if (index == stashed.size - 1) bottom else left,
+                targetUiState = if (index == stashed.lastIndex) bottom else left,
             )
         }
 
