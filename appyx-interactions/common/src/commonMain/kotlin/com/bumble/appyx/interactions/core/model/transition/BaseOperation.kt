@@ -2,8 +2,8 @@ package com.bumble.appyx.interactions.core.model.transition
 
 abstract class BaseOperation<ModelState> : Operation<ModelState> {
 
-    final override fun invoke(baseLineState: ModelState): StateTransition<ModelState> {
-        val fromState = createFromState(baseLineState)
+    final override fun invoke(state: ModelState): StateTransition<ModelState> {
+        val fromState = createFromState(state)
         val targetState = createTargetState(fromState)
 
         return StateTransition(
