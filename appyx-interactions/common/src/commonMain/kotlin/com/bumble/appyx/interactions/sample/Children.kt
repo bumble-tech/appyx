@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
@@ -27,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -40,7 +42,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     childContent: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {},
-    childWrapper: @Composable (ElementUiModel<InteractionTarget>) -> Unit = { frameModel->
+    childWrapper: @Composable (ElementUiModel<InteractionTarget>) -> Unit = { frameModel ->
         ChildWrapper(frameModel) {
             childContent(frameModel)
         }
@@ -70,6 +72,11 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                     ),
                     clipToBounds = clipToBounds
                 )
+            }
+            .onPointerEvent {
+                if (it.type == PointerEventType.Release) {
+                    appyxComponent.onRelease()
+                }
             }
     ) {
         elementUiModels
