@@ -1,5 +1,6 @@
 package com.bumble.appyx.components.experimental.puzzle15.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
@@ -10,7 +11,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -18,6 +29,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
@@ -70,7 +83,8 @@ fun Puzzle15Ui(
             }
             false
         },
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Box(
             modifier = Modifier
@@ -152,25 +166,25 @@ fun Puzzle15Ui(
                     onClick = { puzzle15.operation(Swap(direction = DOWN)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text("^")
+                    Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Move Up")
                 }
                 Button(
                     onClick = { puzzle15.operation(Swap(direction = LEFT)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text(">")
+                    Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Move Right")
                 }
                 Button(
                     onClick = { puzzle15.operation(Swap(direction = UP)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text("v")
+                    Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Move Down")
                 }
                 Button(
                     onClick = { puzzle15.operation(Swap(direction = RIGHT)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text("<")
+                    Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Move Left")
                 }
             }
             Button(
