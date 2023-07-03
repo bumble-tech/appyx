@@ -1,8 +1,8 @@
-package com.bumble.appyx.demos.sample3
+package com.bumble.appyx.demos.dragprediction
 
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -16,22 +16,23 @@ import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNLEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWNRIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.LEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.RIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UP
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPLEFT
-import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
-class Sample3MotionController<InteractionTarget : Any>(
+class DragPredictionMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
@@ -46,6 +47,10 @@ class Sample3MotionController<InteractionTarget : Any>(
         )
 
     companion object {
+        val offsetA = DpOffset(0.dp, 0.dp)
+        val offsetB = DpOffset(324.dp, 0.dp)
+        val offsetC = DpOffset(324.dp, 180.dp)
+        val offsetD = DpOffset(0.dp, 180.dp)
 
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
@@ -58,24 +63,30 @@ class Sample3MotionController<InteractionTarget : Any>(
         // Top-left corner, A
         private val uiStateA = TargetUiState(
             position = Position.Target(DpOffset(0.dp, 0.dp)),
+            scale = Scale.Target(1f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         // Top-right corner, B
         private val uiStateB = TargetUiState(
-            position = Position.Target(DpOffset(370.dp, 0.dp)),
+            position = Position.Target(DpOffset(180.dp, 30.dp)),
+            scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         // Bottom-right corner, C
         private val uiStateC = TargetUiState(
-            position = Position.Target(DpOffset(370.dp, 180.dp)),
+            position = Position.Target(DpOffset(180.dp, 180.dp)),
+            scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
+            rotationZ = RotationZ.Target(90f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
         // Bottom-left corner, D
         private val uiStateD = TargetUiState(
-            position = Position.Target(DpOffset(0.dp, 180.dp)),
+            position = Position.Target(DpOffset(30.dp, 180.dp)),
+            scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
+            rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
     }
@@ -94,8 +105,8 @@ class Sample3MotionController<InteractionTarget : Any>(
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-            val maxY = with(density) { maxY.toPx() }
             val maxX = with(density) { maxX.toPx() }
+            val maxY = with(density) { maxY.toPx() }
 
             val direction = dragDirection8(delta)
             return when (state.elementState) {
@@ -105,22 +116,19 @@ class Sample3MotionController<InteractionTarget : Any>(
                     DOWN -> Gesture(MoveTo(D), Offset(0f, maxY))
                     else -> Gesture.Noop()
                 }
+
                 B -> when (direction) {
-                    DOWN -> Gesture(MoveTo(C), Offset(0f, maxY))
-                    DOWNLEFT -> Gesture(MoveTo(D), Offset(-maxX, maxY))
                     LEFT -> Gesture(MoveTo(A), Offset(-maxX, 0f))
                     else -> Gesture.Noop()
                 }
+
                 C -> when (direction) {
-                    LEFT -> Gesture(MoveTo(D), Offset(-maxX, 0f))
                     UPLEFT -> Gesture(MoveTo(A), Offset(-maxX, -maxY))
-                    UP -> Gesture(MoveTo(B), Offset(0f, -maxY))
                     else -> Gesture.Noop()
                 }
+
                 D -> when (direction) {
                     UP -> Gesture(MoveTo(A), Offset(0f, -maxY))
-                    UPRIGHT -> Gesture(MoveTo(B), Offset(maxX, -maxY))
-                    RIGHT -> Gesture(MoveTo(C), Offset(maxX, 0f))
                     else -> Gesture.Noop()
                 }
             }

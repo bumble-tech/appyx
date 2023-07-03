@@ -53,6 +53,8 @@ include(
     ":demos:mkdocs:appyx-interactions:interactions:sample1:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample2:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample3:web",
+    ":demos:mkdocs:appyx-interactions:gestures:dragprediction:web",
+    ":demos:mkdocs:appyx-interactions:gestures:incompletedrag:web",
     ":demos:mkdocs:appyx-components:backstack:fader:web",
     ":demos:mkdocs:appyx-components:backstack:parallax:web",
     ":demos:mkdocs:appyx-components:backstack:slider:web",
