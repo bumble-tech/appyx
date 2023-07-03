@@ -34,7 +34,6 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.LEFT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.RIGHT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.UP
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.Children
 
@@ -43,11 +42,9 @@ import com.bumble.appyx.interactions.sample.Children
 fun Puzzle15Ui(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color> = emptyList(),
     accentColor: Color = Color.Cyan,
     modifier: Modifier = Modifier,
 ) {
-    println("Hello Puzzle15")
     val coroutineScope = rememberCoroutineScope()
 
     val model = remember { Puzzle15Model(savedStateMap = null) }
@@ -63,7 +60,6 @@ fun Puzzle15Ui(
 
     Column(
         modifier = modifier.onKeyEvent {
-            println("Getting event: $it")
             if (it.type == KeyEventType.KeyDown) {
                 when (it.key) {
                     Key.DirectionLeft -> puzzle15.operation(Swap(RIGHT))
@@ -108,16 +104,18 @@ fun Puzzle15Ui(
                         Box(
                             modifier = Modifier.size(60.dp)
                                 .then(
-                                    elementUiModel.modifier
+                                    elementUiModel
+                                        .modifier
                                         .background(color = Color.White)
-                                ).pointerInput(elementUiModel.element.id) {
+                                )
+                                .pointerInput(elementUiModel.element.id) {
+                                    this.interceptOutOfBoundsChildEvents = true
                                     detectDragGestures(
                                         onDrag = { change, dragAmount ->
                                             change.consume()
                                             puzzle15.onDrag(dragAmount, this)
                                         },
                                         onDragEnd = {
-                                            AppyxLogger.d("drag", "end")
                                             puzzle15.onDragEnd()
                                         }
                                     )

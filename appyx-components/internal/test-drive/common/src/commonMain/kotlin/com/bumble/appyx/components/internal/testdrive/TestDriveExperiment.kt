@@ -71,7 +71,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
                     ),
                 )
             },
-            gestureFactory = { TestDriveSimpleMotionController.Gestures(it) }
+            gestureFactory = { TestDriveSimpleMotionController.Gestures() }
         )
     }
 
