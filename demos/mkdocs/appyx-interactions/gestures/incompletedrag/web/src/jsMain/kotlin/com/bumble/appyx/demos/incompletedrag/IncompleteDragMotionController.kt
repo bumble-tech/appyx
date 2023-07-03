@@ -1,6 +1,5 @@
 package com.bumble.appyx.demos.incompletedrag
 
-import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -12,8 +11,6 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController.Companion
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -28,14 +25,12 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
-import kotlin.math.abs
 
 class IncompleteDragMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
@@ -116,18 +111,21 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
                     DOWN -> Gesture(MoveTo(D), Offset(0f, maxY))
                     else -> Gesture.Noop()
                 }
+
                 B -> when (direction) {
                     DOWN -> Gesture(MoveTo(C), Offset(0f, maxY))
                     DOWNLEFT -> Gesture(MoveTo(D), Offset(-maxX, maxY))
                     LEFT -> Gesture(MoveTo(A), Offset(-maxX, 0f))
                     else -> Gesture.Noop()
                 }
+
                 C -> when (direction) {
                     LEFT -> Gesture(MoveTo(D), Offset(-maxX, 0f))
                     UPLEFT -> Gesture(MoveTo(A), Offset(-maxX, -maxY))
                     UP -> Gesture(MoveTo(B), Offset(0f, -maxY))
                     else -> Gesture.Noop()
                 }
+
                 D -> when (direction) {
                     UP -> Gesture(MoveTo(A), Offset(0f, -maxY))
                     UPRIGHT -> Gesture(MoveTo(B), Offset(maxX, -maxY))

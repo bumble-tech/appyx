@@ -1,10 +1,8 @@
 package com.bumble.appyx.demos.dragprediction
 
-import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.TransformOrigin
-import androidx.compose.ui.graphics.TransformOrigin.Companion
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -26,6 +24,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPLEFT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
@@ -117,14 +116,17 @@ class DragPredictionMotionController<InteractionTarget : Any>(
                     DOWN -> Gesture(MoveTo(D), Offset(0f, maxY))
                     else -> Gesture.Noop()
                 }
+
                 B -> when (direction) {
                     LEFT -> Gesture(MoveTo(A), Offset(-maxX, 0f))
                     else -> Gesture.Noop()
                 }
+
                 C -> when (direction) {
                     UPLEFT -> Gesture(MoveTo(A), Offset(-maxX, -maxY))
                     else -> Gesture.Noop()
                 }
+
                 D -> when (direction) {
                     UP -> Gesture(MoveTo(A), Offset(0f, -maxY))
                     else -> Gesture.Noop()
