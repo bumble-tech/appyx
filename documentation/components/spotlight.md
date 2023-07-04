@@ -12,15 +12,15 @@ It's great for flows or tabbed containers.
 Class: `SpotlightSlider`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-slider",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-slider",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 
@@ -29,15 +29,15 @@ classname="compose_mpp_sample",
 Class: `SpotlightSliderScale`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderscale/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:sliderscale:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-sliderscale",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderscale/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:sliderscale:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-sliderscale",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Slider + rotation
@@ -45,15 +45,15 @@ classname="compose_mpp_sample",
 Class: `SpotlightSliderRotation`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderrotation/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:sliderrotation:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-sliderrotation",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderrotation/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:sliderrotation:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-sliderrotation",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### 3D stack
@@ -61,15 +61,15 @@ classname="compose_mpp_sample",
 Class: `SpotlightStack3D`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/stack3d/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:stack3d:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-stack3d",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/stack3d/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:stack3d:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-stack3d",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Fader
@@ -77,15 +77,15 @@ classname="compose_mpp_sample",
 Class: `SpotlightFader`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/fader/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:fader:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-fader",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/fader/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:fader:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-fader",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Custom

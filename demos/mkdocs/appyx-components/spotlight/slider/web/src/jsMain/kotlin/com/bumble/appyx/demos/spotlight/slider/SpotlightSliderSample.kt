@@ -6,6 +6,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
+import com.bumble.appyx.components.spotlight.operation.first
+import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
@@ -34,8 +36,10 @@ fun SpotlightSliderSample(
             gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     val actions = mapOf(
+        "First" to { spotlight.first() },
         "Prev" to { spotlight.previous() },
         "Next" to { spotlight.next() },
+        "Last" to { spotlight.last() },
     )
     AppyxWebSample(
         screenWidthPx = screenWidthPx,
