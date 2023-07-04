@@ -57,3 +57,15 @@ Check [its own page for more details](spotlight.md).
 Experimental components are still published as artifacts, but meant only for quick prototyping, experimenting, or playing around. There's no promise they will be maintained, or that there API won't change. They might be removed at any point.
 
 Check [its own page for more details](experimental.md).
+
+{{
+compose_mpp_sample(
+project_output_directory="demos/mkdocs/appyx-components/experimental/datingcards/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-components:experimental:datingcards:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-components-experimental-datingcards",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
