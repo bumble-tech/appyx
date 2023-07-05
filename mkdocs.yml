@@ -30,6 +30,7 @@ nav:
     - Overview: components/index.md
     - Back stack: components/backstack.md
     - Spotlight: components/spotlight.md
+    - Experimental: components/experimental.md
   - Appyx Navigation:
     - Overview: navigation/index.md
     - Navigation:

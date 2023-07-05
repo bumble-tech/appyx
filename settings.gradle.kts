@@ -60,6 +60,8 @@ include(
     ":demos:mkdocs:appyx-components:backstack:slider:web",
     ":demos:mkdocs:appyx-components:backstack:stack3d:web",
     ":demos:mkdocs:appyx-components:common",
+    ":demos:mkdocs:appyx-components:experimental:datingcards:web",
+    ":demos:mkdocs:appyx-components:experimental:puzzle15:web",
     ":demos:mkdocs:appyx-components:spotlight:fader:web",
     ":demos:mkdocs:appyx-components:spotlight:slider:web",
     ":demos:mkdocs:appyx-components:spotlight:sliderrotation:web",

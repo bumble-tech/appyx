@@ -1,5 +1,7 @@
 package com.bumble.appyx.components.experimental.cards.operation
 
+import androidx.compose.animation.core.AnimationSpec
+import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.components.experimental.cards.CardsModel
@@ -36,4 +38,11 @@ class VoteLike<InteractionTarget>(
             result
         }
     }
+}
+
+fun <InteractionTarget : Any> Cards<InteractionTarget>.like(
+    mode: Operation.Mode = Operation.Mode.KEYFRAME,
+    animationSpec: AnimationSpec<Float>? = null
+) {
+    operation(operation = VoteLike(mode), animationSpec = animationSpec)
 }
