@@ -46,10 +46,6 @@ class Sample1MotionController<InteractionTarget : Any>(
         )
 
     companion object {
-        val offsetA = DpOffset(0.dp, 0.dp)
-        val offsetB = DpOffset(324.dp, 0.dp)
-        val offsetC = DpOffset(324.dp, 180.dp)
-        val offsetD = DpOffset(0.dp, 180.dp)
 
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
@@ -67,13 +63,13 @@ class Sample1MotionController<InteractionTarget : Any>(
 
         // Top-right corner, B
         private val uiStateB = TargetUiState(
-            position = Position.Target(DpOffset(324.dp, 0.dp)),
+            position = Position.Target(DpOffset(370.dp, 0.dp)),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         // Bottom-right corner, C
         private val uiStateC = TargetUiState(
-            position = Position.Target(DpOffset(324.dp, 180.dp)),
+            position = Position.Target(DpOffset(370.dp, 180.dp)),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
@@ -90,44 +86,44 @@ class Sample1MotionController<InteractionTarget : Any>(
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val widthDp = offsetB.x - offsetA.x
-        private val heightDp = offsetD.y - offsetA.y
+        private val maxX = uiStateB.position.value.x - uiStateA.position.value.x
+        private val maxY = uiStateD.position.value.y - uiStateA.position.value.y
 
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-            val width = with(density) { widthDp.toPx() }
-            val height = with(density) { heightDp.toPx() }
+            val maxX = with(density) { maxX.toPx() }
+            val maxY = with(density) { maxY.toPx() }
 
             val direction = dragDirection8(delta)
             return when (state.elementState) {
                 A -> when (direction) {
-                    RIGHT -> Gesture(MoveTo(B), Offset(width, 0f))
-                    DOWNRIGHT -> Gesture(MoveTo(C), Offset(width, height))
-                    DOWN -> Gesture(MoveTo(D), Offset(0f, height))
+                    RIGHT -> Gesture(MoveTo(B), Offset(maxX, 0f))
+                    DOWNRIGHT -> Gesture(MoveTo(C), Offset(maxX, maxY))
+                    DOWN -> Gesture(MoveTo(D), Offset(0f, maxY))
                     else -> Gesture.Noop()
                 }
 
                 B -> when (direction) {
-                    DOWN -> Gesture(MoveTo(C), Offset(0f, height))
-                    DOWNLEFT -> Gesture(MoveTo(D), Offset(-width, height))
-                    LEFT -> Gesture(MoveTo(A), Offset(-width, 0f))
+                    DOWN -> Gesture(MoveTo(C), Offset(0f, maxY))
+                    DOWNLEFT -> Gesture(MoveTo(D), Offset(-maxX, maxY))
+                    LEFT -> Gesture(MoveTo(A), Offset(-maxX, 0f))
                     else -> Gesture.Noop()
                 }
 
                 C -> when (direction) {
-                    LEFT -> Gesture(MoveTo(D), Offset(-width, 0f))
-                    UPLEFT -> Gesture(MoveTo(A), Offset(-width, -height))
-                    UP -> Gesture(MoveTo(B), Offset(0f, -height))
+                    LEFT -> Gesture(MoveTo(D), Offset(-maxX, 0f))
+                    UPLEFT -> Gesture(MoveTo(A), Offset(-maxX, -maxY))
+                    UP -> Gesture(MoveTo(B), Offset(0f, -maxY))
                     else -> Gesture.Noop()
                 }
 
                 D -> when (direction) {
-                    UP -> Gesture(MoveTo(A), Offset(0f, -height))
-                    UPRIGHT -> Gesture(MoveTo(B), Offset(width, -height))
-                    RIGHT -> Gesture(MoveTo(C), Offset(width, 0f))
+                    UP -> Gesture(MoveTo(A), Offset(0f, -maxY))
+                    UPRIGHT -> Gesture(MoveTo(B), Offset(maxX, -maxY))
+                    RIGHT -> Gesture(MoveTo(C), Offset(maxX, 0f))
                     else -> Gesture.Noop()
                 }
             }
