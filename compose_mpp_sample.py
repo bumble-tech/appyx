@@ -19,9 +19,6 @@ def copy_files(source_directory, target_directory):
     shutil.copytree(source_directory, target_directory, copy_function=shutil.copy2)
 
 
-def is_running_on_ci():
-    os.environ.get('GITHUB_ACTIONS') == 'false'
-
 def generate_html(width, height, target_directory, html_file_name, classname):
     """Generate HTML code"""
     return "<div class=\"{classname}\">" \
