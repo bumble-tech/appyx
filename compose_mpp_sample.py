@@ -56,6 +56,5 @@ def define_env(env):
         site_target_directory = os.path.join(env.variables.config.site_dir, target_directory)
         if not os.path.exists(site_target_directory):
             copy_files(project_output_directory, site_target_directory)
-        base_url = urlparse(env.variables.config.site_url).path
-        html_target_directory = urljoin(base_url, os.path.relpath(site_target_directory, env.variables.config.site_dir))
+        html_target_directory = os.path.relpath(site_target_directory, env.variables.config.site_dir)
         return generate_html(width, height, html_target_directory, html_file_name, classname)
