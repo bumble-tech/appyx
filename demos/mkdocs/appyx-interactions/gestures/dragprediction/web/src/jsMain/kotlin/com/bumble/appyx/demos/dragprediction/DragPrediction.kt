@@ -189,7 +189,6 @@ fun <InteractionTarget : Any> ModelUi(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        modifier = modifier.zIndex(2f)
     ) { elementUiModel ->
         Box(
             modifier = Modifier.size(60.dp)
