@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.backstack.ui.parallax
 
-import DefaultAnimationSpec
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
@@ -13,6 +12,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -78,21 +78,19 @@ class BackstackParallax<InteractionTarget : Any>(
         targetUiState.toMutableState(uiContext)
 
     class Gestures<InteractionTarget : Any>(
-        transitionBounds: TransitionBounds,
+        private val transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
-        private val width = transitionBounds.screenWidthDp
 
         override fun createGesture(
             state: State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, State<InteractionTarget>> {
-            val widthRight = with(density) { width.toPx() }
 
-            return if  (dragHorizontalDirection(delta) == Drag.HorizontalDirection.RIGHT) {
+            return if (dragHorizontalDirection(delta) == Drag.HorizontalDirection.RIGHT) {
                 Gesture(
                     operation = Pop(),
-                    completeAt = Offset(x = widthRight, y = 0f),
+                    completeAt = Offset(x = transitionBounds.widthPx.toFloat(), y = 0f),
                 )
             } else {
                 Gesture.Noop()

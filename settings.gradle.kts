@@ -34,6 +34,8 @@ include(
     ":appyx-components:internal:test-drive:common",
     ":appyx-components:experimental:cards:android",
     ":appyx-components:experimental:cards:common",
+    ":appyx-components:experimental:modal:android",
+    ":appyx-components:experimental:modal:common",
     ":appyx-components:experimental:promoter:android",
     ":appyx-components:experimental:promoter:common",
     ":appyx-components:experimental:puzzle15:android",
@@ -52,6 +54,15 @@ include(
     ":demos:mkdocs:appyx-interactions:interactions:sample2:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample3:web",
     ":demos:mkdocs:appyx-components:backstack:fader:web",
+    ":demos:mkdocs:appyx-components:backstack:parallax:web",
+    ":demos:mkdocs:appyx-components:backstack:slider:web",
+    ":demos:mkdocs:appyx-components:backstack:stack3d:web",
+    ":demos:mkdocs:appyx-components:common",
+    ":demos:mkdocs:appyx-components:spotlight:fader:web",
+    ":demos:mkdocs:appyx-components:spotlight:slider:web",
+    ":demos:mkdocs:appyx-components:spotlight:sliderrotation:web",
+    ":demos:mkdocs:appyx-components:spotlight:sliderscale:web",
+    ":demos:mkdocs:appyx-components:spotlight:stack3d:web",
     ":ksp:mutable-ui-processor",
     ":utils:customisations",
     ":utils:interop-ribs",
@@ -66,6 +77,7 @@ include(
 
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
 project(":appyx-components:stable:backstack:common").name = "backstack"
+project(":appyx-components:experimental:modal:common").name = "modal"
 project(":appyx-components:stable:spotlight:common").name = "spotlight"
 project(":appyx-interactions:common").name = "appyx-interactions"
 project(":appyx-components:experimental:cards:common").name = "cards"

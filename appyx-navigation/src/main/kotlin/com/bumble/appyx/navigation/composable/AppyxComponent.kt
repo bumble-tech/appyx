@@ -24,7 +24,7 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.node.ParentNode
-import gestureModifier
+import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import kotlin.math.roundToInt
 
 @Composable
@@ -43,7 +43,6 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
         }
     }
 ) {
-
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
     val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
