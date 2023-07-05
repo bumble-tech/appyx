@@ -19,6 +19,9 @@ def copy_files(source_directory, target_directory):
     shutil.copytree(source_directory, target_directory, copy_function=shutil.copy2)
 
 
+def is_running_on_ci():
+    os.environ.get('GITHUB_ACTIONS') == 'false'
+
 def generate_html(width, height, target_directory, html_file_name, classname):
     """Generate HTML code"""
     return "<div class=\"{classname}\">" \
@@ -56,5 +59,6 @@ def define_env(env):
         site_target_directory = os.path.join(env.variables.config.site_dir, target_directory)
         if not os.path.exists(site_target_directory):
             copy_files(project_output_directory, site_target_directory)
-        html_target_directory = os.path.relpath(site_target_directory, env.variables.config.site_dir)
+        base_url = '/'
+        html_target_directory = urljoin(base_url, os.path.relpath(site_target_directory, env.variables.config.site_dir))
         return generate_html(width, height, html_target_directory, html_file_name, classname)
