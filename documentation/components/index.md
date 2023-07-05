@@ -59,13 +59,13 @@ Experimental components are still published as artifacts, but meant only for qui
 Check [its own page for more details](experimental.md).
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/experimental/datingcards/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:experimental:datingcards:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-experimental-datingcards",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/experimental/puzzle15/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:experimental:puzzle15:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-experimental-puzzle15",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
