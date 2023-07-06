@@ -54,7 +54,7 @@ Check [its own page for more details](spotlight.md).
 
 ## Experimental
 
-Experimental components are still published as artifacts, but meant only for quick prototyping, experimenting, or playing around. There's no promise they will be maintained, or that there API won't change. They might be removed at any point.
+Experimental components are still published as artifacts, but meant only for quick prototyping, experimenting, or playing around. There's no promise they will be maintained, or that their API won't change. They might be removed at any point.
 
 Check [its own page for more details](experimental.md).
 
