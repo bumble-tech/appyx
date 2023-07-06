@@ -189,7 +189,6 @@ fun <InteractionTarget : Any> ModelUi(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        modifier = modifier.zIndex(2f)
     ) { elementUiModel ->
         Box(
             modifier = Modifier.size(60.dp)
@@ -228,10 +227,14 @@ private fun Controls(
             Box(
                 modifier = Modifier
                     .background(color_primary, shape = RoundedCornerShape(4.dp))
-                    .clickable { testDrive.next(mode = IMMEDIATE, spring(
-                        stiffness = Spring.StiffnessVeryLow,
-                        dampingRatio = Spring.DampingRatioMediumBouncy
-                    )) }
+                    .clickable {
+                        testDrive.next(
+                            mode = IMMEDIATE, spring(
+                                stiffness = Spring.StiffnessVeryLow,
+                                dampingRatio = Spring.DampingRatioMediumBouncy
+                            )
+                        )
+                    }
                     .padding(horizontal = 18.dp, vertical = 9.dp)
             ) {
                 Text("Immediate")
