@@ -1,10 +1,12 @@
 package com.bumble.appyx.interactions.core.model
 
+import androidx.compose.runtime.Stable
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
+@Stable
 interface AppyxComponent<InteractionTarget : Any, ModelState : Any> : SavesInstanceState {
 
     class Elements<InteractionTarget> private constructor(
