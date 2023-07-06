@@ -48,7 +48,8 @@ class SpotlightNode(
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { SpotlightSlider(it) }
+        motionController = { SpotlightSlider(it) },
+        gestureFactory = { SpotlightSlider.Gestures(it) }
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
@@ -63,10 +64,10 @@ class SpotlightNode(
 
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
         when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+            is InteractionTarget.Child -> node(buildContext) { modifier ->
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(5))
                         .background(backgroundColor)

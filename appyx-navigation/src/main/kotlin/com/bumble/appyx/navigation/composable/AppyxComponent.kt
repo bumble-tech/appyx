@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.composable
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -15,38 +15,48 @@ import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.input.pointer.PointerEventType
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.round
+import com.bumble.appyx.interactions.core.gesture.GestureValidator
+import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.model.removedElements
+import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import kotlin.math.roundToInt
 
+
+internal val defaultExtraTouch = 48.dp
+
 @Composable
-inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxComponent(
+fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
+    gestureValidator: GestureValidator = GestureValidator.defaultValidator,
+    gestureExtraTouchArea: Dp = defaultExtraTouch,
+    block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
         children { child, elementUiModel ->
-            child(
-                modifier = Modifier.gestureModifier(
-                    appyxComponent = appyxComponent,
-                    key = elementUiModel.element,
-                )
-            )
+            child()
         }
     }
 ) {
     val density = LocalDensity.current
-    val coroutineScope = rememberCoroutineScope()
     val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
     val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
+    val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
@@ -69,21 +79,27 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
                     clipToBounds = clipToBounds
                 )
             }
+            .onPointerEvent {
+                if (it.type == PointerEventType.Release) {
+                    appyxComponent.onRelease()
+                }
+            }
+            .fillMaxSize()
     ) {
         block(
-            ChildrenTransitionScope(
-                appyxComponent = appyxComponent
-            )
+            ChildrenTransitionScope(appyxComponent, gestureExtraTouchArea, gestureValidator)
         )
     }
 
 }
 
 class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
-    private val appyxComponent: BaseAppyxComponent<InteractionTarget, NavState>
+    private val appyxComponent: BaseAppyxComponent<InteractionTarget, NavState>,
+    private val gestureExtraTouchArea: Dp,
+    private val gestureValidator: GestureValidator
 ) {
 
-    @SuppressLint("ComposableNaming")
+    @Suppress("ComposableNaming", "LongMethod", "ModifierMissing")
     @Composable
     fun ParentNode<InteractionTarget>.children(
         block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
@@ -101,18 +117,71 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
                 }
         }
 
+        val density = LocalDensity.current
+        val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
         val uiModels by this@ChildrenTransitionScope.appyxComponent.uiModels.collectAsState()
+        val appyxComponent = this@ChildrenTransitionScope.appyxComponent
 
         uiModels
-            .forEach { uiModel ->
-                key(uiModel.element.id) {
-                    uiModel.persistentContainer()
-                    val isVisible by uiModel.visibleState.collectAsState()
+            .forEach { elementUiModel ->
+                key(elementUiModel.element.id) {
+                    var transformedBoundingBox by remember(elementUiModel.element.id) {
+                        mutableStateOf(
+                            Rect.Zero
+                        )
+                    }
+                    var offsetCenter by remember(elementUiModel.element.id) {
+                        mutableStateOf(
+                            Offset.Zero
+                        )
+                    }
+                    val isVisible by elementUiModel.visibleState.collectAsState()
+                    elementUiModel.persistentContainer()
                     if (isVisible) {
                         Child(
-                            uiModel,
-                            saveableStateHolder,
-                            block
+                            elementUiModel = elementUiModel.copy(
+                                modifier = Modifier
+                                    .offset { offsetCenter.round() }
+                                    .pointerInput(appyxComponent) {
+                                        detectDragGesturesOrCancellation(
+                                            onDragStart = { position ->
+                                                appyxComponent.onStartDrag(position)
+                                            },
+                                            onDrag = { change, dragAmount ->
+                                                if (gestureValidator.isGestureValid(
+                                                        change.position,
+                                                        transformedBoundingBox.translate(-offsetCenter)
+                                                    )
+                                                ) {
+                                                    change.consume()
+                                                    appyxComponent.onDrag(dragAmount, density)
+                                                    true
+                                                } else {
+                                                    appyxComponent.onDragEnd()
+                                                    false
+                                                }
+                                            },
+                                            onDragEnd = {
+                                                appyxComponent.onDragEnd()
+                                            },
+                                        )
+                                    }
+                                    .offset { -offsetCenter.round() }
+                                    .then(elementUiModel.modifier)
+                                    .onPlaced {
+                                        val localCenter = Offset(
+                                            it.size.width.toFloat(),
+                                            it.size.height.toFloat()
+                                        ) / 2f
+                                        transformedBoundingBox =
+                                            it
+                                                .boundsInParent()
+                                                .inflate(gestureExtraTouchAreaPx)
+                                        offsetCenter = transformedBoundingBox.center - localCenter
+                                    }
+                            ),
+                            saveableStateHolder = saveableStateHolder,
+                            decorator = block
                         )
                     }
                 }
