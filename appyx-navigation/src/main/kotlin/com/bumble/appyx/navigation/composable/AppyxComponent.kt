@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.composable
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.offset
@@ -100,7 +99,7 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
     private val gestureValidator: GestureValidator
 ) {
 
-    @SuppressLint("ComposableNaming")
+    @Suppress("ComposableNaming", "LongMethod", "ModifierMissing")
     @Composable
     fun ParentNode<InteractionTarget>.children(
         block: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
