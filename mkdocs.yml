@@ -117,6 +117,32 @@ plugins:
   - search
   - macros:
       module_name: compose_mpp_sample
+  - redirects:
+      redirect_maps:
+        'how-to-use-appyx/quick-start.md': '1.x/how-to-use-appyx/quick-start.md'
+        'how-to-use-appyx/codelabs.md': '1.x/how-to-use-appyx/codelabs.md'
+        'how-to-use-appyx/coding-challenges.md': '1.x/how-to-use-appyx/coding-challenges.md'
+        'how-to-use-appyx/sample-apps.md': '1.x/how-to-use-appyx/sample-apps.md'
+        'navigation/model-driven-navigation.md': 'navigation/navigation/model-driven-navigation.md'
+        'navmodel/index.md': 'components/index.md'
+        'navmodel/backstack.md': 'components/backstack.md'
+        'navmodel/spotlight.md': 'components/spotlight.md'
+        'navmodel/cards.md': 'components/experimental.md'
+        'navmodel/tiles.md': '1.x/navmodel/tiles.md'
+        'navmodel/promoter.md': '1.x/navmodel/promoter.md'
+        'navmodel/custom.md': 'interactions/appyxcomponent.md'
+        'navigation/composable-navigation.md': 'navigation/navigation/composable-navigation.md'
+        'navigation/implicit-navigation.md': 'navigation/navigation/implicit-navigation.md'
+        'navigation/explicit-navigation.md': 'navigation/navigation/explicit-navigation.md'
+        'navigation/deep-linking.md': 'navigation/navigation/deep-linking.md'
+        'ui/children-view.md': '1.x/ui/children-view.md'
+        'ui/transitions.md': '1.x/ui/transitions.md'
+        'apps/structure.md': 'navigation/apps/structure.md'
+        'apps/lifecycle.md': 'navigation/apps/lifecycle.md'
+        'apps/plugins.md': 'navigation/apps/plugins.md'
+        'apps/childaware.md': 'navigation/apps/childaware.md'
+        'apps/configuration.md': 'navigation/apps/configuration.md'
+        'faq.md': '1.x/faq.md'
 
 # extensions
 markdown_extensions:
