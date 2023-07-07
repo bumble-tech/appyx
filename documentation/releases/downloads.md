@@ -2,7 +2,7 @@
 
 ## Latest version
 
-![Maven Central](https://img.shields.io/maven-central/v/com.bumble.appyx/core)
+![Maven Central](https://img.shields.io/maven-central/v/com.bumble.appyx/appyx-navigation)
 
 ## Repository
 
