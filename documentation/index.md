@@ -1,9 +1,11 @@
 # Appyx
 
 
-Transitions, gestures, navigation for Jetpack Compose
+Transitions, gestures, navigation for Jetpack Compose.
 
 [https://github.com/bumble-tech/appyx](https://github.com/bumble-tech/appyx)
+
+Find us on Kotlinlang Slack: **#appyx**
 
 
 ## Appyx Interactions
