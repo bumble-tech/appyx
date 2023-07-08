@@ -45,6 +45,7 @@ kotlin {
 }
 
 android {
+    namespace = "com.bumble.appyx.components.spotlight"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
 
