@@ -2,7 +2,7 @@
 
 [versions]
 accompanist = "0.28.0"
-agp = "7.4.1"
+agp = "8.0.2"
 androidCompileSdk = "33"
 androidMinSdk = "21"
 androidTargetSdk = "32"
@@ -16,7 +16,7 @@ coroutines = "1.6.4"
 dependencyAnalysis = "1.13.1"
 detekt = "1.21.0"
 junit5 = "5.8.2"
-jvmTarget = "11"
+jvmTarget = "17"
 kotlin = "1.8.10"
 ksp = "1.8.0-1.0.8"
 mvicore = "1.2.6"
@@ -87,7 +87,7 @@ junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref
 
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
-plugin-android = "com.android.tools.build:gradle:7.4.0"
+plugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
 
 detekt-compose = "com.twitter.compose.rules:detekt:0.0.26"
 toolargetool = "com.gu.android:toolargetool:0.3.0"

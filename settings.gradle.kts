@@ -23,8 +23,6 @@ dependencyResolutionManagement {
     }
 }
 
-enableFeaturePreview("VERSION_CATALOGS")
-
 include(
     ":appyx-components:stable:backstack:android",
     ":appyx-components:stable:backstack:common",

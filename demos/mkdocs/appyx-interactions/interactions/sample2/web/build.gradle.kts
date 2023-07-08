@@ -6,6 +6,8 @@ plugins {
 
 kotlin {
     js(IR) {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-interactions-interactions-sample2-web"
         browser()
         binaries.executable()
     }

@@ -21,11 +21,15 @@ android {
             it.useJUnitPlatform()
         }
     }
-    packagingOptions {
+    packaging {
         resources.excludes.apply {
             add("META-INF/LICENSE.md")
             add("META-INF/LICENSE-notice.md")
         }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
