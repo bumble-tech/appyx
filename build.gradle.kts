@@ -22,8 +22,6 @@ plugins {
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
     id("org.jetbrains.compose") version libs.versions.composePlugin.get() apply false
     id("org.jetbrains.kotlin.android") version libs.versions.kotlin.get() apply false
-    id("release-dependencies-diff-compare")
-    id("release-dependencies-diff-create") apply false
 }
 
 dependencyAnalysis {
@@ -74,8 +72,6 @@ allprojects {
 }
 
 subprojects {
-    plugins.apply("release-dependencies-diff-create")
-
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
             if (project.findProperty("enableComposeCompilerReports") == "true") {

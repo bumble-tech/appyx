@@ -21,5 +21,4 @@ dependencyResolutionManagement {
 
 include("publish-plugin")
 include("verification-plugin")
-include("release-dependencies-diff")
 include("screenshot-tests")
