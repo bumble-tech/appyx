@@ -86,46 +86,20 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
-      - name: Pre build sources before launching emulator
-        run: ./gradlew compileDebugAndroidTestSources
-      - name: AVD cache
-        uses: actions/cache@v3
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-29
-      - name: Create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
-          api-level: 29
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
-          script: echo "Generated AVD snapshot for caching."
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
       - name: Instrumentation tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
-          api-level: 29
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: |
-            adb logcat > logcat.out &
-            ./gradlew connectedCheck
-      - name: Managed device clean-up
         run: >
-          ./gradlew cleanManagedDevices --unused-only
+          adb logcat > logcat.out &
+          ./gradlew cleanManagedDevices --unused-only &&
+          ./gradlew pixel2api30DebugAndroidTest
+          -Dorg.gradle.workers.max=1
+          -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
+          -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
       - name: Screenshot tests
-        # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/AndroidCIWithGmd.yaml
+        # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/Build.yaml
         run: >
-          ./gradlew screenshotTestsCompareBaseline
+          ./gradlew cleanManagedDevices --unused-only && ./gradlew screenshotTestsCompareBaseline
           -Dorg.gradle.workers.max=1
           -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
           -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
