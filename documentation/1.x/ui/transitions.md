@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Transitions
  
 You can have arbitrary visualisations and transitions for any [NavModel](../navmodel/index.md). For example, all of these are different representations of the same [Back stack](../navmodel/backstack.md):

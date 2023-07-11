@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Structuring your app navigation
 
 As seen in [Composable navigation](../navigation/composable-navigation.md), you can make `NavModels` composable. 

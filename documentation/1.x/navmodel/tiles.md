@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Tiles
 
 <img src="https://i.imgur.com/N8rEPrJ.gif" width="200">

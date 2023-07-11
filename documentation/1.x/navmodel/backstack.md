@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Back stack
 
 <img src="https://i.imgur.com/8gy3Ghb.gif" width="200">

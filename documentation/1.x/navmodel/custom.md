@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Implementing your own navigation models
 
 A step-by-step guide. You can also take a look at other existing examples to see these in practice.

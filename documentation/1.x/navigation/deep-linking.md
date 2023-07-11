@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Deep linking
 
 Building on top of [explicit navigation](explicit-navigation.md), implementing deep links is straightforward:

@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Navigation models
 
 Navigation model is a core concept of Appyx.

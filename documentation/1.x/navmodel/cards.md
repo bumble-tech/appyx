@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Cards
 
 <img src="https://cdn-images-1.medium.com/max/1600/1*mEg8Ebem3Hd2knQSA0yI1A.gif" width="200">

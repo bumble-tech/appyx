@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Lifecycle
 
 Nodes have their own lifecycles, directly using the related classes of `androidx.lifecycle`.

@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Implicit navigation
 
 <img src="https://i.imgur.com/hKvOs3w.gif" width="450">

@@ -115,6 +115,7 @@ extra_css:
 
 plugins:
   - search
+  - include-markdown
   - macros:
       module_name: compose_mpp_sample
   - redirects:
