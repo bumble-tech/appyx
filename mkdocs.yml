@@ -52,7 +52,6 @@ nav:
     - Migration guide: 2.x/migrationguide.md
   - 1.x:
     - Overview: 1.x/index.md
-    - News & updates: 1.x/news.md
     - Releases:
       - Downloads: 1.x/releases/downloads.md
       - Changelog: 1.x/releases/changelog.md
@@ -115,6 +114,7 @@ extra_css:
 
 plugins:
   - search
+  - include-markdown
   - macros:
       module_name: compose_mpp_sample
   - redirects:
@@ -143,6 +143,7 @@ plugins:
         'apps/childaware.md': 'navigation/apps/childaware.md'
         'apps/configuration.md': 'navigation/apps/configuration.md'
         'faq.md': '1.x/faq.md'
+        'news.md': 'index.md'
 
 # extensions
 markdown_extensions:

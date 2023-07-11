@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Appyx coding challenges
 
 ## Droidcon London 22 – Coding challenge 1

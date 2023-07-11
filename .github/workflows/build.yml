@@ -149,4 +149,5 @@ jobs:
       - run: pip install mkdocs-material
       - run: pip install mkdocs-macros-plugin
       - run: pip install mkdocs-redirects
+      - run: pip install mkdocs-include-markdown-plugin
       - run: mkdocs build --strict

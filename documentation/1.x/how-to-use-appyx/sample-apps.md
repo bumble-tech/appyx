@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Appyx sample apps
 
 ## Where to find the sample apps

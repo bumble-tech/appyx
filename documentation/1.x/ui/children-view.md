@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Adding children to the view
 
 Navigation models define only the abstract model, not how that model will look on the screen. This section describes different ways of adding children (navigation targets) to the composition.

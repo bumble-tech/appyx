@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Composable navigation
 
 [NavModels](../navmodel/index.md) in Appyx are composable. 

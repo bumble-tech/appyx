@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Explicit navigation
 
 When [Implicit navigation](implicit-navigation.md) doesn't fit your use case, you can try an explicit approach.

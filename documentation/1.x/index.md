@@ -1,3 +1,5 @@
+{% include-markdown "deprecation.md" %}
+
 # Appyx
 
 
@@ -66,11 +68,3 @@ Check out the [Quick start guide](how-to-use-appyx/quick-start.md), [Codelabs](h
 
 <img style="vertical-align:middle" src="https://i.imgur.com/bgNLFnD.png" width="75" /> [Model-driven navigation with Appyx](https://www.droidcon.com/2022/11/15/model-driven-navigation-with-appyx-from-zero-to-hero/)
 
-## News & updates
-
-See our [News & updates](news.md) page
-
-You can also follow some of us tweeting about Appyx on these accounts: 
-
-- [@ZsoltKocsi](https://twitter.com/ZsoltKocsi)
-- [@andreyk_nn](https://twitter.com/andreyk_nn)

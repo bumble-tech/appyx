@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Quick start guide
 
 !!! info

@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Changelog
 
 ## Pending changes
