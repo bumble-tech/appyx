@@ -1,7 +1,7 @@
 # Appyx
 
 
-Transitions, gestures, navigation for Jetpack Compose.
+Model-driven navigation + UI components with gesture control for Compose Multiplatform.
 
 [https://github.com/bumble-tech/appyx](https://github.com/bumble-tech/appyx)
 
