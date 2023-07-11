@@ -43,7 +43,7 @@ Find us on Kotlinlang Slack: **#appyx**
 
 ## Appyx Navigation
 
-An Android navigation library for Jetpack Compose that depends on **Appyx Interactions** for its transitions and gesture-based navigation. It allows you to use any **Appyx Components** for navigation.
+A navigation library that depends on **Appyx Interactions** for its transitions and gesture-based navigation. It allows you to use any **Appyx Components** for navigation.
 
 {{
     compose_mpp_sample(
@@ -60,12 +60,12 @@ An Android navigation library for Jetpack Compose that depends on **Appyx Intera
 
 ## 2.x migration guide
 
-If you used Appyx 1.x before, you can find a [summary of differences](2.x/migrationguide.md) here.
+If you used Appyx `1.x` before, you can find a [summary of differences](2.x/migrationguide.md) here.
 
 
 ## 1.x documentation
 
-This page is about Appyx 2.x (alpha).
+This page is about Appyx `2.x` (alpha).
 
-You can find 1.x related documentation [here](1.x/index.md)
+You can find `1.x` related documentation [here](1.x/index.md).
 
