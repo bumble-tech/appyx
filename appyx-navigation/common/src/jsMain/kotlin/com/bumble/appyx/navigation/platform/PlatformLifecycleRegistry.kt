@@ -7,6 +7,8 @@ import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.isActive
 
 actual class PlatformLifecycleRegistry : Lifecycle {
 
@@ -56,6 +58,7 @@ actual class PlatformLifecycleRegistry : Lifecycle {
                             Lifecycle.Event.ON_DESTROY
                         )
                     }
+                    if (coroutineScope.isActive) coroutineScope.cancel("lifecycle was destroyed")
                 }
             }
             _currentState = value
