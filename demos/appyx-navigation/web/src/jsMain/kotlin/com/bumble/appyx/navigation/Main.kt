@@ -4,7 +4,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.key.Key
@@ -31,9 +34,9 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     val events: Channel<Unit> = Channel()
     onWasmReady {
-        Window("Navigation Demo") {
-//            val requester = remember { FocusRequester() }
-            var screenSize = remember { ScreenSize(0.dp, 0.dp) }
+        BrowserViewportWindow("Navigation Demo") {
+            val requester = remember { FocusRequester() }
+            var screenSize by remember { mutableStateOf(ScreenSize(0.dp, 0.dp)) }
             val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
 
             AppyxSampleAppTheme {
