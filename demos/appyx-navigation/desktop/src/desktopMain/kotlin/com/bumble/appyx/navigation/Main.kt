@@ -20,7 +20,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.node.container.ContainerNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
-import com.bumble.navigation.integrationpoint.NodeHost
+import com.bumble.navigation.integrationpoint.DesktopNodeHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -45,7 +45,7 @@ fun main() = application {
         AppyxSampleAppTheme {
             Surface(color = MaterialTheme.colorScheme.background) {
                 Column {
-                    NodeHost(
+                    DesktopNodeHost(
                         windowState = windowState,
                         onBackPressedEvents = events.receiveAsFlow().mapNotNull {
                             if (it is Events.OnBackPressed) Unit else null

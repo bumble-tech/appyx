@@ -31,7 +31,7 @@ import kotlinx.coroutines.launch
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> NodeHost(
+fun <N : Node> DesktopNodeHost(
     windowState: WindowState,
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,
