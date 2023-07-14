@@ -50,6 +50,7 @@ class DatingCardsNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
+            parent = this,
             modifier = modifier
                 .fillMaxSize()
                 .background(appyx_dark)

@@ -80,25 +80,6 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     }
 }
 
-@Composable
-inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
-    modifier: Modifier = Modifier,
-    clipToBounds: Boolean = false,
-    noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
-        children { child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget> ->
-            child(
-                modifier = Modifier.gestureModifier(
-                    interactionModel = interactionModel,
-                    key = elementUiModel.element,
-                )
-            )
-        }
-    }
-) {
-    Children(this, interactionModel, modifier, clipToBounds, block)
-}
-
 class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
     private val interactionModel: BaseInteractionModel<InteractionTarget, NavState>
 ) {
