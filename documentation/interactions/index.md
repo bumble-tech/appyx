@@ -1,11 +1,6 @@
 # Appyx Interactions – Overview
 
-A gesture-driven component kit for Compose Multiplatform.
-
-
-## About the samples
-
-All samples are done with Appyx + Compose multiplatform, embedded as web targets. You can find them in the main GitHub repository under `:demos:mkdocs:appyx-interactions`.
+Component kit with gesture control for Compose Multiplatform.
 
 
 ## State-driven motion
@@ -211,12 +206,6 @@ In `IMMEDIATE` mode the current transition is interrupted and will not be finish
 3. And manipulate with gestures
 
 
-**You can find our packaged examples in [Appyx components](../components/index.md)**
-
-Many of them are deployed as artifacts you can pull into your codebase too. You can also create your own ones. Some use-cases include:
-
-- Navigation (back stack, pager, dialogs, complex ui interactions)
-- Desktop widgets, file browsers / photo albums
-- Simple games (puzzle, card game, etc.)
+Check out some our packaged examples in [Appyx components](../components/index.md)!
 
 
