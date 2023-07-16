@@ -8,9 +8,44 @@ Model-driven navigation + UI components with gesture control for Compose Multipl
 Find us on Kotlinlang Slack: **#appyx**
 
 
+## Overview
+
+Appyx is a collection of libraries:
+
+![Overview](/appyx/assets/overview.png)
+
+**Appyx as a navigation solution**: check out [Appyx Navigation](navigation/index.md) + some of the [Appyx Components](components/index.md) you can use in your navigation tree.
+
+**Creating your own components** (whether for navigation, or standalone): check out [Appyx Interactions](interactions/index.md).
+
+
+## Appyx Navigation
+
+[Composable, type-safe navigation directly from code.](navigation/index.md)
+
+- Leverages the transitions and gesture-based capabilities to **Appyx Interactions** to build beautiful, custom navigation.
+- Use any component for navigation, whether pre-built (see: [Appyx Components](components/index.md)), or custom-built by you (see: [Appyx Interactions](interactions/index.md)).
+
+
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-parallax",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+)
+}}
+
 ## Appyx Interactions
 
-[A gesture-driven component kit for Compose Multiplatform.](interactions/index.md)
+[Component kit for Compose Multiplatform.](interactions/index.md)
+
+- Create custom UI components quickly, which can then be used on their own, or inside your navigation tree.
+- Animation without writing animation code.
+- Gesture control without the usual gesture detection code.
 
 {{
     compose_mpp_sample(
@@ -27,7 +62,9 @@ Find us on Kotlinlang Slack: **#appyx**
 
 ## Appyx Components
 
-[Back stack, Spotlight (pager), and other UI components built using Appyx Interactions.](components/index.md)
+[Component gallery.](components/index.md)
+
+Back stack, Spotlight (pager), and other UI components built using Appyx Interactions.
 
 {{
     compose_mpp_sample(
@@ -41,21 +78,6 @@ Find us on Kotlinlang Slack: **#appyx**
     )
 }}
 
-## Appyx Navigation
-
-A navigation library that depends on **Appyx Interactions** for its transitions and gesture-based navigation. It allows you to use any **Appyx Components** for navigation.
-
-{{
-    compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
-        compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
-        width=512,
-        height=384,
-        target_directory="samples/documentation-components-backstack-parallax",
-        html_file_name="index.html",
-        classname="compose_mpp_sample",
-    )
-}}
 
 
 ## 2.x migration guide
