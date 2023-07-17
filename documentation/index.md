@@ -14,18 +14,16 @@ Appyx is a collection of libraries:
 
 ![Overview](/appyx/assets/overview.png)
 
-**Appyx as a navigation solution**: check out [Appyx Navigation](navigation/index.md) + some of the [Appyx Components](components/index.md) you can use in your navigation tree.
-
-**Creating your own components** (whether for navigation, or standalone): check out [Appyx Interactions](interactions/index.md).
-
 
 ## Appyx Navigation
 
-[Composable, type-safe navigation directly from code.](navigation/index.md)
+**Type-safe navigation directly from code.**
 
+- Tree-based, composable
 - Leverages the transitions and gesture-based capabilities to **Appyx Interactions** to build beautiful, custom navigation.
 - Use any component for navigation, whether pre-built (see: [Appyx Components](components/index.md)), or custom-built by you (see: [Appyx Interactions](interactions/index.md)).
 
+[» More details](navigation/index.md)
 
 {{
     compose_mpp_sample(
@@ -39,13 +37,16 @@ Appyx is a collection of libraries:
 )
 }}
 
+
 ## Appyx Interactions
 
-[Component kit for Compose Multiplatform.](interactions/index.md)
+**Component kit for Compose Multiplatform.**
 
 - Create custom UI components quickly, which can then be used on their own, or inside your navigation tree.
 - Animation without writing animation code.
 - Gesture control without the usual gesture detection code.
+
+[» More details](interactions/index.md)
 
 {{
     compose_mpp_sample(
@@ -62,9 +63,11 @@ Appyx is a collection of libraries:
 
 ## Appyx Components
 
-[Component gallery.](components/index.md)
+**Component gallery.** 
 
 Back stack, Spotlight (pager), and other UI components built using Appyx Interactions.
+
+[» More details](components/index.md)
 
 {{
     compose_mpp_sample(
@@ -77,6 +80,20 @@ Back stack, Spotlight (pager), and other UI components built using Appyx Interac
         classname="compose_mpp_sample",
     )
 }}
+
+
+## Where to start? 
+
+Depending on what's your use-case with Appyx:
+
+#### Appyx as a navigation solution
+
+Check out [Appyx Navigation](navigation/index.md) and some of the [Appyx Components](components/index.md) you can use in your navigation tree.
+
+
+#### Creating your own components
+
+Stacks, custom pagers, custom UI components – whether for navigation, or standalone: check out what [Appyx Interactions](interactions/index.md) can do for you.
 
 
 
