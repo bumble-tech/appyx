@@ -44,7 +44,6 @@ dependencies {
     api(libs.androidx.appcompat)
 
     implementation(composeBom)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
 
     androidTestImplementation(composeBom)

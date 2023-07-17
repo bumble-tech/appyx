@@ -65,7 +65,7 @@ kotlin {
 }
 
 android {
-    namespace = "com.bumble.appyx.demos.appyxnavigation"
+    namespace = "com.bumble.appyx.demos.appyxnavigation.common"
     compileSdk = libs.versions.androidCompileSdk.get().toInt()
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
