@@ -20,6 +20,11 @@ kotlin {
                 implementation(project(":demos:mkdocs:appyx-components:common"))
             }
         }
+        val jsMain by getting {
+            dependencies {
+                implementation(project(":demos:mkdocs:common"))
+            }
+        }
     }
 }
 
