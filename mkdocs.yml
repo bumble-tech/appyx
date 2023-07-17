@@ -2,7 +2,7 @@
 site_name: Appyx
 site_url: https://bumble-tech.github.io/appyx/
 site_author: Bumble
-site_description: Model-driven navigation for Jetpack Compose
+site_description: Model-driven navigation + UI components with gesture control for Compose Multiplatform
 
 # Repository
 repo_name: Appyx
@@ -17,6 +17,21 @@ docs_dir: documentation
 
 nav:
   - Home: index.md
+  - Appyx Navigation:
+      - Overview: navigation/index.md
+      - Quick start guide: navigation/quick-start.md
+      - Navigation:
+          - Model-driven navigation: navigation/navigation/model-driven-navigation.md
+          - Composable navigation: navigation/navigation/composable-navigation.md
+          - Implicit navigation: navigation/navigation/implicit-navigation.md
+          - Explicit navigation: navigation/navigation/explicit-navigation.md
+          - Deep linking: navigation/navigation/deep-linking.md
+      - App:
+          - Structuring your app navigation: navigation/apps/structure.md
+          - Lifecycle: navigation/apps/lifecycle.md
+          - Plugins: navigation/apps/plugins.md
+          - ChildAware API: navigation/apps/childaware.md
+          - Configuration changes: navigation/apps/configuration.md
   - Appyx Interactions:
     - Overview: interactions/index.md
     - Using components: interactions/usage.md
@@ -31,20 +46,7 @@ nav:
     - Back stack: components/backstack.md
     - Spotlight: components/spotlight.md
     - Experimental: components/experimental.md
-  - Appyx Navigation:
-    - Overview: navigation/index.md
-    - Navigation:
-        - Model-driven navigation: navigation/navigation/model-driven-navigation.md
-        - Composable navigation: navigation/navigation/composable-navigation.md
-        - Implicit navigation: navigation/navigation/implicit-navigation.md
-        - Explicit navigation: navigation/navigation/explicit-navigation.md
-        - Deep linking: navigation/navigation/deep-linking.md
-    - App:
-        - Structuring your app navigation: navigation/apps/structure.md
-        - Lifecycle: navigation/apps/lifecycle.md
-        - Plugins: navigation/apps/plugins.md
-        - ChildAware API: navigation/apps/childaware.md
-        - Configuration changes: navigation/apps/configuration.md
+
   - Releases:
     - Downloads: releases/downloads.md
     - Changelog: releases/changelog.md

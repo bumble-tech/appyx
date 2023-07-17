@@ -80,11 +80,11 @@ include(
 )
 
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
-project(":appyx-components:stable:backstack:common").name = "backstack"
-project(":appyx-components:experimental:modal:common").name = "modal"
-project(":appyx-components:stable:spotlight:common").name = "spotlight"
 project(":appyx-interactions:common").name = "appyx-interactions"
+project(":appyx-components:stable:backstack:common").name = "backstack"
+project(":appyx-components:stable:spotlight:common").name = "spotlight"
 project(":appyx-components:experimental:cards:common").name = "cards"
+project(":appyx-components:experimental:modal:common").name = "modal"
 project(":appyx-components:experimental:promoter:common").name = "promoter"
 project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"
 project(":appyx-components:experimental:puzzle15:web").name = "puzzle15-web"
