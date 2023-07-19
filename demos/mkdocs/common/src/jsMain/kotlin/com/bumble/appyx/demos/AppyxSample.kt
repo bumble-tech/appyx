@@ -15,12 +15,14 @@ private val LOADER_STYLES = """
         border: 5px solid rgba(255, 227, 0, 255);
         border-bottom-color: transparent;
         border-radius: 50%;
-        animation: rotation 1s linear infinite;
+        animation: rotation 1s linear 1s infinite;
+        visibility: hidden;
         margin: auto;
     }
     
     @keyframes rotation {
         0% {
+            visibility: visible;
             transform: rotate(0deg);
         }
         100% {
