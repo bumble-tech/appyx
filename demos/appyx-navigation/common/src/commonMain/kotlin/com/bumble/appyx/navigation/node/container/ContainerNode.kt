@@ -130,7 +130,6 @@ class ContainerNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            parent = this,
             interactionModel = backStack,
             modifier = modifier
                 .fillMaxSize()

@@ -56,7 +56,6 @@ internal class ComposeNavigationContainerNode(
     @Composable
     override fun View(modifier: Modifier) {
         Children(
-            parent = this,
             modifier = modifier.fillMaxWidth(),
             interactionModel = backStack
         )

@@ -109,7 +109,6 @@ class BackStackNode(
                 .background(appyx_dark)
         ) {
             Children(
-                parent = this@BackStackNode,
                 clipToBounds = true,
                 interactionModel = backStack,
                 modifier = Modifier

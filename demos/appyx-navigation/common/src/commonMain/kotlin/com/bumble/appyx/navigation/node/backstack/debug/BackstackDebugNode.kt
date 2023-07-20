@@ -100,7 +100,6 @@ class BackstackDebugNode(
                 backStack.setNormalisedProgress(it)
             })
             Children(
-                parent = this@BackstackDebugNode,
                 interactionModel = backStack,
                 modifier = Modifier
                     .fillMaxSize()

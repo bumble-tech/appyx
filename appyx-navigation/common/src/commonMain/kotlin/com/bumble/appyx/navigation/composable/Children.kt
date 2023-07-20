@@ -28,13 +28,20 @@ import gestureModifier
 import kotlin.math.roundToInt
 
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> Children(
-    parent: ParentNode<InteractionTarget>,
+fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
-        parent.children { child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget> ->
+    block: @Composable (ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit)? = null
+) {
+    val density = LocalDensity.current
+    val coroutineScope = rememberCoroutineScope()
+    val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
+    val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
+    var uiContext by remember { mutableStateOf<UiContext?>(null) }
+
+    val childrenBlock = block ?: {
+        children { child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget> ->
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
@@ -43,12 +50,6 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
             )
         }
     }
-) {
-    val density = LocalDensity.current
-    val coroutineScope = rememberCoroutineScope()
-    val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
-    val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
         uiContext?.let { interactionModel.updateContext(it) }
@@ -72,7 +73,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 )
             }
     ) {
-        block(
+        childrenBlock(
             ChildrenTransitionScope(
                 interactionModel = interactionModel
             )

@@ -99,7 +99,6 @@ class SpotlightDebugNode(
                 spotlight.setNormalisedProgress(it)
             })
             Children(
-                parent = this@SpotlightDebugNode,
                 interactionModel = spotlight,
                 modifier = Modifier.padding(
                     horizontal = 64.dp,
