@@ -35,7 +35,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     api(composeBom)
-    api(project(":appyx-navigation:common"))
+    api(project(":appyx-navigation:appyx-navigation"))
     runtimeOnly(libs.kotlin.coroutines.android)
     implementation(libs.androidx.lifecycle.common)
 

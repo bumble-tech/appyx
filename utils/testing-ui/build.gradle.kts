@@ -32,7 +32,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
     api(composeBom)
 
-    api(project(":appyx-navigation:common"))
+    api(project(":appyx-navigation:appyx-navigation"))
     api(project(":utils:testing-ui-activity"))
     api(libs.androidx.test.rules)
     api(libs.compose.ui.test.junit4)

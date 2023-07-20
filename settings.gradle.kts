@@ -74,6 +74,7 @@ include(
 project(":appyx-components:stable:backstack:common").name = "backstack"
 project(":appyx-components:stable:spotlight:common").name = "spotlight"
 project(":appyx-interactions:common").name = "appyx-interactions"
+project(":appyx-navigation:common").name = "appyx-navigation"
 project(":appyx-components:experimental:cards:common").name = "cards"
 project(":appyx-components:experimental:promoter:common").name = "promoter"
 project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"

@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         val jsMain by getting {
             dependencies {
-                implementation(project(":appyx-navigation:common"))
+                implementation(project(":appyx-navigation:appyx-navigation"))
             }
         }
         val jsTest by getting
