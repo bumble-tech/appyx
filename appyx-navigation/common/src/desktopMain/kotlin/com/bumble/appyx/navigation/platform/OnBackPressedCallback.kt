@@ -48,6 +48,7 @@ abstract class OnBackPressedCallback(
      * Callback for handling the [OnBackPressedDispatcher.onBackPressed] event.
      */
     abstract fun handleOnBackPressed()
+    
     fun addCancellable(cancellable: Cancellable) {
         cancellables.add(cancellable)
     }
