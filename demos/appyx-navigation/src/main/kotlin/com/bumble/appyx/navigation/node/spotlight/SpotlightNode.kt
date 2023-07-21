@@ -16,10 +16,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.spotlight.Spotlight
@@ -30,6 +32,8 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
+import com.bumble.appyx.interactions.core.ui.property.getMotionPropertyRenderValue
+import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -65,6 +69,8 @@ class SpotlightNode(
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
         when (interactionTarget) {
             is InteractionTarget.Child -> node(buildContext) { modifier ->
+
+
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = modifier
@@ -79,6 +85,17 @@ class SpotlightNode(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
+
+                    val value = getMotionPropertyRenderValue<DpOffset, Position>()
+                    if (value != null) {
+                        Text(
+                            modifier = Modifier.align(Alignment.Center),
+                            text = value.x.toString(),
+                            fontSize = 21.sp,
+                            color = Color.Black,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
                 }
             }
         }
