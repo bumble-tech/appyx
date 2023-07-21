@@ -8,7 +8,9 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
+import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -42,6 +44,8 @@ class BackStackTest(private val testParam: TestParam) {
         fun data() = arrayOf(
             TestParam(motionController = { BackStackSlider(it) }),
             TestParam(motionController = { BackStackFader(it) }),
+            TestParam(motionController = { BackStackParallax(it) }),
+            TestParam(motionController = { BackStack3D(it) }),
         )
     }
 
