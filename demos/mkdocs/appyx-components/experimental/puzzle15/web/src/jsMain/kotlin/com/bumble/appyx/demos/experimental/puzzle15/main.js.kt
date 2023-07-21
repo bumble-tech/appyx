@@ -14,13 +14,13 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import com.bumble.appyx.components.experimental.puzzle15.ui.Puzzle15Ui
+import com.bumble.appyx.demos.appyxSample
 import com.bumble.appyx.demos.common.color_dark
 import com.bumble.appyx.demos.common.color_primary
-import org.jetbrains.skiko.wasm.onWasmReady
 
 
 fun main() {
-    onWasmReady {
+    appyxSample {
         Window("Appyx") {
             var size by remember { mutableStateOf(IntSize.Zero) }
             Surface(
