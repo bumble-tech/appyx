@@ -2,6 +2,7 @@
 
 ## Pending changes
 
+- [#538](https://github.com/bumble-tech/appyx/pull/538) – **Added**: Availability to observe MotionProperties from children UI 
 
 ---
 
