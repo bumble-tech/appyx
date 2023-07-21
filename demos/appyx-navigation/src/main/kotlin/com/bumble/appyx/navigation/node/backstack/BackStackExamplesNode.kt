@@ -18,7 +18,7 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
-import com.bumble.appyx.components.backstack.ui.parallax.BackstackParallax
+import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
@@ -83,8 +83,8 @@ class BackStackExamplesNode(
             })
             is InteractionTarget.BackstackParallax -> BackStackNode(
                 buildContext = buildContext,
-                motionController = { BackstackParallax(uiContext = it) },
-                gestureFactory = { BackstackParallax.Gestures(it) },
+                motionController = { BackStackParallax(uiContext = it) },
+                gestureFactory = { BackStackParallax.Gestures(it) },
                 isMaxSize = true
             ).also {
                 padding.value = 0
