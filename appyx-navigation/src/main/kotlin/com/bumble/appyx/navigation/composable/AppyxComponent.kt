@@ -1,6 +1,7 @@
 package com.bumble.appyx.navigation.composable
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -61,43 +62,40 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
+    var boxScope: BoxScope? = null
 
     LaunchedEffect(uiContext) {
         uiContext?.let { appyxComponent.updateContext(it) }
     }
     Box(
-        modifier = Modifier
+        modifier = modifier
+            .fillMaxSize()
+            .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
+            .onPlaced {
+                uiContext = UiContext(
+                    coroutineScope = coroutineScope,
+                    transitionBounds = TransitionBounds(
+                        density = density,
+                        widthPx = it.size.width,
+                        heightPx = it.size.height,
+                        screenWidthPx = screenWidthPx,
+                        screenHeightPx = screenHeightPx
+                    ),
+                    boxScope = boxScope!!,
+                    clipToBounds = clipToBounds
+                )
+            }
+            .onPointerEvent {
+                if (it.type == PointerEventType.Release) {
+                    appyxComponent.onRelease()
+                }
+            }
             .fillMaxSize()
     ) {
-        Box(
-            modifier = modifier
-                .fillMaxSize()
-                .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
-                .onPlaced {
-                    uiContext = UiContext(
-                        coroutineScope = coroutineScope,
-                        transitionBounds = TransitionBounds(
-                            density = density,
-                            widthPx = it.size.width,
-                            heightPx = it.size.height,
-                            screenWidthPx = screenWidthPx,
-                            screenHeightPx = screenHeightPx
-                        ),
-                        boxScope = this@Box,
-                        clipToBounds = clipToBounds
-                    )
-                }
-                .onPointerEvent {
-                    if (it.type == PointerEventType.Release) {
-                        appyxComponent.onRelease()
-                    }
-                }
-                .fillMaxSize()
-        ) {
-            block(
-                ChildrenTransitionScope(appyxComponent, gestureExtraTouchArea, gestureValidator)
-            )
-        }
+        boxScope = this
+        block(
+            ChildrenTransitionScope(appyxComponent, gestureExtraTouchArea, gestureValidator)
+        )
     }
 
 }
