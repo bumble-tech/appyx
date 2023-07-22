@@ -65,36 +65,32 @@ class TargetUiState(
     val backgroundColor: BackgroundColor.Target,
 )
 
-// Top-left corner, A
-private val uiStateA = TargetUiState(
-    position = Position.Target(DpOffset(0.dp, 0.dp)),
+private val topLeftCorner = TargetUiState(
+    position = Position.Target(Alignment.TopStart),
     backgroundColor = BackgroundColor.Target(Color(0xFFFFC629))
 )
 
-// Top-right corner, B
-private val uiStateB = TargetUiState(
-    position = Position.Target(DpOffset(320.dp, 0.dp)),
+private val topRightCorner = TargetUiState(
+    position = Position.Target(Alignment.TopEnd),
     backgroundColor = BackgroundColor.Target(Color(0xFF353535))
 )
 
-// Bottom-right corner, C
-private val uiStateC = TargetUiState(
-    position = Position.Target(DpOffset(320.dp, 180.dp)),
+private val bottomRightCorner = TargetUiState(
+    position = Position.Target(Alignment.BottomEnd),
     backgroundColor = BackgroundColor.Target(Color(0xFFFE9763))
 )
 
-// Bottom-left corner, D
-private val uiStateD = TargetUiState(
-    position = Position.Target(DpOffset(0.dp, 180.dp)),
+private val bottomLeftCorner = TargetUiState(
+    position = Position.Target(Alignment.BottomStart),
     backgroundColor = BackgroundColor.Target(Color(0xFF855353))
 )
 
 fun ElementState.toTargetUiState(): TargetUiState =
     when (this) {
-        A -> uiStateA
-        B -> uiStateB
-        C -> uiStateC
-        D -> uiStateD
+        A -> topLeftCorner
+        B -> topRightCorner
+        C -> bottomRightCorner
+        D -> bottomLeftCorner
     }
 ```
 
@@ -110,29 +106,26 @@ class TargetUiState(
     val backgroundColor: BackgroundColor.Target,
 )
 
-private val uiStateA = TargetUiState(
-    position = Position.Target(DpOffset(0.dp, 0.dp)),
+private val topLeftCorner = TargetUiState(
+    position = Position.Target(Alignment.TopStart),
     rotationZ = RotationZ.Target(0f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFFFFC629))
 )
 
-// Top-right corner, B
-private val uiStateB = TargetUiState(
-    position = Position.Target(DpOffset(320.dp, 0.dp)),
+private val topRightCorner = TargetUiState(
+    position = Position.Target(Alignment.TopEnd),
     rotationZ = RotationZ.Target(180f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFF353535))
 )
 
-// Bottom-right corner, C
-private val uiStateC = TargetUiState(
-    position = Position.Target(DpOffset(320.dp, 180.dp)),
+private val bottomRightCorner = TargetUiState(
+    position = Position.Target(Alignment.BottomEnd),
     rotationZ = RotationZ.Target(270f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFFFE9763))
 )
 
-// Bottom-left corner, D
-private val uiStateD = TargetUiState(
-    position = Position.Target(DpOffset(0.dp, 180.dp)),
+private val bottomLeftCorner = TargetUiState(
+    position = Position.Target(Alignment.BottomStart),
     rotationZ = RotationZ.Target(540f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFF855353))
 )
