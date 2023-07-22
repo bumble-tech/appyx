@@ -33,7 +33,7 @@ class TargetUiState(
     ) : this(
         positionInList = positionInList,
         position = Position.Target(
-            base.position.value.copy(
+            base.position.value.offset.copy(
                 x = (positionInList * elementWidth.value).dp
             )
         ),
@@ -55,9 +55,10 @@ class TargetUiState(
         return MutableUiState(
             uiContext = uiContext,
             position = Position(
-                uiContext, position,
-                scrollX.mapState(uiContext.coroutineScope) {
-                    DpOffset((it * elementWidth.value).dp, 0.dp)
+                uiContext = uiContext,
+                target = position,
+                displacement = scrollX.mapState(uiContext.coroutineScope) {
+                    Position.Value(offset = DpOffset((it * elementWidth.value).dp, 0.dp))
                 },
             ),
             scale = Scale(uiContext, scale,

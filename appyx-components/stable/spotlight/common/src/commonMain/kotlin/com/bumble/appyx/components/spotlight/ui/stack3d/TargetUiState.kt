@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.spotlight.ui.stack3d
 
-import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -9,7 +8,6 @@ import com.bumble.appyx.interactions.core.ui.math.clamp
 import com.bumble.appyx.interactions.core.ui.math.smoothstep
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
@@ -48,9 +46,11 @@ class TargetUiState(
                 target = position,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
                     val factor = 0.075f + smoothstep(0f, 1f, it)
-                    DpOffset(
-                        x = 0.dp,
-                        y = (-factor * it * itemHeight.value / (1f - 0.1f * it)).dp,
+                    Position.Value(
+                        offset = DpOffset(
+                            x = 0.dp,
+                            y = (-factor * it * itemHeight.value / (1f - 0.1f * it)).dp,
+                        )
                     )
                 }
             ),

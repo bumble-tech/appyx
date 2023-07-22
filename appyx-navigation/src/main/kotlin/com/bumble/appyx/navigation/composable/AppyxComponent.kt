@@ -63,32 +63,38 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
         uiContext?.let { appyxComponent.updateContext(it) }
     }
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
-            .onPlaced {
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
-                        density = density,
-                        widthPx = it.size.width,
-                        heightPx = it.size.height,
-                        screenWidthPx = screenWidthPx,
-                        screenHeightPx = screenHeightPx
-                    ),
-                    clipToBounds = clipToBounds
-                )
-            }
-            .onPointerEvent {
-                if (it.type == PointerEventType.Release) {
-                    appyxComponent.onRelease()
-                }
-            }
+        modifier = Modifier
             .fillMaxSize()
     ) {
-        block(
-            ChildrenTransitionScope(appyxComponent, gestureExtraTouchArea, gestureValidator)
-        )
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
+                .onPlaced {
+                    uiContext = UiContext(
+                        coroutineScope = coroutineScope,
+                        transitionBounds = TransitionBounds(
+                            density = density,
+                            widthPx = it.size.width,
+                            heightPx = it.size.height,
+                            screenWidthPx = screenWidthPx,
+                            screenHeightPx = screenHeightPx
+                        ),
+                        boxScope = this@Box,
+                        clipToBounds = clipToBounds
+                    )
+                }
+                .onPointerEvent {
+                    if (it.type == PointerEventType.Release) {
+                        appyxComponent.onRelease()
+                    }
+                }
+                .fillMaxSize()
+        ) {
+            block(
+                ChildrenTransitionScope(appyxComponent, gestureExtraTouchArea, gestureValidator)
+            )
+        }
     }
 
 }

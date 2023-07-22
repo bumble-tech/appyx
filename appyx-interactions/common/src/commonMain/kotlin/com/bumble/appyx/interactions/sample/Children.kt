@@ -57,38 +57,44 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
         uiContext?.let { appyxComponent.updateContext(it) }
     }
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxSize()
-            .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
-            .onPlaced {
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
-                        density = density,
-                        widthPx = it.size.width,
-                        heightPx = it.size.height,
-                        screenWidthPx = screenWidthPx,
-                        screenHeightPx = screenHeightPx
-                    ),
-                    clipToBounds = clipToBounds
-                )
-            }
-            .onPointerEvent {
-                if (it.type == PointerEventType.Release) {
-                    appyxComponent.onRelease()
-                }
-            }
     ) {
-        elementUiModels
-            .forEach { elementUiModel ->
-                key(elementUiModel.element.id) {
-                    elementUiModel.persistentContainer()
-                    val isVisible by elementUiModel.visibleState.collectAsState()
-                    if (isVisible) {
-                        childWrapper.invoke(elementUiModel)
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
+                .onPlaced {
+                    uiContext = UiContext(
+                        coroutineScope = coroutineScope,
+                        transitionBounds = TransitionBounds(
+                            density = density,
+                            widthPx = it.size.width,
+                            heightPx = it.size.height,
+                            screenWidthPx = screenWidthPx,
+                            screenHeightPx = screenHeightPx
+                        ),
+                        boxScope = this@Box,
+                        clipToBounds = clipToBounds
+                    )
+                }
+                .onPointerEvent {
+                    if (it.type == PointerEventType.Release) {
+                        appyxComponent.onRelease()
                     }
                 }
-            }
+        ) {
+            elementUiModels
+                .forEach { elementUiModel ->
+                    key(elementUiModel.element.id) {
+                        elementUiModel.persistentContainer()
+                        val isVisible by elementUiModel.visibleState.collectAsState()
+                        if (isVisible) {
+                            childWrapper.invoke(elementUiModel)
+                        }
+                    }
+                }
+        }
     }
 }
 
