@@ -1,6 +1,7 @@
 package com.bumble.appyx.demos.incompletedrag
 
 import androidx.compose.animation.core.SpringSpec
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
@@ -47,39 +48,36 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
         )
 
     companion object {
+        val bottomOffset = DpOffset(0.dp, (-50).dp)
 
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
-                A -> uiStateA
-                B -> uiStateB
-                C -> uiStateC
-                D -> uiStateD
+                A -> topLeftCorner
+                B -> topRightCorner
+                C -> bottomRightCorner
+                D -> bottomLeftCorner
             }
 
-        // Top-left corner, A
-        private val uiStateA = TargetUiState(
-            position = Position.Target(DpOffset(0.dp, 0.dp)),
+        private val topLeftCorner = TargetUiState(
+            position = Position.Target(Alignment.TopStart),
             rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
-        // Top-right corner, B
-        private val uiStateB = TargetUiState(
-            position = Position.Target(DpOffset(370.dp, 0.dp)),
+        private val topRightCorner = TargetUiState(
+            position = Position.Target(Alignment.TopEnd),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
-        // Bottom-right corner, C
-        private val uiStateC = TargetUiState(
-            position = Position.Target(DpOffset(370.dp, 180.dp)),
+        private val bottomRightCorner = TargetUiState(
+            position = Position.Target(Alignment.BottomEnd, bottomOffset),
             rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
-        // Bottom-left corner, D
-        private val uiStateD = TargetUiState(
-            position = Position.Target(DpOffset(0.dp, 180.dp)),
+        private val bottomLeftCorner = TargetUiState(
+            position = Position.Target(Alignment.BottomStart, bottomOffset),
             rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
@@ -90,18 +88,22 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
 
 
     class Gestures<InteractionTarget>(
-        transitionBounds: TransitionBounds,
+        private val transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val maxX = uiStateB.position.value.x - uiStateA.position.value.x
-        private val maxY = uiStateD.position.value.y - uiStateA.position.value.y
 
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-            val maxX = with(density) { maxX.toPx() }
-            val maxY = with(density) { maxY.toPx() }
+            // FIXME 60.dp is the assumed element size, connect it to real value
+            // TODO automate this whole calculation based on .onPlaced centers of targetUiStates
+            val maxX = with (density) {
+                (transitionBounds.widthDp - 60.dp).toPx()
+            }
+            val maxY = with (density) {
+                (transitionBounds.heightDp + bottomOffset.y - 60.dp).toPx()
+            }
 
             val direction = dragDirection8(delta)
             return when (state.elementState) {
