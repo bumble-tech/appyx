@@ -2,7 +2,15 @@
 
 ## Pending changes
 
-- [#530](https://github.com/bumble-tech/appyx/issues/530) – **Fixed**: Backstack Parallax motion controller bug
+### Added
+
+- [#539](https://github.com/bumble-tech/appyx/pull/539) – Position alignment
+
+### Fixed
+
+- [#530](https://github.com/bumble-tech/appyx/issues/530) – Backstack Parallax motion controller bug
+
+---
 
 ## 2.0.0-alpha01
 
