@@ -20,6 +20,11 @@ kotlin {
                 implementation(project(":demos:common"))
             }
         }
+        val jsMain by getting {
+            dependencies {
+                implementation(project(":demos:mkdocs:common"))
+            }
+        }
     }
 }
 
