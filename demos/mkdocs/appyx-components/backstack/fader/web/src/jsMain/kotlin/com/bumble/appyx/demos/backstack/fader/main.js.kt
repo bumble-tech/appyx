@@ -13,12 +13,12 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
+import com.bumble.appyx.demos.appyxSample
 import com.bumble.appyx.demos.common.color_dark
-import org.jetbrains.skiko.wasm.onWasmReady
 
 
 fun main() {
-    onWasmReady {
+    appyxSample {
         Window("Appyx") {
             var size by remember { mutableStateOf(IntSize.Zero) }
             Surface(

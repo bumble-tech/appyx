@@ -14,7 +14,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
-import org.jetbrains.skiko.wasm.onWasmReady
+import com.bumble.appyx.demos.appyxSample
 
 val color_bright = Color(0xFFFFFFFF)
 val color_dark = Color(0xFF353535)
@@ -28,7 +28,7 @@ val color_neutral4 = Color(0xFFBEA489)
 
 
 fun main() {
-    onWasmReady {
+    appyxSample {
         Window("Appyx") {
             var size by remember { mutableStateOf(IntSize.Zero) }
             Surface(
