@@ -2,7 +2,9 @@ package com.bumble.appyx.interactions.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,6 +26,7 @@ import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
@@ -93,14 +96,25 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                     if (it.type == PointerEventType.Release) {
                         appyxComponent.onRelease()
                     }
-                    var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
-                    val isVisible by elementUiModel.visibleState.collectAsState()
-                    elementUiModel.persistentContainer()
-                    if (isVisible) {
-                        element.invoke(
-                            elementUiModel.copy(
+                }
+                .fillMaxSize()
+        ) {
+            elementUiModels
+                .forEach { elementUiModel ->
+                    key(elementUiModel.element.id) {
+                        var transformedBoundingBox by remember(elementUiModel.element.id) {
+                            mutableStateOf(Rect.Zero)
+                        }
+                        var size by remember(elementUiModel.element.id) { mutableStateOf(IntSize.Zero) }
+                        var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
+                        val isVisible by elementUiModel.visibleState.collectAsState()
+                        elementUiModel.persistentContainer()
+                        if (isVisible) {
+                            Box(
                                 modifier = Modifier
                                     .offset { offsetCenter.round() }
+                                    .width(with(density) { size.width.toDp() })
+                                    .height(with(density) { size.height.toDp() })
                                     .pointerInput(appyxComponent) {
                                         detectDragGesturesOrCancellation(
                                             onDragStart = { position ->
@@ -125,21 +139,26 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                                             },
                                         )
                                     }
-                                    .offset { -offsetCenter.round() }
-                                    .then(elementUiModel.modifier)
-                                    .onPlaced {
-                                        val localCenter = Offset(
-                                            it.size.width.toFloat(),
-                                            it.size.height.toFloat()
-                                        ) / 2f
-                                        transformedBoundingBox =
-                                            it.boundsInParent().inflate(gestureExtraTouchAreaPx)
-                                        offsetCenter = transformedBoundingBox.center - localCenter
-                                    }
                             )
-                        )
+                            element.invoke(
+                                elementUiModel.copy(
+                                    modifier = Modifier
+                                        .then(elementUiModel.modifier)
+                                        .onPlaced {
+                                            size = it.size
+                                            val localCenter = Offset(
+                                                it.size.width.toFloat(),
+                                                it.size.height.toFloat()
+                                            ) / 2f
+
+                                            transformedBoundingBox = it.boundsInParent().inflate(gestureExtraTouchAreaPx)
+                                            offsetCenter = transformedBoundingBox.center - localCenter
+                                        }
+                                )
+                            )
+                        }
                     }
                 }
-            }
+        }
     }
 }
