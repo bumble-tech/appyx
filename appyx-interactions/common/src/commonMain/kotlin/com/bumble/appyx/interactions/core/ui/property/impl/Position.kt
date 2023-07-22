@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -83,7 +84,11 @@ class Position(
             alignment: Alignment
         ) : this(
             value = Value(
-                alignment = alignment as? BiasAlignment ?: TopStart,
+                // Compose hides BiasAlignment type for the most commonly used Alignments.
+                // We could enforce BiasAlignment by making the API more cumbersome,
+                // but everyday use-cases should just be fine this way too.
+                // Let's warn for the odd ones instead.
+                alignment = alignment as? BiasAlignment ?: TopStart.also { warnAlignment() },
                 offset = DpOffset.Zero
             )
         )
@@ -93,10 +98,18 @@ class Position(
             offset: DpOffset,
         ) : this(
             value = Value(
-                alignment = alignment as? BiasAlignment ?: TopStart,
+                alignment = alignment as? BiasAlignment ?: TopStart.also { warnAlignment() },
                 offset = offset
             )
         )
+
+        companion object {
+            private fun warnAlignment() {
+                AppyxLogger.w("Position",
+                    "Alignment is not of BiasAlignment, won't have an effect"
+                )
+            }
+        }
     }
 
     override fun calculateRenderValue(base: Value, displacement: Value): Value =
