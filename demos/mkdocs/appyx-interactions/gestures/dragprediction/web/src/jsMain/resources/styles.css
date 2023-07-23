@@ -10,3 +10,10 @@ body {
 #root > .compose-web-column > div {
     position: relative;
 }
+
+@media (max-width: 511px) {
+    #ComposeTarget {
+        scale: 0.5;
+        transform-origin: 0 0;
+    }
+}
