@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.sample
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -54,6 +55,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
+    var boxScope: BoxScope? = null
 
     LaunchedEffect(uiContext) {
         uiContext?.let { appyxComponent.updateContext(it) }
@@ -72,6 +74,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
+                    boxScope = boxScope!!,
                     clipToBounds = clipToBounds
                 )
             }
@@ -81,6 +84,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 }
             }
     ) {
+        boxScope = this
         elementUiModels
             .forEach { elementUiModel ->
                 key(elementUiModel.element.id) {

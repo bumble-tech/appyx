@@ -97,8 +97,8 @@ class DragPredictionMotionController<InteractionTarget : Any>(
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val maxX = uiStateB.position.value.x - uiStateA.position.value.x
-        private val maxY = uiStateD.position.value.y - uiStateA.position.value.y
+        private val maxX = uiStateB.position.value.offset.x - uiStateA.position.value.offset.x
+        private val maxY = uiStateD.position.value.offset.y - uiStateA.position.value.offset.y
 
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,

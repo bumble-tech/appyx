@@ -46,7 +46,7 @@ fun ComposeContentTestRule.createTestDrive(
         },
         progressAnimationSpec = animationSpec ?: spring(),
         gestureFactory = {
-            TestDriveSimpleMotionController.Gestures()
+            TestDriveSimpleMotionController.Gestures(it)
         },
     ).also { setupTestDrive(it, model) }
 }
