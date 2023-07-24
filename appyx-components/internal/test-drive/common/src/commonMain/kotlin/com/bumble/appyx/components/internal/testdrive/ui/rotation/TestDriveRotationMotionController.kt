@@ -1,7 +1,7 @@
 package com.bumble.appyx.components.internal.testdrive.ui.rotation
 
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.ui.Alignment
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.A
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.B

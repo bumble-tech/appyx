@@ -2,7 +2,7 @@ package com.bumble.appyx.demos.sample3
 
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.ui.Alignment
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset

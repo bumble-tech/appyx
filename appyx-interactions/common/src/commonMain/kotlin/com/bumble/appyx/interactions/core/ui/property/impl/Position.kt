@@ -6,14 +6,13 @@ import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.TwoWayConverter
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.offset
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -36,8 +35,30 @@ class Position(
     displacement = displacement
 ), Interpolatable<Position.Target> {
 
+    object Alignment {
+
+        @Stable
+        val TopStart = BiasAlignment(-1f, -1f)
+        @Stable
+        val TopCenter = BiasAlignment(0f, -1f)
+        @Stable
+        val TopEnd = BiasAlignment(1f, -1f)
+        @Stable
+        val CenterStart = BiasAlignment(-1f, 0f)
+        @Stable
+        val Center = BiasAlignment(0f, 0f)
+        @Stable
+        val CenterEnd = BiasAlignment(1f, 0f)
+        @Stable
+        val BottomStart = BiasAlignment(-1f, 1f)
+        @Stable
+        val BottomCenter = BiasAlignment(0f, 1f)
+        @Stable
+        val BottomEnd = BiasAlignment(1f, 1f)
+    }
+
     data class Value(
-        val alignment: BiasAlignment = TopStart,
+        val alignment: BiasAlignment = DefaultAlignment,
         val offset: DpOffset
     ) {
         companion object {
@@ -60,7 +81,7 @@ class Position(
                 )
 
             val Zero = Value(
-                alignment = TopStart,
+                alignment = DefaultAlignment,
                 offset = DpOffset.Zero
             )
         }
@@ -75,41 +96,29 @@ class Position(
             offset: DpOffset
         ) : this(
             value = Value(
-                alignment = TopStart,
+                alignment = DefaultAlignment,
                 offset = offset
             )
         )
 
         constructor(
-            alignment: Alignment
+            alignment: BiasAlignment
         ) : this(
             value = Value(
-                // Compose hides BiasAlignment type for the most commonly used Alignments.
-                // We could enforce BiasAlignment by making the API more cumbersome,
-                // but everyday use-cases should just be fine this way too.
-                // Let's warn for the odd ones instead.
-                alignment = alignment as? BiasAlignment ?: TopStart.also { warnAlignment() },
+                alignment = alignment,
                 offset = DpOffset.Zero
             )
         )
 
         constructor(
-            alignment: Alignment,
+            alignment: BiasAlignment,
             offset: DpOffset,
         ) : this(
             value = Value(
-                alignment = alignment as? BiasAlignment ?: TopStart.also { warnAlignment() },
+                alignment = alignment,
                 offset = offset
             )
         )
-
-        companion object {
-            private fun warnAlignment() {
-                AppyxLogger.w("Position",
-                    "Alignment is not of BiasAlignment, won't have an effect"
-                )
-            }
-        }
     }
 
     override fun calculateRenderValue(base: Value, displacement: Value): Value =
@@ -164,8 +173,8 @@ class Position(
     }
 }
 
-// The effect of using this as a default value is TopStart as intended (hence the name),
+// The effect of using this as a default value is TopStart as intended,
 // but I found I needed to use the values that reflect Center (0,0),
 // and I have no idea why!
-private val TopStart: BiasAlignment = BiasAlignment(0f, 0f)
+private val DefaultAlignment: BiasAlignment = BiasAlignment(0f, 0f)
 
