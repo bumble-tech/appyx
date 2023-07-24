@@ -1,12 +1,11 @@
 plugins {
     kotlin("multiplatform")
     id("org.jetbrains.compose")
-    id("com.google.devtools.ksp")
 }
 
 kotlin {
     js(IR) {
-        moduleName = "demos-mkdocs-appyx-components-common"
+        moduleName = "demos-mkdocs-common"
         browser()
         binaries.executable()
     }
@@ -16,7 +15,6 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                implementation(project(":appyx-interactions:appyx-interactions"))
             }
         }
     }
@@ -24,9 +22,4 @@ kotlin {
 
 compose.experimental {
     web.application {}
-}
-
-dependencies {
-    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
-    add("kspJs", project(":ksp:mutable-ui-processor"))
 }

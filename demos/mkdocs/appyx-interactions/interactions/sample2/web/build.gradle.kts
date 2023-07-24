@@ -19,6 +19,11 @@ kotlin {
                 implementation(project(":appyx-components:internal:test-drive:test-drive"))
             }
         }
+        val jsMain by getting {
+            dependencies {
+                implementation(project(":demos:mkdocs:common"))
+            }
+        }
     }
 }
 
