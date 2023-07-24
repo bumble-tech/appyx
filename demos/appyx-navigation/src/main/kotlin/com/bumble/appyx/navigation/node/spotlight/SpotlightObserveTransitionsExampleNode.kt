@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.spotlight.Spotlight
@@ -90,7 +89,7 @@ class SpotlightObserveTransitionsExampleNode(
 
                     Column(modifier = Modifier.align(Alignment.Center)) {
 
-                        val dpOffset = getMotionPropertyRenderValue<DpOffset, Position>()
+                        val dpOffset = getMotionPropertyRenderValue<Position.Value, Position>()?.offset
                         val df = remember {
                             DecimalFormat("#.##").apply {
                                 roundingMode = RoundingMode.DOWN

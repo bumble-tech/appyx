@@ -13,7 +13,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.spotlight.Spotlight
@@ -34,7 +33,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import kotlin.math.roundToInt
 
 @Composable
-fun SpotlightObserveMotionPropertiesSample(
+fun ObserveMotionPropertiesSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
@@ -106,7 +105,7 @@ fun <InteractionTarget : Any> ModalUi(
                 fontSize = 12.sp,
                 color = Color.White
             )
-            val dpOffset = getMotionPropertyRenderValue<DpOffset, Position>()
+            val dpOffset = getMotionPropertyRenderValue<Position.Value, Position>()?.offset
             if (dpOffset != null) {
                 Text(
                     text = "${roundFloatToTwoDecimals(dpOffset.x.value)}.dp",

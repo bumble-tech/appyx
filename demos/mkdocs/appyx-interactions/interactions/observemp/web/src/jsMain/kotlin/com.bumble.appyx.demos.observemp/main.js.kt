@@ -27,7 +27,7 @@ fun main() {
                     .onSizeChanged { size = it }
             ) {
                 if (size != IntSize.Zero) {
-                    SpotlightObserveMotionPropertiesSample(
+                    ObserveMotionPropertiesSample(
                         screenWidthPx = size.width,
                         screenHeightPx = size.height,
                         modifier = Modifier
