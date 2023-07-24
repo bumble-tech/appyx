@@ -3,6 +3,7 @@
 ## Pending changes
 
 - [#538](https://github.com/bumble-tech/appyx/pull/538) – **Added**: Availability to observe MotionProperties from children UI 
+- [#530](https://github.com/bumble-tech/appyx/issues/530) – **Fixed**: Backstack Parallax motion controller bug
 
 ---
 
