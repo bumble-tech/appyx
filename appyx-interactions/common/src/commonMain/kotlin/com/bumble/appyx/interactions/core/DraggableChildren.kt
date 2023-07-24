@@ -73,7 +73,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
         uiContext?.let { appyxComponent.updateContext(it) }
     }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
