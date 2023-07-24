@@ -16,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -27,7 +26,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
@@ -36,8 +34,6 @@ import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.property.getMotionPropertyRenderValue
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
 
 
 @Composable
@@ -151,16 +147,5 @@ fun SampleElement(
             color = Color.Black,
             fontWeight = FontWeight.Bold
         )
-
-        val value = getMotionPropertyRenderValue<DpOffset, Position>()
-        if (value != null) {
-            Text(
-                modifier = Modifier.align(Alignment.Center),
-                text = "${value.x}, ${value.y}",
-                fontSize = 21.sp,
-                color = Color.Black,
-                fontWeight = FontWeight.Bold
-            )
-        }
     }
 }

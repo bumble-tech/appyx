@@ -1,8 +1,6 @@
 package com.bumble.appyx.navigation.node.spotlight
 
 import android.os.Parcelable
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,10 +14,12 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.spotlight.Spotlight
@@ -30,17 +30,23 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
+import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
+import com.bumble.appyx.interactions.core.ui.property.getMotionPropertyRenderValue
+import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.spotlight.SpotlightNode.InteractionTarget
+import com.bumble.appyx.navigation.node.spotlight.SpotlightObserveTransitionsExampleNode.InteractionTarget
 import com.bumble.appyx.navigation.ui.appyx_dark
 import kotlinx.parcelize.Parcelize
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
-class SpotlightNode(
+class SpotlightObserveTransitionsExampleNode(
     buildContext: BuildContext,
     private val spotlight: Spotlight<InteractionTarget> = Spotlight(
         model = SpotlightModel(
@@ -48,7 +54,7 @@ class SpotlightNode(
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { SpotlightSlider(it) },
+        motionController = { SpotlightSliderRotation(it) },
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
 ) : ParentNode<InteractionTarget>(
@@ -81,6 +87,33 @@ class SpotlightNode(
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
                     )
+
+                    Column(modifier = Modifier.align(Alignment.Center)) {
+
+                        val dpOffset = getMotionPropertyRenderValue<DpOffset, Position>()
+                        val df = remember {
+                            DecimalFormat("#.##").apply {
+                                roundingMode = RoundingMode.DOWN
+                            }
+                        }
+                        if (dpOffset != null) {
+                            Text(
+                                text = "OffsetX: ${df.format(dpOffset.x.value)} dp",
+                                fontSize = 20.sp,
+                                color = Color.Black,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                        val rotationY = getMotionPropertyRenderValue<Float, RotationY>()
+                        if (rotationY != null) {
+                            Text(
+                                text = "RotationY: ${df.format(rotationY)}°",
+                                fontSize = 20.sp,
+                                color = Color.Black,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -108,21 +141,16 @@ class SpotlightNode(
                     .weight(0.1f),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Button(onClick = {
-                    spotlight.updateElements(
-                        newItems.shuffled(),
-                        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
-                    )
-                }) {
+                Button(onClick = { spotlight.updateElements(newItems.shuffled()) }) {
                     Text("New")
                 }
                 Button(onClick = { spotlight.first() }) {
                     Text("First")
                 }
-                Button(onClick = { spotlight.previous(spring(stiffness = Spring.StiffnessLow)) }) {
+                Button(onClick = { spotlight.previous() }) {
                     Text("Prev")
                 }
-                Button(onClick = { spotlight.next(spring(stiffness = Spring.StiffnessMedium)) }) {
+                Button(onClick = { spotlight.next() }) {
                     Text("Next")
                 }
                 Button(onClick = { spotlight.last() }) {
