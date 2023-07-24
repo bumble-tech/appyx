@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -100,6 +101,7 @@ fun Sample3(
             modifier = Modifier.padding(24.dp, 24.dp)
         ) {
             Target(
+                boxScope = this,
                 currentTarget = currentTarget.value,
                 index = index
             )
@@ -151,6 +153,7 @@ fun <InteractionTarget : Any> Background(
 
 @Composable
 fun <InteractionTarget : Any> Target(
+    boxScope: BoxScope,
     currentTarget: TestDriveModel.State<InteractionTarget>?,
     index: Int?,
     modifier: Modifier = Modifier
@@ -158,14 +161,17 @@ fun <InteractionTarget : Any> Target(
     val targetUiState = currentTarget?.elementState?.toTargetUiState()
     targetUiState?.let {
         Box(
-            modifier = modifier
-                .size(60.dp)
-                .offset(targetUiState.position.value.x, targetUiState.position.value.y)
-                .alpha(0.35f)
-                .background(
-                    color = targetUiState.backgroundColor.value,
-                    shape = RoundedCornerShape(targetUiState.roundedCorners.value)
-                )
+            modifier = with(boxScope) {
+                modifier
+                    .size(60.dp)
+                    .align(targetUiState.position.value.alignment)
+                    .offset(targetUiState.position.value.offset.x, targetUiState.position.value.offset.y)
+                    .alpha(0.35f)
+                    .background(
+                        color = targetUiState.backgroundColor.value,
+                        shape = RoundedCornerShape(targetUiState.roundedCorners.value)
+                    )
+            }
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),

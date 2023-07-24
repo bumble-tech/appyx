@@ -158,7 +158,7 @@ fun Target(
         Box(
             modifier = modifier
                 .size(60.dp)
-                .offset(targetUiState.position.value.x, targetUiState.position.value.y)
+                .offset(targetUiState.position.value.offset.x, targetUiState.position.value.offset.y)
                 .scale(targetUiState.scale.value)
                 .rotate(targetUiState.rotationZ.value)
                 .alpha(alpha)

@@ -1,8 +1,7 @@
 package com.bumble.appyx.components.internal.testdrive.ui.rotation
 
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.A
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.B
@@ -36,40 +35,36 @@ class TestDriveRotationMotionController<InteractionTarget : Any>(
         )
 
     companion object {
-        val offsetA = DpOffset(0.dp, 0.dp)
-        val offsetB = DpOffset(200.dp, 0.dp)
-        val offsetC = DpOffset(200.dp, 300.dp)
-        val offsetD = DpOffset(0.dp, 300.dp)
 
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
-                A -> a
-                B -> b
-                C -> c
-                D -> d
+                A -> topLeftCorner
+                B -> topRightCorner
+                C -> bottomRightCorner
+                D -> bottomLeftCorner
             }
 
-        private val a = TargetUiState(
-            position = Position.Target(offsetA),
+        private val topLeftCorner = TargetUiState(
+            position = Position.Target(Alignment.TopStart),
             rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
-        private val b = TargetUiState(
-            position = Position.Target(offsetB),
-            rotationZ = RotationZ.Target(90f),
+        private val topRightCorner = TargetUiState(
+            position = Position.Target(Alignment.TopEnd),
+            rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
-        private val c = TargetUiState(
-            position = Position.Target(offsetC),
-            rotationZ = RotationZ.Target(180f),
+        private val bottomRightCorner = TargetUiState(
+            position = Position.Target(Alignment.CenterEnd),
+            rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
-        private val d = TargetUiState(
-            position = Position.Target(offsetD),
-            rotationZ = RotationZ.Target(270f),
+        private val bottomLeftCorner = TargetUiState(
+            position = Position.Target(Alignment.CenterStart),
+            rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }

@@ -34,7 +34,7 @@ class Puzzle15MotionController(
                 element = tileElements,
                 targetUiState = TargetUiState(
                     position = Position.Target(
-                        value = DpOffset(
+                        offset = DpOffset(
                             x = (index % 4 * width).dp,
                             y = (index / 4 * width).dp
                         )
