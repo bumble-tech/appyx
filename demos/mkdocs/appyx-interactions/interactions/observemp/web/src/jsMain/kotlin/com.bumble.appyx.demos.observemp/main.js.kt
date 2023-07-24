@@ -1,4 +1,4 @@
-package com.bumble.appyx.demos.sample4
+package com.bumble.appyx.demos.observemp
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize

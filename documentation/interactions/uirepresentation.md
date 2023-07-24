@@ -202,11 +202,11 @@ val rotationY = getMotionPropertyRenderValue<Float, RotationY>()
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample4/web/build/distributions",
-        compile_task=":demos:mkdocs:appyx-interactions:interactions:sample4:web:jsBrowserDistribution",
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/observemp/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:interactions:observemp:web:jsBrowserDistribution",
         width=512,
         height=384,
-        target_directory="samples/documentation-interactions-ui-1",
+        target_directory="samples/documentation-interactions-ui-observe-mp",
         html_file_name="index.html",
         classname="compose_mpp_sample",
     )
