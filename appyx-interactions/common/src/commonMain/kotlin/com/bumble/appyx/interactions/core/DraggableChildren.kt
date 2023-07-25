@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,6 +36,7 @@ import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.def
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
+import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -139,22 +141,28 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                                     )
                                 }
                         )
-                        element.invoke(
-                            elementUiModel.copy(
-                                modifier = Modifier
-                                    .then(elementUiModel.modifier)
-                                    .onPlaced {
-                                        size = it.size
-                                        val localCenter = Offset(
-                                            it.size.width.toFloat(),
-                                            it.size.height.toFloat()
-                                        ) / 2f
+                        CompositionLocalProvider(
+                            LocalMotionProperties provides elementUiModel.motionProperties
+                        ) {
+                            element.invoke(
+                                elementUiModel.copy(
+                                    modifier = Modifier
+                                        .then(elementUiModel.modifier)
+                                        .onPlaced {
+                                            size = it.size
+                                            val localCenter = Offset(
+                                                it.size.width.toFloat(),
+                                                it.size.height.toFloat()
+                                            ) / 2f
 
-                                        transformedBoundingBox = it.boundsInParent().inflate(gestureExtraTouchAreaPx)
-                                        offsetCenter = transformedBoundingBox.center - localCenter
-                                    }
+                                            transformedBoundingBox =
+                                                it.boundsInParent().inflate(gestureExtraTouchAreaPx)
+                                            offsetCenter =
+                                                transformedBoundingBox.center - localCenter
+                                        }
+                                )
                             )
-                        )
+                        }
                     }
                 }
             }

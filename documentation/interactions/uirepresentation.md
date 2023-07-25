@@ -181,3 +181,29 @@ dependencies {
     add("kspJs", project(":ksp:mutable-ui-processor"))
 }
 ```
+
+## Observing MotionProperty in children UI
+
+Sometimes children UI can depend on the transition animation values. Appyx provides an API to observe `MotionProperty` inside children UI.
+
+In this example, children composable retrieve and display `DpOffset` value from `Position` motion property as well as `Float` value from `RotationY` using this API:
+
+```kotlin
+// returns dpOffset value if transition has Position MotionProperty and null otherwise 
+val dpOffset : DpOffset? = motionPropertyRenderValue<Position.Value, Position>()?.offset
+
+// returns rotationY value if transition has RotationY MotionProperty and null otherwise 
+val rotationY = motionPropertyRenderValue<Float, RotationY>()
+```
+
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/observemp/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:interactions:observemp:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-interactions-ui-observe-mp",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
