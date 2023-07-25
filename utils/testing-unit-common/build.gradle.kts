@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    api(project(":appyx-navigation:common"))
+    api(project(":appyx-navigation:appyx-navigation"))
     implementation(project(":utils:customisations"))
     implementation(libs.kotlin.test)
 }

@@ -28,12 +28,20 @@ import gestureModifier
 import kotlin.math.roundToInt
 
 @Composable
-inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
+fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Children(
     interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    noinline block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
-        children { child, elementUiModel ->
+    block: @Composable (ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit)? = null
+) {
+    val density = LocalDensity.current
+    val coroutineScope = rememberCoroutineScope()
+    val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
+    val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
+    var uiContext by remember { mutableStateOf<UiContext?>(null) }
+
+    val childrenBlock = block ?: {
+        children { child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget> ->
             child(
                 modifier = Modifier.gestureModifier(
                     interactionModel = interactionModel,
@@ -42,13 +50,6 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
             )
         }
     }
-) {
-
-    val density = LocalDensity.current
-    val coroutineScope = rememberCoroutineScope()
-    val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
-    val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
         uiContext?.let { interactionModel.updateContext(it) }
@@ -72,13 +73,12 @@ inline fun <reified InteractionTarget : Any, ModelState : Any> ParentNode<Intera
                 )
             }
     ) {
-        block(
+        childrenBlock(
             ChildrenTransitionScope(
                 interactionModel = interactionModel
             )
         )
     }
-
 }
 
 class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(

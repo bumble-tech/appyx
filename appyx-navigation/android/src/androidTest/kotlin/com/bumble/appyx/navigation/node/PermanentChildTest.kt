@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.node
 
-import android.os.Parcelable
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -14,7 +13,8 @@ import com.bumble.appyx.navigation.AppyxTestScenario
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.PermanentChildTest.TestParentNode.InteractionTarget
-import kotlinx.parcelize.Parcelize
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -59,7 +59,10 @@ class PermanentChildTest {
 
         var renderPermanentChild by mutableStateOf(true)
 
-        override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
+        override fun resolve(
+            interactionTarget: InteractionTarget,
+            buildContext: BuildContext
+        ): Node =
             node(buildContext) { modifier ->
                 BasicText(
                     text = interactionTarget.toString(),

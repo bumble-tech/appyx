@@ -1,9 +1,10 @@
 plugins {
+    id("org.jetbrains.compose")
     id("com.android.library")
-    id("kotlin-android")
-    id("kotlin-parcelize")
+    kotlin("android")
     id("appyx-publish-android")
     id("appyx-lint")
+    id("kotlin-parcelize")
     id("appyx-detekt")
 }
 
@@ -34,7 +35,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     api(composeBom)
-    api(project(":appyx-navigation:common"))
+    api(project(":appyx-navigation:appyx-navigation"))
     runtimeOnly(libs.kotlin.coroutines.android)
     implementation(libs.androidx.lifecycle.common)
 
@@ -43,7 +44,6 @@ dependencies {
     api(libs.androidx.appcompat)
 
     implementation(composeBom)
-    implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.java8)
 
     androidTestImplementation(composeBom)

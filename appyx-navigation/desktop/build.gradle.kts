@@ -13,7 +13,7 @@ kotlin {
     sourceSets {
         val jvmMain by getting {
             dependencies {
-                implementation(project(":appyx-navigation:common"))
+                implementation(project(":appyx-navigation:appyx-navigation"))
                 implementation(compose.desktop.currentOs)
             }
         }
