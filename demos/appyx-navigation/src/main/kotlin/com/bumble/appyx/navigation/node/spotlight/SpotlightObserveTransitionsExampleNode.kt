@@ -70,8 +70,6 @@ class SpotlightObserveTransitionsExampleNode(
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
         when (interactionTarget) {
             is InteractionTarget.Child -> node(buildContext) { modifier ->
-
-
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = modifier
