@@ -29,46 +29,17 @@ class WidgetsStack3D<InteractionTarget : Any>(
             { state: SpotlightModel.State<InteractionTarget> -> state.activeIndex } to scrollY
         )
 
-    private val created: TargetUiState = TargetUiState(
-        rotationX = RotationX.Target(0f),
-        position = Position.Target(DpOffset(0.dp, height)),
-        scale = Scale.Target(2.5f),
-        alpha = Alpha.Target(0f),
-        zIndex = ZIndex.Target(0f),
-    )
-
-    private val standard: TargetUiState = TargetUiState(
-        rotationX = RotationX.Target(0f),
-        position = Position.Target(DpOffset.Zero),
-        scale = Scale.Target(1f),
-        alpha = Alpha.Target(1f),
-        zIndex = ZIndex.Target(0f),
-    )
-
-    private val destroyed: TargetUiState = TargetUiState(
-        rotationX = RotationX.Target(0f),
-        position = Position.Target(DpOffset(0.dp, -height)),
-        scale = Scale.Target(0.25f),
-        alpha = Alpha.Target(0f),
-        zIndex = ZIndex.Target(0f),
-    )
-
     override fun SpotlightModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         positions.flatMapIndexed { index, position ->
             position.elements.map {
                 MatchedTargetUiState(
                     element = it.key,
                     targetUiState = TargetUiState(
-                        base = when (it.value) {
-                            SpotlightModel.State.ElementState.CREATED -> created
-                            SpotlightModel.State.ElementState.STANDARD -> standard
-                            SpotlightModel.State.ElementState.DESTROYED -> destroyed
-                        },
+                        base = default,
                         positionInList = index,
                     )
                 )
             }
-
         }
 
     override fun mutableUiStateFor(
@@ -81,4 +52,14 @@ class WidgetsStack3D<InteractionTarget : Any>(
             itemWidth = width,
             itemHeight = height,
         )
+
+    private companion object {
+        val default: TargetUiState = TargetUiState(
+            rotationX = RotationX.Target(0f),
+            position = Position.Target(DpOffset.Zero),
+            scale = Scale.Target(1f),
+            alpha = Alpha.Target(1f),
+            zIndex = ZIndex.Target(0f),
+        )
+    }
 }
