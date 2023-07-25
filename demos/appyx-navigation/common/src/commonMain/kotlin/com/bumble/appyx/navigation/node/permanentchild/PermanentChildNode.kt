@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.interactions.permanent.PermanentInteractionModel
+import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.interactions.permanent.PermanentModel
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -31,7 +31,7 @@ class PermanentChildNode(
     buildContext: BuildContext,
 ) : ParentNode<PermanentChildNode.InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = PermanentInteractionModel(model = PermanentModel(buildContext.savedStateMap))
+    appyxComponent = PermanentAppyxComponent(model = PermanentModel(buildContext.savedStateMap))
 ) {
     sealed class InteractionTarget : Parcelable {
         @Parcelize

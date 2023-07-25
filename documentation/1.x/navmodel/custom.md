@@ -1,10 +1,12 @@
+{% include-markdown "../deprecation.md" %}
+
 # Implementing your own navigation models
 
 A step-by-step guide. You can also take a look at other existing examples to see these in practice.
 
 ## Step 1
 
-Create the class; define your possible states; define your initial state. 
+Create the class; define your possible states; define your initial state.
 
 ```kotlin
 class Foo<NavTarget : Any>(
@@ -46,7 +48,6 @@ typealias FooElements<NavTarget> = NavElements<NavTarget, Foo.State>
 
 sealed interface FooOperation<NavTarget> : Operation<NavTarget, Foo.State>
 ```
-
 
 ## Step 3
 
@@ -98,7 +99,7 @@ object FooOnScreenResolver : OnScreenStateResolver<State> {
 
 ## Step 5
 
-Add one or more transition handlers to interpret different states and translate them to Jetpack Compose `Modifiers`. 
+Add one or more transition handlers to interpret different states and translate them to Jetpack Compose `Modifiers`.
 
 ```kotlin
 class FooTransitionHandler<NavTarget>(
@@ -137,7 +138,6 @@ fun <NavTarget> rememberFooTransitionHandler(
 }
 ```
 
-
 ## Test it
 
 Add `Children` to your `Node`. Pass your NavModel and the transition handler:
@@ -160,7 +160,6 @@ foo.someOperation()
 ```
 
 As soon as this is triggered, elements should transition to the `BAR` state in this example, and you should see them scale up defined by the transition handler.
-
 
 ## Created something cool?
 

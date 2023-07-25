@@ -1,9 +1,9 @@
 package com.bumble.appyx.interactions.core.gesture
 
 import androidx.compose.foundation.gestures.awaitDragOrCancellation
+import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.awaitTouchSlopOrCancellation
-import androidx.compose.foundation.gestures.forEachGesture
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.AwaitPointerEventScope
 import androidx.compose.ui.input.pointer.PointerId
@@ -22,32 +22,30 @@ suspend fun PointerInputScope.detectDragGesturesOrCancellation(
     onDragEnd: () -> Unit = { },
     onDrag: (change: PointerInputChange, dragAmount: Offset) -> Boolean
 ) {
-    forEachGesture {
-        awaitPointerEventScope {
-            val down = awaitFirstDown(requireUnconsumed = false)
-            var drag: PointerInputChange?
-            var overSlop = Offset.Zero
-            do {
-                drag = awaitTouchSlopOrCancellation(
-                    down.id,
-                ) { change, over ->
-                    change.consume()
-                    overSlop = over
-                }
-            } while (drag != null && !drag.isConsumed)
-            if (drag != null) {
-                onDragStart.invoke(drag.position)
-                onDrag(drag, overSlop)
-                if (
-                    drag(drag.id) {
-                        onDrag(it, it.positionChange()).run {
-                            it.consume()
-                            this
-                        }
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false)
+        var drag: PointerInputChange?
+        var overSlop = Offset.Zero
+        do {
+            drag = awaitTouchSlopOrCancellation(
+                down.id,
+            ) { change, over ->
+                change.consume()
+                overSlop = over
+            }
+        } while (drag != null && !drag.isConsumed)
+        if (drag != null) {
+            onDragStart.invoke(drag.position)
+            onDrag(drag, overSlop)
+            if (
+                drag(drag.id) {
+                    onDrag(it, it.positionChange()).run {
+                        it.consume()
+                        this
                     }
-                ) {
-                    onDragEnd()
                 }
+            ) {
+                onDragEnd()
             }
         }
     }

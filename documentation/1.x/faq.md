@@ -1,11 +1,13 @@
-# FAQ
+{% include-markdown "deprecation.md" %}
 
+# FAQ
 
 ## Navigation-related
 
 #### **Q: How does Appyx relate to Jetpack Compose Navigation?**
 
-We wrote an article on this: [Appyx vs Jetpack Compose Navigation](https://medium.com/bumble-tech/appyx-vs-jetpack-compose-navigation-b91bd23369f2)
+We wrote an article on
+this: [Appyx vs Jetpack Compose Navigation](https://medium.com/bumble-tech/appyx-vs-jetpack-compose-navigation-b91bd23369f2)
 
 While Appyx represents a different paradigm, it can also co-exist with Jetpack Compose Navigation. This can be helpful if you want to use Appyx for in-screen mechanisms only, or if you plan to migrate gradually.
 
@@ -15,7 +17,7 @@ See [Sample apps](how-to-use-appyx/sample-apps.md) for more details.
 
 #### **Q: How does Appyx compare against other navigation solutions?**
 
-The core concepts of navigation in Appyx differ from most navigation libraries: 
+The core concepts of navigation in Appyx differ from most navigation libraries:
 
 1. You don't have a concept of the "screen" present in the model
 2. You can define your own navigation models
@@ -25,7 +27,6 @@ See [Model-driven navigation](navigation/model-driven-navigation.md) for more de
 
 ---
 
-
 #### **Q: How can I navigate to a specific part of my Appyx tree?**
 
 In most cases [Implicit navigation](navigation/implicit-navigation.md) can be your primary choice, and you don't need to explicitly specify a remote point in the tree. This is helpful to avoid coupling.
@@ -33,7 +34,6 @@ In most cases [Implicit navigation](navigation/implicit-navigation.md) can be yo
 For those cases when you can't avoid it, [Explicit navigation](navigation/explicit-navigation.md) and [Deep linking](navigation/deep-linking.md) covers you.
 
 ---
-
 
 #### **Q: What about dialogs & bottom sheets?**
 
@@ -50,7 +50,6 @@ You could use a similar approach as we do with back buttons in `SamplesContainer
 ---
 
 ## Using Appyx in an app
-
 
 #### **Q: Is it an all or nothing approach?**
 
@@ -73,7 +72,6 @@ Yes, we'll add an example soon.
 
 ---
 
-
 #### **Q: Can I use it with Hilt?**
 
 - Our draft PR: [#115](https://github.com/bumble-tech/appyx/pull/115) (Feel free to provide feedback!)
@@ -94,7 +92,6 @@ In short: you can decide whether a `Node`:
 Check the [Lifecycle](apps/lifecycle.md#on-screen-off-screen) for more details.
 
 ---
-
 
 ## On the project itself
 

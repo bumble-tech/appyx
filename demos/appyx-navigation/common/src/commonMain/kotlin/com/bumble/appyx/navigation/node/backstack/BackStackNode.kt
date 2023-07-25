@@ -30,8 +30,9 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
+import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -40,8 +41,6 @@ import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
-import gestureModifier
-import kotlinx.serialization.Serializable
 import kotlin.random.Random
 
 
@@ -64,11 +63,10 @@ class BackStackNode(
     )
 ) : ParentNode<BackStackNode.InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack,
+    appyxComponent = backStack,
 ) {
     sealed class InteractionTarget : Parcelable {
         @Parcelize
-        @Serializable
         class Child(val index: Int) : InteractionTarget()
     }
 
@@ -108,9 +106,9 @@ class BackStackNode(
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {
-            Children(
+            AppyxComponent(
                 clipToBounds = true,
-                interactionModel = backStack,
+                appyxComponent = backStack,
                 modifier = Modifier
                     .weight(0.9f)
                     .fillMaxSize()

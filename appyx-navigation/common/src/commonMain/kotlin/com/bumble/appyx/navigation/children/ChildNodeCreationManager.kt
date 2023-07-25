@@ -36,39 +36,44 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             _children.update { restoredMap }
             savedStateMap = null
         }
-        syncInteractionModelWithChildren(parentNode)
+        syncAppyxComponentWithChildren(parentNode)
     }
 
-    private fun syncInteractionModelWithChildren(parentNode: ParentNode<InteractionTarget>) {
+    private fun syncAppyxComponentWithChildren(parentNode: ParentNode<InteractionTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
-            parentNode.interactionModel.elements.collect { state ->
-                val interactionModelKeepKeys: Set<Element<InteractionTarget>>
-                val interactionModelSuspendKeys: Set<Element<InteractionTarget>>
-                val interactionModelKeys: Set<Element<InteractionTarget>>
+            parentNode.appyxComponent.elements.collect { state ->
+                val appyxComponentKeepKeys: Set<Element<InteractionTarget>>
+                val appyxComponentSuspendKeys: Set<Element<InteractionTarget>>
+                val appyxComponentKeys: Set<Element<InteractionTarget>>
                 when (keepMode) {
                     ChildEntry.KeepMode.KEEP -> {
-                        interactionModelKeepKeys =
+                        appyxComponentKeepKeys =
                             (state.onScreen + state.offScreen)
-                        interactionModelSuspendKeys = emptySet()
-                        interactionModelKeys = interactionModelKeepKeys
+                        appyxComponentSuspendKeys = emptySet()
+                        appyxComponentKeys = appyxComponentKeepKeys
                     }
+
                     ChildEntry.KeepMode.SUSPEND -> {
-                        interactionModelKeepKeys =
+                        appyxComponentKeepKeys =
                             state.onScreen
-                        interactionModelSuspendKeys =
+                        appyxComponentSuspendKeys =
                             state.offScreen
-                        interactionModelKeys = interactionModelKeepKeys + interactionModelSuspendKeys
+                        appyxComponentKeys = appyxComponentKeepKeys + appyxComponentSuspendKeys
                     }
                 }
-                updateChildren(interactionModelKeys, interactionModelKeepKeys, interactionModelSuspendKeys)
+                updateChildren(
+                    appyxComponentKeys,
+                    appyxComponentKeepKeys,
+                    appyxComponentSuspendKeys
+                )
             }
         }
     }
 
     private fun updateChildren(
-        interactionModelElements: Set<Element<InteractionTarget>>,
-        interactionModelKeepElements: Set<Element<InteractionTarget>>,
-        interactionModelSuspendElements: Set<Element<InteractionTarget>>,
+        appyxComponentElements: Set<Element<InteractionTarget>>,
+        appyxComponentKeepElements: Set<Element<InteractionTarget>>,
+        appyxComponentSuspendElements: Set<Element<InteractionTarget>>,
     ) {
         _children.update { map ->
             val localElements = map.keys
@@ -78,10 +83,10 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             val localSuspendedKeys = map.entries.mapNotNullToSet { entry ->
                 entry.key.takeIf { entry.value is ChildEntry.Suspended }
             }
-            val newElements = interactionModelElements - localElements
-            val removedElements = localElements - interactionModelElements
-            val keepElements = localSuspendedKeys.intersect(interactionModelKeepElements)
-            val suspendElements = localKeptElements.intersect(interactionModelSuspendElements)
+            val newElements = appyxComponentElements - localElements
+            val removedElements = localElements - appyxComponentElements
+            val keepElements = localSuspendedKeys.intersect(appyxComponentKeepElements)
+            val suspendElements = localKeptElements.intersect(appyxComponentSuspendElements)
             val noKeysChanges = newElements.isEmpty() && removedElements.isEmpty()
             val noSuspendChanges = keepElements.isEmpty() && suspendElements.isEmpty()
             if (noKeysChanges && noSuspendChanges) {
@@ -90,7 +95,9 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             val mutableMap = map.toMutableMap()
             newElements.forEach { key ->
                 val shouldSuspend =
-                    keepMode == ChildEntry.KeepMode.SUSPEND && interactionModelSuspendElements.contains(key)
+                    keepMode == ChildEntry.KeepMode.SUSPEND && appyxComponentSuspendElements.contains(
+                        key
+                    )
                 mutableMap[key] =
                     childEntry(
                         key = key,

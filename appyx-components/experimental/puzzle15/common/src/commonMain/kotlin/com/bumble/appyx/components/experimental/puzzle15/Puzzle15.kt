@@ -4,7 +4,7 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model.Tile
 import com.bumble.appyx.components.experimental.puzzle15.ui.Puzzle15MotionController
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -21,10 +21,14 @@ class Puzzle15(
             it
         )
     },
-    gestureFactory: (TransitionBounds) -> GestureFactory<Tile, Puzzle15Model.State> = { bounds -> Puzzle15MotionController.Gestures(bounds) },
+    gestureFactory: (TransitionBounds) -> GestureFactory<Tile, Puzzle15Model.State> = { bounds ->
+        Puzzle15MotionController.Gestures(
+            bounds
+        )
+    },
     animationSpec: AnimationSpec<Float> = spring(),
     animateSettle: Boolean = false,
-) : BaseInteractionModel<Tile, Puzzle15Model.State>(
+) : BaseAppyxComponent<Tile, Puzzle15Model.State>(
     scope = scope,
     model = model,
     motionController = motionController,

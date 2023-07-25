@@ -28,6 +28,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
 ) : TransitionModel<InteractionTarget, ModelState> {
     abstract val initialState: ModelState
 
+    @Suppress("UNCHECKED_CAST")
     private val savedState: ModelState?
         get() = savedStateMap?.get(key) as? ModelState
 

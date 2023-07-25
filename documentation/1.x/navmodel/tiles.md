@@ -1,12 +1,16 @@
+{% include-markdown "../deprecation.md" %}
+
 # Tiles
 
 <img src="https://i.imgur.com/N8rEPrJ.gif" width="200">
 
-Intended only as an illustration, but it should be easy enough to tailor it to your needs if you find it useful.
+Intended only as an illustration, but it should be easy enough to tailor it to your needs if you
+find it useful.
 
 ## Where can I find this NavModel?
 
-The `Tiles` NavModel is not currently published, however you can fork the Appyx repository and try it out yourself!
+The `Tiles` NavModel is not currently published, however you can fork the Appyx repository and try
+it out yourself!
 If you feel that this functionality should be part of the main library, please let us know.
 
 ## States
@@ -36,7 +40,6 @@ internal object TilesOnScreenResolver : OnScreenStateResolver<State> {
 Selection translates to scaling.
 Destroying makes elements fly off the screen with rotation and downscaling.
 
-
 ## Operations
 
 #### Add
@@ -45,13 +48,11 @@ Destroying makes elements fly off the screen with rotation and downscaling.
 
 Adds a new element to the NavModel immediately transitioning from `CREATED` -> `STANDARD`.
 
-
 #### Destroy
 
 `tiles.destroy(navTarget)`
 
 Transitions a given element to `DESTROYED`.
-
 
 #### Select
 
@@ -59,21 +60,17 @@ Transitions a given element to `DESTROYED`.
 
 Transitions a given element `STANDARD` -> `SELECTED`.
 
-
 #### Deselect
 
 `tiles.deselect(navTarget)`
 
 Transitions a given element `SELECTED` -> `STANDARD`.
 
-
 #### Deselect all
 
 `tiles.deselectAll()`
 
 Transitions all elements `SELECTED` -> `STANDARD`.
-
-
 
 #### Remove selected
 

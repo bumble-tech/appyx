@@ -24,7 +24,7 @@ class PopBackstackStrategy<InteractionTarget : Any>(
         val pop = Pop<InteractionTarget>()
         //todo find a better way to check if operation is applicable
         return if (pop.isApplicable(transitionModel.output.value.currentTargetState)) {
-            interactionModel.operation(operation = Pop(), animationSpec)
+            appyxComponent.operation(operation = Pop(), animationSpec)
             true
         } else false
     }

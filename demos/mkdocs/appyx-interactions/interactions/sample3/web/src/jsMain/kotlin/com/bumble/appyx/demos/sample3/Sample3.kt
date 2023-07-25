@@ -4,11 +4,10 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +32,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.LinearGradientShader
 import androidx.compose.ui.graphics.ShaderBrush
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -46,12 +44,12 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.sample3.InteractionTarget.Child1
 import com.bumble.appyx.demos.sample3.Sample3MotionController.Companion.toTargetUiState
+import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
-import com.bumble.appyx.interactions.sample.Children
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
 enum class InteractionTarget {
     Child1
@@ -78,7 +76,7 @@ fun Sample3(
         )
     }
 
-    InteractionModelSetup(testDrive)
+    AppyxComponentSetup(testDrive)
 
     val output = model.output.collectAsState().value
     val currentTarget: State<TestDriveModel.State<InteractionTarget>?> =
@@ -103,6 +101,7 @@ fun Sample3(
             modifier = Modifier.padding(24.dp, 24.dp)
         ) {
             Target(
+                boxScope = this,
                 currentTarget = currentTarget.value,
                 index = index
             )
@@ -154,6 +153,7 @@ fun <InteractionTarget : Any> Background(
 
 @Composable
 fun <InteractionTarget : Any> Target(
+    boxScope: BoxScope,
     currentTarget: TestDriveModel.State<InteractionTarget>?,
     index: Int?,
     modifier: Modifier = Modifier
@@ -161,14 +161,20 @@ fun <InteractionTarget : Any> Target(
     val targetUiState = currentTarget?.elementState?.toTargetUiState()
     targetUiState?.let {
         Box(
-            modifier = modifier
-                .size(60.dp)
-                .offset(targetUiState.position.value.x, targetUiState.position.value.y)
-                .alpha(0.35f)
-                .background(
-                    color = targetUiState.backgroundColor.value,
-                    shape = RoundedCornerShape(targetUiState.roundedCorners.value)
-                )
+            modifier = with(boxScope) {
+                modifier
+                    .size(60.dp)
+                    .align(targetUiState.position.value.alignment)
+                    .offset(
+                        targetUiState.position.value.offset.x,
+                        targetUiState.position.value.offset.y
+                    )
+                    .alpha(0.35f)
+                    .background(
+                        color = targetUiState.backgroundColor.value,
+                        shape = RoundedCornerShape(targetUiState.roundedCorners.value)
+                    )
+            }
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -188,26 +194,14 @@ fun <InteractionTarget : Any> ModelUi(
     model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
-    Children(
-        interactionModel = testDrive,
+    DraggableAppyxComponent(
+        appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        modifier = modifier.zIndex(2f)
     ) { elementUiModel ->
         Box(
             modifier = Modifier.size(60.dp)
                 .then(elementUiModel.modifier)
-                .pointerInput(elementUiModel.element.id) {
-                    detectDragGestures(
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-                            testDrive.onDrag(dragAmount, this)
-                        },
-                        onDragEnd = {
-                            testDrive.onDragEnd()
-                        }
-                    )
-                },
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
@@ -242,10 +236,14 @@ private fun Controls(
             Box(
                 modifier = Modifier
                     .background(color_primary, shape = RoundedCornerShape(4.dp))
-                    .clickable { testDrive.next(mode = IMMEDIATE, spring(
-                        stiffness = Spring.StiffnessVeryLow,
-                        dampingRatio = Spring.DampingRatioMediumBouncy
-                    )) }
+                    .clickable {
+                        testDrive.next(
+                            mode = IMMEDIATE, spring(
+                                stiffness = Spring.StiffnessVeryLow,
+                                dampingRatio = Spring.DampingRatioMediumBouncy
+                            )
+                        )
+                    }
                     .padding(horizontal = 18.dp, vertical = 9.dp)
             ) {
                 Text("Immediate")

@@ -30,7 +30,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -48,11 +48,12 @@ class SpotlightNode(
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { SpotlightSlider(it) }
+        motionController = { SpotlightSlider(it) },
+        gestureFactory = { SpotlightSlider.Gestures(it) }
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = spotlight
+    appyxComponent = spotlight
 ) {
     private val newItems = List(7) { InteractionTarget.Child(it * 3) }
 
@@ -63,10 +64,10 @@ class SpotlightNode(
 
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
         when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+            is InteractionTarget.Child -> node(buildContext) { modifier ->
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
-                    modifier = Modifier
+                    modifier = modifier
                         .fillMaxSize()
                         .clip(RoundedCornerShape(5))
                         .background(backgroundColor)
@@ -89,8 +90,8 @@ class SpotlightNode(
                 .fillMaxSize()
                 .background(appyx_dark)
         ) {
-            Children(
-                interactionModel = spotlight,
+            AppyxComponent(
+                appyxComponent = spotlight,
                 modifier = Modifier
                     .padding(
                         horizontal = 64.dp,

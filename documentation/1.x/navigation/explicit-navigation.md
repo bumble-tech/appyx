@@ -1,6 +1,9 @@
+{% include-markdown "../deprecation.md" %}
+
 # Explicit navigation
 
-When [Implicit navigation](implicit-navigation.md) doesn't fit your use case, you can try an explicit approach.
+When [Implicit navigation](implicit-navigation.md) doesn't fit your use case, you can try an
+explicit approach.
 
 !!! info "Relevant methods"
 
@@ -21,7 +24,6 @@ to onboarding's first screen `O1`:
 
 This time we'll want to do this explicitly by calling a function.
 
-
 ## The plan 
 
 1. Create a public method on `Root` that attaches `Onboarding`
@@ -29,7 +31,6 @@ This time we'll want to do this explicitly by calling a function.
 3. Create a `Navigator`, that starting from an instance of `Root`, can chain these public methods together into a single action: `navigateToO1()`
 4. Capture an instance of `Root` to use with `Navigator`
 5. Call `navigateToO1()` on our `Navigator` instance
-
 
 ## Step 1 – `Root` → `Onboarding`
 
@@ -61,7 +62,6 @@ Let's break down what happens here:
 5. `attachChild` expects an instance of `OnboardingNode` to appear as a child of `Root` as a consequence of executing our lambda
 6. Once it appears, `attachChild` returns it
 
-
 !!! info "Important"
 
     It's our responsibility to make sure that the provided lambda actually results in the expected child being added. If we accidentally do something else instead, for example:
@@ -76,10 +76,9 @@ Let's break down what happens here:
     
     Then an exception will be thrown after a timeout.
 
-
 ## Step 2 – `Onboarding` → `O1`
 
-Unlike `Root`, `Onboarding` uses [Spotlight](../navmodel/spotlight.md) instead of [BackStack](../navmodel/backstack.md) as a `NavModel`, so navigation to the first screen is slightly different:  
+Unlike `Root`, `Onboarding` uses [Spotlight](../navmodel/spotlight.md) instead of [BackStack](../navmodel/backstack.md) as a `NavModel`, so navigation to the first screen is slightly different:
 
 ```kotlin
 class OnboardingNode(
@@ -97,7 +96,6 @@ class OnboardingNode(
     }
 }
 ```
-
 
 ## Step 3 – Our `Navigator`
 
@@ -128,7 +126,6 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
 
 As the last piece of the puzzle, we'll also need to capture the instance of `RootNode` to make it all work. We can do that by a `NodeReadyObserver` plugin when setting up our tree:
 
-
 ```kotlin
 class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
 
@@ -157,7 +154,7 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
 
 ## Step 5 – Using the `Navigator`
 
-See how in the previous snippet `RootNode` receives a `navigator` dependency. 
+See how in the previous snippet `RootNode` receives a `navigator` dependency.
 
 It can pass it further down the tree as a dependency to other nodes. Those nodes can call the methods of the `Navigator`, which will change the global navigation state directly.
 
@@ -170,11 +167,9 @@ There might be cases when we want to wait for a certain action to be _performed 
 
 In these cases we can use `ParentNode.waitForChildAttached()` instead.
 
-
 ### Use case – Wait for login
 
 A typical case building an explicit navigation chain that relies on `Logged in` being attached. Most probably `Logged in` has a dependency on some kind of a `User` object. Here we want to wait for the user to authenticate themselves, rather than creating a dummy user object ourselves.
-
 
 ```kotlin
 class RootNode(

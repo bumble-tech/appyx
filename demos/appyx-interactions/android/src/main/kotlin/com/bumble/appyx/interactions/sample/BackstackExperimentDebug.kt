@@ -13,10 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
-import com.bumble.appyx.components.backstack.BackStack
-import com.bumble.appyx.components.backstack.ui.fader.BackstackFader
+import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.sample.android.SampleChildren
 import com.bumble.appyx.interactions.theme.appyx_dark
@@ -31,10 +31,14 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
         BackStack(
             scope = coroutineScope,
             model = BackStackModel(
-                initialTargets = listOf(InteractionTarget.Child1, InteractionTarget.Child2, InteractionTarget.Child3),
+                initialTargets = listOf(
+                    InteractionTarget.Child1,
+                    InteractionTarget.Child2,
+                    InteractionTarget.Child3
+                ),
                 savedStateMap = null
             ),
-            motionController = { BackstackFader(it) },
+            motionController = { BackStackFader(it) },
             isDebug = false
         )
     }
@@ -68,7 +72,7 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
                     horizontal = 64.dp,
                     vertical = 12.dp
                 ),
-            interactionModel = backStack,
+            appyxComponent = backStack,
         )
     }
 }

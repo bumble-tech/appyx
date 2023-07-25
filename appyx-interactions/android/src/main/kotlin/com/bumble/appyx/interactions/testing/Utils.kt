@@ -12,14 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.android.SampleChildren
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlin.random.Random
 
-fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInteractionModel(
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupAppyxComponent(
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     fraction: Float = 1.0f,
     clipToBounds: Boolean = false
 ) {
@@ -29,10 +29,10 @@ fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupInte
                 .fillMaxSize(),
             color = appyx_dark
         ) {
-            InteractionModelSetup(interactionModel)
+            AppyxComponentSetup(appyxComponent)
             TestChildrenUi(
                 fraction = fraction,
-                interactionModel = interactionModel,
+                appyxComponent = appyxComponent,
                 clipToBounds = clipToBounds
             )
         }
@@ -48,7 +48,7 @@ fun randomColor(): Color {
 @Composable
 private fun <InteractionTarget : Any, ModelState : Any> TestChildrenUi(
     fraction: Float = 1.0f,
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     clipToBounds: Boolean
 ) {
     BoxWithConstraints {
@@ -60,7 +60,7 @@ private fun <InteractionTarget : Any, ModelState : Any> TestChildrenUi(
                 .background(
                     color = randomColor()
                 ),
-            interactionModel = interactionModel,
+            appyxComponent = appyxComponent,
             clipToBounds = clipToBounds,
         ) {
             Box(

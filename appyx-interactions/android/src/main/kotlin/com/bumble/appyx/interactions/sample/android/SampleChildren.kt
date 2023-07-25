@@ -1,12 +1,11 @@
 package com.bumble.appyx.interactions.sample.android
 
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import com.bumble.appyx.interactions.core.model.BaseInteractionModel
+import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.interactions.sample.SampleElement
@@ -20,7 +19,7 @@ import kotlin.math.roundToInt
  */
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
-    interactionModel: BaseInteractionModel<InteractionTarget, ModelState>,
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
@@ -28,7 +27,7 @@ fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
     },
 ) {
     Children(
-        interactionModel = interactionModel,
+        appyxComponent = appyxComponent,
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         modifier = modifier,
@@ -42,7 +41,7 @@ fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
 @Composable
 fun Element(
     elementUiModel: ElementUiModel<*>,
-    modifier: Modifier = Modifier.fillMaxSize(),
+    modifier: Modifier = Modifier,
     color: Color? = Color.Unspecified,
     contentDescription: String? = null
 ) {

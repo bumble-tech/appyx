@@ -142,7 +142,9 @@ You can find examples for implementing operations in the repo. Some possible poi
 - `BackStack` / `Push`, `Pop`, `Replace`
 - `Spotlight` / `Next`, `Prev`, `First`, `Last`
 
-Notice how each of them also comes with their convenient extension methods that allow these operations to be invoked directly on their corresponding `InteractionModels`, so that client code can use a simple API:
+Notice how each of them also comes with their convenient extension methods that allow these
+operations to be invoked directly on their corresponding `AppyxComponent`, so that client code can
+use a simple API:
 
 ```kotlin
 // Without extension methods

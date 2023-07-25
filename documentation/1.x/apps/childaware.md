@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # ChildAware API
 
 The framework includes the `ChildAware` interface which comes with a powerful API.
@@ -42,7 +44,6 @@ class SomeInteractor : Interactor<SomeNode>() {
     }
 }
 ```
-
 
 ## Multiple children
 

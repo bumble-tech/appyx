@@ -1,6 +1,5 @@
 package com.bumble.appyx.transitionmodel
 
-import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
@@ -14,6 +13,7 @@ import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 abstract class BaseMotionController<InteractionTarget : Any, ModelState, MutableUiState, TargetUiState>(
     private val uiContext: UiContext,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<MutableUiState, TargetUiState> {
+) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<TargetUiState> {
 
     open val viewpointDimensions: List<Pair<(ModelState) -> Float, GenericFloatProperty>> =
         emptyList()

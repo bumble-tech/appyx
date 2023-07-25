@@ -16,12 +16,12 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
-import com.bumble.appyx.components.backstack.ui.fader.BackstackFader
-import com.bumble.appyx.components.backstack.ui.parallax.BackstackParallax
+import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
+import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.navigation.composable.Children
+import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -44,7 +44,7 @@ class BackStackExamplesNode(
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
-    interactionModel = backStack
+    appyxComponent = backStack
 ) {
 
     private val padding = mutableStateOf(16)
@@ -72,7 +72,7 @@ class BackStackExamplesNode(
                 BackStackPicker(it)
             }
             is InteractionTarget.BackStackFader -> BackStackNode(buildContext, {
-                BackstackFader(
+                BackStackFader(
                     it
                 )
             })
@@ -83,8 +83,8 @@ class BackStackExamplesNode(
             })
             is InteractionTarget.BackstackParallax -> BackStackNode(
                 buildContext = buildContext,
-                motionController = { BackstackParallax(uiContext = it) },
-                gestureFactory = { BackstackParallax.Gestures(it) },
+                motionController = { BackStackParallax(uiContext = it) },
+                gestureFactory = { BackStackParallax.Gestures(it) },
                 isMaxSize = true
             ).also {
                 padding.value = 0
@@ -129,8 +129,8 @@ class BackStackExamplesNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Children(
-            interactionModel = backStack,
+        AppyxComponent(
+            appyxComponent = backStack,
             modifier = Modifier
                 .fillMaxSize()
                 .background(appyx_dark)

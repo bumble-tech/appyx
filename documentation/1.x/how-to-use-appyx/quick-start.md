@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Quick start guide
 
 !!! info
@@ -22,14 +24,9 @@ This should be enough to get you started as a rudimentary application structure.
 
 Tutorials & codelabs on more advanced topics & the full power of Appyx to follow soon.
 
-
-
-
-
 ## 1. Add Appyx to your project
 
 You can find the related Gradle dependencies in [Downloads](../releases/downloads.md).
-
 
 ## 2. Create a root Node
 
@@ -66,7 +63,6 @@ class MainActivity : NodeActivity() {
 ```
 
 You only need to do this for the root of the tree.
-
 
 ## 3. Define children
 
@@ -234,7 +230,6 @@ You can repeat the same pattern and make any embedded children also a `ParentNod
 2. At some point make it a `ParentNode` and add children to it
 3. At some point extract the increasing complexity from a placeholder to another `Node` 
 4. Repeat the same on children, go to `1.`
-
 
 ## Further reading
 

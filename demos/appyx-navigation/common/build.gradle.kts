@@ -33,6 +33,7 @@ kotlin {
                 api(project(":utils:customisations"))
                 api(project(":utils:multiplatform"))
                 implementation(project(":appyx-components:experimental:cards:cards"))
+                implementation(project(":appyx-components:experimental:modal:modal"))
                 implementation(project(":appyx-components:experimental:promoter:promoter"))
                 implementation(project(":appyx-components:stable:backstack:backstack"))
                 implementation(project(":appyx-components:stable:spotlight:spotlight"))

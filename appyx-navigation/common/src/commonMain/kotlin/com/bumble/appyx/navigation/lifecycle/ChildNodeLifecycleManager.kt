@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.interactions.core.model.InteractionModel
+import com.bumble.appyx.interactions.core.model.AppyxComponent
 import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.nodeOrNull
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
  * and updates lifecycle of children nodes when updated.
  */
 internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
-    private val interactionModel: InteractionModel<InteractionTarget, *>,
+    private val appyxComponent: AppyxComponent<InteractionTarget, *>,
     private val children: StateFlow<ChildEntryMap<InteractionTarget>>,
     private val keepMode: ChildEntry.KeepMode,
     private val coroutineScope: CoroutineScope,
@@ -46,7 +46,7 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
         coroutineScope.launch {
             combine(
                 lifecycleState,
-                interactionModel.elements,
+                appyxComponent.elements,
                 children.withPrevious(),
                 ::Triple
             )
@@ -67,8 +67,7 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
 
                     screenState.offScreen.forEach { key ->
                         if (keepMode == ChildEntry.KeepMode.KEEP) {
-                            val childState =
-                                minOf(parentLifecycleState, Lifecycle.State.CREATED)
+                            val childState = minOf(parentLifecycleState, Lifecycle.State.CREATED)
                             children.current[key]?.setState(childState)
                         } else {
                             // Look up in the previous because in the current it is already suspended

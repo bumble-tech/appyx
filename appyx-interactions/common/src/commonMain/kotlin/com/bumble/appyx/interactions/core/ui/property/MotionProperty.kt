@@ -144,6 +144,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         val timeFactor = if (deltaTimeMs > 0) 1000 / deltaTimeMs else 0
         lastTime = time
 
+        @Suppress("UNCHECKED_CAST")
         val velocity = when (vec1) {
             is AnimationVector1D -> {
                 val vec2 = targetVector as AnimationVector1D

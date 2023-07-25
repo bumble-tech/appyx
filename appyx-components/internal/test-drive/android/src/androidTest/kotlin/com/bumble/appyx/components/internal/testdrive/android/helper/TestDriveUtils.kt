@@ -16,7 +16,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveUi
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
@@ -46,9 +46,7 @@ fun ComposeContentTestRule.createTestDrive(
         },
         progressAnimationSpec = animationSpec ?: spring(),
         gestureFactory = {
-            TestDriveSimpleMotionController.Gestures(
-                it
-            )
+            TestDriveSimpleMotionController.Gestures(it)
         },
     ).also { setupTestDrive(it, model) }
 }
@@ -62,7 +60,7 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupTestDrive(
             modifier = Modifier.fillMaxSize(),
             color = appyx_dark
         ) {
-            InteractionModelSetup(testDrive)
+            AppyxComponentSetup(testDrive)
 
             TestDriveUi(
                 screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),

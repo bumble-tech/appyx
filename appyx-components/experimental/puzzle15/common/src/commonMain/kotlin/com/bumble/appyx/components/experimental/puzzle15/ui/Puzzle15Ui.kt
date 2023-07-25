@@ -1,13 +1,22 @@
 package com.bumble.appyx.components.experimental.puzzle15.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,19 +40,17 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.LEFT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.RIGHT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.UP
-import com.bumble.appyx.interactions.core.ui.helper.InteractionModelSetup
+import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.Children
-import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Puzzle15Ui(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    colors: List<Color>,
+    accentColor: Color = Color.Cyan,
     modifier: Modifier = Modifier,
 ) {
-    println("Hello Puzzle15")
     val coroutineScope = rememberCoroutineScope()
 
     val model = remember { Puzzle15Model(savedStateMap = null) }
@@ -55,11 +62,10 @@ fun Puzzle15Ui(
         )
     }
 
-    InteractionModelSetup(puzzle15)
+    AppyxComponentSetup(puzzle15)
 
     Column(
         modifier = modifier.onKeyEvent {
-            println("Getting event: $it")
             if (it.type == KeyEventType.KeyDown) {
                 when (it.key) {
                     Key.DirectionLeft -> puzzle15.operation(Swap(RIGHT))
@@ -70,16 +76,18 @@ fun Puzzle15Ui(
             }
             false
         },
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Box(
             modifier = Modifier
                 .size(240.dp)
+                .border(4.dp, accentColor)
         ) {
             Children(
                 screenWidthPx = screenWidthPx,
                 screenHeightPx = screenHeightPx,
-                interactionModel = puzzle15,
+                appyxComponent = puzzle15,
             ) { elementUiModel ->
                 if (elementUiModel.element.interactionTarget == Puzzle15Model.Tile.EmptyTile) {
                     Box(
@@ -103,16 +111,18 @@ fun Puzzle15Ui(
                         Box(
                             modifier = Modifier.size(60.dp)
                                 .then(
-                                    elementUiModel.modifier
+                                    elementUiModel
+                                        .modifier
                                         .background(color = Color.White)
-                                ).pointerInput(elementUiModel.element.id) {
+                                )
+                                .pointerInput(elementUiModel.element.id) {
+                                    this.interceptOutOfBoundsChildEvents = true
                                     detectDragGestures(
                                         onDrag = { change, dragAmount ->
                                             change.consume()
                                             puzzle15.onDrag(dragAmount, this)
                                         },
                                         onDragEnd = {
-                                            AppyxLogger.d("drag", "end")
                                             puzzle15.onDragEnd()
                                         }
                                     )
@@ -143,31 +153,48 @@ fun Puzzle15Ui(
             }
         }
 
-        Column {
-            Row {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = DOWN)) }
+                    onClick = { puzzle15.operation(Swap(direction = DOWN)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text("^")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = "Move Up"
+                    )
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = LEFT)) }
+                    onClick = { puzzle15.operation(Swap(direction = LEFT)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text(">")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Move Right"
+                    )
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = UP)) }
+                    onClick = { puzzle15.operation(Swap(direction = UP)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text("\u2304")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Move Down"
+                    )
                 }
                 Button(
-                    onClick = { puzzle15.operation(Swap(direction = RIGHT)) }
+                    onClick = { puzzle15.operation(Swap(direction = RIGHT)) },
+                    colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Text("<")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowLeft,
+                        contentDescription = "Move Left"
+                    )
                 }
             }
             Button(
-                onClick = { puzzle15.operation(Shuffle()) }
+                onClick = { puzzle15.operation(Shuffle()) },
+                colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
             ) {
                 Text("New Game")
             }

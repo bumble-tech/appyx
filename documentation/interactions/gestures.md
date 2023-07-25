@@ -261,41 +261,83 @@ Note how whenever a direction should not result in doing anything, you can alway
 
 In all of the above cases we needed to pass an `Offset` as a second argument to the `Gesture`.
 
-Note how these offsets have different values in each case: they represent the vector from the current visual to the expected target visual state. This is the vector along which Appyx will interpret the gesture from a 0% to a 100% completion.
+Note how these offsets have different values in each case: they represent the vector from the
+current visual to the expected target visual state. This is the vector along which Appyx will
+interpret the gesture from a 0% to a 100% completion.
 
-For example, the vector between `A` and `C` is `Offset(width, height)` as the gesture should be completed along the downward right diagonal from `A`.
+For example, the vector between `A` and `C` is `Offset(width, height)` as the gesture should be
+completed along the downward right diagonal from `A`.
 
-Note that while you're not strictly required to match this offset with how an element moves on the screen, it's recommended to do so – otherwise the UX will be confusing in most cases.
+Note that while you're not strictly required to match this offset with how an element moves on the
+screen, it's recommended to do so – otherwise the UX will be confusing in most cases.
 
+## Drag prediction
+
+The target UI state can be rendered immediately upon starting a drag. Note how the target state here
+matches not only the position, but the scale and the rotation too.
+
+{{
+compose_mpp_sample(
+project_output_directory="
+demos/mkdocs/appyx-interactions/gestures/dragprediction/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-interactions:gestures:dragprediction:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-gestures-drag-prediction",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
 
 ## Settling incomplete gestures
 
-When releasing the drag before reaching the target, the operation is settled. Depending on how far the gesture got, it might be:
+When releasing the drag before reaching the target, the operation is settled. Depending on how far
+the gesture got, it might be:
 
 - rounded up towards completion, or
 - rounded down towards reverting it.
 
-The default threshold is `0.5f` (50%), and can be changed between `0f` (0%) and `1f` (100%). For example, a value of `0.2f` would mean the gesture would be considered completed even after a relatively short movement.
+The default threshold is `0.5f` (50%), and can be changed between `0f` (0%) and `1f` (100%). For
+example, a value of `0.2f` would mean the gesture would be considered completed even after a
+relatively short movement.
 
-This can be configured in `GestureSettleConfig`, along with animation specs of completion and reversal: 
+This can be configured in `GestureSettleConfig`, along with animation specs of completion and
+reversal:
 
 ```kotlin
 GestureSettleConfig(
-    completionThreshold = 0.5f,
+    completionThreshold = 0.2f, // the default is 0.5f
     completeGestureSpec = spring(),
     revertGestureSpec = spring(),
 )
 ```
 
-## Configuring gestures in the InteractionModel
+Here's an example that uses a `completionThreshold` value of `0.15f` (15%). Notice that now you can
+release the drag much closer to the starting point and it will still complete the animation:
 
-You can connect your gesture detection to your [Interaction model](interactionmodel.md) in client code such as:
+{{
+compose_mpp_sample(
+project_output_directory="
+demos/mkdocs/appyx-interactions/gestures/incompletedrag/web/build/distributions",
+compile_task=":demos:mkdocs:appyx-interactions:gestures:incompletedrag:web:jsBrowserDistribution",
+width=512,
+height=384,
+target_directory="samples/documentation-interactions-gestures-incomplete-drag",
+html_file_name="index.html",
+classname="compose_mpp_sample",
+)
+}}
+
+## Configuring gestures in the AppyxComponent
+
+You can connect your gesture detection to your [AppyxComponent](appyxcomponent.md) in client code
+such as:
 
 ```kotlin
 @Composable
 fun SomeComposable() {
-    val interactionModel = remember {
-        SomeInteractionModel(
+    val appyxComponent = remember {
+        SomeAppyxComponent(
             // Required
             model = SomeTransitionModel(/*...*/),
             motionController = { SomeMotionController(/*...*/) } ,

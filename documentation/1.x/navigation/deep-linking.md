@@ -1,6 +1,9 @@
+{% include-markdown "../deprecation.md" %}
+
 # Deep linking
 
-Building on top of [explicit navigation](explicit-navigation.md), implementing deep links is straightforward:
+Building on top of [explicit navigation](explicit-navigation.md), implementing deep links is
+straightforward:
 
 ```kotlin
 class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {

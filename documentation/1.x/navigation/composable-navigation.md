@@ -1,9 +1,11 @@
+{% include-markdown "../deprecation.md" %}
+
 # Composable navigation
 
-[NavModels](../navmodel/index.md) in Appyx are composable. 
+[NavModels](../navmodel/index.md) in Appyx are composable.
 
-As a single `NavModel` won't be enough for the whole of your whole app, you can use many in a composable way. That is, any navigation target of a `NavModel` can also host its own `NavModel`.
-
+As a single `NavModel` won't be enough for the whole of your whole app, you can use many in a
+composable way. That is, any navigation target of a `NavModel` can also host its own `NavModel`.
 
 ## Structural element for composing navigation
 
@@ -12,7 +14,6 @@ As a single `NavModel` won't be enough for the whole of your whole app, you can 
 This allows you to make your app's business logic also composable by leveraging `Nodes` as lifecycled components.
 
 Read more in [Structuring your app navigation](../apps/structure.md)
-
 
 ## Navigation in the tree
 
@@ -26,8 +27,6 @@ Once you've structured your navigation in a composable way, you can add `NavMode
 - Changes will feel like navigation to the user
 
 See [Implicit navigation](implicit-navigation.md) and [Explicit navigation](explicit-navigation.md) for building complex navigation behaviours with this approach.
-
-
 
 ## How NavModels affect Nodes
 

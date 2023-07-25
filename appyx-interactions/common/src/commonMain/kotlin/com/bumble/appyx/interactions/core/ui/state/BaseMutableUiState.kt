@@ -7,9 +7,10 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
-import androidx.compose.ui.layout.boundsInRoot
-import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -20,9 +21,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 
-abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
+abstract class BaseMutableUiState<TargetUiState>(
     val uiContext: UiContext,
-    val motionProperties: List<MotionProperty<*, *>>
+    motionProperties: List<MotionProperty<*, *>>
 ) {
 
     private val containerRect = Rect(
@@ -39,13 +40,13 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
     private val visibilitySources: Iterable<StateFlow<Boolean>> =
         motionProperties.mapNotNull { it.isVisibleFlow } + _isBoundsVisible
 
-    val isVisible: StateFlow<Boolean>
-        get() = combineState(
-            visibilitySources,
-            uiContext.coroutineScope
-        ) { booleanArray ->
-            booleanArray.all { it }
-        }
+    @Suppress("unused")
+    val isVisible: StateFlow<Boolean> = combineState(
+        visibilitySources,
+        uiContext.coroutineScope
+    ) { booleanArray ->
+        booleanArray.all { it }
+    }
 
     /**
      * This modifier duplicates original modifier, and will be placed on the dummy compose view
@@ -54,6 +55,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
      * that it's invisible by setting alpha as 0f. Additionally, it makes sure that it occupies all
      * available space by applying fillMaxSize().
      */
+    @Suppress("unused")
     val visibilityModifier: Modifier
         get() = Modifier
             .graphicsLayer {
@@ -62,22 +64,32 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
             }
             .then(modifier)
             .fillMaxSize()
-            .onPlaced { coordinates ->
+            .onGloballyPositioned { coordinates ->
                 if (uiContext.clipToBounds) {
-                    val boundsInParent = coordinates.boundsInParent()
-                    val overlaps = boundsInParent.overlaps(containerRect)
-                    _isBoundsVisible.update { overlaps }
-                } else {
-                    // if element is invisible boundsInRoot will have width == 0 or height == 0 or both
-                    val boundsInRoot = coordinates.boundsInRoot()
                     _isBoundsVisible.update {
-                        (boundsInRoot.width > 0f && boundsInRoot.height > 0f)
+                        coordinates.isVisibleInParent() && coordinates.isVisibleInWindow()
+                    }
+                } else {
+                    _isBoundsVisible.update {
+                        coordinates.isVisibleInWindow()
                     }
                 }
             }
 
-    val isAnimating: Flow<Boolean>
-        get() = combine(motionProperties.map { it.isAnimating }) { booleanArray ->
+    private fun LayoutCoordinates.isVisibleInParent(): Boolean {
+        val boundsInParent = this.boundsInParent()
+        return boundsInParent.overlaps(containerRect)
+    }
+
+    // If element is invisible boundsInWindow will have width == 0 or height == 0 or both
+    private fun LayoutCoordinates.isVisibleInWindow(): Boolean {
+        val boundsInWindow = this.boundsInWindow()
+        return boundsInWindow.width > 0f && boundsInWindow.height > 0f
+    }
+
+    @Suppress("unused")
+    val isAnimating: Flow<Boolean> =
+        combine(motionProperties.map { it.isAnimating }) { booleanArray ->
             booleanArray.any { it }
         }
 
@@ -92,6 +104,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
         fraction: Float
     )
 
+    @Suppress("unused")
     abstract suspend fun animateTo(
         scope: CoroutineScope,
         target: TargetUiState,

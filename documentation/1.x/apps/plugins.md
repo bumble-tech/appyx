@@ -1,10 +1,14 @@
+{% include-markdown "../deprecation.md" %}
+
 # Plugins
 
 ## Keeping extra concerns out of Node
 
 ```Nodes``` are meant to be simple structural elements, and should be kept lean.
 
-To keep the framework agnostic of any specific approach / pattern you want to use, there aren't any fixed parts. Rather, the ```Node``` offers an extension point using ```Plugins``` in its constructor:
+To keep the framework agnostic of any specific approach / pattern you want to use, there aren't any
+fixed parts. Rather, the ```Node``` offers an extension point using ```Plugins``` in its
+constructor:
 
 ```kotlin
 abstract class Node(
@@ -37,13 +41,11 @@ fun interface Destroyable : Plugin {
 }
 ```
 
-
 ### Component level plugins
 
 Sometimes you need to grab a reference to the component as a whole, either as an interface, or its implementation, the ```Node```.
 
 This will come especially handy when working with workflows.
-
 
 ```kotlin
 interface NodeAware : Plugin {
@@ -71,7 +73,6 @@ class SomeClass(
 
 ⚠️ Note: the reference to ```node``` is set by ```Node``` automatically, and isn't available immediately after constructing your object, but only after the construction of the ```Node``` itself.
 
-
 ### Navigation plugins
 
 In case if you need to control navigation behaviour, you can use these plugins:
@@ -94,7 +95,6 @@ You can read more about it [here](https://developer.android.com/guide/navigation
 ⚠️ Note: `OnBackPressedCallback` are invoked in the following order:
 1. From children to parents. Render order of children matters! The last rendered child will be the first to handle back press.
 2. Direct order of plugins within a node. Plugins are invoked in order they appears in `Node(plugins = ...)` before the NavModel. 
-
 
 ## Using Plugins 
 

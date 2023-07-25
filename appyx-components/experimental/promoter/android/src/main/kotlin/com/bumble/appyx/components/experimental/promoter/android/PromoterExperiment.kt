@@ -22,13 +22,13 @@ import com.bumble.appyx.components.experimental.promoter.Promoter
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
 import com.bumble.appyx.components.experimental.promoter.ui.PromoterMotionController
-import com.bumble.appyx.interactions.sample.android.SampleChildren
-import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child2
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child3
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child4
+import com.bumble.appyx.interactions.sample.android.Element
+import com.bumble.appyx.interactions.sample.android.SampleChildren
 
 
 @ExperimentalMaterialApi
@@ -62,7 +62,7 @@ fun PromoterExperiment() {
             .fillMaxSize()
     ) {
         SampleChildren(
-            interactionModel = promoter,
+            appyxComponent = promoter,
             modifier = Modifier
                 .weight(0.9f)
                 .padding(

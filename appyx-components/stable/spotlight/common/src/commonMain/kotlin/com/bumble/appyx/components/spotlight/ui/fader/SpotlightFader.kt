@@ -1,12 +1,12 @@
 package com.bumble.appyx.components.spotlight.ui.fader
 
-import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
