@@ -30,9 +30,9 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
-import com.bumble.appyx.interactions.core.ui.property.getMotionPropertyRenderValue
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
+import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -87,7 +87,7 @@ class SpotlightObserveTransitionsExampleNode(
 
                     Column(modifier = Modifier.align(Alignment.Center)) {
 
-                        val dpOffset = getMotionPropertyRenderValue<Position.Value, Position>()?.offset
+                        val dpOffset = motionPropertyRenderValue<Position.Value, Position>()?.offset
                         val df = remember {
                             DecimalFormat("#.##").apply {
                                 roundingMode = RoundingMode.DOWN
@@ -101,7 +101,7 @@ class SpotlightObserveTransitionsExampleNode(
                                 fontWeight = FontWeight.Bold
                             )
                         }
-                        val rotationY = getMotionPropertyRenderValue<Float, RotationY>()
+                        val rotationY = motionPropertyRenderValue<Float, RotationY>()
                         if (rotationY != null) {
                             Text(
                                 text = "RotationY: ${df.format(rotationY)}°",

@@ -190,10 +190,10 @@ In this example, children composable retrieve and display `DpOffset` value from 
 
 ```kotlin
 // returns dpOffset value if transition has Position MotionProperty and null otherwise 
-val dpOffset : DpOffset? = getMotionPropertyRenderValue<Position.Value, Position>()?.offset
+val dpOffset : DpOffset? = motionPropertyRenderValue<Position.Value, Position>()?.offset
 
 // returns rotationY value if transition has RotationY MotionProperty and null otherwise 
-val rotationY = getMotionPropertyRenderValue<Float, RotationY>()
+val rotationY = motionPropertyRenderValue<Float, RotationY>()
 ```
 
 {{
