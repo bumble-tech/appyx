@@ -15,9 +15,9 @@ kotlin {
 
     cocoapods {
         version = "1.0.0"
-        summary = "Some description for the Shared Module"
-        homepage = "Link to the Shared Module homepage"
-        ios.deploymentTarget = "17.0"
+        summary = "appyx-interactions shared module"
+        homepage = "https://bumble-tech.github.io/appyx/interactions/"
+        ios.deploymentTarget = "16.4"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "shared"
