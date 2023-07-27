@@ -18,6 +18,7 @@ import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment.TopStart
 import com.bumble.appyx.interactions.core.ui.property.impl.Position.Value
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -58,7 +59,7 @@ class Position(
     }
 
     data class Value(
-        val alignment: BiasAlignment = DefaultAlignment,
+        val alignment: BiasAlignment = TopStart,
         val offset: DpOffset
     ) {
         companion object {
@@ -81,7 +82,7 @@ class Position(
                 )
 
             val Zero = Value(
-                alignment = DefaultAlignment,
+                alignment = BiasAlignment(0f, 0f),
                 offset = DpOffset.Zero
             )
         }
@@ -96,7 +97,7 @@ class Position(
             offset: DpOffset
         ) : this(
             value = Value(
-                alignment = DefaultAlignment,
+                alignment = TopStart,
                 offset = offset
             )
         )
@@ -172,9 +173,4 @@ class Position(
         )
     }
 }
-
-// The effect of using this as a default value is TopStart as intended,
-// but I found I needed to use the values that reflect Center (0,0),
-// and I have no idea why!
-private val DefaultAlignment: BiasAlignment = BiasAlignment(0f, 0f)
 
