@@ -54,6 +54,12 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
     actions: Map<String, () -> Unit>,
     childSize: ChildSize = ChildSize.SMALL,
     modifier: Modifier = Modifier,
+    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
+        ModalUi(
+            elementUiModel = it,
+            isChildMaxSize = childSize == ChildSize.MAX
+        )
+    }
 ) {
     AppyxComponentSetup(appyxComponent)
 
@@ -83,11 +89,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
                     screenWidthPx = screenWidthPx,
                     screenHeightPx = screenHeightPx,
                 ) { elementUiModel ->
-                    ModalUi(
-                        elementUiModel = elementUiModel,
-                        isChildMaxSize = childSize == ChildSize.MAX,
-                        modifier = Modifier.align(Alignment.TopCenter),
-                    )
+                    element(elementUiModel)
                 }
             }
         }

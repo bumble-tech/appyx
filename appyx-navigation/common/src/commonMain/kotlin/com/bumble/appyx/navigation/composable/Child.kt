@@ -2,9 +2,11 @@ package com.bumble.appyx.navigation.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -37,7 +39,11 @@ private class ChildRendererImpl<InteractionTarget : Any>(
     @Composable
     override operator fun invoke(modifier: Modifier) {
         Box(modifier = elementUiModel.modifier) {
-            node.Compose(modifier = modifier)
+            CompositionLocalProvider(
+                LocalMotionProperties provides elementUiModel.motionProperties
+            ) {
+                node.Compose(modifier = modifier)
+            }
         }
     }
 
@@ -45,7 +51,11 @@ private class ChildRendererImpl<InteractionTarget : Any>(
     @Composable
     override operator fun invoke() {
         Box(modifier = elementUiModel.modifier) {
-            node.Compose(modifier = Modifier)
+            CompositionLocalProvider(
+                LocalMotionProperties provides elementUiModel.motionProperties
+            ) {
+                node.Compose(modifier = Modifier)
+            }
         }
     }
 }

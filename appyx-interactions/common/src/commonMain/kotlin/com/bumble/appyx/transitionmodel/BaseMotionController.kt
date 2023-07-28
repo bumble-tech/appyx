@@ -102,6 +102,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                     observeElementAnimationChanges(mutableUiState, t1)
                     manageAnimations(mutableUiState, t1, update)
                 },
+                motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
                 progress = MutableStateFlow(1f),
             )
@@ -225,6 +226,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                     Box(modifier = mutableUiState.visibilityModifier)
                     interpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
                 },
+                motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
                 progress = segmentProgress,
             )
