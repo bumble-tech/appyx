@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 7.4.0" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.0)" variant="all" version="7.4.0">
+<issues format="6" by="lint 7.4.1" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.1)" variant="all" version="7.4.1">
+
+    <issue
+        id="RememberReturnType"
+        message="`remember` calls must not return `Unit`"
+        errorLine1="    val anchors = remember(containerBounds) {"
+        errorLine2="                  ~~~~~~~~">
+        <location
+            file="src/main/kotlin/com/bumble/appyx/interactions/sample/KnobControl.kt"
+            line="47"
+            column="19"/>
+    </issue>
 
 </issues>
