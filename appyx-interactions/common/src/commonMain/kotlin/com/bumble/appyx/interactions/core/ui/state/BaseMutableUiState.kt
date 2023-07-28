@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 
-abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
+abstract class BaseMutableUiState<TargetUiState>(
     val uiContext: UiContext,
     val motionProperties: List<MotionProperty<*, *>>
 ) {
@@ -40,6 +40,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
     private val visibilitySources: Iterable<StateFlow<Boolean>> =
         motionProperties.mapNotNull { it.isVisibleFlow } + _isBoundsVisible
 
+    @Suppress("unused")
     val isVisible: StateFlow<Boolean> = combineState(
         visibilitySources,
         uiContext.coroutineScope
@@ -54,6 +55,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
      * that it's invisible by setting alpha as 0f. Additionally, it makes sure that it occupies all
      * available space by applying fillMaxSize().
      */
+    @Suppress("unused")
     val visibilityModifier: Modifier
         get() = Modifier
             .graphicsLayer {
@@ -85,6 +87,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
         return boundsInWindow.width > 0f && boundsInWindow.height > 0f
     }
 
+    @Suppress("unused")
     val isAnimating: Flow<Boolean> =
         combine(motionProperties.map { it.isAnimating }) { booleanArray ->
             booleanArray.any { it }
@@ -101,6 +104,7 @@ abstract class BaseMutableUiState<MutableUiState, TargetUiState>(
         fraction: Float
     )
 
+    @Suppress("unused")
     abstract suspend fun animateTo(
         scope: CoroutineScope,
         target: TargetUiState,

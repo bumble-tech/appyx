@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "demos-mkdocs-appyx-components-common"
         browser()
         binaries.executable()
     }

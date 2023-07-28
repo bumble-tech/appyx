@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Configuration change
 
 To retain objects during configuration change you can use the `RetainedInstanceStore` class.

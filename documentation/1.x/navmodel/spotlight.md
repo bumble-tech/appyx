@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Spotlight
 
 <img src="https://i.imgur.com/xtPRfij.gif" width="200">

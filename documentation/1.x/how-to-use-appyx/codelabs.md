@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Appyx codelabs
 
 When you feel ready, try our [Coding challenges](coding-challenges.md) too!

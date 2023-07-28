@@ -1,7 +1,7 @@
 package com.bumble.appyx.demos.sample2
 
-import DefaultAnimationSpec
 import androidx.compose.animation.core.SpringSpec
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
@@ -12,8 +12,6 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController.Companion
 import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -28,14 +26,12 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
-import kotlin.math.abs
 
 class Sample2MotionController<InteractionTarget : Any>(
     uiContext: UiContext,
@@ -52,43 +48,36 @@ class Sample2MotionController<InteractionTarget : Any>(
         )
 
     companion object {
-        val offsetA = DpOffset(0.dp, 0.dp)
-        val offsetB = DpOffset(324.dp, 0.dp)
-        val offsetC = DpOffset(324.dp, 180.dp)
-        val offsetD = DpOffset(0.dp, 180.dp)
+        val bottomOffset = DpOffset(0.dp, (-50).dp)
 
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
-                A -> uiStateA
-                B -> uiStateB
-                C -> uiStateC
-                D -> uiStateD
+                A -> topLeftCorner
+                B -> topRightCorner
+                C -> bottomRightCorner
+                D -> bottomLeftCorner
             }
 
-        // Top-left corner, A
-        private val uiStateA = TargetUiState(
-            position = Position.Target(offsetA),
+        private val topLeftCorner = TargetUiState(
+            position = Position.Target(Alignment.TopStart),
             rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
-        // Top-right corner, B
-        private val uiStateB = TargetUiState(
-            position = Position.Target(offsetB),
+        private val topRightCorner = TargetUiState(
+            position = Position.Target(Alignment.TopEnd),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
-        // Bottom-right corner, C
-        private val uiStateC = TargetUiState(
-            position = Position.Target(offsetC),
+        private val bottomRightCorner = TargetUiState(
+            position = Position.Target(Alignment.BottomEnd, bottomOffset),
             rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
-        // Bottom-left corner, D
-        private val uiStateD = TargetUiState(
-            position = Position.Target(offsetD),
+        private val bottomLeftCorner = TargetUiState(
+            position = Position.Target(Alignment.BottomStart, bottomOffset),
             rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
@@ -99,43 +88,50 @@ class Sample2MotionController<InteractionTarget : Any>(
 
 
     class Gestures<InteractionTarget>(
-        transitionBounds: TransitionBounds,
+        private val transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val widthDp = offsetB.x - offsetA.x
-        private val heightDp = offsetD.y - offsetA.y
 
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-            val width = with(density) { widthDp.toPx() }
-            val height = with(density) { heightDp.toPx() }
+            // FIXME 60.dp is the assumed element size, connect it to real value
+            // TODO automate this whole calculation based on .onPlaced centers of targetUiStates
+            val maxX = with (density) {
+                (transitionBounds.widthDp - 60.dp).toPx()
+            }
+            val maxY = with (density) {
+                (transitionBounds.heightDp + bottomOffset.y - 60.dp).toPx()
+            }
 
             val direction = dragDirection8(delta)
             return when (state.elementState) {
                 A -> when (direction) {
-                    RIGHT -> Gesture(MoveTo(B), Offset(width, 0f))
-                    DOWNRIGHT -> Gesture(MoveTo(C), Offset(width, height))
-                    DOWN -> Gesture(MoveTo(D), Offset(0f, height))
+                    RIGHT -> Gesture(MoveTo(B), Offset(maxX, 0f))
+                    DOWNRIGHT -> Gesture(MoveTo(C), Offset(maxX, maxY))
+                    DOWN -> Gesture(MoveTo(D), Offset(0f, maxY))
                     else -> Gesture.Noop()
                 }
+
                 B -> when (direction) {
-                    DOWN -> Gesture(MoveTo(C), Offset(0f, height))
-                    DOWNLEFT -> Gesture(MoveTo(D), Offset(-width, height))
-                    LEFT -> Gesture(MoveTo(A), Offset(-width, 0f))
+                    DOWN -> Gesture(MoveTo(C), Offset(0f, maxY))
+                    DOWNLEFT -> Gesture(MoveTo(D), Offset(-maxX, maxY))
+                    LEFT -> Gesture(MoveTo(A), Offset(-maxX, 0f))
                     else -> Gesture.Noop()
                 }
+
                 C -> when (direction) {
-                    LEFT -> Gesture(MoveTo(D), Offset(-width, 0f))
-                    UPLEFT -> Gesture(MoveTo(A), Offset(-width, -height))
-                    UP -> Gesture(MoveTo(B), Offset(0f, -height))
+                    LEFT -> Gesture(MoveTo(D), Offset(-maxX, 0f))
+                    UPLEFT -> Gesture(MoveTo(A), Offset(-maxX, -maxY))
+                    UP -> Gesture(MoveTo(B), Offset(0f, -maxY))
                     else -> Gesture.Noop()
                 }
+
                 D -> when (direction) {
-                    UP -> Gesture(MoveTo(A), Offset(0f, -height))
-                    UPRIGHT -> Gesture(MoveTo(B), Offset(width, -height))
-                    RIGHT -> Gesture(MoveTo(C), Offset(width, 0f))
+                    UP -> Gesture(MoveTo(A), Offset(0f, -maxY))
+                    UPRIGHT -> Gesture(MoveTo(B), Offset(maxX, -maxY))
+                    RIGHT -> Gesture(MoveTo(C), Offset(maxX, 0f))
                     else -> Gesture.Noop()
                 }
             }

@@ -2,11 +2,13 @@ package com.bumble.appyx.interactions.sample
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -19,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
@@ -27,6 +30,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
+import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -40,7 +45,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     childContent: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {},
-    childWrapper: @Composable (ElementUiModel<InteractionTarget>) -> Unit = { frameModel->
+    childWrapper: @Composable (ElementUiModel<InteractionTarget>) -> Unit = { frameModel ->
         ChildWrapper(frameModel) {
             childContent(frameModel)
         }
@@ -50,6 +55,7 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
+    var boxScope: BoxScope? = null
 
     LaunchedEffect(uiContext) {
         uiContext?.let { appyxComponent.updateContext(it) }
@@ -68,17 +74,28 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
+                    boxScope = boxScope!!,
                     clipToBounds = clipToBounds
                 )
             }
+            .onPointerEvent {
+                if (it.type == PointerEventType.Release) {
+                    appyxComponent.onRelease()
+                }
+            }
     ) {
+        boxScope = this
         elementUiModels
             .forEach { elementUiModel ->
                 key(elementUiModel.element.id) {
                     elementUiModel.persistentContainer()
                     val isVisible by elementUiModel.visibleState.collectAsState()
                     if (isVisible) {
-                        childWrapper.invoke(elementUiModel)
+                        CompositionLocalProvider(
+                            LocalMotionProperties provides elementUiModel.motionProperties
+                        ) {
+                            childWrapper.invoke(elementUiModel)
+                        }
                     }
                 }
             }

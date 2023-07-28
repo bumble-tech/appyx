@@ -24,11 +24,12 @@ import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
 import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.navigation.node.container.ContainerNode.InteractionTarget
 import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode
+import com.bumble.appyx.navigation.node.modal.ModalExamplesNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.node.permanentchild.PermanentChildNode
 import com.bumble.appyx.navigation.node.promoter.PromoterNode
 import com.bumble.appyx.navigation.node.spotlight.SpotlightNode
-import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode
+import com.bumble.appyx.navigation.node.spotlight.SpotlightObserveTransitionsExampleNode
 import com.bumble.appyx.navigation.ui.TextButton
 import kotlinx.parcelize.Parcelize
 
@@ -60,13 +61,16 @@ class ContainerNode(
         object SpotlightExperiment : InteractionTarget()
 
         @Parcelize
-        object SpotlightExperimentDebug : InteractionTarget()
+        object ObservingTransitionsExample : InteractionTarget()
 
         @Parcelize
         object BackStackExperimentDebug : InteractionTarget()
 
         @Parcelize
         object BackStack : InteractionTarget()
+
+        @Parcelize
+        object Modal : InteractionTarget()
 
         @Parcelize
         object PromoterExperiment : InteractionTarget()
@@ -78,12 +82,17 @@ class ContainerNode(
             is InteractionTarget.Selector -> node(buildContext) { modifier ->
                 Selector(modifier)
             }
+
             is InteractionTarget.PermanentChild -> PermanentChildNode(buildContext)
             is InteractionTarget.DatingCards -> DatingCardsNode(buildContext)
             is InteractionTarget.SpotlightExperiment -> SpotlightNode(buildContext)
-            is InteractionTarget.SpotlightExperimentDebug -> SpotlightDebugNode(buildContext)
+            is InteractionTarget.ObservingTransitionsExample -> SpotlightObserveTransitionsExampleNode(
+                buildContext
+            )
+
             is InteractionTarget.BackStack -> BackStackExamplesNode(buildContext)
             is InteractionTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
+            is InteractionTarget.Modal -> ModalExamplesNode(buildContext)
             is InteractionTarget.PromoterExperiment -> PromoterNode(buildContext)
         }
 
@@ -108,8 +117,8 @@ class ContainerNode(
                 TextButton(text = "Spotlight") {
                     backStack.push(InteractionTarget.SpotlightExperiment)
                 }
-                TextButton(text = "Spotlight Debug") {
-                    backStack.push(InteractionTarget.SpotlightExperimentDebug)
+                TextButton(text = "Observe transitions example") {
+                    backStack.push(InteractionTarget.ObservingTransitionsExample)
                 }
                 TextButton(text = "Backstack Examples") {
                     backStack.push(InteractionTarget.BackStack)
@@ -122,6 +131,9 @@ class ContainerNode(
                 }
                 TextButton(text = "Permanent Child") {
                     backStack.push(InteractionTarget.PermanentChild)
+                }
+                TextButton(text = "Modal") {
+                    backStack.push(InteractionTarget.Modal)
                 }
             }
         }

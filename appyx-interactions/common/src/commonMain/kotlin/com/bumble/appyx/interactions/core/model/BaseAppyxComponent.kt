@@ -1,7 +1,5 @@
 package com.bumble.appyx.interactions.core.model
 
-import DefaultAnimationSpec
-import DisableAnimations
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
@@ -27,6 +25,8 @@ import com.bumble.appyx.interactions.core.ui.context.UiContextAware
 import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
+import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,14 +42,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-// TODO save/restore state
 open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
     final override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    final override val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
+    protected val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completeGestureSpec = defaultAnimationSpec,
         revertGestureSpec = defaultAnimationSpec,
     ),
@@ -85,7 +84,6 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         model = model,
         gestureFactory = { _gestureFactory },
         defaultAnimationSpec = defaultAnimationSpec,
-        gestureSettleConfig = gestureSettleConfig,
     )
 
     private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
@@ -137,7 +135,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     override fun onAddedToComposition(scope: CoroutineScope) {
         animationScope = scope
         createAnimatedInputSource(scope)
-        createdDebugInputSource(scope)
+        createdDebugInputSource()
     }
 
     override fun onRemovedFromComposition() {
@@ -155,10 +153,9 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         )
     }
 
-    private fun createdDebugInputSource(scope: CoroutineScope) {
+    private fun createdDebugInputSource() {
         debug = DebugProgressInputSource(
             transitionModel = model,
-            coroutineScope = scope
         )
     }
 
@@ -230,6 +227,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
             animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(
                 operation
             )
+
             else -> animatedSource.operation(operation, animationSpec ?: defaultAnimationSpec)
         }
     }
@@ -257,6 +255,12 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         if (!_isAnimating.value) {
             drag.onDragEnd()
             settle(gestureSettleConfig)
+        }
+    }
+
+    fun onRelease() {
+        if (drag.isDragging()) {
+            onDragEnd()
         }
     }
 

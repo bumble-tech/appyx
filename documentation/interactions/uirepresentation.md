@@ -23,31 +23,27 @@ class TargetUiState(
 Then you will create instances of it to represent some key states an element can be in on the UI:
 
 ```kotlin
-// Top-left corner, A
-private val uiStateA = TargetUiState(
-    position = Position.Target(DpOffset(0.dp, 0.dp)),
-    rotationZ = RotationZ.Target(0f),
+private val topLeftCorner = TargetUiState(
+    position = Position.Target(Alignment.TopStart),
+    rotationZ = RotationZ.Target(0f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFFFFC629))
 )
 
-// Top-right corner, B
-private val uiStateB = TargetUiState(
-    position = Position.Target(DpOffset(320.dp, 0.dp)),
-    rotationZ = RotationZ.Target(180f),
+private val topRightCorner = TargetUiState(
+    position = Position.Target(Alignment.TopEnd),
+    rotationZ = RotationZ.Target(180f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFF353535))
 )
 
-// Bottom-right corner, C
-private val uiStateC = TargetUiState(
-    position = Position.Target(DpOffset(320.dp, 180.dp)),
-    rotationZ = RotationZ.Target(270f),
+private val bottomRightCorner = TargetUiState(
+    position = Position.Target(Alignment.BottomEnd),
+    rotationZ = RotationZ.Target(270f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFFFE9763))
 )
 
-// Bottom-left corner, D
-private val uiStateD = TargetUiState(
-    position = Position.Target(DpOffset(0.dp, 180.dp)),
-    rotationZ = RotationZ.Target(540f),
+private val bottomLeftCorner = TargetUiState(
+    position = Position.Target(Alignment.BottomStart),
+    rotationZ = RotationZ.Target(540f), // <-- +Rotation
     backgroundColor = BackgroundColor.Target(Color(0xFF855353))
 )
 ```
@@ -188,3 +184,29 @@ dependencies {
     add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
 }
 ```
+
+## Observing MotionProperty in children UI
+
+Sometimes children UI can depend on the transition animation values. Appyx provides an API to observe `MotionProperty` inside children UI.
+
+In this example, children composable retrieve and display `DpOffset` value from `Position` motion property as well as `Float` value from `RotationY` using this API:
+
+```kotlin
+// returns dpOffset value if transition has Position MotionProperty and null otherwise 
+val dpOffset : DpOffset? = motionPropertyRenderValue<Position.Value, Position>()?.offset
+
+// returns rotationY value if transition has RotationY MotionProperty and null otherwise 
+val rotationY = motionPropertyRenderValue<Float, RotationY>()
+```
+
+{{
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/observemp/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-interactions:interactions:observemp:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-interactions-ui-observe-mp",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
+}}
