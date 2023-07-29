@@ -28,8 +28,8 @@ jobs:
       - name: Build
         run: >
           ./gradlew
-          build -x test -x lint -x detekt
-          :plugins:buildPlugins
+          build -x test -x lint -x detekt -x assembleRelease
+          :plugins:buildPlugins -x detekt
           --continue
       - name: Check publication setup
         run: >
@@ -105,7 +105,7 @@ jobs:
       - name: Project Health
         run: ./gradlew projectHealth --continue
       - name: Detekt
-        run: ./gradlew detekt mergeDetektSarif --continue
+        run: ./gradlew detekt :plugins:detekt mergeDetektSarif --continue
       - uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:
