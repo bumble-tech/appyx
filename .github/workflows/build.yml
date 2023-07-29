@@ -28,7 +28,7 @@ jobs:
       - name: Build
         run: >
           ./gradlew
-          build -x test -x lint -x detekt -x assembleRelease
+          buildNonMkdocs -x test -x lint -x detekt -x assembleRelease
           :plugins:buildPlugins -x detekt
           --continue
       - name: Check publication setup
@@ -102,10 +102,8 @@ jobs:
       - uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
-      - name: Project Health
-        run: ./gradlew projectHealth --continue
-      - name: Detekt
-        run: ./gradlew detekt :plugins:detekt mergeDetektSarif --continue
+      - name: Detekt & Project Health
+        run: ./gradlew detekt :plugins:detekt mergeDetektSarif projectHealth --continue
       - uses: github/codeql-action/upload-sarif@v2
         if: success() || failure()
         with:

@@ -73,8 +73,14 @@ allprojects {
     }
 }
 
+val buildTask = tasks.register("buildNonMkdocs")
+
 subprojects {
     plugins.apply("release-dependencies-diff-create")
+
+    if (!path.startsWith(":demos:mkdocs:")) {
+        buildTask.configure { dependsOn(tasks.named("build")) }
+    }
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
