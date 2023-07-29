@@ -2,6 +2,7 @@ package com.bumble.appyx.interactions.bottomnav
 
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -18,12 +19,13 @@ class AppyxBottomNavItem(
         content: @Composable () -> Unit,
         iconModifier: Modifier = Modifier
     ) : this(
-        text = { Text(text) },
+        text = { Text(text, color = MaterialTheme.colorScheme.onPrimaryContainer) },
         icon = { isSelected ->
             Icon(
                 imageVector = if (isSelected) selectedIcon else unselectedIcon,
                 contentDescription = text,
-                modifier = iconModifier
+                modifier = iconModifier,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer
             )
         },
         content = content

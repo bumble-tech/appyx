@@ -8,11 +8,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.BottomNavigation
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,14 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import com.bumble.appyx.components.experimental.cards.android.DatingCards
-import com.bumble.appyx.components.experimental.puzzle15.android.Puzzle15
-import com.bumble.appyx.components.experimental.promoter.android.PromoterExperiment
-import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
-import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
-import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.interactions.bottomnav.appyxBottomNavItems
-import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.interactions.theme.AppyxTheme
 import com.bumble.appyx.interactions.theme.appyx_dark
 
@@ -50,7 +42,7 @@ class MainActivity : ComponentActivity() {
                     var content by remember { mutableStateOf(1) }
 
                     var selectedItem by remember { mutableStateOf(0) }
-                    Scaffold(
+                    androidx.compose.material3.Scaffold(
                         content = { paddingValues: PaddingValues ->
                             Box(modifier = Modifier
                                 .fillMaxSize()
@@ -60,9 +52,9 @@ class MainActivity : ComponentActivity() {
                             }
                         },
                         bottomBar = {
-                            BottomNavigation {
+                            NavigationBar {
                                 appyxBottomNavItems.forEachIndexed { index, item ->
-                                    BottomNavigationItem(
+                                    NavigationBarItem(
                                         icon = { item.icon(selectedItem == index) },
                                         label = { item.text(selectedItem == index) },
                                         selected = selectedItem == index,
