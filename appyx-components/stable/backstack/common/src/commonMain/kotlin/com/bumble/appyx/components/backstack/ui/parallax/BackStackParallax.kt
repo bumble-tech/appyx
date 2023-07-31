@@ -13,6 +13,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
@@ -52,7 +53,7 @@ class BackStackParallax<InteractionTarget : Any>(
     private val hidden = TargetUiState(
         elementWidth = width,
         offsetMultiplier = -1f,
-        //alpha = Alpha.Target(0f),
+        alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(-1f),
     )
 

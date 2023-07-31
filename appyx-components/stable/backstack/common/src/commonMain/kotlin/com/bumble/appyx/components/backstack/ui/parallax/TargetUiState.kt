@@ -15,7 +15,7 @@ class TargetUiState(
     val position: Position.Target = Position.Target(DpOffset.Zero),
     val shadow: Shadow.Target,
     val colorOverlay: ColorOverlay.Target,
-    //val alpha: Alpha.Target,
+    val alpha: Alpha.Target,
     val zIndex: ZIndex.Target,
 ) {
 
@@ -35,7 +35,7 @@ class TargetUiState(
         ),
         colorOverlay = colorOverlay,
         shadow = shadow,
-        //alpha = alpha,
+        alpha = alpha,
         zIndex = zIndex,
     )
 }

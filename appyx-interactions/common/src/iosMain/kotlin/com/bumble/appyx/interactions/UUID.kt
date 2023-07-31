@@ -1,9 +1,9 @@
 package com.bumble.appyx.interactions
 
-import kotlin.random.Random
+import platform.Foundation.NSUUID
 
 actual object UUID {
 
-    actual fun randomUUID(): String = Random.nextInt().toString()
+    actual fun randomUUID(): String = NSUUID().UUIDString()
 
 }
