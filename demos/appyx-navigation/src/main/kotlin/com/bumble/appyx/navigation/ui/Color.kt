@@ -19,5 +19,5 @@ val atomic_tangerine = Color(0xFFF0965D)
 
 val appyx_yellow1 = Color(0xFFFFC629)
 val appyx_yellow2 = Color(0xFFFFE54A)
-val appyx_dark = Color(0xFF1F2126)
+val appyx_dark = Color(0xFFFFFFFF)
 val appyx_bright = Color(0xFFFFFFFF)

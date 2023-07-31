@@ -13,7 +13,6 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
@@ -30,50 +29,60 @@ class BackStackParallax<InteractionTarget : Any>(
     private val width = uiContext.transitionBounds.widthDp.value
     private val slowOutFastInEasing = CubicBezierEasing(1f, 0f, 1f, 0f)
 
-    private val left = TargetUiState(
-        elementWidth = width,
-        offsetMultiplier = -1f,
-        alpha = Alpha.Target(0f),
-    )
-    private val right = TargetUiState(
+    private val outsideRight = TargetUiState(
         elementWidth = width,
         offsetMultiplier = 1f,
         shadow = Shadow.Target(value = 0f, easing = slowOutFastInEasing),
-    )
-
-    private val bottom = TargetUiState(
-        elementWidth = width,
-        offsetMultiplier = -0.2f,
-        colorOverlay = ColorOverlay.Target(0.7f),
         zIndex = ZIndex.Target(1f),
     )
-
-    private val top = TargetUiState(
+    private val topVisible = TargetUiState(
         elementWidth = width,
         offsetMultiplier = 0f,
         shadow = Shadow.Target(25f),
-        zIndex = ZIndex.Target(2f),
+        zIndex = ZIndex.Target(1f),
+    )
+
+    private val bottomVisible = TargetUiState(
+        elementWidth = width,
+        offsetMultiplier = -0.2f,
+        colorOverlay = ColorOverlay.Target(0.7f),
+        zIndex = ZIndex.Target(0f),
+    )
+
+    private val hidden = TargetUiState(
+        elementWidth = width,
+        offsetMultiplier = -1f,
+        //alpha = Alpha.Target(0f),
+        zIndex = ZIndex.Target(-1f),
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         val stashed = stashed.mapIndexed { index, element ->
             MatchedTargetUiState(
                 element = element,
-                targetUiState = if (index == stashed.lastIndex) bottom else left,
+                targetUiState = if (index == stashed.lastIndex) bottomVisible else hidden,
+            )
+        }
+        val created = (created).map {
+            MatchedTargetUiState(
+                element = it,
+                targetUiState = this@BackStackParallax.outsideRight
+            )
+        }
+        val active = listOf(
+            MatchedTargetUiState(
+                element = active,
+                targetUiState = topVisible
+            )
+        )
+        val destroyed = (destroyed).map {
+            MatchedTargetUiState(
+                element = it,
+                targetUiState = this@BackStackParallax.outsideRight
             )
         }
 
-        return stashed + listOf(
-            MatchedTargetUiState(
-                element = active,
-                targetUiState = top
-            )
-        ) + (created + destroyed).map {
-            MatchedTargetUiState(
-                element = it,
-                targetUiState = right
-            )
-        }
+        return created + stashed + active + destroyed
     }
 
     override fun mutableUiStateFor(

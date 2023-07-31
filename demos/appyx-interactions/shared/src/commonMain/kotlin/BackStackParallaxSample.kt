@@ -1,3 +1,4 @@
+import InteractionTarget.Element
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
@@ -9,8 +10,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
-import com.bumble.appyx.components.backstack.ui.parallax.BackstackParallax
-import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
+import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 
 
@@ -24,7 +24,7 @@ internal fun BackStackParallaxSample(
     val coroutineScope = rememberCoroutineScope()
     val model = remember {
         BackStackModel<InteractionTarget>(
-            initialTargets = List(5) { InteractionTarget.Element() },
+            initialTargets = List(1) { Element() },
             savedStateMap = null,
         )
     }
@@ -32,17 +32,13 @@ internal fun BackStackParallaxSample(
         BackStack(
             scope = coroutineScope,
             model = model,
-            motionController = { BackstackParallax(it) },
-            gestureFactory = { BackstackParallax.Gestures(it) },
+            motionController = { BackStackParallax(it) },
+            gestureFactory = { BackStackParallax.Gestures(it) },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow),
         )
     val actions = mapOf(
-        "Pop" to {
-            backStack.pop()
-                 },
-        "Push" to {
-            backStack.push(InteractionTarget.Element())
-        }
+        "Pop" to { backStack.pop() },
+        "Push" to { backStack.push(Element()) }
     )
     AppyxSample(
         screenWidthPx = screenWidthPx,

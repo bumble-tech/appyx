@@ -15,7 +15,8 @@ class TargetUiState(
     val position: Position.Target = Position.Target(DpOffset.Zero),
     val shadow: Shadow.Target,
     val colorOverlay: ColorOverlay.Target,
-    val alpha: Alpha.Target,
+    //val alpha: Alpha.Target,
+    val zIndex: ZIndex.Target,
 ) {
 
     constructor(
@@ -24,15 +25,17 @@ class TargetUiState(
         colorOverlay: ColorOverlay.Target = ColorOverlay.Target(0f),
         shadow: Shadow.Target = Shadow.Target(0f),
         alpha: Alpha.Target = Alpha.Target(1f),
+        zIndex: ZIndex.Target = ZIndex.Target(1f),
     ) : this(
         position = Position.Target(
             DpOffset(
-                x = (offsetMultiplier.coerceIn(-0.5f, 1.5f) * elementWidth).dp,
+                x = (offsetMultiplier * elementWidth).dp,
                 y = 0.dp
             ),
         ),
         colorOverlay = colorOverlay,
         shadow = shadow,
-        alpha = alpha,
+        //alpha = alpha,
+        zIndex = zIndex,
     )
 }
