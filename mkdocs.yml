@@ -62,30 +62,30 @@ nav:
           - Codelabs: 1.x/how-to-use-appyx/codelabs.md
           - Coding challenges: 1.x/how-to-use-appyx/coding-challenges.md
           - Sample apps: 1.x/how-to-use-appyx/sample-apps.md
-    - Navigation:
-        - Model-driven navigation: 1.x/navigation/model-driven-navigation.md
-        - NavModel:
-            - Overview: 1.x/navmodel/index.md
-            - Back stack: 1.x/navmodel/backstack.md
-            - Spotlight: 1.x/navmodel/spotlight.md
-            - Cards: 1.x/navmodel/cards.md
-            - Tiles: 1.x/navmodel/tiles.md
-            - Promoter: 1.x/navmodel/promoter.md
-            - Writing your own: 1.x/navmodel/custom.md
-        - Composable navigation: 1.x/navigation/composable-navigation.md
-        - Implicit navigation: 1.x/navigation/implicit-navigation.md
-        - Explicit navigation: 1.x/navigation/explicit-navigation.md
-        - Deep linking: 1.x/navigation/deep-linking.md
-    - UI:
-        - Children: 1.x/ui/children-view.md
-        - Transitions: 1.x/ui/transitions.md
-    - App:
-        - Structuring your app navigation: 1.x/apps/structure.md
-        - Lifecycle: 1.x/apps/lifecycle.md
-        - Plugins: 1.x/apps/plugins.md
-        - ChildAware API: 1.x/apps/childaware.md
-        - Configuration changes: 1.x/apps/configuration.md
-    - FAQ: 1.x/faq.md
+      - Navigation:
+          - Model-driven navigation: 1.x/navigation/model-driven-navigation.md
+          - NavModel:
+              - Overview: 1.x/navmodel/index.md
+              - Back stack: 1.x/navmodel/backstack.md
+              - Spotlight: 1.x/navmodel/spotlight.md
+              - Cards: 1.x/navmodel/cards.md
+              - Tiles: 1.x/navmodel/tiles.md
+              - Promoter: 1.x/navmodel/promoter.md
+              - Writing your own: 1.x/navmodel/custom.md
+          - Composable navigation: 1.x/navigation/composable-navigation.md
+          - Implicit navigation: 1.x/navigation/implicit-navigation.md
+          - Explicit navigation: 1.x/navigation/explicit-navigation.md
+          - Deep linking: 1.x/navigation/deep-linking.md
+      - UI:
+          - Children: 1.x/ui/children-view.md
+          - Transitions: 1.x/ui/transitions.md
+      - App:
+          - Structuring your app navigation: 1.x/apps/structure.md
+          - Lifecycle: 1.x/apps/lifecycle.md
+          - Plugins: 1.x/apps/plugins.md
+          - ChildAware API: 1.x/apps/childaware.md
+          - Configuration changes: 1.x/apps/configuration.md
+      - FAQ: 1.x/faq.md
 
 
 # theme configuration
