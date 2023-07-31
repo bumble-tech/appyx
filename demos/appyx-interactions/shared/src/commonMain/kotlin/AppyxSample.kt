@@ -22,6 +22,18 @@ import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import theme.color_primary
+import theme.md_amber_500
+import theme.md_blue_500
+import theme.md_blue_grey_500
+import theme.md_cyan_500
+import theme.md_grey_500
+import theme.md_indigo_500
+import theme.md_light_blue_500
+import theme.md_light_green_500
+import theme.md_lime_500
+import theme.md_pink_500
+import theme.md_teal_500
 import kotlin.random.Random
 
 internal sealed class InteractionTarget {

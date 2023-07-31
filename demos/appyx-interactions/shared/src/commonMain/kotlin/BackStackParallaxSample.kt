@@ -12,7 +12,6 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 
-
 @Suppress("UNCHECKED_CAST")
 @Composable
 internal fun BackStackParallaxSample(
