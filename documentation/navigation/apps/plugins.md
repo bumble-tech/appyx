@@ -4,9 +4,7 @@
 
 ```Nodes``` are meant to be simple structural elements, and should be kept lean.
 
-To keep the framework agnostic of any specific approach / pattern you want to use, there aren't any
-fixed parts. Rather, the ```Node``` offers an extension point using ```Plugins``` in its
-constructor:
+To keep the framework agnostic of any specific approach / pattern you want to use, there aren't any fixed parts. Rather, the ```Node``` offers an extension point using ```Plugins``` in its constructor:
 
 ```kotlin
 abstract class Node(
@@ -39,12 +37,13 @@ fun interface Destroyable : Plugin {
 }
 ```
 
+
 ### Component level plugins
 
-Sometimes you need to grab a reference to the component as a whole, either as an interface, or its
-implementation, the ```Node```.
+Sometimes you need to grab a reference to the component as a whole, either as an interface, or its implementation, the ```Node```.
 
 This will come especially handy when working with workflows.
+
 
 ```kotlin
 interface NodeAware : Plugin {
@@ -54,8 +53,7 @@ interface NodeAware : Plugin {
 }
 ```
 
-There are helper classes found in the library, so you don't have to implement the above interfaces,
-you can just use delegation:
+There are helper classes found in the library, so you don't have to implement the above interfaces, you can just use delegation:
 
 ```kotlin
 class SomeClass(
@@ -71,9 +69,8 @@ class SomeClass(
 }
 ```
 
-⚠️ Note: the reference to ```node``` is set by ```Node``` automatically, and isn't available
-immediately after constructing your object, but only after the construction of the ```Node```
-itself.
+⚠️ Note: the reference to ```node``` is set by ```Node``` automatically, and isn't available immediately after constructing your object, but only after the construction of the ```Node``` itself.
+
 
 ### Navigation plugins
 
@@ -91,22 +88,17 @@ interface BackPressHandler : Plugin {
 
 `UpNavigationHandler` controls `Node.navigateUp` behaviour and allows to intercept its invocation.
 
-`BackPressHandler` controls device back press behaviour
-via `androidx.activity.OnBackPressedCallback`.
-You can read more about
-it [here](https://developer.android.com/guide/navigation/navigation-custom-back).
+`BackPressHandler` controls device back press behaviour via `androidx.activity.OnBackPressedCallback`.
+You can read more about it [here](https://developer.android.com/guide/navigation/navigation-custom-back).
 
 ⚠️ Note: `OnBackPressedCallback` are invoked in the following order:
+1. From children to parents. Render order of children matters! The last rendered child will be the first to handle back press.
+2. Direct order of plugins within a node. Plugins are invoked in order they appears in `Node(plugins = ...)` before the AppyxComponent. 
 
-1. From children to parents. Render order of children matters! The last rendered child will be the
-   first to handle back press.
-2. Direct order of plugins within a node. Plugins are invoked in order they appears
-   in `Node(plugins = ...)` before the AppyxComponent.
 
-## Using Plugins
+## Using Plugins 
 
-All plugins are designed to have empty ```{}``` default implementations (or other sensible defaults
-when a return value is defined), so it's convenient to implement them only if you need.
+All plugins are designed to have empty ```{}``` default implementations (or other sensible defaults when a return value is defined), so it's convenient to implement them only if you need.
 
 Don't forget to pass your ```Plugins``` to your ```Node```:
 
@@ -122,5 +114,4 @@ internal class MyNode(
 )
 ```
 
-⚠️ Note: ```plugins``` is a ```List```, as the order matters here. All ```Plugin``` instances are
-invoked in the order they appear in the list.
+⚠️ Note: ```plugins``` is a ```List```, as the order matters here. All ```Plugin``` instances are invoked in the order they appear in the list.

@@ -6,9 +6,7 @@ To retain objects during configuration change you can use the `RetainedInstanceS
 
 ## How does it work?
 
-The `RetainedInstanceStore` stores the objects within a singleton. The node manages whether the
-content should be removed by checking whether the `Activity` is being recreated due to a
-configuration change or not.
+The `RetainedInstanceStore` stores the objects within a singleton. The node manages whether the content should be removed by checking whether the `Activity` is being recreated due to a configuration change or not.
 
 These are the following scenarios:
 - If the `Activity` is recreated: the retained instance is returned instead of a new instance.

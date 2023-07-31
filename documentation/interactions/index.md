@@ -198,6 +198,7 @@ In `IMMEDIATE` mode the current transition is interrupted and will not be finish
 2. Which then you can dress up with various UI representations
 3. And manipulate with gestures
 
+
 Check out some our packaged examples in [Appyx components](../components/index.md)!
 
 

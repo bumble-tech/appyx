@@ -10,10 +10,8 @@
 
 ## 1.3.0
 
-- [#425](https://github.com/bumble-tech/appyx/pull/425) – **Fixed**: Up navigation should be
-  properly propagated from Appyx to RIBs
-- [#384](https://github.com/bumble-tech/appyx/issues/384) – **Updated**: Compose BOM version and
-  activity-compose version
+- [#425](https://github.com/bumble-tech/appyx/pull/425) – **Fixed**: Up navigation should be properly propagated from Appyx to RIBs
+- [#384](https://github.com/bumble-tech/appyx/issues/384) – **Updated**: Compose BOM version and activity-compose version
 
 <div style="text-align: center"><small>22 Jun 2023</small></div>
 
@@ -21,11 +19,8 @@
 
 ## 1.2.0
 
-- [#393](https://github.com/bumble-tech/appyx/pull/393) – **Breaking change**: Removed non-lazy
-  implementations from `NodeCustomisationDirectory`
-- [#393](https://github.com/bumble-tech/appyx/pull/393) – **Breaking change**:
-  Removed `NodeCustomisationDirectoryImpl#put(vararg values: T)` due to potential uncaught bugs.
-  Please call the reified `put` extension function instead.
+- [#393](https://github.com/bumble-tech/appyx/pull/393) – **Breaking change**: Removed non-lazy implementations from `NodeCustomisationDirectory`
+- [#393](https://github.com/bumble-tech/appyx/pull/393) – **Breaking change**: Removed `NodeCustomisationDirectoryImpl#put(vararg values: T)` due to potential uncaught bugs. Please call the reified `put` extension function instead.
 
 <div style="text-align: center"><small>11 Apr 2023</small></div>
 

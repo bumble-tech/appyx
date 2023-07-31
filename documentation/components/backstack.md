@@ -4,12 +4,12 @@ Implements a simple linear history:
 
 - The last element at the end of the stack is considered "active".
 - All other elements are considered stashed.
-- Children associated with stashed elements are off the screen but kept alive (see how the counter
-  values reflect this on the video)
+- Children associated with stashed elements are off the screen but kept alive (see how the counter values reflect this on the video)
 
 The back stack can never be empty – it always contains at least one element.
 
 The back stack also supports different back press strategies (see further down below).
+
 
 ## Standard visualisations
 
@@ -18,15 +18,15 @@ The back stack also supports different back press strategies (see further down b
 Class: `BackStackSlider`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/backstack/slider/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:backstack:slider:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-backstack-slider",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/slider/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:slider:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-slider",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Parallax
@@ -34,15 +34,15 @@ classname="compose_mpp_sample",
 Class: `BackStackParallax`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-backstack-parallax",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-parallax",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### 3D stack
@@ -50,15 +50,15 @@ classname="compose_mpp_sample",
 Class: `BackStack3D`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/backstack/stack3d/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:backstack:stack3d:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-backstack-stack3d",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/stack3d/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:stack3d:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-stack3d",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Fader
@@ -66,21 +66,22 @@ classname="compose_mpp_sample",
 Class: `BackStackFader`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/backstack/fader/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:backstack:fader:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-backstack-fader",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/fader/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:fader:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-fader",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Custom
 
-You can always create your own visualisations for Appyx components. Find more info
-in [UI representation](../interactions/uirepresentation.md).
+You can always create your own visualisations for Appyx components. Find more info in [UI representation](../interactions/uirepresentation.md).
+
+
 
 ## ModelState
 
@@ -112,7 +113,7 @@ in [UI representation](../interactions/uirepresentation.md).
 
 ## Constructing the back stack
 
-Note: As the back stack can never be empty, the initial list in the constructor must contain at
+Note: As the back stack can never be empty, the initial list in the constructor must contain at 
 least one element.
 
 ```kotlin
@@ -137,7 +138,6 @@ private val backStack: BackStack<InteractionTarget> = BackStack(
 `backStack.push(navTarget)`
 
 Effect on stack:
-
 ```
 [A, B, C] + Push(D) = [A, B, C, D]
 ```
@@ -145,33 +145,32 @@ Effect on stack:
 Transitions the active element `ACTIVE` -> `STASHED`.
 Adds a new element at the end of the stack with a `CREATED` -> `ACTIVE` transition.
 
+
 #### Replace
 
 `backStack.replace(navTarget)`
 
 Effect on stack:
-
 ```
 [A, B, C] + Replace(D) = [A, B, D]
 ```
 
-Transitions the active element `ACTIVE` -> `DESTROYED`, which will be removed when the transition
-finishes.
+Transitions the active element `ACTIVE` -> `DESTROYED`, which will be removed when the transition finishes.
 Adds a new element at the end of the stack with a `CREATED` -> `ACTIVE` transition.
+
 
 #### Pop
 
 `backStack.pop(navTarget)`
 
 Effect on stack:
-
 ```
 [A, B, C] + Pop = [A, B]
 ```
 
-Transitions the active element `ACTIVE` -> `DESTROYED`, which will be removed when the transition
-finishes.
+Transitions the active element `ACTIVE` -> `DESTROYED`, which will be removed when the transition finishes.
 Transitions the last stashed element `STASHED` -> `ACTIVE`.
+
 
 #### Single top
 
@@ -185,10 +184,10 @@ Effect on stack: depends on the contents of the stack:
 [A, B, C, D] + SingleTop(E)  = [A, B, C, D, E] // not found, acts as Push
 ```
 
+
 ## Back press strategy
 
-You can override the default strategy in the constructor. You're not limited to using the provided
-classes, feel free to implement your own.
+You can override the default strategy in the constructor. You're not limited to using the provided classes, feel free to implement your own.
 
 ```kotlin
 class BackStack<NavTarget : Any>(

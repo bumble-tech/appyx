@@ -4,14 +4,13 @@
 
 <img src="https://i.imgur.com/hKvOs3w.gif" width="450">
 
-How can we go from one part of the tree to another? In almost all cases navigation can be implicit
-instead of explicit. We don't need to specify the target – navigation will happen as a consequence
-of individual pieces of the puzzle.
+How can we go from one part of the tree to another? In almost all cases navigation can be implicit instead of explicit. We don't need to specify the target – navigation will happen as a consequence of individual pieces of the puzzle.
 
 !!! info "Relevant methods"
 
     - `ParentNode.onChildFinished(child: Node)` can be overridden by client code to handle a child finishing
     - `Node.finish()` invokes the above method on its parent
+
 
 ## Use-case 1
 
@@ -33,6 +32,7 @@ After onboarding finishes, the user should land in the message list screen.
 
     Every `Node` in the above sequence only needed to care about its own local concern.
 
+
 ## Use-case 2
 
 <img src="https://i.imgur.com/jkZQJBC.png" width="450">
@@ -51,6 +51,7 @@ Pressing the logout button on the profile screen should land us back to the logi
 !!! success "Bonus"
 
     Note how the entire `Logged in` scope is destroyed without any extra effort. The next time a login happens, all state is created anew. 
+
 
 ## Summary
 

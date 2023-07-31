@@ -4,7 +4,7 @@
 
 {==
 
-A component packaged together with Appyx is called an `AppyxComponent`.
+A component packaged together with Appyx is called an `AppyxComponent`. 
 
 ==}
 
@@ -24,10 +24,8 @@ flowchart TB
 
 Where:
 
-* `AppyxComponent` – The packaged component; its output will result in `@Composable` elements with
-  animated `Modifiers`
-* `Operation` – Allows to change the state of the component. It can be triggered programmatically or
-  by gestures. Both options are specific to the component implementation.
+* `AppyxComponent` – The packaged component; its output will result in `@Composable` elements with animated `Modifiers`
+* `Operation` – Allows to change the state of the component. It can be triggered programmatically or by gestures. Both options are specific to the component implementation.
 
 
 ## Instantiating & configuration
@@ -64,8 +62,7 @@ fun SomeComposable() {
 
 ## Rendering the AppyxComponent
 
-You can render your component with the `AppyxComponent` composable. Make sure to
-apply `elementUiModel.modifier`  if you override the optional `element` rendering.
+You can render your component with the `AppyxComponent` composable. Make sure to apply `elementUiModel.modifier`  if you override the optional `element` rendering.
 
 ```kotlin
 @Composable
@@ -84,8 +81,7 @@ fun SomeComposable() {
 }
 ```
 
-You can also make use of the `DraggableAppyxComponent` composable, if you have components that allow
-gestures to control them:
+You can also make use of the `DraggableAppyxComponent` composable, if you have components that allow gestures to control them:
 
 ```kotlin
 @Composable

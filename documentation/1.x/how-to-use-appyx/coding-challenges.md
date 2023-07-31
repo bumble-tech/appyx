@@ -8,6 +8,7 @@
 
 <img src="https://camo.githubusercontent.com/aa0c9accaaf6aadc2ab0cfac4c43b194e31a6571f90d381ee7f7fd7f6acc8bcd/68747470733a2f2f692e696d6775722e636f6d2f777844716747652e676966" width="50">
 
+
 ## Droidcon London 22 – Coding challenge 2
 
 [A challenge with custom animations and a new operation](https://github.com/bumble-tech/dcldn22-challenge/tree/main/Challenge2)

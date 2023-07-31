@@ -1,10 +1,9 @@
 # Spotlight
 
-Implements a mechanism analogous to a view pager; has a single active element marked by
-an `activeIndex` ("it's in the spotlight", hence the name), but unlike the back stack, it does not
-remove other elements.
+Implements a mechanism analogous to a view pager; has a single active element marked by an `activeIndex` ("it's in the spotlight", hence the name), but unlike the back stack, it does not remove other elements.
 
 It's great for flows or tabbed containers.
+
 
 ## Standard visualisations
 
@@ -13,32 +12,32 @@ It's great for flows or tabbed containers.
 Class: `SpotlightSlider`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-slider",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-slider",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
+
 
 ### Slider + scale
 
 Class: `SpotlightSliderScale`
 
 {{
-compose_mpp_sample(
-project_output_directory="
-demos/mkdocs/appyx-components/spotlight/sliderscale/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:sliderscale:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-sliderscale",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderscale/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:sliderscale:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-sliderscale",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Slider + rotation
@@ -46,16 +45,15 @@ classname="compose_mpp_sample",
 Class: `SpotlightSliderRotation`
 
 {{
-compose_mpp_sample(
-project_output_directory="
-demos/mkdocs/appyx-components/spotlight/sliderrotation/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:sliderrotation:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-sliderrotation",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderrotation/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:sliderrotation:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-sliderrotation",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### 3D stack
@@ -63,15 +61,15 @@ classname="compose_mpp_sample",
 Class: `SpotlightStack3D`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/stack3d/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:stack3d:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-stack3d",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/stack3d/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:stack3d:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-stack3d",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Fader
@@ -79,21 +77,22 @@ classname="compose_mpp_sample",
 Class: `SpotlightFader`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/spotlight/fader/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:spotlight:fader:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-spotlight-fader",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/fader/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:spotlight:fader:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-spotlight-fader",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Custom
 
-You can always create your own visualisations for Appyx components. Find more info
-in [UI representation](../interactions/uirepresentation.md).
+You can always create your own visualisations for Appyx components. Find more info in [UI representation](../interactions/uirepresentation.md).
+
+
 
 ## ModelState
 
@@ -121,9 +120,10 @@ data class State<InteractionTarget>(
 }
 ```
 
-Note that a `Position` in the list can contain multiple elements, each with their own state. This
-allows an element at a specific position to be destroyed (animated out) and another one to be
-animated in in its place.
+Note that a `Position` in the list can contain multiple elements, each with their own state. This allows an element at a specific position to be destroyed (animated out) and another one to be animated in in its place.
+
+
+
 
 ## Constructing an instance
 
@@ -175,6 +175,7 @@ Sets the `activeIndex` to the maximum value.
 `spotlight.activate(index)`
 
 Sets the `activeIndex` to a specific value.
+
 
 #### Update elements
 

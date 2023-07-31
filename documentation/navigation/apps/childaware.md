@@ -43,6 +43,7 @@ class SomeInteractor : Interactor<SomeNode>() {
 }
 ```
 
+
 ## Multiple children
 
 ```kotlin

@@ -2,10 +2,10 @@
 
 # Adding children to the view
 
-Navigation models define only the abstract model, not how that model will look on the screen. This
-section describes different ways of adding children (navigation targets) to the composition.
+Navigation models define only the abstract model, not how that model will look on the screen. This section describes different ways of adding children (navigation targets) to the composition.
 
 All the below mentioned composables should be added to the `View` of the parent node.
+
 
 ## Children
 
@@ -36,7 +36,7 @@ data class TransitionDescriptor<NavTarget, out State>(
 ```
 
 Additionally, you can supply custom modifier to a child `Node`. In this example, we're supplying different `Modifier`
-to a child `Node` depending on the `NavTarget`:
+to a child `Node` depending on the `NavTarget`: 
 
 ```kotlin
 @Composable
@@ -60,7 +60,7 @@ override fun View(modifier: Modifier) {
 
 ## Child
 
-Renders a single child associated to a `NavElement`. Useful if you want to define different child placements in the layout individually.
+Renders a single child associated to a `NavElement`. Useful if you want to define different child placements in the layout individually. 
 
 ```kotlin
 @Composable

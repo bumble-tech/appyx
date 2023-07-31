@@ -12,6 +12,7 @@ repositories {
 }
 ```
 
+
 ## Appyx Navigation
 
 ```groovy
@@ -34,6 +35,7 @@ dependencies {
     implementation "com.bumble.appyx:appyx-interactions-js:$version"
 }
 ```
+
 
 ## Appyx Components
 

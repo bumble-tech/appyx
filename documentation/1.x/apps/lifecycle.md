@@ -6,8 +6,7 @@ Nodes have their own lifecycles, directly using the related classes of `androidx
 
 ## Capping
 
-No node can be in a higher lifecycle state than any of its parents or the Android Activity it lives
-in.
+No node can be in a higher lifecycle state than any of its parents or the Android Activity it lives in.
 
 ## On-screen & off-screen
 

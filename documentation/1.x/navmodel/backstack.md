@@ -8,12 +8,12 @@ Implements a simple linear history:
 
 - The last element at the end of the stack is considered "active".
 - All other elements are considered stashed.
-- Children associated with stashed elements are off the screen but kept alive (see how the counter
-  values reflect this on the video)
+- Children associated with stashed elements are off the screen but kept alive (see how the counter values reflect this on the video)
 
 The back stack can never be empty – it always contains at least one element.
 
 The back stack also supports different back press and operation strategies (see further down below).
+
 
 ## States
 
@@ -27,7 +27,8 @@ enum class State {
 
 <img src="https://camo.githubusercontent.com/aa0c9accaaf6aadc2ab0cfac4c43b194e31a6571f90d381ee7f7fd7f6acc8bcd/68747470733a2f2f692e696d6775722e636f6d2f777844716747652e676966" width="200">
 
-Check out the apps in our [Coding challenges](../how-to-use-appyx/coding-challenges.md) – they have an embedded visualisation of what happens to all the elements inside the back stack (look at the row of orange boxes below the logo).
+Check out the apps in our [Coding challenges](../how-to-use-appyx/coding-challenges.md) – they have an embedded visualisation of what happens to all the elements inside the back stack (look at the row of orange boxes below the logo). 
+
 
 ## Constructing the back stack
 
@@ -65,11 +66,13 @@ object BackStackOnScreenResolver : OnScreenStateResolver<State> {
 
 Adds simple cross-fading transitions
 
+
 #### BackStackSlider
 
 `rememberBackstackSlider()`
 
 Adds horizontal sliding transitions so that the `ACTIVE` element is in the center; other states are animated from / to the left or the right edge of the screen.
+
 
 ## Operations
 
@@ -85,6 +88,7 @@ Effect on stack:
 Transitions the active element `ACTIVE` -> `STASHED`.
 Adds a new element at the end of the stack with a `CREATED` -> `ACTIVE` transition.
 
+
 #### Replace
 
 `backStack.replace(navTarget)`
@@ -96,6 +100,7 @@ Effect on stack:
 
 Transitions the active element `ACTIVE` -> `DESTROYED`, which will be removed when the transition finishes.
 Adds a new element at the end of the stack with a `CREATED` -> `ACTIVE` transition.
+
 
 #### Pop
 
@@ -109,6 +114,7 @@ Effect on stack:
 Transitions the active element `ACTIVE` -> `DESTROYED`, which will be removed when the transition finishes.
 Transitions the last stashed element `STASHED` -> `ACTIVE`.
 
+
 #### Single top
 
 `backStack.singleTop(navTarget)`
@@ -120,6 +126,7 @@ Effect on stack: depends on the contents of the stack:
 [A, B, C, D] + SingleTop(B') = [A, B']         // of same type but not equals, acts as n * Pop + Replace
 [A, B, C, D] + SingleTop(E)  = [A, B, C, D, E] // not found, acts as Push
 ```
+
 
 ## Back press strategy
 
@@ -140,6 +147,7 @@ The default back press handling strategy. Runs a `Pop` operation.
 #### DontHandleBackPress
 
 Serves as a no-op.
+
 
 ## Operation strategy
 

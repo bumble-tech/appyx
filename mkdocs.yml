@@ -33,59 +33,59 @@ nav:
           - ChildAware API: navigation/apps/childaware.md
           - Configuration changes: navigation/apps/configuration.md
   - Appyx Interactions:
-      - Overview: interactions/index.md
-      - Using components: interactions/usage.md
-      - Creating your own:
-          - Component overview: interactions/appyxcomponent.md
-          - Transition model: interactions/transitionmodel.md
-          - Operations: interactions/operations.md
-          - UI representation: interactions/uirepresentation.md
-          - Gestures: interactions/gestures.md
+    - Overview: interactions/index.md
+    - Using components: interactions/usage.md
+    - Creating your own:
+      - Component overview: interactions/appyxcomponent.md
+      - Transition model: interactions/transitionmodel.md
+      - Operations: interactions/operations.md
+      - UI representation: interactions/uirepresentation.md
+      - Gestures: interactions/gestures.md
   - Appyx Components:
-      - Overview: components/index.md
-      - Back stack: components/backstack.md
-      - Spotlight: components/spotlight.md
-      - Experimental: components/experimental.md
+    - Overview: components/index.md
+    - Back stack: components/backstack.md
+    - Spotlight: components/spotlight.md
+    - Experimental: components/experimental.md
 
   - Releases:
-      - Downloads: releases/downloads.md
-      - Changelog: releases/changelog.md
+    - Downloads: releases/downloads.md
+    - Changelog: releases/changelog.md
   - 2.x:
-      - Migration guide: 2.x/migrationguide.md
+    - Migration guide: 2.x/migrationguide.md
   - 1.x:
-      - Overview: 1.x/index.md
-      - Releases:
-          - Downloads: 1.x/releases/downloads.md
-          - Changelog: 1.x/releases/changelog.md
-      - Using Appyx:
-          - Quick start guide: 1.x/how-to-use-appyx/quick-start.md
-          - Codelabs: 1.x/how-to-use-appyx/codelabs.md
-          - Coding challenges: 1.x/how-to-use-appyx/coding-challenges.md
-          - Sample apps: 1.x/how-to-use-appyx/sample-apps.md
-      - Navigation:
-          - Model-driven navigation: 1.x/navigation/model-driven-navigation.md
-          - NavModel:
-              - Overview: 1.x/navmodel/index.md
-              - Back stack: 1.x/navmodel/backstack.md
-              - Spotlight: 1.x/navmodel/spotlight.md
-              - Cards: 1.x/navmodel/cards.md
-              - Tiles: 1.x/navmodel/tiles.md
-              - Promoter: 1.x/navmodel/promoter.md
-              - Writing your own: 1.x/navmodel/custom.md
-          - Composable navigation: 1.x/navigation/composable-navigation.md
-          - Implicit navigation: 1.x/navigation/implicit-navigation.md
-          - Explicit navigation: 1.x/navigation/explicit-navigation.md
-          - Deep linking: 1.x/navigation/deep-linking.md
-      - UI:
-          - Children: 1.x/ui/children-view.md
-          - Transitions: 1.x/ui/transitions.md
-      - App:
-          - Structuring your app navigation: 1.x/apps/structure.md
-          - Lifecycle: 1.x/apps/lifecycle.md
-          - Plugins: 1.x/apps/plugins.md
-          - ChildAware API: 1.x/apps/childaware.md
-          - Configuration changes: 1.x/apps/configuration.md
-      - FAQ: 1.x/faq.md
+    - Overview: 1.x/index.md
+    - Releases:
+      - Downloads: 1.x/releases/downloads.md
+      - Changelog: 1.x/releases/changelog.md
+    - Using Appyx:
+        - Quick start guide: 1.x/how-to-use-appyx/quick-start.md
+        - Codelabs: 1.x/how-to-use-appyx/codelabs.md
+        - Coding challenges: 1.x/how-to-use-appyx/coding-challenges.md
+        - Sample apps: 1.x/how-to-use-appyx/sample-apps.md
+    - Navigation:
+        - Model-driven navigation: 1.x/navigation/model-driven-navigation.md
+        - NavModel:
+            - Overview: 1.x/navmodel/index.md
+            - Back stack: 1.x/navmodel/backstack.md
+            - Spotlight: 1.x/navmodel/spotlight.md
+            - Cards: 1.x/navmodel/cards.md
+            - Tiles: 1.x/navmodel/tiles.md
+            - Promoter: 1.x/navmodel/promoter.md
+            - Writing your own: 1.x/navmodel/custom.md
+        - Composable navigation: 1.x/navigation/composable-navigation.md
+        - Implicit navigation: 1.x/navigation/implicit-navigation.md
+        - Explicit navigation: 1.x/navigation/explicit-navigation.md
+        - Deep linking: 1.x/navigation/deep-linking.md
+    - UI:
+        - Children: 1.x/ui/children-view.md
+        - Transitions: 1.x/ui/transitions.md
+    - App:
+        - Structuring your app navigation: 1.x/apps/structure.md
+        - Lifecycle: 1.x/apps/lifecycle.md
+        - Plugins: 1.x/apps/plugins.md
+        - ChildAware API: 1.x/apps/childaware.md
+        - Configuration changes: 1.x/apps/configuration.md
+    - FAQ: 1.x/faq.md
 
 
 # theme configuration

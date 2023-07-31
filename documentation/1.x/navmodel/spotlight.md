@@ -4,8 +4,7 @@
 
 <img src="https://i.imgur.com/xtPRfij.gif" width="200">
 
-Implements a mechanism analogous to a view pager; has a single active element ("it's in the
-spotlight", hence the name), but unlike the back stack, it does not remove other elements.
+Implements a mechanism analogous to a view pager; has a single active element ("it's in the spotlight", hence the name), but unlike the back stack, it does not remove other elements.
 
 It's great for flows or tabbed containers.
 
@@ -53,11 +52,13 @@ object SpotlightOnScreenResolver : OnScreenStateResolver<Spotlight.State> {
 
 Adds simple cross-fading transitions
 
+
 #### SpotlightSlider
 
 `rememberSpotlightSlider()`
 
 Adds horizontal sliding transitions so that the `ACTIVE` element is in the center; other states are animated from / to the left or the right edge of the screen, depending on the order of them in the `items` property.
+
 
 ## Operations
 
@@ -67,12 +68,14 @@ Adds horizontal sliding transitions so that the `ACTIVE` element is in the cente
 
 Transitions the element to `ACTIVE`. Transitions other elements to `INACTIVE_BEFORE` or `INACTIVE_AFTER` depending on their relative position to the activated element.
 
+
 #### Next
 
 `spotlight.next()`
 
 Transitions the currently active element to `INACTIVE_BEFORE`. 
 Transitions the element after the currently active one to `ACTIVE`.
+
 
 #### Previous
 
@@ -81,11 +84,13 @@ Transitions the element after the currently active one to `ACTIVE`.
 Transitions the currently active element to `INACTIVE_AFTER`.
 Transitions the element before the currently active one to `ACTIVE`.
 
+
 #### Update elements
 
 `spotlight.updateElements(items, activeIndex)`
 
 Replaces elements held by the spotlight instance with a new list. Transitions new elements to `INACTIVE_BEFORE`, `ACTIVE`, or `INACTIVE_AFTER` depending on their position in the provided list relative to `activeIndex`.
+
 
 ## Back press strategy
 
@@ -108,6 +113,7 @@ The default back press handling strategy. Activates the default index.
 #### GoToPrevious
 
 Runs a `Previous` operation.
+
 
 ## Operation strategy
 

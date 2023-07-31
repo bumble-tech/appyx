@@ -99,7 +99,5 @@ A `TransitionModel` behaves like a state machine. If you want a new `ModelState`
 val output: StateFlow<Output<ModelState>>
 ```
 
-In most cases don't need to deal with this output directly. The [AppyxComponent](appyxcomponent.md)
-takes care of that, and channels this flow to the `MotionController` to translate it to a UI
-representation. 
+In most cases don't need to deal with this output directly. The [AppyxComponent](appyxcomponent.md) takes care of that, and channels this flow to the `MotionController` to translate it to a UI representation. 
 

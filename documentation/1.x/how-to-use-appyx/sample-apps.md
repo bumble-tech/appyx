@@ -17,7 +17,7 @@ You can find the pre-built sample app apks here:
 
 The `:app` module showcases **Appyx** itself with multiple levels of navigation, NavModel demos, etc. See it in action, then check the related code how it works.
 
-## Appyx + Jetpack Compose Navigation example
+## Appyx + Jetpack Compose Navigation example 
 
 The `:samples:navigation-compose` module demonstrates how to use Appyx within Google's Jetpack Compose Navigation library.
 This example may be useful if you need to migrate to Appyx gradually.

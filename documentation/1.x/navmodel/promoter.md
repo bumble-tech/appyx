@@ -8,8 +8,7 @@ Intended only as an illustration.
 
 ## Where can I find this NavModel?
 
-The `Promoter` NavModel is not currently published, however you can fork the Appyx repository and
-try it out yourself!
+The `Promoter` NavModel is not currently published, however you can fork the Appyx repository and try it out yourself!
 If you feel that this functionality should be part of the main library, please let us know.
 
 ## States
@@ -43,6 +42,7 @@ As elements are promoted to next stages, they're:
 
 You can check `PromoterTransitionHandler` for implementation details.
 
+
 ## Operations
 
 #### Add first
@@ -50,6 +50,7 @@ You can check `PromoterTransitionHandler` for implementation details.
 `promoter.addFirst(navTarget)`
 
 Adds a new element at the start of the element list with a `CREATED` state.
+
 
 #### Promote all
 

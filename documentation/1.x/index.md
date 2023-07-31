@@ -2,9 +2,11 @@
 
 # Appyx
 
+
 Model-driven navigation for Jetpack Compose
 
 [https://github.com/bumble-tech/appyx](https://github.com/bumble-tech/appyx)
+
 
 ## Navigation for your Compose app on steroids
 
@@ -14,9 +16,10 @@ Model-driven navigation for Jetpack Compose
 - **Your own navigation** – With Appyx, you can define your own navigation models
 - **Use any animation for transitions** – Anything you can represent with Compose `Modifiers`
 
+
 ## Model-driven navigation – a different paradigm with superpowers
 
-Using Appyx you gain navigation superpowers in addition to screen-to-screen navigation:
+Using Appyx you gain navigation superpowers in addition to screen-to-screen navigation:  
 
 - **Break down screen boundaries** – Using `NavModels` you can navigate inside the screen as well as between them
 - **Make your navigation composable** – Navigate whole scopes of your application 
@@ -37,17 +40,21 @@ With Appyx you can break down screen boundaries and transform the screen itself:
 
 See [Model-driven navigation](navigation/model-driven-navigation.md) for more details.
 
+
 ## Launch the demo app
 
 Check out the project and launch the `:app` module for a quick demonstration!
+
 
 ## Download
 
 See the [Downloads page](releases/downloads.md).
 
+
 ## Learning Appyx
 
 Check out the [Quick start guide](how-to-use-appyx/quick-start.md), [Codelabs](how-to-use-appyx/codelabs.md), and [Sample apps](how-to-use-appyx/sample-apps.md)!
+
 
 ## Articles
 

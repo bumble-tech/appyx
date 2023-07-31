@@ -1,13 +1,12 @@
 # Appyx
 
+
 ## 2.x vs 1.x project organisation
 
 ### Appyx 1.0
-
 Packaged as a single library, implementing Model-driven navigation with transitions together.
 
 ### Appyx 2.0
-
 The library is packaged as multiple artifacts.
 
 #### :appyx-navigation
@@ -25,16 +24,18 @@ The library is packaged as multiple artifacts.
 - Does not contain Node-related functionality → moved to `:appyx-navigation`
 - Does not contain Android-specific functionality → moved to `:appyx-navigation`
 - Compose multiplatform
-
+   
 #### :appyx-components
 
 - Pre-packaged components to use with `:appyx-navigation`
 - Compose multiplatform
+ 
 
 ## 1.x ~ 2.x rough equivalents
 
 - `NavModel` -> `AppyxComponent`
 - `TransitionHandler` -> `MotionController`
+
 
 ## 1.x → 2.x Migration guide
 
@@ -44,8 +45,7 @@ The library is packaged as multiple artifacts.
 
 #### Core
 
-Note that [BackStack](../components/backstack.md) and [Spotlight](../components/spotlight.md) are
-now standalone artifacts. Check your usage, you might only need `backstack`:
+Note that [BackStack](../components/backstack.md) and [Spotlight](../components/spotlight.md) are now standalone artifacts. Check your usage, you might only need `backstack`:
 
 ```diff
 -    implementation("com.bumble.appyx:core:1.x.x")
@@ -53,6 +53,8 @@ now standalone artifacts. Check your usage, you might only need `backstack`:
 +    implementation("com.bumble.appyx:backstack-android:2.0.0-alpha01")
 +    implementation("com.bumble.appyx:spotlight-android:2.0.0-alpha01")
 ```
+
+
 
 #### Testing
 
@@ -69,6 +71,7 @@ Artifacts have a `utils-` prefix:
 +"com.bumble.appyx:utils-testing-junit4"
 +"com.bumble.appyx:utils-testing-junit5"
 ```
+
 
 ### MainActivity
 
@@ -154,6 +157,7 @@ class RootNode(
 }
 ```
 
+
 ### Usage site (@Preview)
 
 ```diff
@@ -176,5 +180,4 @@ fun RootNodePreview() {
 }
 ```
 
-If you have a broken import that's not listed above, please open an issue/PR, or let us know on
-the **#appyx** channel on Kotlinlang Slack. Thanks!
+If you have a broken import that's not listed above, please open an issue/PR, or let us know on the **#appyx** channel on Kotlinlang Slack. Thanks!
