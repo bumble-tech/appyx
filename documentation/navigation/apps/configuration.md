@@ -4,46 +4,56 @@ To retain objects during configuration change you can use the `RetainedInstanceS
 
 ## How does it work?
 
-The `RetainedInstanceStore` stores the objects within a singleton. The node manages whether the content should be removed by checking whether the `Activity` is being recreated due to a configuration change or not.
+The `RetainedInstanceStore` stores objects within a singleton.
 
-These are the following scenarios:
-- If the `Activity` is recreated: the retained instance is returned instead of a new instance.
-- If the `Activity` is destroyed: the retained instance is removed and disposed.
+Every `Node` has access to the `RetainedInstanceStore` and manages these cases automatically:
+
+- The `Activity` is recreated: the retained instance is returned instead of a new instance.
+- The `Activity` is destroyed: the retained instance is removed and disposed.
+
 
 ## Example
 
-Here is an example of how you can use the `RetainedInstanceStore`:
+Appyx provides extension methods on the `BuildContext` class (an instance which is passed to every `Node` upon creation) to access the `RetainedInstanceStore`. You can use these to:
+
+- Create your retained objects (`factory`)
+- Define cleanup mechanisms (`disposer`) to be run when the retained object will be removed on `Activity` destroy.
+
+You can opt to use the `Builder` pattern to provide dependencies to your `Node` and separate this logic:
 
 ```kotlin
-import com.bumble.appyx.core.builder.Builder
-import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.node.Node
-import com.bumble.appyx.core.store.getRetainedInstance
-import com.bumble.appyx.interop.rx2.store.getRetainedDisposable
+import com.bumble.appyx.navigation.builder.Builder
+import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.store.getRetainedInstance
+import com.bumble.appyx.utils.interop.rx2.store.getRetainedDisposable
 
-class RetainedInstancesBuilder : Builder<String>() {
+class YourNodeBuilder : Builder<YourPayload>() {
 
-    override fun build(buildContext: BuildContext, payload: String): Node {
-        val retainedNonDisposable = buildContext.getRetainedInstance(
-            factory = { NonDisposableClass(payload) },
-            disposer = { feature.cleanUp() }
-        ) 
-        val retainedFeature = buildContext.getRetainedDisposable {
-            RetainedInstancesFeature(payload)
+    override fun build(buildContext: BuildContext, payload: YourPayload): Node {
+        // Case 1:
+        // If your type implements an rx2/rx3 Disposable,
+        // you don't need to pass a disposer:
+        val retainedFoo = buildContext.getRetainedDisposable {
+            Foo(payload)
         }
-
-        val view = RetainedInstancesViewImpl()
-        val interactor = RetainedInstancesInteractor(
-            feature = retainedFeature,
-            nonDisposable = retainedNonDisposable,
-            view = view
+        
+        // Case 2:
+        // If your type doesn't implement an rx2/rx3 Disposable,
+        // you can define a custom cleanup mechanism:
+        val retainedFoo = buildContext.getRetainedInstance(
+            factory = { Foo(payload) },
+            disposer = { it.cleanup() } // it: Foo
         )
+        
+        val view = YourNodeViewImpl()
 
-        return RetainedInstancesNode(
+        return YourNode(
             buildContext = buildContext,
+            foo = retainedFoo, 
             view = view,
-            plugins = listOf(interactor)
         )
     }
 }
 ```
+
