@@ -48,6 +48,7 @@ nav:
       - Transition model: interactions/transitionmodel.md
       - Operations: interactions/operations.md
       - UI representation: interactions/uirepresentation.md
+      - KSP setup: interactions/ksp.md
       - Gestures: interactions/gestures.md
   - Appyx Components:
     - Overview: components/index.md
