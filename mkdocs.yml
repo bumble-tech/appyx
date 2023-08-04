@@ -94,6 +94,7 @@ nav:
         - ChildAware API: 1.x/apps/childaware.md
         - Configuration changes: 1.x/apps/configuration.md
     - FAQ: 1.x/faq.md
+  - FAQ: faq.md
 
 
 # theme configuration
@@ -152,7 +153,6 @@ plugins:
         'apps/plugins.md': 'navigation/apps/plugins.md'
         'apps/childaware.md': 'navigation/apps/childaware.md'
         'apps/configuration.md': 'navigation/apps/configuration.md'
-        'faq.md': '1.x/faq.md'
         'news.md': 'index.md'
 
 # extensions
