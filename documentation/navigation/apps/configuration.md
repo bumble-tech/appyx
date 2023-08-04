@@ -4,6 +4,8 @@ To retain objects during configuration change you can use the `RetainedInstanceS
 
 ## How does it work?
 
+{==
+
 The `RetainedInstanceStore` stores objects within a singleton.
 
 Every `Node` has access to the `RetainedInstanceStore` and manages these cases automatically:
@@ -11,6 +13,7 @@ Every `Node` has access to the `RetainedInstanceStore` and manages these cases a
 - The `Activity` is recreated: the retained instance is returned instead of a new instance.
 - The `Activity` is destroyed: the retained instance is removed and disposed.
 
+==}
 
 ## Example
 
@@ -20,6 +23,12 @@ Appyx provides extension methods on the `BuildContext` class (an instance which 
 - Define cleanup mechanisms (`disposer`) to be run when the retained object will be removed on `Activity` destroy.
 
 You can opt to use the `Builder` pattern to provide dependencies to your `Node` and separate this logic:
+
+{==
+
+Note: to use the rx2/rx3 `getRetainedDisposable` extension methods you see below, you need to add the relevant gradle dependencies. Please refer to [Downloads](../../releases/downloads.md).
+
+==}
 
 ```kotlin
 import com.bumble.appyx.navigation.builder.Builder
@@ -56,4 +65,3 @@ class YourNodeBuilder : Builder<YourPayload>() {
     }
 }
 ```
-
