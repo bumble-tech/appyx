@@ -7,6 +7,9 @@ Model-driven navigation + UI components with gesture control for Compose Multipl
 
 Find us on Kotlinlang Slack: **#appyx**
 
+## Setup
+
+See [Downloads](releases/downloads.md) and [Navigation quick start guide](navigation/quick-start.md).
 
 ## Overview
 
