@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.interactions.widgets
 
 import androidx.compose.animation.core.Spring

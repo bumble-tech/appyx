@@ -51,7 +51,9 @@ class SpotlightModel<InteractionTarget : Any>(
             activeIndex = initialActiveIndex
         )
 
-    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> {
+    override fun State<InteractionTarget>.removeDestroyedElement(
+        element: Element<InteractionTarget>
+    ): State<InteractionTarget> {
         val newPositions = positions.map { position ->
             val newElements = position
                 .elements

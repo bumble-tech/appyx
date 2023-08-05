@@ -120,11 +120,15 @@ fun ChildWrapper(
     }
 }
 
+@Suppress(
+    "MagicNumber",
+    "UnstableCollections" // colors is not an immutable list
+)
 @Composable
 fun SampleElement(
     elementUiModel: ElementUiModel<*>,
-    modifier: Modifier = Modifier.fillMaxSize(),
     colors: List<Color>,
+    modifier: Modifier = Modifier.fillMaxSize(),
     color: Color? = Color.Unspecified,
     contentDescription: String? = null
 ) {

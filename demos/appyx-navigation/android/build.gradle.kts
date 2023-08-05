@@ -1,9 +1,6 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
+    id("com.bumble.appyx.android.application")
     id("kotlin-parcelize")
-    id("appyx-lint")
-    id("appyx-detekt")
 }
 
 android {

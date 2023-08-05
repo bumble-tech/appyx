@@ -19,6 +19,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
+@Suppress("MagicNumber")
 class BackStackParallax<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec

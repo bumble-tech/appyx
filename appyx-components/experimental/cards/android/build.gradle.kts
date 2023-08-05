@@ -1,7 +1,6 @@
 plugins {
+    id("com.bumble.appyx.android.library")
     id("org.jetbrains.compose")
-    id("com.android.library")
-    kotlin("android")
 }
 
 
@@ -31,7 +30,7 @@ android {
 dependencies {
     val composeBom = platform(libs.compose.bom)
 
-    api(project(":demos:common"))
+    implementation(project(":demos:common"))
 
     implementation(project(":appyx-interactions:android"))
     implementation(project(":appyx-interactions:appyx-interactions"))

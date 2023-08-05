@@ -34,10 +34,12 @@ import com.squareup.kotlinpoet.ksp.toTypeName
 import com.squareup.kotlinpoet.ksp.writeTo
 import kotlinx.coroutines.CoroutineScope
 
+@Suppress("TooManyFunctions", "MaxLineLength")
 class MutableUiStateProcessor(
     private val codeGenerator: CodeGenerator,
     private val logger: KSPLogger,
 ) : SymbolProcessor {
+    @Suppress("NestedBlockDepth")
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val resultFiles = mutableListOf<KSFile>()
         val targetType = resolver.getType(MotionProperty.Target::class)

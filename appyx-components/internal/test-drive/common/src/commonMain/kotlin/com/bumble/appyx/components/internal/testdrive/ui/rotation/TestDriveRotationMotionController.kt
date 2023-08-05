@@ -27,7 +27,8 @@ class TestDriveRotationMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun TestDriveModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun TestDriveModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(element, elementState.toTargetUiState()).also {
                 AppyxLogger.d("TestDrive", "Matched $elementState -> UiState: ${it.targetUiState}")

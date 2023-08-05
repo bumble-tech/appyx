@@ -1,7 +1,6 @@
 plugins {
+    id("com.bumble.appyx.android.library")
     id("org.jetbrains.compose")
-    id("com.android.library")
-    kotlin("android")
 }
 
 

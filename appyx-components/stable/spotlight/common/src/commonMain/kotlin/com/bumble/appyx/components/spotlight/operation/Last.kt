@@ -16,10 +16,14 @@ class Last<InteractionTarget : Any>(
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         fromState.copy(
             activeIndex = fromState.positions.lastIndex.toFloat(),
         )

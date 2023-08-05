@@ -41,12 +41,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
+@Suppress("TooManyFunctions")
 open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
-    private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
+    private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = {
+        GestureFactory.Noop()
+    },
     final override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     protected val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completeGestureSpec = defaultAnimationSpec,
@@ -107,6 +109,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     }
 
     private var animationScope: CoroutineScope? = null
+    @Suppress("UnusedPrivateMember")
     private var isInitialised: Boolean = false
 
     private fun observeAnimationChanges(motionController: MotionController<InteractionTarget, ModelState>) {

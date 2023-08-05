@@ -1,6 +1,5 @@
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    id("com.bumble.appyx.multiplatform")
     id("com.android.library")
     id("kotlin-parcelize")
     id("appyx-publish-multiplatform")

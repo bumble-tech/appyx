@@ -23,7 +23,8 @@ class BackStackFader<InteractionTarget : Any>(
         alpha = Alpha.Target(0f)
     )
 
-    override fun BackStackModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun BackStackModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(active, visible)
         ) + (created + stashed + destroyed).map {

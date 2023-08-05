@@ -17,7 +17,7 @@ style:
   ForbiddenComment:
     allowedPatterns: 'https://github.com/bumble-tech/appyx/issues/*'
   MagicNumber:
-    excludes: [ '**/test/**', '**/*Test.kt' ]
+    excludes: [ '**/test/**', '**/*Test.kt', '**/demos/**', '**/androidTest/**', '**/commonTest/**', '**/desktopTest/**' , '**/jsTest/**' ]
   MaxLineLength:
     excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt' ]
     excludeCommentStatements: true

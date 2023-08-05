@@ -16,10 +16,14 @@ data class MoveTo<InteractionTarget>(
     override fun isApplicable(state: TestDriveModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: TestDriveModel.State<InteractionTarget>): TestDriveModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: TestDriveModel.State<InteractionTarget>
+    ): TestDriveModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: TestDriveModel.State<InteractionTarget>): TestDriveModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: TestDriveModel.State<InteractionTarget>
+    ): TestDriveModel.State<InteractionTarget> =
         fromState.copy(
             elementState = elementState
         )

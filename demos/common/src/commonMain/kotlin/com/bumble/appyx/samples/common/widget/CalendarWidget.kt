@@ -58,7 +58,7 @@ private fun Event(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = Color.DarkGray,
-            modifier = modifier
+            modifier = Modifier
                 .requiredWidth(80.dp)
                 .padding(end = 8.dp),
         )
@@ -66,7 +66,7 @@ private fun Event(
             text = event,
             fontSize = 16.sp,
             color = Color.DarkGray,
-            modifier = modifier.weight(1f),
+            modifier = Modifier.weight(1f),
         )
     }
 }

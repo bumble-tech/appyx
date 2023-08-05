@@ -11,6 +11,7 @@ pluginManagement {
         id("org.jetbrains.compose")
         id("com.google.devtools.ksp")
     }
+    includeBuild("plugins")
 }
 
 dependencyResolutionManagement {
@@ -98,5 +99,3 @@ project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"
 project(":appyx-components:experimental:puzzle15:web").name = "puzzle15-web"
 project(":appyx-components:internal:test-drive:common").name = "test-drive"
 project(":demos:appyx-navigation:web").name = "navigation-web"
-
-includeBuild("plugins")

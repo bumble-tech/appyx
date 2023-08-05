@@ -1,6 +1,5 @@
 plugins {
-    kotlin("multiplatform")
-    id("org.jetbrains.compose")
+    id("com.bumble.appyx.multiplatform")
     id("com.google.devtools.ksp")
 }
 

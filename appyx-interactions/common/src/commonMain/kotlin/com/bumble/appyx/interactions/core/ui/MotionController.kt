@@ -41,8 +41,9 @@ interface MotionController<InteractionTarget, ModelState> {
         mapSegment(
             keyframes.currentSegment,
             keyframes.getSegmentProgress(segmentIndex),
-            keyframes.progress.toSegmentProgress(segmentIndex)
-                ?: throw IllegalStateException("Segment progress should be in bounds")
+            checkNotNull(keyframes.progress.toSegmentProgress(segmentIndex)) {
+                "Segment progress should be in bounds"
+            }
         )
 
     fun mapSegment(
