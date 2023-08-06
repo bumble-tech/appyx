@@ -1,24 +1,17 @@
 plugins {
     id("com.bumble.appyx.android.application")
-    id("kotlin-parcelize")
+}
+
+appyx {
+    namespace.set("com.bumble.appyx.demos.appyxnavigation")
+
+    buildFeatures {
+        compose.set(true)
+        kotlinParcelize.set(true)
+    }
 }
 
 android {
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    namespace = "com.bumble.appyx.demos.appyxnavigation"
-
-    defaultConfig {
-        applicationId = "com.bumble.demos.samples.appyxnavigation"
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
     signingConfigs {
         create("sampleConfig") { // debug is already created
             storeFile = file("debug.keystore")
@@ -40,12 +33,6 @@ android {
             // if we ever publish, we should create a more secure signingConfig
             signingConfig = signingConfigs.findByName("sampleConfig")
         }
-    }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
 }
 

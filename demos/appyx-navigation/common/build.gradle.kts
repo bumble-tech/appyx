@@ -7,6 +7,10 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+appyx {
+    androidNamespace.set("com.bumble.appyx.demos.appyxnavigation.common")
+}
+
 kotlin {
     android {
         publishLibraryVariants("release")
@@ -66,13 +70,6 @@ kotlin {
 }
 
 android {
-    namespace = "com.bumble.appyx.demos.appyxnavigation.common"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-    }
     buildFeatures {
         compose = true
     }

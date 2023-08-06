@@ -6,6 +6,10 @@ plugins {
     id("appyx-publish-multiplatform")
 }
 
+appyx {
+    androidNamespace.set("com.bumble.appyx.samples.common")
+}
+
 kotlin {
     android {
         publishLibraryVariants("release")
@@ -44,15 +48,5 @@ kotlin {
             }
         }
         val desktopMain by getting
-    }
-}
-
-android {
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }

@@ -7,6 +7,10 @@ plugins {
     id("appyx-publish-multiplatform")
 }
 
+appyx {
+    androidNamespace.set("com.bumble.appyx.interactions.common")
+}
+
 kotlin {
     android {
         publishLibraryVariants("release")
@@ -58,15 +62,5 @@ kotlin {
                 implementation(npm("uuid", libs.versions.uuid.get()))
             }
         }
-    }
-}
-
-android {
-    namespace = "com.bumble.appyx.interactions.common"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }
