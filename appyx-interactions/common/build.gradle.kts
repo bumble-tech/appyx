@@ -1,5 +1,6 @@
 plugins {
     id("com.bumble.appyx.multiplatform")
+    kotlin("plugin.serialization")
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")

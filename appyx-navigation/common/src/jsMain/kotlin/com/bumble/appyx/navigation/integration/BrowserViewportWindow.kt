@@ -21,6 +21,7 @@ private const val CANVAS_ELEMENT_ID = "ComposeTarget" // Hardwired into ComposeW
 /**
  * A Skiko/Canvas-based top-level window using the browser's entire viewport. Supports resizing.
  */
+@Suppress("FunctionNaming")
 fun BrowserViewportWindow(
     title: String = "Untitled",
     content: @Composable ComposeWindow.() -> Unit

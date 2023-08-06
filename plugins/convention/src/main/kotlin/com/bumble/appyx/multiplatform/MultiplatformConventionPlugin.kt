@@ -10,7 +10,6 @@ class MultiplatformConventionPlugin : Plugin<Project> {
         project.extensions.create("appyx", MultiplatformConventionExtension::class.java)
 
         project.plugins.apply("kotlin-multiplatform")
-        project.plugins.apply("org.jetbrains.compose")
         project.plugins.apply("appyx-detekt")
 
         project.extensions.configure<DetektExtension> {

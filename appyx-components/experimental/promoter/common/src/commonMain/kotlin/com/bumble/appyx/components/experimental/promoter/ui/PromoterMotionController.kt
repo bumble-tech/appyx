@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.bumble.appyx.components.experimental.promoter.ui
 
 import androidx.compose.animation.core.SpringSpec
@@ -27,7 +28,8 @@ class PromoterMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun PromoterModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun PromoterModel.State<InteractionTarget>.toUiTargets(
+    ): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         elements.map {
             MatchedTargetUiState(
                 it.first, when (it.second) {
@@ -50,6 +52,7 @@ class PromoterMotionController<InteractionTarget : Any>(
 
     private val halfWidthDp = uiContext.transitionBounds.widthDp.value / 2
     private val halfHeightDp = uiContext.transitionBounds.heightDp.value / 2
+    @Suppress("MaxLineLength", "UnusedPrivateMember")
     private val center = DpOffset(halfWidthDp.dp, halfHeightDp.dp) - DpOffset((childSize.value / 2).dp, (childSize.value / 2).dp)
     private val radius = min(halfWidthDp, halfHeightDp) * 0.8f
 

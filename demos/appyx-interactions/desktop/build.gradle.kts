@@ -2,6 +2,7 @@ import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     id("com.bumble.appyx.multiplatform")
+    id("org.jetbrains.compose")
     id("com.google.devtools.ksp")
 }
 

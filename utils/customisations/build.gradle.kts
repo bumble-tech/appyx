@@ -1,8 +1,7 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("com.android.library")
     id("appyx-publish-multiplatform")
-    id("appyx-detekt")
 }
 
 publishingPlugin {

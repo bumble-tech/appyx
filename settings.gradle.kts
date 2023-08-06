@@ -35,7 +35,6 @@ include(
     ":appyx-components:internal:test-drive:common",
     ":appyx-components:experimental:cards:android",
     ":appyx-components:experimental:cards:common",
-    ":appyx-components:experimental:modal:android",
     ":appyx-components:experimental:modal:common",
     ":appyx-components:experimental:promoter:android",
     ":appyx-components:experimental:promoter:common",

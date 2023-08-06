@@ -38,7 +38,7 @@ import com.bumble.appyx.interactions.sample.android.Element
 import kotlin.math.roundToInt
 
 
-@Suppress("MagicNumber")
+@Suppress("MagicNumber", "LongMethod")
 @ExperimentalMaterialApi
 @Composable
 fun PromoterExperiment(modifier: Modifier = Modifier) {

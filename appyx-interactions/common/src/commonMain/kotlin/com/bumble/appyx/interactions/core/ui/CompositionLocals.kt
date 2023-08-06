@@ -7,5 +7,6 @@ import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 @Suppress("CompositionLocalAllowlist")
 val LocalMotionProperties = compositionLocalOf<List<MotionProperty<*, *>>?> { null }
 
+@Suppress("CompositionLocalAllowlist")
 val LocalBoxScope = compositionLocalOf<BoxScope?> { null }
 

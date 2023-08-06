@@ -19,7 +19,7 @@ style:
   MagicNumber:
     excludes: [ '**/test/**', '**/*Test.kt', '**/demos/**', '**/androidTest/**', '**/commonTest/**', '**/desktopTest/**' , '**/jsTest/**' ]
   MaxLineLength:
-    excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt' ]
+    excludes: [ '**/test/**', '**/*.Test.kt', '**/*.Spec.kt', '**/androidTest/**', '**/commonTest/**', '**/desktopTest/**' , '**/jsTest/**' ]
     excludeCommentStatements: true
   UnusedPrivateMember:
     # https://detekt.dev/docs/introduction/compose#unusedprivatemember

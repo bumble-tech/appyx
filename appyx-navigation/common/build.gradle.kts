@@ -1,9 +1,8 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
     id("appyx-publish-multiplatform")
-    id("appyx-detekt")
 }
 
 kotlin {
