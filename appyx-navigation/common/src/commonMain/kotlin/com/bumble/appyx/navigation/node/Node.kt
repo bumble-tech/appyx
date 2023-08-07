@@ -15,6 +15,7 @@ import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.LifecycleLogger
+import com.bumble.appyx.navigation.lifecycle.LocalCommonLifecycleOwner
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
@@ -113,6 +114,7 @@ open class Node internal constructor(
     fun Compose(modifier: Modifier = Modifier) {
         CompositionLocalProvider(
             LocalNode provides this,
+            LocalCommonLifecycleOwner provides this,
         ) {
             DerivedSetup()
             View(modifier)
