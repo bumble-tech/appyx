@@ -45,6 +45,11 @@ open class Node internal constructor(
         plugins: List<Plugin> = emptyList()
     ) : this(buildContext, view, RetainedInstanceStore, plugins)
 
+    @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
+    private val nodeLifecycle = NodeLifecycleImpl(this)
+
+    private var wasBuilt = false
+
     val id: String
         get() = buildContext.identifier
 
@@ -66,9 +71,6 @@ open class Node internal constructor(
 
     override val lifecycleScope: CoroutineScope by lazy { lifecycle.coroutineScope }
 
-    @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
-    private val nodeLifecycle = NodeLifecycleImpl(this)
-
     var integrationPoint: IntegrationPoint = IntegrationPointStub()
         get() {
             return if (isRoot) field
@@ -80,8 +82,6 @@ open class Node internal constructor(
             check(isRoot) { "Only a root Node can have an integration point" }
             field = value
         }
-
-    private var wasBuilt = false
 
     init {
         if (BuildFlags.DEBUG) {

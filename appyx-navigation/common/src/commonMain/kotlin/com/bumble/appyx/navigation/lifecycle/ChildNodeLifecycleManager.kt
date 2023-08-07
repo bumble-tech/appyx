@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
  * Hosts [PlatformLifecycleRegistry] to manage the current node lifecycle
  * and updates lifecycle of children nodes when updated.
  */
-internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
+internal class ChildNodeLifecycleManager<InteractionTarget : Any>(
     private val appyxComponent: AppyxComponent<InteractionTarget, *>,
     private val children: StateFlow<ChildEntryMap<InteractionTarget>>,
     private val keepMode: ChildEntry.KeepMode,
@@ -60,8 +60,7 @@ internal class ChildNodeLifecycleManager<InteractionTarget: Any>(
                 }
                 .collect { (parentLifecycleState, screenState, children) ->
                     screenState.onScreen.forEach { key ->
-                        val childState =
-                            minOf(parentLifecycleState, Lifecycle.State.RESUMED)
+                        val childState = minOf(parentLifecycleState, Lifecycle.State.RESUMED)
                         children.current[key]?.setState(childState)
                     }
 

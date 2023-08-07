@@ -157,10 +157,12 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
 
                                             transformedBoundingBox =
                                                 it.boundsInParent().inflate(gestureExtraTouchAreaPx)
-                                            offsetCenter = transformedBoundingBox.center - localCenter
+                                            offsetCenter =
+                                                transformedBoundingBox.center - localCenter
                                         }
+                                )
                             )
-                        )}
+                        }
                     }
                 }
             }

@@ -134,9 +134,7 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
             .forEach { elementUiModel ->
                 key(elementUiModel.element.id) {
                     var transformedBoundingBox by remember(elementUiModel.element.id) {
-                        mutableStateOf(
-                            Rect.Zero
-                        )
+                        mutableStateOf(Rect.Zero)
                     }
                     var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
                     var size by remember(elementUiModel.element.id) { mutableStateOf(IntSize.Zero) }

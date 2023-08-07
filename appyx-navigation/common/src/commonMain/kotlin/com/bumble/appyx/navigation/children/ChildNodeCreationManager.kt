@@ -94,10 +94,8 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             }
             val mutableMap = map.toMutableMap()
             newElements.forEach { key ->
-                val shouldSuspend =
-                    keepMode == ChildEntry.KeepMode.SUSPEND && appyxComponentSuspendElements.contains(
-                        key
-                    )
+                val shouldSuspend = keepMode == ChildEntry.KeepMode.SUSPEND
+                        && appyxComponentSuspendElements.contains(key)
                 mutableMap[key] =
                     childEntry(
                         key = key,
@@ -128,6 +126,7 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
         return when (child) {
             is ChildEntry.Initialized ->
                 child
+
             is ChildEntry.Suspended ->
                 _children.updateAndGet { map ->
                     val updateChild = map[element]

@@ -17,14 +17,10 @@ class Puzzle15(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: Puzzle15Model = Puzzle15Model(savedStateMap = null),
     motionController: (UiContext) -> MotionController<Tile, Puzzle15Model.State> = {
-        Puzzle15MotionController(
-            it
-        )
+        Puzzle15MotionController(it)
     },
     gestureFactory: (TransitionBounds) -> GestureFactory<Tile, Puzzle15Model.State> = { bounds ->
-        Puzzle15MotionController.Gestures(
-            bounds
-        )
+        Puzzle15MotionController.Gestures(bounds)
     },
     animationSpec: AnimationSpec<Float> = spring(),
     animateSettle: Boolean = false,
