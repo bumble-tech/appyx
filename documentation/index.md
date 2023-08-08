@@ -20,11 +20,11 @@ Appyx is a collection of libraries:
 
 ## Appyx Navigation
 
-**Type-safe navigation directly from code.**
+**Type-safe navigation for Compose directly from code.**
 
 - Tree-based, composable
-- Leverages the transitions and gesture-based capabilities to **Appyx Interactions** to build beautiful, custom navigation.
-- Use any component for navigation, whether pre-built (see: [Appyx Components](components/index.md)), or custom-built by you (see: [Appyx Interactions](interactions/index.md)).
+- Leverages the transitions and gesture-based capabilities of [Appyx Interactions](interactions/index.md) to build beautiful, custom navigation.
+- Use any component for navigation, whether pre-built ([Appyx Components](components/index.md)), or custom-built by you ([Appyx Interactions](interactions/index.md)).
 
 [» More details](navigation/index.md)
 
@@ -68,7 +68,7 @@ Appyx is a collection of libraries:
 
 **Component gallery.** 
 
-Back stack, Spotlight (pager), and other UI components built using Appyx Interactions.
+Back stack, Spotlight (pager), and other UI components built using [Appyx Interactions](interactions/index.md).
 
 [» More details](components/index.md)
 
