@@ -74,7 +74,7 @@ Please see [Appyx + ViewModel](navigation/integrations/viewmodel.md).
 
 #### **Q: Can I use it with Hilt?**
 
-Please see [Appyx + Hilt](navigation/integrations/hilt.md).
+Please see [Appyx + DI frameworks](navigation/integrations/di-frameworks.md).
 
 ---
 

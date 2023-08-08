@@ -28,9 +28,7 @@ Use the links in the nav menu to see more details.
 ## Integrations
 
 - [Compose Navigation](integrations/compose-navigation.md)
-- [Hilt](integrations/hilt.md)
-- [Koin](integrations/koin.md)
-- [Kodein](integrations/kodein.md)
+- [DI frameworks](integrations/di-frameworks.md)
 - [RIBs](integrations/ribs.md)
 - [RxJava](integrations/rx.md)
 - [ViewModel](integrations/viewmodel.md)
