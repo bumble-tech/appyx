@@ -32,7 +32,7 @@ See [Model-driven navigation](navigation/concepts/model-driven-navigation.md) fo
 
 In most cases [Implicit navigation](navigation/concepts/implicit-navigation.md) can be your primary choice, and you don't need to explicitly specify a remote point in the tree. This is helpful to avoid coupling.
 
-For those cases when you can't avoid it, [Explicit navigation](navigation/concepts/explicit-navigation.md) and [Deep linking](navigation/concepts/deep-linking.md) covers you.
+For those cases when you can't avoid it, [Explicit navigation](navigation/concepts/explicit-navigation.md) and [Deep linking](navigation/features/deep-linking.md) covers you.
 
 ---
 

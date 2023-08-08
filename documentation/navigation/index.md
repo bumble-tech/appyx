@@ -16,14 +16,13 @@ Use the links in the nav menu to see more details.
 - [Composable navigation](concepts/composable-navigation.md)
 - [Implicit navigation](concepts/implicit-navigation.md)
 - [Explicit navigation](concepts/explicit-navigation.md)
-- [Deep linking](concepts/deep-linking.md)
 
 ## Features
 
+- [Deep link navigation](features/deep-linking.md)
+- [Lifecycle](features/lifecycle.md)
 - [Scoped DI](features/scoped-di.md)
 - [Surviving configuration changes](features/configuration.md)
-- [Lifecycle](features/lifecycle.md)
-- [Deep link navigation](concepts/deep-linking.md)
 
 ## Integrations
 
