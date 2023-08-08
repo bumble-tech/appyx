@@ -4,7 +4,7 @@ Once you represent your navigation in a [Composable way](../concepts/composable-
 
 <img src="https://i.imgur.com/hKvOs3w.gif" width="450">
 
-Appyx gives every single `Node` its own DI scope for free, with no extra effort required needed to clean up these scopes other than navigating away from them.
+Appyx gives every single `Node` its own DI scope for free, with no extra effort required to clean up these scopes other than navigating away from them.
 
 
 ## How does this work?
@@ -12,7 +12,7 @@ Appyx gives every single `Node` its own DI scope for free, with no extra effort 
 1. Imagine you create an object in the `Node` related to `Onboarding`, and make it available to all of its children.
 2. While navigation is advancing between the individual screens of Onboarding, `O1` – `O2` – `O3`, this object will be the same instance.
 3. As soon as the navigation switches to `Main`, the entire subtree of `Onboarding` is destroyed and all held objects are released.
-4. Should the navigation ever go back to Onboarding, said object would be created from scratch.
+4. Should the navigation ever go back to `Onboarding`, said object would be created from scratch.
 
 This of course applies to every other `Node` in the tree.
 
