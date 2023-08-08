@@ -23,16 +23,16 @@ The core concepts of navigation in Appyx differ from most navigation libraries:
 2. You can define your own navigation models using [Appyx Components](components/index.md)
 3. On the UI level you can transform what feels like the "screen" itself
 
-See [Model-driven navigation](navigation/navigation/model-driven-navigation.md) for more details.
+See [Model-driven navigation](navigation/concepts/model-driven-navigation.md) for more details.
 
 ---
 
 
 #### **Q: How can I navigate to a specific part of my Appyx tree?**
 
-In most cases [Implicit navigation](navigation/navigation/implicit-navigation.md) can be your primary choice, and you don't need to explicitly specify a remote point in the tree. This is helpful to avoid coupling.
+In most cases [Implicit navigation](navigation/concepts/implicit-navigation.md) can be your primary choice, and you don't need to explicitly specify a remote point in the tree. This is helpful to avoid coupling.
 
-For those cases when you can't avoid it, [Explicit navigation](navigation/navigation/explicit-navigation.md) and [Deep linking](navigation/navigation/deep-linking.md) covers you.
+For those cases when you can't avoid it, [Explicit navigation](navigation/concepts/explicit-navigation.md) and [Deep linking](navigation/concepts/deep-linking.md) covers you.
 
 ---
 
@@ -88,7 +88,7 @@ In short: you can decide whether a `Node`:
 - is off-screen but kept alive
 - is off-screen and becomes destroyed
 
-Check the [Lifecycle](navigation/apps/lifecycle.md#on-screen-off-screen) for more details.
+Check the [Lifecycle](navigation/features/lifecycle.md#on-screen-off-screen) for more details.
 
 ---
 

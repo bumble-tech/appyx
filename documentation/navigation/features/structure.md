@@ -1,6 +1,6 @@
 # Structuring your app navigation
 
-As seen in [Composable navigation](../navigation/composable-navigation.md), you can make `AppyxComponents` composable. 
+As seen in [Composable navigation](../concepts/composable-navigation.md), you can make `AppyxComponents` composable. 
 
 To achieve this, Appyx offers the `Node` class as the structural element.
 
@@ -22,7 +22,7 @@ You can think of a `Node` as a standalone component with:
 - State restoration
 -  A `@Composable` view
 - Business logic that's kept alive even when the view isn't added to the composition
-- The ability to host generic [Plugins](../apps/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
+- The ability to host generic [Plugins](/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
 
 
 ## Parent nodes, child nodes
@@ -40,14 +40,14 @@ You can go as granular or as high-level as it fits you. This allows to keep the 
 
 `Nodes` offer the structure – `AppyxComponents` add dynamism to it.
 
-Read more in [Composable navigation](../navigation/composable-navigation.md)
+Read more in [Composable navigation](../concepts/composable-navigation.md)
 
 
 ## Lifecycle
 
 Nodes have their own lifecycles, directly using the related classes of `androidx.lifecycle`.
 
-Read more in [Lifecycle](../apps/lifecycle.md)
+Read more in [Lifecycle](/lifecycle.md)
 
 
 ## ChildAware API

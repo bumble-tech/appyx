@@ -11,7 +11,7 @@ As a single `AppyxComponent` won't be enough for the whole of your whole app, yo
 
 This allows you to make your app's business logic also composable by leveraging `Nodes` as lifecycled components.
 
-Read more in [Structuring your app navigation](../apps/structure.md)
+Read more in [Structuring your app navigation](../features/structure.md)
 
 
 ## Navigation in the tree

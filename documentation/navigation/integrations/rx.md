@@ -5,7 +5,7 @@ Rx2 and Rx3 implementations are provided for the functionality below. Please ref
 
 ## Connectable
 
-You can use this together with the [ChildAware API](../apps/childaware.md) to set up communication between Nodes in a decoupled way:
+You can use this together with the [ChildAware API](../features/childaware.md) to set up communication between Nodes in a decoupled way:
 
 ```kotlin
 interface Connectable<Input, Output> : NodeLifecycleAware {
@@ -18,7 +18,7 @@ interface Connectable<Input, Output> : NodeLifecycleAware {
 
 Provides a singleton store to survive configuration changes. The rx2/rx3 helpers add automatic disposal on objects implementing `Disposable`.
 
-You can find more details here: [Configuration change](../apps/configuration.md) 
+You can find more details here: [Configuration change](../features/configuration.md) 
 
 ```kotlin
 import com.bumble.appyx.utils.interop.rx2.store.getRetainedDisposable

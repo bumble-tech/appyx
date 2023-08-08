@@ -1,6 +1,6 @@
 # Scoped DI
 
-Once you represent your navigation in a [Composable way](../navigation/composable-navigation.md), you will get powerful DI scoping as a pleasant side-effect:
+Once you represent your navigation in a [Composable way](../concepts/composable-navigation.md), you will get powerful DI scoping as a pleasant side-effect:
 
 <img src="https://i.imgur.com/hKvOs3w.gif" width="450">
 

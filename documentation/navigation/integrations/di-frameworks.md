@@ -34,6 +34,6 @@ It's worth mentioning that while manual DI in an unstructured project sounds lik
 
 Benefits:
 
-- [Scoped DI for free](../apps/scoped-di.md).
+- [Scoped DI for free](../features/scoped-di.md).
 - The tree provides a good enough structure to make it understandable.
 - Less boilerplate than with Dagger.

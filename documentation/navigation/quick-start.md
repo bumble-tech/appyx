@@ -1,6 +1,6 @@
 # Quick start guide
 
-You can check out [App structure](apps/structure.md), which explains the concepts you'll encounter in this guide.
+You can check out [App structure](features/structure.md), which explains the concepts you'll encounter in this guide.
 
 
 ## The scope of this guide
@@ -231,5 +231,5 @@ You can repeat the same pattern and make any embedded children also a `ParentNod
 
 ## Further reading
 
-- Check out [Model-driven navigation](navigation/model-driven-navigation.md) how to take your navigation to the next level
-- You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [Plugins](apps/plugins.md).
+- Check out [Model-driven navigation](concepts/model-driven-navigation.md) how to take your navigation to the next level
+- You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [Plugins](features/plugins.md).

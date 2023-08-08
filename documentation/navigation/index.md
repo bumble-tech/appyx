@@ -7,23 +7,23 @@ Use the links in the nav menu to see more details.
 
 ## Quick start
 
-[Quick start guide](navigation/quick-start.md)
+[Quick start guide](quick-start.md)
 
 
 ## Concepts
 
-- [Model-driven navigation](navigation/navigation/model-driven-navigation.md)
-- [Composable navigation](navigation/navigation/composable-navigation.md)
-- [Implicit navigation](navigation/navigation/implicit-navigation.md)
-- [Explicit navigation](navigation/navigation/explicit-navigation.md)
-- [Deep linking](navigation/navigation/deep-linking.md)
+- [Model-driven navigation](concepts/model-driven-navigation.md)
+- [Composable navigation](concepts/composable-navigation.md)
+- [Implicit navigation](concepts/implicit-navigation.md)
+- [Explicit navigation](concepts/explicit-navigation.md)
+- [Deep linking](concepts/deep-linking.md)
 
 ## Features
 
-- [Scoped DI](apps/scoped-di.md)
-- [Surviving configuration changes](apps/configuration.md)
-- [Lifecycle](apps/lifecycle.md)
-- [Deep link navigation](navigation/deep-linking.md)
+- [Scoped DI](features/scoped-di.md)
+- [Surviving configuration changes](features/configuration.md)
+- [Lifecycle](features/lifecycle.md)
+- [Deep link navigation](concepts/deep-linking.md)
 
 ## Integrations
 
