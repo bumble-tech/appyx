@@ -26,7 +26,12 @@ package com.bumble.appyx.navigation.store
  */
 interface RetainedInstanceStore {
 
-    fun <T : Any> get(storeId: String, key: String, disposer: (T) -> Unit = {}, factory: () -> T): T
+    fun <T : Any> get(
+        storeId: String,
+        key: String,
+        disposer: (T) -> Unit = {},
+        factory: () -> T
+    ): T
 
     fun isRetainedByStoreId(storeId: String, value: Any): Boolean
 

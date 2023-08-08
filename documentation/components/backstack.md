@@ -79,7 +79,7 @@ Class: `BackStackFader`
 
 ### Custom
 
-You can always create your own visualisations for Appyx components. Find more info in [UI representation](../interactions/uirepresentation.md).
+You can always create your own visualisations for Appyx components. Find more info in [UI representation](../interactions/ui-representation.md).
 
 
 
