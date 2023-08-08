@@ -11,7 +11,7 @@ Most of the same arguments apply to Appyx 2.x too.
 
 While Appyx represents a different paradigm, it can also co-exist with Jetpack Compose Navigation. This can be helpful if you want to use Appyx for in-screen mechanisms only, or if you plan to migrate gradually.
 
-See [Appyx + Compose Navigation](navigation/integrations/composenavigation.md) for more details.
+See [Appyx + Compose Navigation](navigation/integrations/compose-navigation.md) for more details.
 
 ---
 
@@ -55,7 +55,7 @@ If you wish, you can model your own Modal with Appyx too. We'll add an example s
 No, you can adopt Appyx gradually:
 
 - Plug an [Appyx Components](components/index.md) in to any screen and just use it as a UI component.
-- Plug it in to a few screens and substitute another navigation mechanism with it, such as [Jetpack Compose Navigation](navigation/integrations/composenavigation.md)
+- Plug it in to a few screens and substitute another navigation mechanism with it, such as [Jetpack Compose Navigation](navigation/integrations/compose-navigation.md)
 
 ---
 

@@ -34,7 +34,7 @@ nav:
           - ChildAware API: navigation/apps/childaware.md
           - Configuration changes: navigation/apps/configuration.md
       - Integrations:
-          - Compose Navigation: navigation/integrations/composenavigation.md
+          - Compose Navigation: navigation/integrations/compose-navigation.md
           - Hilt: navigation/integrations/hilt.md
           - Koin: navigation/integrations/koin.md
           - Kodein: navigation/integrations/kodein.md
@@ -48,7 +48,7 @@ nav:
       - Component overview: interactions/appyxcomponent.md
       - Transition model: interactions/transitionmodel.md
       - Operations: interactions/operations.md
-      - UI representation: interactions/uirepresentation.md
+      - UI representation: interactions/ui-representation.md
       - KSP setup: interactions/ksp.md
       - Gestures: interactions/gestures.md
   - Appyx Components:
@@ -156,6 +156,7 @@ plugins:
         'apps/childaware.md': 'navigation/apps/childaware.md'
         'apps/configuration.md': 'navigation/apps/configuration.md'
         'news.md': 'index.md'
+        'interactions/uirepresentation.md': 'interactions/ui-representation.md'
 
 # extensions
 markdown_extensions:

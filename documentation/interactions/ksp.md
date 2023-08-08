@@ -1,6 +1,6 @@
 # Appyx Interactions – KSP setup
 
-Defining `TargetUiStates` is easy, as demonstrated in [UI representation](uirepresentation.md)
+Defining `TargetUiStates` is easy, as demonstrated in [UI representation](ui-representation.md)
 
 ```kotlin
 @MutableUiStateSpecs

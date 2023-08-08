@@ -183,7 +183,7 @@ motionController = { BackStackSlider(it) }
 
 Need something more custom?
 
-1. You can check out some other visualisations in the [Back stack documentation](../components/backstack.md), or [create your own](../interactions/uirepresentation.md).
+1. You can check out some other visualisations in the [Back stack documentation](../components/backstack.md), or [create your own](../interactions/ui-representation.md).
 2. Instead of a back stack, you can also find other [Components](../components/index.md) in the library, or you can [create your own](../interactions/appyxcomponent.md).
 
 
