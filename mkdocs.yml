@@ -28,6 +28,7 @@ nav:
           - Deep linking: navigation/navigation/deep-linking.md
       - App:
           - Structuring your app navigation: navigation/apps/structure.md
+          - Scoped DI: navigation/apps/scoped-di.md
           - Lifecycle: navigation/apps/lifecycle.md
           - Plugins: navigation/apps/plugins.md
           - ChildAware API: navigation/apps/childaware.md
