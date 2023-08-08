@@ -1,6 +1,6 @@
 # Quick start guide
 
-You can check out [App structure](features/structure.md), which explains the concepts you'll encounter in this guide.
+You can check out [Composable navigation](concepts/composable-navigation.md), which explains the concepts you'll encounter in this guide.
 
 
 ## The scope of this guide

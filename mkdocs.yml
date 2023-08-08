@@ -27,7 +27,6 @@ nav:
           - Explicit navigation: navigation/concepts/explicit-navigation.md
       - Features:
           - Deep linking: navigation/features/deep-linking.md
-          - Structuring your app navigation: navigation/features/structure.md
           - Scoped DI: navigation/features/scoped-di.md
           - Lifecycle: navigation/features/lifecycle.md
           - Plugins: navigation/features/plugins.md
@@ -148,7 +147,7 @@ plugins:
         'navigation/deep-linking.md': 'navigation/features/deep-linking.md'
         'ui/children-view.md': '1.x/ui/children-view.md'
         'ui/transitions.md': '1.x/ui/transitions.md'
-        'apps/structure.md': 'navigation/features/structure.md'
+        'apps/structure.md': 'navigation/concepts/composable-navigation.md'
         'apps/lifecycle.md': 'navigation/features/lifecycle.md'
         'apps/plugins.md': 'navigation/features/plugins.md'
         'apps/childaware.md': 'navigation/features/childaware.md'
@@ -159,7 +158,7 @@ plugins:
         'navigation/navigation/implicit-navigation.md': 'navigation/concepts/implicit-navigation.md'
         'navigation/navigation/explicit-navigation.md': 'navigation/concepts/explicit-navigation.md'
         'navigation/navigation/deep-linking.md': 'navigation/features/deep-linking.md'
-        'navigation/apps/structure.md': 'navigation/features/structure.md'
+        'navigation/apps/structure.md': 'navigation/concepts/composable-navigation.md'
         'navigation/apps/lifecycle.md': 'navigation/features/lifecycle.md'
         'navigation/apps/plugins.md': 'navigation/features/plugins.md'
         'navigation/apps/childaware.md': 'navigation/features/childaware.md'
