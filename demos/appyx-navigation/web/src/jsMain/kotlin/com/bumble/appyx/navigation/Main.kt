@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.node.container.ContainerNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
-import com.bumble.navigation.integrationpoint.WebNodeHost
+import com.bumble.appyx.navigation.integrationpoint.WebNodeHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

@@ -1,13 +1,11 @@
-package com.bumble.navigation.integrationpoint
+package com.bumble.appyx.navigation.integrationpoint
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.window.WindowState
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.integration.ScreenSize
@@ -25,27 +23,24 @@ import kotlinx.coroutines.launch
 /**
  * Composable function to host [Node].
  *
- * This convenience wrapper uses [WindowState] to provide [ScreenSize] and provides an
- * [OnBackPressedDispatcherOwner] hooked up to the [.onBackPressedEvents] flow to simplify
- * implementing the global "go back" functionality that is a common concept in the Appyx framework.
+ * This convenience wrapper provides an [OnBackPressedDispatcherOwner] hooked up to the
+ * [.onBackPressedEvents] flow to simplify implementing the global "go back" functionality
+ * that is a common concept in the Appyx framework.
  */
-@Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
+//@Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> DesktopNodeHost(
-    windowState: WindowState,
+fun <N : Node> WebNodeHost(
+    screenSize: ScreenSize,
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,
     integrationPoint: IntegrationPoint = remember { MainIntegrationPoint() },
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
     factory: NodeFactory<N>
 ) {
-    val screenSize = remember {
-        derivedStateOf { windowState.size.run { ScreenSize(width, height) } }
-    }
     val platformLifecycleRegistry = remember {
         PlatformLifecycleRegistry()
     }
-    val onBackPressedDispatcherOwner = remember {
+    val onBackPressedDispatcherOwner = remember<OnBackPressedDispatcherOwner> {
         object : OnBackPressedDispatcherOwner {
             override val onBackPressedDispatcher: OnBackPressedDispatcher =
                 OnBackPressedDispatcher { integrationPoint.handleUpNavigation() }
@@ -67,7 +62,7 @@ fun <N : Node> DesktopNodeHost(
             integrationPoint = integrationPoint,
             modifier = modifier,
             customisations = customisations,
-            screenSize = screenSize.value,
+            screenSize = screenSize,
             factory = factory,
         )
     }
