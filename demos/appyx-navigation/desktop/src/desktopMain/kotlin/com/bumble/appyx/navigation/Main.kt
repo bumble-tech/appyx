@@ -14,12 +14,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.bumble.appyx.components.backstack.BackStack
-import com.bumble.appyx.components.backstack.BackStackModel
-import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.navigation.integrationpoint.DesktopNodeHost
 import com.bumble.appyx.navigation.node.container.ContainerNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
-import com.bumble.navigation.integrationpoint.DesktopNodeHost
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -43,25 +40,15 @@ fun main() = application {
     ) {
         AppyxSampleAppTheme {
             Surface(color = MaterialTheme.colorScheme.background) {
-                Column {
-                    DesktopNodeHost(
-                        windowState = windowState,
-                        onBackPressedEvents = events.receiveAsFlow().mapNotNull {
-                            if (it is Events.OnBackPressed) Unit else null
-                        }
-                    ) { buildContext ->
-                        val backStack: BackStack<ContainerNode.InteractionTarget> = BackStack(
-                            model = BackStackModel(
-                                initialTargets = listOf(ContainerNode.InteractionTarget.Selector),
-                                savedStateMap = buildContext.savedStateMap,
-                            ),
-                            motionController = { BackStackSlider(it) }
-                        )
-                        ContainerNode(
-                            buildContext = buildContext,
-                            backStack = backStack,
-                        )
+                DesktopNodeHost(
+                    windowState = windowState,
+                    onBackPressedEvents = events.receiveAsFlow().mapNotNull {
+                        if (it is Events.OnBackPressed) Unit else null
                     }
+                ) { buildContext ->
+                    ContainerNode(
+                        buildContext = buildContext,
+                    )
                 }
             }
         }

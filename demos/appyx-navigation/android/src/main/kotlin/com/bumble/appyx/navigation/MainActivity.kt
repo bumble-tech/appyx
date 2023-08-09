@@ -31,15 +31,13 @@ class MainActivity : NodeActivity() {
             AppyxSampleAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colorScheme.background) {
-                    Column {
-                        NodeHost(
-                            AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                            integrationPoint = appyxV2IntegrationPoint,
-                        ) {
-                            ContainerNode(
-                                buildContext = it,
-                            )
-                        }
+                    NodeHost(
+                        AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
+                        integrationPoint = appyxV2IntegrationPoint,
+                    ) {
+                        ContainerNode(
+                            buildContext = it,
+                        )
                     }
                 }
             }

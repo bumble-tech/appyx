@@ -59,15 +59,13 @@ fun main() {
                         .focusable()
                         .onFocusChanged { hasFocus = it.hasFocus }
                 ) {
-                    Column {
-                        WebNodeHost(
-                            screenSize = screenSize,
-                            onBackPressedEvents = events.receiveAsFlow(),
-                        ) { buildContext ->
-                            ContainerNode(
-                                buildContext = buildContext,
-                            )
-                        }
+                    WebNodeHost(
+                        screenSize = screenSize,
+                        onBackPressedEvents = events.receiveAsFlow(),
+                    ) { buildContext ->
+                        ContainerNode(
+                            buildContext = buildContext,
+                        )
                     }
                 }
 
