@@ -73,8 +73,32 @@ allprojects {
     }
 }
 
+val buildNonMkdocsTask = tasks.register("buildNonMkdocs")
+val jsBrowserDistributionMkdocsTask = tasks.register("jsBrowserDistributionMkdocs")
+
 subprojects {
     plugins.apply("release-dependencies-diff-create")
+
+    // Allows avoiding building these modules as part of CI as they are also built for mkdocs.
+    if (!path.startsWith(":demos:mkdocs:")) {
+        plugins.withId("com.android.application") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+        plugins.withId("com.android.library") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+        plugins.withId("org.jetbrains.kotlin.multiplatform") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+        plugins.withId("java-library") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+    } else {
+        plugins.withId("org.jetbrains.kotlin.multiplatform") {
+            jsBrowserDistributionMkdocsTask
+                .configure { dependsOn(tasks.named("jsBrowserDistribution")) }
+        }
+    }
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {

@@ -1,8 +1,6 @@
 # ChildAware API
 
-The framework includes the `ChildAware` interface which comes with a powerful API.
-
-It allows you to scope communication with (or between) dynamically available child nodes easily.
+The `ChildAware` interface allows you to scope communication with (or between) dynamically available child nodes easily.
 
 ## Baseline
 

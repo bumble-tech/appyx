@@ -166,21 +166,8 @@ class TargetUiState(
 
 You might have noticed that the above classes are annotated with `@MutableUiStateSpecs`. Appyx comes with a KSP processor that will generate the corresponding `MutableUiState` class for you, so that you don't have to. 
 
-You can configure the processor in your `build.gradle.kts` such as:
+Please refer to the [KSP setup](ksp.md) guide.
 
-```kotlin
-plugins {
-    id("com.google.devtools.ksp")
-}
-
-dependencies {
-    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
-    // Add for each of your target platforms: 
-    add("kspAndroid", project(":ksp:mutable-ui-processor"))
-    add("kspDesktop", project(":ksp:mutable-ui-processor"))
-    add("kspJs", project(":ksp:mutable-ui-processor"))
-}
-```
 
 ## Observing MotionProperty in children UI
 

@@ -1,12 +1,12 @@
 # Appyx
 
 
-## 2.x vs 1.x project organisation
+## Project organisation
 
-### Appyx 1.0
+### 1.x
 Packaged as a single library, implementing Model-driven navigation with transitions together.
 
-### Appyx 2.0
+### 2.x
 The library is packaged as multiple artifacts.
 
 #### :appyx-navigation
@@ -31,13 +31,14 @@ The library is packaged as multiple artifacts.
 - Compose multiplatform
  
 
-## 1.x ~ 2.x rough equivalents
+## Rough equivalents
 
-- `NavModel` -> `AppyxComponent`
-- `TransitionHandler` -> `MotionController`
+- 1.x → 2.x
+- `NavModel` → `AppyxComponent`
+- `TransitionHandler` → `MotionController`
 
 
-## 1.x → 2.x Migration guide
+## Migration guide
 
 ### Gradle
 
@@ -48,10 +49,10 @@ The library is packaged as multiple artifacts.
 Note that [BackStack](../components/backstack.md) and [Spotlight](../components/spotlight.md) are now standalone artifacts. Check your usage, you might only need `backstack`:
 
 ```diff
--    implementation("com.bumble.appyx:core:1.x.x")
-+    implementation("com.bumble.appyx:appyx-navigation:2.0.0-alpha01")
-+    implementation("com.bumble.appyx:backstack-android:2.0.0-alpha01")
-+    implementation("com.bumble.appyx:spotlight-android:2.0.0-alpha01")
+-implementation("com.bumble.appyx:core:1.x.x")
++implementation("com.bumble.appyx:appyx-navigation:2.0.0-alpha01")
++implementation("com.bumble.appyx:backstack-android:2.0.0-alpha01")
++implementation("com.bumble.appyx:spotlight-android:2.0.0-alpha01")
 ```
 
 
@@ -61,15 +62,15 @@ Note that [BackStack](../components/backstack.md) and [Spotlight](../components/
 Artifacts have a `utils-` prefix:
 
 ```diff
--"com.bumble.appyx:testing-ui"
--"com.bumble.appyx:testing-unit-common"
--"com.bumble.appyx:testing-junit4"
--"com.bumble.appyx:testing-junit5"
+-implementation("com.bumble.appyx:testing-ui")
+-implementation("com.bumble.appyx:testing-unit-common")
+-implementation("com.bumble.appyx:testing-junit4")
+-implementation("com.bumble.appyx:testing-junit5")
 
-+"com.bumble.appyx:utils-testing-ui"
-+"com.bumble.appyx:utils-testing-unit-common"
-+"com.bumble.appyx:utils-testing-junit4"
-+"com.bumble.appyx:utils-testing-junit5"
++implementation("com.bumble.appyx:utils-testing-ui")
++implementation("com.bumble.appyx:utils-testing-unit-common")
++implementation("com.bumble.appyx:utils-testing-junit4")
++implementation("com.bumble.appyx:utils-testing-junit5")
 ```
 
 
@@ -116,7 +117,7 @@ Artifacts have a `utils-` prefix:
 
 class RootNode(
     buildContext: BuildContext,
-         private val backStack: BackStack<NavTarget> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
 -        initialElement = Child1,
 -        savedStateMap = buildContext.savedStateMap
 +        model = BackStackModel(
