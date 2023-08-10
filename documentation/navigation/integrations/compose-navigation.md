@@ -1,3 +1,7 @@
+---
+title: Appyx + Jetpack Compose Navigation
+---
+
 # Appyx + Jetpack Compose Navigation
 
 You can easily make Appyx co-exist with Jetpack Compose Navigation. This might be useful if:

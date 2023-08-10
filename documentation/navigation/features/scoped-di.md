@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Scoped DI
+---
+
 # Scoped DI
 
 Once you represent your navigation in a [Composable way](../concepts/composable-navigation.md), you will get powerful DI scoping as a pleasant side-effect:

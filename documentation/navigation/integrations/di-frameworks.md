@@ -1,3 +1,7 @@
+---
+title: Appyx + DI frameworks
+---
+
 # Appyx + DI frameworks
 
 ## Appyx + Hilt

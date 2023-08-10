@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Implicit navigation
+---
+
 # Implicit navigation
 
 <img src="https://i.imgur.com/hKvOs3w.gif" width="450">

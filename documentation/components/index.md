@@ -1,3 +1,7 @@
+---
+title: Appyx Components – Overview
+---
+
 # Appyx Components
 
 ## Overview

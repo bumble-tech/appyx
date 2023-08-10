@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – Gestures
+---
+
 # Appyx Interactions – Gestures
 
 {==

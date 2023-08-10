@@ -1,3 +1,7 @@
+---
+title: Appyx Components – Spotlight
+---
+
 # Spotlight
 
 Implements a mechanism analogous to a view pager; has a single active element marked by an `activeIndex` ("it's in the spotlight", hence the name), but unlike the back stack, it does not remove other elements.

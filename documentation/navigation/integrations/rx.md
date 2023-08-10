@@ -1,3 +1,7 @@
+---
+title: Appyx + RxJava
+---
+
 # Appyx + RxJava
 
 Rx2 and Rx3 implementations are provided for the functionality below. Please refer to [Downloads](../../releases/downloads.md) for gradle artifacts.

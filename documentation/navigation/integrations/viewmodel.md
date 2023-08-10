@@ -1,3 +1,7 @@
+---
+title: Appyx + ViewModel
+---
+
 # Appyx + ViewModel
 
 We've experimented with adding ViewModel support for Appyx Nodes, however the solution is not finalised.

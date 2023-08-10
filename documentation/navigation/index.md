@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Overview
+---
+
 # Appyx Navigation
 
 ## Type-safe navigation for Compose directly from code

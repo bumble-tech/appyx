@@ -1,3 +1,7 @@
+---
+title: Appyx Components – Back stack
+---
+
 # Back stack
 
 Implements a simple linear history:

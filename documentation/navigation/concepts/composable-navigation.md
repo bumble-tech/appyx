@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Composable navigation 
+---
+
 # Composable navigation
 
 [AppyxComponents](../../components/index.md) in Appyx are composable. 
