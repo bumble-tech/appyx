@@ -18,7 +18,7 @@ interface Connectable<Input, Output> : NodeLifecycleAware {
 
 Provides a singleton store to survive configuration changes. The rx2/rx3 helpers add automatic disposal on objects implementing `Disposable`.
 
-You can find more details here: [Configuration change](../features/configuration.md) 
+You can find more details here: [Surviving configuration change](../features/surviving-configuration-changes.md) 
 
 ```kotlin
 import com.bumble.appyx.utils.interop.rx2.store.getRetainedDisposable

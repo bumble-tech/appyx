@@ -31,7 +31,7 @@ nav:
           - Lifecycle: navigation/features/lifecycle.md
           - Plugins: navigation/features/plugins.md
           - ChildAware API: navigation/features/childaware.md
-          - Configuration changes: navigation/features/configuration.md
+          - Surviving configuration changes: navigation/features/surviving-configuration-changes.md
       - Integrations:
           - Compose Navigation: navigation/integrations/compose-navigation.md
           - DI frameworks: navigation/integrations/di-frameworks.md
@@ -151,7 +151,7 @@ plugins:
         'apps/lifecycle.md': 'navigation/features/lifecycle.md'
         'apps/plugins.md': 'navigation/features/plugins.md'
         'apps/childaware.md': 'navigation/features/childaware.md'
-        'apps/configuration.md': 'navigation/features/configuration.md'
+        'apps/configuration.md': 'navigation/features/surviving-configuration-changes.md'
         'news.md': 'index.md'
         'interactions/uirepresentation.md': 'interactions/ui-representation.md'
         'navigation/navigation/composable-navigation.md': 'navigation/concepts/composable-navigation.md'
@@ -162,7 +162,8 @@ plugins:
         'navigation/apps/lifecycle.md': 'navigation/features/lifecycle.md'
         'navigation/apps/plugins.md': 'navigation/features/plugins.md'
         'navigation/apps/childaware.md': 'navigation/features/childaware.md'
-        'navigation/apps/configuration.md': 'navigation/features/configuration.md'
+        'navigation/apps/configuration.md': 'navigation/features/surviving-configuration-changes.md'
+        'navigation/features/configuration.md': 'navigation/features/surviving-configuration-changes.md'
 
 # extensions
 markdown_extensions:

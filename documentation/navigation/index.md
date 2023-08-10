@@ -28,7 +28,7 @@
 - [Lifecycle](features/lifecycle.md)
 - [Plugins](features/plugins.md)
 - [Scoped DI](features/scoped-di.md)
-- [Surviving configuration changes](features/configuration.md)
+- [Surviving configuration changes](features/surviving-configuration-changes.md)
 
 ## Integrations
 
