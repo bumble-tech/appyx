@@ -127,6 +127,9 @@ plugins:
   - include-markdown
   - macros:
       module_name: compose_mpp_sample
+  - social:
+      cards_layout_options:
+        background_color: white
   - redirects:
       redirect_maps:
         'how-to-use-appyx/quick-start.md': '1.x/how-to-use-appyx/quick-start.md'
