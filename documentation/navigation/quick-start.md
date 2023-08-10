@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Quick start guide
+---
+
 # Quick start guide
 
 You can check out [Composable navigation](concepts/composable-navigation.md), which explains the concepts you'll encounter in this guide.

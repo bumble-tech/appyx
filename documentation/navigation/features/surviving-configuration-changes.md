@@ -1,4 +1,8 @@
-# Configuration change
+---
+title: Appyx Navigation – Surviving configuration changes
+---
+
+# Surviving configuration changes
 
 To retain objects during configuration change you can use the `RetainedInstanceStore` class.
 

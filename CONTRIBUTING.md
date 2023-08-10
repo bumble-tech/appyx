@@ -36,14 +36,24 @@ When updating the documentation, test the generated mkdocs site locally.
 
 **Prerequisites**
 
-- Python
+- Install
 
 ```bash
 pip install mkdocs
 pip install mkdocs-material
+pip install mkdocs-material-extensions
 pip install mkdocs-macros-plugin
+pip install pillow cairosvg
+brew install cairo freetype libffi libjpeg libpng zlib
 ```
 
+- Upgrade
+
+If you installed mkdocs earlier and receive some error, try upgrading first:
+
+```bash
+pip install [mkdocs-...] --upgrade
+```
 
 ### Run
 

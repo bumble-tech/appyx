@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – Using components
+---
+
 # Appyx Interactions – Using components
 
 ## Overview

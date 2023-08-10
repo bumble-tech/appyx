@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Composable navigation 
+---
+
 # Composable navigation
 
 [AppyxComponents](../../components/index.md) in Appyx are composable. 
@@ -12,11 +16,11 @@ As a single `AppyxComponent` won't be enough for the whole of your whole app, yo
 You can think of a `Node` as a standalone unit of your app with:
 
 - Its own `AppyxComponent`
-- Its own [Lifecycle](/lifecycle.md)
+- Its own [Lifecycle](../features/lifecycle.md)
 - State restoration
 -  A `@Composable` view
 - Business logic that's kept alive even when the view isn't added to the composition
-- The ability to host generic [Plugins](/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
+- The ability to host generic [Plugins](../features/plugins.md) to extract extra concerns without enforcing any particular architectural pattern
 
 This allows you to make your app's business logic also composable by leveraging `Nodes` as lifecycled components.
 

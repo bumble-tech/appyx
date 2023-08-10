@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Deep linking
+---
+
 # Deep linking
 
 Building on top of [explicit navigation](../concepts/explicit-navigation.md), implementing deep links is straightforward:

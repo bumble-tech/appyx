@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Explicit navigation
+---
+
 # Explicit navigation
 
 When [Implicit navigation](implicit-navigation.md) doesn't fit your use case, you can try an explicit approach.

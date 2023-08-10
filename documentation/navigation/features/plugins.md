@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Plugins
+---
+
 # Plugins
 
 ## Keeping extra concerns out of Node

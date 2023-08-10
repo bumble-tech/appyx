@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – TransitionModel
+---
+
 # Appyx Interactions – TransitionModel
 
 
