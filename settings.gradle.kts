@@ -44,8 +44,6 @@ include(
     ":appyx-interactions:android",
     ":appyx-interactions:common",
     ":appyx-navigation:android",
-    ":appyx-navigation:desktop",
-    ":appyx-navigation:web",
     ":appyx-navigation:common",
     ":demos:appyx-interactions:android",
     ":demos:appyx-interactions:desktop",
