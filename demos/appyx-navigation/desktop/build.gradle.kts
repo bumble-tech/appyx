@@ -19,7 +19,6 @@ kotlin {
                 implementation(project(":demos:appyx-navigation:common"))
                 implementation(project(":appyx-interactions:appyx-interactions"))
                 implementation(project(":appyx-navigation:appyx-navigation"))
-                implementation(project(":appyx-navigation:desktop"))
                 implementation(project(":appyx-components:stable:backstack:backstack"))
                 api(compose.runtime)
                 api(compose.foundation)

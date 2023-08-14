@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.bumble.appyx.navigation.integration.LocalIntegrationPoint
 import com.bumble.appyx.navigation.integration.NodeHost
-import com.bumble.appyx.navigation.integrationpoint.LocalIntegrationPoint
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 
 /**

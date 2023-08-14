@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("appyx-publish-multiplatform")
+    id("appyx-detekt")
 }
 
 kotlin {
@@ -40,7 +41,12 @@ kotlin {
             dependencies {
                 api(libs.androidx.appcompat)
                 api(libs.androidx.core)
+                api(libs.compose.runtime)
+                api(libs.compose.ui.tooling)
+
                 implementation(libs.androidx.activity.compose)
+                implementation(libs.androidx.lifecycle.java8)
+
             }
         }
         val desktopMain by getting {
@@ -69,5 +75,20 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+    }
+    testOptions {
+    }
+
+    dependencies {
+        val composeBom = platform(libs.compose.bom)
+
+        api(composeBom)
+
+        androidTestImplementation(composeBom)
+        androidTestImplementation(libs.androidx.test.espresso.core)
+        androidTestImplementation(libs.androidx.test.junit)
+        androidTestImplementation(libs.compose.ui.test.junit4)
+        androidTestImplementation(libs.compose.foundation)
+        androidTestImplementation(project(":utils:testing-ui"))
     }
 }
