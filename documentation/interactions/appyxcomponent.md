@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – Creating your own components
+---
+
 # Appyx Interactions – Creating your own components
 
 ## Overview

@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Lifecycle
+---
+
 # Lifecycle
 
 Nodes have their own lifecycles, directly using the related classes of `androidx.lifecycle`.

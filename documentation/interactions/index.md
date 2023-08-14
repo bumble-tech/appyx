@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – Overview
+---
+
 # Appyx Interactions – Overview
 
 Component kit with gesture control for Compose Multiplatform.

@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – ChildAware API
+---
+
 # ChildAware API
 
 The `ChildAware` interface allows you to scope communication with (or between) dynamically available child nodes easily.

@@ -1,3 +1,7 @@
+---
+title: Downloads
+---
+
 # Downloads
 
 ## Latest version

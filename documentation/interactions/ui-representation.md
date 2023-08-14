@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – UI representation
+---
+
 # Appyx Interactions – UI representation
 
 

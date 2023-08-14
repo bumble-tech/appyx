@@ -1,3 +1,7 @@
+---
+title: Appyx Navigation – Model-driven navigation
+---
+
 # Model-driven navigation
 
 

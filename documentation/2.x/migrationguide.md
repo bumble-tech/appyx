@@ -1,4 +1,8 @@
-# Appyx
+---
+title: Appyx – 2.x Migration guide
+---
+
+# Appyx – Migration guide
 
 
 ## Project organisation

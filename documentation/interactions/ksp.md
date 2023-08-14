@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – KSP setup
+---
+
 # Appyx Interactions – KSP setup
 
 Defining `TargetUiStates` is easy, as demonstrated in [UI representation](ui-representation.md)
