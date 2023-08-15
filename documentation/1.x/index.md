@@ -1,4 +1,4 @@
-{% include-markdown "deprecation.md" %}
+{% include-markdown "./deprecation.md" %}
 
 # Appyx
 
