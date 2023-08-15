@@ -165,7 +165,10 @@ fun <InteractionTarget : Any> Target(
                 modifier
                     .size(60.dp)
                     .align(targetUiState.position.value.alignment)
-                    .offset(targetUiState.position.value.offset.x, targetUiState.position.value.offset.y)
+                    .offset(
+                        targetUiState.position.value.offset.x,
+                        targetUiState.position.value.offset.y
+                    )
                     .alpha(0.35f)
                     .background(
                         color = targetUiState.backgroundColor.value,

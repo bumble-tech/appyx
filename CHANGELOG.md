@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#551](https://github.com/bumble-tech/appyx/pull/551) - Multiplatform Navigation module
 
 ---
 
@@ -11,7 +11,8 @@
 ### Added
 
 - [#539](https://github.com/bumble-tech/appyx/pull/539) – Position alignment
-- [#538](https://github.com/bumble-tech/appyx/pull/538) – Availability to observe MotionProperties from children UI
+- [#538](https://github.com/bumble-tech/appyx/pull/538) – Availability to observe MotionProperties
+  from children UI
 
 ### Fixed
 

@@ -48,7 +48,11 @@ class BackStackParallaxTest {
         )
         backStack = BackStack(
             model = backStackModel,
-            motionController = { buildContext -> BackStackParallax<InteractionTarget>(buildContext).also { motionController = it } },
+            motionController = { buildContext ->
+                BackStackParallax<InteractionTarget>(buildContext).also {
+                    motionController = it
+                }
+            },
             scope = CoroutineScope(Dispatchers.Unconfined),
         )
     }

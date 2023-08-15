@@ -159,25 +159,37 @@ fun Puzzle15Ui(
                     onClick = { puzzle15.operation(Swap(direction = DOWN)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Move Up")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowUp,
+                        contentDescription = "Move Up"
+                    )
                 }
                 Button(
                     onClick = { puzzle15.operation(Swap(direction = LEFT)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Icon(imageVector = Icons.Default.KeyboardArrowRight, contentDescription = "Move Right")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowRight,
+                        contentDescription = "Move Right"
+                    )
                 }
                 Button(
                     onClick = { puzzle15.operation(Swap(direction = UP)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "Move Down")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowDown,
+                        contentDescription = "Move Down"
+                    )
                 }
                 Button(
                     onClick = { puzzle15.operation(Swap(direction = RIGHT)) },
                     colors = ButtonDefaults.buttonColors(backgroundColor = accentColor),
                 ) {
-                    Icon(imageVector = Icons.Default.KeyboardArrowLeft, contentDescription = "Move Left")
+                    Icon(
+                        imageVector = Icons.Default.KeyboardArrowLeft,
+                        contentDescription = "Move Left"
+                    )
                 }
             }
             Button(

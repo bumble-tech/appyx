@@ -4,7 +4,6 @@ import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
-import kotlinx.coroutines.CoroutineScope
 
 // FIXME
 class DebugProgressInputSource<InteractionTarget, ModelState>(

@@ -42,7 +42,7 @@ fun SpotlightSliderRotationSample(
         "Next" to { spotlight.next() },
         "Last" to { spotlight.last() },
 
-    )
+        )
     AppyxWebSample(
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,

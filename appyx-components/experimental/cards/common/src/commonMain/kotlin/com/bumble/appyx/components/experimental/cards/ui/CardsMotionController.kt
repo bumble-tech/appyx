@@ -9,7 +9,6 @@ import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.components.experimental.cards.operation.VoteLike
 import com.bumble.appyx.components.experimental.cards.operation.VotePass
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag
@@ -23,6 +22,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 class CardsMotionController<InteractionTarget : Any>(
     uiContext: UiContext,

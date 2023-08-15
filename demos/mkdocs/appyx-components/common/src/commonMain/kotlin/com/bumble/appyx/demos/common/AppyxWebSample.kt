@@ -47,7 +47,7 @@ enum class ChildSize {
 }
 
 @Composable
-fun <InteractionTarget : Any, ModelState: Any> AppyxWebSample(
+fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
@@ -75,13 +75,15 @@ fun <InteractionTarget : Any, ModelState: Any> AppyxWebSample(
                 .clip(containerShape)
                 .weight(0.9f)
         ) {
-            Box(Modifier.padding(
-                when (childSize) {
-                    ChildSize.SMALL -> 32.dp
-                    ChildSize.MEDIUM -> 16.dp
-                    ChildSize.MAX -> 0.dp
-                }
-            )) {
+            Box(
+                Modifier.padding(
+                    when (childSize) {
+                        ChildSize.SMALL -> 32.dp
+                        ChildSize.MEDIUM -> 16.dp
+                        ChildSize.MAX -> 0.dp
+                    }
+                )
+            ) {
                 DraggableAppyxComponent(
                     appyxComponent = appyxComponent,
                     screenWidthPx = screenWidthPx,
@@ -135,7 +137,9 @@ fun <InteractionTarget : Any> ModalUi(
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {
                     is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
-                    else -> { Color.Cyan }
+                    else -> {
+                        Color.Cyan
+                    }
                 },
                 shape = RoundedCornerShape(if (isChildMaxSize) 0 else 8)
             )

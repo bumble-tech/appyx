@@ -1,7 +1,6 @@
 package com.bumble.appyx.utils.interop.rx2.plugin
 
 import com.bumble.appyx.navigation.plugin.Destroyable
-import com.bumble.appyx.utils.interop.rx2.plugin.disposeOnDestroyPlugin
 import io.reactivex.disposables.Disposables
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertInstanceOf

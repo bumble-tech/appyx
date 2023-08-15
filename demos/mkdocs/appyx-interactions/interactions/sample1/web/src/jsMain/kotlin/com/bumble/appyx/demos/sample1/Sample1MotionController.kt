@@ -1,7 +1,6 @@
 package com.bumble.appyx.demos.sample1
 
 import androidx.compose.animation.core.SpringSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.DpOffset
@@ -12,7 +11,6 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
@@ -29,8 +27,10 @@ import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 class Sample1MotionController<InteractionTarget : Any>(
     uiContext: UiContext,
@@ -78,7 +78,10 @@ class Sample1MotionController<InteractionTarget : Any>(
         )
     }
 
-    override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
+    override fun mutableUiStateFor(
+        uiContext: UiContext,
+        targetUiState: TargetUiState
+    ): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
     class Gestures<InteractionTarget>(
@@ -92,10 +95,10 @@ class Sample1MotionController<InteractionTarget : Any>(
         ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
             // FIXME quick fix – 60.dp is the assumed element size, connect it to real value
             // TODO properly – automate this whole calculation based on .onPlaced centers of targetUiStates
-            val maxX = with (density) {
+            val maxX = with(density) {
                 (transitionBounds.widthDp - 60.dp).toPx()
             }
-            val maxY = with (density) {
+            val maxY = with(density) {
                 (transitionBounds.heightDp + bottomOffset.y - 60.dp).toPx()
             }
 

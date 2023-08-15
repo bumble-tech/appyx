@@ -1,7 +1,7 @@
 package com.bumble.appyx.utils.testing.unit.common.helper
 
-import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.children.nodeOrNull
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.node.ParentNode
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
