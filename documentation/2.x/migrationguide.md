@@ -19,20 +19,21 @@ The library is packaged as multiple artifacts.
 - Cares about the Node structure & Android-related functionality
 - Uses `:appyx-interactions` as a dependency to implement navigation using gestures and transitions
 - Android library
-- Supports Compose multiplatform. WebNodeHost and DesktopNodeHost provide convenience wrappers for
-  the NodeHost entry point and the demos/appyx-navigation module demonstrates their usage.
+- Compose Multiplatform. 
+
+Check also [Multiplatform](../navigation/multiplatform.md) documentation and the `:demos:appyx-navigation` module for code examples.
 
 #### :appyx-interactions
 
 - Gesture-driven, state-based motion kit & transition engine
 - Does not contain Node-related functionality → moved to `:appyx-navigation`
 - Does not contain Android-specific functionality → moved to `:appyx-navigation`
-- Compose multiplatform
+- Compose Multiplatform
    
 #### :appyx-components
 
 - Pre-packaged components to use with `:appyx-navigation`
-- Compose multiplatform
+- Compose Multiplatform
  
 
 ## Rough equivalents

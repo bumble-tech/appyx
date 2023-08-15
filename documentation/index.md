@@ -4,12 +4,18 @@ title: Appyx – Overview
 
 # Appyx
 
+![badge-android](https://img.shields.io/badge/platform-android-brightgreen)
+![badge-jvm](https://img.shields.io/badge/platform-jvm-orange)
+![badge-macos](https://img.shields.io/badge/platform-macos-purple)
+![badge-js](https://img.shields.io/badge/platform-js-yellow)
+![badge-ios](https://img.shields.io/badge/platform-🔄ios🔄-lightgray)
 
 Model-driven navigation + UI components with gesture control for Compose Multiplatform.
 
 [https://github.com/bumble-tech/appyx](https://github.com/bumble-tech/appyx)
 
 Find us on Kotlinlang Slack: **#appyx**
+
 
 ## Setup
 
@@ -24,7 +30,7 @@ Appyx is a collection of libraries:
 
 ## Appyx Navigation
 
-**Type-safe navigation for Compose directly from code.**
+**Type-safe navigation for Compose Multiplatform directly from code.**
 
 - Tree-based, composable
 - Leverages the transitions and gesture-based capabilities of [Appyx Interactions](interactions/index.md) to build beautiful, custom navigation.

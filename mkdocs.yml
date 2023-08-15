@@ -38,6 +38,7 @@ nav:
           - RIBs: navigation/integrations/ribs.md
           - RxJava: navigation/integrations/rx.md
           - ViewModel: navigation/integrations/viewmodel.md
+      - Multiplatform: navigation/multiplatform.md
   - Appyx Interactions:
     - Overview: interactions/index.md
     - Using components: interactions/usage.md

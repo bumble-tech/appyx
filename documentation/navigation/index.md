@@ -43,6 +43,11 @@ title: Appyx Navigation – Overview
 - [ViewModel](integrations/viewmodel.md)
 
 
+## Multiplatform
+
+- [Multiplatform](multiplatform.md)
+
+
 ## Components
 
 {{
@@ -60,10 +65,3 @@ title: Appyx Navigation – Overview
 See [Appyx Components](../components/index.md) for Back stack, Spotlight (pager) and other components you can use in navigation.
 
 See [Appyx Interactions](../interactions/index.md) on how to build your own components with state-based transitions and easy-to-create gesture control.
-
-
-## Multiplatform status
-
-**Appyx Interactions** and **Appyx Components** are multiplatform.
-
-**Appyx Navigation** is currently being converted to a multiplatform project and is expected to be merged soon (ETA Aug 2023). 

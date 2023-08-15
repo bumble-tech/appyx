@@ -4,11 +4,15 @@ title: Appyx Navigation – Lifecycle
 
 # Lifecycle
 
-Nodes have their own lifecycles, directly using the related classes of `androidx.lifecycle`.
+Nodes have their own lifecycles.
+
+The relevant class [Lifecycle](../multiplatform.md#lifecycle) is multiplatform.
+
 
 ## Capping
 
-No node can be in a higher lifecycle state than any of its parents or the Android Activity it lives in.
+No node can be in a higher lifecycle state than any of its parents or the platform-relevant App component (e.g. Android Activity) it lives in.
+
 
 ## On-screen & off-screen
 
@@ -21,7 +25,7 @@ Child elements automatically receive appropriate lifecycle callbacks. The lifecy
 
 - The `AppyxComponent` of the parent (adding or removing child `Nodes` and changing their on-screen status)
 - The parent's lifecycle state capping its children (transitive in the tree)
-- Android lifecycle (Activity) capping the whole tree
+- On Android, Activity lifecycle will be capping the whole tree
 
 
 ## Back stack node lifecycle

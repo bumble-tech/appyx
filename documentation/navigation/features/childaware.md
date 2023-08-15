@@ -22,7 +22,7 @@ In the next examples:
 ## Single child scenario
 
 ```kotlin
-import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.core.children.whenChildAttached
 import com.bumble.appyx.core.children.whenChildrenAttached
 import com.bumble.appyx.core.clienthelper.interactor.Interactor
@@ -44,6 +44,8 @@ class SomeInteractor : Interactor<SomeNode>() {
     }
 }
 ```
+
+Note: [Lifecycle](../multiplatform.md#lifecycle) is multiplatform.
 
 
 ## Multiple children

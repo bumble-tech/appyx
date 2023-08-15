@@ -32,7 +32,7 @@ class MainActivity : NodeActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colorScheme.background) {
                     NodeHost(
-                        AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
+                        lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                         integrationPoint = appyxV2IntegrationPoint,
                     ) {
                         ContainerNode(
