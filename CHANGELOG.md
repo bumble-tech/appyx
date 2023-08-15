@@ -2,7 +2,9 @@
 
 ## Pending changes
 
-–
+### Fixed
+
+- [#560](https://github.com/bumble-tech/appyx/issues/560) – Don't remove destroyed elements on update automatically
 
 ---
 
