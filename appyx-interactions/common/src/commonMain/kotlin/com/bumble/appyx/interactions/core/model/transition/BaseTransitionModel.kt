@@ -119,7 +119,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
         val baseLine = state.value
 
         return if (operation.isApplicable(baseLine.currentTargetState)) {
-            val transition = operation.invoke(baseLine.currentTargetState.removeDestroyedElements())
+            val transition = operation.invoke(baseLine.currentTargetState)
             val newState = baseLine.deriveUpdate(transition)
             updateState(newState)
             true
