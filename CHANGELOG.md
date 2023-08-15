@@ -2,6 +2,8 @@
 
 ## Pending changes
 
+- [#551](https://github.com/bumble-tech/appyx/pull/551) - Multiplatform Navigation module
+
 ### Fixed
 
 - [#560](https://github.com/bumble-tech/appyx/issues/560) – Don't remove destroyed elements on update automatically

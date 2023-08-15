@@ -19,4 +19,4 @@ data class TransitionBounds(
     val screenHeightDp: Dp = with(density) { screenHeightPx.toDp() }
 }
 
-val zeroSizeTransitionBounds  = TransitionBounds(Density(0f), 0, 0, 0, 0)
+val zeroSizeTransitionBounds = TransitionBounds(Density(0f), 0, 0, 0, 0)

@@ -162,7 +162,10 @@ fun <InteractionTarget : Any> TestDriveUi(
                 modifier = Modifier
                     .size(60.dp)
                     .align(targetUiState.position.value.alignment)
-                    .offset(targetUiState.position.value.offset.x, targetUiState.position.value.offset.y)
+                    .offset(
+                        targetUiState.position.value.offset.x,
+                        targetUiState.position.value.offset.y
+                    )
                     .border(2.dp, targetUiState.backgroundColor.value)
                     .semantics {
                         contentDescription = TEST_DRIVE_EXPERIMENT_TEST_HELPER

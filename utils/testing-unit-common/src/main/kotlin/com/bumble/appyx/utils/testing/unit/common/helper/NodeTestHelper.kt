@@ -1,6 +1,6 @@
 package com.bumble.appyx.utils.testing.unit.common.helper
 
-import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 

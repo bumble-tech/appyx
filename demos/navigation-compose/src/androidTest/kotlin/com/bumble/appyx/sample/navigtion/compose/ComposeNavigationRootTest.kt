@@ -5,7 +5,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.bumble.appyx.navigation.integrationpoint.LocalIntegrationPoint
+import com.bumble.appyx.navigation.integration.LocalIntegrationPoint
 import com.bumble.appyx.utils.testing.ui.rules.AppyxTestActivity
 import org.junit.Rule
 import org.junit.Test

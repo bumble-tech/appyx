@@ -1,7 +1,7 @@
 package com.bumble.appyx.utils.testing.unit.common.util
 
-import androidx.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.builder.Builder
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import kotlin.test.assertEquals

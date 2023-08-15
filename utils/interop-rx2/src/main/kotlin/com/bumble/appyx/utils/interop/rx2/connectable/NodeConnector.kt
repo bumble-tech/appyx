@@ -1,7 +1,7 @@
 package com.bumble.appyx.utils.interop.rx2.connectable
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.Lifecycle
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.subscribe
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
