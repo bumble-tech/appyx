@@ -129,6 +129,7 @@ fun Puzzle15Ui(
                                 }
                         ) {
                             Text(
+                                color = Color.Black,
                                 text = elementUiModel.element.interactionTarget.textValue(),
                                 modifier = Modifier.align(Alignment.Center),
                                 fontSize = 24.sp,
@@ -143,6 +144,7 @@ fun Puzzle15Ui(
                                 )
                         ) {
                             Text(
+                                color = Color.Black,
                                 text = elementUiModel.element.interactionTarget.textValue(),
                                 modifier = Modifier.align(Alignment.Center),
                                 fontSize = 24.sp,

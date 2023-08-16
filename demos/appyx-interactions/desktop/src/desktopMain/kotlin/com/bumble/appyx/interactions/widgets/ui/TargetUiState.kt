@@ -8,7 +8,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.clamp
 import com.bumble.appyx.interactions.core.ui.math.smoothstep
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.StateFlow
 class TargetUiState(
     val positionInList: Int = 0,
     val rotationX: RotationX.Target,
-    val position: Position.Target,
+    val position: PositionOutside.Target,
     val scale: Scale.Target,
     val alpha: Alpha.Target,
     val zIndex: ZIndex.Target,
@@ -54,12 +54,12 @@ class TargetUiState(
                 },
                 origin = TransformOrigin(0.075f, 0f),
             ),
-            position = Position(
+            position = PositionOutside(
                 uiContext = uiContext,
                 target = position,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
                     val factor = 0.075f + smoothstep(0f, 1f, it)
-                    Position.Value(
+                    PositionOutside.Value(
                         offset = DpOffset(
                             x = (-0.125f * it * itemWidth.value).dp,
                             y = (-factor * it * itemHeight.value / (1f - 0.1f * it)).dp,

@@ -3,9 +3,6 @@ package com.bumble.appyx.components.spotlight.ui.slider
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -21,8 +18,9 @@ import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -32,8 +30,6 @@ class SpotlightSlider<InteractionTarget : Any>(
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val width: Dp = uiContext.transitionBounds.widthDp
-    private val height: Dp = uiContext.transitionBounds.heightDp
     private val scrollX = GenericFloatProperty(
         uiContext,
         GenericFloatProperty.Target(0f)
@@ -44,19 +40,19 @@ class SpotlightSlider<InteractionTarget : Any>(
         )
 
     private val created: TargetUiState = TargetUiState(
-        position = Position.Target(DpOffset(0.dp, width)),
+        position = PositionOutside.Target(BiasAlignment.OutsideAlignment.OutsideTop),
         scale = Scale.Target(0f),
         alpha = Alpha.Target(1f),
     )
 
     private val standard: TargetUiState = TargetUiState(
-        position = Position.Target(DpOffset.Zero),
+        position = PositionOutside.Target(BiasAlignment.OutsideAlignment.Center),
         scale = Scale.Target(1f),
         alpha = Alpha.Target(1f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        position = Position.Target(DpOffset(x = 0.dp, y = -height)),
+        position = PositionOutside.Target(BiasAlignment.OutsideAlignment.OutsideBottom),
         scale = Scale.Target(0f),
         alpha = Alpha.Target(0f),
     )
@@ -72,8 +68,7 @@ class SpotlightSlider<InteractionTarget : Any>(
                             STANDARD -> standard
                             DESTROYED -> destroyed
                         },
-                        positionInList = index,
-                        elementWidth = width
+                        positionInList = index
                     )
                 )
             }
@@ -84,7 +79,7 @@ class SpotlightSlider<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext, scrollX.renderValueFlow, width)
+        targetUiState.toMutableState(uiContext, scrollX.renderValueFlow)
 
 
     class Gestures<InteractionTarget>(
