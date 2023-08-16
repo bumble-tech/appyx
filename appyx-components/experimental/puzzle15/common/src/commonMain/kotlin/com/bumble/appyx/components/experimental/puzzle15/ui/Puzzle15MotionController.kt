@@ -26,8 +26,7 @@ class Puzzle15MotionController(
     defaultAnimationSpec = defaultAnimationSpec
 ) {
     companion object {
-        // max step count from topLeft element to topRight element in the grid 4x4
-        private const val STEPS_COUNT = 3f
+        private const val CELLS_COUNT = 4
     }
 
     override fun Puzzle15Model.State.toUiTargets(): List<MatchedTargetUiState<Tile, TargetUiState>> {
@@ -37,8 +36,8 @@ class Puzzle15MotionController(
                 targetUiState = TargetUiState(
                     position = PositionInside.Target(
                         alignment = fractionAlignment(
-                            horizontalBiasFraction = (index % 4) / STEPS_COUNT,
-                            verticalBiasFraction = (index / 4) / STEPS_COUNT
+                            horizontalBiasFraction = (index % CELLS_COUNT).toFloat() / (CELLS_COUNT - 1),
+                            verticalBiasFraction = (index / CELLS_COUNT).toFloat() / (CELLS_COUNT - 1)
                         )
                     )
                 )
