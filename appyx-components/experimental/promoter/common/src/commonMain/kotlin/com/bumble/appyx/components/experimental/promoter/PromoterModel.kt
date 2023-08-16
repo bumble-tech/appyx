@@ -9,12 +9,8 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PromoterModel<InteractionTarget : Any>(
     savedStateMap: SavedStateMap?,
-//    key: String = KEY_PROMOTER_MODEL
 ) : BaseTransitionModel<InteractionTarget, PromoterModel.State<InteractionTarget>>(
-//    screenResolver = PromoterOnScreenResolver,
-//    finalState = DESTROYED,
     savedStateMap = savedStateMap,
-//    key = key
 ) {
     @Parcelize
     data class State<InteractionTarget>(
@@ -38,7 +34,6 @@ class PromoterModel<InteractionTarget : Any>(
 
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         elements
-            .filter { it.second != DESTROYED }
             .map { it.first }
             .toSet()
 
