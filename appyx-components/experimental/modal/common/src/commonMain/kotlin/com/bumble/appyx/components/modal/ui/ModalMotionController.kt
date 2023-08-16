@@ -48,7 +48,6 @@ class ModalMotionController<InteractionTarget : Any>(
     private val destroyedState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-//            position = Position.Target(DpOffset(0.dp, height * 1.5f)),
             position = PositionOutside.Target(OutsideAlignment(0f, 1.5f)),
             corner = RoundedCorners.Target(0),
         )

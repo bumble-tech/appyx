@@ -85,10 +85,10 @@ class SpotlightObserveTransitionsExampleNode(
 
                     Column(modifier = Modifier.align(Alignment.Center)) {
 
-                        val dpOffset = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()?.offset
-                        if (dpOffset != null) {
+                        val alignment = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()?.alignment
+                        if (alignment != null) {
                             Text(
-                                text = "OffsetX: ${dpOffset.x.value.toTwoPointPrecisionString()} dp",
+                                text = "Screens offset: ${alignment.horizontalBias.toTwoPointPrecisionString()}",
                                 fontSize = 20.sp,
                                 color = Color.Black,
                                 fontWeight = FontWeight.Bold
