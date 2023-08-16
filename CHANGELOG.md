@@ -8,6 +8,10 @@
 
 - [#560](https://github.com/bumble-tech/appyx/issues/560) – Don't remove destroyed elements on update automatically
 
+### Changed
+
+- [#562](https://github.com/bumble-tech/appyx/issues/562) – Implement custom alignment to remove screen size knowledge when offsetting element in MotionController
+
 ---
 
 ## 2.0.0-alpha02
