@@ -3,8 +3,6 @@ package com.bumble.appyx.components.experimental.cards.ui
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.components.experimental.cards.operation.VoteLike
@@ -16,10 +14,11 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -45,11 +44,8 @@ class CardsMotionController<InteractionTarget : Any>(
     )
 
     private val votePass = TargetUiState(
-        position = Position.Target(
-            DpOffset(
-                x = (-voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
-                y = 0.dp
-            )
+        position = PositionOutside.Target(
+            BiasAlignment.OutsideAlignment(-voteCardPositionMultiplier, 0)
         ),
         scale = Scale.Target(1f),
         zIndex = ZIndex.Target(2f),
@@ -57,11 +53,8 @@ class CardsMotionController<InteractionTarget : Any>(
     )
 
     private val voteLike = TargetUiState(
-        position = Position.Target(
-            DpOffset(
-                x = (voteCardPositionMultiplier * uiContext.transitionBounds.widthDp.value).dp,
-                y = 0.dp
-            )
+        position = PositionOutside.Target(
+            BiasAlignment.OutsideAlignment(voteCardPositionMultiplier, 0)
         ),
         scale = Scale.Target(1f),
         zIndex = ZIndex.Target(2f),
@@ -99,7 +92,10 @@ class CardsMotionController<InteractionTarget : Any>(
         return result
     }
 
-    override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
+    override fun mutableUiStateFor(
+        uiContext: UiContext,
+        targetUiState: TargetUiState
+    ): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
 

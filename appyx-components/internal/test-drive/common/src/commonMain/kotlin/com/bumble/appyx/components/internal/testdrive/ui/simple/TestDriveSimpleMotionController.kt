@@ -28,8 +28,8 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -59,22 +59,22 @@ class TestDriveSimpleMotionController<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.TopStart),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopStart),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val topRightCorner = TargetUiState(
-            position = Position.Target(Alignment.TopEnd),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopEnd),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = Position.Target(Alignment.CenterEnd),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterEnd),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.CenterStart),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterStart),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }

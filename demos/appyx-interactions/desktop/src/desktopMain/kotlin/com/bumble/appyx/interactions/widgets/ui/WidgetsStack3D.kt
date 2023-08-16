@@ -2,12 +2,11 @@ package com.bumble.appyx.interactions.widgets.ui
 
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
@@ -56,7 +55,7 @@ class WidgetsStack3D<InteractionTarget : Any>(
     private companion object {
         val default: TargetUiState = TargetUiState(
             rotationX = RotationX.Target(0f),
-            position = Position.Target(DpOffset.Zero),
+            position = PositionOutside.Target(DpOffset.Zero),
             scale = Scale.Target(1f),
             alpha = Alpha.Target(1f),
             zIndex = ZIndex.Target(0f),

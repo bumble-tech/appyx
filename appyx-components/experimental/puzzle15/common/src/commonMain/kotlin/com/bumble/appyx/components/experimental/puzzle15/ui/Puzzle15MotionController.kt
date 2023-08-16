@@ -15,7 +15,8 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -27,16 +28,17 @@ class Puzzle15MotionController(
     defaultAnimationSpec = defaultAnimationSpec
 ) {
 
+    private val twoThirds = 2f / 3f
+
     override fun Puzzle15Model.State.toUiTargets(): List<MatchedTargetUiState<Tile, TargetUiState>> {
-        val width = uiContext.transitionBounds.widthDp.value / 4
         return items.mapIndexed { index, tileElements ->
             MatchedTargetUiState(
                 element = tileElements,
                 targetUiState = TargetUiState(
-                    position = Position.Target(
-                        offset = DpOffset(
-                            x = (index % 4 * width).dp,
-                            y = (index / 4 * width).dp
+                    position = PositionInside.Target(
+                        alignment = BiasAlignment.InsideAlignment(
+                            -1f + (index % 4) * twoThirds,
+                            -1f + (index / 4) * twoThirds
                         )
                     )
                 )

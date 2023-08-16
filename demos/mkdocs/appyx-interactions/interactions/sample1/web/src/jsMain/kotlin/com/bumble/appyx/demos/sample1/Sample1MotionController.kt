@@ -26,8 +26,8 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -58,22 +58,22 @@ class Sample1MotionController<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.TopStart),
+            position = PositionInside.Target(alignment = InsideAlignment.TopStart),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         private val topRightCorner = TargetUiState(
-            position = Position.Target(Alignment.TopEnd),
+            position = PositionInside.Target(alignment = InsideAlignment.TopEnd),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = Position.Target(Alignment.BottomEnd, bottomOffset),
+            position = PositionInside.Target(alignment = InsideAlignment.BottomEnd, bottomOffset),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.BottomStart, bottomOffset),
+            position = PositionInside.Target(alignment = InsideAlignment.BottomStart, bottomOffset),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
     }
