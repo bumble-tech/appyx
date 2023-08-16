@@ -1,7 +1,6 @@
 package com.bumble.appyx.components.internal.testdrive.ui.rotation
 
 import androidx.compose.animation.core.SpringSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.A
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.B
@@ -11,14 +10,15 @@ import com.bumble.appyx.components.internal.testdrive.ui.md_light_blue_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_light_green_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 class TestDriveRotationMotionController<InteractionTarget : Any>(
     uiContext: UiContext,

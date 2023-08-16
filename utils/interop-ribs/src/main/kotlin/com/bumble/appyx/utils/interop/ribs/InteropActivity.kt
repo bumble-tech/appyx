@@ -3,7 +3,7 @@ package com.bumble.appyx.utils.interop.ribs
 import android.content.Intent
 import android.os.Bundle
 import com.badoo.ribs.android.RibActivity
-import com.bumble.appyx.navigation.integrationpoint.ActivityIntegrationPoint
+import com.bumble.appyx.navigation.integration.ActivityIntegrationPoint
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPointProvider
 
 abstract class InteropActivity : RibActivity(), IntegrationPointProvider {

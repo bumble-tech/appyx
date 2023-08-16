@@ -1,12 +1,12 @@
 package com.bumble.appyx.interactions.permanent.operation
 
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.interactions.permanent.PermanentModel
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 @Parcelize
 data class AddUnique<InteractionTarget : Any>(

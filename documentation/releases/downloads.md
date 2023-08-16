@@ -1,3 +1,7 @@
+---
+title: Downloads
+---
+
 # Downloads
 
 ## Latest version
@@ -59,4 +63,55 @@ dependencies {
     implementation "com.bumble.appyx:spotlight-desktop:$version"
     implementation "com.bumble.appyx:spotlight-js:$version"
 }
+```
+
+## Utils and interop with other libraries
+
+### RxJava 2
+
+```groovy
+dependencies {
+    // Optional support for RxJava 2/3
+    implementation "com.bumble.appyx:utils-interop-rx2:$version"
+}
+```
+
+### RxJava 3
+
+```groovy
+dependencies {
+    implementation "com.bumble.appyx:utils-interop-rx3:$version"
+}
+```
+
+### badoo/RIBs
+
+```groovy
+repositories {
+    // Don't forget to add this, since badoo/RIBs is hosted on jitpack:
+    maven(url = "https://jitpack.io")
+}
+
+dependencies {
+    implementation "com.bumble.appyx:utils-interop-ribs:$version"
+
+}
+```
+
+
+### Testing
+
+```groovy
+    // Test rules and utility classes for testing on Android
+    debugImplementation "com.bumble.appyx:utils-testing-ui-activity:$version"
+    androidTestImplementation "com.bumble.appyx:utils-testing-ui:$version"
+
+    // Utility classes for unit testing
+    testImplementation "com.bumble.appyx:utils-testing-unit-common:$version"
+    
+    // Test rules and utility classes for unit testing using JUnit4
+    testImplementation "com.bumble.appyx:utils-testing-junit4:$version"
+
+    // Test extensions and utility classes for unit testing using JUnit5
+    testImplementation "com.bumble.appyx:utils-testing-junit5:$version"
 ```

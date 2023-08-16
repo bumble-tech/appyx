@@ -110,7 +110,7 @@ private fun WidgetsUi(
                     .fillMaxWidth()
                     .requiredHeight(240.dp)
             )
-        }
+        },
     )
 }
 

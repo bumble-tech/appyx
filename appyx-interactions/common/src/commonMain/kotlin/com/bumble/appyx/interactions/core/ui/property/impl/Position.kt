@@ -40,20 +40,28 @@ class Position(
 
         @Stable
         val TopStart = BiasAlignment(-1f, -1f)
+
         @Stable
         val TopCenter = BiasAlignment(0f, -1f)
+
         @Stable
         val TopEnd = BiasAlignment(1f, -1f)
+
         @Stable
         val CenterStart = BiasAlignment(-1f, 0f)
+
         @Stable
         val Center = BiasAlignment(0f, 0f)
+
         @Stable
         val CenterEnd = BiasAlignment(1f, 0f)
+
         @Stable
         val BottomStart = BiasAlignment(-1f, 1f)
+
         @Stable
         val BottomCenter = BiasAlignment(0f, 1f)
+
         @Stable
         val BottomEnd = BiasAlignment(1f, 1f)
     }

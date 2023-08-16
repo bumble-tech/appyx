@@ -1,7 +1,6 @@
 package com.bumble.appyx.components.internal.testdrive.ui.simple
 
 import androidx.compose.animation.core.SpringSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
@@ -14,7 +13,6 @@ import com.bumble.appyx.components.internal.testdrive.ui.md_light_blue_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_light_green_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
@@ -31,8 +29,10 @@ import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 class TestDriveSimpleMotionController<InteractionTarget : Any>(
     uiContext: UiContext,

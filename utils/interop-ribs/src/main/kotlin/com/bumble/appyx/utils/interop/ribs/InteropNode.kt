@@ -8,9 +8,10 @@ import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.ViewFactory
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.platform.toCommonState
+import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.utils.interop.ribs.InteropNode.Customisation
 import com.bumble.appyx.utils.interop.ribs.InteropViewImpl.Factory
-import com.bumble.appyx.utils.customisations.NodeCustomisation
 
 interface InteropNode<N : Node> : Rib {
     val appyxNode: N
@@ -41,12 +42,12 @@ internal class InteropNodeImpl<N : Node>(
 ), InteropNode<N> {
 
     private val observer = LifecycleEventObserver { source, _ ->
-        appyxNode.updateLifecycleState(source.lifecycle.currentState)
+        appyxNode.updateLifecycleState(source.lifecycle.currentState.toCommonState())
     }
 
     override fun onCreate() {
         super.onCreate()
-        appyxNode.updateLifecycleState(lifecycle.currentState)
+        appyxNode.updateLifecycleState(lifecycle.currentState.toCommonState())
         lifecycle.addObserver(observer)
     }
 
