@@ -3,8 +3,6 @@ package com.bumble.appyx.components.experimental.puzzle15.ui
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model.Tile
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap
@@ -15,7 +13,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.fractionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -27,8 +25,10 @@ class Puzzle15MotionController(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {
-
-    private val twoThirds = 2f / 3f
+    companion object {
+        // max step count from topLeft element to topRight element in the grid 4x4
+        private const val STEPS_COUNT = 3f
+    }
 
     override fun Puzzle15Model.State.toUiTargets(): List<MatchedTargetUiState<Tile, TargetUiState>> {
         return items.mapIndexed { index, tileElements ->
@@ -36,9 +36,9 @@ class Puzzle15MotionController(
                 element = tileElements,
                 targetUiState = TargetUiState(
                     position = PositionInside.Target(
-                        alignment = BiasAlignment.InsideAlignment(
-                            -1f + (index % 4) * twoThirds,
-                            -1f + (index / 4) * twoThirds
+                        alignment = fractionAlignment(
+                            horizontalBiasFraction = (index % 4) / STEPS_COUNT,
+                            verticalBiasFraction = (index / 4) / STEPS_COUNT
                         )
                     )
                 )

@@ -109,7 +109,7 @@ fun <InteractionTarget : Any> ModalUi(
                 motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()?.alignment
             if (alignment != null) {
                 Text(
-                    text = "Screens offset: ${roundFloatToTwoDecimals(alignment.horizontalBias)}",
+                    text = "Offset: ${roundFloatToTwoDecimals(alignment.horizontalBias * 100)}%",
                     fontSize = 12.sp,
                     color = Color.White
                 )

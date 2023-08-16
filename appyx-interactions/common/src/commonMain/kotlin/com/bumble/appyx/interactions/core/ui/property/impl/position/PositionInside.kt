@@ -18,6 +18,7 @@ import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -37,7 +38,7 @@ class PositionInside(
 ), Interpolatable<PositionInside.Target> {
 
     data class Value(
-        val alignment: InsideAlignment = InsideAlignment.TopStart,
+        val alignment: InsideAlignment = TopStart,
         val offset: DpOffset
     ) {
         companion object {
@@ -60,7 +61,7 @@ class PositionInside(
                 )
 
             val Zero = Value(
-                alignment = InsideAlignment.Center,
+                alignment = InsideAlignment(0f, 0f),
                 offset = DpOffset.Zero
             )
         }
@@ -75,7 +76,7 @@ class PositionInside(
             offset: DpOffset = DpOffset.Zero
         ) : this(
             value = Value(
-                alignment = InsideAlignment(0f, 0f),
+                alignment = TopStart,
                 offset = offset
             )
         )

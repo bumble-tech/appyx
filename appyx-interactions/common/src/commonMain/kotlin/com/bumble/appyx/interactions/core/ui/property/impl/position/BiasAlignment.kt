@@ -13,12 +13,21 @@ sealed class BiasAlignment(
     open val verticalBias: Float
 ) : Alignment {
 
+    /**
+     * Aligns elements outside of the parent bounds.
+     * (0,0) will be placed with zero offset relative to the parent bounds.
+     * (1,1) will have the offset that equals to parent's width and height.
+     * (-1,-1) will have the negative offset that equals to parent's width and height.
+     */
     class OutsideAlignment(
         override val horizontalBias: Float,
         override val verticalBias: Float
     ) : BiasAlignment(horizontalBias, verticalBias) {
 
-        constructor(horizontalBias: Int, verticalBias: Int) : this(horizontalBias.toFloat(), verticalBias.toFloat())
+        constructor(horizontalBias: Int, verticalBias: Int) : this(
+            horizontalBias.toFloat(),
+            verticalBias.toFloat()
+        )
 
         companion object {
 
@@ -63,6 +72,13 @@ sealed class BiasAlignment(
     }
 
 
+    /**
+     * Aligns the element fully inside the parent.
+     * (-1, -1) is the top left corner of the parent.
+     * (1, 1) is the bottom right corner of the parent.
+     * (0, 0) is the center of the parent.
+     * Intermediate values between -1 and 1 are allowed.
+     */
     class InsideAlignment(
         @FloatRange(from = -1.0, to = 1.0)
         override val horizontalBias: Float,
@@ -71,6 +87,16 @@ sealed class BiasAlignment(
     ) : BiasAlignment(horizontalBias, verticalBias) {
 
         companion object {
+            fun fractionAlignment(
+                @FloatRange(from = 0.0, to = 1.0)
+                horizontalBiasFraction: Float,
+                @FloatRange(from = 0.0, to = 1.0)
+                verticalBiasFraction: Float
+            ): InsideAlignment = InsideAlignment(
+                horizontalBias = -1f + horizontalBiasFraction * 2f,
+                verticalBias = -1f + verticalBiasFraction * 2f
+            )
+
             @Stable
             val TopStart = InsideAlignment(-1f, -1f)
 
