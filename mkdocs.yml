@@ -128,6 +128,7 @@ plugins:
   - include-markdown
   - macros:
       module_name: compose_mpp_sample
+      on_error_fail: true
   - social:
       cards_layout_options:
         background_color: white
