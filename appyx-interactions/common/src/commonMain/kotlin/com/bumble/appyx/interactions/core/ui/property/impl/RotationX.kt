@@ -10,22 +10,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX.Target
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class RotationX(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     target: Target,
     visibilityThreshold: Float = 1f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
     private val origin: TransformOrigin = target.origin,
 ) : MotionProperty<Float, AnimationVector1D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value, Float.VectorConverter),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,

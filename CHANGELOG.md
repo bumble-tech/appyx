@@ -11,6 +11,7 @@
 ### Changed
 
 - [#562](https://github.com/bumble-tech/appyx/issues/562) – Implement custom alignment to remove screen size knowledge when offsetting element in MotionController
+- [#562](https://github.com/bumble-tech/appyx/pull/565) – Remove UiContext parameter from MotionProperty and provide BoxScope via composition local
 
 ---
 

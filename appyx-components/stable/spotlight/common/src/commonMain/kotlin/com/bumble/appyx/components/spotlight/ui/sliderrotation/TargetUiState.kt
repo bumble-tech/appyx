@@ -54,7 +54,7 @@ class TargetUiState(
         return MutableUiState(
             uiContext = uiContext,
             position = PositionOutside(
-                uiContext = uiContext,
+                coroutineScope = uiContext.coroutineScope,
                 target = position,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
                     PositionOutside.Value(
@@ -65,17 +65,17 @@ class TargetUiState(
                     )
                 },
             ),
-            scale = Scale(uiContext, scale,
+            scale = Scale(uiContext.coroutineScope, scale,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { scroll ->
                     scaleUpTo(cutOffCenter(positionInList.toFloat(), scroll, 0.15f), -0.1f, 1f)
                 }
             ),
-            rotationY = RotationY(uiContext, rotationY,
+            rotationY = RotationY(uiContext.coroutineScope, rotationY,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { scroll ->
                     scaleUpTo(cutOffCenterSigned(positionInList.toFloat(), scroll, 0.15f), 15f, 1f)
                 }
             ),
-            alpha = Alpha(uiContext, alpha),
+            alpha = Alpha(uiContext.coroutineScope, alpha),
         )
     }
 }
