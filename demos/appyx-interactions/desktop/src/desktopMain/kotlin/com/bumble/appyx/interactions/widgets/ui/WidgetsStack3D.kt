@@ -22,7 +22,7 @@ class WidgetsStack3D<InteractionTarget : Any>(
     private val width: Dp = uiContext.transitionBounds.widthDp
     private val height: Dp = uiContext.transitionBounds.heightDp
 
-    private val scrollY = GenericFloatProperty(uiContext, GenericFloatProperty.Target(0f))
+    private val scrollY = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
     override val viewpointDimensions: List<Pair<(SpotlightModel.State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: SpotlightModel.State<InteractionTarget> -> state.activeIndex } to scrollY
