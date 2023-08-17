@@ -10,23 +10,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.graphicsLayer
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.math.lerpInt
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners.Target
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class RoundedCorners(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     target: Target,
     visibilityThreshold: Int = 1,
     displacement: StateFlow<Int> = MutableStateFlow(0),
 ) : MotionProperty<Int, AnimationVector1D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value, Int.VectorConverter),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,

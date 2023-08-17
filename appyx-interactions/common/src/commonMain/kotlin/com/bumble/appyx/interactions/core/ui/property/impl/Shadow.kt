@@ -8,20 +8,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class Shadow(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     target: Target,
     visibilityThreshold: Float = 0.01f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
 ) : MotionProperty<Float, AnimationVector1D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,

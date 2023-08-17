@@ -16,6 +16,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Height
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -28,7 +29,7 @@ class ModalMotionController<InteractionTarget : Any>(
     private val createdState: TargetUiState =
         TargetUiState(
             height = Height.Target(0f),
-            position = PositionOutside.Target(OutsideAlignment.Center),
+            position = PositionOutside.Target(InContainer),
             corner = RoundedCorners.Target(8),
         )
     private val modalState: TargetUiState =
@@ -41,7 +42,7 @@ class ModalMotionController<InteractionTarget : Any>(
     private val fullScreenState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-            position = PositionOutside.Target(OutsideAlignment(0f, 0f)),
+            position = PositionOutside.Target(InContainer),
             corner = RoundedCorners.Target(0),
         )
 

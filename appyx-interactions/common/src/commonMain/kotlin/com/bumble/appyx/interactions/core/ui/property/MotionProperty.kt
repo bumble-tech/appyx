@@ -13,8 +13,8 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.SystemClock
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +27,7 @@ import kotlinx.coroutines.flow.update
  * even when snapping. This is used to seamlessly switch to animation with a natural initial velocity
  * rather than zero.
  *
- * @param uiContext
+ * @param coroutineScope
  * @param animatable The backing [Animatable] to animate internal values with.
  * @param easing The [Easing] function to apply when setting interpolated values.
  * See [easingTransform].
@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.update
  * that are backed by the internal [Animatable].
  */
 abstract class MotionProperty<T, V : AnimationVector>(
-    protected val uiContext: UiContext,
+    protected val coroutineScope: CoroutineScope,
     private val animatable: Animatable<T, V>,
     val easing: Easing? = null,
     private val visibilityThreshold: T? = null,
@@ -81,7 +81,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         ) { displacement, value ->
             calculateRenderValue(value, displacement)
         }.stateIn(
-            scope = uiContext.coroutineScope,
+            scope = coroutineScope,
             started = SharingStarted.Eagerly,
             initialValue = internalValueFlow.value
         )

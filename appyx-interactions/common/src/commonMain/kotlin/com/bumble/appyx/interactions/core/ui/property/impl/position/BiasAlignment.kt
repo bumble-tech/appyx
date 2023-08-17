@@ -32,7 +32,7 @@ sealed class BiasAlignment(
         companion object {
 
             @Stable
-            val Center = OutsideAlignment(0f, 0f)
+            val InContainer = OutsideAlignment(0f, 0f)
 
             @Stable
             val OutsideLeft = OutsideAlignment(-1f, 0f)

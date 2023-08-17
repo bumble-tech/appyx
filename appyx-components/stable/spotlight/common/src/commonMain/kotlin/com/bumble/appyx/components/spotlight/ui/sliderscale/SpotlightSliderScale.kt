@@ -11,6 +11,9 @@ import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -21,26 +24,24 @@ class SpotlightSliderScale<InteractionTarget : Any>(
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val width: Dp = uiContext.transitionBounds.widthDp
-    private val height: Dp = uiContext.transitionBounds.heightDp
-    private val scrollX = GenericFloatProperty(uiContext, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
+    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
         )
 
     private val created: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideAlignment.OutsideTop),
+        position = PositionOutside.Target(OutsideTop),
         scale = Scale.Target(0f),
     )
 
     private val standard: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideAlignment.Center),
+        position = PositionOutside.Target(InContainer),
         scale = Scale.Target(1f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideAlignment.OutsideBottom),
+        position = PositionOutside.Target(OutsideBottom),
         scale = Scale.Target(0f),
     )
 

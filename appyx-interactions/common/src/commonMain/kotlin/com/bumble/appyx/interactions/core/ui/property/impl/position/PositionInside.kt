@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.TwoWayConverter
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -12,7 +11,7 @@ import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -20,17 +19,18 @@ import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.roundToInt
 
 class PositionInside(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     val target: Target,
     displacement: StateFlow<Value> = MutableStateFlow(Value.Zero),
     visibilityThreshold: Value = Value(InsideAlignment(0.01f, 0.01f), DpOffset(1.dp, 1.dp)),
 ) : MotionProperty<Value, AnimationVector4D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value, Value.VectorConverter),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
@@ -113,8 +113,7 @@ class PositionInside(
     override val modifier: Modifier
         get() = Modifier.composed {
             val value = renderValueFlow.collectAsState()
-            val boxScope: BoxScope = uiContext.boxScope
-
+            val boxScope = requireNotNull(LocalBoxScope.current)
             with(boxScope) {
                 this@composed
                     .offset {

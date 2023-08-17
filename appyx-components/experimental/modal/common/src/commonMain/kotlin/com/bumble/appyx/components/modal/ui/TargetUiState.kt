@@ -18,8 +18,8 @@ class TargetUiState(
     ): MutableUiState =
         MutableUiState(
             uiContext = uiContext,
-            height = Height(uiContext, height),
-            position = PositionOutside(uiContext, position),
-            corner = RoundedCorners(uiContext, corner),
+            height = Height(uiContext.coroutineScope, height),
+            position = PositionOutside(uiContext.coroutineScope, position),
+            corner = RoundedCorners(uiContext.coroutineScope, corner),
         )
 }
