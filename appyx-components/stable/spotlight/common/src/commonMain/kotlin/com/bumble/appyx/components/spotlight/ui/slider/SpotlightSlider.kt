@@ -31,7 +31,7 @@ class SpotlightSlider<InteractionTarget : Any>(
     uiContext = uiContext
 ) {
     private val scrollX = GenericFloatProperty(
-        uiContext,
+        uiContext.coroutineScope,
         GenericFloatProperty.Target(0f)
     ) // TODO sync this with the model's initial value rather than assuming 0
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =

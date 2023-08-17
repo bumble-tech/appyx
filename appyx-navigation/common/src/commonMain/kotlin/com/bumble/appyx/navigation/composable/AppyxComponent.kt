@@ -1,12 +1,12 @@
 package com.bumble.appyx.navigation.composable
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -34,6 +34,7 @@ import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellati
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.model.removedElements
 import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
+import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -58,7 +59,6 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
     val coroutineScope = rememberCoroutineScope()
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
-    var boxScope: BoxScope? = null
     val childrenBlock = block ?: {
         children { child, _ ->
             child()
@@ -82,7 +82,6 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
                     ),
-                    boxScope = boxScope!!,
                     clipToBounds = clipToBounds
                 )
             }
@@ -93,10 +92,11 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
             }
             .fillMaxSize()
     ) {
-        boxScope = this
-        childrenBlock(
-            ChildrenTransitionScope(appyxComponent, gestureExtraTouchArea, gestureValidator)
-        )
+        CompositionLocalProvider(LocalBoxScope provides this) {
+            childrenBlock(
+                ChildrenTransitionScope(appyxComponent, gestureExtraTouchArea, gestureValidator)
+            )
+        }
     }
 
 }

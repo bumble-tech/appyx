@@ -42,7 +42,7 @@ class TargetUiState(
         return MutableUiState(
             uiContext = uiContext,
             position = PositionOutside(
-                uiContext = uiContext,
+                coroutineScope = uiContext.coroutineScope,
                 target = position,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
                     val factor = 0.075f + smoothstep(0f, 1f, it)
@@ -55,19 +55,19 @@ class TargetUiState(
                 }
             ),
             scale = Scale(
-                uiContext = uiContext,
+                coroutineScope = uiContext.coroutineScope,
                 target = scale,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { -0.1f * it },
             ),
             alpha = Alpha(
-                uiContext = uiContext,
+                coroutineScope = uiContext.coroutineScope,
                 target = alpha,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
                     clamp(it, 0f, 1f) + clamp(-it - itemsInStack, 0f, 1f)
                 },
             ),
             zIndex = ZIndex(
-                uiContext = uiContext,
+                coroutineScope = uiContext.coroutineScope,
                 target = zIndex,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { -it }
             ),

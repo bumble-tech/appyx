@@ -21,9 +21,7 @@ class SpotlightSliderScale<InteractionTarget : Any>(
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val width: Dp = uiContext.transitionBounds.widthDp
-    private val height: Dp = uiContext.transitionBounds.heightDp
-    private val scrollX = GenericFloatProperty(uiContext, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
+    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX

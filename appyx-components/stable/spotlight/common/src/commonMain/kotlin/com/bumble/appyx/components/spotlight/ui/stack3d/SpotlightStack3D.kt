@@ -23,7 +23,7 @@ class SpotlightStack3D<InteractionTarget : Any>(
 ) {
     private val height: Dp = uiContext.transitionBounds.heightDp
 
-    private val scrollY = GenericFloatProperty(uiContext, GenericFloatProperty.Target(0f))
+    private val scrollY = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollY
