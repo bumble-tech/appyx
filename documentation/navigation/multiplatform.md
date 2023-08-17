@@ -189,7 +189,7 @@ On Android back events are handled automatically.
 
 In the above [desktop](#desktop) and [web](#web) examples there is a reference to an `onKeyEvent` method.
 
-You can implement as such, and configure the keybinding which `Key` should trigger a back event:
+You can configure any `KeyEvent` to trigger a back event via the events `Channel`. In this example the `OnBackPressed` event is launched when the backspace key is pressed down:
 
 ```kotlin
 @OptIn(ExperimentalComposeUiApi::class)
