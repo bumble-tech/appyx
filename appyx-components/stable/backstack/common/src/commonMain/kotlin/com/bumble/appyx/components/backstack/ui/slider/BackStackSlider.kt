@@ -3,7 +3,7 @@ package com.bumble.appyx.components.backstack.ui.slider
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
@@ -16,13 +16,13 @@ class BackStackSlider<InteractionTarget : Any>(
 
     private val visible: TargetUiState =
         TargetUiState(
-            position = PositionOutside.Target(BiasAlignment.OutsideAlignment.Center),
+            position = PositionOutside.Target(InContainer),
             alpha = Alpha.Target(1f),
         )
 
     private val fadeOut: TargetUiState =
         TargetUiState(
-            position = PositionOutside.Target(BiasAlignment.OutsideAlignment.Center),
+            position = PositionOutside.Target(InContainer),
             alpha = Alpha.Target(1f),
         )
 

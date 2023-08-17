@@ -11,6 +11,9 @@ import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.mapState
@@ -30,21 +33,21 @@ class SpotlightStack3D<InteractionTarget : Any>(
         )
 
     private val created: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(BiasAlignment.OutsideAlignment.OutsideTop),
+        position = PositionOutside.Target(OutsideTop),
         scale = Scale.Target(2.5f),
         alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(0f),
     )
 
     private val standard: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(BiasAlignment.OutsideAlignment.Center),
+        position = PositionOutside.Target(InContainer),
         scale = Scale.Target(1f),
         alpha = Alpha.Target(1f),
         zIndex = ZIndex.Target(0f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(BiasAlignment.OutsideAlignment.OutsideBottom),
+        position = PositionOutside.Target(OutsideBottom),
         scale = Scale.Target(0.25f),
         alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(0f),
