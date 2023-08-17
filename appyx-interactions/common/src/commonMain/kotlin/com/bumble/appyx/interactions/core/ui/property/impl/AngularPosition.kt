@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.AngularPosition.Value
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.PI
@@ -22,12 +22,12 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class AngularPosition(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     val target: Target,
     displacement: StateFlow<Value> = MutableStateFlow(Value.Zero),
     visibilityThreshold: Value = Value(0.1f, 0.1f)
 ) : MotionProperty<Value, AnimationVector2D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value, Value.VectorConverter),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
