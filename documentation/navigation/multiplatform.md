@@ -187,7 +187,7 @@ fun main() {
 
 On Android back events are handled automatically.
 
-In the above [desktop](#desktop) and [web](#web) examples there are a references to an `onKeyEvent` method.
+In the above [desktop](#desktop) and [web](#web) examples there is a reference to an `onKeyEvent` method.
 
 You can implement as such, and configure the keybinding which `Key` should trigger a back event:
 
