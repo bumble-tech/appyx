@@ -2,7 +2,14 @@
 
 ## Pending changes
 
-- [#551](https://github.com/bumble-tech/appyx/pull/551) - Multiplatform Navigation module
+–
+
+## 2.0.0-alpha03
+
+### Added
+
+- [#551](https://github.com/bumble-tech/appyx/pull/551) - Support Multiplatform in **:appyx-navigation**
+- [#565](https://github.com/bumble-tech/appyx/pull/565) - Adds `AngularPosition` via restoring `Promoter` example
 
 ### Fixed
 
@@ -12,6 +19,8 @@
 
 - [#562](https://github.com/bumble-tech/appyx/issues/562) – Implement custom alignment to remove screen size knowledge when offsetting element in MotionController
 - [#562](https://github.com/bumble-tech/appyx/pull/565) – Remove UiContext parameter from MotionProperty and provide BoxScope via composition local
+
+<div style="text-align: center"><small>17 Aug 2023</small></div>
 
 ---
 
