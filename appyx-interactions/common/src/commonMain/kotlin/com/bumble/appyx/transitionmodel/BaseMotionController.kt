@@ -12,6 +12,7 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -64,6 +65,16 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
 
     private val _finishedAnimations = MutableSharedFlow<Element<InteractionTarget>>()
     override val finishedAnimations: Flow<Element<InteractionTarget>> = _finishedAnimations
+
+    protected var transitionBounds: TransitionBounds = TransitionBounds.Zero
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        this.transitionBounds = transitionBounds
+        mutableUiStateCache.values.forEach {
+            it.updateBounds(transitionBounds)
+        }
+    }
+
     override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         currentSpringSpec = springSpec
     }

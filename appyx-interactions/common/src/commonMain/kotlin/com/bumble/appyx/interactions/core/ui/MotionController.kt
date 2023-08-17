@@ -7,13 +7,14 @@ import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.model.transition.toSegmentProgress
+import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
-interface MotionController<InteractionTarget, ModelState> {
+interface MotionController<InteractionTarget, ModelState> : TransitionBoundsAware {
 
     val finishedAnimations: Flow<Element<InteractionTarget>>
 

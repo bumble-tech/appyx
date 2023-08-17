@@ -54,26 +54,30 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     val density = LocalDensity.current
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
+    var transitionBounds by remember { mutableStateOf<TransitionBounds?>(null) }
 
-    LaunchedEffect(uiContext) {
-        uiContext?.let { appyxComponent.updateContext(it) }
+    LaunchedEffect(coroutineScope) {
+        appyxComponent.updateContext(
+            UiContext(
+                coroutineScope = coroutineScope,
+                clipToBounds = clipToBounds
+            )
+        )
+    }
+    LaunchedEffect(transitionBounds) {
+        transitionBounds?.let { appyxComponent.updateBounds(it) }
     }
     Box(
         modifier = modifier
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
-                        density = density,
-                        widthPx = it.size.width,
-                        heightPx = it.size.height,
-                        screenWidthPx = screenWidthPx,
-                        screenHeightPx = screenHeightPx
-                    ),
-                    clipToBounds = clipToBounds
+                transitionBounds = TransitionBounds(
+                    density = density,
+                    widthPx = it.size.width,
+                    heightPx = it.size.height,
+                    screenWidthPx = screenWidthPx,
+                    screenHeightPx = screenHeightPx
                 )
             }
             .onPointerEvent {

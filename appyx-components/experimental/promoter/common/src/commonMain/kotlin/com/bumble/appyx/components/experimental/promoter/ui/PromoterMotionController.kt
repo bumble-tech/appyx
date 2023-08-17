@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.PromoterModel.State.ElementState
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.AngularPosition
@@ -27,6 +28,10 @@ class PromoterMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
+    init {
+        createTargetUiStates(0f)
+    }
+
     override fun PromoterModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         elements.map {
             MatchedTargetUiState(
@@ -48,100 +53,116 @@ class PromoterMotionController<InteractionTarget : Any>(
     ): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
-    private val halfWidthDp = uiContext.transitionBounds.widthDp.value / 2
-    private val halfHeightDp = uiContext.transitionBounds.heightDp.value / 2
-    private val center = DpOffset(halfWidthDp.dp, halfHeightDp.dp) - DpOffset((childSize.value / 2).dp, (childSize.value / 2).dp)
-    private val radius = min(halfWidthDp, halfHeightDp) * 0.8f
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        super.updateBounds(transitionBounds)
+        val halfWidthDp = transitionBounds.widthDp.value / 2
+        val halfHeightDp = transitionBounds.heightDp.value / 2
+        val radius = min(halfWidthDp, halfHeightDp) * 0.8f
+        createTargetUiStates(radius)
+    }
 
-    private val created = TargetUiState(
-        position = PositionInside.Target(alignment = Center),
-        angularPosition = AngularPosition.Target(
-            AngularPosition.Value(
-                radius = radius,
-                angleDegrees = 0f
-            )
-        ),
-        scale = Scale.Target(0f),
-        rotationY = RotationY.Target(0f),
-        rotationZ = RotationZ.Target(0f),
-    )
+    private lateinit var created: TargetUiState
+    private lateinit var stage1: TargetUiState
+    private lateinit var stage2: TargetUiState
+    private lateinit var stage3: TargetUiState
+    private lateinit var stage4: TargetUiState
+    private lateinit var stage5: TargetUiState
+    private lateinit var destroyed: TargetUiState
 
-    private val stage1 = TargetUiState(
-        position = PositionInside.Target(alignment = Center),
-        angularPosition = AngularPosition.Target(
-            AngularPosition.Value(
-                radius = radius,
-                angleDegrees = 0f
-            )
-        ),
-        scale = Scale.Target(0.25f),
-        rotationY = RotationY.Target(0f),
-        rotationZ = RotationZ.Target(0f),
-
+    fun createTargetUiStates(radius: Float) {
+        created = TargetUiState(
+            position = PositionInside.Target(alignment = Center),
+            angularPosition = AngularPosition.Target(
+                AngularPosition.Value(
+                    radius = radius,
+                    angleDegrees = 0f
+                )
+            ),
+            scale = Scale.Target(0f),
+            rotationY = RotationY.Target(0f),
+            rotationZ = RotationZ.Target(0f),
         )
 
-    private val stage2 = TargetUiState(
-        position = PositionInside.Target(alignment = Center),
-        angularPosition = AngularPosition.Target(
-            AngularPosition.Value(
-                radius = radius,
-                angleDegrees = 90f
-            )
-        ),
-        scale = Scale.Target(0.45f),
-        rotationY = RotationY.Target(0f),
-        rotationZ = RotationZ.Target(0f),
-    )
+        stage1 = TargetUiState(
+            position = PositionInside.Target(alignment = Center),
+            angularPosition = AngularPosition.Target(
+                AngularPosition.Value(
+                    radius = radius,
+                    angleDegrees = 0f
+                )
+            ),
+            scale = Scale.Target(0.25f),
+            rotationY = RotationY.Target(0f),
+            rotationZ = RotationZ.Target(0f)
+        )
 
-    private val stage3 = TargetUiState(
-        position = PositionInside.Target(alignment = Center),
-        angularPosition = AngularPosition.Target(
-            AngularPosition.Value(
-                radius = radius,
-                angleDegrees = 180f
-            )
-        ),
-        scale = Scale.Target(0.65f),
-        rotationY = RotationY.Target(0f),
-        rotationZ = RotationZ.Target(0f),
-    )
+        stage2 = TargetUiState(
+            position = PositionInside.Target(alignment = Center),
+            angularPosition = AngularPosition.Target(
+                AngularPosition.Value(
+                    radius = radius,
+                    angleDegrees = 90f
+                )
+            ),
+            scale = Scale.Target(0.45f),
+            rotationY = RotationY.Target(0f),
+            rotationZ = RotationZ.Target(0f),
+        )
 
-    private val stage4 = TargetUiState(
-        position = PositionInside.Target(alignment = Center),
-        angularPosition = AngularPosition.Target(
-            AngularPosition.Value(
-                radius = radius,
-                angleDegrees = 270f
-            )
-        ),
-        scale = Scale.Target(0.85f),
-        rotationY = RotationY.Target(0f),
-        rotationZ = RotationZ.Target(0f),
-    )
+        stage3 = TargetUiState(
+            position = PositionInside.Target(alignment = Center),
+            angularPosition = AngularPosition.Target(
+                AngularPosition.Value(
+                    radius = radius,
+                    angleDegrees = 180f
+                )
+            ),
+            scale = Scale.Target(0.65f),
+            rotationY = RotationY.Target(0f),
+            rotationZ = RotationZ.Target(0f),
+        )
 
-    private val stage5 = TargetUiState(
-        position = PositionInside.Target(alignment = Center),
-        angularPosition = AngularPosition.Target(
-            AngularPosition.Value(
-                radius = 0f,
-                angleDegrees = 270f
-            )
-        ),
-        scale = Scale.Target(1f),
-        rotationY = RotationY.Target(360f),
-        rotationZ = RotationZ.Target(0f),
-    )
+        stage4 = TargetUiState(
+            position = PositionInside.Target(alignment = Center),
+            angularPosition = AngularPosition.Target(
+                AngularPosition.Value(
+                    radius = radius,
+                    angleDegrees = 270f
+                )
+            ),
+            scale = Scale.Target(0.85f),
+            rotationY = RotationY.Target(0f),
+            rotationZ = RotationZ.Target(0f),
+        )
 
-    private val destroyed = TargetUiState(
-        position = PositionInside.Target(alignment = Center, offset = DpOffset(500.dp, (-200).dp)),
-        angularPosition = AngularPosition.Target(
-            AngularPosition.Value(
-                radius = radius,
-                angleDegrees = 0f
-            )
-        ),
-        scale = Scale.Target(0f),
-        rotationY = RotationY.Target(360f),
-        rotationZ = RotationZ.Target(540f),
-    )
+        stage5 = TargetUiState(
+            position = PositionInside.Target(alignment = Center),
+            angularPosition = AngularPosition.Target(
+                AngularPosition.Value(
+                    radius = 0f,
+                    angleDegrees = 270f
+                )
+            ),
+            scale = Scale.Target(1f),
+            rotationY = RotationY.Target(360f),
+            rotationZ = RotationZ.Target(0f),
+        )
+
+        destroyed = TargetUiState(
+            position = PositionInside.Target(
+                alignment = Center,
+                offset = DpOffset(500.dp, (-200).dp)
+            ),
+            angularPosition = AngularPosition.Target(
+                AngularPosition.Value(
+                    radius = radius,
+                    angleDegrees = 0f
+                )
+            ),
+            scale = Scale.Target(0f),
+            rotationY = RotationY.Target(360f),
+            rotationZ = RotationZ.Target(540f),
+        )
+    }
 }
+

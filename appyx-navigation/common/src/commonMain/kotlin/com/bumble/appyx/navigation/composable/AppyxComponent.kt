@@ -58,31 +58,35 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
     val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
     val coroutineScope = rememberCoroutineScope()
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
+    var transitionBounds by remember { mutableStateOf(TransitionBounds.Zero) }
     val childrenBlock = block ?: {
         children { child, _ ->
             child()
         }
     }
 
-    LaunchedEffect(uiContext) {
-        uiContext?.let { appyxComponent.updateContext(it) }
+    LaunchedEffect(coroutineScope) {
+        appyxComponent.updateContext(
+            UiContext(
+                coroutineScope = coroutineScope,
+                clipToBounds = clipToBounds
+            )
+        )
+    }
+    LaunchedEffect(transitionBounds) {
+        appyxComponent.updateBounds(transitionBounds)
     }
     Box(
         modifier = modifier
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
-                        density = density,
-                        widthPx = it.size.width,
-                        heightPx = it.size.height,
-                        screenWidthPx = screenWidthPx,
-                        screenHeightPx = screenHeightPx
-                    ),
-                    clipToBounds = clipToBounds
+                transitionBounds = TransitionBounds(
+                    density = density,
+                    widthPx = it.size.width,
+                    heightPx = it.size.height,
+                    screenWidthPx = screenWidthPx,
+                    screenHeightPx = screenHeightPx
                 )
             }
             .onPointerEvent {

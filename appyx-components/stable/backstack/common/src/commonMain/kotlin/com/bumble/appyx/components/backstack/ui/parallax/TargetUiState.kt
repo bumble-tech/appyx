@@ -17,7 +17,6 @@ class TargetUiState(
 ) {
 
     constructor(
-        elementWidth: Float,
         offsetMultiplier: Float,
         colorOverlay: ColorOverlay.Target = ColorOverlay.Target(0f),
         shadow: Shadow.Target = Shadow.Target(0f),
