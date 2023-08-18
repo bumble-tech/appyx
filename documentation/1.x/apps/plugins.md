@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Plugins
 
 ## Keeping extra concerns out of Node

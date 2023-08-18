@@ -71,7 +71,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
                     ),
                 )
             },
-            gestureFactory = { TestDriveSimpleMotionController.Gestures() }
+            gestureFactory = { TestDriveSimpleMotionController.Gestures(it) }
         )
     }
 
@@ -161,7 +161,11 @@ fun <InteractionTarget : Any> TestDriveUi(
             Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .offset(targetUiState.position.value.x, targetUiState.position.value.y)
+                    .align(targetUiState.position.value.alignment)
+                    .offset(
+                        targetUiState.position.value.offset.x,
+                        targetUiState.position.value.offset.y
+                    )
                     .border(2.dp, targetUiState.backgroundColor.value)
                     .semantics {
                         contentDescription = TEST_DRIVE_EXPERIMENT_TEST_HELPER

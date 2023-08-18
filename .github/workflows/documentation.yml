@@ -1,0 +1,23 @@
+name: Deploy mkdocs to GitHub Pages
+
+on:
+  push:
+    branches:
+      - 2.x
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+      - run: pip install mkdocs-material
+      - run: pip install mkdocs-macros-plugin
+      - run: pip install mkdocs-redirects
+      - run: pip install mkdocs-include-markdown-plugin
+      - run: pip install pillow cairosvg
+      - run: mkdocs gh-deploy --force

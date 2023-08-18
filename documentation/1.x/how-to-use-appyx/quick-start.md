@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Quick start guide
 
 !!! info
@@ -189,7 +191,7 @@ You can also use a fader instead: ```rememberBackstackFader()```, and you can su
 
 Need something more custom?
 
-1. Instead of a back stack, you can find other [NavModels](../navmodel) in the library, or you can [implement your own](../navmodel/custom.md)
+1. Instead of a back stack, you can find other [NavModels](../navmodel/index.md) in the library, or you can [implement your own](../navmodel/custom.md)
 2. Instead of the default transition handlers, you can also [use Jetpack Compose provided ones, or supply your own](../ui/transitions.md)
 
 You can also read the [Back stack documentation](../navmodel/backstack.md) for more info on the specific options for the back stack.

@@ -47,13 +47,19 @@ enum class ChildSize {
 }
 
 @Composable
-fun <InteractionTarget : Any, ModelState: Any> AppyxWebSample(
+fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     actions: Map<String, () -> Unit>,
     childSize: ChildSize = ChildSize.SMALL,
     modifier: Modifier = Modifier,
+    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
+        ModalUi(
+            elementUiModel = it,
+            isChildMaxSize = childSize == ChildSize.MAX
+        )
+    }
 ) {
     AppyxComponentSetup(appyxComponent)
 
@@ -69,23 +75,21 @@ fun <InteractionTarget : Any, ModelState: Any> AppyxWebSample(
                 .clip(containerShape)
                 .weight(0.9f)
         ) {
-            Box(Modifier.padding(
-                when (childSize) {
-                    ChildSize.SMALL -> 32.dp
-                    ChildSize.MEDIUM -> 16.dp
-                    ChildSize.MAX -> 0.dp
-                }
-            )) {
+            Box(
+                Modifier.padding(
+                    when (childSize) {
+                        ChildSize.SMALL -> 32.dp
+                        ChildSize.MEDIUM -> 16.dp
+                        ChildSize.MAX -> 0.dp
+                    }
+                )
+            ) {
                 DraggableAppyxComponent(
                     appyxComponent = appyxComponent,
                     screenWidthPx = screenWidthPx,
                     screenHeightPx = screenHeightPx,
                 ) { elementUiModel ->
-                    ModalUi(
-                        elementUiModel = elementUiModel,
-                        isChildMaxSize = childSize == ChildSize.MAX,
-                        modifier = Modifier.align(Alignment.TopCenter),
-                    )
+                    element(elementUiModel)
                 }
             }
         }
@@ -133,7 +137,9 @@ fun <InteractionTarget : Any> ModalUi(
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {
                     is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
-                    else -> { Color.Cyan }
+                    else -> {
+                        Color.Cyan
+                    }
                 },
                 shape = RoundedCornerShape(if (isChildMaxSize) 0 else 8)
             )

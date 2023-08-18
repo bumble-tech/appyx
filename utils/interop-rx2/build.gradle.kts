@@ -28,7 +28,7 @@ android {
 }
 
 dependencies {
-    api(project(":appyx-navigation"))
+    api(project(":appyx-navigation:appyx-navigation"))
     api(libs.rxjava2)
     api(libs.rxrelay2)
 

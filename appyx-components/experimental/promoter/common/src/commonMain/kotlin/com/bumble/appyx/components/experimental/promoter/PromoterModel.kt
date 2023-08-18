@@ -1,20 +1,16 @@
 package com.bumble.appyx.components.experimental.promoter
 
 import com.bumble.appyx.components.experimental.promoter.PromoterModel.State.ElementState.DESTROYED
-import com.bumble.appyx.interactions.Parcelable
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PromoterModel<InteractionTarget : Any>(
     savedStateMap: SavedStateMap?,
-//    key: String = KEY_PROMOTER_MODEL
 ) : BaseTransitionModel<InteractionTarget, PromoterModel.State<InteractionTarget>>(
-//    screenResolver = PromoterOnScreenResolver,
-//    finalState = DESTROYED,
     savedStateMap = savedStateMap,
-//    key = key
 ) {
     @Parcelize
     data class State<InteractionTarget>(
@@ -38,7 +34,6 @@ class PromoterModel<InteractionTarget : Any>(
 
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         elements
-            .filter { it.second != DESTROYED }
             .map { it.first }
             .toSet()
 

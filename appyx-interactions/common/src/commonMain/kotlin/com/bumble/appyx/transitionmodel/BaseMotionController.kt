@@ -8,7 +8,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import com.bumble.appyx.combineState
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
@@ -20,6 +19,7 @@ import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import com.bumble.appyx.withPrevious
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -102,6 +102,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                     observeElementAnimationChanges(mutableUiState, t1)
                     manageAnimations(mutableUiState, t1, update)
                 },
+                motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
                 progress = MutableStateFlow(1f),
             )
@@ -225,6 +226,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                     Box(modifier = mutableUiState.visibilityModifier)
                     interpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
                 },
+                motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
                 progress = segmentProgress,
             )

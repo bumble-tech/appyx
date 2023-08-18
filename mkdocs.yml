@@ -1,8 +1,8 @@
 # General setup
 site_name: Appyx
-site_url: https://github.com/bumble-tech/appyx
+site_url: https://bumble-tech.github.io/appyx/
 site_author: Bumble
-site_description: Model-driven navigation for Jetpack Compose
+site_description: Model-driven navigation + UI components with gesture control for Compose Multiplatform
 
 # Repository
 repo_name: Appyx
@@ -17,6 +17,28 @@ docs_dir: documentation
 
 nav:
   - Home: index.md
+  - Appyx Navigation:
+      - Overview: navigation/index.md
+      - Quick start guide: navigation/quick-start.md
+      - Concepts:
+          - Model-driven navigation: navigation/concepts/model-driven-navigation.md
+          - Composable navigation: navigation/concepts/composable-navigation.md
+          - Implicit navigation: navigation/concepts/implicit-navigation.md
+          - Explicit navigation: navigation/concepts/explicit-navigation.md
+      - Features:
+          - Deep linking: navigation/features/deep-linking.md
+          - Scoped DI: navigation/features/scoped-di.md
+          - Lifecycle: navigation/features/lifecycle.md
+          - Plugins: navigation/features/plugins.md
+          - ChildAware API: navigation/features/childaware.md
+          - Surviving configuration changes: navigation/features/surviving-configuration-changes.md
+      - Integrations:
+          - Compose Navigation: navigation/integrations/compose-navigation.md
+          - DI frameworks: navigation/integrations/di-frameworks.md
+          - RIBs: navigation/integrations/ribs.md
+          - RxJava: navigation/integrations/rx.md
+          - ViewModel: navigation/integrations/viewmodel.md
+      - Multiplatform: navigation/multiplatform.md
   - Appyx Interactions:
     - Overview: interactions/index.md
     - Using components: interactions/usage.md
@@ -24,19 +46,22 @@ nav:
       - Component overview: interactions/appyxcomponent.md
       - Transition model: interactions/transitionmodel.md
       - Operations: interactions/operations.md
-      - UI representation: interactions/uirepresentation.md
+      - UI representation: interactions/ui-representation.md
+      - KSP setup: interactions/ksp.md
       - Gestures: interactions/gestures.md
   - Appyx Components:
     - Overview: components/index.md
     - Back stack: components/backstack.md
     - Spotlight: components/spotlight.md
-  - Appyx Navigation: navigation/index.md
+    - Experimental: components/experimental.md
+
   - Releases:
     - Downloads: releases/downloads.md
     - Changelog: releases/changelog.md
+  - 2.x:
+    - Migration guide: 2.x/migrationguide.md
   - 1.x:
     - Overview: 1.x/index.md
-    - News & updates: 1.x/news.md
     - Releases:
       - Downloads: 1.x/releases/downloads.md
       - Changelog: 1.x/releases/changelog.md
@@ -69,6 +94,7 @@ nav:
         - ChildAware API: 1.x/apps/childaware.md
         - Configuration changes: 1.x/apps/configuration.md
     - FAQ: 1.x/faq.md
+  - FAQ: faq.md
 
 
 # theme configuration
@@ -99,8 +125,49 @@ extra_css:
 
 plugins:
   - search
+  - include-markdown
   - macros:
       module_name: compose_mpp_sample
+  - social:
+      cards_layout_options:
+        background_color: white
+  - redirects:
+      redirect_maps:
+        'how-to-use-appyx/quick-start.md': '1.x/how-to-use-appyx/quick-start.md'
+        'how-to-use-appyx/codelabs.md': '1.x/how-to-use-appyx/codelabs.md'
+        'how-to-use-appyx/coding-challenges.md': '1.x/how-to-use-appyx/coding-challenges.md'
+        'how-to-use-appyx/sample-apps.md': '1.x/how-to-use-appyx/sample-apps.md'
+        'navigation/model-driven-navigation.md': 'navigation/concepts/model-driven-navigation.md'
+        'navmodel/index.md': 'components/index.md'
+        'navmodel/backstack.md': 'components/backstack.md'
+        'navmodel/spotlight.md': 'components/spotlight.md'
+        'navmodel/cards.md': 'components/experimental.md'
+        'navmodel/tiles.md': '1.x/navmodel/tiles.md'
+        'navmodel/promoter.md': '1.x/navmodel/promoter.md'
+        'navmodel/custom.md': 'interactions/appyxcomponent.md'
+        'navigation/composable-navigation.md': 'navigation/concepts/composable-navigation.md'
+        'navigation/implicit-navigation.md': 'navigation/concepts/implicit-navigation.md'
+        'navigation/explicit-navigation.md': 'navigation/concepts/explicit-navigation.md'
+        'navigation/deep-linking.md': 'navigation/features/deep-linking.md'
+        'ui/children-view.md': '1.x/ui/children-view.md'
+        'ui/transitions.md': '1.x/ui/transitions.md'
+        'apps/structure.md': 'navigation/concepts/composable-navigation.md'
+        'apps/lifecycle.md': 'navigation/features/lifecycle.md'
+        'apps/plugins.md': 'navigation/features/plugins.md'
+        'apps/childaware.md': 'navigation/features/childaware.md'
+        'apps/configuration.md': 'navigation/features/surviving-configuration-changes.md'
+        'news.md': 'index.md'
+        'interactions/uirepresentation.md': 'interactions/ui-representation.md'
+        'navigation/navigation/composable-navigation.md': 'navigation/concepts/composable-navigation.md'
+        'navigation/navigation/implicit-navigation.md': 'navigation/concepts/implicit-navigation.md'
+        'navigation/navigation/explicit-navigation.md': 'navigation/concepts/explicit-navigation.md'
+        'navigation/navigation/deep-linking.md': 'navigation/features/deep-linking.md'
+        'navigation/apps/structure.md': 'navigation/concepts/composable-navigation.md'
+        'navigation/apps/lifecycle.md': 'navigation/features/lifecycle.md'
+        'navigation/apps/plugins.md': 'navigation/features/plugins.md'
+        'navigation/apps/childaware.md': 'navigation/features/childaware.md'
+        'navigation/apps/configuration.md': 'navigation/features/surviving-configuration-changes.md'
+        'navigation/features/configuration.md': 'navigation/features/surviving-configuration-changes.md'
 
 # extensions
 markdown_extensions:

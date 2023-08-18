@@ -7,16 +7,17 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.jvm.JvmInline
 
 class GenericFloatProperty(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     target: Target,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
 ) : MotionProperty<Float, AnimationVector1D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value),
     displacement = displacement
 ), Interpolatable<GenericFloatProperty> {

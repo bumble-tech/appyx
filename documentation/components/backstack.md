@@ -1,3 +1,7 @@
+---
+title: Appyx Components – Back stack
+---
+
 # Back stack
 
 Implements a simple linear history:
@@ -18,15 +22,15 @@ The back stack also supports different back press strategies (see further down b
 Class: `BackStackSlider`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/backstack/slider/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:backstack:slider:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-backstack-slider",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/slider/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:slider:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-slider",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Parallax
@@ -34,15 +38,15 @@ classname="compose_mpp_sample",
 Class: `BackStackParallax`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-backstack-parallax",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-parallax",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### 3D stack
@@ -50,15 +54,15 @@ classname="compose_mpp_sample",
 Class: `BackStack3D`
 
 {{
-compose_mpp_sample(
-project_output_directory="demos/mkdocs/appyx-components/backstack/stack3d/web/build/distributions",
-compile_task=":demos:mkdocs:appyx-components:backstack:stack3d:web:jsBrowserDistribution",
-width=512,
-height=384,
-target_directory="samples/documentation-components-backstack-stack3d",
-html_file_name="index.html",
-classname="compose_mpp_sample",
-)
+    compose_mpp_sample(
+        project_output_directory="demos/mkdocs/appyx-components/backstack/stack3d/web/build/distributions",
+        compile_task=":demos:mkdocs:appyx-components:backstack:stack3d:web:jsBrowserDistribution",
+        width=512,
+        height=384,
+        target_directory="samples/documentation-components-backstack-stack3d",
+        html_file_name="index.html",
+        classname="compose_mpp_sample",
+    )
 }}
 
 ### Fader
@@ -79,7 +83,7 @@ Class: `BackStackFader`
 
 ### Custom
 
-You can always create your own visualisations for Appyx components. Find more info in [UI representation](../interactions/uirepresentation.md).
+You can always create your own visualisations for Appyx components. Find more info in [UI representation](../interactions/ui-representation.md).
 
 
 

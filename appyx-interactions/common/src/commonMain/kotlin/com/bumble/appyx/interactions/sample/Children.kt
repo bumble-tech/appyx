@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -29,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
+import com.bumble.appyx.interactions.core.ui.LocalBoxScope
+import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -79,16 +82,22 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 }
             }
     ) {
-        elementUiModels
-            .forEach { elementUiModel ->
-                key(elementUiModel.element.id) {
-                    elementUiModel.persistentContainer()
-                    val isVisible by elementUiModel.visibleState.collectAsState()
-                    if (isVisible) {
-                        childWrapper.invoke(elementUiModel)
+        CompositionLocalProvider(LocalBoxScope provides this) {
+            elementUiModels
+                .forEach { elementUiModel ->
+                    key(elementUiModel.element.id) {
+                        elementUiModel.persistentContainer()
+                        val isVisible by elementUiModel.visibleState.collectAsState()
+                        if (isVisible) {
+                            CompositionLocalProvider(
+                                LocalMotionProperties provides elementUiModel.motionProperties
+                            ) {
+                                childWrapper.invoke(elementUiModel)
+                            }
+                        }
                     }
                 }
-            }
+        }
     }
 }
 

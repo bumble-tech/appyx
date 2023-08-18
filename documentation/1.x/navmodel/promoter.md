@@ -1,3 +1,5 @@
+{% include-markdown "../deprecation.md" %}
+
 # Promoter carousel
 
 <img src="https://i.imgur.com/esLXh61.gif" width="200">

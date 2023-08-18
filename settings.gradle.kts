@@ -43,26 +43,36 @@ include(
     ":appyx-components:experimental:puzzle15:web",
     ":appyx-interactions:android",
     ":appyx-interactions:common",
-    ":appyx-navigation",
+    ":appyx-navigation:android",
+    ":appyx-navigation:common",
     ":demos:appyx-interactions:android",
     ":demos:appyx-interactions:desktop",
     ":demos:appyx-interactions:web",
-    ":demos:appyx-navigation",
+    ":demos:appyx-navigation:common",
+    ":demos:appyx-navigation:android",
+    ":demos:appyx-navigation:desktop",
+    ":demos:appyx-navigation:web",
     ":demos:common",
     ":demos:navigation-compose",
     ":demos:mkdocs:appyx-interactions:interactions:sample1:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample2:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample3:web",
+    ":demos:mkdocs:appyx-interactions:interactions:observemp:web",
+    ":demos:mkdocs:appyx-interactions:gestures:dragprediction:web",
+    ":demos:mkdocs:appyx-interactions:gestures:incompletedrag:web",
     ":demos:mkdocs:appyx-components:backstack:fader:web",
     ":demos:mkdocs:appyx-components:backstack:parallax:web",
     ":demos:mkdocs:appyx-components:backstack:slider:web",
     ":demos:mkdocs:appyx-components:backstack:stack3d:web",
     ":demos:mkdocs:appyx-components:common",
+    ":demos:mkdocs:appyx-components:experimental:datingcards:web",
+    ":demos:mkdocs:appyx-components:experimental:puzzle15:web",
     ":demos:mkdocs:appyx-components:spotlight:fader:web",
     ":demos:mkdocs:appyx-components:spotlight:slider:web",
     ":demos:mkdocs:appyx-components:spotlight:sliderrotation:web",
     ":demos:mkdocs:appyx-components:spotlight:sliderscale:web",
     ":demos:mkdocs:appyx-components:spotlight:stack3d:web",
+    ":demos:mkdocs:common",
     ":ksp:mutable-ui-processor",
     ":utils:customisations",
     ":utils:interop-ribs",
@@ -73,17 +83,20 @@ include(
     ":utils:testing-ui",
     ":utils:testing-ui-activity",
     ":utils:testing-unit-common",
+    ":utils:multiplatform",
 )
 
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
-project(":appyx-components:stable:backstack:common").name = "backstack"
-project(":appyx-components:experimental:modal:common").name = "modal"
-project(":appyx-components:stable:spotlight:common").name = "spotlight"
 project(":appyx-interactions:common").name = "appyx-interactions"
+project(":appyx-navigation:common").name = "appyx-navigation"
+project(":appyx-components:stable:backstack:common").name = "backstack"
+project(":appyx-components:stable:spotlight:common").name = "spotlight"
 project(":appyx-components:experimental:cards:common").name = "cards"
+project(":appyx-components:experimental:modal:common").name = "modal"
 project(":appyx-components:experimental:promoter:common").name = "promoter"
 project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"
 project(":appyx-components:experimental:puzzle15:web").name = "puzzle15-web"
 project(":appyx-components:internal:test-drive:common").name = "test-drive"
+project(":demos:appyx-navigation:web").name = "navigation-web"
 
 includeBuild("plugins")

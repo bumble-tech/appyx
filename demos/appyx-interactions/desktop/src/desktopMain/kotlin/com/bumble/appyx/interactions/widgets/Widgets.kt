@@ -17,12 +17,12 @@ import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
-import com.bumble.appyx.components.spotlight.ui.stack3d.SpotlightStack3D
 import com.bumble.appyx.interactions.Events
 import com.bumble.appyx.interactions.core.DraggableAppyxComponent
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.widgets.ui.WidgetsStack3D
 import com.bumble.appyx.samples.common.widget.CalendarWidget
 import com.bumble.appyx.samples.common.widget.TimerWidget
 import com.bumble.appyx.samples.common.widget.WeatherWidget
@@ -50,7 +50,7 @@ fun Widgets(
                 items = items,
                 savedStateMap = null
             ),
-            motionController = { SpotlightStack3D(it) },
+            motionController = { WidgetsStack3D(it) },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
             gestureFactory = {
                 SpotlightSlider.Gestures(
@@ -110,7 +110,7 @@ private fun WidgetsUi(
                     .fillMaxWidth()
                     .requiredHeight(240.dp)
             )
-        }
+        },
     )
 }
 

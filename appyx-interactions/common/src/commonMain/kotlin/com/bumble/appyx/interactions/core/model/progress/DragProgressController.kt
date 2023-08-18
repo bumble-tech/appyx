@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.core.model.progress
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
@@ -11,13 +10,12 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Settl
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.REVERT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 internal class DragProgressController<InteractionTarget : Any, State>(
     private val model: TransitionModel<InteractionTarget, State>,
     private val gestureFactory: () -> GestureFactory<InteractionTarget, State>,
     override val defaultAnimationSpec: AnimationSpec<Float>,
-    override val gestureSettleConfig: GestureSettleConfig,
 ) : Draggable {
 
     // TODO get rid of this

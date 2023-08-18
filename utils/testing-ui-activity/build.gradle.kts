@@ -27,6 +27,6 @@ android {
 }
 
 dependencies {
-    api(project(":appyx-navigation"))
     implementation(libs.androidx.activity.compose)
+    api(project(":appyx-navigation:appyx-navigation"))
 }

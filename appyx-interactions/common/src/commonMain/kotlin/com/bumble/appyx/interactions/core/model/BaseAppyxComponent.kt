@@ -4,7 +4,6 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
@@ -28,6 +27,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,14 +42,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
-// TODO save/restore state
 open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
     final override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
-    final override val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
+    protected val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completeGestureSpec = defaultAnimationSpec,
         revertGestureSpec = defaultAnimationSpec,
     ),
@@ -85,7 +84,6 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         model = model,
         gestureFactory = { _gestureFactory },
         defaultAnimationSpec = defaultAnimationSpec,
-        gestureSettleConfig = gestureSettleConfig,
     )
 
     private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =

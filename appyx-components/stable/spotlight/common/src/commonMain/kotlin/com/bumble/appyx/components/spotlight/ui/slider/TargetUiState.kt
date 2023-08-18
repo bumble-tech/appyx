@@ -1,12 +1,10 @@
 package com.bumble.appyx.components.spotlight.ui.slider
 
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
-    val position: Position.Target,
+    val position: PositionOutside.Target,
     val scale: Scale.Target,
     val alpha: Alpha.Target,
 ) {
@@ -23,13 +21,12 @@ class TargetUiState(
      */
     constructor(
         base: TargetUiState,
-        positionInList: Int,
-        elementWidth: Dp
+        positionInList: Int
     ) : this(
         positionInList = positionInList,
-        position = Position.Target(
+        position = PositionOutside.Target(
             base.position.value.copy(
-                x = (positionInList * elementWidth.value).dp
+                OutsideAlignment(horizontalBias = positionInList.toFloat(), verticalBias = 0f)
             )
         ),
         scale = base.scale,
@@ -43,18 +40,20 @@ class TargetUiState(
      */
     fun toMutableState(
         uiContext: UiContext,
-        scrollX: StateFlow<Float>,
-        elementWidth: Dp
+        scrollX: StateFlow<Float>
     ): MutableUiState =
         MutableUiState(
             uiContext = uiContext,
-            position = Position(
-                uiContext, position,
-                scrollX.mapState(uiContext.coroutineScope) {
-                    DpOffset((it * elementWidth.value).dp, 0.dp)
+            position = PositionOutside(
+                coroutineScope = uiContext.coroutineScope,
+                target = position,
+                displacement = scrollX.mapState(uiContext.coroutineScope) {
+                    PositionOutside.Value(
+                        alignment = OutsideAlignment(horizontalBias = it, verticalBias = 0f)
+                    )
                 },
             ),
-            scale = Scale(uiContext, scale),
-            alpha = Alpha(uiContext, alpha),
+            scale = Scale(uiContext.coroutineScope, scale),
+            alpha = Alpha(uiContext.coroutineScope, alpha),
         )
 }

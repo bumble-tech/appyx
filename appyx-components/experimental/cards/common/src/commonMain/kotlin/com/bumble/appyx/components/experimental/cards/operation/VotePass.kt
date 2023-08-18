@@ -1,9 +1,11 @@
 package com.bumble.appyx.components.experimental.cards.operation
 
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.core.model.transition.Operation
+import androidx.compose.animation.core.AnimationSpec
+import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.PASSED
+import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
 class VotePass<InteractionTarget>(
@@ -39,4 +41,11 @@ class VotePass<InteractionTarget>(
             result
         }
     }
+}
+
+fun <InteractionTarget : Any> Cards<InteractionTarget>.pass(
+    mode: Operation.Mode = Operation.Mode.KEYFRAME,
+    animationSpec: AnimationSpec<Float>? = null
+) {
+    operation(operation = VotePass(mode), animationSpec = animationSpec)
 }

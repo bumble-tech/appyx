@@ -2,10 +2,10 @@ package com.bumble.appyx.components.experimental.puzzle15.operation
 
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model.Tile
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
 class Swap(

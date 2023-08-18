@@ -270,7 +270,7 @@ class MutableUiStateProcessor(
             indent()
             addStatement("$PARAM_UI_CONTEXT = $PARAM_UI_CONTEXT,")
             params.forEach {
-                addStatement("${it.name} = ${it.type}($PARAM_UI_CONTEXT, ${it.name}),")
+                addStatement("${it.name} = ${it.type}($PARAM_UI_CONTEXT.$PARAM_COROUTINE_SCOPE, ${it.name}),")
             }
             unindent()
             add(")")
@@ -297,6 +297,7 @@ class MutableUiStateProcessor(
 
         const val PARAM_UI_CONTEXT = "uiContext"
         const val PARAM_MOTION_PROPERTIES = "motionProperties"
+        const val PARAM_COROUTINE_SCOPE = "coroutineScope"
         const val PARAM_SCOPE = "scope"
         const val PARAM_TARGET = "target"
         const val PARAM_SPRING_SPEC = "springSpec"

@@ -3,12 +3,14 @@ package com.bumble.appyx.interactions.core.ui.output
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 data class ElementUiModel<InteractionTarget>(
     val element: Element<InteractionTarget>,
     val visibleState: StateFlow<Boolean>,
+    val motionProperties: List<MotionProperty<*, *>>,
     /**
      * The purpose of this container is to be present in composition as long as corresponding
      * Element exists. With its help we calculate visibility of the element and animate MotionProperties

@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -15,7 +14,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
-import org.jetbrains.skiko.wasm.onWasmReady
+import com.bumble.appyx.demos.appyxSample
 
 val color_bright = Color(0xFFFFFFFF)
 val color_dark = Color(0xFF353535)
@@ -29,7 +28,7 @@ val color_neutral4 = Color(0xFFBEA489)
 
 
 fun main() {
-    onWasmReady {
+    appyxSample {
         Window("Appyx") {
             var size by remember { mutableStateOf(IntSize.Zero) }
             Surface(
