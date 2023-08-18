@@ -11,20 +11,11 @@ def compile_project(compile_task):
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
 
-    # Read and print the error output in real-time
-    while True:
-        stderr_line = process.stderr.readline().decode('utf-8')
-
-        if stderr_line:
-            sys.stderr.write(stderr_line)
-            sys.stderr.flush()
-
-        if process.poll() is not None and stderr_line == '':
-            break
-
-    process.wait()
+    stdout, stderr = process.communicate()
 
     if process.returncode != 0:
+        sys.stderr.write(stderr.decode('utf-8'))
+        sys.stderr.flush()
         sys.exit(process.returncode)
 
 
