@@ -68,7 +68,6 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
-    var transitionBounds by remember { mutableStateOf<TransitionBounds?>(null) }
 
     LaunchedEffect(coroutineScope) {
         appyxComponent.updateContext(
@@ -78,20 +77,19 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
             )
         )
     }
-    LaunchedEffect(transitionBounds) {
-        transitionBounds?.let { appyxComponent.updateBounds(it) }
-    }
     Box(
         modifier = modifier
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
-                transitionBounds = TransitionBounds(
-                    density = density,
-                    widthPx = it.size.width,
-                    heightPx = it.size.height,
-                    screenWidthPx = screenWidthPx,
-                    screenHeightPx = screenHeightPx
+                appyxComponent.updateBounds(
+                    TransitionBounds(
+                        density = density,
+                        widthPx = it.size.width,
+                        heightPx = it.size.height,
+                        screenWidthPx = screenWidthPx,
+                        screenHeightPx = screenHeightPx
+                    )
                 )
             }
             .onPointerEvent {

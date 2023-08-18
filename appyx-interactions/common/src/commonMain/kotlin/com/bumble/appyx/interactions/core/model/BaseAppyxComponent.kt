@@ -74,6 +74,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private var animationChangesJob: Job? = null
     private var animationFinishedJob: Job? = null
     private var uiContext: UiContext? = null
+    private var transitionBounds: TransitionBounds = TransitionBounds.Zero
 
     private var _isAnimating = MutableStateFlow(false)
     val isAnimating: StateFlow<Boolean> = _isAnimating
@@ -171,8 +172,11 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     }
 
     override fun updateBounds(transitionBounds: TransitionBounds) {
-        _gestureFactory = gestureFactory(transitionBounds)
-        _motionController?.updateBounds(transitionBounds)
+        if (transitionBounds != this.transitionBounds) {
+            this.transitionBounds = transitionBounds
+            _gestureFactory = gestureFactory(transitionBounds)
+            _motionController?.updateBounds(transitionBounds)
+        }
     }
 
     private fun onMotionControllerReady(motionController: MotionController<InteractionTarget, ModelState>) {
