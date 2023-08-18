@@ -34,9 +34,8 @@ abstract class BaseMutableUiState<TargetUiState>(
     private var containerRect = Rect(
         offset = Offset.Zero,
         size = Size(
-            // permissive for visibility calculation to return true on first composition
-            width = Float.MAX_VALUE,
-            height = Float.MAX_VALUE
+            width = 0f,
+            height = 0f
         )
     )
 
