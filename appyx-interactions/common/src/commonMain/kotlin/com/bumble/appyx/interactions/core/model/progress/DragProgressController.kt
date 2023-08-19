@@ -67,7 +67,9 @@ internal class DragProgressController<InteractionTarget : Any, State>(
         val operation = gesture!!.operation
         operation.mode = KEYFRAME
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
-        require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
+        require(!deltaProgress.isNaN()) {
+            "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation"
+        }
         val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
         val totalTarget = currentProgress + deltaProgress
 

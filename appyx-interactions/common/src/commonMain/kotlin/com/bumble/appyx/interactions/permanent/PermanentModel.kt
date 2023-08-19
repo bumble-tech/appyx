@@ -29,7 +29,9 @@ class PermanentModel<InteractionTarget : Any>(
     override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
         emptySet()
 
-    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> =
+    override fun State<InteractionTarget>.removeDestroyedElement(
+        element: Element<InteractionTarget>
+    ): State<InteractionTarget> =
         this
 
     override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =

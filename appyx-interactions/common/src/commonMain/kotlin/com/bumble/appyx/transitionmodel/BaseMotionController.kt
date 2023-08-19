@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Suppress("TooManyFunctions")
 abstract class BaseMotionController<InteractionTarget : Any, ModelState, MutableUiState, TargetUiState>(
     private val uiContext: UiContext,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
@@ -89,6 +90,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             updateViewpoint(update)
         }
 
+
+        @Suppress("ForbiddenComment")
         // TODO: use a map instead of find
         return matchedTargetUiStates.map { t1 ->
             val mutableUiState = mutableUiStateCache.getOrPut(t1.element.id) {
@@ -99,8 +102,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                 visibleState = mutableUiState.isVisible,
                 persistentContainer = @Composable {
                     Box(modifier = mutableUiState.visibilityModifier)
-                    observeElementAnimationChanges(mutableUiState, t1)
-                    manageAnimations(mutableUiState, t1, update)
+                    ObserveElementAnimationChanges(mutableUiState, t1)
+                    ManageAnimations(mutableUiState, t1, update)
                 },
                 motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
@@ -123,7 +126,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     }
 
     @Composable
-    private fun manageAnimations(
+    private fun ManageAnimations(
         mutableUiState: MutableUiState,
         matchedTargetUiState: MatchedTargetUiState<InteractionTarget, TargetUiState>,
         update: Update<ModelState>
@@ -146,7 +149,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     }
 
     @Composable
-    private fun observeElementAnimationChanges(
+    private fun ObserveElementAnimationChanges(
         mutableUiState: MutableUiState,
         matchedTargetUiState: MatchedTargetUiState<InteractionTarget, TargetUiState>
     ) {
@@ -209,6 +212,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             }
         }
 
+        @Suppress("ForbiddenComment")
         // TODO: use a map instead of find
         return toTargetUiState.map { t1 ->
             val t0 = fromTargetUiState.find { it.element.id == t1.element.id }!!
@@ -224,7 +228,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                 visibleState = mutableUiState.isVisible,
                 persistentContainer = @Composable {
                     Box(modifier = mutableUiState.visibilityModifier)
-                    interpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
+                    InterpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
                 },
                 motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
@@ -234,7 +238,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     }
 
     @Composable
-    private fun interpolateUiState(
+    private fun InterpolateUiState(
         segmentProgress: Flow<Float>,
         mutableUiState: MutableUiState,
         from: MatchedTargetUiState<InteractionTarget, TargetUiState>,
@@ -272,7 +276,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-                            AppyxLogger.d(TAG, "Viewpoint animateTo (Segment) – ${viewpointDimension.internalValue} -> $targetValue")
+                            AppyxLogger.d(TAG,
+                                "Viewpoint animateTo (Segment) – ${viewpointDimension.internalValue} -> $targetValue")
                         }
                     }
                 }

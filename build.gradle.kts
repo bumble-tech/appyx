@@ -117,4 +117,17 @@ subprojects {
             }
         }
     }
+
+    afterEvaluate {
+        // Ensure that all project modules use convention plugins
+        if (childProjects.isEmpty()) {
+            if (!pluginManager.hasPlugin("com.bumble.appyx.android.application") &&
+                !pluginManager.hasPlugin("com.bumble.appyx.android.library") &&
+                !pluginManager.hasPlugin("com.bumble.appyx.java") &&
+                !pluginManager.hasPlugin("com.bumble.appyx.multiplatform")
+            ) {
+                error("'$path' module must use a convention plugin")
+            }
+        }
+    }
 }

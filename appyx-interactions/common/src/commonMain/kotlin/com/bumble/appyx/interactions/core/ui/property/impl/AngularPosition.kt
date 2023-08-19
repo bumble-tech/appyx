@@ -21,6 +21,7 @@ import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
 
+@Suppress("MagicNumber")
 class AngularPosition(
     coroutineScope: CoroutineScope,
     val target: Target,

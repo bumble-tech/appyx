@@ -23,12 +23,15 @@ class WidgetsStack3D<InteractionTarget : Any>(
     private val height: Dp = uiContext.transitionBounds.heightDp
 
     private val scrollY = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
+
+    @Suppress("MaxLineLength")
     override val viewpointDimensions: List<Pair<(SpotlightModel.State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: SpotlightModel.State<InteractionTarget> -> state.activeIndex } to scrollY
         )
 
-    override fun SpotlightModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun SpotlightModel.State<InteractionTarget>.toUiTargets(
+    ): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         positions.flatMapIndexed { index, position ->
             position.elements.map {
                 MatchedTargetUiState(

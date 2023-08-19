@@ -32,6 +32,7 @@ class CardsModel<InteractionTarget : Any>(
                     override val element: Element<InteractionTarget>,
                     val topCardState: TOP_CARD_STATE
                 ) : VisibleCard<InteractionTarget>() {
+                    @Suppress("ClassNaming")
                     enum class TOP_CARD_STATE {
                         STANDARD, INDICATE_LIKE, INDICATE_PASS
                     }
@@ -52,6 +53,7 @@ class CardsModel<InteractionTarget : Any>(
                     override val element: Element<InteractionTarget>,
                     val votedCardState: VOTED_CARD_STATE
                 ) : InvisibleCard<InteractionTarget>() {
+                    @Suppress("ClassNaming")
                     enum class VOTED_CARD_STATE {
                         LIKED, PASSED
                     }
@@ -83,7 +85,9 @@ class CardsModel<InteractionTarget : Any>(
 
     override val initialState: State<InteractionTarget> = getInitialState(initialItems)
 
-    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> =
+    override fun State<InteractionTarget>.removeDestroyedElement(
+        element: Element<InteractionTarget>
+    ): State<InteractionTarget> =
         copy(votedCards = votedCards.filterNot { it == element })
 
     override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =

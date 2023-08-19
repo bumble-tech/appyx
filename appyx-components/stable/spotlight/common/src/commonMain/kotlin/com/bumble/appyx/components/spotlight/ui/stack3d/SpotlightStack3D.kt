@@ -19,6 +19,7 @@ import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.mapState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
+@Suppress("MagicNumber")
 class SpotlightStack3D<InteractionTarget : Any>(
     uiContext: UiContext,
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(

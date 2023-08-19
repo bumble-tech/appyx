@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Widget(
+    modifier: Modifier = Modifier,
     bgTopColor: Color = Color.DarkGray,
     bgBottomColor: Color = Color.Gray,
-    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Box(

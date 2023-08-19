@@ -43,6 +43,8 @@ import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 
 private val defaultExtraTouch = 48f.dp
 
+
+@Suppress("LongMethod")
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,

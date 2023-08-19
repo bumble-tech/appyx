@@ -39,7 +39,8 @@ class DragPredictionMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun TestDriveModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun TestDriveModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(element, elementState.toTargetUiState()).also {
                 AppyxLogger.d("TestDrive", "Matched $elementState -> UiState: ${it.targetUiState}")
@@ -97,12 +98,15 @@ class DragPredictionMotionController<InteractionTarget : Any>(
     ): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
+
+    @Suppress("UnusedPrivateMember")
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
         private val maxX = uiStateB.position.value.offset.x - uiStateA.position.value.offset.x
         private val maxY = uiStateD.position.value.offset.y - uiStateA.position.value.offset.y
 
+        @Suppress("ComplexMethod")
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,
             delta: Offset,

@@ -47,7 +47,9 @@ class PromoterModel<InteractionTarget : Any>(
     override val initialState: State<InteractionTarget> =
         State(elements = listOf())
 
-    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> =
+    override fun State<InteractionTarget>.removeDestroyedElement(
+        element: Element<InteractionTarget>
+    ): State<InteractionTarget> =
         copy(elements.filterNot { it.first == element && it.second == DESTROYED })
 
     override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =

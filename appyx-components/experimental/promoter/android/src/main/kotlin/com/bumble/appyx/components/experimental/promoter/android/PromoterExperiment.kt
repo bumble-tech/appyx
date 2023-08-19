@@ -38,9 +38,10 @@ import com.bumble.appyx.interactions.sample.android.Element
 import kotlin.math.roundToInt
 
 
+@Suppress("MagicNumber", "LongMethod")
 @ExperimentalMaterialApi
 @Composable
-fun PromoterExperiment() {
+fun PromoterExperiment(modifier: Modifier = Modifier) {
     val coroutineScope = rememberCoroutineScope()
 
     val promoter = remember {
@@ -67,7 +68,7 @@ fun PromoterExperiment() {
     }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
     ) {
         val density = LocalDensity.current

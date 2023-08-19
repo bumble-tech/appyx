@@ -26,7 +26,9 @@ class UpdateElements<InteractionTarget : Any>(
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> {
+    override fun createFromState(
+        baseLineState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> {
         val positions = baseLineState.positions
         val newSize = max(positions.size, items.size)
         val newPositions = ArrayList<Position<InteractionTarget>>(newSize)
@@ -44,7 +46,9 @@ class UpdateElements<InteractionTarget : Any>(
         return baseLineState.copy(positions = newPositions)
     }
 
-    override fun createTargetState(fromState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         fromState.copy(
             positions = fromState.positions.map { position ->
                 position.copy(

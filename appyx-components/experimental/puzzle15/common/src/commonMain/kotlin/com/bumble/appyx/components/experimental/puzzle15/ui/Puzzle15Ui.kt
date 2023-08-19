@@ -43,13 +43,14 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.Children
 
+@Suppress("MagicNumber", "LongMethod")
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Puzzle15Ui(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    accentColor: Color = Color.Cyan,
     modifier: Modifier = Modifier,
+    accentColor: Color = Color.Cyan,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -103,6 +104,8 @@ fun Puzzle15Ui(
                         state.currentTargetState.items.find { it.id == elementUiModel.element.id }
                     val index = state.currentTargetState.items.indexOf(element)
                     val emptyTileIndex = state.currentTargetState.emptyTileIndex
+
+                    @Suppress("ComplexCondition")
                     if (index == emptyTileIndex - 1 ||
                         index == emptyTileIndex + 1 ||
                         index == emptyTileIndex - 4 ||
@@ -204,6 +207,7 @@ fun Puzzle15Ui(
     }
 }
 
+@Suppress("ComplexMethod")
 private fun Puzzle15Model.Tile.textValue() =
     when (this) {
         Puzzle15Model.Tile.Tile1 -> "1"

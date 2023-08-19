@@ -20,6 +20,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignmen
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
+@Suppress("MagicNumber")
 class ModalMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
 ) : BaseMotionController<InteractionTarget, ModalModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
@@ -53,7 +54,8 @@ class ModalMotionController<InteractionTarget : Any>(
             corner = RoundedCorners.Target(0),
         )
 
-    override fun ModalModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun ModalModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         return created.map { MatchedTargetUiState(it, createdState) } +
                 listOfNotNull(modal).map { MatchedTargetUiState(it, modalState) } +
                 listOfNotNull(fullScreen).map { MatchedTargetUiState(it, fullScreenState) } +

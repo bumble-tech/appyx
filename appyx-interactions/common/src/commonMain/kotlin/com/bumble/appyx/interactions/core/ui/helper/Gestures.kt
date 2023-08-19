@@ -17,7 +17,7 @@ var DisableAnimations = false
 val DefaultAnimationSpec: SpringSpec<Float> = spring()
 
 @Composable
-@Suppress("UnnecessaryComposedModifier")
+@Suppress("UnnecessaryComposedModifier", "ModifierComposable")
 fun <InteractionTarget : Any, ModelState : Any> Modifier.gestureModifier(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     key: Any,

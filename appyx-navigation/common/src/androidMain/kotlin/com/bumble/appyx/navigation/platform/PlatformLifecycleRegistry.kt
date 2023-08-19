@@ -94,9 +94,9 @@ actual class PlatformLifecycleRegistry(
                     get() = when (val platformLifecycle = owner.lifecycle) {
                         is AndroidLifecycle -> platformLifecycle.androidLifecycle
                         is PlatformLifecycleRegistry -> platformLifecycle.androidLifecycleRegistry
-                        else -> throw (IllegalStateException(
+                        else -> error(
                             "Unable to get android lifecycle from $platformLifecycle provided by $owner"
-                        ))
+                        )
                     }
             })
     }

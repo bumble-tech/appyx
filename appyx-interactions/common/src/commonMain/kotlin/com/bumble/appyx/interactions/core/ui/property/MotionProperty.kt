@@ -133,6 +133,7 @@ abstract class MotionProperty<T, V : AnimationVector>(
         onValueChanged()
     }
 
+    @Suppress("MagicNumber")
     private fun calculateVelocity(targetValue: T): T {
         if (lastTime == 0L) lastTime = SystemClock.nanoTime()
         val converter = animatable.typeConverter

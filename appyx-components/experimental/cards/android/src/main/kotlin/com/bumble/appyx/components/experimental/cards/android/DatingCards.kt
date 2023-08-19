@@ -21,10 +21,6 @@ import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
 import kotlin.math.roundToInt
 
-sealed class DatingCardsInteractionTarget {
-    class ProfileCard(val profile: Profile) : DatingCardsInteractionTarget()
-}
-
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
     val cards = remember {
@@ -59,4 +55,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
             ProfileCard(profile = elementUiModel.element.interactionTarget.profile)
         }
     }
+}
+
+private sealed class DatingCardsInteractionTarget {
+    class ProfileCard(val profile: Profile) : DatingCardsInteractionTarget()
 }

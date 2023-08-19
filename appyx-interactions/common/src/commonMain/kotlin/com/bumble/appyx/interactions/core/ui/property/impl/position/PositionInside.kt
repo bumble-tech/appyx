@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.roundToInt
 
+@Suppress("MagicNumber")
 class PositionInside(
     coroutineScope: CoroutineScope,
     val target: Target,

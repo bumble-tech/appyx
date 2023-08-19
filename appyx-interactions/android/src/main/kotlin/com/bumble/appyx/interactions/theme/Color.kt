@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.bumble.appyx.interactions.theme
 
 import androidx.compose.ui.graphics.Color
