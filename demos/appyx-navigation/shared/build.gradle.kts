@@ -15,7 +15,7 @@ kotlin {
 
     cocoapods {
         version = "1.0.0"
-        summary = "appyx-interactions shared module"
+        summary = "appyx-nvaigation shared module"
         homepage = "https://bumble-tech.github.io/appyx/interactions/"
         ios.deploymentTarget = "16.4"
         podfile = project.file("../iosApp/Podfile")
@@ -28,13 +28,15 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(compose.runtime)
-                implementation(compose.foundation)
-                implementation(compose.material)
-                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
-                implementation(compose.components.resources)
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
+                implementation(project(":demos:common"))
+                implementation(project(":demos:appyx-navigation:common"))
+                implementation(project(":appyx-interactions:appyx-interactions"))
+                implementation(project(":appyx-navigation:appyx-navigation"))
                 implementation(project(":appyx-components:stable:backstack:backstack"))
+                api(compose.runtime)
+                api(compose.foundation)
+                api(compose.material)
+                implementation(libs.kotlin.coroutines.core)
             }
         }
         val androidMain by getting {

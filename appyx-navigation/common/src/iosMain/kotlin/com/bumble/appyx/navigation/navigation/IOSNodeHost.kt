@@ -27,7 +27,6 @@ fun <N : Node> IOSNodeHost(
     }
     val mainScreen = UIScreen.mainScreen
     val screenBounds = mainScreen.bounds
-    val scale = mainScreen.scale
 
     // Calculate the width and height in dp
     val dpWidth = screenBounds.useContents { size.width }.pixelsToDp()

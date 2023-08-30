@@ -5,14 +5,14 @@ Pod::Spec.new do |spec|
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'appyx-interactions shared module'
+    spec.summary                  = 'appyx-nvaigation shared module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target = '16.4'
                 
                 
     spec.pod_target_xcconfig = {
-        'KOTLIN_PROJECT_PATH' => ':demos:appyx-interactions:shared',
+        'KOTLIN_PROJECT_PATH' => ':demos:appyx-navigation:shared',
         'PRODUCT_MODULE_NAME' => 'shared',
     }
                 

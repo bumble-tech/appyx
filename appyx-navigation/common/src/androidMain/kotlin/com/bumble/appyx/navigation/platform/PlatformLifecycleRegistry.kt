@@ -11,7 +11,7 @@ import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleObserver
 import kotlinx.coroutines.CoroutineScope
 
-actual class PlatformLifecycleRegistry(
+class PlatformLifecycleRegistry(
     androidOwner: LifecycleOwner
 ) : Lifecycle, androidx.lifecycle.DefaultLifecycleObserver,
     androidx.lifecycle.LifecycleEventObserver {

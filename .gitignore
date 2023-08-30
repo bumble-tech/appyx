@@ -22,3 +22,7 @@ demos/appyx-interactions/iosApp/Pods/*
 demos/appyx-interactions/iosApp/iosApp.xcworkspace/*
 demos/appyx-interactions/iosApp/iosApp.xcodeproj/*
 !demos/appyx-interactions/iosApp/iosApp.xcodeproj/project.pbxproj
+demos/appyx-navigation/iosApp/Pods/*
+demos/appyx-navigation/iosApp/iosApp.xcworkspace/*
+demos/appyx-navigation/iosApp/iosApp.xcodeproj/*
+!demos/appyx-navigation/iosApp/iosApp.xcodeproj/project.pbxproj
