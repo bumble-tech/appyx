@@ -2,7 +2,9 @@
 
 ## Pending changes
 
-–
+### Fixed
+
+- [#575](https://github.com/bumble-tech/appyx/pull/575) - Make customisations lazy to improve performance
 
 ## 2.0.0-alpha03
 
