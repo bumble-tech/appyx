@@ -1,6 +1,5 @@
 plugins {
     id("com.bumble.appyx.android.library")
-    id("kotlin-parcelize")
     id("appyx-publish-android")
 }
 
@@ -8,21 +7,12 @@ publishingPlugin {
     artifactId = "utils-interop-ribs"
 }
 
-android {
-    namespace = "com.bumble.appyx.utils.interop.ribs"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+appyx {
+    namespace.set("com.bumble.appyx.utils.interop.ribs")
 
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+        compose.set(true)
+        kotlinParcelize.set(true)
     }
 }
 

@@ -7,21 +7,11 @@ publishingPlugin {
     artifactId = "utils-testing-unit-common"
 }
 
-android {
-    namespace = "com.bumble.appyx.utils.testing.unit.common"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+appyx {
+    namespace.set("com.bumble.appyx.utils.testing.unit.common")
 
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+        compose.set(true)
     }
 }
 

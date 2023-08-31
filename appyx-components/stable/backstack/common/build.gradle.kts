@@ -7,6 +7,10 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+appyx {
+    androidNamespace.set("com.bumble.appyx.components.backstack")
+}
+
 kotlin {
     android {
         publishLibraryVariants("release")
@@ -38,16 +42,6 @@ kotlin {
         val androidMain by getting
         val desktopMain by getting
         val jsMain by getting
-    }
-}
-
-android {
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }
 

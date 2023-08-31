@@ -42,7 +42,10 @@ dependencyAnalysis {
 
                     // This is used to add the testing activity to the debug manifest
                     // However since not code is referenced, it is raised as unused.
-                    ":utils:testing-ui-activity"
+                    ":utils:testing-ui-activity",
+
+                    // Convenience for convention plugins to avoid needing to define this.
+                    "org.junit.jupiter:junit-jupiter-api"
                 )
             }
         }

@@ -4,6 +4,10 @@ plugins {
     id("appyx-publish-multiplatform")
 }
 
+appyx {
+    androidNamespace.set("com.bumble.appyx.utils.customisation")
+}
+
 publishingPlugin {
     artifactId = "utils-customisations"
 }
@@ -27,15 +31,5 @@ kotlin {
         val androidMain by getting
         val desktopMain by getting
         val jsMain by getting
-    }
-}
-
-android {
-    namespace = "com.bumble.appyx.utils.customisation"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }

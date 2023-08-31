@@ -7,6 +7,10 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+appyx {
+    androidNamespace.set("com.bumble.appyx.components.experimental.promoter.common")
+}
+
 kotlin {
     android {
         publishLibraryVariants("release")
@@ -38,17 +42,6 @@ kotlin {
         }
         val androidMain by getting
         val desktopMain by getting
-    }
-}
-
-android {
-    namespace = "com.bumble.appyx.components.experimental.promoter.common"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }
 
