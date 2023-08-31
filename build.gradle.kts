@@ -22,8 +22,6 @@ plugins {
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
     id("org.jetbrains.compose") version libs.versions.composePlugin.get() apply false
     id("org.jetbrains.kotlin.android") version libs.versions.kotlin.get() apply false
-    id("release-dependencies-diff-compare")
-    id("release-dependencies-diff-create") apply false
 }
 
 dependencyAnalysis {
@@ -80,8 +78,6 @@ val buildNonMkdocsTask = tasks.register("buildNonMkdocs")
 val jsBrowserDistributionMkdocsTask = tasks.register("jsBrowserDistributionMkdocs")
 
 subprojects {
-    plugins.apply("release-dependencies-diff-create")
-
     // Allows avoiding building these modules as part of CI as they are also built for mkdocs.
     if (!path.startsWith(":demos:mkdocs:")) {
         plugins.withId("com.android.application") {
