@@ -2,9 +2,17 @@
 
 ## Pending changes
 
+-
+
+## 2.0.0-alpha04
+
 ### Fixed
 
 - [#575](https://github.com/bumble-tech/appyx/pull/575) - Make customisations lazy to improve performance
+
+<div style="text-align: center"><small>31 Aug 2023</small></div>
+
+---
 
 ## 2.0.0-alpha03
 
