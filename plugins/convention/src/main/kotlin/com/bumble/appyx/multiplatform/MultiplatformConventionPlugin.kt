@@ -3,6 +3,7 @@ package com.bumble.appyx.multiplatform
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
 import com.bumble.appyx.versionCatalog
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -45,6 +46,11 @@ class MultiplatformConventionPlugin : Plugin<Project> {
                         defaultConfig {
                             minSdk = libs.findVersion("androidMinSdk").get().displayName.toInt()
                             targetSdk = libs.findVersion("androidTargetSdk").get().displayName.toInt()
+                        }
+
+                        compileOptions {
+                            sourceCompatibility = JavaVersion.VERSION_17
+                            targetCompatibility = JavaVersion.VERSION_17
                         }
                     }
                 }
