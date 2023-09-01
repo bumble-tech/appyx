@@ -29,14 +29,14 @@ class ScreenshotTestPlugin : Plugin<Project> {
         target.tasks.register(TASK_RECORD, RecordScreenshotsTask::class.java) {
             dependsOn(project.tasks.named("${DEVICE_NAME}Check"))
             testResultsFolder.set(
-                project.file("build/outputs/managed_device_android_test_additional_output/$DEVICE_NAME")
+                project.file("build/outputs/managed_device_android_test_additional_output/debug/$DEVICE_NAME")
             )
         }
 
         target.tasks.register(TASK_COMPARE, CompareScreenshotsTask::class.java) {
             dependsOn(project.tasks.named("${DEVICE_NAME}Check"))
             testResultsFolder.set(
-                project.file("build/outputs/managed_device_android_test_additional_output/$DEVICE_NAME")
+                project.file("build/outputs/managed_device_android_test_additional_output/debug/$DEVICE_NAME")
             )
         }
 
