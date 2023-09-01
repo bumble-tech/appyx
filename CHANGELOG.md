@@ -2,7 +2,9 @@
 
 ## Pending changes
 
--
+### Fixed
+
+- [#579](https://github.com/bumble-tech/appyx/pull/579) – Expose AndroidLifecycle in PlatformLifecycleRegistry for Android
 
 ## 2.0.0-alpha04
 
