@@ -17,7 +17,7 @@ actual class PlatformLifecycleRegistry(
     androidx.lifecycle.LifecycleEventObserver {
 
     private var lifecycleOwner: LifecycleOwner? = androidOwner
-    private val androidLifecycleRegistry = LifecycleRegistry(androidOwner)
+    val androidLifecycleRegistry = LifecycleRegistry(androidOwner)
 
     private val managedDefaultLifecycleObservers: MutableList<DefaultPlatformLifecycleObserver> =
         ArrayList()
