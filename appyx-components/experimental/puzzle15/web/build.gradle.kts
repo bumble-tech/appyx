@@ -5,6 +5,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-components-experimental-puzzle15-web"
         browser()
         binaries.executable()
     }

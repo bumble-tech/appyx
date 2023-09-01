@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-components-spotlight-stack3d-web"
         browser()
         binaries.executable()
     }

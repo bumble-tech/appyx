@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-demos-backstack-parallax-web"
         browser()
         binaries.executable()
     }

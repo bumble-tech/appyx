@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-components-spotlight-fader-web"
         browser()
         binaries.executable()
     }

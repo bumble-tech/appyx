@@ -5,6 +5,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-demos-navigation-web"
         browser()
         binaries.executable()
     }
