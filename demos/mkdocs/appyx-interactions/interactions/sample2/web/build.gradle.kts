@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-interactions-sample2-web"
         browser()
         binaries.executable()
     }

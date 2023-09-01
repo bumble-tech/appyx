@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-interactions-observemp-web"
         browser()
         binaries.executable()
     }

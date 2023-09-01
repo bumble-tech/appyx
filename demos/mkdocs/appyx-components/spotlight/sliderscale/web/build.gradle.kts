@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-components-spotlight-slider-scale-web"
         browser()
         binaries.executable()
     }

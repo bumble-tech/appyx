@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-interactions-gestures-incompletedrag-web"
         browser()
         binaries.executable()
     }

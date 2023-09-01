@@ -11,10 +11,6 @@ dependencies {
     implementation(project(":publish-plugin"))
 }
 
-tasks.withType(org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompile::class.java).configureEach {
-    kotlinOptions.jvmTarget = JavaVersion.VERSION_11.name
-}
-
 detekt {
     buildUponDefaultConfig = true
     config.from(file("../../detekt.yml"))

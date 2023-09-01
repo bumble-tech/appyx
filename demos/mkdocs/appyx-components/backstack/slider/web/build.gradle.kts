@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-demos-backstack-slider-web"
         browser()
         binaries.executable()
     }

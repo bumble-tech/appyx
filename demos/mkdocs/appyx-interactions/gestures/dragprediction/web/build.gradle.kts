@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-interactions-gestures-dragpredication-web"
         browser()
         binaries.executable()
     }
