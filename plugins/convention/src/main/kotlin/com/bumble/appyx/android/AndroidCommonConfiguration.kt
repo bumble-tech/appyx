@@ -32,6 +32,8 @@ internal inline fun <
 
     dependencies.add("testImplementation", libs.findLibrary("junit-api").get())
     dependencies.add("testRuntimeOnly", libs.findLibrary("junit-engine").get())
+    dependencies.add("androidTestImplementation", libs.findLibrary("androidx-test-runner").get())
+    dependencies.add("androidTestUtil", libs.findLibrary("androidx-test-orchestrator").get())
 
     extensions
         .getByType<ComponentsExtensionT>()
@@ -62,6 +64,7 @@ private fun <DefaultConfigT : DefaultConfig> CommonExtension<*, *, DefaultConfig
             useSupportLibrary = true
         }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
         testInstrumentationRunnerArguments["useTestStorageService"] = "true"
     }
 
@@ -80,6 +83,7 @@ private fun <DefaultConfigT : DefaultConfig> CommonExtension<*, *, DefaultConfig
         unitTests.all {
             it.useJUnitPlatform()
         }
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
         managedDevices.devices.register<ManagedVirtualDevice>("uiTestsDevice") {
             device = "Pixel"
             @Suppress("MagicNumber")
