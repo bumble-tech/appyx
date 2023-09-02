@@ -2,6 +2,7 @@ package com.bumble.appyx.android
 
 import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DefaultConfig
+import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.bumble.appyx.versionCatalog
 import org.gradle.api.JavaVersion
@@ -9,6 +10,7 @@ import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalog
 import org.gradle.api.artifacts.VersionCatalogsExtension
 import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.register
 
 internal inline fun <
         reified ConfigT : DefaultConfig,
@@ -60,6 +62,7 @@ private fun <DefaultConfigT : DefaultConfig> CommonExtension<*, *, DefaultConfig
             useSupportLibrary = true
         }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["useTestStorageService"] = "true"
     }
 
     val composeEnabled = appyxExtension.buildFeatures.compose.get()
@@ -76,6 +79,12 @@ private fun <DefaultConfigT : DefaultConfig> CommonExtension<*, *, DefaultConfig
     testOptions {
         unitTests.all {
             it.useJUnitPlatform()
+        }
+        managedDevices.devices.register<ManagedVirtualDevice>("uiTestsDevice") {
+            device = "Pixel"
+            @Suppress("MagicNumber")
+            apiLevel = 30
+            systemImageSource = "aosp-atd"
         }
     }
 
