@@ -88,11 +88,13 @@ jobs:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
       - name: Setup Android SDK
         uses: android-actions/setup-android@v2
+      - name: Package Debug Android Test
+        # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/Build.yaml
+        run: ./gradlew packageDebugAndroidTest
       - name: Instrumentation tests
         # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/Build.yaml
         run: >
           adb logcat > logcat.out &
-          ./gradlew packageDebugAndroidTest &&
           ./gradlew cleanManagedDevices --unused-only &&
           ./gradlew uiTestsDeviceDebugAndroidTest
           -Dorg.gradle.workers.max=1

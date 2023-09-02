@@ -65,7 +65,6 @@ private fun <DefaultConfigT : DefaultConfig> CommonExtension<*, *, DefaultConfig
         }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments["clearPackageData"] = "true"
-        testInstrumentationRunnerArguments["useTestStorageService"] = "true"
     }
 
     val composeEnabled = appyxExtension.buildFeatures.compose.get()

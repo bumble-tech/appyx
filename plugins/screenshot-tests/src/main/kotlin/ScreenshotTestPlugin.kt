@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.CommonExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.VersionCatalogsExtension
@@ -5,6 +6,12 @@ import org.gradle.api.artifacts.VersionCatalogsExtension
 class ScreenshotTestPlugin : Plugin<Project> {
 
     override fun apply(target: Project) {
+        target.extensions.configure(CommonExtension::class.java) {
+            defaultConfig {
+                testInstrumentationRunnerArguments["useTestStorageService"] = "true"
+            }
+        }
+
         target.dependencies.add(
             "androidTestUtil",
             target.extensions.getByType(VersionCatalogsExtension::class.java).named("libs")
