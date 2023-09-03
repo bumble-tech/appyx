@@ -34,13 +34,6 @@ jobs:
           mergeDetektSarif
           :plugins:buildPlugins
           --continue
-      - name: Check publication setup
-        run: >
-          ./gradlew
-          publishAllPublicationsToOSSRHRepository
-          publishAllPublicationsToSonatypeSnapshotRepository
-          --dry-run
-          --no-parallel
       - name: Deploy snapshot
         if: env.MAIN_BRANCH == 'true' && github.repository == 'bumble-tech/appyx'
         env:
@@ -71,6 +64,29 @@ jobs:
           path: |
             **/build/reports/
             !**/build/reports/dependency-analysis/
+
+  publication-verification:
+    name: Publication verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
+      - name: Check publication setup
+        run: >
+          ./gradlew
+          publishAllPublicationsToOSSRHRepository
+          publishAllPublicationsToSonatypeSnapshotRepository
+          --dry-run
+          --no-parallel
+      - name: Publish locally
+        run: ./gradlew publishToMavenLocal -Psigning.required=false --no-parallel --continue
 
   instrumentation-tests:
     name: Instrumentation tests

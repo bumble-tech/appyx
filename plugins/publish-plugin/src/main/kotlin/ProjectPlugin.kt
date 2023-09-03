@@ -75,7 +75,7 @@ internal abstract class ProjectPlugin : Plugin<Project> {
     }
 
     private fun SigningExtension.configureSigning() {
-        isRequired = true
+        isRequired = project.findProperty("signing.required")?.toString()?.toBooleanStrict() ?: true
 
         sign(project.extensions.getByType(PublishingExtension::class.java).publications)
 
