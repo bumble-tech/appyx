@@ -58,11 +58,7 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = GestureValidator.defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
-    block: @Composable ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit = {
-        children { child, elementUiModel ->
-            child(elementUiModel.modifier)
-        }
-    }
+    block: @Composable (ChildrenTransitionScope<InteractionTarget, ModelState>.() -> Unit)? = null,
 ) {
     val density = LocalDensity.current
     val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
@@ -70,6 +66,11 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     val coroutineScope = rememberCoroutineScope()
     var containerSize by remember { mutableStateOf(IntSize.Zero) }
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
+    val childrenBlock = block ?: {
+        children { child, _ ->
+            child()
+        }
+    }
 
     LaunchedEffect(uiContext) {
         uiContext?.let { appyxComponent.updateContext(it) }
@@ -99,8 +100,8 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
                 }
             }
     ) {
-        CompositionLocalProvider(LocalBoxScope provides this) {
-            block(
+        CompositionLocalProvider(LocalBoxScope provides this@Box) {
+            childrenBlock(
                 ChildrenTransitionScope(containerSize, appyxComponent, gestureExtraTouchArea, gestureValidator)
             )
         }
@@ -141,7 +142,7 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
             .forEach { elementUiModel ->
                 val id = elementUiModel.element.id
 
-                key(elementUiModel.element.id) {
+                key(id) {
                     var transformedBoundingBox by remember(id) { mutableStateOf(Rect.Zero) }
                     var elementSize by remember(id) { mutableStateOf(IntSize.Zero) }
                     var offsetCenter by remember(id) { mutableStateOf(Offset.Zero) }
