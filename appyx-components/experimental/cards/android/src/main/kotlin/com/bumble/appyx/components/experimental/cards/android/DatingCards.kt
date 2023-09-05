@@ -49,11 +49,10 @@ fun DatingCards(modifier: Modifier = Modifier) {
         appyxComponent = cards,
         gestureValidator = permissiveValidator,
     ) { elementUiModel ->
-        Box(
-            modifier = elementUiModel.modifier
-        ) {
-            ProfileCard(profile = elementUiModel.element.interactionTarget.profile)
-        }
+        ProfileCard(
+            profile = elementUiModel.element.interactionTarget.profile,
+            modifier = Modifier.fillMaxSize().then(elementUiModel.modifier)
+        )
     }
 }
 
