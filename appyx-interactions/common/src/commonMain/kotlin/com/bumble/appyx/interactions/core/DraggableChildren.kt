@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -23,13 +24,14 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion
 import androidx.compose.ui.input.pointer.PointerEventType
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
@@ -43,6 +45,10 @@ import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 
 private val defaultExtraTouch = 48f.dp
 
@@ -73,6 +79,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
+    var containerSize by remember { mutableStateOf(IntSize.Zero) }
     var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
     LaunchedEffect(uiContext) {
@@ -83,6 +90,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
+                containerSize = it.size
                 uiContext = UiContext(
                     coroutineScope = coroutineScope,
                     transitionBounds = TransitionBounds(
@@ -100,32 +108,31 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                     appyxComponent.onRelease()
                 }
             }
-            .fillMaxSize()
     ) {
         CompositionLocalProvider(LocalBoxScope provides this) {
             elementUiModels.forEach { elementUiModel ->
-                key(elementUiModel.element.id) {
-                    var transformedBoundingBox by remember(elementUiModel.element.id) {
-                        mutableStateOf(Rect.Zero)
-                    }
-                    var size by remember(elementUiModel.element.id) { mutableStateOf(IntSize.Zero) }
-                    var offsetCenter by remember(elementUiModel.element.id) {
-                        mutableStateOf(
-                            Offset.Zero
-                        )
-                    }
+                val id = elementUiModel.element.id
+
+                key(id) {
+                    var transformedBoundingBox by remember(id) { mutableStateOf(Rect.Zero) }
+                    var elementSize by remember(id) { mutableStateOf(IntSize.Zero) }
+                    var offsetCenter by remember(id) { mutableStateOf(Offset.Zero) }
                     val isVisible by elementUiModel.visibleState.collectAsState()
+                    
                     elementUiModel.persistentContainer()
+
                     if (isVisible) {
                         CompositionLocalProvider(
                             LocalMotionProperties provides elementUiModel.motionProperties
                         ) {
+                            val elementOffset = offsetCenter.round() - elementOffset(elementSize, containerSize)
+
                             element.invoke(
                                 elementUiModel.copy(
                                     modifier = Modifier
-                                        .offset { offsetCenter.round() }
-                                        .width(with(density) { size.width.toDp() })
-                                        .height(with(density) { size.height.toDp() })
+                                        .offset { elementOffset }
+                                        .width(with(density) { elementSize.width.toDp() })
+                                        .height(with(density) { elementSize.height.toDp() })
                                         .pointerInput(appyxComponent) {
                                             detectDragGesturesOrCancellation(
                                                 onDragStart = { position ->
@@ -150,10 +157,10 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                                                 },
                                             )
                                         }
-                                        .offset { -offsetCenter.round() }
+                                        .offset { -elementOffset }
                                         .then(elementUiModel.modifier)
                                         .onPlaced {
-                                            size = it.size
+                                            elementSize = it.size
                                             val localCenter = Offset(
                                                 it.size.width.toFloat(),
                                                 it.size.height.toFloat()
@@ -172,4 +179,29 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
             }
         }
     }
+}
+
+
+@Composable
+fun elementOffset(
+    elementSize: IntSize,
+    containerSize: IntSize,
+): IntOffset {
+
+    val positionInside = motionPropertyRenderValue<Value, PositionInside>()
+    val positionOutside = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()
+    val layoutDirection = LocalLayoutDirection.current
+
+    val positionInsideOffset by derivedStateOf {
+        positionInside?.let {
+            it.alignment.align(elementSize, containerSize, layoutDirection)
+        } ?: IntOffset.Zero
+    }
+    val positionOutsideOffset by derivedStateOf {
+        positionOutside?.let {
+            it.alignment.align(elementSize, containerSize, layoutDirection)
+        } ?: IntOffset.Zero
+    }
+
+    return positionInsideOffset - positionOutsideOffset
 }
