@@ -3,7 +3,7 @@ package com.bumble.appyx.navigation.platform
 import com.bumble.appyx.navigation.lifecycle.CommonLifecycleOwner
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 
-expect class PlatformLifecycleRegistry() : Lifecycle {
+expect class PlatformLifecycleRegistry : Lifecycle {
     fun setCurrentState(state: Lifecycle.State)
 
     companion object {
