@@ -10,7 +10,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.isActive
 
-actual class PlatformLifecycleRegistry : Lifecycle {
+actual open class PlatformLifecycleRegistry : Lifecycle {
 
     private val managedDefaultLifecycleObservers: MutableList<DefaultPlatformLifecycleObserver> =
         ArrayList()

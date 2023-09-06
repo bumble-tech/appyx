@@ -146,7 +146,6 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
                                 .offset { offsetCenter.round() }
                                 .width(with(density) { size.width.toDp() })
                                 .height(with(density) { size.height.toDp() })
-                                .offset { offsetCenter.round() }
                                 .pointerInput(appyxComponent) {
                                     detectDragGesturesOrCancellation(
                                         onDragStart = { position ->

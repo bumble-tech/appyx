@@ -4,12 +4,3 @@ import com.bumble.appyx.navigation.navigation.IOSNodeHost
 import com.bumble.appyx.navigation.node.container.ContainerNode
 
 fun MainViewController() = ComposeUIViewController { App() }
-
-@Composable
-actual fun NodeHost() {
-    IOSNodeHost { buildContext ->
-        ContainerNode(
-            buildContext = buildContext,
-        )
-    }
-}
