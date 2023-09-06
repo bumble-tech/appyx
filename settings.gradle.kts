@@ -52,7 +52,7 @@ include(
     ":demos:appyx-navigation:android",
     ":demos:appyx-navigation:desktop",
     ":demos:appyx-navigation:web",
-    ":demos:appyx-navigation:shared",
+    ":demos:appyx-navigation:ios",
     ":demos:appyx-interactions:shared",
     ":demos:common",
     ":demos:navigation-compose",

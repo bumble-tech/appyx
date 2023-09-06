@@ -1,24 +1,24 @@
 Pod::Spec.new do |spec|
-    spec.name                     = 'shared'
+    spec.name                     = 'ios'
     spec.version                  = '1.0.0'
     spec.homepage                 = 'https://bumble-tech.github.io/appyx/interactions/'
     spec.source                   = { :http=> ''}
     spec.authors                  = ''
     spec.license                  = ''
-    spec.summary                  = 'appyx-nvaigation shared module'
-    spec.vendored_frameworks      = 'build/cocoapods/framework/shared.framework'
+    spec.summary                  = 'appyx-nvaigation ios module'
+    spec.vendored_frameworks      = 'build/cocoapods/framework/ios.framework'
     spec.libraries                = 'c++'
     spec.ios.deployment_target = '16.4'
                 
                 
     spec.pod_target_xcconfig = {
-        'KOTLIN_PROJECT_PATH' => ':demos:appyx-navigation:shared',
-        'PRODUCT_MODULE_NAME' => 'shared',
+        'KOTLIN_PROJECT_PATH' => ':demos:appyx-navigation:ios',
+        'PRODUCT_MODULE_NAME' => 'ios',
     }
                 
     spec.script_phases = [
         {
-            :name => 'Build shared',
+            :name => 'Build ios',
             :execution_position => :before_compile,
             :shell_path => '/bin/sh',
             :script => <<-SCRIPT
