@@ -53,7 +53,7 @@ include(
     ":demos:appyx-navigation:desktop",
     ":demos:appyx-navigation:web",
     ":demos:appyx-navigation:ios",
-    ":demos:appyx-interactions:shared",
+    ":demos:appyx-interactions:ios",
     ":demos:common",
     ":demos:navigation-compose",
     ":demos:mkdocs:appyx-interactions:interactions:sample1:web",

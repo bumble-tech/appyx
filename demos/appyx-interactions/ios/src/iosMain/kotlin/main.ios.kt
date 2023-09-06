@@ -3,11 +3,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.window.ComposeUIViewController
 import theme.DarkColorPalette
 import theme.shapes
 
-@Composable
-internal fun App() {
+fun MainViewController() = ComposeUIViewController {
     AppyxTheme {
         BoxWithConstraints(
             modifier = Modifier.fillMaxSize()
@@ -20,8 +20,6 @@ internal fun App() {
         }
     }
 }
-
-expect fun getPlatformName(): String
 
 @Composable
 private fun AppyxTheme(content: @Composable () -> Unit) {
