@@ -229,6 +229,6 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
             } ?: IntOffset.Zero
         }
 
-        return positionInsideOffset - positionOutsideOffset
+        return positionInsideOffset + positionOutsideOffset
     }
 }
