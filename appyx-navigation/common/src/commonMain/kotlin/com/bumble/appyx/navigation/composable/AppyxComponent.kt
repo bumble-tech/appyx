@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -218,16 +217,13 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
         val positionOutside = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()
         val layoutDirection = LocalLayoutDirection.current
 
-        val positionInsideOffset by derivedStateOf {
-            positionInside?.let {
-                it.alignment.align(elementSize, containerSize, layoutDirection)
-            } ?: IntOffset.Zero
-        }
-        val positionOutsideOffset by derivedStateOf {
-            positionOutside?.let {
-                it.alignment.align(elementSize, containerSize, layoutDirection)
-            } ?: IntOffset.Zero
-        }
+        val positionInsideOffset = positionInside?.let {
+            it.alignment.align(elementSize, containerSize, layoutDirection)
+        } ?: IntOffset.Zero
+
+        val positionOutsideOffset = positionOutside?.let {
+            it.alignment.align(elementSize, containerSize, layoutDirection)
+        } ?: IntOffset.Zero
 
         return positionInsideOffset + positionOutsideOffset
     }
