@@ -1,32 +1,14 @@
 plugins {
+    id("com.bumble.appyx.android.library")
     id("org.jetbrains.compose")
-    id("com.android.library")
-    kotlin("android")
-    id("appyx-lint")
-    id("kotlin-parcelize")
-    id("appyx-detekt")
 }
 
-android {
-    namespace = "com.bumble.appyx.navigation.android"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
+appyx {
+    namespace.set("com.bumble.appyx.navigation.android")
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-    testOptions {
-        unitTests.all {
-            // interface method default implementation
-            it.exclude("**/*\$DefaultImpls.class")
-        }
+        compose.set(true)
+        kotlinParcelize.set(true)
     }
 }
 

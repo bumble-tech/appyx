@@ -1,3 +1,4 @@
+@file:Suppress("MagicNumber")
 package com.bumble.appyx.components.experimental.promoter.ui
 
 import androidx.compose.animation.core.SpringSpec

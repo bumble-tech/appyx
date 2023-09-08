@@ -46,14 +46,15 @@ enum class ChildSize {
     MAX,
 }
 
+@Suppress("UnstableCollections") // actions parameter
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     actions: Map<String, () -> Unit>,
-    childSize: ChildSize = ChildSize.SMALL,
     modifier: Modifier = Modifier,
+    childSize: ChildSize = ChildSize.SMALL,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
         ModalUi(
             elementUiModel = it,

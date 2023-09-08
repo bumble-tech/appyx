@@ -1,10 +1,11 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
 }
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-demos-interactions-web"
         browser()
         binaries.executable()
     }

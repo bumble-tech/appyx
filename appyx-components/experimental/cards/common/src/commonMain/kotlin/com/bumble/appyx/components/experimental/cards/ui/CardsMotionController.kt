@@ -23,6 +23,7 @@ import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
+@Suppress("MagicNumber")
 class CardsMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
@@ -61,7 +62,8 @@ class CardsMotionController<InteractionTarget : Any>(
         rotationZ = RotationZ.Target(45f)
     )
 
-    override fun CardsModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun CardsModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         val result = mutableListOf<MatchedTargetUiState<InteractionTarget, TargetUiState>>()
         (votedCards + visibleCards + queued).map {
             when (it) {

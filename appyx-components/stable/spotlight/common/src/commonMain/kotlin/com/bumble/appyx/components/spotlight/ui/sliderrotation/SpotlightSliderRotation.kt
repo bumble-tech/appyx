@@ -21,6 +21,7 @@ import com.bumble.appyx.transitionmodel.BaseMotionController
 
 class SpotlightSliderRotation<InteractionTarget : Any>(
     uiContext: UiContext,
+    @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext

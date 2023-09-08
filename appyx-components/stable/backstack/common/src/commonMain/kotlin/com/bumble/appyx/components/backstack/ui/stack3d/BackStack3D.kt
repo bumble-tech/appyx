@@ -23,6 +23,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInsi
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
+@Suppress("MagicNumber")
 class BackStack3D<InteractionTarget : Any>(
     uiContext: UiContext,
     private val itemsInStack: Int = 3,

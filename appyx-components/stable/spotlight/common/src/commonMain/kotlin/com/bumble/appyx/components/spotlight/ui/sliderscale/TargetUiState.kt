@@ -9,6 +9,7 @@ import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.abs
 
+@Suppress("MagicNumber")
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,

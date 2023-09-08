@@ -11,10 +11,10 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlin.math.roundToInt
 
 @Composable
-fun Puzzle15() {
+fun Puzzle15(modifier: Modifier = Modifier) {
     Puzzle15Ui(
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-        modifier = Modifier.fillMaxSize().background(appyx_dark),
+        modifier = modifier.fillMaxSize().background(appyx_dark),
     )
 }

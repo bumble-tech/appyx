@@ -15,7 +15,9 @@ class VoteLike<InteractionTarget>(
     override var mode: Operation.Mode = Operation.Mode.KEYFRAME
 ) : TopCardOperation<InteractionTarget>() {
 
-    override fun createTargetState(fromState: CardsModel.State<InteractionTarget>): CardsModel.State<InteractionTarget> {
+    override fun createTargetState(
+        fromState: CardsModel.State<InteractionTarget>
+    ): CardsModel.State<InteractionTarget> {
         val votedCards = fromState.votedCards
         return CardsModel.State(
             votedCards = votedCards + CardsModel.State.Card.InvisibleCard.VotedCard(
@@ -26,7 +28,9 @@ class VoteLike<InteractionTarget>(
         )
     }
 
-    private fun resolveVisibleCards(fromState: CardsModel.State<InteractionTarget>): List<CardsModel.State.Card.VisibleCard<InteractionTarget>> {
+    private fun resolveVisibleCards(
+        fromState: CardsModel.State<InteractionTarget>
+    ): List<CardsModel.State.Card.VisibleCard<InteractionTarget>> {
         return if (fromState.visibleCards.size < 2) {
             emptyList()
         } else {

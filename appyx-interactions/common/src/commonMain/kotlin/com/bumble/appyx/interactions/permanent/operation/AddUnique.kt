@@ -18,10 +18,14 @@ data class AddUnique<InteractionTarget : Any>(
     override fun isApplicable(state: PermanentModel.State<InteractionTarget>): Boolean =
         !state.elements.any { it.interactionTarget == interactionTarget }
 
-    override fun createFromState(baseLineState: PermanentModel.State<InteractionTarget>): PermanentModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: PermanentModel.State<InteractionTarget>
+    ): PermanentModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: PermanentModel.State<InteractionTarget>): PermanentModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: PermanentModel.State<InteractionTarget>
+    ): PermanentModel.State<InteractionTarget> =
         fromState.copy(
             elements = fromState.elements + interactionTarget.asElement()
         )

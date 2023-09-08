@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.demos.incompletedrag
 
 import androidx.compose.animation.animateColorAsState

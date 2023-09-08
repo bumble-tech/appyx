@@ -1,9 +1,13 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     kotlin("plugin.serialization")
     id("com.android.library")
     id("kotlin-parcelize")
     id("appyx-publish-multiplatform")
+}
+
+appyx {
+    androidNamespace.set("com.bumble.appyx.utils.multiplatform")
 }
 
 publishingPlugin {
@@ -37,15 +41,5 @@ kotlin {
         }
         val desktopMain by getting
         val jsMain by getting
-    }
-}
-
-android {
-    namespace = "com.bumble.appyx.utils.multiplatform"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }

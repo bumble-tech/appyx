@@ -16,7 +16,9 @@ open class Spotlight<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: SpotlightModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, SpotlightModel.State<InteractionTarget>> = { GestureFactory.Noop() },
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, SpotlightModel.State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
     animationSpec: AnimationSpec<Float> = spring(),
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completionThreshold = 0.2f,

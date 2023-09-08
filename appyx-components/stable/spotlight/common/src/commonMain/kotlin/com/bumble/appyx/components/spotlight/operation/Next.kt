@@ -15,10 +15,14 @@ class Next<InteractionTarget>(
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
         state.hasNext()
 
-    override fun createFromState(baseLineState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         fromState.copy(
             activeIndex = fromState.activeIndex + 1f
         )

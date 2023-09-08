@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.demos.dragprediction
 
 import androidx.compose.animation.animateColorAsState
@@ -81,6 +82,8 @@ fun DragPrediction(
             is Keyframes -> output.currentSegmentTargetStateFlow.collectAsState(null)
             is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
         }
+
+    @Suppress("UnusedPrivateMember")
     val index = when (output) {
         is Keyframes -> output.currentIndex
         is Update -> null
@@ -150,8 +153,8 @@ fun <InteractionTarget : Any> Background(
 @Composable
 fun Target(
     elementState: ElementState?,
+    alpha: Float,
     modifier: Modifier = Modifier,
-    alpha: Float
 ) {
     val targetUiState = elementState?.toTargetUiState()
     targetUiState?.let {
@@ -207,6 +210,7 @@ fun <InteractionTarget : Any> ModelUi(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 private fun Controls(
     testDrive: TestDrive<InteractionTarget>,

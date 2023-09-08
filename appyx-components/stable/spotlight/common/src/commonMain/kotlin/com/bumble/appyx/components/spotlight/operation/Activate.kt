@@ -17,10 +17,14 @@ class Activate<InteractionTarget : Any>(
         index != state.activeIndex &&
                 (index in 0f..state.positions.lastIndex.toFloat())
 
-    override fun createFromState(baseLineState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         fromState.copy(
             activeIndex = index,
         )

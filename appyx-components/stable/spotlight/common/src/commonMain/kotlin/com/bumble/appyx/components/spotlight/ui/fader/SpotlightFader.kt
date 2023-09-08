@@ -27,7 +27,8 @@ class SpotlightFader<InteractionTarget : Any>(
         alpha = Alpha.Target(1f),
     )
 
-    override fun SpotlightModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun SpotlightModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 MatchedTargetUiState(

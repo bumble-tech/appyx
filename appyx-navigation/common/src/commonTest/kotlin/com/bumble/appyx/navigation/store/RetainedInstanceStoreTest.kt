@@ -38,6 +38,7 @@ class RetainedInstanceStoreTest {
     }
 
     // This test requires reflection so can only be executed in JVM builds.
+    @Suppress("ForbiddenComment")
     // TODO: move to desktop or android only tests, not common test
     @Ignore
     @Test

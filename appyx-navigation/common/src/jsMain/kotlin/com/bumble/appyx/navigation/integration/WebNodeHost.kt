@@ -24,7 +24,7 @@ import kotlinx.coroutines.launch
  * [.onBackPressedEvents] flow to simplify implementing the global "go back" functionality
  * that is a common concept in the Appyx framework.
  */
-//@Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
+@Suppress("ComposableParamOrder")
 @Composable
 fun <N : Node> WebNodeHost(
     screenSize: ScreenSize,

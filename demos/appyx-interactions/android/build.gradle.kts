@@ -1,39 +1,13 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-parcelize")
-    id("appyx-lint")
-    id("appyx-detekt")
+    id("com.bumble.appyx.android.application")
 }
 
-android {
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    namespace = "com.bumble.appyx.demos.appyxinteractions"
+appyx {
+    namespace.set("com.bumble.appyx.demos.appyxinteractions")
 
-    defaultConfig {
-        applicationId = "com.bumble.appyx.demos.appyxinteractions"
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-
-    packagingOptions {
-        resources.excludes.apply {
-            add("META-INF/LICENSE.md")
-            add("META-INF/LICENSE-notice.md")
-        }
+        compose.set(true)
+        kotlinParcelize.set(true)
     }
 }
 
