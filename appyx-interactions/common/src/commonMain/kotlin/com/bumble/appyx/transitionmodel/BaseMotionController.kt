@@ -103,7 +103,9 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         // TODO: use a map instead of find
         return matchedTargetUiStates.map { t1 ->
             val mutableUiState = mutableUiStateCache.getOrPut(t1.element.id) {
-                mutableUiStateFor(uiContext, t1.targetUiState)
+                mutableUiStateFor(uiContext, t1.targetUiState).apply {
+                    updateBounds(transitionBounds)
+                }
             }
             ElementUiModel(
                 element = t1.element,
@@ -224,7 +226,9 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
         return toTargetUiState.map { t1 ->
             val t0 = fromTargetUiState.find { it.element.id == t1.element.id }!!
             val mutableUiState = mutableUiStateCache.getOrPut(t1.element.id) {
-                mutableUiStateFor(uiContext, t0.targetUiState)
+                mutableUiStateFor(uiContext, t0.targetUiState).apply {
+                    updateBounds(transitionBounds)
+                }
             }
             // Synchronously, immediately apply current interpolated value before the new mutable state
             // reaches composition. This is to avoid jumping between default & current value.
