@@ -197,5 +197,5 @@ fun elementOffset(
         it.alignment.align(elementSize, containerSize, layoutDirection)
     } ?: IntOffset.Zero
 
-    return positionInsideOffset - positionOutsideOffset
+    return positionInsideOffset + positionOutsideOffset
 }
