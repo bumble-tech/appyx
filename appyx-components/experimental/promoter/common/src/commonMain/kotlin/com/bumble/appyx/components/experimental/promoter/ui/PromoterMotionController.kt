@@ -23,8 +23,7 @@ import kotlin.math.min
 
 class PromoterMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
-    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-    childSize: Dp,
+    uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<InteractionTarget, PromoterModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
@@ -33,7 +32,8 @@ class PromoterMotionController<InteractionTarget : Any>(
         createTargetUiStates(0f)
     }
 
-    override fun PromoterModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun PromoterModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         elements.map {
             MatchedTargetUiState(
                 it.first, when (it.second) {

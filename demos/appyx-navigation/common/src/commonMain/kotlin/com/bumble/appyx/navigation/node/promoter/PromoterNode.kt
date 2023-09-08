@@ -51,8 +51,7 @@ class PromoterNode(
         ),
         motionController = {
             PromoterMotionController(
-                uiContext = it,
-                childSize = 100.dp,
+                uiContext = it
             )
         },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)

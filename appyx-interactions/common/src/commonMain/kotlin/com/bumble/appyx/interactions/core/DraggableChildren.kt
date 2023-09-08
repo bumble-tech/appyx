@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -71,7 +71,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
     val coroutineScope = rememberCoroutineScope()
     val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
 
-    LaunchedEffect(coroutineScope) {
+    SideEffect {
         appyxComponent.updateContext(
             UiContext(
                 coroutineScope = coroutineScope,
