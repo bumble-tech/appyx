@@ -1,4 +1,5 @@
 @file:Suppress("MagicNumber")
+
 package com.bumble.appyx.components.experimental.promoter.ui
 
 import androidx.compose.animation.core.SpringSpec
@@ -20,7 +21,6 @@ import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import kotlin.math.min
 
-@Suppress("TransitionPropertiesLabel")
 class PromoterMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
@@ -70,6 +70,7 @@ class PromoterMotionController<InteractionTarget : Any>(
     private lateinit var stage5: TargetUiState
     private lateinit var destroyed: TargetUiState
 
+    @Suppress("LongMethod")
     fun createTargetUiStates(radius: Float) {
         created = TargetUiState(
             position = PositionInside.Target(alignment = Center),
