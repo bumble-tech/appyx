@@ -43,7 +43,6 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 
@@ -187,7 +186,7 @@ fun elementOffset(
     containerSize: IntSize,
 ): IntOffset {
 
-    val positionInside = motionPropertyRenderValue<Value, PositionInside>()
+    val positionInside = motionPropertyRenderValue<PositionInside.Value, PositionInside>()
     val positionOutside = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()
     val layoutDirection = LocalLayoutDirection.current
 
