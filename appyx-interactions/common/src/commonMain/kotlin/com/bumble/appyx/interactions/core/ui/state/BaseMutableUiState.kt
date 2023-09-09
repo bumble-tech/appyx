@@ -2,6 +2,9 @@ package com.bumble.appyx.interactions.core.ui.state
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -12,6 +15,8 @@ import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import com.bumble.appyx.combineState
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import kotlinx.coroutines.CoroutineScope
@@ -24,13 +29,13 @@ import kotlinx.coroutines.flow.update
 abstract class BaseMutableUiState<TargetUiState>(
     val uiContext: UiContext,
     val motionProperties: List<MotionProperty<*, *>>
-) {
+) : TransitionBoundsAware {
 
-    private val containerRect = Rect(
+    private var containerRect = Rect(
         offset = Offset.Zero,
         size = Size(
-            width = uiContext.transitionBounds.widthPx.toFloat(),
-            height = uiContext.transitionBounds.heightPx.toFloat()
+            width = 0f,
+            height = 0f
         )
     )
 
@@ -75,6 +80,16 @@ abstract class BaseMutableUiState<TargetUiState>(
                     }
                 }
             }
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        containerRect = Rect(
+            offset = Offset.Zero,
+            size = Size(
+                width = transitionBounds.widthPx.toFloat(),
+                height = transitionBounds.heightPx.toFloat()
+            )
+        )
+    }
 
     private fun LayoutCoordinates.isVisibleInParent(): Boolean {
         val boundsInParent = this.boundsInParent()

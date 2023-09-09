@@ -6,6 +6,5 @@ import kotlinx.coroutines.CoroutineScope
 @Immutable
 data class UiContext(
     val coroutineScope: CoroutineScope,
-    val transitionBounds: TransitionBounds,
     val clipToBounds: Boolean
 )

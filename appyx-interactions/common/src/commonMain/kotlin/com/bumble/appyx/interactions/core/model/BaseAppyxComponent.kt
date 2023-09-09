@@ -19,9 +19,9 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
-import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
@@ -61,7 +61,8 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 ) : AppyxComponent<InteractionTarget, ModelState>,
     HasDefaultAnimationSpec<Float>,
     Draggable,
-    UiContextAware {
+    UiContextAware,
+    TransitionBoundsAware {
     init {
         backPressStrategy.init(this, model)
     }
@@ -70,11 +71,12 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private var _motionController: MotionController<InteractionTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<InteractionTarget, ModelState> =
-        gestureFactory(zeroSizeTransitionBounds)
+        gestureFactory(TransitionBounds.Zero)
 
     private var animationChangesJob: Job? = null
     private var animationFinishedJob: Job? = null
     private var uiContext: UiContext? = null
+    private var transitionBounds: TransitionBounds = TransitionBounds.Zero
 
     private var _isAnimating = MutableStateFlow(false)
     val isAnimating: StateFlow<Boolean> = _isAnimating
@@ -169,7 +171,14 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
             _motionController = motionController(uiContext).also {
                 onMotionControllerReady(it)
             }
-            _gestureFactory = gestureFactory(uiContext.transitionBounds)
+        }
+    }
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        if (transitionBounds != this.transitionBounds) {
+            this.transitionBounds = transitionBounds
+            _gestureFactory = gestureFactory(transitionBounds)
+            _motionController?.updateBounds(transitionBounds)
         }
     }
 

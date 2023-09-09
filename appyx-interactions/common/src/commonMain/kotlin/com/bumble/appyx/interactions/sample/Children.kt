@@ -8,14 +8,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -54,26 +52,28 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     val density = LocalDensity.current
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
-    LaunchedEffect(uiContext) {
-        uiContext?.let { appyxComponent.updateContext(it) }
+    SideEffect {
+        appyxComponent.updateContext(
+            UiContext(
+                coroutineScope = coroutineScope,
+                clipToBounds = clipToBounds
+            )
+        )
     }
     Box(
         modifier = modifier
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
+                appyxComponent.updateBounds(
+                    TransitionBounds(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
-                    ),
-                    clipToBounds = clipToBounds
+                    )
                 )
             }
             .onPointerEvent {

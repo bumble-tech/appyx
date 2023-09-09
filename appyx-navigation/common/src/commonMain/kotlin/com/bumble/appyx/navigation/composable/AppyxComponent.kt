@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -40,7 +41,6 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.integration.LocalScreenSize
@@ -64,15 +64,19 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
     val coroutineScope = rememberCoroutineScope()
     var containerSize by remember { mutableStateOf(IntSize.Zero) }
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
     val childrenBlock = block ?: {
         children { child, _ ->
             child()
         }
     }
 
-    LaunchedEffect(uiContext) {
-        uiContext?.let { appyxComponent.updateContext(it) }
+    SideEffect {
+        appyxComponent.updateContext(
+            UiContext(
+                coroutineScope = coroutineScope,
+                clipToBounds = clipToBounds
+            )
+        )
     }
 
     Box(
@@ -81,16 +85,14 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
                 containerSize = it.size
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
+                appyxComponent.updateBounds(
+                    TransitionBounds(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
-                    ),
-                    clipToBounds = clipToBounds
+                    )
                 )
             }
             .onPointerEvent {
@@ -213,7 +215,7 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
         containerSize: IntSize
     ): IntOffset {
 
-        val positionInside = motionPropertyRenderValue<Value, PositionInside>()
+        val positionInside = motionPropertyRenderValue<PositionInside.Value, PositionInside>()
         val positionOutside = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()
         val layoutDirection = LocalLayoutDirection.current
 

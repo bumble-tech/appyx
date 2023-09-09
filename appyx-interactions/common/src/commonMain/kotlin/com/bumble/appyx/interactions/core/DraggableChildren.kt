@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -43,7 +43,6 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 
@@ -77,10 +76,14 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
     val coroutineScope = rememberCoroutineScope()
     val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
     var containerSize by remember { mutableStateOf(IntSize.Zero) }
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
 
-    LaunchedEffect(uiContext) {
-        uiContext?.let { appyxComponent.updateContext(it) }
+    SideEffect {
+        appyxComponent.updateContext(
+            UiContext(
+                coroutineScope = coroutineScope,
+                clipToBounds = clipToBounds
+            )
+        )
     }
     Box(
         modifier = modifier
@@ -88,16 +91,14 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
                 containerSize = it.size
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
+                appyxComponent.updateBounds(
+                    TransitionBounds(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
-                    ),
-                    clipToBounds = clipToBounds
+                    )
                 )
             }
             .onPointerEvent {
@@ -115,7 +116,7 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                     var elementSize by remember(id) { mutableStateOf(IntSize.Zero) }
                     var offsetCenter by remember(id) { mutableStateOf(Offset.Zero) }
                     val isVisible by elementUiModel.visibleState.collectAsState()
-                    
+
                     elementUiModel.persistentContainer()
 
                     if (isVisible) {
@@ -185,7 +186,7 @@ fun elementOffset(
     containerSize: IntSize,
 ): IntOffset {
 
-    val positionInside = motionPropertyRenderValue<Value, PositionInside>()
+    val positionInside = motionPropertyRenderValue<PositionInside.Value, PositionInside>()
     val positionOutside = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()
     val layoutDirection = LocalLayoutDirection.current
 

@@ -11,8 +11,13 @@ class TargetUiState(
     val position: PositionOutside.Target,
     val alpha: Alpha.Target,
 ) {
-    fun toOutsideLeft() = TargetUiState(
-        position = PositionOutside.Target(alignment = BiasAlignment.OutsideAlignment.OutsideLeft),
+    fun toOutsideLeft(multiplier: Float) = TargetUiState(
+        position = PositionOutside.Target(
+            alignment = BiasAlignment.OutsideAlignment(
+                horizontalBias = multiplier,
+                verticalBias = 0f
+            )
+        ),
         alpha = alpha
     )
 

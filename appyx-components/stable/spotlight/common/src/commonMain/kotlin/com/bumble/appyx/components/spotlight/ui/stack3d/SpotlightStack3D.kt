@@ -1,10 +1,12 @@
 package com.bumble.appyx.components.spotlight.ui.stack3d
 
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
@@ -25,7 +27,14 @@ class SpotlightStack3D<InteractionTarget : Any>(
 ) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
 ) {
-    private val height: Dp = uiContext.transitionBounds.heightDp
+    private var width: Dp = 0.dp
+    private var height: Dp = 0.dp
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        super.updateBounds(transitionBounds)
+        width = transitionBounds.widthDp
+        height = transitionBounds.heightDp
+    }
 
     private val scrollY = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
