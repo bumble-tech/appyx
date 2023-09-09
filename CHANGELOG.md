@@ -10,6 +10,7 @@
 ### Fixed
 
 - [#584](https://github.com/bumble-tech/appyx/pull/584) – Fix applying offset twice in `AppyxComponent`
+- [#585](https://github.com/bumble-tech/appyx/pull/585) – Fix drag vs align
 - [#571](https://github.com/bumble-tech/appyx/pull/571) – Avoid `MotionController` recreation
 
 
