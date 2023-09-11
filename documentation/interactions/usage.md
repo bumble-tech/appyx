@@ -85,12 +85,12 @@ fun SomeComposable() {
 }
 ```
 
-You can also make use of the `DraggableAppyxComponent` composable, if you have components that allow gestures to control them:
+You can also make use of the `AppyxComponent` composable, if you have components that allow gestures to control them:
 
 ```kotlin
 @Composable
 fun SomeComposable() {
-    DraggableAppyxComponent(
+    AppyxComponent(
         modifier = Modifier,
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),

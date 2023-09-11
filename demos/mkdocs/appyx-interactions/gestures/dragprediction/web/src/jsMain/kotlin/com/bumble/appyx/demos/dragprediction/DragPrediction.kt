@@ -45,7 +45,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.demos.dragprediction.DragPredictionMotionController.Companion.toTargetUiState
 import com.bumble.appyx.demos.dragprediction.InteractionTarget.Child1
-import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
@@ -191,7 +191,7 @@ fun <InteractionTarget : Any> ModelUi(
     model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
-    DraggableAppyxComponent(
+    AppyxComponent(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
