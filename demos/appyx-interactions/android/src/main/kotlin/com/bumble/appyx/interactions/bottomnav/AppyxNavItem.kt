@@ -7,7 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 
-class AppyxBottomNavItem(
+
+class AppyxNavItemQ(
     val text: @Composable (isSelected: Boolean) -> Unit,
     val icon: @Composable (isSelected: Boolean) -> Unit,
     val content: @Composable () -> Unit
@@ -19,7 +20,12 @@ class AppyxBottomNavItem(
         content: @Composable () -> Unit,
         iconModifier: Modifier = Modifier
     ) : this(
-        text = { Text(text, color = MaterialTheme.colorScheme.onPrimaryContainer) },
+        text = {
+            Text(
+                text = text,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        },
         icon = { isSelected ->
             Icon(
                 imageVector = if (isSelected) selectedIcon else unselectedIcon,

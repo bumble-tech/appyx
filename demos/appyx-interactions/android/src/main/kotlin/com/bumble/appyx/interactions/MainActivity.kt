@@ -9,19 +9,15 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import com.bumble.appyx.interactions.bottomnav.appyxBottomNavItems
+import com.bumble.appyx.interactions.bottomnav.navConfig
 import com.bumble.appyx.interactions.theme.AppyxTheme
 import com.bumble.appyx.interactions.theme.appyx_dark
+
 
 @ExperimentalMaterialApi
 @ExperimentalUnitApi
@@ -33,35 +29,24 @@ class MainActivity : ComponentActivity() {
     @Suppress("ComplexMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             AppyxTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = appyx_dark
                 ) {
-                    var content by remember { mutableStateOf(1) }
-
-                    var selectedItem by remember { mutableStateOf(0) }
-                    androidx.compose.material3.Scaffold(
+                    Scaffold(
                         content = { paddingValues: PaddingValues ->
                             Box(modifier = Modifier
                                 .fillMaxSize()
                                 .padding(paddingValues))
                             {
-                                appyxBottomNavItems[selectedItem].content()
+                                navConfig.CurrentNavItem()
                             }
                         },
                         bottomBar = {
-                            NavigationBar {
-                                appyxBottomNavItems.forEachIndexed { index, item ->
-                                    NavigationBarItem(
-                                        icon = { item.icon(selectedItem == index) },
-                                        label = { item.text(selectedItem == index) },
-                                        selected = selectedItem == index,
-                                        onClick = { selectedItem = index }
-                                    )
-                                }
-                            }
+                            navConfig.NavigationBar()
                         }
                     )
 
