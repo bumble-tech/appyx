@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.navigation
+package com.bumble.appyx.navigation.integration
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -31,6 +31,7 @@ fun <N : Node> IOSNodeHost(
     // Calculate the width and height in dp
     val dpWidth = screenBounds.useContents { size.width }.pixelsToDp()
     val dpHeight = screenBounds.useContents { size.height }.pixelsToDp()
+
     NodeHost(
         lifecycle = platformLifecycleRegistry,
         integrationPoint = integrationPoint,

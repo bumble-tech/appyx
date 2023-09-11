@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.navigation
+package com.bumble.appyx.navigation.integration
 
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 
