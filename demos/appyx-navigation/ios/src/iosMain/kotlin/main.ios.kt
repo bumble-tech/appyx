@@ -14,7 +14,6 @@ import androidx.compose.ui.zIndex
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
-import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.integration.IOSNodeHost
 import com.bumble.appyx.navigation.node.container.ContainerNode
@@ -33,7 +32,7 @@ fun MainViewController() = ComposeUIViewController {
        val backStack: BackStack<ContainerNode.InteractionTarget> = BackStack(
            scope = coroutineScope,
            model = backStackModel,
-           motionController = { BackStackParallax(it) },
+           motionController = { BackStackSlider(it) },
        )
        val backAction = { backStack.pop() }
 

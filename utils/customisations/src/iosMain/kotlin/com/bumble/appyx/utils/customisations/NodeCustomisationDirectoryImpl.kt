@@ -8,14 +8,21 @@ actual open class NodeCustomisationDirectoryImpl actual constructor(
 
     private val map: MutableMap<Any, Any> = hashMapOf()
 
-    override fun <T : NodeCustomisation> put(key: KClass<T>, value: T) {
-        map[key] = value
+    override fun <T : NodeCustomisation> put(key: KClass<T>, valueProvider: () -> T) {
+        map[key] = lazy(valueProvider)
     }
 
     fun <T : Any> put(vararg values: T) {
         values.forEach {
             map[it::class] = it
         }
+    }
+
+    override fun <T : Any> putSubDirectory(
+        key: KClass<T>,
+        valueProvider: () -> NodeCustomisationDirectory
+    ) {
+        map[key] = lazy(valueProvider)
     }
 
     inline operator fun <reified T : Any> T.unaryPlus() {
@@ -27,10 +34,6 @@ actual open class NodeCustomisationDirectoryImpl actual constructor(
 
     override fun <T : NodeCustomisation> getRecursively(key: KClass<T>): T? =
         get(key) ?: parent?.get(key)
-
-    override fun <T : Any> putSubDirectory(key: KClass<T>, value: NodeCustomisationDirectory) {
-        map[key] = value
-    }
 
     override fun <T : Any> getSubDirectory(key: KClass<T>): NodeCustomisationDirectory? =
         map[key] as? NodeCustomisationDirectory

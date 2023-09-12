@@ -1,4 +1,5 @@
 plugins {
+    id("com.bumble.appyx.multiplatform")
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("org.jetbrains.compose")
