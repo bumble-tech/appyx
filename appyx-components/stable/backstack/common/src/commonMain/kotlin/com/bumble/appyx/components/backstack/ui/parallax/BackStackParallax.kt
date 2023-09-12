@@ -16,10 +16,10 @@ import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
-import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
+@Suppress("MagicNumber")
 class BackStackParallax<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
@@ -27,63 +27,46 @@ class BackStackParallax<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
-    private val width = uiContext.transitionBounds.widthDp.value
     private val slowOutFastInEasing = CubicBezierEasing(1f, 0f, 1f, 0f)
 
-    private val outsideRight = TargetUiState(
-        elementWidth = width,
-        offsetMultiplier = 1f,
-        shadow = Shadow.Target(value = 0f, easing = slowOutFastInEasing),
-        zIndex = ZIndex.Target(1f),
-    )
-    private val topVisible = TargetUiState(
-        elementWidth = width,
-        offsetMultiplier = 0f,
-        shadow = Shadow.Target(25f),
-        zIndex = ZIndex.Target(1f),
-    )
-
-    private val bottomVisible = TargetUiState(
-        elementWidth = width,
-        offsetMultiplier = -0.2f,
-        colorOverlay = ColorOverlay.Target(0.7f),
-        zIndex = ZIndex.Target(0f),
-    )
-
-    private val hidden = TargetUiState(
-        elementWidth = width,
+    private val left = TargetUiState(
         offsetMultiplier = -1f,
         alpha = Alpha.Target(0f),
-        zIndex = ZIndex.Target(-1f),
+    )
+    private val right = TargetUiState(
+        offsetMultiplier = 1f,
+        shadow = Shadow.Target(value = 0f, easing = slowOutFastInEasing),
+    )
+
+    private val bottom = TargetUiState(
+        offsetMultiplier = -0.2f,
+        colorOverlay = ColorOverlay.Target(0.7f),
+    )
+
+    private val top = TargetUiState(
+        offsetMultiplier = 0f,
+        shadow = Shadow.Target(25f),
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         val stashed = stashed.mapIndexed { index, element ->
             MatchedTargetUiState(
                 element = element,
-                targetUiState = if (index == stashed.lastIndex) bottomVisible else hidden,
-            )
-        }
-        val created = (created).map {
-            MatchedTargetUiState(
-                element = it,
-                targetUiState = this@BackStackParallax.outsideRight
-            )
-        }
-        val active = listOf(
-            MatchedTargetUiState(
-                element = active,
-                targetUiState = topVisible
-            )
-        )
-        val destroyed = (destroyed).map {
-            MatchedTargetUiState(
-                element = it,
-                targetUiState = this@BackStackParallax.outsideRight
+                targetUiState = if (index == stashed.size - 1) bottom else left,
             )
         }
 
-        return created + stashed + active + destroyed
+        return stashed + listOf(
+            MatchedTargetUiState(
+                element = active,
+                targetUiState = top
+            )
+        ) + (created + destroyed).map {
+            MatchedTargetUiState(
+                element = it,
+                targetUiState = right
+            )
+        }
     }
 
     override fun mutableUiStateFor(

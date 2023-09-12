@@ -6,7 +6,7 @@ actual open class NodeCustomisationDirectoryImpl actual constructor(
     override val parent: NodeCustomisationDirectory?
 ) : MutableNodeCustomisationDirectory {
 
-    override fun <T : NodeCustomisation> put(key: KClass<T>, value: T) {
+    override fun <T : NodeCustomisation> put(key: KClass<T>, valueProvider: () -> T) {
         // NO-OP
     }
 
@@ -16,7 +16,7 @@ actual open class NodeCustomisationDirectoryImpl actual constructor(
     override fun <T : NodeCustomisation> getRecursively(key: KClass<T>): T? =
         null
 
-    override fun <T : Any> putSubDirectory(key: KClass<T>, value: NodeCustomisationDirectory) {
+    override fun <T : Any> putSubDirectory(key: KClass<T>, valueProvider: () -> NodeCustomisationDirectory) {
         // NO-OP
     }
 

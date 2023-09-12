@@ -1,10 +1,9 @@
+@file:Suppress("MagicNumber")
 package com.bumble.appyx.components.experimental.puzzle15.ui
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model.Tile
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap
@@ -15,7 +14,8 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.fractionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
@@ -26,17 +26,19 @@ class Puzzle15MotionController(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {
+    companion object {
+        private const val CELLS_COUNT = 4
+    }
 
     override fun Puzzle15Model.State.toUiTargets(): List<MatchedTargetUiState<Tile, TargetUiState>> {
-        val width = uiContext.transitionBounds.widthDp.value / 4
         return items.mapIndexed { index, tileElements ->
             MatchedTargetUiState(
                 element = tileElements,
                 targetUiState = TargetUiState(
-                    position = Position.Target(
-                        offset = DpOffset(
-                            x = (index % 4 * width).dp,
-                            y = (index / 4 * width).dp
+                    position = PositionInside.Target(
+                        alignment = fractionAlignment(
+                            horizontalBiasFraction = (index % CELLS_COUNT).toFloat() / (CELLS_COUNT - 1),
+                            verticalBiasFraction = (index / CELLS_COUNT).toFloat() / (CELLS_COUNT - 1)
                         )
                     )
                 )

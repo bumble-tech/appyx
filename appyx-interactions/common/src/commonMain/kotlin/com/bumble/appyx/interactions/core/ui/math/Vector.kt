@@ -11,6 +11,7 @@ import kotlin.math.cos
  * - 12 o'clock = 0 degrees
  * - 3 o'clock = 90 degrees
  */
+@Suppress("MagicNumber")
 fun angleDegrees(vector: Offset): Float  {
     val (x, y) = vector
     val deg = when {
@@ -37,6 +38,7 @@ fun angleDegrees(vector: Offset): Float  {
     return (deg.toFloat() + 90) % 360
 }
 
+@Suppress("MagicNumber")
 fun scalarComponentOf(v1: Offset, v2: Offset): Float {
     val theta = angleDegrees(v1) - angleDegrees(v2)
     val l = v1.getDistance()

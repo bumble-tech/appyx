@@ -1,73 +1,45 @@
-package com.bumble.appyx.interactions.core.ui.property.impl
+package com.bumble.appyx.interactions.core.ui.property.impl.position
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.TwoWayConverter
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.offset
-import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment.TopStart
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Value
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.math.roundToInt
 
-class Position(
-    uiContext: UiContext,
+@Suppress("MagicNumber")
+class PositionInside(
+    coroutineScope: CoroutineScope,
     val target: Target,
     displacement: StateFlow<Value> = MutableStateFlow(Value.Zero),
-    visibilityThreshold: Value = Value(BiasAlignment(0.01f, 0.01f), DpOffset(1.dp, 1.dp)),
+    visibilityThreshold: Value = Value(InsideAlignment(0.01f, 0.01f), DpOffset(1.dp, 1.dp)),
 ) : MotionProperty<Value, AnimationVector4D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value, Value.VectorConverter),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
     displacement = displacement
-), Interpolatable<Position.Target> {
-
-    object Alignment {
-
-        @Stable
-        val TopStart = BiasAlignment(-1f, -1f)
-
-        @Stable
-        val TopCenter = BiasAlignment(0f, -1f)
-
-        @Stable
-        val TopEnd = BiasAlignment(1f, -1f)
-
-        @Stable
-        val CenterStart = BiasAlignment(-1f, 0f)
-
-        @Stable
-        val Center = BiasAlignment(0f, 0f)
-
-        @Stable
-        val CenterEnd = BiasAlignment(1f, 0f)
-
-        @Stable
-        val BottomStart = BiasAlignment(-1f, 1f)
-
-        @Stable
-        val BottomCenter = BiasAlignment(0f, 1f)
-
-        @Stable
-        val BottomEnd = BiasAlignment(1f, 1f)
-    }
+), Interpolatable<PositionInside.Target> {
 
     data class Value(
-        val alignment: BiasAlignment = TopStart,
+        val alignment: InsideAlignment = TopStart,
         val offset: DpOffset
     ) {
         companion object {
@@ -83,14 +55,14 @@ class Position(
                     },
                     convertFromVector = {
                         Value(
-                            alignment = BiasAlignment(it.v3, it.v4),
+                            alignment = InsideAlignment(it.v3, it.v4),
                             offset = DpOffset(it.v1.dp, it.v2.dp)
                         )
                     }
                 )
 
             val Zero = Value(
-                alignment = BiasAlignment(0f, 0f),
+                alignment = InsideAlignment(0f, 0f),
                 offset = DpOffset.Zero
             )
         }
@@ -102,7 +74,7 @@ class Position(
     ) : MotionProperty.Target {
 
         constructor(
-            offset: DpOffset
+            offset: DpOffset = DpOffset.Zero
         ) : this(
             value = Value(
                 alignment = TopStart,
@@ -111,7 +83,7 @@ class Position(
         )
 
         constructor(
-            alignment: BiasAlignment
+            alignment: InsideAlignment
         ) : this(
             value = Value(
                 alignment = alignment,
@@ -120,7 +92,7 @@ class Position(
         )
 
         constructor(
-            alignment: BiasAlignment,
+            alignment: InsideAlignment,
             offset: DpOffset,
         ) : this(
             value = Value(
@@ -132,7 +104,7 @@ class Position(
 
     override fun calculateRenderValue(base: Value, displacement: Value): Value =
         Value(
-            alignment = BiasAlignment(
+            alignment = InsideAlignment(
                 horizontalBias = base.alignment.horizontalBias - displacement.alignment.horizontalBias,
                 verticalBias = base.alignment.verticalBias - displacement.alignment.verticalBias,
             ),
@@ -142,14 +114,15 @@ class Position(
     override val modifier: Modifier
         get() = Modifier.composed {
             val value = renderValueFlow.collectAsState()
-            val boxScope: BoxScope = uiContext.boxScope
-
+            val boxScope = requireNotNull(LocalBoxScope.current)
             with(boxScope) {
                 this@composed
-                    .offset(
-                        x = value.value.offset.x,
-                        y = value.value.offset.y
-                    )
+                    .offset {
+                        IntOffset(
+                            x = (value.value.offset.x.value * density).roundToInt(),
+                            y = (value.value.offset.y.value * density).roundToInt(),
+                        )
+                    }
                     .align(value.value.alignment)
             }
 
@@ -160,7 +133,7 @@ class Position(
 
         snapTo(
             Value(
-                alignment = BiasAlignment(
+                alignment = InsideAlignment(
                     horizontalBias = lerpFloat(
                         start = start.value.alignment.horizontalBias,
                         end = end.value.alignment.horizontalBias,
@@ -181,4 +154,3 @@ class Position(
         )
     }
 }
-

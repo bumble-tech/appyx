@@ -21,10 +21,6 @@ import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.samples.common.profile.ProfileCard
 import kotlin.math.roundToInt
 
-sealed class DatingCardsInteractionTarget {
-    class ProfileCard(val profile: Profile) : DatingCardsInteractionTarget()
-}
-
 @Composable
 fun DatingCards(modifier: Modifier = Modifier) {
     val cards = remember {
@@ -53,10 +49,13 @@ fun DatingCards(modifier: Modifier = Modifier) {
         appyxComponent = cards,
         gestureValidator = permissiveValidator,
     ) { elementUiModel ->
-        Box(
-            modifier = elementUiModel.modifier
-        ) {
-            ProfileCard(profile = elementUiModel.element.interactionTarget.profile)
-        }
+        ProfileCard(
+            profile = elementUiModel.element.interactionTarget.profile,
+            modifier = Modifier.fillMaxSize().then(elementUiModel.modifier)
+        )
     }
+}
+
+private sealed class DatingCardsInteractionTarget {
+    class ProfileCard(val profile: Profile) : DatingCardsInteractionTarget()
 }

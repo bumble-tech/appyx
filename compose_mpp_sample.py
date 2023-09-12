@@ -1,6 +1,7 @@
 import subprocess
 import shutil
 import os
+import sys
 from urllib.parse import urljoin, urlparse
 
 
@@ -9,9 +10,13 @@ def compile_project(compile_task):
     process = subprocess.Popen(args=['./gradlew', compile_task],
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
-    process.communicate()
+
+    stdout, stderr = process.communicate()
+
     if process.returncode != 0:
-        raise ChildProcessError
+        sys.stderr.write(stderr.decode('utf-8'))
+        sys.stderr.flush()
+        sys.exit(process.returncode)
 
 
 def copy_files(source_directory, target_directory):

@@ -2,8 +2,6 @@ package com.bumble.appyx.components.modal.ui
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.modal.ModalModel
 import com.bumble.appyx.components.modal.operation.Dismiss
 import com.bumble.appyx.components.modal.operation.FullScreen
@@ -15,46 +13,49 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Height
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
+@Suppress("MagicNumber")
 class ModalMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
 ) : BaseMotionController<InteractionTarget, ModalModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val height = uiContext.transitionBounds.heightDp
 
     private val createdState: TargetUiState =
         TargetUiState(
             height = Height.Target(0f),
-            position = Position.Target(DpOffset(0.dp, 0.dp)),
+            position = PositionOutside.Target(InContainer),
             corner = RoundedCorners.Target(8),
         )
     private val modalState: TargetUiState =
         TargetUiState(
             height = Height.Target(0.5f),
-            position = Position.Target(DpOffset(0.dp, height * 0.5f)),
+            position = PositionOutside.Target(OutsideAlignment(0f, 0.5f)),
             corner = RoundedCorners.Target(8),
         )
 
     private val fullScreenState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-            position = Position.Target(DpOffset(0.dp, 0.dp)),
+            position = PositionOutside.Target(InContainer),
             corner = RoundedCorners.Target(0),
         )
 
     private val destroyedState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-            position = Position.Target(DpOffset(0.dp, height * 1.5f)),
+            position = PositionOutside.Target(OutsideAlignment(0f, 1.5f)),
             corner = RoundedCorners.Target(0),
         )
 
-    override fun ModalModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun ModalModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         return created.map { MatchedTargetUiState(it, createdState) } +
                 listOfNotNull(modal).map { MatchedTargetUiState(it, modalState) } +
                 listOfNotNull(fullScreen).map { MatchedTargetUiState(it, fullScreenState) } +

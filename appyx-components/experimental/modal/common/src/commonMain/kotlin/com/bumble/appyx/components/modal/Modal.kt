@@ -18,10 +18,11 @@ class Modal<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: ModalModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, ModalModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModalModel.State<InteractionTarget>> = { GestureFactory.Noop() },
-    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModalModel.State<InteractionTarget>> = RevertBackPressHandler(
-        scope
-    ),
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModalModel.State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
+    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModalModel.State<InteractionTarget>> =
+        RevertBackPressHandler(scope),
     animationSpec: AnimationSpec<Float> = spring(),
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completionThreshold = 0.2f,

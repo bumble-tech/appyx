@@ -12,11 +12,11 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlin.math.roundToInt
 
 @Composable
-fun TestDriveExperiment() {
+fun TestDriveExperiment(modifier: Modifier = Modifier) {
     TestDriveExperiment(
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         element = InteractionTarget.Child1,
-        modifier = Modifier.fillMaxSize().background(appyx_dark),
+        modifier = modifier.fillMaxSize().background(appyx_dark),
     )
 }

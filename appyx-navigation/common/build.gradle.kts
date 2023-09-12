@@ -1,9 +1,12 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
     id("appyx-publish-multiplatform")
-    id("appyx-detekt")
+}
+
+appyx {
+    androidNamespace.set("com.bumble.appyx.navigation")
 }
 
 kotlin {
@@ -77,20 +80,11 @@ kotlin {
 }
 
 android {
-    namespace = "com.bumble.appyx.navigation"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-    }
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-    testOptions {
     }
 
     dependencies {

@@ -26,9 +26,9 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -40,7 +40,8 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun TestDriveModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun TestDriveModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(element, elementState.toTargetUiState()).also {
                 AppyxLogger.d("TestDrive", "Matched $elementState -> UiState: ${it.targetUiState}")
@@ -59,25 +60,25 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.TopStart),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopStart),
             rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         private val topRightCorner = TargetUiState(
-            position = Position.Target(Alignment.TopEnd),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopEnd),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = Position.Target(Alignment.BottomEnd, bottomOffset),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.BottomEnd, bottomOffset),
             rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.BottomStart, bottomOffset),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.BottomStart, bottomOffset),
             rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
@@ -94,6 +95,7 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
         private val transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
 
+        @Suppress("ComplexMethod")
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,
             delta: Offset,

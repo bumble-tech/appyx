@@ -1,10 +1,13 @@
 package com.bumble.appyx.navigation.node.promoter
 
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,6 +30,8 @@ import com.bumble.appyx.components.experimental.promoter.Promoter
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
 import com.bumble.appyx.components.experimental.promoter.ui.PromoterMotionController
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -34,6 +39,7 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget
+import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget.Child
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -45,10 +51,10 @@ class PromoterNode(
         ),
         motionController = {
             PromoterMotionController(
-                uiContext = it,
-                childSize = 100.dp,
+                uiContext = it
             )
-        }
+        },
+        animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
@@ -56,10 +62,10 @@ class PromoterNode(
 ) {
 
     init {
-        promoter.addFirst(InteractionTarget.Child(1))
-        promoter.addFirst(InteractionTarget.Child(2))
-        promoter.addFirst(InteractionTarget.Child(3))
-        promoter.addFirst(InteractionTarget.Child(4))
+        promoter.addFirst(Child(1))
+        promoter.addFirst(Child(2))
+        promoter.addFirst(Child(3))
+        promoter.addFirst(Child(4))
     }
 
     sealed class InteractionTarget : Parcelable {
@@ -69,7 +75,7 @@ class PromoterNode(
 
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
         when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+            is Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -112,15 +118,18 @@ class PromoterNode(
                     .fillMaxWidth()
                     .weight(0.1f)
                     .padding(4.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                horizontalArrangement = Arrangement.Center
             ) {
                 Button(
-                    onClick = {
-                        promoter.addFirst(InteractionTarget.Child(index))
-                        index++
-                    }
+                    onClick = { promoter.addFirst(Child(index++), KEYFRAME) }
                 ) {
-                    Text("Add")
+                    Text("KEYFRAME")
+                }
+                Spacer(Modifier.size(24.dp))
+                Button(
+                    onClick = { promoter.addFirst(Child(index++), IMMEDIATE) }
+                ) {
+                    Text("IMMEDIATE")
                 }
             }
         }

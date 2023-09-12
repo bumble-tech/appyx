@@ -18,12 +18,16 @@ data class AddFirst<InteractionTarget>(
     override fun isApplicable(state: PromoterModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: PromoterModel.State<InteractionTarget>): PromoterModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: PromoterModel.State<InteractionTarget>
+    ): PromoterModel.State<InteractionTarget> =
         baseLineState.copy(
             elements = listOf(element.asElement() to PromoterModel.State.ElementState.CREATED) + baseLineState.elements,
         )
 
-    override fun createTargetState(fromState: PromoterModel.State<InteractionTarget>): PromoterModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: PromoterModel.State<InteractionTarget>
+    ): PromoterModel.State<InteractionTarget> =
         fromState.copy(
             elements = fromState.elements.map { it.first to it.second.next() }
         )

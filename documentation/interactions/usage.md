@@ -90,7 +90,7 @@ You can also make use of the `DraggableAppyxComponent` composable, if you have c
 ```kotlin
 @Composable
 fun SomeComposable() {
-    DraggableChildren(
+    DraggableAppyxComponent(
         modifier = Modifier,
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),

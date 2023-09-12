@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import com.bumble.appyx.components.experimental.cards.android.DatingCards
 import com.bumble.appyx.components.experimental.puzzle15.android.Puzzle15
+import com.bumble.appyx.components.experimental.promoter.android.PromoterExperiment
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
 import com.bumble.appyx.components.modal.ui.ModalMotionController
 import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
 
                     Column {
                         LazyRow {
-                            items(count = 8, itemContent = { item ->
+                            items(count = 9, itemContent = { item ->
                                 when (item) {
                                     0 -> Button({ content = 1 }) { Text("1") }
                                     1 -> Button({ content = 2 }) { Text("2") }
@@ -63,6 +64,7 @@ class MainActivity : ComponentActivity() {
                                     5 -> Button({ content = 6 }) { Text("6") }
                                     6 -> Button({ content = 7 }) { Text("7") }
                                     7 -> Button({ content = 8 }) { Text("8") }
+                                    8 -> Button({ content = 9 }) { Text("9") }
                                 }
                             })
                         }
@@ -73,8 +75,9 @@ class MainActivity : ComponentActivity() {
                             4 -> SpotlightExperiment { SpotlightSliderRotation(it) }
                             5 -> SpotlightExperiment { SpotlightFader(it) }
                             6 -> TestDriveExperiment()
-                            7 -> Puzzle15()
-                            8 -> ModalExperiment { ModalMotionController(it) }
+                            7 -> PromoterExperiment()
+                            8 -> Puzzle15()
+                            9 -> ModalExperiment { ModalMotionController(it) }
                             else -> SpotlightExperiment { SpotlightSlider(it) }
                         }
                     }

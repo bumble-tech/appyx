@@ -9,6 +9,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 
+@Suppress("CompositionLocalAllowlist")
 val LocalOnBackPressedDispatcherOwner: ProvidableCompositionLocal<OnBackPressedDispatcherOwner> =
     compositionLocalOf {
         object : OnBackPressedDispatcherOwner {

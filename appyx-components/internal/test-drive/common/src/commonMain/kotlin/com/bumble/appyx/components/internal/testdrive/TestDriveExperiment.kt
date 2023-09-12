@@ -39,7 +39,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRA
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
-
+@Suppress("MagicNumber", "LongMethod")
 @Composable
 fun <InteractionTarget : Any> TestDriveExperiment(
     screenWidthPx: Int,

@@ -1,39 +1,13 @@
 plugins {
-    id("com.android.application")
-    id("kotlin-android")
-    id("kotlin-parcelize")
-    id("appyx-lint")
-    id("appyx-detekt")
+    id("com.bumble.appyx.android.application")
 }
 
-android {
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    namespace = "com.bumble.appyx.demos.appyxinteractions"
+appyx {
+    namespace.set("com.bumble.appyx.demos.appyxinteractions")
 
-    defaultConfig {
-        applicationId = "com.bumble.appyx.demos.appyxinteractions"
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-        versionCode = 1
-        versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
-    }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
-    }
-
-    packagingOptions {
-        resources.excludes.apply {
-            add("META-INF/LICENSE.md")
-            add("META-INF/LICENSE-notice.md")
-        }
+        compose.set(true)
+        kotlinParcelize.set(true)
     }
 }
 
@@ -42,12 +16,13 @@ dependencies {
 
     implementation(composeBom)
     implementation(project(":appyx-interactions:android"))
-    implementation(project(":appyx-components:stable:spotlight:spotlight"))
     implementation(project(":appyx-components:stable:backstack:backstack"))
-    implementation(project(":appyx-components:experimental:modal:modal"))
-    implementation(project(":appyx-components:internal:test-drive:android"))
+    implementation(project(":appyx-components:stable:spotlight:spotlight"))
     implementation(project(":appyx-components:experimental:cards:android"))
+    implementation(project(":appyx-components:experimental:modal:modal"))
+    implementation(project(":appyx-components:experimental:promoter:android"))
     implementation(project(":appyx-components:experimental:puzzle15:android"))
+    implementation(project(":appyx-components:internal:test-drive:android"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

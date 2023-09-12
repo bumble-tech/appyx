@@ -21,8 +21,13 @@ repositories {
 
 ```groovy
 dependencies {
-    // Android-only. Multiplatform is coming soon.
+    // Multiplatform
     implementation "com.bumble.appyx:appyx-navigation:$version"
+
+    // Platform-specific
+    implementation "com.bumble.appyx:appyx-navigation-android:$version"
+    implementation "com.bumble.appyx:appyx-navigation-desktop:$version"
+    implementation "com.bumble.appyx:appyx-navigation-js:$version"
 }
 ```
 

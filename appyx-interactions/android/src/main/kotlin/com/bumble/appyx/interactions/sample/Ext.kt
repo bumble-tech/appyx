@@ -16,10 +16,6 @@ import com.bumble.appyx.interactions.theme.md_teal_500
 import com.bumble.appyx.interactions.theme.silver_sand
 import com.bumble.appyx.interactions.theme.sizzling_red
 
-enum class InteractionTarget {
-    Child1, Child2, Child3, Child4, Child5, Child6, Child7, Child8, Child9, Child10
-}
-
 val colors = listOf(
     manatee,
     sizzling_red,

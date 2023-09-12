@@ -22,12 +22,16 @@ data class NewRoot<InteractionTarget>(
     override fun isApplicable(state: BackStackModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: BackStackModel.State<InteractionTarget>
+    ): BackStackModel.State<InteractionTarget> =
         baseLineState.copy(
             created = baseLineState.created + interactionTarget.asElement()
         )
 
-    override fun createTargetState(fromState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: BackStackModel.State<InteractionTarget>
+    ): BackStackModel.State<InteractionTarget> =
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),

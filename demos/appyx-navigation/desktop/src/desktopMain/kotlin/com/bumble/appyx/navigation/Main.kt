@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.navigation
 
 import androidx.compose.material3.MaterialTheme

@@ -24,8 +24,8 @@ import kotlin.math.PI
 
 @Composable
 fun TimerWidget(
-    timeInitial: Long = 89764,
     modifier: Modifier = Modifier,
+    timeInitial: Long = 89764,
 ) {
     val timeLeft by remember { mutableStateOf(timeInitial) }
     val minutes by remember { derivedStateOf { (timeLeft / 60000).formatted() } }

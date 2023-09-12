@@ -1,7 +1,6 @@
 package com.bumble.appyx.interactions.core
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -9,7 +8,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -27,7 +26,9 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.onPlaced
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
@@ -36,13 +37,19 @@ import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.def
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
+import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 
 private val defaultExtraTouch = 48f.dp
 
+
+@Suppress("LongMethod")
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
@@ -68,28 +75,30 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val gestureExtraTouchAreaPx = with(density) { gestureExtraTouchArea.toPx() }
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
-    var boxScope: BoxScope? = null
+    var containerSize by remember { mutableStateOf(IntSize.Zero) }
 
-    LaunchedEffect(uiContext) {
-        uiContext?.let { appyxComponent.updateContext(it) }
+    SideEffect {
+        appyxComponent.updateContext(
+            UiContext(
+                coroutineScope = coroutineScope,
+                clipToBounds = clipToBounds
+            )
+        )
     }
     Box(
         modifier = modifier
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
+                containerSize = it.size
+                appyxComponent.updateBounds(
+                    TransitionBounds(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
-                    ),
-                    boxScope = boxScope!!,
-                    clipToBounds = clipToBounds
+                    )
                 )
             }
             .onPointerEvent {
@@ -97,59 +106,59 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                     appyxComponent.onRelease()
                 }
             }
-            .fillMaxSize()
     ) {
-        boxScope = this
-        elementUiModels
-            .forEach { elementUiModel ->
-                key(elementUiModel.element.id) {
-                    var transformedBoundingBox by remember(elementUiModel.element.id) {
-                        mutableStateOf(Rect.Zero)
-                    }
-                    var size by remember(elementUiModel.element.id) { mutableStateOf(IntSize.Zero) }
-                    var offsetCenter by remember(elementUiModel.element.id) { mutableStateOf(Offset.Zero) }
+        CompositionLocalProvider(LocalBoxScope provides this) {
+            elementUiModels.forEach { elementUiModel ->
+                val id = elementUiModel.element.id
+
+                key(id) {
+                    var transformedBoundingBox by remember(id) { mutableStateOf(Rect.Zero) }
+                    var elementSize by remember(id) { mutableStateOf(IntSize.Zero) }
+                    var offsetCenter by remember(id) { mutableStateOf(Offset.Zero) }
                     val isVisible by elementUiModel.visibleState.collectAsState()
+
                     elementUiModel.persistentContainer()
+
                     if (isVisible) {
-                        Box(
-                            modifier = Modifier
-                                .offset { offsetCenter.round() }
-                                .width(with(density) { size.width.toDp() })
-                                .height(with(density) { size.height.toDp() })
-                                .pointerInput(appyxComponent) {
-                                    detectDragGesturesOrCancellation(
-                                        onDragStart = { position ->
-                                            appyxComponent.onStartDrag(position)
-                                        },
-                                        onDrag = { change, dragAmount ->
-                                            if (gestureValidator.isGestureValid(
-                                                    change.position,
-                                                    transformedBoundingBox.translate(-offsetCenter)
-                                                )
-                                            ) {
-                                                change.consume()
-                                                appyxComponent.onDrag(dragAmount, density)
-                                                true
-                                            } else {
-                                                appyxComponent.onDragEnd()
-                                                false
-                                            }
-                                        },
-                                        onDragEnd = {
-                                            appyxComponent.onDragEnd()
-                                        },
-                                    )
-                                }
-                        )
                         CompositionLocalProvider(
                             LocalMotionProperties provides elementUiModel.motionProperties
                         ) {
+                            val elementOffset = offsetCenter.round() - elementOffset(elementSize, containerSize)
+
                             element.invoke(
                                 elementUiModel.copy(
                                     modifier = Modifier
+                                        .offset { elementOffset }
+                                        .width(with(density) { elementSize.width.toDp() })
+                                        .height(with(density) { elementSize.height.toDp() })
+                                        .pointerInput(appyxComponent) {
+                                            detectDragGesturesOrCancellation(
+                                                onDragStart = { position ->
+                                                    appyxComponent.onStartDrag(position)
+                                                },
+                                                onDrag = { change, dragAmount ->
+                                                    if (gestureValidator.isGestureValid(
+                                                            change.position,
+                                                            transformedBoundingBox.translate(-offsetCenter)
+                                                        )
+                                                    ) {
+                                                        change.consume()
+                                                        appyxComponent.onDrag(dragAmount, density)
+                                                        true
+                                                    } else {
+                                                        appyxComponent.onDragEnd()
+                                                        false
+                                                    }
+                                                },
+                                                onDragEnd = {
+                                                    appyxComponent.onDragEnd()
+                                                },
+                                            )
+                                        }
+                                        .offset { -elementOffset }
                                         .then(elementUiModel.modifier)
                                         .onPlaced {
-                                            size = it.size
+                                            elementSize = it.size
                                             val localCenter = Offset(
                                                 it.size.width.toFloat(),
                                                 it.size.height.toFloat()
@@ -166,5 +175,28 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                     }
                 }
             }
+        }
     }
+}
+
+
+@Composable
+fun elementOffset(
+    elementSize: IntSize,
+    containerSize: IntSize,
+): IntOffset {
+
+    val positionInside = motionPropertyRenderValue<PositionInside.Value, PositionInside>()
+    val positionOutside = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()
+    val layoutDirection = LocalLayoutDirection.current
+
+    val positionInsideOffset = positionInside?.let {
+        it.alignment.align(elementSize, containerSize, layoutDirection)
+    } ?: IntOffset.Zero
+
+    val positionOutsideOffset = positionOutside?.let {
+        it.alignment.align(elementSize, containerSize, layoutDirection)
+    } ?: IntOffset.Zero
+
+    return positionInsideOffset + positionOutsideOffset
 }

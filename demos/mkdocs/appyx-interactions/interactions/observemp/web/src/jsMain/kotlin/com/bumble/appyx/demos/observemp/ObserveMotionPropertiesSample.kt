@@ -27,9 +27,9 @@ import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.demos.common.colors
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import kotlin.math.roundToInt
 
 @Composable
@@ -105,10 +105,11 @@ fun <InteractionTarget : Any> ModalUi(
                 fontSize = 12.sp,
                 color = Color.White
             )
-            val dpOffset = motionPropertyRenderValue<Position.Value, Position>()?.offset
-            if (dpOffset != null) {
+            val alignment =
+                motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()?.alignment
+            if (alignment != null) {
                 Text(
-                    text = "${roundFloatToTwoDecimals(dpOffset.x.value)}.dp",
+                    text = "Offset: ${roundFloatToTwoDecimals(alignment.horizontalBias * 100)}%",
                     fontSize = 12.sp,
                     color = Color.White
                 )

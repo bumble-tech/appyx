@@ -25,7 +25,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -39,7 +39,8 @@ class DragPredictionMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun TestDriveModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun TestDriveModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(element, elementState.toTargetUiState()).also {
                 AppyxLogger.d("TestDrive", "Matched $elementState -> UiState: ${it.targetUiState}")
@@ -62,21 +63,21 @@ class DragPredictionMotionController<InteractionTarget : Any>(
 
         // Top-left corner, A
         private val uiStateA = TargetUiState(
-            position = Position.Target(DpOffset(0.dp, 0.dp)),
+            position = PositionOutside.Target(DpOffset(0.dp, 0.dp)),
             scale = Scale.Target(1f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         // Top-right corner, B
         private val uiStateB = TargetUiState(
-            position = Position.Target(DpOffset(180.dp, 30.dp)),
+            position = PositionOutside.Target(DpOffset(180.dp, 30.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         // Bottom-right corner, C
         private val uiStateC = TargetUiState(
-            position = Position.Target(DpOffset(180.dp, 180.dp)),
+            position = PositionOutside.Target(DpOffset(180.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(90f),
             backgroundColor = BackgroundColor.Target(color_secondary)
@@ -84,7 +85,7 @@ class DragPredictionMotionController<InteractionTarget : Any>(
 
         // Bottom-left corner, D
         private val uiStateD = TargetUiState(
-            position = Position.Target(DpOffset(30.dp, 180.dp)),
+            position = PositionOutside.Target(DpOffset(30.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
@@ -97,12 +98,15 @@ class DragPredictionMotionController<InteractionTarget : Any>(
     ): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
+
+    @Suppress("UnusedPrivateMember")
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
         private val maxX = uiStateB.position.value.offset.x - uiStateA.position.value.offset.x
         private val maxY = uiStateD.position.value.offset.y - uiStateA.position.value.offset.y
 
+        @Suppress("ComplexMethod")
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,
             delta: Offset,

@@ -15,7 +15,9 @@ open class Promoter<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: PromoterModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, PromoterModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, PromoterModel.State<InteractionTarget>> = { GestureFactory.Noop() },
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, PromoterModel.State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
     animationSpec: AnimationSpec<Float> = spring(),
 ) : BaseAppyxComponent<InteractionTarget, PromoterModel.State<InteractionTarget>>(
     scope = scope,

@@ -12,6 +12,7 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+@Suppress("TooManyFunctions")
 abstract class BaseMotionController<InteractionTarget : Any, ModelState, MutableUiState, TargetUiState>(
     private val uiContext: UiContext,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
@@ -64,6 +66,16 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
 
     private val _finishedAnimations = MutableSharedFlow<Element<InteractionTarget>>()
     override val finishedAnimations: Flow<Element<InteractionTarget>> = _finishedAnimations
+
+    protected var transitionBounds: TransitionBounds = TransitionBounds.Zero
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        this.transitionBounds = transitionBounds
+        mutableUiStateCache.values.forEach {
+            it.updateBounds(transitionBounds)
+        }
+    }
+
     override fun overrideAnimationSpec(springSpec: SpringSpec<Float>) {
         currentSpringSpec = springSpec
     }
@@ -89,18 +101,22 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             updateViewpoint(update)
         }
 
+
+        @Suppress("ForbiddenComment")
         // TODO: use a map instead of find
         return matchedTargetUiStates.map { t1 ->
             val mutableUiState = mutableUiStateCache.getOrPut(t1.element.id) {
-                mutableUiStateFor(uiContext, t1.targetUiState)
+                mutableUiStateFor(uiContext, t1.targetUiState).apply {
+                    updateBounds(transitionBounds)
+                }
             }
             ElementUiModel(
                 element = t1.element,
                 visibleState = mutableUiState.isVisible,
                 persistentContainer = @Composable {
                     Box(modifier = mutableUiState.visibilityModifier)
-                    observeElementAnimationChanges(mutableUiState, t1)
-                    manageAnimations(mutableUiState, t1, update)
+                    ObserveElementAnimationChanges(mutableUiState, t1)
+                    ManageAnimations(mutableUiState, t1, update)
                 },
                 motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
@@ -123,7 +139,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     }
 
     @Composable
-    private fun manageAnimations(
+    private fun ManageAnimations(
         mutableUiState: MutableUiState,
         matchedTargetUiState: MatchedTargetUiState<InteractionTarget, TargetUiState>,
         update: Update<ModelState>
@@ -146,7 +162,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     }
 
     @Composable
-    private fun observeElementAnimationChanges(
+    private fun ObserveElementAnimationChanges(
         mutableUiState: MutableUiState,
         matchedTargetUiState: MatchedTargetUiState<InteractionTarget, TargetUiState>
     ) {
@@ -209,11 +225,14 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
             }
         }
 
+        @Suppress("ForbiddenComment")
         // TODO: use a map instead of find
         return toTargetUiState.map { t1 ->
             val t0 = fromTargetUiState.find { it.element.id == t1.element.id }!!
             val mutableUiState = mutableUiStateCache.getOrPut(t1.element.id) {
-                mutableUiStateFor(uiContext, t0.targetUiState)
+                mutableUiStateFor(uiContext, t0.targetUiState).apply {
+                    updateBounds(transitionBounds)
+                }
             }
             // Synchronously, immediately apply current interpolated value before the new mutable state
             // reaches composition. This is to avoid jumping between default & current value.
@@ -224,7 +243,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                 visibleState = mutableUiState.isVisible,
                 persistentContainer = @Composable {
                     Box(modifier = mutableUiState.visibilityModifier)
-                    interpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
+                    InterpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
                 },
                 motionProperties = mutableUiState.motionProperties,
                 modifier = mutableUiState.modifier,
@@ -234,7 +253,7 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
     }
 
     @Composable
-    private fun interpolateUiState(
+    private fun InterpolateUiState(
         segmentProgress: Flow<Float>,
         mutableUiState: MutableUiState,
         from: MatchedTargetUiState<InteractionTarget, TargetUiState>,
@@ -272,7 +291,8 @@ abstract class BaseMotionController<InteractionTarget : Any, ModelState, Mutable
                                 dampingRatio = currentSpringSpec.dampingRatio
                             )
                         ) {
-                            AppyxLogger.d(TAG, "Viewpoint animateTo (Segment) – ${viewpointDimension.internalValue} -> $targetValue")
+                            AppyxLogger.d(TAG,
+                                "Viewpoint animateTo (Segment) – ${viewpointDimension.internalValue} -> $targetValue")
                         }
                     }
                 }
