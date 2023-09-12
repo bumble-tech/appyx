@@ -167,7 +167,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     override fun updateContext(uiContext: UiContext) {
         if (this.uiContext != uiContext) {
             this.uiContext = uiContext
-            AppyxLogger.d("AppyxComponent", "new uiContext supplied: $uiContext")
+            AppyxLogger.d("AppyxComponent", "${this::class.simpleName} – UiContext update: $uiContext")
             _motionController = motionController(uiContext).also {
                 onMotionControllerReady(it)
             }
@@ -176,6 +176,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 
     override fun updateBounds(transitionBounds: TransitionBounds) {
         if (transitionBounds != this.transitionBounds) {
+            AppyxLogger.d("AppyxComponent", "${this::class.simpleName} – Bounds update: ${transitionBounds.widthPx}x${transitionBounds.heightPx}")
             this.transitionBounds = transitionBounds
             _gestureFactory = gestureFactory(transitionBounds)
             _motionController?.updateBounds(transitionBounds)
