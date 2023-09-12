@@ -45,24 +45,23 @@ abstract class BaseMutableUiState<TargetUiState>(
         )
     )
 
-    private val sizeChangedModifier: Modifier = Modifier
-        .onSizeChanged { size ->
-            _size.update { size }
-        }
-
-    protected abstract val combinedMotionPropertyModifier: Modifier
-
     val modifier
         get() = combinedMotionPropertyModifier
             .then(sizeChangedModifier)
+
+    protected abstract val combinedMotionPropertyModifier: Modifier
+
+    private val sizeChangedModifier: Modifier = Modifier
+        .onSizeChanged { size ->
+            this.size.update { size }
+        }
 
     private val _isBoundsVisible = MutableStateFlow(false)
     private val visibilitySources: Iterable<StateFlow<Boolean>> =
         motionProperties.mapNotNull { it.isVisibleFlow } + _isBoundsVisible
 
-    protected val _size = MutableStateFlow(IntSize.Zero)
+    protected val size = MutableStateFlow(IntSize.Zero)
 
-    @Suppress("unused")
     val isVisible: StateFlow<Boolean> = combineState(
         visibilitySources,
         uiContext.coroutineScope
@@ -76,7 +75,6 @@ abstract class BaseMutableUiState<TargetUiState>(
      * bounds visibility relative to parent's bounds. Because it's responsible only for calculating
      * element's bounds it ensures that it's invisible by setting alpha as 0f.
      */
-    @Suppress("unused")
     val visibilityModifier: Modifier
         get() = Modifier
             .graphicsLayer {
@@ -85,7 +83,7 @@ abstract class BaseMutableUiState<TargetUiState>(
             }
             .then(combinedMotionPropertyModifier)
             .composed {
-                val size by _size.collectAsState()
+                val size by size.collectAsState()
                 if (size != IntSize.Zero) {
                     val localDensity = LocalDensity.current.density
                     requiredSize(
