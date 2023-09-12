@@ -183,6 +183,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     }
 
     private fun onMotionControllerReady(motionController: MotionController<InteractionTarget, ModelState>) {
+        motionController.updateBounds(transitionBounds)
         observeAnimationChanges(motionController)
         observeMotionController(motionController)
     }
