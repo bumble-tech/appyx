@@ -13,9 +13,10 @@ dependencies {
     api(project(":appyx-interactions:appyx-interactions"))
     api(libs.compose.ui.test.junit4)
     implementation(libs.androidx.test.core)
-
     implementation(composeBom)
+
     androidTestImplementation(composeBom)
+    androidTestImplementation(libs.compose.ui.test.junit4)
 
     debugRuntimeOnly(libs.compose.ui.test.manifest)
 }

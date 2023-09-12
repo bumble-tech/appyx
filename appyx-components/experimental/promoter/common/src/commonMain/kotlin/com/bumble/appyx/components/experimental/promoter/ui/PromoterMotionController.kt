@@ -3,7 +3,6 @@
 package com.bumble.appyx.components.experimental.promoter.ui
 
 import androidx.compose.animation.core.SpringSpec
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
@@ -71,7 +70,7 @@ class PromoterMotionController<InteractionTarget : Any>(
     private lateinit var destroyed: TargetUiState
 
     @Suppress("LongMethod")
-    fun createTargetUiStates(radius: Float) {
+    private fun createTargetUiStates(radius: Float) {
         created = TargetUiState(
             position = PositionInside.Target(alignment = Center),
             angularPosition = AngularPosition.Target(
