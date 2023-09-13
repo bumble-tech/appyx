@@ -13,48 +13,42 @@ import androidx.compose.ui.window.ComposeUIViewController
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
-import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.integration.IOSNodeHost
 import com.bumble.appyx.navigation.node.container.ContainerNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+
+val backEvents: Channel<Unit> = Channel()
 
 fun MainViewController() = ComposeUIViewController {
-   AppyxSampleAppTheme {
+    AppyxSampleAppTheme {
+        Box(modifier = Modifier.fillMaxSize()) {
+            BackButton(rememberCoroutineScope())
 
-       val backStackModel = remember {
-           BackStackModel<ContainerNode.InteractionTarget>(
-               initialTargets = listOf(ContainerNode.InteractionTarget.Selector),
-               savedStateMap = null,
-           )
-       }
-       val coroutineScope = rememberCoroutineScope()
-       val backStack: BackStack<ContainerNode.InteractionTarget> = BackStack(
-           scope = coroutineScope,
-           model = backStackModel,
-           motionController = { BackStackSlider(it) },
-       )
-       val backAction = { backStack.pop() }
-
-       Box(modifier = Modifier.fillMaxSize()) {
-           BackButton(action = backAction)
-
-           IOSNodeHost(
-               modifier = Modifier
-           ) { buildContext ->
-               ContainerNode(
-                   buildContext = buildContext,
-                   backStack = backStack,
-               )
-           }
-       }
-   }
+            IOSNodeHost(
+                modifier = Modifier,
+                onBackPressedEvents = backEvents.receiveAsFlow()
+            ) { buildContext ->
+                ContainerNode(
+                    buildContext = buildContext,
+                )
+            }
+        }
+    }
 }
 
 @Composable
-private fun BackButton(action: () -> Unit) {
+private fun BackButton(coroutineScope: CoroutineScope) {
     IconButton(
-        onClick =  { action.invoke() },
+        onClick = {
+            coroutineScope.launch {
+                backEvents.send(Unit)
+            }
+        },
         modifier = Modifier.zIndex(5f)
     ) {
         Icon(
