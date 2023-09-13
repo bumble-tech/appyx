@@ -2,10 +2,13 @@
 
 ## Pending changes
 
+-
+
+## 2.0.0-alpha05
+
 ### Added
 
 - [#579](https://github.com/bumble-tech/appyx/pull/579) – Expose `AndroidLifecycle` in `PlatformLifecycleRegistry` for Android
-
 
 ### Fixed
  
@@ -17,6 +20,10 @@
 - [#589](https://github.com/bumble-tech/appyx/pull/589) – Fix visibility resolution for elements that do not match parent's size
 - [#591](https://github.com/bumble-tech/appyx/pull/591) – Flush output cache when onCreate is called in NodeConnector
 - [#592](https://github.com/bumble-tech/appyx/pull/592) – Fix Backstack3D Motion Controller
+
+<div style="text-align: center"><small>13 Sep 2023</small></div>
+
+---
 
 ## 2.0.0-alpha04
 
