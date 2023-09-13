@@ -16,7 +16,7 @@
 - [#588](https://github.com/bumble-tech/appyx/pull/588) – Set bounds on all new motion controllers
 - [#589](https://github.com/bumble-tech/appyx/pull/589) – Fix visibility resolution for elements that do not match parent's size
 - [#591](https://github.com/bumble-tech/appyx/pull/591) – Flush output cache when onCreate is called in NodeConnector
-
+- [#592](https://github.com/bumble-tech/appyx/pull/592) – Fix Backstack3D Motion Controller
 
 ## 2.0.0-alpha04
 
