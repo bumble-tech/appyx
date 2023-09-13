@@ -2,7 +2,6 @@ package com.bumble.appyx.utils.interop.rx2.connectable
 
 import android.annotation.SuppressLint
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.lifecycle.subscribe
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observer
@@ -32,7 +31,7 @@ class NodeConnector<Input: Any, Output: Any>(
     }
 
     override fun onCreate(lifecycle: Lifecycle) {
-        lifecycle.subscribe(onCreate = { flushOutputCache() })
+        flushOutputCache()
     }
 
     private val cacheSubscription = intake.subscribe {
