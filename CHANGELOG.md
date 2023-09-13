@@ -15,6 +15,7 @@
 - [#587](https://github.com/bumble-tech/appyx/pull/587) – Fix `DraggableChildren` and rename it to `AppyxComponent`
 - [#588](https://github.com/bumble-tech/appyx/pull/588) – Set bounds on all new motion controllers
 - [#589](https://github.com/bumble-tech/appyx/pull/589) – Fix visibility resolution for elements that do not match parent's size
+- [#591](https://github.com/bumble-tech/appyx/pull/591) – Flush output cache when onCreate is called in NodeConnector
 
 
 ## 2.0.0-alpha04
