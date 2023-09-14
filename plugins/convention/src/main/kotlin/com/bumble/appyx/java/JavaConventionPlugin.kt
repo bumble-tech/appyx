@@ -1,5 +1,6 @@
 package com.bumble.appyx.java
 
+import com.bumble.appyx.configureKotlinPlugin
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -13,6 +14,8 @@ class JavaConventionPlugin : Plugin<Project> {
         project.plugins.apply("java-library")
         project.plugins.apply("kotlin")
         project.plugins.apply("appyx-detekt")
+
+        project.configureKotlinPlugin()
 
         project.extensions
             .configure<JavaPluginExtension> {

@@ -4,6 +4,7 @@ import com.android.build.api.dsl.CommonExtension
 import com.android.build.api.dsl.DefaultConfig
 import com.android.build.api.dsl.ManagedVirtualDevice
 import com.android.build.api.variant.AndroidComponentsExtension
+import com.bumble.appyx.configureKotlinPlugin
 import com.bumble.appyx.versionCatalog
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -27,6 +28,8 @@ internal inline fun <
     plugins.apply("kotlin-android")
     plugins.apply("appyx-lint")
     plugins.apply("appyx-detekt")
+
+    project.configureKotlinPlugin()
 
     val libs = project.versionCatalog
 
@@ -99,7 +102,7 @@ private fun <DefaultConfigT : DefaultConfig> CommonExtension<*, *, DefaultConfig
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 }
