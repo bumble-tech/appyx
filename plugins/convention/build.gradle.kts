@@ -26,10 +26,6 @@ gradlePlugin {
             id = "com.bumble.appyx.android.library"
             implementationClass = "com.bumble.appyx.android.library.AndroidLibraryConventionPlugin"
         }
-        create("com.bumble.appyx.java") {
-            id = "com.bumble.appyx.java"
-            implementationClass = "com.bumble.appyx.java.JavaConventionPlugin"
-        }
         create("com.bumble.appyx.multiplatform") {
             id = "com.bumble.appyx.multiplatform"
             implementationClass = "com.bumble.appyx.multiplatform.MultiplatformConventionPlugin"
