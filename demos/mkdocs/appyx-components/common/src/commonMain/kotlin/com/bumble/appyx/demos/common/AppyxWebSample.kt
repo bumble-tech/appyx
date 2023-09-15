@@ -133,7 +133,8 @@ fun <InteractionTarget : Any> ModalUi(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize(if (isChildMaxSize) 1f else 0.9f)
+            .fillMaxSize()
+            .padding(if (isChildMaxSize) 0.dp else 8.dp)
             .then(elementUiModel.modifier)
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {
