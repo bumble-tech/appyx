@@ -89,6 +89,7 @@ class BackStackParallax<InteractionTarget : Any>(
                 Gesture(
                     operation = Pop(),
                     completeAt = Offset(x = transitionBounds.widthPx.toFloat(), y = 0f),
+                    isContinuous = false
                 )
             } else {
                 Gesture.Noop()

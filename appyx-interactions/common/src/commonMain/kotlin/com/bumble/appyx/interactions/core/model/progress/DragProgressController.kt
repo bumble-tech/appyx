@@ -97,19 +97,25 @@ internal class DragProgressController<InteractionTarget : Any, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 model.setProgress(totalTarget)
-                val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
-                AppyxLogger.d(
-                    TAG,
-                    "delta applied forward, new progress: $currentProgress"
-                )
+                val currentProgress =
+                    if (currentState is Keyframes<*>) currentState.progress else 0f
+                AppyxLogger.d(TAG, "delta applied forward, new progress: $currentProgress")
 
                 // Case: target is beyond the current segment, we'll need a new operation
             } else {
                 // TODO without recursion
-                val remainder =
-                    consumePartial(COMPLETE, dragAmount, totalTarget, deltaProgress, startProgress + 1)
-                if (remainder.getDistanceSquared() > 0) {
-                    consumeDrag(remainder)
+                if (gesture!!.isContinuous) {
+                    val remainder =
+                        consumePartial(
+                            direction = COMPLETE,
+                            dragAmount = dragAmount,
+                            totalTarget = totalTarget,
+                            deltaProgress = deltaProgress,
+                            boundary = startProgress + 1
+                        )
+                    if (remainder.getDistanceSquared() > 0) {
+                        consumeDrag(remainder)
+                    }
                 }
             }
 
@@ -117,9 +123,18 @@ internal class DragProgressController<InteractionTarget : Any, State>(
             // now we need to re-evaluate for a new operation
         } else {
             // TODO without recursion
-            val remainder = consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
-            if (dragAmount != remainder) {
-                consumeDrag(remainder)
+            if (gesture!!.isContinuous) {
+                val remainder =
+                    consumePartial(
+                        direction = REVERT,
+                        dragAmount = dragAmount,
+                        totalTarget = totalTarget,
+                        deltaProgress = deltaProgress,
+                        boundary = startProgress
+                    )
+                if (dragAmount != remainder) {
+                    consumeDrag(remainder)
+                }
             }
         }
     }

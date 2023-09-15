@@ -99,7 +99,8 @@ class BackStack3D<InteractionTarget : Any>(
             return if (dragVerticalDirection(delta) == Drag.VerticalDirection.DOWN) {
                 Gesture(
                     operation = Pop(),
-                    completeAt = Offset(x = 0f, y = heightInPx)
+                    completeAt = Offset(x = 0f, y = heightInPx),
+                    isContinuous = false
                 )
             } else {
                 Gesture.Noop()
