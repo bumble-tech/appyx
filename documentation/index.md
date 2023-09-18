@@ -8,7 +8,7 @@ title: Appyx – Overview
 ![badge-jvm](https://img.shields.io/badge/platform-jvm-orange)
 ![badge-macos](https://img.shields.io/badge/platform-macos-purple)
 ![badge-js](https://img.shields.io/badge/platform-js-yellow)
-![badge-ios](https://img.shields.io/badge/platform-🔄ios🔄-lightgray)
+![badge-ios](https://img.shields.io/badge/platform-ios-lightgray)
 
 Model-driven navigation + UI components with gesture control for Compose Multiplatform.
 

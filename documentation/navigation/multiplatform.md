@@ -10,12 +10,7 @@ title: Appyx Navigation – Multiplatform
 ![badge-jvm](https://img.shields.io/badge/platform-jvm-orange)
 ![badge-macos](https://img.shields.io/badge/platform-macos-purple)
 ![badge-js](https://img.shields.io/badge/platform-js-yellow)
-
-In progress:
-
 ![badge-ios](https://img.shields.io/badge/platform-ios-lightgray)
-
-
 
 ## Lifecycle
 
@@ -183,6 +178,26 @@ fun main() {
 
 ```
 
+### iOS
+
+```kotlin
+val backEvents: Channel<Unit> = Channel()
+
+fun MainViewController() = ComposeUIViewController {
+    YourAppTheme {
+        IOSNodeHost(
+            modifier = Modifier,
+            onBackPressedEvents = backEvents.receiveAsFlow()
+        ) {
+            RootNode(
+                buildContext = it
+            )
+        }
+    }
+}
+
+```
+
 ## Back handling
 
 On Android back events are handled automatically.
@@ -208,4 +223,5 @@ private fun onKeyEvent(
         else -> false
     }
 ``` 
+For [iOS](#ios), you can send an event to the `backEvents` Channel to perform the standard back action as on other platforms.
 
