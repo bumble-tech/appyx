@@ -153,7 +153,7 @@ class MutableUiStateProcessor(
         }
 
     private fun generateModifierProperty(params: List<ParameterSpec>) =
-        PropertySpec.builder(PROPERTY_MODIFIER, Modifier::class, KModifier.OVERRIDE)
+        PropertySpec.builder(COMBINED_MOTION_PROPERTY_MODIFIER, Modifier::class, KModifier.OVERRIDE)
             .initializer(
                 with(CodeBlock.builder()) {
                     addStatement("Modifier")
@@ -307,7 +307,7 @@ class MutableUiStateProcessor(
         const val PARAM_END = "end"
         const val PARAM_FRACTION = "fraction"
 
-        const val PROPERTY_MODIFIER = "modifier"
+        const val COMBINED_MOTION_PROPERTY_MODIFIER = "combinedMotionPropertyModifier"
 
         const val FUNCTION_ANIMATE_TO = "animateTo"
         const val FUNCTION_SNAP_TO = "snapTo"

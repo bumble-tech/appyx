@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.demos.common.InteractionTarget.Element
-import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -85,7 +85,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
                     }
                 )
             ) {
-                DraggableAppyxComponent(
+                AppyxComponent(
                     appyxComponent = appyxComponent,
                     screenWidthPx = screenWidthPx,
                     screenHeightPx = screenHeightPx,
@@ -133,7 +133,8 @@ fun <InteractionTarget : Any> ModalUi(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize(if (isChildMaxSize) 1f else 0.9f)
+            .fillMaxSize()
+            .padding(if (isChildMaxSize) 0.dp else 8.dp)
             .then(elementUiModel.modifier)
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {

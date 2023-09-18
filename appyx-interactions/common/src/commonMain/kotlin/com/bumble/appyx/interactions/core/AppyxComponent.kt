@@ -2,9 +2,7 @@ package com.bumble.appyx.interactions.core
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -51,7 +49,7 @@ private val defaultExtraTouch = 48f.dp
 
 @Suppress("LongMethod")
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
+fun <InteractionTarget : Any, ModelState : Any> AppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     screenWidthPx: Int,
     screenHeightPx: Int,
@@ -129,8 +127,6 @@ fun <InteractionTarget : Any, ModelState : Any> DraggableAppyxComponent(
                                 elementUiModel.copy(
                                     modifier = Modifier
                                         .offset { elementOffset }
-                                        .width(with(density) { elementSize.width.toDp() })
-                                        .height(with(density) { elementSize.height.toDp() })
                                         .pointerInput(appyxComponent) {
                                             detectDragGesturesOrCancellation(
                                                 onDragStart = { position ->

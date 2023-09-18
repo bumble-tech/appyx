@@ -85,26 +85,6 @@ fun SomeComposable() {
 }
 ```
 
-You can also make use of the `DraggableAppyxComponent` composable, if you have components that allow gestures to control them:
-
-```kotlin
-@Composable
-fun SomeComposable() {
-    DraggableAppyxComponent(
-        modifier = Modifier,
-        screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
-        screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-        appyxComponent = yourComponent,
-        gestureValidator = permissiveValidator,
-    ) { elementUiModel ->
-        YourElementComposable(
-            elementUiModel = elementUiModel,
-            modifier = elementUiModel.modifier
-        )
-    }
-}
-```
-
 ## Interacting with the AppyxComponent
 
 How you use your model will depend on the specific component. However, typically, you will have a high level API to trigger changes, such as:
