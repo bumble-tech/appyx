@@ -103,39 +103,24 @@ internal class DragProgressController<InteractionTarget : Any, State>(
                 AppyxLogger.d(TAG, "delta applied forward, new progress: $currentProgress")
 
                 // Case: target is beyond the current segment, we'll need a new operation
-            } else {
+            } else if (isGestureContinuous) {
                 // TODO without recursion
-                if (isGestureContinuous) {
-                    val remainder =
-                        consumePartial(
-                            direction = COMPLETE,
-                            dragAmount = dragAmount,
-                            totalTarget = totalTarget,
-                            deltaProgress = deltaProgress,
-                            boundary = startProgress + 1
-                        )
-                    if (remainder.getDistanceSquared() > 0) {
-                        consumeDrag(remainder)
-                    }
+
+                val remainder =
+                    consumePartial(COMPLETE, dragAmount, totalTarget, deltaProgress, startProgress + 1)
+                if (remainder.getDistanceSquared() > 0) {
+                    consumeDrag(remainder)
                 }
             }
 
             // Case: we went back to or beyond the start,
             // now we need to re-evaluate for a new operation
-        } else {
+        } else if (isGestureContinuous) {
             // TODO without recursion
-            if (isGestureContinuous) {
-                val remainder =
-                    consumePartial(
-                        direction = REVERT,
-                        dragAmount = dragAmount,
-                        totalTarget = totalTarget,
-                        deltaProgress = deltaProgress,
-                        boundary = startProgress
-                    )
-                if (dragAmount != remainder) {
-                    consumeDrag(remainder)
-                }
+            val remainder =
+                consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
+            if (dragAmount != remainder) {
+                consumeDrag(remainder)
             }
         }
     }
