@@ -56,6 +56,8 @@ class Puzzle15MotionController(
         bounds: TransitionBounds,
     ) : GestureFactory<Tile, Puzzle15Model.State> {
 
+        override val isContinuous: Boolean = false
+
         private val cellSize: Float = bounds.widthPx / 4f
 
         override fun createGesture(
@@ -67,25 +69,21 @@ class Puzzle15MotionController(
                 Drag.Direction4.UP -> Gesture(
                     operation = Swap(Swap.Direction.DOWN),
                     completeAt = Offset(0f, -cellSize),
-                    isContinuous = false
                 )
 
                 Drag.Direction4.LEFT -> Gesture(
                     operation = Swap(Swap.Direction.RIGHT),
                     completeAt = Offset(-cellSize, 0f),
-                    isContinuous = false
                 )
 
                 Drag.Direction4.RIGHT -> Gesture(
                     operation = Swap(Swap.Direction.LEFT),
                     completeAt = Offset(cellSize, 0f),
-                    isContinuous = false
                 )
 
                 Drag.Direction4.DOWN -> Gesture(
                     operation = Swap(Swap.Direction.UP),
                     completeAt = Offset(0f, cellSize),
-                    isContinuous = false
                 )
 
             }

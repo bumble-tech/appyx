@@ -79,6 +79,8 @@ class BackStackParallax<InteractionTarget : Any>(
         private val transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
 
+        override val isContinuous: Boolean = false
+
         override fun createGesture(
             state: State<InteractionTarget>,
             delta: Offset,
@@ -89,7 +91,6 @@ class BackStackParallax<InteractionTarget : Any>(
                 Gesture(
                     operation = Pop(),
                     completeAt = Offset(x = transitionBounds.widthPx.toFloat(), y = 0f),
-                    isContinuous = false
                 )
             } else {
                 Gesture.Noop()

@@ -90,6 +90,7 @@ internal class DragProgressController<InteractionTarget : Any, State>(
         }
 
         val startProgress = gesture!!.startProgress!!
+        val isGestureContinuous = gestureFactory().isContinuous
 
         // Case: we go forward, it's cool
         if (totalTarget > startProgress) {
@@ -104,7 +105,7 @@ internal class DragProgressController<InteractionTarget : Any, State>(
                 // Case: target is beyond the current segment, we'll need a new operation
             } else {
                 // TODO without recursion
-                if (gesture!!.isContinuous) {
+                if (isGestureContinuous) {
                     val remainder =
                         consumePartial(
                             direction = COMPLETE,
@@ -123,7 +124,7 @@ internal class DragProgressController<InteractionTarget : Any, State>(
             // now we need to re-evaluate for a new operation
         } else {
             // TODO without recursion
-            if (gesture!!.isContinuous) {
+            if (isGestureContinuous) {
                 val remainder =
                     consumePartial(
                         direction = REVERT,
