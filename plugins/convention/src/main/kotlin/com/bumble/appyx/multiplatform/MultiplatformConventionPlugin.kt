@@ -1,6 +1,7 @@
 package com.bumble.appyx.multiplatform
 
 import com.android.build.api.variant.LibraryAndroidComponentsExtension
+import com.bumble.appyx.configureKotlinPlugin
 import com.bumble.appyx.versionCatalog
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
 import org.gradle.api.GradleException
@@ -20,6 +21,8 @@ class MultiplatformConventionPlugin : Plugin<Project> {
 
         project.plugins.apply("kotlin-multiplatform")
         project.plugins.apply("appyx-detekt")
+
+        project.configureKotlinPlugin()
 
         project.extensions.configure<DetektExtension> {
             source.setFrom(
@@ -55,12 +58,13 @@ class MultiplatformConventionPlugin : Plugin<Project> {
 
                         defaultConfig {
                             minSdk = libs.findVersion("androidMinSdk").get().displayName.toInt()
-                            targetSdk = libs.findVersion("androidTargetSdk").get().displayName.toInt()
+                            targetSdk =
+                                libs.findVersion("androidTargetSdk").get().displayName.toInt()
                         }
 
                         compileOptions {
-                            sourceCompatibility = JavaVersion.VERSION_17
-                            targetCompatibility = JavaVersion.VERSION_17
+                            sourceCompatibility = JavaVersion.VERSION_11
+                            targetCompatibility = JavaVersion.VERSION_11
                         }
                     }
                 }

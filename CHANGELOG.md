@@ -4,6 +4,17 @@
 
 -
 
+## 2.0.0-alpha06
+
+### Changed
+
+- [#594](https://github.com/bumble-tech/appyx/pull/594) Reverted JVM bytecode target to JDK11 instead of 17
+
+
+<div style="text-align: center"><small>15 Sep 2023</small></div>
+
+---
+
 ## 2.0.0-alpha05
 
 ### Added
