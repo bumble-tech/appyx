@@ -127,8 +127,10 @@ class Gestures<InteractionTarget> : GestureFactory<InteractionTarget, SomeModel.
 }
 ```
 
-`GestureFactory` implementations are usually nested in a specific UI representation. This makes sense since driving a model with gestures usually results in a natural UX if the gestures are in sync with what happens in the UI. However, it's not a requirement – you could use different gestures than the default one for the UI representation. 
+`GestureFactory` implementations are usually nested in a specific UI representation. This makes sense since driving a model with gestures usually results in a natural UX if the gestures are in sync with what happens in the UI. However, it's not a requirement – you could use different gestures than the default one for the UI representation.
 
+`GestureFactory` contains a Boolean field called `isContinuous` that indicates if during a drag gesture this operation completes but there's still offset to process a new gesture will be created that handles the remaining amount.
+This defaults to `true` however it can be overridden and changed as needed.
 
 ## Choosing an operation
 
