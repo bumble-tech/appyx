@@ -3,7 +3,7 @@
 [versions]
 accompanist = "0.28.0"
 agp = "8.1.1"
-androidCompileSdk = "33"
+androidCompileSdk = "34"
 androidMinSdk = "21"
 androidTargetSdk = "32"
 androidx-lifecycle = "2.6.1"
