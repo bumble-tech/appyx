@@ -12,7 +12,11 @@ internal class AndroidAppyxPublishPlugin : ProjectPlugin() {
             publishing {
                 singleVariant(getComponentName()) {
                     withSourcesJar()
-                    withJavadocJar()
+                    /**
+                     * Currently not working with Multiplatform plugin and AGP 8+
+                     * https://github.com/bumble-tech/appyx/issues/582
+                     */
+                    // withJavadocJar()
                 }
             }
         }

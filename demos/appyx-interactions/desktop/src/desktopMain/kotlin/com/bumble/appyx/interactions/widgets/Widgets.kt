@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.interactions.widgets
 
 import androidx.compose.animation.core.Spring
@@ -18,7 +19,7 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.Events
-import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -93,7 +94,7 @@ private fun WidgetsUi(
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
 ) {
-    DraggableAppyxComponent(
+    AppyxComponent(
         clipToBounds = false,
         appyxComponent = spotlight,
         modifier = modifier
@@ -110,7 +111,7 @@ private fun WidgetsUi(
                     .fillMaxWidth()
                     .requiredHeight(240.dp)
             )
-        }
+        },
     )
 }
 

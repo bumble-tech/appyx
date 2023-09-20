@@ -2,7 +2,11 @@ package com.bumble.appyx.interactions.core.ui.state
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.requiredSize
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
@@ -11,7 +15,14 @@ import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.combineState
+import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import kotlinx.coroutines.CoroutineScope
@@ -24,23 +35,33 @@ import kotlinx.coroutines.flow.update
 abstract class BaseMutableUiState<TargetUiState>(
     val uiContext: UiContext,
     val motionProperties: List<MotionProperty<*, *>>
-) {
+) : TransitionBoundsAware {
 
-    private val containerRect = Rect(
+    private var containerRect = Rect(
         offset = Offset.Zero,
         size = Size(
-            width = uiContext.transitionBounds.widthPx.toFloat(),
-            height = uiContext.transitionBounds.heightPx.toFloat()
+            width = 0f,
+            height = 0f
         )
     )
 
-    abstract val modifier: Modifier
+    val modifier
+        get() = combinedMotionPropertyModifier
+            .then(sizeChangedModifier)
+
+    protected abstract val combinedMotionPropertyModifier: Modifier
+
+    private val sizeChangedModifier: Modifier = Modifier
+        .onSizeChanged { size ->
+            this.size.update { size }
+        }
 
     private val _isBoundsVisible = MutableStateFlow(false)
     private val visibilitySources: Iterable<StateFlow<Boolean>> =
         motionProperties.mapNotNull { it.isVisibleFlow } + _isBoundsVisible
 
-    @Suppress("unused")
+    protected val size = MutableStateFlow(IntSize.Zero)
+
     val isVisible: StateFlow<Boolean> = combineState(
         visibilitySources,
         uiContext.coroutineScope
@@ -49,21 +70,32 @@ abstract class BaseMutableUiState<TargetUiState>(
     }
 
     /**
-     * This modifier duplicates original modifier, and will be placed on the dummy compose view
-     * to calculate bounds relative to parent and eventually update bounds visibility relative
-     * to parent's bounds. Because it's responsible only for calculating element's bounds it ensures
-     * that it's invisible by setting alpha as 0f. Additionally, it makes sure that it occupies all
-     * available space by applying fillMaxSize().
+     * This modifier duplicates original modifier, and will be placed on the dummy compose view with
+     * the same size as original composable to calculate bounds relative to parent, and eventually update
+     * bounds visibility relative to parent's bounds. Because it's responsible only for calculating
+     * element's bounds it ensures that it's invisible by setting alpha as 0f.
      */
-    @Suppress("unused")
     val visibilityModifier: Modifier
         get() = Modifier
             .graphicsLayer {
                 // Making sure that this modifier is invisible
                 alpha = 0f
             }
-            .then(modifier)
-            .fillMaxSize()
+            .then(combinedMotionPropertyModifier)
+            .composed {
+                val size by size.collectAsState()
+                if (size != IntSize.Zero) {
+                    val localDensity = LocalDensity.current.density
+                    requiredSize(
+                        DpSize(
+                            (size.width / localDensity).dp,
+                            (size.height / localDensity).dp
+                        )
+                    )
+                } else {
+                    fillMaxSize()
+                }
+            }
             .onGloballyPositioned { coordinates ->
                 if (uiContext.clipToBounds) {
                     _isBoundsVisible.update {
@@ -75,6 +107,16 @@ abstract class BaseMutableUiState<TargetUiState>(
                     }
                 }
             }
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        containerRect = Rect(
+            offset = Offset.Zero,
+            size = Size(
+                width = transitionBounds.widthPx.toFloat(),
+                height = transitionBounds.heightPx.toFloat()
+            )
+        )
+    }
 
     private fun LayoutCoordinates.isVisibleInParent(): Boolean {
         val boundsInParent = this.boundsInParent()

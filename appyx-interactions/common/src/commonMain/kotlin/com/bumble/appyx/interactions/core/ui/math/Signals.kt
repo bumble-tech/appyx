@@ -55,6 +55,7 @@ fun clamp(x: Float, min: Float, max: Float): Float =
  * Based on the OpenGL Shading Language smoothstep function.
  * https://registry.khronos.org/OpenGL-Refpages/gl4/html/smoothstep.xhtml
  */
+@Suppress("MagicNumber")
 fun smoothstep(edge0: Float, edge1: Float, x: Float): Float =
     clamp((x - edge0) / (edge1 - edge0), 0f, 1f).run {
         this * this * (3f - 2f * this)

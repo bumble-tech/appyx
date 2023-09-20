@@ -51,7 +51,7 @@ suspend fun PointerInputScope.detectDragGesturesOrCancellation(
     }
 }
 
-
+@Suppress("ReturnCount")
 private suspend fun AwaitPointerEventScope.drag(
     pointerId: PointerId,
     onDrag: (PointerInputChange) -> Boolean

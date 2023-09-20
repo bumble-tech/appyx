@@ -1,12 +1,16 @@
-# Appyx
+---
+title: Appyx – 2.x Migration guide
+---
+
+# Appyx – Migration guide
 
 
-## 2.x vs 1.x project organisation
+## Project organisation
 
-### Appyx 1.0
+### 1.x
 Packaged as a single library, implementing Model-driven navigation with transitions together.
 
-### Appyx 2.0
+### 2.x
 The library is packaged as multiple artifacts.
 
 #### :appyx-navigation
@@ -15,28 +19,31 @@ The library is packaged as multiple artifacts.
 - Cares about the Node structure & Android-related functionality
 - Uses `:appyx-interactions` as a dependency to implement navigation using gestures and transitions
 - Android library
-- Compose multiplatform implementation is in progress, to be merged soon
+- Compose Multiplatform. 
+
+Check also [Multiplatform](../navigation/multiplatform.md) documentation and the `:demos:appyx-navigation` module for code examples.
 
 #### :appyx-interactions
 
 - Gesture-driven, state-based motion kit & transition engine
 - Does not contain Node-related functionality → moved to `:appyx-navigation`
 - Does not contain Android-specific functionality → moved to `:appyx-navigation`
-- Compose multiplatform
+- Compose Multiplatform
    
 #### :appyx-components
 
 - Pre-packaged components to use with `:appyx-navigation`
-- Compose multiplatform
+- Compose Multiplatform
  
 
-## 1.x ~ 2.x rough equivalents
+## Rough equivalents
 
-- `NavModel` -> `AppyxComponent`
-- `TransitionHandler` -> `MotionController`
+- 1.x → 2.x
+- `NavModel` → `AppyxComponent`
+- `TransitionHandler` → `MotionController`
 
 
-## 1.x → 2.x Migration guide
+## Migration guide
 
 ### Gradle
 
@@ -47,10 +54,10 @@ The library is packaged as multiple artifacts.
 Note that [BackStack](../components/backstack.md) and [Spotlight](../components/spotlight.md) are now standalone artifacts. Check your usage, you might only need `backstack`:
 
 ```diff
--    implementation("com.bumble.appyx:core:1.x.x")
-+    implementation("com.bumble.appyx:appyx-navigation:2.0.0-alpha01")
-+    implementation("com.bumble.appyx:backstack-android:2.0.0-alpha01")
-+    implementation("com.bumble.appyx:spotlight-android:2.0.0-alpha01")
+-implementation("com.bumble.appyx:core:1.x.x")
++implementation("com.bumble.appyx:appyx-navigation:2.0.0-alpha01")
++implementation("com.bumble.appyx:backstack-android:2.0.0-alpha01")
++implementation("com.bumble.appyx:spotlight-android:2.0.0-alpha01")
 ```
 
 
@@ -60,15 +67,15 @@ Note that [BackStack](../components/backstack.md) and [Spotlight](../components/
 Artifacts have a `utils-` prefix:
 
 ```diff
--"com.bumble.appyx:testing-ui"
--"com.bumble.appyx:testing-unit-common"
--"com.bumble.appyx:testing-junit4"
--"com.bumble.appyx:testing-junit5"
+-implementation("com.bumble.appyx:testing-ui")
+-implementation("com.bumble.appyx:testing-unit-common")
+-implementation("com.bumble.appyx:testing-junit4")
+-implementation("com.bumble.appyx:testing-junit5")
 
-+"com.bumble.appyx:utils-testing-ui"
-+"com.bumble.appyx:utils-testing-unit-common"
-+"com.bumble.appyx:utils-testing-junit4"
-+"com.bumble.appyx:utils-testing-junit5"
++implementation("com.bumble.appyx:utils-testing-ui")
++implementation("com.bumble.appyx:utils-testing-unit-common")
++implementation("com.bumble.appyx:utils-testing-junit4")
++implementation("com.bumble.appyx:utils-testing-junit5")
 ```
 
 
@@ -115,7 +122,7 @@ Artifacts have a `utils-` prefix:
 
 class RootNode(
     buildContext: BuildContext,
-         private val backStack: BackStack<NavTarget> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
 -        initialElement = Child1,
 -        savedStateMap = buildContext.savedStateMap
 +        model = BackStackModel(

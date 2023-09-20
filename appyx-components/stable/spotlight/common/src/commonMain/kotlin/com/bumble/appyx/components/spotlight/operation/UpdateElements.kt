@@ -7,12 +7,12 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.C
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.Position
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 import kotlin.math.max
 
 @Parcelize
@@ -26,7 +26,9 @@ class UpdateElements<InteractionTarget : Any>(
     override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> {
+    override fun createFromState(
+        baseLineState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> {
         val positions = baseLineState.positions
         val newSize = max(positions.size, items.size)
         val newPositions = ArrayList<Position<InteractionTarget>>(newSize)
@@ -44,7 +46,9 @@ class UpdateElements<InteractionTarget : Any>(
         return baseLineState.copy(positions = newPositions)
     }
 
-    override fun createTargetState(fromState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         fromState.copy(
             positions = fromState.positions.map { position ->
                 position.copy(

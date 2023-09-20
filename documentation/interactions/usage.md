@@ -1,3 +1,7 @@
+---
+title: Appyx Interactions – Using components
+---
+
 # Appyx Interactions – Using components
 
 ## Overview
@@ -78,26 +82,6 @@ fun SomeComposable() {
             )
         }
     )
-}
-```
-
-You can also make use of the `DraggableAppyxComponent` composable, if you have components that allow gestures to control them:
-
-```kotlin
-@Composable
-fun SomeComposable() {
-    DraggableChildren(
-        modifier = Modifier,
-        screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
-        screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-        appyxComponent = yourComponent,
-        gestureValidator = permissiveValidator,
-    ) { elementUiModel ->
-        YourElementComposable(
-            elementUiModel = elementUiModel,
-            modifier = elementUiModel.modifier
-        )
-    }
 }
 ```
 

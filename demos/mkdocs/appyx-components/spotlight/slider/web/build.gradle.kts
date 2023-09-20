@@ -1,11 +1,12 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
     id("com.google.devtools.ksp")
 }
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-components-spotlight-slider-web"
         browser()
         binaries.executable()
     }

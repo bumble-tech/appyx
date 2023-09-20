@@ -1,4 +1,0 @@
-style:
-  MagicNumber:
-    # Magic numbers are okay for sample apps.
-    active: false

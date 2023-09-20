@@ -2,10 +2,10 @@ package com.bumble.appyx.interactions.core
 
 
 import androidx.compose.runtime.Immutable
-import com.bumble.appyx.interactions.Parcelable
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.UUID
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 @Parcelize
 @Immutable

@@ -1,10 +1,11 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
 }
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-components-experimental-puzzle15-web"
         browser()
         binaries.executable()
     }

@@ -1,13 +1,13 @@
 package com.bumble.appyx.components.backstack
 
 import com.bumble.appyx.components.backstack.BackStackModel.State
-import com.bumble.appyx.interactions.Parcelable
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.Elements
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class BackStackModel<InteractionTarget : Any>(
     initialTargets: List<InteractionTarget>,
@@ -46,13 +46,16 @@ class BackStackModel<InteractionTarget : Any>(
         initialTargets = listOf(initialTarget),
         savedStateMap = savedStateMap
     )
+
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         (created + active + stashed + destroyed).toSet()
 
     override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
         destroyed.toSet()
 
-    override fun State<InteractionTarget>.removeDestroyedElement(element: Element<InteractionTarget>): State<InteractionTarget> =
+    override fun State<InteractionTarget>.removeDestroyedElement(
+        element: Element<InteractionTarget>
+    ): State<InteractionTarget> =
         copy(destroyed = destroyed.filterNot { it == element })
 
     override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =

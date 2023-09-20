@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.interactions
 
 import androidx.compose.foundation.background
@@ -86,8 +87,8 @@ fun main() = application {
 @Composable
 private fun FrameWindowScope.TitleBar(
     text: String,
-    color: Color = Color(0.9f, 0.9f, 0.9f),
     modifier: Modifier = Modifier,
+    color: Color = Color(0.9f, 0.9f, 0.9f),
 ) {
     WindowDraggableArea(
         modifier = modifier

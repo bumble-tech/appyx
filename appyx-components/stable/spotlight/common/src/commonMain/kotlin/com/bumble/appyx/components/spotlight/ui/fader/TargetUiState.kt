@@ -17,6 +17,6 @@ class TargetUiState(
     ): MutableUiState =
         MutableUiState(
             uiContext = uiContext,
-            alpha = Alpha(uiContext, alpha),
+            alpha = Alpha(uiContext.coroutineScope, alpha),
         )
 }

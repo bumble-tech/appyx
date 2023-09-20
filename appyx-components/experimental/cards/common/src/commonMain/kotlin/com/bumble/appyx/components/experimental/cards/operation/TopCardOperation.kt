@@ -5,7 +5,9 @@ import com.bumble.appyx.components.experimental.cards.CardsModel
 
 abstract class TopCardOperation<InteractionTarget> : BaseOperation<CardsModel.State<InteractionTarget>>() {
 
-    override fun createFromState(baseLineState: CardsModel.State<InteractionTarget>): CardsModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: CardsModel.State<InteractionTarget>
+    ): CardsModel.State<InteractionTarget> =
         baseLineState
 
     override fun isApplicable(state: CardsModel.State<InteractionTarget>): Boolean =

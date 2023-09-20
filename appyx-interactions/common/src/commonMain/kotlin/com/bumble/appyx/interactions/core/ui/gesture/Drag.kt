@@ -22,6 +22,7 @@ interface Drag {
         UP, UPRIGHT, RIGHT, DOWNRIGHT, DOWN, DOWNLEFT, LEFT, UPLEFT
     }
 
+    @Suppress("MagicNumber")
     enum class ClockDirection(val digit: Int) {
         Clock1(1),
         Clock2(2),
@@ -72,6 +73,7 @@ fun dragDirection4(delta: Offset) =
 /**
  * The dominant direction of the drag of 8 possible directions
  */
+@Suppress("MagicNumber")
 fun dragDirection8(delta: Offset): Drag.Direction8 {
     val angle = dragAngleDegrees(delta)
     return when {
@@ -90,6 +92,7 @@ fun dragDirection8(delta: Offset): Drag.Direction8 {
 /**
  * The drag direction interpreted on the clock
  */
+@Suppress("MagicNumber")
 fun dragClockDirection(delta: Offset): Drag.ClockDirection {
     val angle = dragAngleDegrees(delta)
     return when {

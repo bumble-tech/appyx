@@ -9,21 +9,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor.Target
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import androidx.compose.ui.graphics.lerp as lerpColor
 
 class BackgroundColor(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     target: Target,
     displacement: StateFlow<Color> = MutableStateFlow(Color.Unspecified),
     visibilityThreshold: Color = Color(1, 1, 1, 1),
 ) : MotionProperty<Color, AnimationVector4D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value, Color.VectorConverter(target.value.colorSpace)),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,

@@ -1,6 +1,10 @@
+---
+title: Appyx Navigation – Quick start guide
+---
+
 # Quick start guide
 
-You can check out [App structure](apps/structure.md), which explains the concepts you'll encounter in this guide.
+You can check out [Composable navigation](concepts/composable-navigation.md), which explains the concepts you'll encounter in this guide.
 
 
 ## The scope of this guide
@@ -35,36 +39,18 @@ class RootNode(
 }
 ```
 
-Since this is the root of your tree, you'll also need to plug it in to your Activity, so that system events (lifecycle, back press, etc.) reach your components in the tree.
+## 3. Connect to your platform
 
-```kotlin
-// Please note we are extending NodeActivity
-class MainActivity : NodeActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            AppTheme {
-                NodeHost(integrationPoint = appyxIntegrationPoint) {
-                    RootNode(buildContext = it)
-                }
-            }
-        }
-    }
-}
-```
-
-You only need to do this for the root of the tree.
+Plug your root node into your platform: [Multiplatform | Node hosts](multiplatform.md#node-hosts).
 
 
-## 3. Define children
+## 4. Define children
 
 A single leaf node isn't all that interesting. Let's add some children to the root!
 
 First, let's define the possible set of children using a sealed class. We'll refer them via these navigation targets:
 
 ```kotlin
-
 /**
  * You can create this class inside the body of RootNode
  * 
@@ -82,6 +68,8 @@ sealed class NavTarget : Parcelable {
     object Child3 : NavTarget()
 }
 ```
+
+Note: [Parcelable, Parcelize](multiplatform.md#parcelable-parcelize-rawvalue) are multiplatform.
 
 Next, let's modify `RootNode` so it extends `ParentNode`:
 
@@ -107,7 +95,7 @@ override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
 
 Great! With this mapping created, we can now just refer to children using the sealed class elements, and Appyx will be able to relate them to other nodes.
 
-## 4. Add a back stack
+## 5. Add a back stack
 
 The project wouldn't compile just yet. `ParentNode` expects us to pass an instance of an `AppyxComponent` – the main control structure in any case when we want to add children. No need to worry now – for simplicity, let's just go with a simple `BackStack` implementation here:
 
@@ -167,7 +155,7 @@ override fun View(modifier: Modifier) {
 }
 ```
 
-## 5. Transitions
+## 6. Transitions
 
 Adding sliding transitions instead of the default cross-fade is as simple as changing this:
 
@@ -183,11 +171,11 @@ motionController = { BackStackSlider(it) }
 
 Need something more custom?
 
-1. You can check out some other visualisations in the [Back stack documentation](../components/backstack.md), or [create your own](../interactions/uirepresentation.md).
+1. You can check out some other visualisations in the [Back stack documentation](../components/backstack.md), or [create your own](../interactions/ui-representation.md).
 2. Instead of a back stack, you can also find other [Components](../components/index.md) in the library, or you can [create your own](../interactions/appyxcomponent.md).
 
 
-## 6. Proper child nodes  
+## 7. Proper child nodes  
 
 As a last step, let's replace at least one of the child placeholders with another proper node.
 
@@ -231,5 +219,5 @@ You can repeat the same pattern and make any embedded children also a `ParentNod
 
 ## Further reading
 
-- Check out [Model-driven navigation](navigation/model-driven-navigation.md) how to take your navigation to the next level
-- You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [Plugins](apps/plugins.md).
+- Check out [Model-driven navigation](concepts/model-driven-navigation.md) how to take your navigation to the next level
+- You can (and probably should) also extract local business logic, the view, any any other components into separate classes and [Plugins](features/plugins.md).

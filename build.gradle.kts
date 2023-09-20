@@ -22,8 +22,6 @@ plugins {
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
     id("org.jetbrains.compose") version libs.versions.composePlugin.get() apply false
     id("org.jetbrains.kotlin.android") version libs.versions.kotlin.get() apply false
-    id("release-dependencies-diff-compare")
-    id("release-dependencies-diff-create") apply false
 }
 
 dependencyAnalysis {
@@ -42,7 +40,10 @@ dependencyAnalysis {
 
                     // This is used to add the testing activity to the debug manifest
                     // However since not code is referenced, it is raised as unused.
-                    ":utils:testing-ui-activity"
+                    ":utils:testing-ui-activity",
+
+                    // Convenience for convention plugins to avoid needing to define this.
+                    "org.junit.jupiter:junit-jupiter-api"
                 )
             }
         }
@@ -73,8 +74,30 @@ allprojects {
     }
 }
 
+val buildNonMkdocsTask = tasks.register("buildNonMkdocs")
+val jsBrowserDistributionMkdocsTask = tasks.register("jsBrowserDistributionMkdocs")
+
 subprojects {
-    plugins.apply("release-dependencies-diff-create")
+    // Allows avoiding building these modules as part of CI as they are also built for mkdocs.
+    if (!path.startsWith(":demos:mkdocs:")) {
+        plugins.withId("com.android.application") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+        plugins.withId("com.android.library") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+        plugins.withId("org.jetbrains.kotlin.multiplatform") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+        plugins.withId("java-library") {
+            buildNonMkdocsTask.configure { dependsOn(tasks.named("build")) }
+        }
+    } else {
+        plugins.withId("org.jetbrains.kotlin.multiplatform") {
+            jsBrowserDistributionMkdocsTask
+                .configure { dependsOn(tasks.named("jsBrowserDistribution")) }
+        }
+    }
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
@@ -90,6 +113,18 @@ subprojects {
                     "plugin:androidx.compose.compiler.plugins.kotlin:metricsDestination=" +
                             File(project.buildDir, "compose_metrics").absolutePath
                 )
+            }
+        }
+    }
+
+    afterEvaluate {
+        // Ensure that all project modules use convention plugins
+        if (childProjects.isEmpty()) {
+            if (!pluginManager.hasPlugin("com.bumble.appyx.android.application") &&
+                !pluginManager.hasPlugin("com.bumble.appyx.android.library") &&
+                !pluginManager.hasPlugin("com.bumble.appyx.multiplatform")
+            ) {
+                error("'$path' module must use a convention plugin")
             }
         }
     }

@@ -2,21 +2,18 @@ package com.bumble.appyx.interactions.sample
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
@@ -31,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
+import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -54,28 +52,28 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
     val density = LocalDensity.current
     val elementUiModels by appyxComponent.uiModels.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-    var uiContext by remember { mutableStateOf<UiContext?>(null) }
-    var boxScope: BoxScope? = null
 
-    LaunchedEffect(uiContext) {
-        uiContext?.let { appyxComponent.updateContext(it) }
+    SideEffect {
+        appyxComponent.updateContext(
+            UiContext(
+                coroutineScope = coroutineScope,
+                clipToBounds = clipToBounds
+            )
+        )
     }
     Box(
         modifier = modifier
             .fillMaxSize()
             .then(if (clipToBounds) Modifier.clipToBounds() else Modifier)
             .onPlaced {
-                uiContext = UiContext(
-                    coroutineScope = coroutineScope,
-                    transitionBounds = TransitionBounds(
+                appyxComponent.updateBounds(
+                    TransitionBounds(
                         density = density,
                         widthPx = it.size.width,
                         heightPx = it.size.height,
                         screenWidthPx = screenWidthPx,
                         screenHeightPx = screenHeightPx
-                    ),
-                    boxScope = boxScope!!,
-                    clipToBounds = clipToBounds
+                    )
                 )
             }
             .onPointerEvent {
@@ -84,21 +82,22 @@ fun <InteractionTarget : Any, ModelState : Any> Children(
                 }
             }
     ) {
-        boxScope = this
-        elementUiModels
-            .forEach { elementUiModel ->
-                key(elementUiModel.element.id) {
-                    elementUiModel.persistentContainer()
-                    val isVisible by elementUiModel.visibleState.collectAsState()
-                    if (isVisible) {
-                        CompositionLocalProvider(
-                            LocalMotionProperties provides elementUiModel.motionProperties
-                        ) {
-                            childWrapper.invoke(elementUiModel)
+        CompositionLocalProvider(LocalBoxScope provides this) {
+            elementUiModels
+                .forEach { elementUiModel ->
+                    key(elementUiModel.element.id) {
+                        elementUiModel.persistentContainer()
+                        val isVisible by elementUiModel.visibleState.collectAsState()
+                        if (isVisible) {
+                            CompositionLocalProvider(
+                                LocalMotionProperties provides elementUiModel.motionProperties
+                            ) {
+                                childWrapper.invoke(elementUiModel)
+                            }
                         }
                     }
                 }
-            }
+        }
     }
 }
 
@@ -121,11 +120,15 @@ fun ChildWrapper(
     }
 }
 
+@Suppress(
+    "MagicNumber",
+    "UnstableCollections" // colors is not an immutable list
+)
 @Composable
 fun SampleElement(
     elementUiModel: ElementUiModel<*>,
-    modifier: Modifier = Modifier.fillMaxSize(),
     colors: List<Color>,
+    modifier: Modifier = Modifier.fillMaxSize(),
     color: Color? = Color.Unspecified,
     contentDescription: String? = null
 ) {
