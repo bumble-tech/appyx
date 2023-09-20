@@ -1,103 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<issues format="6" by="lint 7.4.1" type="baseline" client="gradle" dependencies="false" name="AGP (7.4.1)" variant="all" version="7.4.1">
+<issues format="6" by="lint 7.1.3" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.3)" variant="all" version="7.1.3">
 
     <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="            .forEach { elementUiModel ->"
-        errorLine2="             ~~~~~~~">
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    fun ParentNode&lt;T>.children("
+        errorLine2="                      ~~~~~~~~">
         <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/composable/AppyxComponent.kt"
-            line="133"
-            column="14"/>
+            file="src/main/kotlin/com/bumble/appyx/core/composable/Children.kt"
+            line="90"
+            column="23"/>
     </issue>
 
     <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="            activeNodes.forEach { node ->"
-        errorLine2="                        ~~~~~~~">
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    fun ParentNode&lt;T>.children("
+        errorLine2="                      ~~~~~~~~">
         <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/children/ChildAwareCallbackInfo.kt"
-            line="35"
-            column="25"/>
+            file="src/main/kotlin/com/bumble/appyx/core/composable/Children.kt"
+            line="102"
+            column="23"/>
     </issue>
 
     <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="                        .forEach { entry -> entry.setState(Lifecycle.State.DESTROYED) }"
-        errorLine2="                         ~~~~~~~">
+        id="ComposableNaming"
+        message="Composable functions that return Unit should start with an uppercase letter"
+        errorLine1="    private fun ParentNode&lt;T>._children("
+        errorLine2="                              ~~~~~~~~~">
         <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/lifecycle/ChildNodeLifecycleManager.kt"
-            line="61"
-            column="26"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="                    screenState.onScreen.forEach { key ->"
-        errorLine2="                                         ~~~~~~~">
-        <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/lifecycle/ChildNodeLifecycleManager.kt"
-            line="64"
-            column="42"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="                    screenState.offScreen.forEach { key ->"
-        errorLine2="                                          ~~~~~~~">
-        <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/lifecycle/ChildNodeLifecycleManager.kt"
-            line="69"
-            column="43"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="        plugins&lt;NodeReadyObserver&lt;Node>>().forEach { it.init(this) }"
-        errorLine2="                                           ~~~~~~~">
-        <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/node/Node.kt"
-            line="112"
-            column="44"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="        plugins&lt;NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }"
-        errorLine2="                                      ~~~~~~~">
-        <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/node/Node.kt"
-            line="113"
-            column="39"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="            plugins&lt;Destroyable>().forEach { it.destroy() }"
-        errorLine2="                                   ~~~~~~~">
-        <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/node/Node.kt"
-            line="150"
-            column="36"/>
-    </issue>
-
-    <issue
-        id="NewApi"
-        message="Call requires API level 24 (current min is 21): `java.lang.Iterable#forEach`"
-        errorLine1="        map.remove(storeId)?.values?.forEach { it.dispose() }"
-        errorLine2="                                     ~~~~~~~">
-        <location
-            file="src/main/kotlin/com/bumble/appyx/navigation/store/RetainedInstanceStoreImpl.kt"
-            line="25"
-            column="38"/>
+            file="src/main/kotlin/com/bumble/appyx/core/composable/Children.kt"
+            line="118"
+            column="31"/>
     </issue>
 
 </issues>
