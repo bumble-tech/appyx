@@ -16,7 +16,9 @@ open class TestDrive<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: TestDriveModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> = { GestureFactory.Noop() },
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
     progressAnimationSpec: AnimationSpec<Float> = spring(),
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
     animateSettle: Boolean = false

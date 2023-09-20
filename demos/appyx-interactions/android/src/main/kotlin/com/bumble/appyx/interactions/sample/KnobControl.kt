@@ -27,8 +27,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.theme.appyx_yellow1
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlin.math.roundToInt
 
 

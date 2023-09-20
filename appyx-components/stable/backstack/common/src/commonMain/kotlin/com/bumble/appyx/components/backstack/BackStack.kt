@@ -19,9 +19,12 @@ class BackStack<InteractionTarget : Any>(
     val model: BackStackModel<InteractionTarget>,
     motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>,
     animationSpec: AnimationSpec<Float> = spring(),
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> = { GestureFactory.Noop() },
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> = {
+        GestureFactory.Noop()
+    },
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
-    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> = PopBackstackStrategy(scope),
+    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> =
+        PopBackstackStrategy(scope),
     disableAnimations: Boolean = false,
     isDebug: Boolean = false
 ) : BaseAppyxComponent<InteractionTarget, BackStackModel.State<InteractionTarget>>(

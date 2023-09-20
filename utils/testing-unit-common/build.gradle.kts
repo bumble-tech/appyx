@@ -1,34 +1,22 @@
 plugins {
-    id("com.android.library")
-    id("kotlin-android")
+    id("com.bumble.appyx.android.library")
     id("appyx-publish-android")
-    id("appyx-lint")
-    id("appyx-detekt")
 }
 
 publishingPlugin {
     artifactId = "utils-testing-unit-common"
 }
 
-android {
-    namespace = "com.bumble.appyx.utils.testing.unit.common"
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
+appyx {
+    namespace.set("com.bumble.appyx.utils.testing.unit.common")
 
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
     buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
+        compose.set(true)
     }
 }
 
 dependencies {
-    api(project(":appyx-navigation"))
+    api(project(":appyx-navigation:appyx-navigation"))
+    implementation(project(":utils:customisations"))
     implementation(libs.kotlin.test)
 }

@@ -1,7 +1,6 @@
 package com.bumble.appyx.components.internal.testdrive.ui.simple
 
 import androidx.compose.animation.core.SpringSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.Position.Alignment
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
@@ -14,7 +13,6 @@ import com.bumble.appyx.components.internal.testdrive.ui.md_light_blue_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_light_green_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
@@ -30,9 +28,11 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.Position
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 class TestDriveSimpleMotionController<InteractionTarget : Any>(
     uiContext: UiContext,
@@ -41,7 +41,8 @@ class TestDriveSimpleMotionController<InteractionTarget : Any>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
-    override fun TestDriveModel.State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun TestDriveModel.State<InteractionTarget>.toUiTargets():
+            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(element, elementState.toTargetUiState()).also {
                 AppyxLogger.d("TestDrive", "Matched $elementState -> UiState: ${it.targetUiState}")
@@ -59,22 +60,22 @@ class TestDriveSimpleMotionController<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.TopStart),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopStart),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val topRightCorner = TargetUiState(
-            position = Position.Target(Alignment.TopEnd),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopEnd),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = Position.Target(Alignment.CenterEnd),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterEnd),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = Position.Target(Alignment.CenterStart),
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterStart),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }
@@ -86,6 +87,7 @@ class TestDriveSimpleMotionController<InteractionTarget : Any>(
         private val transitionBounds: TransitionBounds
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
 
+        @Suppress("ComplexMethod")
         override fun createGesture(
             state: TestDriveModel.State<InteractionTarget>,
             delta: Offset,

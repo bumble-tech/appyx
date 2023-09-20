@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.demos.dragprediction
 
 import androidx.compose.animation.animateColorAsState
@@ -44,7 +45,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.demos.dragprediction.DragPredictionMotionController.Companion.toTargetUiState
 import com.bumble.appyx.demos.dragprediction.InteractionTarget.Child1
-import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
@@ -81,6 +82,8 @@ fun DragPrediction(
             is Keyframes -> output.currentSegmentTargetStateFlow.collectAsState(null)
             is Update -> remember(output) { mutableStateOf(output.currentTargetState) }
         }
+
+    @Suppress("UnusedPrivateMember")
     val index = when (output) {
         is Keyframes -> output.currentIndex
         is Update -> null
@@ -150,15 +153,18 @@ fun <InteractionTarget : Any> Background(
 @Composable
 fun Target(
     elementState: ElementState?,
+    alpha: Float,
     modifier: Modifier = Modifier,
-    alpha: Float
 ) {
     val targetUiState = elementState?.toTargetUiState()
     targetUiState?.let {
         Box(
             modifier = modifier
                 .size(60.dp)
-                .offset(targetUiState.position.value.offset.x, targetUiState.position.value.offset.y)
+                .offset(
+                    targetUiState.position.value.offset.x,
+                    targetUiState.position.value.offset.y
+                )
                 .scale(targetUiState.scale.value)
                 .rotate(targetUiState.rotationZ.value)
                 .alpha(alpha)
@@ -185,7 +191,7 @@ fun <InteractionTarget : Any> ModelUi(
     model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
-    DraggableAppyxComponent(
+    AppyxComponent(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
@@ -204,6 +210,7 @@ fun <InteractionTarget : Any> ModelUi(
     }
 }
 
+@Suppress("UnusedPrivateMember")
 @Composable
 private fun Controls(
     testDrive: TestDrive<InteractionTarget>,

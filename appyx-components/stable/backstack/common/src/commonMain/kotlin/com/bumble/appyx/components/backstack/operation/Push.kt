@@ -3,11 +3,11 @@ package com.bumble.appyx.components.backstack.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 /**
  * Operation:
@@ -23,12 +23,16 @@ data class Push<InteractionTarget : Any>(
     override fun isApplicable(state: BackStackModel.State<InteractionTarget>): Boolean =
         interactionTarget != state.active.interactionTarget
 
-    override fun createFromState(baseLineState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: BackStackModel.State<InteractionTarget>
+    ): BackStackModel.State<InteractionTarget> =
         baseLineState.copy(
             created = baseLineState.created + interactionTarget.asElement()
         )
 
-    override fun createTargetState(fromState: BackStackModel.State<InteractionTarget>): BackStackModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: BackStackModel.State<InteractionTarget>
+    ): BackStackModel.State<InteractionTarget> =
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),

@@ -3,9 +3,9 @@ package com.bumble.appyx.components.spotlight.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
 class Activate<InteractionTarget : Any>(
@@ -17,10 +17,14 @@ class Activate<InteractionTarget : Any>(
         index != state.activeIndex &&
                 (index in 0f..state.positions.lastIndex.toFloat())
 
-    override fun createFromState(baseLineState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createFromState(
+        baseLineState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: SpotlightModel.State<InteractionTarget>): SpotlightModel.State<InteractionTarget> =
+    override fun createTargetState(
+        fromState: SpotlightModel.State<InteractionTarget>
+    ): SpotlightModel.State<InteractionTarget> =
         fromState.copy(
             activeIndex = index,
         )

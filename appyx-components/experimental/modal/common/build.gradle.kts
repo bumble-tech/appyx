@@ -1,10 +1,14 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
     id("appyx-publish-multiplatform")
     id("com.google.devtools.ksp")
+}
+
+appyx {
+    androidNamespace.set("com.bumble.appyx.components.experimental.modal")
 }
 
 kotlin {
@@ -42,16 +46,6 @@ kotlin {
             }
         }
         val desktopMain by getting
-    }
-}
-
-android {
-    compileSdk = libs.versions.androidCompileSdk.get().toInt()
-    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
-
-    defaultConfig {
-        minSdk = libs.versions.androidMinSdk.get().toInt()
-        targetSdk = libs.versions.androidTargetSdk.get().toInt()
     }
 }
 

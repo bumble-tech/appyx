@@ -39,6 +39,7 @@ fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupAppy
     }
 }
 
+@Suppress("MagicNumber")
 fun randomColor(): Color {
     val random = Random(System.currentTimeMillis())
     return Color(random.nextInt(256), random.nextInt(256), random.nextInt(256))
@@ -47,9 +48,9 @@ fun randomColor(): Color {
 
 @Composable
 private fun <InteractionTarget : Any, ModelState : Any> TestChildrenUi(
-    fraction: Float = 1.0f,
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
-    clipToBounds: Boolean
+    clipToBounds: Boolean,
+    fraction: Float = 1.0f,
 ) {
     BoxWithConstraints {
         val padding = this.maxWidth * (1.0f - fraction) / 2

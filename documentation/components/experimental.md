@@ -1,3 +1,7 @@
+---
+title: Appyx Components – Experimental
+---
+
 # Experimental 
 
 Other uses of the library to create complex transitions and gestures.

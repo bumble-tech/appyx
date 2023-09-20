@@ -1,11 +1,12 @@
 plugins {
-    kotlin("multiplatform")
+    id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
     id("com.google.devtools.ksp")
 }
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-interactions-sample3-web"
         browser()
         binaries.executable()
     }
@@ -17,6 +18,7 @@ kotlin {
                 api(compose.material)
                 implementation(project(":appyx-interactions:appyx-interactions"))
                 implementation(project(":appyx-components:internal:test-drive:test-drive"))
+                implementation(project(":utils:multiplatform"))
             }
         }
         val jsMain by getting {

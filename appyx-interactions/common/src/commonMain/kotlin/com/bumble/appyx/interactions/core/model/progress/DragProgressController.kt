@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.core.model.progress
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
@@ -11,6 +10,7 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel.Settl
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.REVERT
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 internal class DragProgressController<InteractionTarget : Any, State>(
     private val model: TransitionModel<InteractionTarget, State>,
@@ -67,7 +67,9 @@ internal class DragProgressController<InteractionTarget : Any, State>(
         val operation = gesture!!.operation
         operation.mode = KEYFRAME
         val deltaProgress = gesture!!.dragToProgress(dragAmount)
-        require(!deltaProgress.isNaN()) { "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation" }
+        require(!deltaProgress.isNaN()) {
+            "deltaProgress is NaN! – dragAmount: $dragAmount, gesture: $gesture, operation: $operation"
+        }
         val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
         val totalTarget = currentProgress + deltaProgress
 
@@ -88,6 +90,7 @@ internal class DragProgressController<InteractionTarget : Any, State>(
         }
 
         val startProgress = gesture!!.startProgress!!
+        val isGestureContinuous = gestureFactory().isContinuous
 
         // Case: we go forward, it's cool
         if (totalTarget > startProgress) {
@@ -95,15 +98,14 @@ internal class DragProgressController<InteractionTarget : Any, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 model.setProgress(totalTarget)
-                val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
-                AppyxLogger.d(
-                    TAG,
-                    "delta applied forward, new progress: $currentProgress"
-                )
+                val currentProgress =
+                    if (currentState is Keyframes<*>) currentState.progress else 0f
+                AppyxLogger.d(TAG, "delta applied forward, new progress: $currentProgress")
 
                 // Case: target is beyond the current segment, we'll need a new operation
-            } else {
+            } else if (isGestureContinuous) {
                 // TODO without recursion
+
                 val remainder =
                     consumePartial(COMPLETE, dragAmount, totalTarget, deltaProgress, startProgress + 1)
                 if (remainder.getDistanceSquared() > 0) {
@@ -113,9 +115,10 @@ internal class DragProgressController<InteractionTarget : Any, State>(
 
             // Case: we went back to or beyond the start,
             // now we need to re-evaluate for a new operation
-        } else {
+        } else if (isGestureContinuous) {
             // TODO without recursion
-            val remainder = consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
+            val remainder =
+                consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
             if (dragAmount != remainder) {
                 consumeDrag(remainder)
             }

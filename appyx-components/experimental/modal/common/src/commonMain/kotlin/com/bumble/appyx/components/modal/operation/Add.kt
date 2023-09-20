@@ -3,11 +3,11 @@ package com.bumble.appyx.components.modal.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.components.modal.Modal
 import com.bumble.appyx.components.modal.ModalModel
-import com.bumble.appyx.interactions.Parcelize
-import com.bumble.appyx.interactions.RawValue
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
 
 @Parcelize
 class Add<InteractionTarget : Any>(

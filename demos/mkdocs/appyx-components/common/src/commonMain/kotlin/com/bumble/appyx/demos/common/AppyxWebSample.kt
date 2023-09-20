@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.demos.common.InteractionTarget.Element
-import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -46,14 +46,15 @@ enum class ChildSize {
     MAX,
 }
 
+@Suppress("UnstableCollections") // actions parameter
 @Composable
-fun <InteractionTarget : Any, ModelState: Any> AppyxWebSample(
+fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     actions: Map<String, () -> Unit>,
-    childSize: ChildSize = ChildSize.SMALL,
     modifier: Modifier = Modifier,
+    childSize: ChildSize = ChildSize.SMALL,
     element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
         ModalUi(
             elementUiModel = it,
@@ -75,14 +76,16 @@ fun <InteractionTarget : Any, ModelState: Any> AppyxWebSample(
                 .clip(containerShape)
                 .weight(0.9f)
         ) {
-            Box(Modifier.padding(
-                when (childSize) {
-                    ChildSize.SMALL -> 32.dp
-                    ChildSize.MEDIUM -> 16.dp
-                    ChildSize.MAX -> 0.dp
-                }
-            )) {
-                DraggableAppyxComponent(
+            Box(
+                Modifier.padding(
+                    when (childSize) {
+                        ChildSize.SMALL -> 32.dp
+                        ChildSize.MEDIUM -> 16.dp
+                        ChildSize.MAX -> 0.dp
+                    }
+                )
+            ) {
+                AppyxComponent(
                     appyxComponent = appyxComponent,
                     screenWidthPx = screenWidthPx,
                     screenHeightPx = screenHeightPx,
@@ -130,12 +133,15 @@ fun <InteractionTarget : Any> ModalUi(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize(if (isChildMaxSize) 1f else 0.9f)
+            .fillMaxSize()
+            .padding(if (isChildMaxSize) 0.dp else 8.dp)
             .then(elementUiModel.modifier)
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {
                     is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
-                    else -> { Color.Cyan }
+                    else -> {
+                        Color.Cyan
+                    }
                 },
                 shape = RoundedCornerShape(if (isChildMaxSize) 0 else 8)
             )

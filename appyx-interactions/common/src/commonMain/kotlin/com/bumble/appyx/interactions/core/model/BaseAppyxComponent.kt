@@ -4,7 +4,6 @@ import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
@@ -20,14 +19,15 @@ import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.MotionController
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
-import com.bumble.appyx.interactions.core.ui.context.zeroSizeTransitionBounds
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,12 +41,14 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-
+@Suppress("TooManyFunctions")
 open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
     private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
-    private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = { GestureFactory.Noop() },
+    private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = {
+        GestureFactory.Noop()
+    },
     final override val defaultAnimationSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     protected val gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(
         completeGestureSpec = defaultAnimationSpec,
@@ -59,7 +61,8 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 ) : AppyxComponent<InteractionTarget, ModelState>,
     HasDefaultAnimationSpec<Float>,
     Draggable,
-    UiContextAware {
+    UiContextAware,
+    TransitionBoundsAware {
     init {
         backPressStrategy.init(this, model)
     }
@@ -68,11 +71,12 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private var _motionController: MotionController<InteractionTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<InteractionTarget, ModelState> =
-        gestureFactory(zeroSizeTransitionBounds)
+        gestureFactory(TransitionBounds.Zero)
 
     private var animationChangesJob: Job? = null
     private var animationFinishedJob: Job? = null
     private var uiContext: UiContext? = null
+    private var transitionBounds: TransitionBounds = TransitionBounds.Zero
 
     private var _isAnimating = MutableStateFlow(false)
     val isAnimating: StateFlow<Boolean> = _isAnimating
@@ -107,6 +111,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     }
 
     private var animationScope: CoroutineScope? = null
+    @Suppress("UnusedPrivateMember")
     private var isInitialised: Boolean = false
 
     private fun observeAnimationChanges(motionController: MotionController<InteractionTarget, ModelState>) {
@@ -166,11 +171,19 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
             _motionController = motionController(uiContext).also {
                 onMotionControllerReady(it)
             }
-            _gestureFactory = gestureFactory(uiContext.transitionBounds)
+        }
+    }
+
+    override fun updateBounds(transitionBounds: TransitionBounds) {
+        if (transitionBounds != this.transitionBounds) {
+            this.transitionBounds = transitionBounds
+            _gestureFactory = gestureFactory(transitionBounds)
+            _motionController?.updateBounds(transitionBounds)
         }
     }
 
     private fun onMotionControllerReady(motionController: MotionController<InteractionTarget, ModelState>) {
+        motionController.updateBounds(transitionBounds)
         observeAnimationChanges(motionController)
         observeMotionController(motionController)
     }

@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
       - uses: gradle/wrapper-validation-action@v1
       - uses: gradle/gradle-build-action@v2
         with:
@@ -28,19 +28,12 @@ jobs:
       - name: Build
         run: >
           ./gradlew
-          build
+          buildNonMkdocs
           projectHealth
           mergeLintSarif
           mergeDetektSarif
           :plugins:buildPlugins
           --continue
-      - name: Check publication setup
-        run: >
-          ./gradlew
-          publishAllPublicationsToOSSRHRepository
-          publishAllPublicationsToSonatypeSnapshotRepository
-          --dry-run
-          --no-parallel
       - name: Deploy snapshot
         if: env.MAIN_BRANCH == 'true' && github.repository == 'bumble-tech/appyx'
         env:
@@ -72,6 +65,29 @@ jobs:
             **/build/reports/
             !**/build/reports/dependency-analysis/
 
+  publication-verification:
+    name: Publication verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
+      - name: Check publication setup
+        run: >
+          ./gradlew
+          publishAllPublicationsToOSSRHRepository
+          publishAllPublicationsToSonatypeSnapshotRepository
+          --dry-run
+          --no-parallel
+      - name: Publish locally
+        run: ./gradlew publishToMavenLocal -Psigning.required=false --no-parallel --continue
+
   instrumentation-tests:
     name: Instrumentation tests
     runs-on: macOS-latest
@@ -81,51 +97,22 @@ jobs:
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
-          java-version: '11'
+          java-version: '17'
       - uses: gradle/wrapper-validation-action@v1
       - uses: gradle/gradle-build-action@v2
         with:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
-      - name: Pre build sources before launching emulator
-        run: ./gradlew compileDebugAndroidTestSources
-      - name: AVD cache
-        uses: actions/cache@v3
-        id: avd-cache
-        with:
-          path: |
-            ~/.android/avd/*
-            ~/.android/adb*
-          key: avd-29
-      - name: Create AVD and generate snapshot for caching
-        if: steps.avd-cache.outputs.cache-hit != 'true'
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
-          api-level: 29
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: false
-          script: echo "Generated AVD snapshot for caching."
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Package Debug Android Test
+        # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/Build.yaml
+        run: ./gradlew packageDebugAndroidTest
       - name: Instrumentation tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          # Use API 29 https://github.com/ReactiveCircus/android-emulator-runner/issues/222
-          api-level: 29
-          arch: x86_64
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          disable-animations: true
-          script: |
-            adb logcat > logcat.out &
-            ./gradlew connectedCheck
-      - name: Managed device clean-up
+        # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/Build.yaml
         run: >
-          ./gradlew cleanManagedDevices --unused-only
-      - name: Screenshot tests
-        # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/AndroidCIWithGmd.yaml
-        run: >
-          ./gradlew screenshotTestsCompareBaseline
+          adb logcat > logcat.out &
+          ./gradlew cleanManagedDevices --unused-only &&
+          ./gradlew uiTestsDeviceDebugAndroidTest
           -Dorg.gradle.workers.max=1
           -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
           -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
@@ -138,11 +125,56 @@ jobs:
             **/build/reports
             logcat.out
 
+  screenshot-tests:
+    name: Screenshot tests
+    runs-on: macOS-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v2
+      - name: Screenshot tests
+        # Flags from https://github.com/android/nowinandroid/blob/main/.github/workflows/Build.yaml
+        run: >
+          adb logcat > logcat.out &
+          ./gradlew cleanManagedDevices --unused-only &&
+          ./gradlew screenshotTestsCompareBaseline
+          -Dorg.gradle.workers.max=1
+          -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
+          -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
+      - name: Upload failed screenshot artifacts
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshot-failures
+          path: |
+            **/build/reports
+            **/build/outputs/managed_device_android_test_additional_output
+            logcat.out
+
   check-documentation:
     name: Check documentation
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: gradle/wrapper-validation-action@v1
+      - uses: gradle/gradle-build-action@v2
+        with:
+          cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
+      - name: Generate distributions
+        run: ./gradlew jsBrowserDistributionMkdocs --continue
       - uses: actions/setup-python@v4
         with:
           python-version: '3.x'
@@ -150,4 +182,5 @@ jobs:
       - run: pip install mkdocs-macros-plugin
       - run: pip install mkdocs-redirects
       - run: pip install mkdocs-include-markdown-plugin
+      - run: pip install pillow cairosvg
       - run: mkdocs build --strict

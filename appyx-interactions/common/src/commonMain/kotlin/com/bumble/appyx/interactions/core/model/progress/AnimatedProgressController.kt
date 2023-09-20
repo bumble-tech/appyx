@@ -3,12 +3,12 @@ package com.bumble.appyx.interactions.core.model.progress
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
-import com.bumble.appyx.interactions.AppyxLogger
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.COMPLETE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.REVERT
+import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -60,7 +60,8 @@ class AnimatedProgressController<InteractionTarget : Any, ModelState>(
         val currentState = model.output.value
         if (currentState is Keyframes<ModelState>) {
             val currentProgress = currentState.progress
-            val direction: TransitionModel.SettleDirection = if (currentProgress % 1 < completionThreshold) REVERT else COMPLETE
+            val direction: TransitionModel.SettleDirection =
+                if (currentProgress % 1 < completionThreshold) REVERT else COMPLETE
             val targetValue = if (direction == REVERT) floor(currentProgress).toInt() else ceil(currentProgress).toInt()
             val animationSpec = if (direction == REVERT) revertGestureSpec else completeGestureSpec
 

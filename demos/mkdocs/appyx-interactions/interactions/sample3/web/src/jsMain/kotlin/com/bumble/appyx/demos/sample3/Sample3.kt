@@ -1,3 +1,4 @@
+@file:Suppress("MatchingDeclarationName")
 package com.bumble.appyx.demos.sample3
 
 import androidx.compose.animation.animateColorAsState
@@ -44,7 +45,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.sample3.InteractionTarget.Child1
 import com.bumble.appyx.demos.sample3.Sample3MotionController.Companion.toTargetUiState
-import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
@@ -165,7 +166,10 @@ fun <InteractionTarget : Any> Target(
                 modifier
                     .size(60.dp)
                     .align(targetUiState.position.value.alignment)
-                    .offset(targetUiState.position.value.offset.x, targetUiState.position.value.offset.y)
+                    .offset(
+                        targetUiState.position.value.offset.x,
+                        targetUiState.position.value.offset.y
+                    )
                     .alpha(0.35f)
                     .background(
                         color = targetUiState.backgroundColor.value,
@@ -191,7 +195,7 @@ fun <InteractionTarget : Any> ModelUi(
     model: TestDriveModel<InteractionTarget>,
     modifier: Modifier = Modifier.fillMaxSize()
 ) {
-    DraggableAppyxComponent(
+    AppyxComponent(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,

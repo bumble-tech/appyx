@@ -7,21 +7,21 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.mapState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class Alpha(
-    uiContext: UiContext,
+    coroutineScope: CoroutineScope,
     target: Target,
     visibilityThreshold: Float = 0.01f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
 ) : MotionProperty<Float, AnimationVector1D>(
-    uiContext = uiContext,
+    coroutineScope = coroutineScope,
     animatable = Animatable(target.value),
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
@@ -34,7 +34,7 @@ class Alpha(
     ) : MotionProperty.Target
 
     override val isVisibleFlow: StateFlow<Boolean> =
-        renderValueFlow.mapState(uiContext.coroutineScope) {
+        renderValueFlow.mapState(coroutineScope) {
             it > 0f
         }
 

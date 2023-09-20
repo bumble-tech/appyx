@@ -2,11 +2,12 @@ package com.bumble.appyx.components.experimental.puzzle15.operation
 
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model.Tile
-import com.bumble.appyx.interactions.Parcelize
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.utils.multiplatform.Parcelize
 
+@Suppress("MagicNumber")
 @Parcelize
 class Swap(
     private val direction: Direction,
@@ -35,6 +36,7 @@ class Swap(
         return (destination) in 0..15 && !isNewLine
     }
 
+    @Suppress("MemberNameEqualsClassName")
     private fun Puzzle15Model.State.swap(direction: Direction): List<Element<Tile>> {
         val origin = emptyTileIndex
         val destination = origin + offsetForDirection(direction)
@@ -48,6 +50,7 @@ class Swap(
         return copy
     }
 
+    @Suppress("MagicNumber")
     private fun offsetForDirection(direction: Direction) =
         when (direction) {
             Direction.LEFT -> -1

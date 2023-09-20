@@ -4,7 +4,6 @@ import androidx.compose.animation.core.AnimationResult
 import androidx.compose.animation.core.AnimationVector1D
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
-import kotlinx.coroutines.CoroutineScope
 
 // FIXME
 class DebugProgressInputSource<InteractionTarget, ModelState>(
@@ -12,7 +11,9 @@ class DebugProgressInputSource<InteractionTarget, ModelState>(
 ) : ProgressController<InteractionTarget, ModelState> {
     // TODO this should >not< use its own animatable that's independent of AnimatedInputSource
 //    private val animatable = Animatable(0f)
+    @Suppress("UnusedPrivateMember")
     private lateinit var result: AnimationResult<Float, AnimationVector1D>
+    @Suppress("UnusedPrivateMember")
     private var progress: Float = 1f
 
     override fun operation(operation: Operation<ModelState>) {
@@ -20,6 +21,7 @@ class DebugProgressInputSource<InteractionTarget, ModelState>(
         transitionModel.operation(operation, Operation.Mode.KEYFRAME)
     }
 
+    @Suppress("UnusedPrivateMember")
     fun setNormalisedProgress(progress: Float) {
         // FIXME
 //        this.progress = progress.coerceIn(0f, 1f)
@@ -44,6 +46,7 @@ class DebugProgressInputSource<InteractionTarget, ModelState>(
     }
 
     private companion object {
+        @Suppress("UnusedPrivateMember")
         private const val TAG = "DebugProgressInputSource"
     }
 }
