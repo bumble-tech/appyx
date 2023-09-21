@@ -185,7 +185,7 @@ val backEvents: Channel<Unit> = Channel()
 
 fun MainViewController() = ComposeUIViewController {
     YourAppTheme {
-        IOSNodeHost(
+        IosNodeHost(
             modifier = Modifier,
             onBackPressedEvents = backEvents.receiveAsFlow()
         ) {
