@@ -90,6 +90,7 @@ internal class DragProgressController<InteractionTarget : Any, State>(
         }
 
         val startProgress = gesture!!.startProgress!!
+        val isGestureContinuous = gestureFactory().isContinuous
 
         // Case: we go forward, it's cool
         if (totalTarget > startProgress) {
@@ -97,15 +98,14 @@ internal class DragProgressController<InteractionTarget : Any, State>(
             // Case: standard forward progress
             if (totalTarget < startProgress + 1) {
                 model.setProgress(totalTarget)
-                val currentProgress = if (currentState is Keyframes<*>) currentState.progress else 0f
-                AppyxLogger.d(
-                    TAG,
-                    "delta applied forward, new progress: $currentProgress"
-                )
+                val currentProgress =
+                    if (currentState is Keyframes<*>) currentState.progress else 0f
+                AppyxLogger.d(TAG, "delta applied forward, new progress: $currentProgress")
 
                 // Case: target is beyond the current segment, we'll need a new operation
-            } else {
+            } else if (isGestureContinuous) {
                 // TODO without recursion
+
                 val remainder =
                     consumePartial(COMPLETE, dragAmount, totalTarget, deltaProgress, startProgress + 1)
                 if (remainder.getDistanceSquared() > 0) {
@@ -115,9 +115,10 @@ internal class DragProgressController<InteractionTarget : Any, State>(
 
             // Case: we went back to or beyond the start,
             // now we need to re-evaluate for a new operation
-        } else {
+        } else if (isGestureContinuous) {
             // TODO without recursion
-            val remainder = consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
+            val remainder =
+                consumePartial(REVERT, dragAmount, totalTarget, deltaProgress, startProgress)
             if (dragAmount != remainder) {
                 consumeDrag(remainder)
             }

@@ -88,7 +88,11 @@ class BackStack3D<InteractionTarget : Any>(
     class Gestures<InteractionTarget : Any>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
+
+        override val isContinuous: Boolean = false
+
         private val height = transitionBounds.screenHeightDp
+
         override fun createGesture(
             state: State<InteractionTarget>,
             delta: Offset,
@@ -99,7 +103,7 @@ class BackStack3D<InteractionTarget : Any>(
             return if (dragVerticalDirection(delta) == Drag.VerticalDirection.DOWN) {
                 Gesture(
                     operation = Pop(),
-                    completeAt = Offset(x = 0f, y = heightInPx)
+                    completeAt = Offset(x = 0f, y = heightInPx),
                 )
             } else {
                 Gesture.Noop()
