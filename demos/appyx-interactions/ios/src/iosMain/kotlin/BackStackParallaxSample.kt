@@ -43,7 +43,6 @@ internal fun BackStackParallaxSample(
         screenHeightPx = screenHeightPx,
         appyxComponent = backStack as BaseAppyxComponent<InteractionTarget, Any>,
         actions = actions,
-        childSize = ChildSize.MAX,
         modifier = modifier,
     )
 }

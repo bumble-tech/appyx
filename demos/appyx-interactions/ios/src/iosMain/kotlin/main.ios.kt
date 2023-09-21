@@ -5,7 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ComposeUIViewController
 import theme.DarkColorPalette
-import theme.shapes
 
 fun MainViewController() = ComposeUIViewController {
     AppyxTheme {
@@ -25,7 +24,6 @@ fun MainViewController() = ComposeUIViewController {
 private fun AppyxTheme(content: @Composable () -> Unit) {
     MaterialTheme(
         colors = DarkColorPalette,
-        shapes = shapes,
         content = content
     )
 }

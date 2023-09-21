@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.interactions.core.DraggableAppyxComponent
+import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -43,21 +43,12 @@ internal sealed class InteractionTarget {
     }
 }
 
-private val containerShape = RoundedCornerShape(8)
-
-internal enum class ChildSize {
-    SMALL,
-    MEDIUM,
-    MAX,
-}
-
 @Composable
 internal fun AppyxSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
     appyxComponent: BaseAppyxComponent<InteractionTarget, Any>,
     actions: Map<String, () -> Unit>,
-    childSize: ChildSize = ChildSize.SMALL,
     modifier: Modifier = Modifier,
 ) {
     AppyxComponentSetup(appyxComponent)
@@ -66,16 +57,13 @@ internal fun AppyxSample(
         modifier = modifier,
         horizontalAlignment = CenterHorizontally,
     ) {
-        DraggableAppyxComponent(
+        AppyxComponent(
             appyxComponent = appyxComponent,
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             modifier = Modifier.weight(0.9f).clipToBounds()
         ) { elementUiModel ->
-            ModalUi(
-                elementUiModel = elementUiModel,
-                isChildMaxSize = childSize == ChildSize.MAX,
-            )
+            ModalUi(elementUiModel = elementUiModel)
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -94,7 +82,6 @@ internal fun AppyxSample(
 @Composable
 internal fun ModalUi(
     elementUiModel: ElementUiModel<InteractionTarget>,
-    isChildMaxSize: Boolean,
     modifier: Modifier = Modifier
 ) {
     val colors = listOf(
@@ -117,8 +104,7 @@ internal fun ModalUi(
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {
                     is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
-                },
-                shape = RoundedCornerShape(if (isChildMaxSize) 0 else 8)
+                }
             )
     ) {
         Text(
