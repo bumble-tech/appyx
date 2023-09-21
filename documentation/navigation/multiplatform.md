@@ -187,6 +187,7 @@ fun MainViewController() = ComposeUIViewController {
     YourAppTheme {
         IosNodeHost(
             modifier = Modifier,
+            // See back handling section in the docs below!
             onBackPressedEvents = backEvents.receiveAsFlow()
         ) {
             RootNode(
@@ -196,11 +197,33 @@ fun MainViewController() = ComposeUIViewController {
     }
 }
 
+@Composable
+private fun BackButton(coroutineScope: CoroutineScope) {
+    IconButton(
+        onClick = {
+            coroutineScope.launch {
+                backEvents.send(Unit)
+            }
+        },
+        modifier = Modifier.zIndex(99f)
+    ) {
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            tint = Color.White,
+            contentDescription = "Go Back"
+        )
+    }
+}
+
 ```
 
 ## Back handling
 
+### Android
+
 On Android back events are handled automatically.
+
+### Desktop & Web
 
 In the above [desktop](#desktop) and [web](#web) examples there is a reference to an `onKeyEvent` method.
 
@@ -223,5 +246,9 @@ private fun onKeyEvent(
         else -> false
     }
 ``` 
-For [iOS](#ios), you can send an event to the `backEvents` Channel to perform the standard back action as on other platforms.
+### iOS
+
+On [iOS](#ios), you can design a user interface element to enable back navigation, similar to how it's done on other platforms. 
+In the example mentioned earlier, we create a Composable component `BackButton` that includes an `ArrowBack` icon. 
+When this button is clicked, it triggers the back event through the `backEvents` `Channel`. 
 
