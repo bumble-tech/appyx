@@ -7,9 +7,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.integration.NodeFactory
-import com.bumble.appyx.navigation.integration.NodeHost
-import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.platform.LocalOnBackPressedDispatcherOwner
@@ -24,7 +21,7 @@ import kotlinx.coroutines.launch
 import platform.UIKit.UIScreen
 
 @Composable
-fun <N : Node> IOSNodeHost(
+fun <N : Node> IosNodeHost(
     modifier: Modifier = Modifier,
     onBackPressedEvents: Flow<Unit>,
     integrationPoint: IntegrationPoint = remember { MainIntegrationPoint() },

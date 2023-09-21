@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.navigation.integration.IOSNodeHost
+import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.node.container.ContainerNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -36,7 +36,7 @@ fun MainViewController() = ComposeUIViewController {
                 BackButton(coroutineScope)
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    IOSNodeHost(
+                    IosNodeHost(
                         modifier = Modifier,
                         onBackPressedEvents = backEvents.receiveAsFlow()
                     ) { buildContext ->
