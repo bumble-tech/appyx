@@ -43,6 +43,20 @@ internal sealed class InteractionTarget {
     }
 }
 
+val colors = listOf(
+    md_pink_500,
+    md_indigo_500,
+    md_blue_500,
+    md_light_blue_500,
+    md_cyan_500,
+    md_teal_500,
+    md_light_green_500,
+    md_lime_500,
+    md_amber_500,
+    md_grey_500,
+    md_blue_grey_500,
+)
+
 @Composable
 internal fun AppyxSample(
     screenWidthPx: Int,
@@ -63,7 +77,7 @@ internal fun AppyxSample(
             screenHeightPx = screenHeightPx,
             modifier = Modifier.weight(0.9f).clipToBounds()
         ) { elementUiModel ->
-            ModalUi(elementUiModel = elementUiModel)
+            ElementUi(elementUiModel = elementUiModel)
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -80,23 +94,10 @@ internal fun AppyxSample(
 }
 
 @Composable
-internal fun ModalUi(
+internal fun ElementUi(
     elementUiModel: ElementUiModel<InteractionTarget>,
     modifier: Modifier = Modifier
 ) {
-    val colors = listOf(
-        md_pink_500,
-        md_indigo_500,
-        md_blue_500,
-        md_light_blue_500,
-        md_cyan_500,
-        md_teal_500,
-        md_light_green_500,
-        md_lime_500,
-        md_amber_500,
-        md_grey_500,
-        md_blue_grey_500,
-    )
     Box(
         modifier = modifier
             .fillMaxSize()
