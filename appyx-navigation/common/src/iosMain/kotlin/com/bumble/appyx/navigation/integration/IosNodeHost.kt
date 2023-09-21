@@ -20,10 +20,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import platform.UIKit.UIScreen
 
+@Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
 fun <N : Node> IosNodeHost(
-    modifier: Modifier = Modifier,
     onBackPressedEvents: Flow<Unit>,
+    modifier: Modifier = Modifier,
     integrationPoint: IntegrationPoint = remember { MainIntegrationPoint() },
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
     factory: NodeFactory<N>,

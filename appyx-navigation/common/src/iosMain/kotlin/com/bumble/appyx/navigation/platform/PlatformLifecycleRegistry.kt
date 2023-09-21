@@ -37,6 +37,7 @@ actual class PlatformLifecycleRegistry : Lifecycle {
         }
     }
 
+    @Suppress("ComplexMethod")
     actual fun setCurrentState(state: Lifecycle.State) {
         when (state) {
             Lifecycle.State.INITIALIZED -> Unit

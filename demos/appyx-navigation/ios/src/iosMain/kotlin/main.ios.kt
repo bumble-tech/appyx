@@ -24,6 +24,7 @@ import kotlinx.coroutines.launch
 
 val backEvents: Channel<Unit> = Channel()
 
+@Suppress("FunctionNaming")
 fun MainViewController() = ComposeUIViewController {
     AppyxSampleAppTheme {
         val coroutineScope = rememberCoroutineScope()

@@ -6,6 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ComposeUIViewController
 import theme.DarkColorPalette
 
+@Suppress("FunctionNaming")
 fun MainViewController() = ComposeUIViewController {
     AppyxTheme {
         BoxWithConstraints(

@@ -36,27 +36,7 @@ import theme.md_pink_500
 import theme.md_teal_500
 import kotlin.random.Random
 
-internal sealed class InteractionTarget {
-    data class Element(val idx: Int = Random.nextInt(1, 100)) : InteractionTarget() {
-        override fun toString(): String =
-            "Element $idx"
-    }
-}
-
-val colors = listOf(
-    md_pink_500,
-    md_indigo_500,
-    md_blue_500,
-    md_light_blue_500,
-    md_cyan_500,
-    md_teal_500,
-    md_light_green_500,
-    md_lime_500,
-    md_amber_500,
-    md_grey_500,
-    md_blue_grey_500,
-)
-
+@Suppress("UnstableCollections") // actions parameter
 @Composable
 internal fun AppyxSample(
     screenWidthPx: Int,
@@ -132,3 +112,24 @@ private fun Action(
         Text(text)
     }
 }
+
+internal sealed class InteractionTarget {
+    data class Element(val idx: Int = Random.nextInt(1, 100)) : InteractionTarget() {
+        override fun toString(): String =
+            "Element $idx"
+    }
+}
+
+val colors = listOf(
+    md_pink_500,
+    md_indigo_500,
+    md_blue_500,
+    md_light_blue_500,
+    md_cyan_500,
+    md_teal_500,
+    md_light_green_500,
+    md_lime_500,
+    md_amber_500,
+    md_grey_500,
+    md_blue_grey_500,
+)
