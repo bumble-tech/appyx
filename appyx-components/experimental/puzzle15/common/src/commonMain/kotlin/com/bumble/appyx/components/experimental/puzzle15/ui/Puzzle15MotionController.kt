@@ -20,7 +20,7 @@ import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseMotionController
 
 class Puzzle15MotionController(
-    private val uiContext: UiContext,
+    uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
 ) : BaseMotionController<Tile, Puzzle15Model.State, MutableUiState, TargetUiState>(
     uiContext = uiContext,
@@ -56,6 +56,8 @@ class Puzzle15MotionController(
         bounds: TransitionBounds,
     ) : GestureFactory<Tile, Puzzle15Model.State> {
 
+        override val isContinuous: Boolean = false
+
         private val cellSize: Float = bounds.widthPx / 4f
 
         override fun createGesture(
@@ -66,22 +68,22 @@ class Puzzle15MotionController(
             return when (dragDirection4(delta)) {
                 Drag.Direction4.UP -> Gesture(
                     operation = Swap(Swap.Direction.DOWN),
-                    completeAt = Offset(0f, -cellSize)
+                    completeAt = Offset(0f, -cellSize),
                 )
 
                 Drag.Direction4.LEFT -> Gesture(
                     operation = Swap(Swap.Direction.RIGHT),
-                    completeAt = Offset(-cellSize, 0f)
+                    completeAt = Offset(-cellSize, 0f),
                 )
 
                 Drag.Direction4.RIGHT -> Gesture(
                     operation = Swap(Swap.Direction.LEFT),
-                    completeAt = Offset(cellSize, 0f)
+                    completeAt = Offset(cellSize, 0f),
                 )
 
                 Drag.Direction4.DOWN -> Gesture(
                     operation = Swap(Swap.Direction.UP),
-                    completeAt = Offset(0f, cellSize)
+                    completeAt = Offset(0f, cellSize),
                 )
 
             }
