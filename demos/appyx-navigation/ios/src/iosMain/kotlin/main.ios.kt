@@ -21,8 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import platform.UIKit.UIWindow
-import platform.UIKit.safeAreaInsets
 
 val backEvents: Channel<Unit> = Channel()
 
@@ -32,7 +30,7 @@ fun MainViewController() = ComposeUIViewController {
         Scaffold(
             modifier = Modifier
                 .background(Color.Black)
-                .padding(top = UIWindow().safeAreaInsets.size.dp)
+                .padding(top = 60.dp)
         ) {
             Box {
                 BackButton(coroutineScope)
