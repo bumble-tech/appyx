@@ -50,7 +50,6 @@ fun MainViewController() = ComposeUIViewController {
     }
 }
 
-
 @Composable
 private fun BackButton(coroutineScope: CoroutineScope) {
     IconButton(
@@ -64,7 +63,7 @@ private fun BackButton(coroutineScope: CoroutineScope) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
             tint = Color.White,
-            contentDescription = ""
+            contentDescription = "Go Back",
         )
     }
 }
