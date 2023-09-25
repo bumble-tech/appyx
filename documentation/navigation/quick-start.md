@@ -77,7 +77,7 @@ Next, let's modify `RootNode` so it extends `ParentNode`:
 class RootNode(
     buildContext: BuildContext
 ) : ParentNode<NavTarget>(
-    navModel = TODO("We will come back to this in Step 4"),
+    appyxComponent = TODO("We will come back to this in Step 4"),
     buildContext = buildContext
 ) {
 ```
