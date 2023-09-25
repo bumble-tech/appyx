@@ -14,7 +14,7 @@ kotlin {
 
     cocoapods {
         version = "1.0.0"
-        summary = "appyx-nvaigation ios module"
+        summary = "appyx-navigation iOS module"
         homepage = "https://bumble-tech.github.io/appyx/interactions/"
         ios.deploymentTarget = "16.4"
         podfile = project.file("../iosApp/Podfile")
