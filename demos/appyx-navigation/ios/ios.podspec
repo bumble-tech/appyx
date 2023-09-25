@@ -3,7 +3,7 @@ Pod::Spec.new do |spec|
     spec.version                  = '1.0.0'
     spec.homepage                 = 'https://bumble-tech.github.io/appyx/interactions/'
     spec.source                   = { :http=> ''}
-    spec.authors                  = ''
+    spec.authors                  = 'https://github.com/bumble-tech/'
     spec.license                  = ''
     spec.summary                  = 'appyx-nvaigation ios module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/ios.framework'
