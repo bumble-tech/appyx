@@ -10,9 +10,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 
-@Suppress("UNCHECKED_CAST")
 @Composable
 internal fun BackStackParallaxSample(
     screenWidthPx: Int,
@@ -40,7 +38,7 @@ internal fun BackStackParallaxSample(
     AppyxSample(
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        appyxComponent = backStack as BaseAppyxComponent<InteractionTarget, Any>,
+        appyxComponent = backStack,
         actions = actions,
         modifier = modifier,
     )

@@ -38,12 +38,17 @@ import kotlin.random.Random
 
 @Suppress("UnstableCollections") // actions parameter
 @Composable
-internal fun AppyxSample(
+internal fun <InteractionTarget : Any, ModelState : Any> AppyxSample(
     screenWidthPx: Int,
     screenHeightPx: Int,
-    appyxComponent: BaseAppyxComponent<InteractionTarget, Any>,
+    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     actions: Map<String, () -> Unit>,
     modifier: Modifier = Modifier,
+    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
+        ElementUi(
+            elementUiModel = it,
+        )
+    }
 ) {
     AppyxComponentSetup(appyxComponent)
 
@@ -57,7 +62,7 @@ internal fun AppyxSample(
             screenHeightPx = screenHeightPx,
             modifier = Modifier.weight(0.9f).clipToBounds()
         ) { elementUiModel ->
-            ElementUi(elementUiModel = elementUiModel)
+            element(elementUiModel)
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -74,7 +79,7 @@ internal fun AppyxSample(
 }
 
 @Composable
-internal fun ElementUi(
+internal fun <InteractionTarget : Any> ElementUi(
     elementUiModel: ElementUiModel<InteractionTarget>,
     modifier: Modifier = Modifier
 ) {
@@ -85,6 +90,9 @@ internal fun ElementUi(
             .background(
                 color = when (val target = elementUiModel.element.interactionTarget) {
                     is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
+                    else -> {
+                        Color.Cyan
+                    }
                 }
             )
     ) {
