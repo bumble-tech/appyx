@@ -19,7 +19,7 @@
 ### Added
 
 - [#579](https://github.com/bumble-tech/appyx/pull/579) – Expose `AndroidLifecycle` in `PlatformLifecycleRegistry` for Android
-- [#601](https://github.com/bumble-tech/appyx/pull/601) – Support iOS platform for  **:appyx-navigation** & adding sample iOS targets in **:demos:appyx-navigation** & **:demos:appyx-interactions**  
+- [#601](https://github.com/bumble-tech/appyx/pull/601) – iOS support and target apps  
 
 ### Fixed
  
