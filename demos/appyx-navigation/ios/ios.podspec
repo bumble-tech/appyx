@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
     spec.name                     = 'ios'
     spec.version                  = '1.0.0'
-    spec.homepage                 = 'https://bumble-tech.github.io/appyx/interactions/'
+    spec.homepage                 = 'https://bumble-tech.github.io/appyx/navigation/'
     spec.source                   = { :http=> ''}
     spec.authors                  = 'https://github.com/bumble-tech/'
     spec.license                  = ''
