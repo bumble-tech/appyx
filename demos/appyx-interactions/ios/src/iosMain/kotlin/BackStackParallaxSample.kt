@@ -26,8 +26,7 @@ internal fun BackStackParallaxSample(
             savedStateMap = null,
         )
     }
-    val backStack =
-        BackStack(
+    val backStack = BackStack(
             scope = coroutineScope,
             model = model,
             motionController = { BackStackParallax(it) },
