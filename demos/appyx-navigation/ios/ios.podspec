@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
     spec.homepage                 = 'https://bumble-tech.github.io/appyx/navigation/'
     spec.source                   = { :http=> ''}
     spec.authors                  = 'https://github.com/bumble-tech/'
-    spec.license                  = ''
+    spec.license                  = 'Apache License, Version 2.0'
     spec.summary                  = 'appyx-navigation iOS module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/ios.framework'
     spec.libraries                = 'c++'
