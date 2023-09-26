@@ -19,54 +19,115 @@ repositories {
 
 ## Appyx Navigation
 
+Adding the gradle dependency in a non-multiplatform project:
+
 ```groovy
 dependencies {
-    // Multiplatform
-    implementation "com.bumble.appyx:appyx-navigation:$version"
-
-    // Platform-specific
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:appyx-navigation-android:$version"
     implementation "com.bumble.appyx:appyx-navigation-desktop:$version"
     implementation "com.bumble.appyx:appyx-navigation-js:$version"
 }
 ```
 
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation "com.bumble.appyx:appyx-navigation:$version"
+            }
+        }
+    }
+}
+```
+
 ## Appyx Interactions
+
+Adding the gradle dependency in a non-multiplatform project:
 
 ```groovy
 dependencies {
-    // Multiplatform
-    implementation "com.bumble.appyx:appyx-interactions:$version"
-    
-    // Platform-specific
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:appyx-interactions-android:$version"
     implementation "com.bumble.appyx:appyx-interactions-desktop:$version"
     implementation "com.bumble.appyx:appyx-interactions-js:$version"
 }
 ```
 
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation "com.bumble.appyx:appyx-interactions:$version"
+            }
+        }
+    }
+}
+```
 
 ## Appyx Components
 
 ### Back stack
 
+Adding the gradle dependency in a non-multiplatform project:
+
 ```groovy
 dependencies {
-    // Pick one (for your platform)
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:backstack-android:$version"
     implementation "com.bumble.appyx:backstack-desktop:$version"
     implementation "com.bumble.appyx:backstack-js:$version"
 }
 ```
 
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // Use api, not implementation!
+                api "com.bumble.appyx:backstack:$version"
+            }
+        }
+
+    }
+}
+```
+
 ### Spotlight
+
+Adding the gradle dependency in a non-multiplatform project:
 
 ```groovy
 dependencies {
-    // Pick one (for your platform)
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:spotlight-android:$version"
     implementation "com.bumble.appyx:spotlight-desktop:$version"
     implementation "com.bumble.appyx:spotlight-js:$version"
+}
+```
+
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // Use api, not implementation!
+                api "com.bumble.appyx:spotlight:$version"
+            }
+        }
+
+    }
 }
 ```
 

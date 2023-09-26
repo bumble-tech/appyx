@@ -21,7 +21,13 @@ This should be enough to get you started as a rudimentary application structure.
 
 ## 1. Add Appyx to your project
 
-You can find the related Gradle dependencies in [Downloads](../releases/downloads.md).
+Please refer to the [Downloads](../releases/downloads.md) to find the relevant artifacts
+(also depending on whether you're doing this in a multiplatform project or not).
+
+For the scope of this quick start guide, you will need to add dependencies for:
+
+- [Appyx Navigation](../releases/downloads.md#appyx-navigation)
+- [Back stack](../releases/downloads.md#back-stack)
 
 
 ## 2. Create a root Node
@@ -43,6 +49,13 @@ class RootNode(
 
 Plug your root node into your platform: [Multiplatform | Node hosts](multiplatform.md#node-hosts).
 
+Use the multiplatform imports Appyx provides in any of the code snippets from now on, such as: 
+
+```kotlin
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
+```
 
 ## 4. Define children
 
@@ -51,6 +64,9 @@ A single leaf node isn't all that interesting. Let's add some children to the ro
 First, let's define the possible set of children using a sealed class. We'll refer them via these navigation targets:
 
 ```kotlin
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+
 /**
  * You can create this class inside the body of RootNode
  * 
@@ -69,15 +85,13 @@ sealed class NavTarget : Parcelable {
 }
 ```
 
-Note: [Parcelable, Parcelize](multiplatform.md#parcelable-parcelize-rawvalue) are multiplatform.
-
 Next, let's modify `RootNode` so it extends `ParentNode`:
 
 ```kotlin
 class RootNode(
     buildContext: BuildContext
 ) : ParentNode<NavTarget>(
-    navModel = TODO("We will come back to this in Step 4"),
+    appyxComponent = TODO("We will come back to this in Step 5"),
     buildContext = buildContext
 ) {
 ```
@@ -126,18 +140,27 @@ backStack.pop()                     // will remove the currently active child an
 Since we passed the back stack to the `ParentNode`, all such changes will be immediately reflected. We only need to add it to the composition:
 
 ```kotlin
+// Pay attention to the import:
+import com.bumble.appyx.navigation.composable.AppyxComponent
+
 @Composable
 override fun View(modifier: Modifier) {
-    Column {
-        Text("Hello world!")
-        
-        // Let's add the children to the composition
+    Column(
+        modifier = modifier
+    ) {
+        // Let's include the elements of our component into the composition
         AppyxComponent(
-            appyxComponent = backStack
+            appyxComponent = backStack,
+            modifier = Modifier.weight(0.9f)
         )
         
         // Let's also add some controls so we can test it
-        Row {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.1f)
+        ) {
             TextButton(onClick = { backStack.push(NavTarget.Child1) }) {
                 Text(text = "Push child 1")
             }
@@ -157,7 +180,7 @@ override fun View(modifier: Modifier) {
 
 ## 6. Transitions
 
-Adding sliding transitions instead of the default cross-fade is as simple as changing this:
+Adding different state transition visualisations instead of the default cross-fade is as simple as changing this:
 
 ```kotlin
 motionController = { BackStackFader(it) }
@@ -169,9 +192,23 @@ to this:
 motionController = { BackStackSlider(it) }
 ```
 
+or this:
+
+```kotlin
+motionController = { BackStackParallax(it) }
+```
+
+or this:
+
+```kotlin
+motionController = { BackStack3D(it) }
+```
+
+Be sure to check the [Back stack documentation](../components/backstack.md) where you can also find live previews of the above transitions.
+
 Need something more custom?
 
-1. You can check out some other visualisations in the [Back stack documentation](../components/backstack.md), or [create your own](../interactions/ui-representation.md).
+1. You can [create your own visualisations](../interactions/ui-representation.md).
 2. Instead of a back stack, you can also find other [Components](../components/index.md) in the library, or you can [create your own](../interactions/appyxcomponent.md).
 
 
