@@ -171,7 +171,7 @@ override fun View(modifier: Modifier) {
 
 ## 6. Transitions
 
-Adding sliding transitions instead of the default cross-fade is as simple as changing this:
+Adding different state transition visualisations instead of the default cross-fade is as simple as changing this:
 
 ```kotlin
 motionController = { BackStackFader(it) }
@@ -183,9 +183,23 @@ to this:
 motionController = { BackStackSlider(it) }
 ```
 
+or this:
+
+```kotlin
+motionController = { BackStackParallax(it) }
+```
+
+or this:
+
+```kotlin
+motionController = { BackStack3D(it) }
+```
+
+Be sure to check the [Back stack documentation](../components/backstack.md) where you can also find live previews of the above transitions.
+
 Need something more custom?
 
-1. You can check out some other visualisations in the [Back stack documentation](../components/backstack.md), or [create your own](../interactions/ui-representation.md).
+1. You can [create your own visualisations](../interactions/ui-representation.md).
 2. Instead of a back stack, you can also find other [Components](../components/index.md) in the library, or you can [create your own](../interactions/appyxcomponent.md).
 
 
