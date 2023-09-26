@@ -145,7 +145,9 @@ import com.bumble.appyx.navigation.composable.AppyxComponent
 
 @Composable
 override fun View(modifier: Modifier) {
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         // Let's include the elements of our component into the composition
         AppyxComponent(
             appyxComponent = backStack,
