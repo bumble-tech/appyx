@@ -140,12 +140,15 @@ backStack.pop()                     // will remove the currently active child an
 Since we passed the back stack to the `ParentNode`, all such changes will be immediately reflected. We only need to add it to the composition:
 
 ```kotlin
+// Pay attention to the import:
+import com.bumble.appyx.navigation.composable.AppyxComponent
+
 @Composable
 override fun View(modifier: Modifier) {
     Column {
         Text("Hello world!")
         
-        // Let's add the children to the composition
+        // Let's include the elements of our component into the composition
         AppyxComponent(
             appyxComponent = backStack
         )
