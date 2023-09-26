@@ -146,15 +146,19 @@ import com.bumble.appyx.navigation.composable.AppyxComponent
 @Composable
 override fun View(modifier: Modifier) {
     Column {
-        Text("Hello world!")
-        
         // Let's include the elements of our component into the composition
         AppyxComponent(
-            appyxComponent = backStack
+            appyxComponent = backStack,
+            modifier = Modifier.weight(0.9f)
         )
         
         // Let's also add some controls so we can test it
-        Row {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(0.1f)
+        ) {
             TextButton(onClick = { backStack.push(NavTarget.Child1) }) {
                 Text(text = "Push child 1")
             }
