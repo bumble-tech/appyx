@@ -21,7 +21,13 @@ This should be enough to get you started as a rudimentary application structure.
 
 ## 1. Add Appyx to your project
 
-You can find the related Gradle dependencies in [Downloads](../releases/downloads.md).
+Please refer to the [Downloads](../releases/downloads.md) to find the relevant artifacts
+(also depending on whether you're doing this in a multiplatform project or not).
+
+For the scope of this quick start guide, you will need to add dependencies for:
+
+- [Appyx Navigation](../releases/downloads.md#appyx-navigation)
+- [Back stack](../releases/downloads.md#back-stack)
 
 
 ## 2. Create a root Node
@@ -43,6 +49,13 @@ class RootNode(
 
 Plug your root node into your platform: [Multiplatform | Node hosts](multiplatform.md#node-hosts).
 
+Use the multiplatform imports Appyx provides in any of the code snippets from now on, such as: 
+
+```kotlin
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+import com.bumble.appyx.utils.multiplatform.RawValue
+```
 
 ## 4. Define children
 
@@ -51,6 +64,9 @@ A single leaf node isn't all that interesting. Let's add some children to the ro
 First, let's define the possible set of children using a sealed class. We'll refer them via these navigation targets:
 
 ```kotlin
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+
 /**
  * You can create this class inside the body of RootNode
  * 
@@ -69,15 +85,13 @@ sealed class NavTarget : Parcelable {
 }
 ```
 
-Note: [Parcelable, Parcelize](multiplatform.md#parcelable-parcelize-rawvalue) are multiplatform.
-
 Next, let's modify `RootNode` so it extends `ParentNode`:
 
 ```kotlin
 class RootNode(
     buildContext: BuildContext
 ) : ParentNode<NavTarget>(
-    appyxComponent = TODO("We will come back to this in Step 4"),
+    appyxComponent = TODO("We will come back to this in Step 5"),
     buildContext = buildContext
 ) {
 ```
