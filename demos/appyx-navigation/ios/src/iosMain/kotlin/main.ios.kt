@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.navigation.integration.IosNodeHost
+import com.bumble.appyx.navigation.integration.MainIntegrationPoint
 import com.bumble.appyx.navigation.node.container.ContainerNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -24,8 +26,11 @@ import kotlinx.coroutines.launch
 
 val backEvents: Channel<Unit> = Channel()
 
+private val integrationPoint = MainIntegrationPoint()
+
 @Suppress("FunctionNaming")
 fun MainViewController() = ComposeUIViewController {
+
     AppyxSampleAppTheme {
         val coroutineScope = rememberCoroutineScope()
         Scaffold(
@@ -39,7 +44,8 @@ fun MainViewController() = ComposeUIViewController {
                 Box(modifier = Modifier.fillMaxSize()) {
                     IosNodeHost(
                         modifier = Modifier,
-                        onBackPressedEvents = backEvents.receiveAsFlow()
+                        onBackPressedEvents = backEvents.receiveAsFlow(),
+                        integrationPoint = remember { integrationPoint }
                     ) { buildContext ->
                         ContainerNode(
                             buildContext = buildContext,
@@ -49,6 +55,8 @@ fun MainViewController() = ComposeUIViewController {
             }
         }
     }
+}.also { uiViewController ->
+    integrationPoint.setViewController(uiViewController)
 }
 
 @Composable

@@ -25,7 +25,7 @@ import platform.UIKit.UIScreen
 fun <N : Node> IosNodeHost(
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,
-    integrationPoint: IntegrationPoint = remember { MainIntegrationPoint() },
+    integrationPoint: IntegrationPoint,
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
     factory: NodeFactory<N>,
 ) {

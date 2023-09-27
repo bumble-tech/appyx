@@ -1,14 +1,24 @@
 package com.bumble.appyx.navigation.integration
 
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
+import platform.UIKit.UIViewController
+import platform.UIKit.navigationController
 
-class MainIntegrationPoint : IntegrationPoint() {
+class MainIntegrationPoint: IntegrationPoint() {
+    private lateinit var viewController: UIViewController
+
     override val isChangingConfigurations: Boolean
         get() = false
 
-    @Suppress("EmptyFunctionBlock")
-    override fun onRootFinished() {}
+    fun setViewController(viewController: UIViewController) {
+        this.viewController = viewController
+    }
 
-    @Suppress("EmptyFunctionBlock")
-    override fun handleUpNavigation() {}
+    override fun onRootFinished() {
+        viewController.dismissModalViewControllerAnimated(false)
+    }
+
+    override fun handleUpNavigation() {
+        viewController.navigationController?.popViewControllerAnimated(false)
+    }
 }
