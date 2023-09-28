@@ -15,9 +15,15 @@ import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.CollectionInfo
+import androidx.compose.ui.semantics.CustomAccessibilityAction
+import androidx.compose.ui.semantics.collectionInfo
+import androidx.compose.ui.semantics.customActions
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
@@ -69,11 +75,12 @@ fun SpotlightExperiment(
         Target.Child6,
         Target.Child7,
     )
+    val spotlightModel = SpotlightModel(
+        items = items,
+        savedStateMap = null
+    )
     val spotlight = Spotlight(
-        model = SpotlightModel(
-            items = items,
-            savedStateMap = null
-        ),
+        model = spotlightModel,
         motionController = motionController,
         gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
@@ -93,6 +100,7 @@ fun SpotlightExperiment(
     ) {
         SpotlightUi(
             spotlight = spotlight,
+            model = spotlightModel,
             modifier = Modifier.weight(0.9f)
         )
 
@@ -130,6 +138,7 @@ fun SpotlightExperiment(
 @Composable
 fun <InteractionTarget : Any> SpotlightUi(
     spotlight: Spotlight<InteractionTarget>,
+    model: SpotlightModel<InteractionTarget>,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
@@ -140,15 +149,47 @@ fun <InteractionTarget : Any> SpotlightUi(
             .padding(
                 horizontal = 64.dp,
                 vertical = 12.dp
-            ),
+            )
+            .semantics {
+                collectionInfo = CollectionInfo(1, spotlight.elements.value.all.size)
+            },
         element = { elementUiModel ->
+            val elementIndex = spotlight.elements.value.all.indexOf(elementUiModel.element)
+            val state = model.output.collectAsState()
+            val activeIndex = state.value.currentTargetState.activeIndex.toInt()
             Element(
                 color = color,
                 elementUiModel = elementUiModel,
-                contentDescription =
-                "${SPOTLIGHT_EXPERIMENT_TEST_HELPER}_${elementUiModel.element.id}",
                 modifier = Modifier
                     .fillMaxSize()
+                    .semantics(mergeDescendants = true) {
+                        customActions =
+                            if (elementIndex == activeIndex) {
+                                listOfNotNull(
+                                    CustomAccessibilityAction("Next") {
+                                        spotlight.next()
+                                        true
+                                    }
+                                        .takeIf { elementIndex != spotlight.elements.value.all.size - 1 },
+                                    CustomAccessibilityAction("Previous") {
+                                        spotlight.previous()
+                                        true
+                                    }
+                                        .takeIf { elementIndex != 0 }
+                                )
+                            } else {
+                                listOf(
+                                    CustomAccessibilityAction("Select") {
+                                        if (elementIndex < activeIndex) {
+                                            spotlight.previous()
+                                        } else {
+                                            spotlight.next()
+                                        }
+                                        true
+                                    }
+                                )
+                            }
+                    }
                     .pointerInput(elementUiModel.element.id) {
                         detectDragGestures(
                             onDrag = { change, dragAmount ->
