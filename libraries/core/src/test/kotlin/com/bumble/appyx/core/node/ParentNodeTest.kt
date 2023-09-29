@@ -3,6 +3,8 @@ package com.bumble.appyx.core.node
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.bumble.appyx.core.children.nodeOrNull
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.NavModel
+import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.navigation.model.permanent.operation.addUnique
 import com.bumble.appyx.core.node.ParentNodeTest.NavTarget.ChildA
@@ -84,7 +86,7 @@ class ParentNodeTest {
             //given
             val permanentNavModel: PermanentNavModel<NavTarget> =
                 PermanentNavModel(ChildA, savedStateMap = null)
-            val node = buildParentNode(permanentNavModel = permanentNavModel)
+            val node = buildParentNode(navModel = permanentNavModel)
             assertChildrenCount(node, 1)
 
             // when
@@ -92,10 +94,32 @@ class ParentNodeTest {
             assertChildrenCount(node, 2)
             val state = node.saveInstanceState { true }
             val restoredStateNode =
-                buildParentNode(permanentNavModel = permanentNavModel, savedStateMap = state)
+                buildParentNode(navModel = permanentNavModel, savedStateMap = state)
 
             //then
             assertChildrenCount(restoredStateNode, 2)
+        }
+
+    @Test
+    fun `GIVEN node with CombinedNavModel with PermanentNavModel WHEN saves state THEN restores state correctly`() =
+        testScope.runTest {
+            //given
+            val permanentNavModel: PermanentNavModel<NavTarget> =
+                PermanentNavModel(ChildA, savedStateMap = null)
+
+            val backStack = buildBackStack(initialElement = ChildB)
+            val node = buildParentNode(navModel = permanentNavModel + backStack)
+            assertChildrenCount(node, 2)
+
+            // when
+            permanentNavModel.addUnique(ChildB)
+            assertChildrenCount(node, 3)
+            val state = node.saveInstanceState { true }
+            val restoredStateNode =
+                buildParentNode(navModel = permanentNavModel + backStack, savedStateMap = state)
+
+            //then
+            assertChildrenCount(restoredStateNode, 3)
         }
 
     private fun assertChildrenCount(node: ParentNode<*>, expectedCount: Int) {
@@ -103,27 +127,30 @@ class ParentNodeTest {
         assertTrue(childrenCount == expectedCount)
     }
 
-    private fun buildBackStack(initialElement: NavTarget = ChildA) =
-        BackStack(initialElement = initialElement, savedStateMap = null)
+    private fun buildBackStack(
+        initialElement: NavTarget = ChildA,
+        savedStateMap: SavedStateMap? = null
+    ) =
+        BackStack(initialElement = initialElement, savedStateMap = savedStateMap)
 
     private fun buildParentNode(backStack: BackStack<NavTarget>) =
         TestParentNode(backStack).apply { onBuilt() }
 
     private fun buildParentNode(
         savedStateMap: SavedStateMap? = null,
-        permanentNavModel: PermanentNavModel<NavTarget>
+        navModel: NavModel<NavTarget, *>
     ) =
         TestPermanentModelParentNode(
             savedStateMap = savedStateMap,
-            permanentNavModel = permanentNavModel
+            navModel = navModel
         ).apply { onBuilt() }
 
     private class TestPermanentModelParentNode(
         savedStateMap: SavedStateMap? = null,
-        permanentNavModel: PermanentNavModel<NavTarget>
+        navModel: NavModel<NavTarget, *>
     ) : ParentNode<NavTarget>(
         buildContext = BuildContext.root(savedStateMap),
-        navModel = permanentNavModel
+        navModel = navModel
     ) {
 
         override fun resolve(navTarget: NavTarget, buildContext: BuildContext) = when (navTarget) {
