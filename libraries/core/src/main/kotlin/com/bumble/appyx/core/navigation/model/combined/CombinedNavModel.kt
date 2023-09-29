@@ -6,6 +6,7 @@ import com.bumble.appyx.core.navigation.NavElements
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.NavModelAdapter
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.plugin.Destroyable
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +18,13 @@ import kotlin.coroutines.EmptyCoroutineContext
 class CombinedNavModel<NavTarget>(
     val navModels: List<NavModel<NavTarget, *>>,
 ) : NavModel<NavTarget, Any?>, Destroyable {
+
+    init {
+        val permanentNavModelCount = navModels.filterIsInstance<PermanentNavModel<*>>().count()
+        check(permanentNavModelCount <= MAX_PERMANENT_NAV_MODEL_COUNT) {
+            "Do not provide more than one PermanentNavModel"
+        }
+    }
 
     constructor(vararg navModels: NavModel<NavTarget, *>) : this(navModels.toList())
 
@@ -59,6 +67,10 @@ class CombinedNavModel<NavTarget>(
     override fun destroy() {
         scope.cancel()
         navModels.filterIsInstance<Destroyable>().forEach { it.destroy() }
+    }
+
+    companion object {
+        private const val MAX_PERMANENT_NAV_MODEL_COUNT = 1
     }
 
 }

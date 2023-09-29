@@ -32,6 +32,7 @@ import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.Resolver
 import com.bumble.appyx.core.navigation.isTransitioning
+import com.bumble.appyx.core.navigation.model.combined.CombinedNavModel
 import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.navigation.model.permanent.operation.addUnique
@@ -62,11 +63,56 @@ abstract class ParentNode<NavTarget : Any>(
     plugins = plugins + navModel + childAware
 ), Resolver<NavTarget> {
 
-    private val permanentNavModel = PermanentNavModel<NavTarget>(
-        savedStateMap = buildContext.savedStateMap,
-        key = KEY_PERMANENT_NAV_MODEL,
-    )
-    val navModel: NavModel<NavTarget, *> = permanentNavModel + navModel
+    private lateinit var permanentNavModel: PermanentNavModel<NavTarget>
+    private var isPermanentNavModelProvided: Boolean? = null
+    val navModel: NavModel<NavTarget, *> = resolveNavModels(navModel, buildContext)
+
+    /**
+     * If PermanentNavModel is provided in the constructor, it will be retrieved and used. Original NavModel
+     * will not be modified. Otherwise, PermanentNavModel will be created internally, and combined with
+     * the original NavModel. In ths case it's not added to the list of plugins, and we'll have to call
+     * onSavedInstanceState manually.
+     */
+    private fun resolveNavModels(
+        navModel: NavModel<NavTarget, *>,
+        buildContext: BuildContext,
+    ): NavModel<NavTarget, *> {
+
+        val existingPermanentNavModel = retrievePermanentNavModel(navModel)
+        isPermanentNavModelProvided = existingPermanentNavModel != null
+
+        return if (existingPermanentNavModel != null) {
+            permanentNavModel = existingPermanentNavModel
+            navModel
+        } else {
+            permanentNavModel = PermanentNavModel(
+                savedStateMap = buildContext.savedStateMap,
+                key = KEY_PERMANENT_NAV_MODEL,
+            )
+            navModel + permanentNavModel
+        }
+    }
+
+    /**
+     * If PermanentNavModel is provided in the constructor, it will be retrieved and used.
+     * Otherwise, it will be created internally.
+     */
+    private fun retrievePermanentNavModel(navModel: NavModel<NavTarget, *>): PermanentNavModel<NavTarget>? =
+        when (navModel) {
+            is CombinedNavModel<NavTarget> -> {
+                navModel
+                    .navModels
+                    .find { it is PermanentNavModel<NavTarget> } as PermanentNavModel<NavTarget>?
+            }
+            is PermanentNavModel<NavTarget> -> navModel
+            else -> null
+        }
+
+    private fun createPermanentNavModel(buildContext: BuildContext): PermanentNavModel<NavTarget> =
+        PermanentNavModel(
+            savedStateMap = buildContext.savedStateMap,
+            key = KEY_PERMANENT_NAV_MODEL,
+        )
 
     private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
@@ -225,8 +271,10 @@ abstract class ParentNode<NavTarget : Any>(
     @CallSuper
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        // permanentNavModel is not provided as a plugin, store manually
-        permanentNavModel.saveInstanceState(state)
+        if (isPermanentNavModelProvided != true) {
+            // permanentNavModel is not provided as a plugin, store manually
+            permanentNavModel.saveInstanceState(state)
+        }
         childNodeCreationManager.saveChildrenState(state)
     }
 
