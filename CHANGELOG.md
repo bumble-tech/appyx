@@ -2,7 +2,7 @@
 
 ## Pending changes
 
--
+- [#605](https://github.com/bumble-tech/appyx/pull/605) – **Fixed**: Reuse PermanentNavModel if provided in the list of NavModels 
 
 ---
 
