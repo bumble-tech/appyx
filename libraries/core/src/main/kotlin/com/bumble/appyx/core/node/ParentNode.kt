@@ -64,7 +64,7 @@ abstract class ParentNode<NavTarget : Any>(
 ), Resolver<NavTarget> {
 
     private lateinit var permanentNavModel: PermanentNavModel<NavTarget>
-    private var isPermanentNavModelProvided: Boolean? = null
+    private var isPermanentNavModelCreated: Boolean = false
     val navModel: NavModel<NavTarget, *> = resolveNavModels(navModel, buildContext)
 
     /**
@@ -79,16 +79,12 @@ abstract class ParentNode<NavTarget : Any>(
     ): NavModel<NavTarget, *> {
 
         val existingPermanentNavModel = retrievePermanentNavModel(navModel)
-        isPermanentNavModelProvided = existingPermanentNavModel != null
 
         return if (existingPermanentNavModel != null) {
             permanentNavModel = existingPermanentNavModel
             navModel
         } else {
-            permanentNavModel = PermanentNavModel(
-                savedStateMap = buildContext.savedStateMap,
-                key = KEY_PERMANENT_NAV_MODEL,
-            )
+            permanentNavModel = createPermanentNavModel(buildContext)
             navModel + permanentNavModel
         }
     }
@@ -104,11 +100,13 @@ abstract class ParentNode<NavTarget : Any>(
             else -> null
         }
 
-    private fun createPermanentNavModel(buildContext: BuildContext): PermanentNavModel<NavTarget> =
-        PermanentNavModel(
+    private fun createPermanentNavModel(buildContext: BuildContext): PermanentNavModel<NavTarget> {
+        isPermanentNavModelCreated = true
+        return PermanentNavModel(
             savedStateMap = buildContext.savedStateMap,
             key = KEY_PERMANENT_NAV_MODEL,
         )
+    }
 
     private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
@@ -267,7 +265,7 @@ abstract class ParentNode<NavTarget : Any>(
     @CallSuper
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        if (isPermanentNavModelProvided != true) {
+        if (isPermanentNavModelCreated) {
             // permanentNavModel is not provided as a plugin, store manually
             permanentNavModel.saveInstanceState(state)
         }
