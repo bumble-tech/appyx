@@ -20,9 +20,14 @@ class CombinedNavModel<NavTarget>(
 ) : NavModel<NavTarget, Any?>, Destroyable {
 
     init {
-        val permanentNavModelCount = navModels.filterIsInstance<PermanentNavModel<*>>().count()
+        val permanentNavModelCount = navModels.count { it is PermanentNavModel<*> }
         check(permanentNavModelCount <= MAX_PERMANENT_NAV_MODEL_COUNT) {
-            "Do not provide more than one PermanentNavModel"
+            "CombinedNavModel does not support more than one PermanentNavModel"
+        }
+
+        val hasNoNestedCombinedNavModel = navModels.count { it is CombinedNavModel<*> } == 0
+        check(hasNoNestedCombinedNavModel) {
+            "CombinedNavModel does not support nested CombinedNavModel"
         }
     }
 
