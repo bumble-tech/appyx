@@ -93,10 +93,6 @@ abstract class ParentNode<NavTarget : Any>(
         }
     }
 
-    /**
-     * If PermanentNavModel is provided in the constructor, it will be retrieved and used.
-     * Otherwise, it will be created internally.
-     */
     private fun retrievePermanentNavModel(navModel: NavModel<NavTarget, *>): PermanentNavModel<NavTarget>? =
         when (navModel) {
             is CombinedNavModel<NavTarget> -> {
