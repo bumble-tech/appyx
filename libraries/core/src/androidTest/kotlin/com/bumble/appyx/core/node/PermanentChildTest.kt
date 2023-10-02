@@ -39,6 +39,13 @@ class PermanentChildTest {
     }
 
     @Test
+    fun `WHEN_permanent_model_does_not_contain_relevant_nav_key_THEN_permanent_child_is_not_rendered`() {
+        rule.start()
+
+        rule.onNode(hasTestTag(TestParentNode.NavTarget::class.java.name)).assertDoesNotExist()
+    }
+
+    @Test
     fun `WHEN_visibility_switched_THEN_permanent_child_is_reused`() {
         createPermanentNavModelWithNavKey()
         rule.start()

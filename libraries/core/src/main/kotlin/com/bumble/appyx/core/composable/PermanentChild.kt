@@ -1,11 +1,16 @@
 package com.bumble.appyx.core.composable
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.core.mapState
 import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
+import kotlinx.coroutines.flow.SharingStarted
 
 @Composable
 fun <NavTarget : Any> ParentNode<NavTarget>.PermanentChild(
@@ -13,19 +18,22 @@ fun <NavTarget : Any> ParentNode<NavTarget>.PermanentChild(
     navTarget: NavTarget,
     decorator: @Composable (child: ChildRenderer) -> Unit
 ) {
-    val child = remember(navTarget, permanentNavModel) {
+    val scope = rememberCoroutineScope()
+    val child by remember(navTarget, permanentNavModel) {
         permanentNavModel
             .elements
-            .value
-            .find { it.key.navTarget == navTarget }
-            ?.let { childOrCreate(it.key) }
-            ?: throw IllegalStateException(
-                "No child found for $navTarget in $permanentNavModel. " +
-                        "Add $navTarget to $permanentNavModel before calling PermanentChild."
-            )
+            // use WhileSubscribed or Lazy otherwise desynchronisation issue
+            .mapState(scope, SharingStarted.WhileSubscribed()) { navElements ->
+                navElements
+                    .find { it.key.navTarget == navTarget }
+                    ?.let { childOrCreate(it.key) }
+            }
+    }.collectAsState()
+
+    child?.let {
+        decorator(PermanentChildRender(it.node))
     }
 
-    decorator(PermanentChildRender(child.node))
 }
 
 @Composable
