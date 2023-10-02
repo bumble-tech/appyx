@@ -10,12 +10,7 @@ title: Appyx Navigation – Multiplatform
 ![badge-jvm](https://img.shields.io/badge/platform-jvm-orange)
 ![badge-macos](https://img.shields.io/badge/platform-macos-purple)
 ![badge-js](https://img.shields.io/badge/platform-js-yellow)
-
-In progress:
-
 ![badge-ios](https://img.shields.io/badge/platform-ios-lightgray)
-
-
 
 ## Lifecycle
 
@@ -183,9 +178,52 @@ fun main() {
 
 ```
 
+### iOS
+
+```kotlin
+val backEvents: Channel<Unit> = Channel()
+
+fun MainViewController() = ComposeUIViewController {
+    YourAppTheme {
+        IosNodeHost(
+            modifier = Modifier,
+            // See back handling section in the docs below!
+            onBackPressedEvents = backEvents.receiveAsFlow()
+        ) {
+            RootNode(
+                buildContext = it
+            )
+        }
+    }
+}
+
+@Composable
+private fun BackButton(coroutineScope: CoroutineScope) {
+    IconButton(
+        onClick = {
+            coroutineScope.launch {
+                backEvents.send(Unit)
+            }
+        },
+        modifier = Modifier.zIndex(99f)
+    ) {
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            tint = Color.White,
+            contentDescription = "Go Back"
+        )
+    }
+}
+
+```
+
 ## Back handling
 
+### Android
+
 On Android back events are handled automatically.
+
+### Desktop & Web
 
 In the above [desktop](#desktop) and [web](#web) examples there is a reference to an `onKeyEvent` method.
 
@@ -208,4 +246,9 @@ private fun onKeyEvent(
         else -> false
     }
 ``` 
+### iOS
+
+On [iOS](#ios), you can design a user interface element to enable back navigation, similar to how it's done on other platforms. 
+In the example mentioned earlier, we create a Composable component `BackButton` that includes an `ArrowBack` icon. 
+When this button is clicked, it triggers the back event through the `backEvents` `Channel`. 
 
