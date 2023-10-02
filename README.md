@@ -91,7 +91,7 @@ This is a Kotlin module that contains the logic common for Android, Desktop, iOS
 This is a Kotlin module that builds into an Android application. It uses Gradle as the build system.
 The `android` module depends on and uses the `common` module as a regular Android library.
 
-### iOS
+### ios
 
 This is an Xcode project that builds into an iOS application.
 The `:demos:appyx-navigation` module depends on and uses the `:demos:appyx-navigation:common` module as a CocoaPods dependency.
