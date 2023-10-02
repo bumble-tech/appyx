@@ -42,6 +42,10 @@ import kotlinx.parcelize.Parcelize
 class StatefulNode1(
     buildContext: BuildContext,
     private val permanentNavModel: PermanentNavModel<NavTarget> = PermanentNavModel(
+        NavTarget.Child(BASE_COUNTER),
+        NavTarget.Child(BASE_COUNTER * 2),
+        NavTarget.Child(BASE_COUNTER * 3),
+        NavTarget.Child(BASE_COUNTER * 4),
         savedStateMap = buildContext.savedStateMap
     )
 ) : ParentNode<StatefulNode1.NavTarget>(

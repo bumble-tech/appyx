@@ -13,7 +13,7 @@ fun <NavTarget : Any> ParentNode<NavTarget>.PermanentChild(
     navTarget: NavTarget,
     decorator: @Composable (child: ChildRenderer) -> Unit
 ) {
-    val child = remember(navTarget) {
+    val child = remember(navTarget, permanentNavModel) {
         permanentNavModel
             .elements
             .value
