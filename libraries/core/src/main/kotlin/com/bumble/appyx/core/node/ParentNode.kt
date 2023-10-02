@@ -2,14 +2,7 @@ package com.bumble.appyx.core.node
 
 import androidx.annotation.CallSuper
 import androidx.annotation.VisibleForTesting
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -24,21 +17,15 @@ import com.bumble.appyx.core.children.ChildEntryMap
 import com.bumble.appyx.core.children.ChildNodeCreationManager
 import com.bumble.appyx.core.children.ChildrenCallback
 import com.bumble.appyx.core.children.nodeOrNull
-import com.bumble.appyx.core.composable.ChildRenderer
 import com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager
-import com.bumble.appyx.core.mapState
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.navigation.NavKey
 import com.bumble.appyx.core.navigation.NavModel
 import com.bumble.appyx.core.navigation.Resolver
 import com.bumble.appyx.core.navigation.isTransitioning
-import com.bumble.appyx.core.navigation.model.combined.plus
-import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
-import com.bumble.appyx.core.navigation.model.permanent.operation.addUnique
 import com.bumble.appyx.core.plugin.Plugin
 import com.bumble.appyx.core.state.MutableSavedStateMap
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -50,7 +37,7 @@ import kotlin.reflect.KClass
 @Suppress("TooManyFunctions")
 @Stable
 abstract class ParentNode<NavTarget : Any>(
-    navModel: NavModel<NavTarget, *>,
+    val navModel: NavModel<NavTarget, *>,
     buildContext: BuildContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
@@ -61,12 +48,6 @@ abstract class ParentNode<NavTarget : Any>(
     buildContext = buildContext,
     plugins = plugins + navModel + childAware
 ), Resolver<NavTarget> {
-
-    private val permanentNavModel = PermanentNavModel<NavTarget>(
-        savedStateMap = buildContext.savedStateMap,
-        key = KEY_PERMANENT_NAV_MODEL,
-    )
-    val navModel: NavModel<NavTarget, *> = permanentNavModel + navModel
 
     private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
@@ -95,35 +76,6 @@ abstract class ParentNode<NavTarget : Any>(
 
     fun childOrCreate(navKey: NavKey<NavTarget>): ChildEntry.Initialized<NavTarget> =
         childNodeCreationManager.childOrCreate(navKey)
-
-    @Composable
-    fun PermanentChild(
-        navTarget: NavTarget,
-        decorator: @Composable (child: ChildRenderer) -> Unit
-    ) {
-        LaunchedEffect(navTarget) {
-            permanentNavModel.addUnique(navTarget)
-        }
-        val scope = rememberCoroutineScope()
-        val child by remember(navTarget) {
-            permanentNavModel
-                .elements
-                // use WhileSubscribed or Lazy otherwise desynchronisation issue
-                .mapState(scope, SharingStarted.WhileSubscribed()) { navElements ->
-                    navElements
-                        .find { it.key.navTarget == navTarget }
-                        ?.let { childOrCreate(it.key) }
-                }
-        }.collectAsState()
-        child?.let {
-            decorator(child = PermanentChildRender(it.node))
-        }
-    }
-
-    @Composable
-    fun PermanentChild(navTarget: NavTarget) {
-        PermanentChild(navTarget) { child -> child() }
-    }
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         super.updateLifecycleState(state)
@@ -225,8 +177,6 @@ abstract class ParentNode<NavTarget : Any>(
     @CallSuper
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        // permanentNavModel is not provided as a plugin, store manually
-        permanentNavModel.saveInstanceState(state)
         childNodeCreationManager.saveChildrenState(state)
     }
 
@@ -266,26 +216,8 @@ abstract class ParentNode<NavTarget : Any>(
 
     companion object {
         const val ATTACH_WORKFLOW_SYNC_TIMEOUT = 5000L
-        const val KEY_PERMANENT_NAV_MODEL = "PermanentNavModel"
     }
 
-    private class PermanentChildRender(private val node: Node) : ChildRenderer {
 
-        @Suppress(
-            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
-        )
-        @Composable
-        override operator fun invoke(modifier: Modifier) {
-            node.Compose(modifier)
-        }
-
-        @Suppress(
-            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
-        )
-        @Composable
-        override operator fun invoke() {
-            invoke(modifier = Modifier)
-        }
-    }
 
 }

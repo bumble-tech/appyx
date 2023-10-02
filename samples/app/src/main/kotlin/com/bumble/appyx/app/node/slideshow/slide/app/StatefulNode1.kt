@@ -25,13 +25,14 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.app.composable.Page
 import com.bumble.appyx.app.node.child.GenericChildNode
 import com.bumble.appyx.app.ui.AppyxSampleAppTheme
+import com.bumble.appyx.core.composable.PermanentChild
 import com.bumble.appyx.core.integration.NodeHost
 import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 import com.bumble.appyx.core.modality.BuildContext
 import com.bumble.appyx.core.modality.BuildContext.Companion.root
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
-import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import kotlinx.coroutines.delay
 import kotlinx.parcelize.Parcelize
 
@@ -39,12 +40,13 @@ import kotlinx.parcelize.Parcelize
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 class StatefulNode1(
-    buildContext: BuildContext
-) : ParentNode<StatefulNode1.NavTarget>(
-    buildContext = buildContext,
-    navModel = PermanentNavModel(
+    buildContext: BuildContext,
+    private val permanentNavModel: PermanentNavModel<NavTarget> = PermanentNavModel(
         savedStateMap = buildContext.savedStateMap
     )
+) : ParentNode<StatefulNode1.NavTarget>(
+    buildContext = buildContext,
+    navModel = permanentNavModel,
 ) {
     sealed class NavTarget : Parcelable {
         @Parcelize
@@ -62,8 +64,8 @@ class StatefulNode1(
             modifier = modifier,
             title = "Stateful",
             body = "Each Node on this screen has some state:" +
-                "\n\n1. The counter represents data from a background process (e.g. server)." +
-                "\n2. You can also tap them to change their colour. Try it!"
+                    "\n\n1. The counter represents data from a background process (e.g. server)." +
+                    "\n2. You can also tap them to change their colour. Try it!"
         ) {
             Column(Modifier.fillMaxSize()) {
                 Row(
@@ -108,8 +110,15 @@ class StatefulNode1(
     }
 
     @Composable
-    private fun ChildInABox(navTarget: NavTarget, showWithDelay: Long, modifier: Modifier = Modifier) {
-        PermanentChild(navTarget) { child ->
+    private fun ChildInABox(
+        navTarget: NavTarget,
+        showWithDelay: Long,
+        modifier: Modifier = Modifier
+    ) {
+        PermanentChild(
+            permanentNavModel = permanentNavModel,
+            navTarget
+        ) { child ->
             Box(modifier) {
                 var visible by remember { mutableStateOf(false) }
                 AnimatedVisibility(
