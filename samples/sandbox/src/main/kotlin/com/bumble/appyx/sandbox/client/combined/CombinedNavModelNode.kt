@@ -22,13 +22,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.core.composable.Children
+import com.bumble.appyx.core.composable.PermanentChild
 import com.bumble.appyx.core.modality.BuildContext
+import com.bumble.appyx.core.navigation.model.combined.plus
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.navmodel.backstack.BackStack
 import com.bumble.appyx.navmodel.backstack.operation.push
 import com.bumble.appyx.navmodel.backstack.transitionhandler.rememberBackstackFader
-import com.bumble.appyx.core.navigation.model.combined.plus
 import com.bumble.appyx.sandbox.client.child.ChildNode
 import com.bumble.appyx.sandbox.client.combined.CombinedNavModelNode.NavTarget.Dynamic.Child
 import kotlinx.parcelize.Parcelize
@@ -46,9 +48,13 @@ class CombinedNavModelNode(
         savedStateMap = buildContext.savedStateMap,
         key = "BackStack2",
     ),
+    private val permanentNavModel: PermanentNavModel<NavTarget> = PermanentNavModel(
+        NavTarget.Permanent.Child1,
+        savedStateMap = buildContext.savedStateMap,
+    )
 ) : ParentNode<CombinedNavModelNode.NavTarget>(
     buildContext = buildContext,
-    navModel = backStack1 + backStack2,
+    navModel = backStack1 + backStack2 + permanentNavModel,
 ) {
 
     sealed class NavTarget : Parcelable {
@@ -100,7 +106,7 @@ class CombinedNavModelNode(
             Button(onClick = { visibility = !visibility }) {
                 Text(text = "Trigger visibility")
             }
-            PermanentChild(NavTarget.Permanent.Child1) { child ->
+            PermanentChild(permanentNavModel, NavTarget.Permanent.Child1) { child ->
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()

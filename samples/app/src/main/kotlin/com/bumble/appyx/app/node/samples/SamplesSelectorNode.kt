@@ -19,9 +19,10 @@ import com.bumble.appyx.app.node.backstack.InsideTheBackStack
 import com.bumble.appyx.app.node.cards.CardsExampleNode
 import com.bumble.appyx.app.node.slideshow.WhatsAppyxSlideShow
 import com.bumble.appyx.core.composable.ChildRenderer
+import com.bumble.appyx.core.composable.PermanentChild
 import com.bumble.appyx.core.integrationpoint.LocalIntegrationPoint
 import com.bumble.appyx.core.modality.BuildContext
-import com.bumble.appyx.core.navigation.EmptyNavModel
+import com.bumble.appyx.core.navigation.model.permanent.PermanentNavModel
 import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import com.bumble.appyx.core.node.node
@@ -30,9 +31,16 @@ import kotlinx.parcelize.Parcelize
 
 class SamplesSelectorNode(
     buildContext: BuildContext,
+    private val permanentNavModel: PermanentNavModel<NavTarget> = PermanentNavModel(
+        NavTarget.InsideTheBackStack,
+        NavTarget.CardsExample,
+        NavTarget.OnboardingScreen,
+        NavTarget.ComposeNavigationScreen,
+        savedStateMap = buildContext.savedStateMap,
+    ),
     private val outputFunc: (Output) -> Unit
 ) : ParentNode<SamplesSelectorNode.NavTarget>(
-    navModel = EmptyNavModel<NavTarget, Unit>(),
+    navModel = permanentNavModel,
     buildContext = buildContext
 ) {
     sealed class NavTarget : Parcelable {
@@ -53,7 +61,7 @@ class SamplesSelectorNode(
         object OpenCardsExample : Output()
         object OpenOnboarding : Output()
         object OpenComposeNavigation : Output()
-        object OpenInsideTheBackStack: Output()
+        object OpenInsideTheBackStack : Output()
     }
 
     @ExperimentalUnitApi
@@ -67,6 +75,7 @@ class SamplesSelectorNode(
                 buildContext = buildContext,
                 autoAdvanceDelayMs = 2500
             )
+
             is NavTarget.ComposeNavigationScreen -> {
                 node(buildContext) {
                     // compose-navigation fetches the integration point via LocalIntegrationPoint
@@ -77,6 +86,7 @@ class SamplesSelectorNode(
                     }
                 }
             }
+
             is NavTarget.InsideTheBackStack -> InsideTheBackStack(
                 buildContext = buildContext,
                 autoAdvanceDelayMs = 1000
@@ -124,6 +134,7 @@ class SamplesSelectorNode(
             onClick = { outputFunc(Output.OpenInsideTheBackStack) },
         ) {
             PermanentChild(
+                permanentNavModel = permanentNavModel,
                 navTarget = NavTarget.InsideTheBackStack,
                 decorator = decorator
             )
@@ -141,6 +152,7 @@ class SamplesSelectorNode(
             onClick = { outputFunc(Output.OpenComposeNavigation) },
         ) {
             PermanentChild(
+                permanentNavModel = permanentNavModel,
                 navTarget = NavTarget.ComposeNavigationScreen,
                 decorator = decorator
             )
@@ -158,6 +170,7 @@ class SamplesSelectorNode(
             onClick = { outputFunc(Output.OpenOnboarding) },
         ) {
             PermanentChild(
+                permanentNavModel = permanentNavModel,
                 navTarget = NavTarget.OnboardingScreen,
                 decorator = decorator
             )
@@ -172,9 +185,11 @@ class SamplesSelectorNode(
             onClick = { outputFunc(Output.OpenCardsExample) },
         ) {
             PermanentChild(
+                permanentNavModel = permanentNavModel,
                 navTarget = NavTarget.CardsExample,
                 decorator = decorator
             )
+
         }
     }
 }
