@@ -2,7 +2,13 @@
 
 ## Pending changes
 
+--
+
+## 1.4.0
+
 - [#606](https://github.com/bumble-tech/appyx/pull/606) – **Breaking change**: Do not create permanentNavModel inside ParentNode. Provide it via constructor to ParentNode
+
+<div style="text-align: center"><small>03 Oct 2023</small></div>
 
 ---
 
