@@ -2,7 +2,19 @@
 
 ## Pending changes
 
-- [#494](https://github.com/bumble-tech/appyx/pull/599) Added isContinuous flag to GestureFactory
+### Fixed
+
+- [#608](https://github.com/bumble-tech/appyx/pull/608) – Setting default value to NodeCustomisationDirectory in IosNodeHost
+
+## 2.0.0-alpha07
+
+### Added
+
+- [#601](https://github.com/bumble-tech/appyx/pull/601) – iOS support and target apps
+- [#599](https://github.com/bumble-tech/appyx/pull/599) Added isContinuous flag to GestureFactory
+
+<div style="text-align: center"><small>4 Oct 2023</small></div>
+
 
 ## 2.0.0-alpha06
 
@@ -19,7 +31,6 @@
 ### Added
 
 - [#579](https://github.com/bumble-tech/appyx/pull/579) – Expose `AndroidLifecycle` in `PlatformLifecycleRegistry` for Android
-- [#601](https://github.com/bumble-tech/appyx/pull/601) – iOS support and target apps  
 
 ### Fixed
  
