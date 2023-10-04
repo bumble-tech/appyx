@@ -2,7 +2,13 @@
 
 ## Pending changes
 
+–
+
+## 2.0.0-alpha07
+
 - [#494](https://github.com/bumble-tech/appyx/pull/599) Added isContinuous flag to GestureFactory
+
+<div style="text-align: center"><small>4 Oct 2023</small></div>
 
 ## 2.0.0-alpha06
 
