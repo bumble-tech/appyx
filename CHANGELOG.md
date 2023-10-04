@@ -2,7 +2,9 @@
 
 ## Pending changes
 
-–
+### Fixed
+
+- [#608](https://github.com/bumble-tech/appyx/pull/608) – Setting default value to NodeCustomisationDirectory in IosNodeHost
 
 ## 2.0.0-alpha07
 

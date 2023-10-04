@@ -26,7 +26,7 @@ fun <N : Node> IosNodeHost(
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,
     integrationPoint: IntegrationPoint,
-    customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl() },
+    customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl(null) },
     factory: NodeFactory<N>,
 ) {
     val platformLifecycleRegistry = remember {
