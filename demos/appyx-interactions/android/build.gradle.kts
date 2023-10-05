@@ -15,6 +15,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     implementation(composeBom)
+    implementation(project(":appyx-navigation:android"))
     implementation(project(":appyx-interactions:android"))
     implementation(project(":appyx-components:stable:backstack:backstack"))
     implementation(project(":appyx-components:stable:spotlight:spotlight"))
@@ -23,6 +24,7 @@ dependencies {
     implementation(project(":appyx-components:experimental:promoter:android"))
     implementation(project(":appyx-components:experimental:puzzle15:android"))
     implementation(project(":appyx-components:internal:test-drive:android"))
+    implementation(project(":utils:material3"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
