@@ -56,8 +56,8 @@ fun Sample1(
         TestDrive(
             scope = coroutineScope,
             model = model,
-            motionController = { Sample1MotionController(it) },
-            gestureFactory = { Sample1MotionController.Gestures(it) }
+            visualisation = { Sample1Visualisation(it) },
+            gestureFactory = { Sample1Visualisation.Gestures(it) }
         )
     }
 

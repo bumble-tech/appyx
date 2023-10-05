@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.experimental.promoter.Promoter
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
-import com.bumble.appyx.components.experimental.promoter.ui.PromoterMotionController
+import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.colors
@@ -49,8 +49,8 @@ class PromoterNode(
         model = PromoterModel(
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = {
-            PromoterMotionController(
+        visualisation = {
+            PromoterVisualisation(
                 uiContext = it
             )
         },

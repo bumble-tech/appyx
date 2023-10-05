@@ -39,7 +39,7 @@ class ContainerNode(
             initialTargets = listOf(InteractionTarget.Selector),
             savedStateMap = buildContext.savedStateMap,
         ),
-        motionController = { BackStackSlider(it) }
+        visualisation = { BackStackSlider(it) }
     )
 
 ) : ParentNode<InteractionTarget>(

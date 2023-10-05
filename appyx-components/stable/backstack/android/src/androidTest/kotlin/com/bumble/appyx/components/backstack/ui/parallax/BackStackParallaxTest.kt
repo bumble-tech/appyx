@@ -48,7 +48,7 @@ class BackStackParallaxTest {
         )
         backStack = BackStack(
             model = backStackModel,
-            motionController = { buildContext ->
+            visualisation = { buildContext ->
                 BackStackParallax<InteractionTarget>(buildContext).also {
                     motionController = it
                 }

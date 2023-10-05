@@ -40,7 +40,7 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
                 ),
                 savedStateMap = null
             ),
-            motionController = { SpotlightSlider(it) },
+            visualisation = { SpotlightSlider(it) },
             gestureFactory = { SpotlightSlider.Gestures(it) },
             isDebug = true
         )
