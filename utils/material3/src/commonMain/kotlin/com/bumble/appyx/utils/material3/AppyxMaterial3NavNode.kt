@@ -40,7 +40,7 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.ParentNodeView
 
 @OptIn(ExperimentalMaterial3Api::class)
-abstract class AppyxMaterial3NavNode<NavTarget : Any>(
+open class AppyxMaterial3NavNode<NavTarget : Any>(
     buildContext: BuildContext,
     private val navTargets: List<NavTarget>,
     private val navTargetResolver: (NavTarget) -> AppyxNavItem,
