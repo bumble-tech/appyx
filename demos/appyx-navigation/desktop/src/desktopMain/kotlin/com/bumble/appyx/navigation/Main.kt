@@ -35,6 +35,7 @@ fun main() = application {
     val windowState = rememberWindowState(size = DpSize(480.dp, 658.dp))
     val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
     Window(
+        title = "Appyx navigation demo",
         state = windowState,
         onCloseRequest = ::exitApplication,
         onKeyEvent = { onKeyEvent(it, events, eventScope) },
