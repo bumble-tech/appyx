@@ -3,8 +3,8 @@ Pod::Spec.new do |spec|
     spec.version                  = '1.0.0'
     spec.homepage                 = 'https://bumble-tech.github.io/appyx/navigation/'
     spec.source                   = { :http=> ''}
-    spec.authors                  = 'https://github.com/bumble-tech/'
-    spec.license                  = 'Apache License, Version 2.0'
+    spec.authors                  = ''
+    spec.license                  = ''
     spec.summary                  = 'appyx-navigation iOS module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/ios.framework'
     spec.libraries                = 'c++'
@@ -12,7 +12,7 @@ Pod::Spec.new do |spec|
                 
                 
     spec.pod_target_xcconfig = {
-        'KOTLIN_PROJECT_PATH' => ':demos:appyx-navigation:ios',
+        'KOTLIN_PROJECT_PATH' => ':demos:sandbox-appyx-navigation:ios',
         'PRODUCT_MODULE_NAME' => 'ios',
     }
                 

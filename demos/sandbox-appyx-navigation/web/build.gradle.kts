@@ -13,7 +13,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":demos:common"))
-                implementation(project(":demos:appyx-navigation:common"))
+                implementation(project(":demos:sandbox-appyx-navigation:common"))
                 implementation(project(":appyx-interactions:appyx-interactions"))
                 implementation(project(":appyx-navigation:appyx-navigation"))
                 implementation(project(":appyx-components:stable:backstack:backstack"))

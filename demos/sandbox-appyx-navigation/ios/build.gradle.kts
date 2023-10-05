@@ -33,7 +33,7 @@ kotlin {
             iosArm64Main.dependsOn(this)
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
-                implementation(project(":demos:appyx-navigation:common"))
+                implementation(project(":demos:sandbox-appyx-navigation:common"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
