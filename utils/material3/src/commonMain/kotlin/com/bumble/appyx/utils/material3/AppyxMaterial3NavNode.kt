@@ -1,6 +1,7 @@
 package com.bumble.appyx.utils.material3
 
 import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,9 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
+import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.operation.activate
 import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
@@ -40,20 +44,22 @@ abstract class AppyxMaterial3NavNode<NavTarget : Any>(
     buildContext: BuildContext,
     private val navTargets: List<NavTarget>,
     private val navTargetResolver: (NavTarget) -> AppyxNavItem,
+    private val animationSpec: SpringSpec<Float> = spring(
+        stiffness = Spring.StiffnessHigh
+    ),
+    private val motionController: (UiContext) -> MotionController<NavTarget, State<NavTarget>> = {
+        SpotlightFader(
+            uiContext = it,
+            defaultAnimationSpec = animationSpec
+        )
+    },
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = navTargets,
-            initialActiveIndex = 0.toFloat(),
-            savedStateMap = null
+            initialActiveIndex = 0f,
+            savedStateMap = buildContext.savedStateMap
         ),
-        motionController = {
-            SpotlightFader(
-                uiContext = it,
-                defaultAnimationSpec = spring(
-                    stiffness = Spring.StiffnessMedium
-                )
-            )
-        }
+        motionController = motionController
     ),
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
