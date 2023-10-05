@@ -144,7 +144,7 @@ private val spotlight = Spotlight(
         items = listOf(SomeElement(1), SomeElement(2), SomeElement(3)),
         savedStateMap = null
     ),
-    motionController = { SpotlightSlider(it) }
+    visualisation = { SpotlightSlider(it) }
 )
 ```
 

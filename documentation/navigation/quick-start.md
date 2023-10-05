@@ -121,7 +121,7 @@ class RootNode(
             initialTarget = NavTarget.Child1,
             savedStateMap = buildContext.savedStateMap,        
         ),
-        motionController = { BackStackFader(it) }
+        visualisation = { BackStackFader(it) }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
@@ -178,33 +178,33 @@ override fun View(modifier: Modifier) {
 }
 ```
 
-## 6. Transitions
+## 6. Visualisations, transitions
 
-Adding different state transition visualisations instead of the default cross-fade is as simple as changing this:
+Adding a different visual representation of our model and its state changes is as simple as changing this:
 
 ```kotlin
-motionController = { BackStackFader(it) }
+visualisation = { BackStackFader(it) }
 ```
 
 to this:
 
 ```kotlin
-motionController = { BackStackSlider(it) }
+visualisation = { BackStackSlider(it) }
 ```
 
 or this:
 
 ```kotlin
-motionController = { BackStackParallax(it) }
+visualisation = { BackStackParallax(it) }
 ```
 
 or this:
 
 ```kotlin
-motionController = { BackStack3D(it) }
+visualisation = { BackStack3D(it) }
 ```
 
-Be sure to check the [Back stack documentation](../components/backstack.md) where you can also find live previews of the above transitions.
+Be sure to check the [Back stack documentation](../components/backstack.md) where you can also find live previews of the above visualisations.
 
 Need something more custom?
 
