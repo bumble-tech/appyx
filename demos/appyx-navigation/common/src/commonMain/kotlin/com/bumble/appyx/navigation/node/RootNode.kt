@@ -17,6 +17,9 @@ import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.RootNode.NavTarget
+import com.bumble.appyx.navigation.node.cakecategory.CakeCategoryNode
+import com.bumble.appyx.navigation.node.main.MainNode
+import com.bumble.appyx.navigation.node.profile.ProfileNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -48,24 +51,10 @@ class RootNode(
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is NavTarget.Main -> node(buildContext) { modifier ->
-                HelloWorld("Main", modifier)
-            }
-
-            is NavTarget.CakeCategory -> node(buildContext) { modifier ->
-                HelloWorld("Cakes", modifier)
-            }
-
-            is NavTarget.Profile -> node(buildContext) { modifier ->
-                HelloWorld("Profile", modifier)
-            }
+            is NavTarget.Main -> MainNode(buildContext)
+            is NavTarget.CakeCategory -> CakeCategoryNode(buildContext)
+            is NavTarget.Profile -> ProfileNode(buildContext)
         }
-
-
-    @Composable
-    private fun HelloWorld(text: String, modifier: Modifier = Modifier) {
-        Text(text, modifier)
-    }
 
     @Composable
     override fun View(modifier: Modifier) {
