@@ -30,6 +30,7 @@ title: Appyx Navigation – Overview
 - [ChildAware](features/childaware.md)
 - [Deep link navigation](features/deep-linking.md)
 - [Lifecycle](features/lifecycle.md)
+- [Material 3 support](features/material3.md)
 - [Plugins](features/plugins.md)
 - [Scoped DI](features/scoped-di.md)
 - [Surviving configuration changes](features/surviving-configuration-changes.md)
