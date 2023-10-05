@@ -20,7 +20,7 @@ class BackStackParallaxTest {
 
     private lateinit var backStack: BackStack<InteractionTarget>
     private lateinit var backStackModel: BackStackModel<InteractionTarget>
-    private lateinit var motionController: BackStackParallax<InteractionTarget>
+    private lateinit var visualisation: BackStackParallax<InteractionTarget>
 
     @Test
     fun backStackParallax_resolves_visibility_to_false_when_element_is_not_top_most_stashed_one() {
@@ -33,7 +33,7 @@ class BackStackParallaxTest {
 
         composeTestRule.waitForIdle()
 
-        with(motionController.mapUpdate(backStackModel.output.value as Update<BackStackModel.State<InteractionTarget>>)) {
+        with(visualisation.mapUpdate(backStackModel.output.value as Update<BackStackModel.State<InteractionTarget>>)) {
             Assert.assertFalse(get(0).visibleState.value) // Child #1 should be false
             Assert.assertFalse(get(1).visibleState.value) // Child #2 should be false
             Assert.assertTrue(get(2).visibleState.value)  // Child #3 should be true
@@ -50,7 +50,7 @@ class BackStackParallaxTest {
             model = backStackModel,
             visualisation = { buildContext ->
                 BackStackParallax<InteractionTarget>(buildContext).also {
-                    motionController = it
+                    visualisation = it
                 }
             },
             scope = CoroutineScope(Dispatchers.Unconfined),
