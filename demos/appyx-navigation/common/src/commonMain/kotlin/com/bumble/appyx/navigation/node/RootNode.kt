@@ -1,11 +1,18 @@
 package com.bumble.appyx.navigation.node
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
+import com.bumble.appyx.components.backstack.operation.push
+import com.bumble.appyx.components.backstack.operation.replace
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -30,28 +37,54 @@ class RootNode(
     sealed class NavTarget : Parcelable {
         @Parcelize
         object Main : NavTarget()
+
+        @Parcelize
+        object CakeCategory : NavTarget()
+
+        @Parcelize
+        object Profile : NavTarget()
     }
 
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is NavTarget.Main -> node(buildContext) { modifier ->
-                HelloWorld(modifier)
+                HelloWorld("Main", modifier)
+            }
+
+            is NavTarget.CakeCategory -> node(buildContext) { modifier ->
+                HelloWorld("Cakes", modifier)
+            }
+
+            is NavTarget.Profile -> node(buildContext) { modifier ->
+                HelloWorld("Profile", modifier)
             }
         }
 
 
     @Composable
-    private fun HelloWorld(modifier: Modifier = Modifier) {
-        Text("Hello world")
+    private fun HelloWorld(text: String, modifier: Modifier = Modifier) {
+        Text(text, modifier)
     }
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxComponent(
-            appyxComponent = backStack,
-            modifier = modifier
-                .fillMaxSize()
-        )
+        Column(modifier = modifier.fillMaxSize()) {
+            AppyxComponent(
+                appyxComponent = backStack,
+                modifier = Modifier
+                    .weight(0.9f)
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(0.1f),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Button({ backStack.replace(NavTarget.Main) }) { Text("Main") }
+                Button({ backStack.replace(NavTarget.CakeCategory) }) { Text("Cakes") }
+                Button({ backStack.replace(NavTarget.Profile) }) { Text("Profile") }
+            }
+        }
     }
 }
