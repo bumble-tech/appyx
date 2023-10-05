@@ -2,7 +2,10 @@
 
 ## Pending changes
 
-–
+### API breaking changes
+
+- [#612](https://github.com/bumble-tech/appyx/pull/612) – Rename MotionController to Visualisation
+
 
 ## 2.0.0-alpha08
 
