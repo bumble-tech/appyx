@@ -6,11 +6,11 @@ plugins {
 }
 
 appyx {
-    androidNamespace.set("com.bumble.appyx.utils.material")
+    androidNamespace.set("com.bumble.appyx.utils.material3")
 }
 
 publishingPlugin {
-    artifactId = "utils-material"
+    artifactId = "utils-material3"
 }
 
 kotlin {
@@ -24,7 +24,7 @@ kotlin {
     }
     js(IR) {
         // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
-        moduleName = "appyx-utils-material"
+        moduleName = "appyx-utils-material3"
         browser()
     }
     

@@ -13,7 +13,7 @@ import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
 import com.bumble.appyx.navigation.node.promoter.PromoterNode
 import com.bumble.appyx.navigation.node.spotlight.SpotlightNode
 import com.bumble.appyx.navigation.ui.icons.GridViewCustom
-import com.bumble.appyx.utils.material.AppyxNavItem
+import com.bumble.appyx.utils.material3.AppyxNavItem
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 

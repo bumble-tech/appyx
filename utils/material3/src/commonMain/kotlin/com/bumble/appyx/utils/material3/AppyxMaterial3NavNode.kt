@@ -1,4 +1,4 @@
-package com.bumble.appyx.utils.material
+package com.bumble.appyx.utils.material3
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring

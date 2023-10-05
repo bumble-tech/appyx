@@ -1,4 +1,4 @@
-package com.bumble.appyx.utils.material
+package com.bumble.appyx.utils.material3
 
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
