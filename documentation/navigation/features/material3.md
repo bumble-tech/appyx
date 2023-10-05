@@ -17,6 +17,10 @@ To add the proper gradle artifacts, please refer to: [Downloads](../../releases/
 ### 2. Define your navigation config
 
 ```kotlin
+import com.bumble.appyx.utils.material3.AppyxNavItem
+import com.bumble.appyx.utils.multiplatform.Parcelable
+import com.bumble.appyx.utils.multiplatform.Parcelize
+
 @Parcelize
 enum class MainNavItem : Parcelable {
     DESTINATION1, DESTINATION2, DESTINATION3;
