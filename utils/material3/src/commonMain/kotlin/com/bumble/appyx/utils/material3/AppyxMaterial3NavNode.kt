@@ -141,7 +141,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
 
     @Composable
     fun NavigationRail(selectedIndex: Int, modifier: Modifier = Modifier) {
-        NavigationRail(modifier = modifier.zIndex(999f)) {
+        NavigationRail(modifier = modifier.zIndex(Float.MAX_VALUE)) {
             navTargets.forEachIndexed { index, item ->
                 val appyxNavItem = navTargetResolver.invoke(item)
 
