@@ -2,7 +2,7 @@
 
 ## Pending changes
 
-–
+- [#616](https://github.com/bumble-tech/appyx/pull/616) – Added iOS artefacts in downloads.md
 
 ## 2.0.0-alpha08
 
