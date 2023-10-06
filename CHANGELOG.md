@@ -2,10 +2,6 @@
 
 ## Pending changes
 
-### Added
-
-- [#616](https://github.com/bumble-tech/appyx/pull/616) – Added iOS artefacts in downloads.md
-
 ### API breaking changes
 
 - [#612](https://github.com/bumble-tech/appyx/pull/612) – Rename MotionController to Visualisation
