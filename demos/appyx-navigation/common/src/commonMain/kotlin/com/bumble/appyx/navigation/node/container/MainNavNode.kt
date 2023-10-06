@@ -11,5 +11,4 @@ class MainNavNode(
     buildContext = buildContext,
     navTargets = MainNavItem.values().toList(),
     navTargetResolver = MainNavItem.resolver
-) {
-}
+)
