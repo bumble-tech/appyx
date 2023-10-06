@@ -52,7 +52,7 @@ class CakeListNode(
                 modifier = Modifier
                     .fillMaxSize(0.6f)
                     .padding(top = 64.dp)
-                    .align(Alignment.TopCenter)
+                    .align(Alignment.Center)
             )
         }
     }
