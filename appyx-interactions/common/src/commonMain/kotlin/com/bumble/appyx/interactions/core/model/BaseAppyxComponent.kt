@@ -176,7 +176,9 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 
     override fun updateBounds(transitionBounds: TransitionBounds) {
         if (transitionBounds != this.transitionBounds) {
-            AppyxLogger.d("AppyxComponent", "${this::class.simpleName} – Bounds update: ${transitionBounds.widthPx}x${transitionBounds.heightPx}")
+            with (transitionBounds) {
+                AppyxLogger.d("AppyxComponent", "${this::class.simpleName} – Bounds update: ${widthPx}x${heightPx}")
+            }
             this.transitionBounds = transitionBounds
             _gestureFactory = gestureFactory(transitionBounds)
             _visualisation?.updateBounds(transitionBounds)
