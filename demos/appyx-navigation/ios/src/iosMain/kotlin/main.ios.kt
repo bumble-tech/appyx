@@ -18,7 +18,7 @@ import androidx.compose.ui.zIndex
 import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.integration.MainIntegrationPoint
 import com.bumble.appyx.navigation.node.RootNode
-import com.bumble.appyx.navigation.node.container.ContainerNode
+import com.bumble.appyx.navigation.node.container.MainNavNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel

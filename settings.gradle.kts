@@ -88,6 +88,7 @@ include(
     ":utils:testing-ui",
     ":utils:testing-ui-activity",
     ":utils:testing-unit-common",
+    ":utils:material3",
     ":utils:multiplatform",
 )
 

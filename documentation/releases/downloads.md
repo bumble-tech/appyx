@@ -153,6 +153,41 @@ kotlin {
 
 ## Utils and interop with other libraries
 
+### Material 3 support
+
+Support for [Navigation bar](https://m3.material.io/components/navigation-bar/overview), [Navigation rail](https://m3.material.io/components/navigation-rail/overview) to use easily together with **Appyx Navigation**.
+
+See more in [Material 3 support](../navigation/features/material3.md).
+
+Adding the gradle dependency in a non-multiplatform project:
+
+```groovy
+dependencies {
+    // Platform-specific (pick the right one for your platform)
+    implementation "com.bumble.appyx:utils-material3-android:$version"
+    implementation "com.bumble.appyx:utils-material3-desktop:$version"
+    implementation "com.bumble.appyx:utils-material3-js:$version"
+    implementation "com.bumble.appyx:utils-material3-iosarm64:$version"
+    implementation "com.bumble.appyx:utils-material3-iossimulatorarm64:$version"
+    implementation "com.bumble.appyx:utils-material3-iosx64:$version"
+}
+```
+
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // Use api, not implementation!
+                api "com.bumble.appyx:utils-material3:$version"
+            }
+        }
+    }
+}
+```
+
 ### RxJava 2
 
 ```groovy

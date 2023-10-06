@@ -16,7 +16,7 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.bumble.appyx.navigation.integration.DesktopNodeHost
-import com.bumble.appyx.navigation.node.container.ContainerNode
+import com.bumble.appyx.navigation.node.container.MainNavNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,6 +35,7 @@ fun main() = application {
     val windowState = rememberWindowState(size = DpSize(480.dp, 658.dp))
     val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
     Window(
+        title = "Appyx navigation demo",
         state = windowState,
         onCloseRequest = ::exitApplication,
         onKeyEvent = { onKeyEvent(it, events, eventScope) },
