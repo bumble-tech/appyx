@@ -14,31 +14,31 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.profile.ProfileNode.InteractionTarget
+import com.bumble.appyx.navigation.node.profile.ProfileNode.NavTarget
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class ProfileNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<InteractionTarget> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(InteractionTarget.ProfileChild),
+            initialTargets = listOf(NavTarget.ProfileChild),
             savedStateMap = buildContext.savedStateMap,
         ),
         visualisation = { BackStackSlider(it) }
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = backStack
 ) {
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object ProfileChild : InteractionTarget()
+        object ProfileChild : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.ProfileChild -> node(buildContext) { modifier ->
+    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.ProfileChild -> node(buildContext) { modifier ->
                 Box(
                     modifier = modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
