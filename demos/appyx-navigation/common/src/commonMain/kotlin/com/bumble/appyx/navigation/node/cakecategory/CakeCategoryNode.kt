@@ -22,7 +22,7 @@ class CakeCategoryNode(
             initialTargets = listOf(InteractionTarget.CakeCategoryChild),
             savedStateMap = buildContext.savedStateMap,
         ),
-        motionController = { BackStackSlider(it) }
+        visualisation = { BackStackSlider(it) }
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,

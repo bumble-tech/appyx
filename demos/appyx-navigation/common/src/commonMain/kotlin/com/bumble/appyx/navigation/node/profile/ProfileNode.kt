@@ -22,7 +22,7 @@ class ProfileNode(
             initialTargets = listOf(InteractionTarget.ProfileChild),
             savedStateMap = buildContext.savedStateMap,
         ),
-        motionController = { BackStackSlider(it) }
+        visualisation = { BackStackSlider(it) }
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,

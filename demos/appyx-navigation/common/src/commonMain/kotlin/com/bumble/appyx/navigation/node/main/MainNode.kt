@@ -37,7 +37,7 @@ class MainNode(
                 initialActiveIndex = 0f,
                 savedStateMap = buildContext.savedStateMap
             ),
-            motionController = { SpotlightSlider(it) },
+            visualisation = { SpotlightSlider(it) },
             gestureFactory = { SpotlightSlider.Gestures(it) }
         )
 ) : ParentNode<InteractionTarget>(

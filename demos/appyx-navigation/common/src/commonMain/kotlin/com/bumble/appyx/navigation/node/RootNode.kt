@@ -30,7 +30,7 @@ class RootNode(
             initialTargets = listOf(NavTarget.Main),
             savedStateMap = buildContext.savedStateMap,
         ),
-        motionController = { BackStackSlider(it) }
+        visualisation = { BackStackSlider(it) }
     )
 
 ) : ParentNode<NavTarget>(
