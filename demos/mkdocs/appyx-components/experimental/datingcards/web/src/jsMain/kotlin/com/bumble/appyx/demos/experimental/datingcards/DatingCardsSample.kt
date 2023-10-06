@@ -10,7 +10,7 @@ import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.operation.like
 import com.bumble.appyx.components.experimental.cards.operation.pass
-import com.bumble.appyx.components.experimental.cards.ui.CardsMotionController
+import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.ChildSize
 import com.bumble.appyx.demos.common.InteractionTarget
@@ -27,8 +27,8 @@ fun DatingCardsSample(
                 initialItems = List(15) { InteractionTarget.Element(it) },
                 savedStateMap = null
             ),
-            motionController = { CardsMotionController(it) },
-            gestureFactory = { CardsMotionController.Gestures(it) },
+            visualisation = { CardsVisualisation(it) },
+            gestureFactory = { CardsVisualisation.Gestures(it) },
             animateSettle = true
         )
     }

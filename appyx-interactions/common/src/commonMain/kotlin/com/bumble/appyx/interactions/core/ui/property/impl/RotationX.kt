@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 class RotationX(
     coroutineScope: CoroutineScope,
     target: Target,
-    visibilityThreshold: Float = 1f,
+    visibilityThreshold: Float = 0.1f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
     private val origin: TransformOrigin = target.origin,
 ) : MotionProperty<Float, AnimationVector1D>(

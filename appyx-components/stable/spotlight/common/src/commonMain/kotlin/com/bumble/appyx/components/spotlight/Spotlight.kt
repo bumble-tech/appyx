@@ -3,7 +3,7 @@ package com.bumble.appyx.components.spotlight
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
-import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
@@ -15,7 +15,7 @@ import kotlinx.coroutines.SupervisorJob
 open class Spotlight<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: SpotlightModel<InteractionTarget>,
-    motionController: (UiContext) -> MotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>>,
+    visualisation: (UiContext) -> Visualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, SpotlightModel.State<InteractionTarget>> = {
         GestureFactory.Noop()
     },
@@ -30,7 +30,7 @@ open class Spotlight<InteractionTarget : Any>(
 ) : BaseAppyxComponent<InteractionTarget, SpotlightModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
-    motionController = motionController,
+    visualisation = visualisation,
     gestureFactory = gestureFactory,
     defaultAnimationSpec = animationSpec,
     gestureSettleConfig = gestureSettleConfig,

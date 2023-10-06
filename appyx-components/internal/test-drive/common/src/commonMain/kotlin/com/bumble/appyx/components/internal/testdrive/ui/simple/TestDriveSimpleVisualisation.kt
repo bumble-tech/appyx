@@ -1,16 +1,18 @@
-package com.bumble.appyx.demos.incompletedrag
+package com.bumble.appyx.components.internal.testdrive.ui.simple
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
-import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.A
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.B
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
+import com.bumble.appyx.components.internal.testdrive.ui.md_light_blue_500
+import com.bumble.appyx.components.internal.testdrive.ui.md_light_green_500
+import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
+import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.Drag.Direction8.DOWN
@@ -26,17 +28,16 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
-class IncompleteDragMotionController<InteractionTarget : Any>(
+class TestDriveSimpleVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
@@ -49,7 +50,6 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
         )
 
     companion object {
-        val bottomOffset = DpOffset(0.dp, (-50).dp)
 
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
@@ -61,38 +61,30 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
 
         private val topLeftCorner = TargetUiState(
             position = PositionInside.Target(BiasAlignment.InsideAlignment.TopStart),
-            rotationZ = RotationZ.Target(0f),
-            backgroundColor = BackgroundColor.Target(color_primary)
+            backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val topRightCorner = TargetUiState(
             position = PositionInside.Target(BiasAlignment.InsideAlignment.TopEnd),
-            rotationZ = RotationZ.Target(180f),
-            backgroundColor = BackgroundColor.Target(color_dark)
+            backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = PositionInside.Target(BiasAlignment.InsideAlignment.BottomEnd, bottomOffset),
-            rotationZ = RotationZ.Target(270f),
-            backgroundColor = BackgroundColor.Target(color_secondary)
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterEnd),
+            backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = PositionInside.Target(BiasAlignment.InsideAlignment.BottomStart, bottomOffset),
-            rotationZ = RotationZ.Target(540f),
-            backgroundColor = BackgroundColor.Target(color_tertiary)
+            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterStart),
+            backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }
 
-    override fun mutableUiStateFor(
-        uiContext: UiContext,
-        targetUiState: TargetUiState
-    ): MutableUiState =
+    override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
         targetUiState.toMutableState(uiContext)
 
-
     class Gestures<InteractionTarget>(
-        private val transitionBounds: TransitionBounds,
+        private val transitionBounds: TransitionBounds
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
 
         @Suppress("ComplexMethod")
@@ -101,14 +93,8 @@ class IncompleteDragMotionController<InteractionTarget : Any>(
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-            // FIXME 60.dp is the assumed element size, connect it to real value
-            // TODO automate this whole calculation based on .onPlaced centers of targetUiStates
-            val maxX = with(density) {
-                (transitionBounds.widthDp - 60.dp).toPx()
-            }
-            val maxY = with(density) {
-                (transitionBounds.heightDp + bottomOffset.y - 60.dp).toPx()
-            }
+            val maxX = transitionBounds.widthPx.toFloat()
+            val maxY = transitionBounds.heightPx.toFloat() / 2 // Alignment at CenterStart/End
 
             val direction = dragDirection8(delta)
             return when (state.elementState) {

@@ -18,12 +18,12 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 @Suppress("MagicNumber")
-class ModalMotionController<InteractionTarget : Any>(
+class ModalVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
-) : BaseMotionController<InteractionTarget, ModalModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, ModalModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
 

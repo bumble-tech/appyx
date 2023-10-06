@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.promoter.Promoter
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
-import com.bumble.appyx.components.experimental.promoter.ui.PromoterMotionController
+import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisation
 import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
@@ -48,8 +48,8 @@ fun PromoterExperiment(modifier: Modifier = Modifier) {
         Promoter(
             scope = coroutineScope,
             model = PromoterModel<InteractionTarget>(savedStateMap = null),
-            motionController = {
-                PromoterMotionController(
+            visualisation = {
+                PromoterVisualisation(
                     uiContext = it
                 )
             },

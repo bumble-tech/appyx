@@ -11,7 +11,7 @@ import com.bumble.appyx.combineState
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.transition.Segment
 import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
@@ -31,10 +31,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @Suppress("TooManyFunctions")
-abstract class BaseMotionController<InteractionTarget : Any, ModelState, MutableUiState, TargetUiState>(
+abstract class BaseVisualisation<InteractionTarget : Any, ModelState, MutableUiState, TargetUiState>(
     private val uiContext: UiContext,
     protected val defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec,
-) : MotionController<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<TargetUiState> {
+) : Visualisation<InteractionTarget, ModelState> where MutableUiState : BaseMutableUiState<TargetUiState> {
 
     open val viewpointDimensions: List<Pair<(ModelState) -> Float, GenericFloatProperty>> =
         emptyList()

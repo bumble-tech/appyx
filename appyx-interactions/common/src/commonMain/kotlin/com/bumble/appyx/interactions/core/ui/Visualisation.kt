@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 
-interface MotionController<InteractionTarget, ModelState> : TransitionBoundsAware {
+interface Visualisation<InteractionTarget, ModelState> : TransitionBoundsAware {
 
     val finishedAnimations: Flow<Element<InteractionTarget>>
 

@@ -33,7 +33,7 @@ fun BackStackSliderSample(
         BackStack(
             scope = coroutineScope,
             model = model,
-            motionController = { BackStackSlider(it) },
+            visualisation = { BackStackSlider(it) },
             gestureFactory = { GestureFactory.Noop() },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow),
         )

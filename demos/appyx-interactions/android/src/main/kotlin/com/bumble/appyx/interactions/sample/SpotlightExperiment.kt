@@ -33,7 +33,7 @@ import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.sample.android.SampleChildren
 import com.bumble.appyx.interactions.theme.appyx_dark
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 
@@ -44,7 +44,7 @@ fun SpotlightExperiment(
     modifier: Modifier = Modifier,
     orientation: Orientation = Orientation.Horizontal,
     reverseOrientation: Boolean = false,
-    motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
+    visualisation: (UiContext) -> BaseVisualisation<Target, SpotlightModel.State<Target>, *, *>
 ) {
     val items = listOf(
         Target.Child1,
@@ -74,7 +74,7 @@ fun SpotlightExperiment(
             items = items,
             savedStateMap = null
         ),
-        motionController = motionController,
+        visualisation = visualisation,
         gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
         gestureSettleConfig = GestureSettleConfig(
@@ -169,12 +169,12 @@ fun <InteractionTarget : Any> SpotlightUi(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SpotlightExperimentInVertical(
-    motionController: (UiContext) -> BaseMotionController<Target, SpotlightModel.State<Target>, *, *>
+    visualisation: (UiContext) -> BaseVisualisation<Target, SpotlightModel.State<Target>, *, *>
 ) {
     SpotlightExperiment(
         orientation = Orientation.Vertical,
         reverseOrientation = true,
-        motionController = motionController
+        visualisation = visualisation
     )
 }
 
