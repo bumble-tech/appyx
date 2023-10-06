@@ -25,8 +25,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.WebNodeHost
-import com.bumble.appyx.navigation.node.RootNode
-import com.bumble.appyx.navigation.node.container.MainNavNode
+import com.bumble.appyx.navigation.node.main.MainNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,7 +62,7 @@ fun main() {
                         screenSize = screenSize,
                         onBackPressedEvents = events.receiveAsFlow(),
                     ) { buildContext ->
-                        RootNode(
+                        MainNode(
                             buildContext = buildContext,
                         )
                     }

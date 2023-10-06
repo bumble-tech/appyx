@@ -15,7 +15,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.bumble.appyx.navigation.integration.NodeActivity
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.node.RootNode
+import com.bumble.appyx.navigation.node.main.MainNode
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 
@@ -35,7 +35,7 @@ class MainActivity : NodeActivity() {
                         lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                         integrationPoint = appyxV2IntegrationPoint,
                     ) {
-                        RootNode(
+                        MainNode(
                             buildContext = it,
                         )
                     }
@@ -54,7 +54,7 @@ class MainActivity : NodeActivity() {
 fun DefaultPreview() {
     AppyxSampleAppTheme {
         Column {
-            RootNode(
+            MainNode(
                 buildContext = BuildContext.root(null),
             ).Compose()
         }
