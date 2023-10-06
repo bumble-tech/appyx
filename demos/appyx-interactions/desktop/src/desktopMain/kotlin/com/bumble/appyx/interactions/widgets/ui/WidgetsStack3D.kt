@@ -14,11 +14,11 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.mapState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class WidgetsStack3D<InteractionTarget : Any>(
     uiContext: UiContext,
-) : BaseMotionController<InteractionTarget, SpotlightModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
 ) {
     private var width: Dp = 0.dp

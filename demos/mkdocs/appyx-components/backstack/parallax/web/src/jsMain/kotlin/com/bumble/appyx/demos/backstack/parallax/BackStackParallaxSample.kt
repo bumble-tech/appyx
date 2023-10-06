@@ -32,7 +32,7 @@ fun BackStackParallaxSample(
         BackStack(
             scope = coroutineScope,
             model = model,
-            motionController = { BackStackParallax(it) },
+            visualisation = { BackStackParallax(it) },
             gestureFactory = { BackStackParallax.Gestures(it) },
             animationSpec = spring(stiffness = StiffnessVeryLow),
         )

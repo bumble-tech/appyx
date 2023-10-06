@@ -335,11 +335,11 @@ fun SomeComposable() {
         SomeAppyxComponent(
             // Required
             model = SomeTransitionModel(/*...*/),
-            motionController = { SomeMotionController(/*...*/) } ,
+            visualisation = { SomeVisualisation(/*...*/) } ,
             
             // Optional
             animationSpec = spring(stiffness = Spring.StiffnessLow),
-            gestureFactory = { SomeMotionController.Gestures(/*...*/) },
+            gestureFactory = { SomeVisualisation.Gestures(/*...*/) },
             gestureSettleConfig = GestureSettleConfig(
                 completionThreshold = 0.5f,
                 completeGestureSpec = spring(),

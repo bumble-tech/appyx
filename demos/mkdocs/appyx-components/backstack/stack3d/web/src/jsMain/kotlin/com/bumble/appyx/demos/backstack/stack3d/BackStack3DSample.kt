@@ -32,7 +32,7 @@ fun BackStack3DSample(
         BackStack(
             scope = coroutineScope,
             model = model,
-            motionController = { BackStack3D(it) },
+            visualisation = { BackStack3D(it) },
             gestureFactory = { BackStack3D.Gestures(it) },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow * 2),
         )

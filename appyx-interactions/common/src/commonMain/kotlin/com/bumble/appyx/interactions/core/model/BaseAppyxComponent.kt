@@ -17,7 +17,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
-import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -45,7 +45,7 @@ import kotlinx.coroutines.launch
 open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     private val model: TransitionModel<InteractionTarget, ModelState>,
-    private val motionController: (UiContext) -> MotionController<InteractionTarget, ModelState>,
+    private val visualisation: (UiContext) -> Visualisation<InteractionTarget, ModelState>,
     private val gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, ModelState> = {
         GestureFactory.Noop()
     },
@@ -67,8 +67,8 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         backPressStrategy.init(this, model)
     }
 
-    private var motionControllerObserverJob: Job? = null
-    private var _motionController: MotionController<InteractionTarget, ModelState>? = null
+    private var visualisationObserverJob: Job? = null
+    private var _visualisation: Visualisation<InteractionTarget, ModelState>? = null
 
     private var _gestureFactory: GestureFactory<InteractionTarget, ModelState> =
         gestureFactory(TransitionBounds.Zero)
@@ -100,7 +100,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     override val elements: StateFlow<AppyxComponent.Elements<InteractionTarget>> = _elements
 
     init {
-        // Before motionController is ready we consider all elements as off-screen
+        // Before visualisation is ready we consider all elements as off-screen
         elementsJob = scope.launch {
             model
                 .elements
@@ -114,10 +114,10 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     @Suppress("UnusedPrivateMember")
     private var isInitialised: Boolean = false
 
-    private fun observeAnimationChanges(motionController: MotionController<InteractionTarget, ModelState>) {
+    private fun observeAnimationChanges(visualisation: Visualisation<InteractionTarget, ModelState>) {
         animationChangesJob?.cancel()
         animationChangesJob = scope.launch {
-            motionController.isAnimating()
+            visualisation.isAnimating()
                 .collect {
                     if (!it) {
                         AppyxLogger.d("AppyxComponent", "Finished animating")
@@ -129,7 +129,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         }
         animationFinishedJob?.cancel()
         animationFinishedJob = scope.launch {
-            motionController.finishedAnimations
+            visualisation.finishedAnimations
                 .collect {
                     AppyxLogger.d("AppyxComponent", "$it onAnimation finished")
                     model.cleanUpElement(it)
@@ -168,8 +168,8 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         if (this.uiContext != uiContext) {
             this.uiContext = uiContext
             AppyxLogger.d("AppyxComponent", "new uiContext supplied: $uiContext")
-            _motionController = motionController(uiContext).also {
-                onMotionControllerReady(it)
+            _visualisation = visualisation(uiContext).also {
+                onVisualisationReady(it)
             }
         }
     }
@@ -178,24 +178,24 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         if (transitionBounds != this.transitionBounds) {
             this.transitionBounds = transitionBounds
             _gestureFactory = gestureFactory(transitionBounds)
-            _motionController?.updateBounds(transitionBounds)
+            _visualisation?.updateBounds(transitionBounds)
         }
     }
 
-    private fun onMotionControllerReady(motionController: MotionController<InteractionTarget, ModelState>) {
-        motionController.updateBounds(transitionBounds)
-        observeAnimationChanges(motionController)
-        observeMotionController(motionController)
+    private fun onVisualisationReady(visualisation: Visualisation<InteractionTarget, ModelState>) {
+        visualisation.updateBounds(transitionBounds)
+        observeAnimationChanges(visualisation)
+        observeVisualisation(visualisation)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private fun observeMotionController(motionController: MotionController<InteractionTarget, ModelState>) {
+    private fun observeVisualisation(visualisation: Visualisation<InteractionTarget, ModelState>) {
         elementsJob.cancel()
-        motionControllerObserverJob?.cancel()
-        motionControllerObserverJob = scope.launch {
+        visualisationObserverJob?.cancel()
+        visualisationObserverJob = scope.launch {
             model
                 .output
-                .flatMapLatest { motionController.map(it) }
+                .flatMapLatest { visualisation.map(it) }
                 .flatMapLatest { elementUiModels ->
                     val visibilityFlows = elementUiModels.map { uiModel ->
                         uiModel.visibleState
@@ -230,7 +230,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         operation: Operation<ModelState>,
         animationSpec: AnimationSpec<Float>? = null
     ) {
-        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _motionController?.overrideAnimationSpec(
+        if (operation.mode == IMMEDIATE && animationSpec is SpringSpec<Float>) _visualisation?.overrideAnimationSpec(
             animationSpec
         )
         val animatedSource = animated
@@ -291,7 +291,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 
     // TODO plugin?!
     override fun destroy() {
-        motionControllerObserverJob?.cancel()
+        visualisationObserverJob?.cancel()
         elementsJob.cancel()
         scope.cancel()
     }

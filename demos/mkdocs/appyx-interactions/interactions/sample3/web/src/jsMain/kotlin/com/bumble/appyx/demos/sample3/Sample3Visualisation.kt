@@ -1,4 +1,4 @@
-package com.bumble.appyx.demos.sample2
+package com.bumble.appyx.demos.sample3
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.geometry.Offset
@@ -26,17 +26,16 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
-class Sample2MotionController<InteractionTarget : Any>(
+class Sample3Visualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
@@ -54,32 +53,28 @@ class Sample2MotionController<InteractionTarget : Any>(
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
                 A -> topLeftCorner
-                B -> topRightCorner
-                C -> bottomRightCorner
-                D -> bottomLeftCorner
+                B -> uiStateB
+                C -> uiStateC
+                D -> uiStateD
             }
 
         private val topLeftCorner = TargetUiState(
             position = PositionInside.Target(alignment = InsideAlignment.TopStart),
-            rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
-        private val topRightCorner = TargetUiState(
+        private val uiStateB = TargetUiState(
             position = PositionInside.Target(alignment = InsideAlignment.TopEnd),
-            rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
-        private val bottomRightCorner = TargetUiState(
+        private val uiStateC = TargetUiState(
             position = PositionInside.Target(alignment = InsideAlignment.BottomEnd, bottomOffset),
-            rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
-        private val bottomLeftCorner = TargetUiState(
+        private val uiStateD = TargetUiState(
             position = PositionInside.Target(alignment = InsideAlignment.BottomStart, bottomOffset),
-            rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
     }
@@ -89,7 +84,6 @@ class Sample2MotionController<InteractionTarget : Any>(
         targetUiState: TargetUiState
     ): MutableUiState =
         targetUiState.toMutableState(uiContext)
-
 
     class Gestures<InteractionTarget>(
         private val transitionBounds: TransitionBounds,

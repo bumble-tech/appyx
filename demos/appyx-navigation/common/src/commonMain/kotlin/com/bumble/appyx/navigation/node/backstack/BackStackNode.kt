@@ -25,7 +25,7 @@ import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.operation.replace
-import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
@@ -46,7 +46,7 @@ import kotlin.random.Random
 
 class BackStackNode(
     buildContext: BuildContext,
-    motionController: (UiContext) -> MotionController<InteractionTarget, State<InteractionTarget>>,
+    visualisation: (UiContext) -> Visualisation<InteractionTarget, State<InteractionTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
         GestureFactory.Noop()
     },
@@ -57,7 +57,7 @@ class BackStackNode(
             initialTargets = listOf(InteractionTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = motionController,
+        visualisation = visualisation,
         gestureFactory = gestureFactory,
         gestureSettleConfig = gestureSettleConfig,
     )

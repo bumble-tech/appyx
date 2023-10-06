@@ -11,7 +11,7 @@ Other uses of the library to create complex transitions and gestures.
 
 ### Dating Cards
 
-Class: `CardsMotionController`
+Class: `CardsVisualisation`
 
 {{
     compose_mpp_sample(
@@ -27,7 +27,7 @@ Class: `CardsMotionController`
 
 ### Puzzle 15
 
-Class: `Puzzle15MotionController`
+Class: `Puzzle15Visualisation`
 
 {{
     compose_mpp_sample(

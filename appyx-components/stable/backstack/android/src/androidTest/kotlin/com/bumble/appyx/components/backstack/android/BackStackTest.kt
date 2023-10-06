@@ -12,7 +12,7 @@ import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.testing.InteractionTarget
 import com.bumble.appyx.interactions.testing.setupAppyxComponent
@@ -36,22 +36,22 @@ class BackStackTest(private val testParam: TestParam) {
 
     companion object {
         data class TestParam(
-            val motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>
+            val visualisation: (UiContext) -> Visualisation<InteractionTarget, BackStackModel.State<InteractionTarget>>
         )
 
         @JvmStatic
         @Parameterized.Parameters
         fun data() = arrayOf(
-            TestParam(motionController = { BackStackSlider(it) }),
-            TestParam(motionController = { BackStackFader(it) }),
-            TestParam(motionController = { BackStackParallax(it) }),
-            TestParam(motionController = { BackStack3D(it) }),
+            TestParam(visualisation = { BackStackSlider(it) }),
+            TestParam(visualisation = { BackStackFader(it) }),
+            TestParam(visualisation = { BackStackParallax(it) }),
+            TestParam(visualisation = { BackStack3D(it) }),
         )
     }
 
     @Test
     fun backStack_with_animations_enabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
-        createBackStack(disableAnimations = false, testParam.motionController)
+        createBackStack(disableAnimations = false, testParam.visualisation)
         composeTestRule.setupAppyxComponent(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
@@ -69,7 +69,7 @@ class BackStackTest(private val testParam: TestParam) {
 
     @Test
     fun backStack_with_animations_enabled_does_not_clean_up_in_keyframe_mode_when_element_is_used() {
-        createBackStack(disableAnimations = false, testParam.motionController)
+        createBackStack(disableAnimations = false, testParam.visualisation)
         composeTestRule.setupAppyxComponent(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
@@ -86,7 +86,7 @@ class BackStackTest(private val testParam: TestParam) {
 
     @Test
     fun backStack_with_animations_disabled_cleans_up_destroyed_element_in_keyframe_mode_when_settled() {
-        createBackStack(disableAnimations = true, testParam.motionController)
+        createBackStack(disableAnimations = true, testParam.visualisation)
         composeTestRule.setupAppyxComponent(backStack)
 
         backStack.push(interactionTarget = InteractionTarget.Child2)
@@ -99,7 +99,7 @@ class BackStackTest(private val testParam: TestParam) {
 
     @Test
     fun backStack_with_animations_enabled_cleans_destroyed_element_in_immediate_mode_when_animation_finished() {
-        createBackStack(disableAnimations = false, testParam.motionController)
+        createBackStack(disableAnimations = false, testParam.visualisation)
         composeTestRule.setupAppyxComponent(backStack)
 
         val pushSpringSpec = spring<Float>()
@@ -133,14 +133,14 @@ class BackStackTest(private val testParam: TestParam) {
 
     private fun createBackStack(
         disableAnimations: Boolean,
-        motionController: (UiContext) -> MotionController<InteractionTarget, BackStackModel.State<InteractionTarget>>
+        visualisation: (UiContext) -> Visualisation<InteractionTarget, BackStackModel.State<InteractionTarget>>
     ) {
         backStack = BackStack(
             model = BackStackModel(
                 initialTargets = listOf(InteractionTarget.Child1),
                 savedStateMap = null
             ),
-            motionController = motionController,
+            visualisation = visualisation,
             scope = CoroutineScope(Dispatchers.Unconfined),
             disableAnimations = disableAnimations
         )

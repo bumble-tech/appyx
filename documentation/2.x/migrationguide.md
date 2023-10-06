@@ -40,7 +40,7 @@ Check also [Multiplatform](../navigation/multiplatform.md) documentation and the
 
 - 1.x → 2.x
 - `NavModel` → `AppyxComponent`
-- `TransitionHandler` → `MotionController`
+- `TransitionHandler` → `Visualisation`
 
 
 ## Migration guide
@@ -129,7 +129,7 @@ class RootNode(
 +            initialTarget = Child1,
 +            savedStateMap = buildContext.savedStateMap
 +        ),
-+        motionController = { BackStackFader(it) },
++        visualisation = { BackStackFader(it) },
      ),
  ) : ParentNode<RootNode.NavTarget>(
 -    navModel = backStack,

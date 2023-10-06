@@ -28,7 +28,7 @@ class PositionOutside(
     coroutineScope: CoroutineScope,
     val target: Target,
     displacement: StateFlow<Value> = MutableStateFlow(Value.Zero),
-    visibilityThreshold: Value = Value(OutsideAlignment(0.01f, 0.01f), DpOffset(1.dp, 1.dp)),
+    visibilityThreshold: Value = Value(OutsideAlignment(0.001f, 0.001f), DpOffset(1.dp, 1.dp)),
 ) : MotionProperty<Value, AnimationVector4D>(
     coroutineScope = coroutineScope,
     animatable = Animatable(target.value, Value.VectorConverter),
