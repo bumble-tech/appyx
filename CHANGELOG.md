@@ -2,13 +2,19 @@
 
 ## Pending changes
 
-–
+### Changed
+
+- [#611](https://github.com/bumble-tech/appyx/pull/611) – Lower position and rotation animation default round-off thresholds
+
+---
 
 ## 2.0.0-alpha08
 
 ### Fixed
 
 - [#608](https://github.com/bumble-tech/appyx/pull/608) – Setting default value to NodeCustomisationDirectory in IosNodeHost
+
+---
 
 ## 2.0.0-alpha07
 
@@ -19,6 +25,7 @@
 
 <div style="text-align: center"><small>4 Oct 2023</small></div>
 
+---
 
 ## 2.0.0-alpha06
 
