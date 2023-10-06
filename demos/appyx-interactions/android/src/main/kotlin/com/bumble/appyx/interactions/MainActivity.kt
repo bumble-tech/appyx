@@ -43,7 +43,8 @@ class MainActivity : NodeActivity() {
                         AppyxMaterial3NavNode(
                             buildContext = it,
                             navTargets = MainNavItem.values().toList(),
-                            navTargetResolver = MainNavItem.resolver
+                            navTargetResolver = MainNavItem.resolver,
+                            initialActiveElement = MainNavItem.CARDS
                         )
                     }
                 }

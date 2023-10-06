@@ -44,6 +44,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     buildContext: BuildContext,
     private val navTargets: List<NavTarget>,
     private val navTargetResolver: (NavTarget) -> AppyxNavItem,
+    private val initialActiveElement: NavTarget,
     private val animationSpec: SpringSpec<Float> = spring(
         stiffness = Spring.StiffnessHigh
     ),
@@ -56,7 +57,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = navTargets,
-            initialActiveIndex = 0f,
+            initialActiveIndex = navTargets.indexOf(initialActiveElement).toFloat(),
             savedStateMap = buildContext.savedStateMap
         ),
         visualisation = visualisation
