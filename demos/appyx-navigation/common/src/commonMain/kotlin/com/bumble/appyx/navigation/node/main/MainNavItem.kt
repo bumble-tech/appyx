@@ -8,7 +8,7 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.Cake
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
-import com.bumble.appyx.navigation.node.cakecategory.CakeCategoryNode
+import com.bumble.appyx.navigation.node.cakes.CakeCategoryNode
 import com.bumble.appyx.navigation.node.home.HomeNode
 import com.bumble.appyx.navigation.node.profile.ProfileNode
 import com.bumble.appyx.utils.material3.AppyxNavItem

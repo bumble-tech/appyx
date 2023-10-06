@@ -1,7 +1,10 @@
 package com.bumble.appyx.navigation.node.profile
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
@@ -35,8 +38,15 @@ class ProfileNode(
 
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
         when (interactionTarget) {
-            is InteractionTarget.ProfileChild -> node(buildContext) {
-                Text("Profile Node")
+            is InteractionTarget.ProfileChild -> node(buildContext) { modifier ->
+                Box(
+                    modifier = modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "Profile",
+                    )
+                }
             }
         }
 
