@@ -21,7 +21,7 @@ import com.bumble.appyx.components.modal.operation.add
 import com.bumble.appyx.components.modal.operation.fullScreen
 import com.bumble.appyx.components.modal.operation.revert
 import com.bumble.appyx.components.modal.operation.show
-import com.bumble.appyx.components.modal.ui.ModalMotionController
+import com.bumble.appyx.components.modal.ui.ModalVisualisation
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -43,7 +43,7 @@ class ModalExamplesNode(
             initialElements = listOf(InteractionTarget.Child),
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { ModalMotionController(it) }
+        visualisation = { ModalVisualisation(it) }
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,

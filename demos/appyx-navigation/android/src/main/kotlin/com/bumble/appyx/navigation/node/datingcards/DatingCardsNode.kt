@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
-import com.bumble.appyx.components.experimental.cards.ui.CardsMotionController
+import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -30,8 +30,8 @@ class DatingCardsNode(
                 },
                 savedStateMap = buildContext.savedStateMap
             ),
-            motionController = { CardsMotionController(it) },
-            gestureFactory = { CardsMotionController.Gestures(it) },
+            visualisation = { CardsVisualisation(it) },
+            gestureFactory = { CardsVisualisation.Gestures(it) },
         )
 
 ) : ParentNode<InteractionTarget>(

@@ -44,7 +44,7 @@ class SpotlightDebugNode(
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { SpotlightSlider(it) },
+        visualisation = { SpotlightSlider(it) },
         isDebug = true
     )
 ) : ParentNode<InteractionTarget>(

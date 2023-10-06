@@ -24,7 +24,7 @@ The big picture:
 flowchart TB
   subgraph AC[AppyxComponent]
     direction TB
-    T[TransitionModel] --> |"#lt;ModelState#gt;"| M[MotionController];
+    T[TransitionModel] --> |"#lt;ModelState#gt;"| V[Visualisation];
   end
   O[Operation] --> AC --> |Modifier| C(["@Composable"]);
   C --> |Gesture| O
@@ -34,7 +34,7 @@ flowchart TB
 Where:
 
 * `TransitionModel` – Defines the abstract description of `<ModelState>`, accepts `Operations`
-* `MotionController` – Translates `<ModelState>` to UI middle representation, eventually `Modifier`
+* `Visualisation` – Translates `<ModelState>` to UI middle representation, eventually `Modifier`
 * `AppyxComponent` – Packages the above as a high level component; its output will result in `@Composable` elements with animated `Modifiers`
 * `Operation` – Defines a `(ModelState) -> ModelState` change
 

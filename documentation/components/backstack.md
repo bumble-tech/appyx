@@ -131,7 +131,7 @@ private val backStack: BackStack<InteractionTarget> = BackStack(
         initialTargets = listOf(InteractionTarget.SomeElement),
         savedStateMap = buildContext.savedStateMap
     ),
-    motionController = { BackStackSlider(it) } // or other visualisations 
+    visualisation = { BackStackSlider(it) } // or other visualisations 
 )
 ```
 

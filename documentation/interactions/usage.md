@@ -45,13 +45,13 @@ fun SomeComposable() {
             model = SomeTransitionModel(/*...*/),
             
             // The visual representation (slider, fader, etc.) 
-            motionController = { SomeMotionController(/*...*/) } ,
+            visualisation = { SomeVisualisation(/*...*/) } ,
             
             // Optional – configure animations
             animationSpec = spring(stiffness = Spring.StiffnessLow),
 
             // What kind of gestures to control this model with 
-            gestureFactory = { SomeMotionController.Gestures(/*...*/) },
+            gestureFactory = { SomeVisualisation.Gestures(/*...*/) },
 
             // Optional – configure behaviour of incomplete gestures
             gestureSettleConfig = GestureSettleConfig(

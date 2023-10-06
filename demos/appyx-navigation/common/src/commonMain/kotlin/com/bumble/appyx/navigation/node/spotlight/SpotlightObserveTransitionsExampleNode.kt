@@ -51,7 +51,7 @@ class SpotlightObserveTransitionsExampleNode(
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { SpotlightSliderRotation(it) },
+        visualisation = { SpotlightSliderRotation(it) },
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
 ) : ParentNode<InteractionTarget>(

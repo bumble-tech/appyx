@@ -43,7 +43,7 @@ class BackstackDebugNode(
             initialTargets = listOf(InteractionTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap,
         ),
-        motionController = { BackStackSlider(it) }
+        visualisation = { BackStackSlider(it) }
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
