@@ -40,7 +40,7 @@ class BackStackExamplesNode(
             initialTargets = listOf(InteractionTarget.BackStackPicker),
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { BackStackSlider(it) }
+        visualisation = { BackStackSlider(it) }
     )
 ) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
@@ -83,7 +83,7 @@ class BackStackExamplesNode(
             })
             is InteractionTarget.BackstackParallax -> BackStackNode(
                 buildContext = buildContext,
-                motionController = { BackStackParallax(uiContext = it) },
+                visualisation = { BackStackParallax(uiContext = it) },
                 gestureFactory = { BackStackParallax.Gestures(it) },
                 isMaxSize = true
             ).also {
@@ -91,7 +91,7 @@ class BackStackExamplesNode(
             }
             is InteractionTarget.BackStack3D -> BackStackNode(
                 buildContext = buildContext,
-                motionController = { BackStack3D(it) },
+                visualisation = { BackStack3D(it) },
                 gestureFactory = { BackStack3D.Gestures(it) },
                 gestureSettleConfig = GestureSettleConfig(completionThreshold = 0.2f),
             )

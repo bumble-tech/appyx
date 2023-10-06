@@ -1,7 +1,6 @@
 package com.bumble.appyx.components.spotlight.ui.sliderscale
 
 import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.ui.unit.Dp
 import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
@@ -10,19 +9,18 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightSliderScale<InteractionTarget : Any>(
     uiContext: UiContext,
     @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
     @Suppress("MaxLineLength")

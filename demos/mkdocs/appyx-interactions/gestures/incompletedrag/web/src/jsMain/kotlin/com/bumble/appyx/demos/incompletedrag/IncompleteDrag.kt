@@ -57,8 +57,8 @@ fun IncompleteDrag(
         TestDrive(
             scope = coroutineScope,
             model = model,
-            motionController = { IncompleteDragMotionController(it) },
-            gestureFactory = { IncompleteDragMotionController.Gestures(it) },
+            visualisation = { IncompleteDragVisualisation(it) },
+            gestureFactory = { IncompleteDragVisualisation.Gestures(it) },
             gestureSettleConfig = GestureSettleConfig(0.15f)
         )
     }

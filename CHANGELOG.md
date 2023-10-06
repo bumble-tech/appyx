@@ -2,6 +2,10 @@
 
 ## Pending changes
 
+### API breaking changes
+
+- [#612](https://github.com/bumble-tech/appyx/pull/612) – Rename MotionController to Visualisation
+
 ### Changed
 
 - [#611](https://github.com/bumble-tech/appyx/pull/611) – Lower position and rotation animation default round-off thresholds
@@ -70,6 +74,11 @@
 
 ## 2.0.0-alpha03
 
+### API breaking changes
+
+- [#562](https://github.com/bumble-tech/appyx/issues/562) – Implement custom alignment to remove screen size knowledge when offsetting element in MotionController
+- [#562](https://github.com/bumble-tech/appyx/pull/565) – Remove UiContext parameter from MotionProperty and provide BoxScope via composition local
+
 ### Added
 
 - [#551](https://github.com/bumble-tech/appyx/pull/551) - Support Multiplatform in **:appyx-navigation**
@@ -78,11 +87,6 @@
 ### Fixed
 
 - [#560](https://github.com/bumble-tech/appyx/issues/560) – Don't remove destroyed elements on update automatically
-
-### Changed
-
-- [#562](https://github.com/bumble-tech/appyx/issues/562) – Implement custom alignment to remove screen size knowledge when offsetting element in MotionController
-- [#562](https://github.com/bumble-tech/appyx/pull/565) – Remove UiContext parameter from MotionProperty and provide BoxScope via composition local
 
 <div style="text-align: center"><small>17 Aug 2023</small></div>
 

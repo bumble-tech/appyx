@@ -44,7 +44,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.sample3.InteractionTarget.Child1
-import com.bumble.appyx.demos.sample3.Sample3MotionController.Companion.toTargetUiState
+import com.bumble.appyx.demos.sample3.Sample3Visualisation.Companion.toTargetUiState
 import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
@@ -72,8 +72,8 @@ fun Sample3(
                 stiffness = Spring.StiffnessVeryLow / 10,
                 visibilityThreshold = 0.001f
             ),
-            motionController = { Sample3MotionController(it) },
-            gestureFactory = { Sample3MotionController.Gestures(it) }
+            visualisation = { Sample3Visualisation(it) },
+            gestureFactory = { Sample3Visualisation.Gestures(it) }
         )
     }
 
