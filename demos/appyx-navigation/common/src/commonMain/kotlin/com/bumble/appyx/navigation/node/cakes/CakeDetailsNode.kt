@@ -30,7 +30,7 @@ class CakeDetailsNode(
         val backgroundColor = colors[backgroundColorIdx]
 
         Box(
-            modifier = Modifier
+            modifier = modifier
                 .fillMaxSize()
                 .clip(RoundedCornerShape(5))
                 .background(backgroundColor)

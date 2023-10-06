@@ -40,7 +40,7 @@ class CakeCategoryNode(
     override fun View(modifier: Modifier) {
         AppyxComponent(
             appyxComponent = backStack,
-            modifier = Modifier
+            modifier = modifier
         )
     }
 }

@@ -46,7 +46,7 @@ class CakeListNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        Box(modifier = Modifier.fillMaxSize()) {
+        Box(modifier = modifier.fillMaxSize()) {
             AppyxComponent(
                 appyxComponent = spotlight,
                 modifier = Modifier
