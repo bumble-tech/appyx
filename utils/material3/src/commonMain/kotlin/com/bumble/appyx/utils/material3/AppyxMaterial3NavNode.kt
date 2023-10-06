@@ -24,7 +24,7 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.operation.activate
 import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
 import com.bumble.appyx.interactions.core.plugin.Plugin
-import com.bumble.appyx.interactions.core.ui.MotionController
+import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -47,7 +47,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     private val animationSpec: SpringSpec<Float> = spring(
         stiffness = Spring.StiffnessHigh
     ),
-    private val motionController: (UiContext) -> MotionController<NavTarget, State<NavTarget>> = {
+    private val visualisation: (UiContext) -> Visualisation<NavTarget, State<NavTarget>> = {
         SpotlightFader(
             uiContext = it,
             defaultAnimationSpec = animationSpec
@@ -59,7 +59,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
             initialActiveIndex = 0f,
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = motionController
+        visualisation = visualisation
     ),
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,

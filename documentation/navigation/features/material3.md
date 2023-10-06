@@ -82,7 +82,6 @@ You can set a different animation spec applied to the default crossfade:
 
 ```kotlin
 AppyxMaterial3NavNode<MainNavItem>(
-    /*...*/
     animationSpec = spring(Spring.StiffnessMedium)
 )
 ```
@@ -92,7 +91,7 @@ Or you can set a different visualisation altogether:
 ```kotlin
 AppyxMaterial3NavNode<MainNavItem>(
     /*...*/
-    motionController = { SpotlightSlider(it) }
+    visualisation = { SpotlightSlider(it) }
 )
 ```
 
