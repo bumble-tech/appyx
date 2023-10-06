@@ -10,5 +10,6 @@ class MainNavNode(
 ) : AppyxMaterial3NavNode<MainNavItem>(
     buildContext = buildContext,
     navTargets = MainNavItem.values().toList(),
-    navTargetResolver = MainNavItem.resolver
+    navTargetResolver = MainNavItem.resolver,
+    initialActiveElement = MainNavItem.SPOTLIGHT
 )
