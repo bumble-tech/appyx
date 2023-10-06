@@ -3,7 +3,7 @@ plugins {
 }
 
 appyx {
-    namespace.set("com.bumble.appyx.demos.appyxnavigation")
+    namespace.set("com.bumble.appyx.demos.sandbox.navigation")
 
     buildFeatures {
         compose.set(true)

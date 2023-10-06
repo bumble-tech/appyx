@@ -8,7 +8,7 @@ plugins {
 }
 
 appyx {
-    androidNamespace.set("com.bumble.appyx.demos.appyxnavigation.common")
+    androidNamespace.set("com.bumble.appyx.demos.sandbox.navigation.common")
 }
 
 kotlin {
@@ -22,7 +22,7 @@ kotlin {
     }
     js(IR) {
         // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
-        moduleName = "demo-appyx-navigation-common"
+        moduleName = "demo-sandbox-appyx-navigation-common"
         browser()
     }
     iosX64()
