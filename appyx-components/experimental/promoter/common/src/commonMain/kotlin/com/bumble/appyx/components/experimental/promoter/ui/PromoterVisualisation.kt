@@ -72,7 +72,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
     @Suppress("LongMethod")
     private fun createTargetUiStates(radius: Float) {
         created = TargetUiState(
-            position = PositionAlignment.Target(alignment = Center),
+            position = PositionAlignment.Target(insideAlignment = Center),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -85,7 +85,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage1 = TargetUiState(
-            position = PositionAlignment.Target(alignment = Center),
+            position = PositionAlignment.Target(insideAlignment = Center),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -98,7 +98,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage2 = TargetUiState(
-            position = PositionAlignment.Target(alignment = Center),
+            position = PositionAlignment.Target(insideAlignment = Center),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -111,7 +111,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage3 = TargetUiState(
-            position = PositionAlignment.Target(alignment = Center),
+            position = PositionAlignment.Target(insideAlignment = Center),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -124,7 +124,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage4 = TargetUiState(
-            position = PositionAlignment.Target(alignment = Center),
+            position = PositionAlignment.Target(insideAlignment = Center),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -137,7 +137,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage5 = TargetUiState(
-            position = PositionAlignment.Target(alignment = Center),
+            position = PositionAlignment.Target(insideAlignment = Center),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = 0f,
@@ -151,7 +151,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
 
         destroyed = TargetUiState(
             position = PositionAlignment.Target(
-                alignment = Center,
+                insideAlignment = Center,
                 offset = DpOffset(500.dp, (-200).dp)
             ),
             angularPosition = AngularPosition.Target(

@@ -161,7 +161,7 @@ fun <InteractionTarget : Any> TestDriveUi(
             Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .align(targetUiState.position.value.alignment)
+                    .align(targetUiState.position.value.insideAlignment)
                     .offset(
                         targetUiState.position.value.offset.x,
                         targetUiState.position.value.offset.y

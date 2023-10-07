@@ -40,7 +40,7 @@ class MutableUiStateTest {
 
     private fun setupTestMutableUiState(
         target: PositionAlignment.Target = PositionAlignment.Target(
-            alignment = BiasAlignment.InsideAlignment.TopStart
+            insideAlignment = BiasAlignment.InsideAlignment.TopStart
         ),
         clipToBounds: Boolean = false,
         containerModifier: Modifier = Modifier
@@ -98,7 +98,7 @@ class MutableUiStateTest {
         testMutableUiState.snapTo(
             target = TestTargetUiState(
                 position = PositionAlignment.Target(
-                    alignment = BiasAlignment.InsideAlignment.TopEnd,
+                    insideAlignment = BiasAlignment.InsideAlignment.TopEnd,
                     offset = DpOffset(x = childSize, y = 0.dp)
                 )
             )
@@ -124,7 +124,7 @@ class MutableUiStateTest {
         testMutableUiState.snapTo(
             target = TestTargetUiState(
                 position = PositionAlignment.Target(
-                    alignment = BiasAlignment.InsideAlignment.TopEnd,
+                    insideAlignment = BiasAlignment.InsideAlignment.TopEnd,
                     offset = DpOffset(x = offset, y = 0.dp)
                 )
             )

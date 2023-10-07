@@ -220,7 +220,7 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
         val layoutDirection = LocalLayoutDirection.current
 
         val positionInsideOffset = positionAlignment?.let {
-            it.alignment.align(elementSize, containerSize, layoutDirection)
+            it.insideAlignment.align(elementSize, containerSize, layoutDirection)
         } ?: IntOffset.Zero
 
         val positionOutsideOffset = positionOutside?.let {

@@ -36,7 +36,7 @@ class Puzzle15Visualisation(
                 element = tileElements,
                 targetUiState = TargetUiState(
                     position = PositionAlignment.Target(
-                        alignment = fractionAlignment(
+                        insideAlignment = fractionAlignment(
                             horizontalBiasFraction = (index % CELLS_COUNT).toFloat() / (CELLS_COUNT - 1),
                             verticalBiasFraction = (index / CELLS_COUNT).toFloat() / (CELLS_COUNT - 1)
                         )

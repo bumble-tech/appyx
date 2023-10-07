@@ -60,25 +60,25 @@ class Sample2Visualisation<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = PositionAlignment.Target(alignment = InsideAlignment.TopStart),
+            position = PositionAlignment.Target(insideAlignment = InsideAlignment.TopStart),
             rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         private val topRightCorner = TargetUiState(
-            position = PositionAlignment.Target(alignment = InsideAlignment.TopEnd),
+            position = PositionAlignment.Target(insideAlignment = InsideAlignment.TopEnd),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = PositionAlignment.Target(alignment = InsideAlignment.BottomEnd, bottomOffset),
+            position = PositionAlignment.Target(insideAlignment = InsideAlignment.BottomEnd, bottomOffset),
             rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = PositionAlignment.Target(alignment = InsideAlignment.BottomStart, bottomOffset),
+            position = PositionAlignment.Target(insideAlignment = InsideAlignment.BottomStart, bottomOffset),
             rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
