@@ -9,7 +9,7 @@ import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 @Suppress("unused")
 @MutableUiStateSpecs
 class TargetUiState(
-    val position: PositionAlignment.Target,
+    val positionAlignment: PositionAlignment.Target,
     val rotationZ: RotationZ.Target,
     val roundedCorners: RoundedCorners.Target = RoundedCorners.Target(10),
     val backgroundColor: BackgroundColor.Target,

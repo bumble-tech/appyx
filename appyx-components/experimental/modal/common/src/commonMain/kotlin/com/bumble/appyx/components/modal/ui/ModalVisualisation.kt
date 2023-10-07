@@ -30,27 +30,27 @@ class ModalVisualisation<InteractionTarget : Any>(
     private val createdState: TargetUiState =
         TargetUiState(
             height = Height.Target(0f),
-            position = PositionAlignment.Target(InContainer),
+            positionAlignment = PositionAlignment.Target(InContainer),
             corner = RoundedCorners.Target(8),
         )
     private val modalState: TargetUiState =
         TargetUiState(
             height = Height.Target(0.5f),
-            position = PositionAlignment.Target(OutsideAlignment(0f, 0.5f)),
+            positionAlignment = PositionAlignment.Target(OutsideAlignment(0f, 0.5f)),
             corner = RoundedCorners.Target(8),
         )
 
     private val fullScreenState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-            position = PositionAlignment.Target(InContainer),
+            positionAlignment = PositionAlignment.Target(InContainer),
             corner = RoundedCorners.Target(0),
         )
 
     private val destroyedState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-            position = PositionAlignment.Target(OutsideAlignment(0f, 1.5f)),
+            positionAlignment = PositionAlignment.Target(OutsideAlignment(0f, 1.5f)),
             corner = RoundedCorners.Target(0),
         )
 

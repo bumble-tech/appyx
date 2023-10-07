@@ -1,17 +1,14 @@
 package com.bumble.appyx.interactions.widgets.ui
 
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
-import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.SpotlightModel
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.mapState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
@@ -21,15 +18,6 @@ class WidgetsStack3D<InteractionTarget : Any>(
 ) : BaseVisualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
 ) {
-    private var width: Dp = 0.dp
-    private var height: Dp = 0.dp
-
-    override fun updateBounds(transitionBounds: TransitionBounds) {
-        super.updateBounds(transitionBounds)
-        width = transitionBounds.widthDp
-        height = transitionBounds.heightDp
-    }
-
     private val scrollY = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
 
     @Suppress("MaxLineLength")
@@ -59,14 +47,14 @@ class WidgetsStack3D<InteractionTarget : Any>(
         targetUiState.toMutableState(
             uiContext = uiContext,
             scrollX = scrollY.renderValueFlow.mapState(uiContext.coroutineScope) { it - targetUiState.positionInList },
-            itemWidth = width,
-            itemHeight = height,
+            itemWidth = transitionBounds.widthDp,
+            itemHeight = transitionBounds.heightDp,
         )
 
     private companion object {
         val default: TargetUiState = TargetUiState(
             rotationX = RotationX.Target(0f),
-            position = PositionAlignment.Target(DpOffset.Zero),
+            positionOffset = PositionOffset.Target(DpOffset.Zero),
             scale = Scale.Target(1f),
             alpha = Alpha.Target(1f),
             zIndex = ZIndex.Target(0f),

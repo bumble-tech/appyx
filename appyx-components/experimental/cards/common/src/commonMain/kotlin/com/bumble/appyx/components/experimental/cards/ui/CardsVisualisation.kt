@@ -45,7 +45,7 @@ class CardsVisualisation<InteractionTarget : Any>(
     )
 
     private val votePass = TargetUiState(
-        position = PositionAlignment.Target(
+        positionAlignment = PositionAlignment.Target(
             BiasAlignment.OutsideAlignment(-voteCardPositionMultiplier, 0)
         ),
         scale = Scale.Target(1f),
@@ -54,7 +54,7 @@ class CardsVisualisation<InteractionTarget : Any>(
     )
 
     private val voteLike = TargetUiState(
-        position = PositionAlignment.Target(
+        positionAlignment = PositionAlignment.Target(
             BiasAlignment.OutsideAlignment(voteCardPositionMultiplier, 0)
         ),
         scale = Scale.Target(1f),

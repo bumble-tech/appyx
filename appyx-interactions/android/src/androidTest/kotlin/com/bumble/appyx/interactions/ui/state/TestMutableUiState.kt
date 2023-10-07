@@ -13,13 +13,13 @@ import kotlinx.coroutines.launch
 
 class TestMutableUiState(
     uiContext: UiContext,
-    val position: PositionAlignment,
+    val positionAlignment: PositionAlignment,
 ) : BaseMutableUiState<TestTargetUiState>(
     uiContext = uiContext,
-    motionProperties = listOf(position),
+    motionProperties = listOf(positionAlignment),
 ) {
     override val combinedMotionPropertyModifier: Modifier = Modifier
-        .then(position.modifier)
+        .then(positionAlignment.modifier)
 
     override suspend fun animateTo(
         scope: CoroutineScope,
@@ -28,8 +28,8 @@ class TestMutableUiState(
     ) {
         listOf(
             scope.async {
-                position.animateTo(
-                    target.position.value,
+                positionAlignment.animateTo(
+                    target.positionAlignment.value,
                     spring(springSpec.dampingRatio, springSpec.stiffness),
                 )
             },
@@ -37,7 +37,7 @@ class TestMutableUiState(
     }
 
     override suspend fun snapTo(target: TestTargetUiState) {
-        position.snapTo(target.position.value)
+        positionAlignment.snapTo(target.positionAlignment.value)
     }
 
     override fun lerpTo(
@@ -47,7 +47,7 @@ class TestMutableUiState(
         fraction: Float,
     ) {
         scope.launch {
-            position.lerpTo(start.position, end.position, fraction)
+            positionAlignment.lerpTo(start.positionAlignment, end.positionAlignment, fraction)
         }
     }
 }

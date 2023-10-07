@@ -2,7 +2,6 @@ package com.bumble.appyx.interactions.core.ui.property.impl.position
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector2D
-import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.TwoWayConverter
 import androidx.compose.foundation.layout.offset

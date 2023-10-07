@@ -60,22 +60,22 @@ class TestDriveSimpleVisualisation<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = PositionAlignment.Target(BiasAlignment.InsideAlignment.TopStart),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.TopStart),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val topRightCorner = TargetUiState(
-            position = PositionAlignment.Target(BiasAlignment.InsideAlignment.TopEnd),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.TopEnd),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = PositionAlignment.Target(BiasAlignment.InsideAlignment.CenterEnd),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.CenterEnd),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = PositionAlignment.Target(BiasAlignment.InsideAlignment.CenterStart),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.CenterStart),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }

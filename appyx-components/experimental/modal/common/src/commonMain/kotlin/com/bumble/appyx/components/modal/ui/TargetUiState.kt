@@ -9,7 +9,7 @@ import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 @MutableUiStateSpecs
 class TargetUiState(
     val height: Height.Target,
-    val position: PositionAlignment.Target,
+    val positionAlignment: PositionAlignment.Target,
     val corner: RoundedCorners.Target,
 ) {
 
@@ -19,7 +19,7 @@ class TargetUiState(
         MutableUiState(
             uiContext = uiContext,
             height = Height(uiContext.coroutineScope, height),
-            position = PositionAlignment(uiContext.coroutineScope, position),
+            positionAlignment = PositionAlignment(uiContext.coroutineScope, positionAlignment),
             corner = RoundedCorners(uiContext.coroutineScope, corner),
         )
 }

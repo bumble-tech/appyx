@@ -73,7 +73,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
     @Suppress("LongMethod")
     private fun createTargetUiStates(radius: Float) {
         created = TargetUiState(
-            position = PositionAlignment.Target(insideAlignment = Center),
+            positionAlignment = PositionAlignment.Target(insideAlignment = Center),
             positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
@@ -87,7 +87,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage1 = TargetUiState(
-            position = PositionAlignment.Target(insideAlignment = Center),
+            positionAlignment = PositionAlignment.Target(insideAlignment = Center),
             positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
@@ -101,7 +101,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage2 = TargetUiState(
-            position = PositionAlignment.Target(insideAlignment = Center),
+            positionAlignment = PositionAlignment.Target(insideAlignment = Center),
             positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
@@ -115,7 +115,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage3 = TargetUiState(
-            position = PositionAlignment.Target(insideAlignment = Center),
+            positionAlignment = PositionAlignment.Target(insideAlignment = Center),
             positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
@@ -129,7 +129,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage4 = TargetUiState(
-            position = PositionAlignment.Target(insideAlignment = Center),
+            positionAlignment = PositionAlignment.Target(insideAlignment = Center),
             positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
@@ -143,7 +143,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         stage5 = TargetUiState(
-            position = PositionAlignment.Target(insideAlignment = Center),
+            positionAlignment = PositionAlignment.Target(insideAlignment = Center),
             positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
@@ -157,7 +157,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
         )
 
         destroyed = TargetUiState(
-            position = PositionAlignment.Target(
+            positionAlignment = PositionAlignment.Target(
                 insideAlignment = Center
             ),
             positionOffset = PositionOffset.Target(

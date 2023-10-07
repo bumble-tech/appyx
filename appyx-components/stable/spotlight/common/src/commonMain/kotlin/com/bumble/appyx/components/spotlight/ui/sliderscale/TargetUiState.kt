@@ -13,7 +13,7 @@ import kotlin.math.abs
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
-    val position: PositionAlignment.Target,
+    val positionAlignment: PositionAlignment.Target,
     val scale: Scale.Target,
 ) {
     /**
@@ -24,8 +24,8 @@ class TargetUiState(
         positionInList: Int
     ) : this(
         positionInList = positionInList,
-        position = PositionAlignment.Target(
-            base.position.value.copy(
+        positionAlignment = PositionAlignment.Target(
+            base.positionAlignment.value.copy(
                 outsideAlignment = BiasAlignment.OutsideAlignment(
                     horizontalBias = positionInList.toFloat(),
                     verticalBias = 0f
@@ -45,9 +45,9 @@ class TargetUiState(
         scrollX: StateFlow<Float>
     ): MutableUiState = MutableUiState(
         uiContext = uiContext,
-        position = PositionAlignment(
+        positionAlignment = PositionAlignment(
             coroutineScope = uiContext.coroutineScope,
-            target = position,
+            target = positionAlignment,
             displacement = scrollX.mapState(uiContext.coroutineScope) {
                 PositionAlignment.Value(
                     outsideAlignment = BiasAlignment.OutsideAlignment(

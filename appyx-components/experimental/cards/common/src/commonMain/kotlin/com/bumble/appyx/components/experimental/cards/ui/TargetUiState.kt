@@ -10,7 +10,7 @@ import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 @MutableUiStateSpecs
 class TargetUiState(
     val scale: Scale.Target = Scale.Target(1f),
-    val position: PositionAlignment.Target = PositionAlignment.Target(),
+    val positionAlignment: PositionAlignment.Target = PositionAlignment.Target(),
     val rotationZ: RotationZ.Target = RotationZ.Target(0f),
     val zIndex: ZIndex.Target = ZIndex.Target(0f),
 )

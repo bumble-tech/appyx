@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
-    val position: PositionAlignment.Target,
+    val positionAlignment: PositionAlignment.Target,
     val scale: Scale.Target,
     val rotationY: RotationY.Target,
     val alpha: Alpha.Target,
@@ -30,8 +30,8 @@ class TargetUiState(
         positionInList: Int
     ) : this(
         positionInList = positionInList,
-        position = PositionAlignment.Target(
-            base.position.value.copy(
+        positionAlignment = PositionAlignment.Target(
+            base.positionAlignment.value.copy(
                 outsideAlignment = BiasAlignment.OutsideAlignment(
                     horizontalBias = positionInList.toFloat(),
                     verticalBias = 0f
@@ -54,9 +54,9 @@ class TargetUiState(
     ): MutableUiState {
         return MutableUiState(
             uiContext = uiContext,
-            position = PositionAlignment(
+            positionAlignment = PositionAlignment(
                 coroutineScope = uiContext.coroutineScope,
-                target = position,
+                target = positionAlignment,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
                     PositionAlignment.Value(
                         outsideAlignment = BiasAlignment.OutsideAlignment(

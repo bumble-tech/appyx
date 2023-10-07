@@ -46,25 +46,25 @@ class TestDriveRotationVisualisation<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = PositionAlignment.Target(InsideAlignment.TopStart),
+            positionAlignment = PositionAlignment.Target(InsideAlignment.TopStart),
             rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val topRightCorner = TargetUiState(
-            position = PositionAlignment.Target(InsideAlignment.TopEnd),
+            positionAlignment = PositionAlignment.Target(InsideAlignment.TopEnd),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = PositionAlignment.Target(InsideAlignment.CenterEnd),
+            positionAlignment = PositionAlignment.Target(InsideAlignment.CenterEnd),
             rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = PositionAlignment.Target(InsideAlignment.CenterStart),
+            positionAlignment = PositionAlignment.Target(InsideAlignment.CenterStart),
             rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )

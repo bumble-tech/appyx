@@ -63,21 +63,21 @@ class DragPredictionVisualisation<InteractionTarget : Any>(
 
         // Top-left corner, A
         private val uiStateA = TargetUiState(
-            position = PositionAlignment.Target(DpOffset(0.dp, 0.dp)),
+            positionAlignment = PositionAlignment.Target(DpOffset(0.dp, 0.dp)),
             scale = Scale.Target(1f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         // Top-right corner, B
         private val uiStateB = TargetUiState(
-            position = PositionAlignment.Target(DpOffset(180.dp, 30.dp)),
+            positionAlignment = PositionAlignment.Target(DpOffset(180.dp, 30.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         // Bottom-right corner, C
         private val uiStateC = TargetUiState(
-            position = PositionAlignment.Target(DpOffset(180.dp, 180.dp)),
+            positionAlignment = PositionAlignment.Target(DpOffset(180.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(90f),
             backgroundColor = BackgroundColor.Target(color_secondary)
@@ -85,7 +85,7 @@ class DragPredictionVisualisation<InteractionTarget : Any>(
 
         // Bottom-left corner, D
         private val uiStateD = TargetUiState(
-            position = PositionAlignment.Target(DpOffset(30.dp, 180.dp)),
+            positionAlignment = PositionAlignment.Target(DpOffset(30.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
@@ -103,8 +103,8 @@ class DragPredictionVisualisation<InteractionTarget : Any>(
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val maxX = uiStateB.position.value.offset.x - uiStateA.position.value.offset.x
-        private val maxY = uiStateD.position.value.offset.y - uiStateA.position.value.offset.y
+        private val maxX = uiStateB.positionAlignment.value.offset.x - uiStateA.positionAlignment.value.offset.x
+        private val maxY = uiStateD.positionAlignment.value.offset.y - uiStateA.positionAlignment.value.offset.y
 
         @Suppress("ComplexMethod")
         override fun createGesture(

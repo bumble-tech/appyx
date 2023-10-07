@@ -31,17 +31,17 @@ class SpotlightSliderScale<InteractionTarget : Any>(
         )
 
     private val created: TargetUiState = TargetUiState(
-        position = PositionAlignment.Target(OutsideTop),
+        positionAlignment = PositionAlignment.Target(OutsideTop),
         scale = Scale.Target(0f),
     )
 
     private val standard: TargetUiState = TargetUiState(
-        position = PositionAlignment.Target(InContainer),
+        positionAlignment = PositionAlignment.Target(InContainer),
         scale = Scale.Target(1f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        position = PositionAlignment.Target(OutsideBottom),
+        positionAlignment = PositionAlignment.Target(OutsideBottom),
         scale = Scale.Target(0f),
     )
 

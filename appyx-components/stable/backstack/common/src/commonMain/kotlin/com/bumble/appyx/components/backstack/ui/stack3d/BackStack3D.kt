@@ -34,8 +34,8 @@ class BackStack3D<InteractionTarget : Any>(
 
     private val topMost: TargetUiState =
         TargetUiState(
-            position = PositionAlignment.Target(TopCenter),
-            offset = PositionOffset.Target(DpOffset(0f.dp, (itemsInStack * 16).dp)),
+            positionAlignment = PositionAlignment.Target(TopCenter),
+            positionOffset = PositionOffset.Target(DpOffset(0f.dp, (itemsInStack * 16).dp)),
             scale = Scale.Target(1f, origin = TransformOrigin(0.5f, 0.0f)),
             alpha = Alpha.Target(1f),
             zIndex = ZIndex.Target(itemsInStack.toFloat()),
@@ -50,16 +50,16 @@ class BackStack3D<InteractionTarget : Any>(
 
     private fun stacked(stackIndex: Int): TargetUiState =
         TargetUiState(
-            position = PositionAlignment.Target(TopCenter),
-            offset = PositionOffset.Target(DpOffset(0f.dp, (itemsInStack - stackIndex) * 16.dp)),
+            positionAlignment = PositionAlignment.Target(TopCenter),
+            positionOffset = PositionOffset.Target(DpOffset(0f.dp, (itemsInStack - stackIndex) * 16.dp)),
             scale = Scale.Target(1f - stackIndex * 0.05f, origin = TransformOrigin(0.5f, 0.0f)),
             alpha = Alpha.Target(if (stackIndex < itemsInStack) 1f else 0f),
             zIndex = ZIndex.Target(-stackIndex.toFloat()),
         )
 
     private fun incoming(height: Dp): TargetUiState = TargetUiState(
-        position = PositionAlignment.Target(TopCenter, ),
-        offset = PositionOffset.Target(DpOffset(0f.dp, height)),
+        positionAlignment = PositionAlignment.Target(TopCenter, ),
+        positionOffset = PositionOffset.Target(DpOffset(0f.dp, height)),
         scale = Scale.Target(1f, origin = TransformOrigin(0.5f, 0.0f)),
         alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(itemsInStack + 1f),

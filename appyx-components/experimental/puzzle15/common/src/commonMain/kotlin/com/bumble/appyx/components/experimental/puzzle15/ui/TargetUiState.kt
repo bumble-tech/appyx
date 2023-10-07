@@ -5,5 +5,5 @@ import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 
 @MutableUiStateSpecs
 class TargetUiState(
-    val position: PositionAlignment.Target = PositionAlignment.Target()
+    val positionAlignment: PositionAlignment.Target = PositionAlignment.Target()
 )
