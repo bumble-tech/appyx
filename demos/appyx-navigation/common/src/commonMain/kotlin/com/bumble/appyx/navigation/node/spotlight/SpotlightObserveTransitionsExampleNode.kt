@@ -30,7 +30,7 @@ import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
@@ -85,11 +85,10 @@ class SpotlightObserveTransitionsExampleNode(
 
                     Column(modifier = Modifier.align(Alignment.Center)) {
 
-                        val alignment =
-                            motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()?.alignment
+                        val alignment = motionPropertyRenderValue<PositionAlignment.Value, PositionAlignment>()
                         if (alignment != null) {
                             Text(
-                                text = "Offset: ${(alignment.horizontalBias * 100).toTwoPointPrecisionString()}%",
+                                text = "Offset: ${(alignment.outsideAlignment.horizontalBias * 100).toTwoPointPrecisionString()}%",
                                 fontSize = 20.sp,
                                 color = Color.Black,
                                 fontWeight = FontWeight.Bold

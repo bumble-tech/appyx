@@ -20,6 +20,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopCenter
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
@@ -30,12 +31,11 @@ class BackStack3D<InteractionTarget : Any>(
 ) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
 ) {
-    private var width: Dp = 0.dp
-    private var height: Dp = 0.dp
 
     private val topMost: TargetUiState =
         TargetUiState(
-            position = PositionAlignment.Target(TopCenter, DpOffset(0f.dp, (itemsInStack * 16).dp)),
+            position = PositionAlignment.Target(TopCenter),
+            offset = PositionOffset.Target(DpOffset(0f.dp, (itemsInStack * 16).dp)),
             scale = Scale.Target(1f, origin = TransformOrigin(0.5f, 0.0f)),
             alpha = Alpha.Target(1f),
             zIndex = ZIndex.Target(itemsInStack.toFloat()),
@@ -45,24 +45,21 @@ class BackStack3D<InteractionTarget : Any>(
 
     override fun updateBounds(transitionBounds: TransitionBounds) {
         super.updateBounds(transitionBounds)
-        width = transitionBounds.widthDp
-        height = transitionBounds.heightDp
-        incoming = incoming(height)
+        incoming = incoming(transitionBounds.heightDp)
     }
 
     private fun stacked(stackIndex: Int): TargetUiState =
         TargetUiState(
-            position = PositionAlignment.Target(
-                TopCenter,
-                DpOffset(0f.dp, (itemsInStack - stackIndex) * 16.dp)
-            ),
+            position = PositionAlignment.Target(TopCenter),
+            offset = PositionOffset.Target(DpOffset(0f.dp, (itemsInStack - stackIndex) * 16.dp)),
             scale = Scale.Target(1f - stackIndex * 0.05f, origin = TransformOrigin(0.5f, 0.0f)),
             alpha = Alpha.Target(if (stackIndex < itemsInStack) 1f else 0f),
             zIndex = ZIndex.Target(-stackIndex.toFloat()),
         )
 
     private fun incoming(height: Dp): TargetUiState = TargetUiState(
-        position = PositionAlignment.Target(TopCenter, DpOffset(0f.dp, height)),
+        position = PositionAlignment.Target(TopCenter, ),
+        offset = PositionOffset.Target(DpOffset(0f.dp, height)),
         scale = Scale.Target(1f, origin = TransformOrigin(0.5f, 0.0f)),
         alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(itemsInStack + 1f),

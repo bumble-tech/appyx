@@ -2,7 +2,7 @@ package com.bumble.appyx.components.spotlight.ui.slider
 
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
-    val position: PositionOutside.Target,
+    val position: PositionAlignment.Target,
     val scale: Scale.Target,
     val alpha: Alpha.Target,
 ) {
@@ -24,9 +24,9 @@ class TargetUiState(
         positionInList: Int
     ) : this(
         positionInList = positionInList,
-        position = PositionOutside.Target(
+        position = PositionAlignment.Target(
             base.position.value.copy(
-                OutsideAlignment(horizontalBias = positionInList.toFloat(), verticalBias = 0f)
+                outsideAlignment = OutsideAlignment(horizontalBias = positionInList.toFloat(), verticalBias = 0f)
             )
         ),
         scale = base.scale,
@@ -44,12 +44,15 @@ class TargetUiState(
     ): MutableUiState =
         MutableUiState(
             uiContext = uiContext,
-            position = PositionOutside(
+            position = PositionAlignment(
                 coroutineScope = uiContext.coroutineScope,
                 target = position,
-                displacement = scrollX.mapState(uiContext.coroutineScope) {
-                    PositionOutside.Value(
-                        alignment = OutsideAlignment(horizontalBias = it, verticalBias = 0f)
+                displacement = scrollX.mapState(uiContext.coroutineScope) { scrollX ->
+                    PositionAlignment.Value(
+                        outsideAlignment = OutsideAlignment(
+                            horizontalBias = scrollX,
+                            verticalBias = 0f
+                        )
                     )
                 },
             ),

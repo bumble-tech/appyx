@@ -16,6 +16,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.Center
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import kotlin.math.min
@@ -73,6 +74,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
     private fun createTargetUiStates(radius: Float) {
         created = TargetUiState(
             position = PositionAlignment.Target(insideAlignment = Center),
+            positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -86,6 +88,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
 
         stage1 = TargetUiState(
             position = PositionAlignment.Target(insideAlignment = Center),
+            positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -99,6 +102,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
 
         stage2 = TargetUiState(
             position = PositionAlignment.Target(insideAlignment = Center),
+            positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -112,6 +116,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
 
         stage3 = TargetUiState(
             position = PositionAlignment.Target(insideAlignment = Center),
+            positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -125,6 +130,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
 
         stage4 = TargetUiState(
             position = PositionAlignment.Target(insideAlignment = Center),
+            positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = radius,
@@ -138,6 +144,7 @@ class PromoterVisualisation<InteractionTarget : Any>(
 
         stage5 = TargetUiState(
             position = PositionAlignment.Target(insideAlignment = Center),
+            positionOffset = PositionOffset.Target(),
             angularPosition = AngularPosition.Target(
                 AngularPosition.Value(
                     radius = 0f,
@@ -151,7 +158,9 @@ class PromoterVisualisation<InteractionTarget : Any>(
 
         destroyed = TargetUiState(
             position = PositionAlignment.Target(
-                insideAlignment = Center,
+                insideAlignment = Center
+            ),
+            positionOffset = PositionOffset.Target(
                 offset = DpOffset(500.dp, (-200).dp)
             ),
             angularPosition = AngularPosition.Target(

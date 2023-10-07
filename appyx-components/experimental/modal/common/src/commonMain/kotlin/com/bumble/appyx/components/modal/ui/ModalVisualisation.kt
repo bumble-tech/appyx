@@ -13,7 +13,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Height
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
@@ -30,27 +30,27 @@ class ModalVisualisation<InteractionTarget : Any>(
     private val createdState: TargetUiState =
         TargetUiState(
             height = Height.Target(0f),
-            position = PositionOutside.Target(InContainer),
+            position = PositionAlignment.Target(InContainer),
             corner = RoundedCorners.Target(8),
         )
     private val modalState: TargetUiState =
         TargetUiState(
             height = Height.Target(0.5f),
-            position = PositionOutside.Target(OutsideAlignment(0f, 0.5f)),
+            position = PositionAlignment.Target(OutsideAlignment(0f, 0.5f)),
             corner = RoundedCorners.Target(8),
         )
 
     private val fullScreenState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-            position = PositionOutside.Target(InContainer),
+            position = PositionAlignment.Target(InContainer),
             corner = RoundedCorners.Target(0),
         )
 
     private val destroyedState: TargetUiState =
         TargetUiState(
             height = Height.Target(1f),
-            position = PositionOutside.Target(OutsideAlignment(0f, 1.5f)),
+            position = PositionAlignment.Target(OutsideAlignment(0f, 1.5f)),
             corner = RoundedCorners.Target(0),
         )
 

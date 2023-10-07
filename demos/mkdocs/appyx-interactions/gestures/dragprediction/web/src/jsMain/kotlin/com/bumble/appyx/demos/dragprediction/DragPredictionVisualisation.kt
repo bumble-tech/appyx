@@ -25,7 +25,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
@@ -63,21 +63,21 @@ class DragPredictionVisualisation<InteractionTarget : Any>(
 
         // Top-left corner, A
         private val uiStateA = TargetUiState(
-            position = PositionOutside.Target(DpOffset(0.dp, 0.dp)),
+            position = PositionAlignment.Target(DpOffset(0.dp, 0.dp)),
             scale = Scale.Target(1f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         // Top-right corner, B
         private val uiStateB = TargetUiState(
-            position = PositionOutside.Target(DpOffset(180.dp, 30.dp)),
+            position = PositionAlignment.Target(DpOffset(180.dp, 30.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         // Bottom-right corner, C
         private val uiStateC = TargetUiState(
-            position = PositionOutside.Target(DpOffset(180.dp, 180.dp)),
+            position = PositionAlignment.Target(DpOffset(180.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(90f),
             backgroundColor = BackgroundColor.Target(color_secondary)
@@ -85,7 +85,7 @@ class DragPredictionVisualisation<InteractionTarget : Any>(
 
         // Bottom-left corner, D
         private val uiStateD = TargetUiState(
-            position = PositionOutside.Target(DpOffset(30.dp, 180.dp)),
+            position = PositionAlignment.Target(DpOffset(30.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_tertiary)

@@ -28,7 +28,7 @@ import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.demos.common.colors
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import kotlin.math.roundToInt
 
@@ -106,7 +106,7 @@ fun <InteractionTarget : Any> ModalUi(
                 color = Color.White
             )
             val alignment =
-                motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()?.alignment
+                motionPropertyRenderValue<PositionAlignment.Value, PositionAlignment>()?.alignment
             if (alignment != null) {
                 Text(
                     text = "Offset: ${roundFloatToTwoDecimals(alignment.horizontalBias * 100)}%",

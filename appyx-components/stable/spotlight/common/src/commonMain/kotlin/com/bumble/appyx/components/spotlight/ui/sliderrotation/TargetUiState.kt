@@ -8,7 +8,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
-    val position: PositionOutside.Target,
+    val position: PositionAlignment.Target,
     val scale: Scale.Target,
     val rotationY: RotationY.Target,
     val alpha: Alpha.Target,
@@ -30,9 +30,9 @@ class TargetUiState(
         positionInList: Int
     ) : this(
         positionInList = positionInList,
-        position = PositionOutside.Target(
+        position = PositionAlignment.Target(
             base.position.value.copy(
-                BiasAlignment.OutsideAlignment(
+                outsideAlignment = BiasAlignment.OutsideAlignment(
                     horizontalBias = positionInList.toFloat(),
                     verticalBias = 0f
                 )
@@ -54,12 +54,12 @@ class TargetUiState(
     ): MutableUiState {
         return MutableUiState(
             uiContext = uiContext,
-            position = PositionOutside(
+            position = PositionAlignment(
                 coroutineScope = uiContext.coroutineScope,
                 target = position,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
-                    PositionOutside.Value(
-                        alignment = BiasAlignment.OutsideAlignment(
+                    PositionAlignment.Value(
+                        outsideAlignment = BiasAlignment.OutsideAlignment(
                             horizontalBias = it,
                             verticalBias = 0f
                         )

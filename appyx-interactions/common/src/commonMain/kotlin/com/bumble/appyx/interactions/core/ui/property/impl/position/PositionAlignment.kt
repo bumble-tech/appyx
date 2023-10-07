@@ -21,6 +21,7 @@ import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment.Value
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,7 +47,7 @@ class PositionAlignment(
 
     data class Value(
         val insideAlignment: InsideAlignment = TopStart,
-        val outsideAlignment: OutsideAlignment = OutsideAlignment.InContainer,
+        val outsideAlignment: OutsideAlignment = InContainer,
     ) : Alignment {
 
         override fun align(
@@ -87,6 +88,13 @@ class PositionAlignment(
         val easing: Easing? = null,
     ) : MotionProperty.Target {
 
+        constructor() : this(
+            value = Value(
+                insideAlignment = TopStart,
+                outsideAlignment = InContainer,
+            )
+        )
+
         constructor(
             outsideAlignment: OutsideAlignment
         ) : this(
@@ -101,7 +109,7 @@ class PositionAlignment(
         ) : this(
             value = Value(
                 insideAlignment = insideAlignment,
-                outsideAlignment = OutsideAlignment.InContainer,
+                outsideAlignment = InContainer,
             )
         )
 
@@ -153,6 +161,18 @@ class PositionAlignment(
                     verticalBias = lerpFloat(
                         start = start.value.insideAlignment.verticalBias,
                         end = end.value.insideAlignment.verticalBias,
+                        progress = progress
+                    ),
+                ),
+                outsideAlignment = OutsideAlignment(
+                    horizontalBias = lerpFloat(
+                        start = start.value.outsideAlignment.horizontalBias,
+                        end = end.value.outsideAlignment.horizontalBias,
+                        progress = progress
+                    ),
+                    verticalBias = lerpFloat(
+                        start = start.value.outsideAlignment.verticalBias,
+                        end = end.value.outsideAlignment.verticalBias,
                         progress = progress
                     ),
                 ),

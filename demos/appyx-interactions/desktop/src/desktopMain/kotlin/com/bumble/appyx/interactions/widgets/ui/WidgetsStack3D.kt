@@ -8,7 +8,7 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
@@ -66,7 +66,7 @@ class WidgetsStack3D<InteractionTarget : Any>(
     private companion object {
         val default: TargetUiState = TargetUiState(
             rotationX = RotationX.Target(0f),
-            position = PositionOutside.Target(DpOffset.Zero),
+            position = PositionAlignment.Target(DpOffset.Zero),
             scale = Scale.Target(1f),
             alpha = Alpha.Target(1f),
             zIndex = ZIndex.Target(0f),

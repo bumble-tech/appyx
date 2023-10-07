@@ -3,7 +3,7 @@ package com.bumble.appyx.components.spotlight.ui.sliderscale
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import kotlin.math.abs
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
-    val position: PositionOutside.Target,
+    val position: PositionAlignment.Target,
     val scale: Scale.Target,
 ) {
     /**
@@ -24,9 +24,9 @@ class TargetUiState(
         positionInList: Int
     ) : this(
         positionInList = positionInList,
-        position = PositionOutside.Target(
+        position = PositionAlignment.Target(
             base.position.value.copy(
-                BiasAlignment.OutsideAlignment(
+                outsideAlignment = BiasAlignment.OutsideAlignment(
                     horizontalBias = positionInList.toFloat(),
                     verticalBias = 0f
                 )
@@ -43,26 +43,24 @@ class TargetUiState(
     fun toMutableState(
         uiContext: UiContext,
         scrollX: StateFlow<Float>
-    ): MutableUiState {
-        return MutableUiState(
-            uiContext = uiContext,
-            position = PositionOutside(
-                coroutineScope = uiContext.coroutineScope,
-                target = position,
-                displacement = scrollX.mapState(uiContext.coroutineScope) {
-                    PositionOutside.Value(
-                        alignment = BiasAlignment.OutsideAlignment(
-                            horizontalBias = it,
-                            verticalBias = 0f
-                        )
+    ): MutableUiState = MutableUiState(
+        uiContext = uiContext,
+        position = PositionAlignment(
+            coroutineScope = uiContext.coroutineScope,
+            target = position,
+            displacement = scrollX.mapState(uiContext.coroutineScope) {
+                PositionAlignment.Value(
+                    outsideAlignment = BiasAlignment.OutsideAlignment(
+                        horizontalBias = it,
+                        verticalBias = 0f
                     )
-                },
-            ),
-            scale = Scale(uiContext.coroutineScope, scale,
-                displacement = scrollX.mapState(uiContext.coroutineScope) {
-                    (abs(positionInList - it) - 0.15f).coerceIn(0f, 0.25f)
-                }
-            )
+                )
+            },
+        ),
+        scale = Scale(uiContext.coroutineScope, scale,
+            displacement = scrollX.mapState(uiContext.coroutineScope) {
+                (abs(positionInList - it) - 0.15f).coerceIn(0f, 0.25f)
+            }
         )
-    }
+    )
 }

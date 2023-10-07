@@ -4,12 +4,14 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 
 @Suppress("unused")
 @MutableUiStateSpecs
 class TargetUiState(
     val position: PositionAlignment.Target,
+    val offset: PositionOffset.Target,
     val scale: Scale.Target,
     val alpha: Alpha.Target,
     val zIndex: ZIndex.Target
