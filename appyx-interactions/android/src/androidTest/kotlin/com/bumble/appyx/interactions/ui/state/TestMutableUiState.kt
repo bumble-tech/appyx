@@ -4,7 +4,7 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 
 class TestMutableUiState(
     uiContext: UiContext,
-    val position: PositionInside,
+    val position: PositionAlignment,
 ) : BaseMutableUiState<TestTargetUiState>(
     uiContext = uiContext,
     motionProperties = listOf(position),

@@ -19,7 +19,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopCenter
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
@@ -35,7 +35,7 @@ class BackStack3D<InteractionTarget : Any>(
 
     private val topMost: TargetUiState =
         TargetUiState(
-            position = PositionInside.Target(TopCenter, DpOffset(0f.dp, (itemsInStack * 16).dp)),
+            position = PositionAlignment.Target(TopCenter, DpOffset(0f.dp, (itemsInStack * 16).dp)),
             scale = Scale.Target(1f, origin = TransformOrigin(0.5f, 0.0f)),
             alpha = Alpha.Target(1f),
             zIndex = ZIndex.Target(itemsInStack.toFloat()),
@@ -52,7 +52,7 @@ class BackStack3D<InteractionTarget : Any>(
 
     private fun stacked(stackIndex: Int): TargetUiState =
         TargetUiState(
-            position = PositionInside.Target(
+            position = PositionAlignment.Target(
                 TopCenter,
                 DpOffset(0f.dp, (itemsInStack - stackIndex) * 16.dp)
             ),
@@ -62,7 +62,7 @@ class BackStack3D<InteractionTarget : Any>(
         )
 
     private fun incoming(height: Dp): TargetUiState = TargetUiState(
-        position = PositionInside.Target(TopCenter, DpOffset(0f.dp, height)),
+        position = PositionAlignment.Target(TopCenter, DpOffset(0f.dp, height)),
         scale = Scale.Target(1f, origin = TransformOrigin(0.5f, 0.0f)),
         alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(itemsInStack + 1f),

@@ -19,7 +19,7 @@ import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +39,7 @@ class MutableUiStateTest {
     private lateinit var coroutineScope: CoroutineScope
 
     private fun setupTestMutableUiState(
-        target: PositionInside.Target = PositionInside.Target(
+        target: PositionAlignment.Target = PositionAlignment.Target(
             alignment = BiasAlignment.InsideAlignment.TopStart
         ),
         clipToBounds: Boolean = false,
@@ -59,7 +59,7 @@ class MutableUiStateTest {
                     testMutableUiState = remember {
                         TestMutableUiState(
                             uiContext = uiContext,
-                            position = PositionInside(
+                            position = PositionAlignment(
                                 coroutineScope = coroutineScope,
                                 target = target,
                             )
@@ -97,7 +97,7 @@ class MutableUiStateTest {
         // moving the child to the top-right corner + offset its size -> pushes it off screen
         testMutableUiState.snapTo(
             target = TestTargetUiState(
-                position = PositionInside.Target(
+                position = PositionAlignment.Target(
                     alignment = BiasAlignment.InsideAlignment.TopEnd,
                     offset = DpOffset(x = childSize, y = 0.dp)
                 )
@@ -123,7 +123,7 @@ class MutableUiStateTest {
         // moving the child to the top-right corner + offset less than its size -> make it just visible
         testMutableUiState.snapTo(
             target = TestTargetUiState(
-                position = PositionInside.Target(
+                position = PositionAlignment.Target(
                     alignment = BiasAlignment.InsideAlignment.TopEnd,
                     offset = DpOffset(x = offset, y = 0.dp)
                 )
@@ -152,7 +152,7 @@ class MutableUiStateTest {
         // moving the child with offset that equals parent's size -> pushes it off parent's bounds
         testMutableUiState.snapTo(
             target = TestTargetUiState(
-                position = PositionInside.Target(
+                position = PositionAlignment.Target(
                     offset = DpOffset(x = parentSize, y = 0.dp)
                 )
             )
@@ -181,7 +181,7 @@ class MutableUiStateTest {
         val offset = parentSize - 1.dp
         testMutableUiState.snapTo(
             target = TestTargetUiState(
-                position = PositionInside.Target(
+                position = PositionAlignment.Target(
                     offset = DpOffset(x = offset, y = 0.dp)
                 )
             )

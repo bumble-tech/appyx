@@ -18,14 +18,14 @@ import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside.Value
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment.Value
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.roundToInt
 
 @Suppress("MagicNumber")
-class PositionInside(
+class PositionAlignment(
     coroutineScope: CoroutineScope,
     val target: Target,
     displacement: StateFlow<Value> = MutableStateFlow(Value.Zero),
@@ -36,7 +36,7 @@ class PositionInside(
     easing = target.easing,
     visibilityThreshold = visibilityThreshold,
     displacement = displacement
-), Interpolatable<PositionInside.Target> {
+), Interpolatable<PositionAlignment.Target> {
 
     data class Value(
         val alignment: InsideAlignment = TopStart,
