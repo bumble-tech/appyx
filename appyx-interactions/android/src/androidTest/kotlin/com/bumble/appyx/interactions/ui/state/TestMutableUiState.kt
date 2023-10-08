@@ -5,6 +5,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -14,12 +15,14 @@ import kotlinx.coroutines.launch
 class TestMutableUiState(
     uiContext: UiContext,
     val positionAlignment: PositionAlignment,
+    val positionOffset: PositionOffset,
 ) : BaseMutableUiState<TestTargetUiState>(
     uiContext = uiContext,
     motionProperties = listOf(positionAlignment),
 ) {
     override val combinedMotionPropertyModifier: Modifier = Modifier
         .then(positionAlignment.modifier)
+        .then(positionOffset.modifier)
 
     override suspend fun animateTo(
         scope: CoroutineScope,
@@ -33,11 +36,18 @@ class TestMutableUiState(
                     spring(springSpec.dampingRatio, springSpec.stiffness),
                 )
             },
+            scope.async {
+                positionOffset.animateTo(
+                    target.positionOffset.value,
+                    spring(springSpec.dampingRatio, springSpec.stiffness),
+                )
+            },
         ).awaitAll()
     }
 
     override suspend fun snapTo(target: TestTargetUiState) {
         positionAlignment.snapTo(target.positionAlignment.value)
+        positionOffset.snapTo(target.positionOffset.value)
     }
 
     override fun lerpTo(
@@ -48,6 +58,7 @@ class TestMutableUiState(
     ) {
         scope.launch {
             positionAlignment.lerpTo(start.positionAlignment, end.positionAlignment, fraction)
+            positionOffset.lerpTo(start.positionOffset, end.positionOffset, fraction)
         }
     }
 }

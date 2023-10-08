@@ -19,6 +19,7 @@ import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import junit.framework.TestCase.assertFalse
@@ -40,12 +41,10 @@ class MutableUiStateTest {
     private lateinit var coroutineScope: CoroutineScope
 
     private fun setupTestMutableUiState(
-        target: PositionAlignment.Target = PositionAlignment.Target(
-            insideAlignment = BiasAlignment.InsideAlignment.TopStart
-        ),
+        targetAlignment: PositionAlignment.Target = PositionAlignment.Target(TopStart),
+        targetOffset: PositionOffset.Target = PositionOffset.Target(DpOffset.Zero),
         clipToBounds: Boolean = false,
-        containerModifier: Modifier = Modifier
-            .fillMaxSize(),
+        containerModifier: Modifier = Modifier.fillMaxSize(),
         childModifier: Modifier = Modifier,
     ) {
         composeTestRule.setContent {
@@ -62,7 +61,11 @@ class MutableUiStateTest {
                             uiContext = uiContext,
                             positionAlignment = PositionAlignment(
                                 coroutineScope = coroutineScope,
-                                target = target,
+                                target = targetAlignment,
+                            ),
+                            positionOffset = PositionOffset(
+                                coroutineScope = coroutineScope,
+                                target = targetOffset,
                             )
                         ).apply {
                             updateBounds(
