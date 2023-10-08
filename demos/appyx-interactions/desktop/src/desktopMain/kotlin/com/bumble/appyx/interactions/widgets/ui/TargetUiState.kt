@@ -54,7 +54,7 @@ class TargetUiState(
                 },
                 origin = TransformOrigin(0.075f, 0f),
             ),
-            position = PositionOffset(
+            positionOffset = PositionOffset(
                 coroutineScope = uiContext.coroutineScope,
                 target = positionOffset,
                 displacement = scrollX.mapState(uiContext.coroutineScope) {
