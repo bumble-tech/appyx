@@ -162,8 +162,8 @@ fun Target(
             modifier = modifier
                 .size(60.dp)
                 .offset(
-                    targetUiState.positionAlignment.value.offset.x,
-                    targetUiState.positionAlignment.value.offset.y
+                    targetUiState.positionOffset.value.offset.x,
+                    targetUiState.positionOffset.value.offset.y
                 )
                 .scale(targetUiState.scale.value)
                 .rotate(targetUiState.rotationZ.value)

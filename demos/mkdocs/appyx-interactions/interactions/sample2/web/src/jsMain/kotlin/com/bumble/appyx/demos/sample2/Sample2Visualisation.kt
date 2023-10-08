@@ -28,7 +28,11 @@ import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.BottomEnd
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopEnd
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -60,25 +64,29 @@ class Sample2Visualisation<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            positionAlignment = PositionAlignment.Target(insideAlignment = InsideAlignment.TopStart),
+            positionAlignment = PositionAlignment.Target(TopStart),
+            positionOffset = PositionOffset.Target(DpOffset.Zero),
             rotationZ = RotationZ.Target(0f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
         private val topRightCorner = TargetUiState(
-            positionAlignment = PositionAlignment.Target(insideAlignment = InsideAlignment.TopEnd),
+            positionAlignment = PositionAlignment.Target(TopEnd),
+            positionOffset = PositionOffset.Target(DpOffset.Zero),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
         private val bottomRightCorner = TargetUiState(
-            positionAlignment = PositionAlignment.Target(insideAlignment = InsideAlignment.BottomEnd, bottomOffset),
+            positionAlignment = PositionAlignment.Target(BottomEnd),
+            positionOffset = PositionOffset.Target(bottomOffset),
             rotationZ = RotationZ.Target(270f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            positionAlignment = PositionAlignment.Target(insideAlignment = InsideAlignment.BottomStart, bottomOffset),
+            positionAlignment = PositionAlignment.Target(InsideAlignment.BottomStart),
+            positionOffset = PositionOffset.Target(bottomOffset),
             rotationZ = RotationZ.Target(540f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )

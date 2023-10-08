@@ -165,10 +165,10 @@ fun <InteractionTarget : Any> Target(
             modifier = with(boxScope) {
                 modifier
                     .size(60.dp)
-                    .align(targetUiState.positionAlignment.value.insideAlignment)
+                    .align(targetUiState.positionAlignment.value)
                     .offset(
-                        targetUiState.positionAlignment.value.offset.x,
-                        targetUiState.positionAlignment.value.offset.y
+                        x = targetUiState.positionOffset.value.offset.x,
+                        y = targetUiState.positionOffset.value.offset.y
                     )
                     .alpha(0.35f)
                     .background(
