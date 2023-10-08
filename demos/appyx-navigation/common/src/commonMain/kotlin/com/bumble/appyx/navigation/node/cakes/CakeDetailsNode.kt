@@ -13,9 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import com.bumble.appyx.navigation.node.cakes.model.Cake
 
 class CakeDetailsNode(
@@ -30,16 +32,14 @@ class CakeDetailsNode(
     override fun View(modifier: Modifier) {
         val backgroundColorIdx = rememberSaveable { colors.shuffled().indices.random() }
         val backgroundColor = colors[backgroundColorIdx]
+        val heroProgress = motionPropertyRenderValue<Float, HeroProgress>() ?: 0f
 
         Box(
             modifier = modifier
                 .fillMaxSize()
                 .background(backgroundColor)
-                .clickable {
-                    onClick()
-                }
+                .clickable { onClick() }
                 .padding(24.dp)
-
         ) {
             Text(
                 text = cake.name,

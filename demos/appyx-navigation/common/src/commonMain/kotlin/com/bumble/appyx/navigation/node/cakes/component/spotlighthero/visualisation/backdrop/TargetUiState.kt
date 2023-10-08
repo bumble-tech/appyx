@@ -8,25 +8,30 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.Height
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
-import com.bumble.appyx.interactions.core.ui.property.impl.Width
+import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.Center
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
+import com.bumble.appyx.interactions.core.ui.property.impl.AspectRatio
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import kotlinx.coroutines.flow.StateFlow
 
 @Suppress("MagicNumber")
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
-    val positionAlignment: PositionAlignment.Target = PositionAlignment.Target(),
+    val positionAlignment: PositionAlignment.Target = PositionAlignment.Target(Center),
     val positionOffset: PositionOffset.Target = PositionOffset.Target(DpOffset.Zero),
-    val width: Width.Target = Width.Target(1f),
+    val aspectRatio: AspectRatio.Target = AspectRatio.Target(0.75f),
     val height: Height.Target = Height.Target(1f),
+    val scale: Scale.Target = Scale.Target(1f),
     val rotationY: RotationY.Target = RotationY.Target(0f),
     val alpha: Alpha.Target = Alpha.Target(1f),
     val roundedCorners: RoundedCorners.Target = RoundedCorners.Target(0),
+    val heroProgress: HeroProgress.Target,
 ) {
     /**
      * Take item's own position in the list of elements into account
@@ -47,11 +52,13 @@ class TargetUiState(
             }
         ),
         positionOffset = base.positionOffset,
-        width = base.width,
+        aspectRatio = base.aspectRatio,
         height = base.height,
+        scale = base.scale,
         roundedCorners = base.roundedCorners,
         rotationY = base.rotationY,
         alpha = base.alpha,
+        heroProgress = base.heroProgress
     )
 
     /**
@@ -85,8 +92,9 @@ class TargetUiState(
                 coroutineScope = uiContext.coroutineScope,
                 target = positionOffset,
             ),
-            width = Width(uiContext.coroutineScope, width),
+            aspectRatio = AspectRatio(uiContext.coroutineScope, aspectRatio),
             height = Height(uiContext.coroutineScope, height),
+            scale = Scale(uiContext.coroutineScope, scale),
             roundedCorners = RoundedCorners(uiContext.coroutineScope, roundedCorners),
             rotationY = RotationY(uiContext.coroutineScope, rotationY,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { scroll ->
@@ -94,6 +102,7 @@ class TargetUiState(
                 }
             ),
             alpha = Alpha(uiContext.coroutineScope, alpha),
+            heroProgress = HeroProgress(uiContext.coroutineScope, heroProgress)
         )
     }
 }

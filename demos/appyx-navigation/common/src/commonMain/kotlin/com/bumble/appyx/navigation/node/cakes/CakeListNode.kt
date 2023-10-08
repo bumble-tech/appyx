@@ -1,6 +1,8 @@
 package com.bumble.appyx.navigation.node.cakes
 
+import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -29,6 +31,8 @@ import com.bumble.appyx.navigation.node.cakes.model.cakes
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
+private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
+
 class CakeListNode(
     buildContext: BuildContext,
     private val spotlight: SpotlightHero<NavTarget> =
@@ -38,8 +42,9 @@ class CakeListNode(
                 initialActiveIndex = 0f,
                 savedStateMap = buildContext.savedStateMap
             ),
+            animationSpec = spring(stiffness = Spring.StiffnessLow),
             visualisation = { SpotlightHeroBackdropVisualisation(it) },
-             gestureFactory = { SpotlightHeroGestures(it) }
+            gestureFactory = { SpotlightHeroGestures(it) }
         )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
@@ -67,7 +72,8 @@ class CakeListNode(
             targetValue = when (mode.value) {
                 LIST -> 0.6f
                 HERO -> 1f
-            }
+            },
+            animationSpec = animationSpec
         )
 
         Box(
