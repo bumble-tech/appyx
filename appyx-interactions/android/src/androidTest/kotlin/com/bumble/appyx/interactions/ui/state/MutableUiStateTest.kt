@@ -20,6 +20,7 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.CoroutineScope
@@ -99,6 +100,8 @@ class MutableUiStateTest {
             target = TestTargetUiState(
                 positionAlignment = PositionAlignment.Target(
                     insideAlignment = BiasAlignment.InsideAlignment.TopEnd,
+                ),
+                positionOffset = PositionOffset.Target(
                     offset = DpOffset(x = childSize, y = 0.dp)
                 )
             )
@@ -125,6 +128,8 @@ class MutableUiStateTest {
             target = TestTargetUiState(
                 positionAlignment = PositionAlignment.Target(
                     insideAlignment = BiasAlignment.InsideAlignment.TopEnd,
+                ),
+                positionOffset = PositionOffset.Target(
                     offset = DpOffset(x = offset, y = 0.dp)
                 )
             )
@@ -152,7 +157,8 @@ class MutableUiStateTest {
         // moving the child with offset that equals parent's size -> pushes it off parent's bounds
         testMutableUiState.snapTo(
             target = TestTargetUiState(
-                positionAlignment = PositionAlignment.Target(
+                positionAlignment = PositionAlignment.Target(),
+                positionOffset = PositionOffset.Target(
                     offset = DpOffset(x = parentSize, y = 0.dp)
                 )
             )
@@ -181,7 +187,8 @@ class MutableUiStateTest {
         val offset = parentSize - 1.dp
         testMutableUiState.snapTo(
             target = TestTargetUiState(
-                positionAlignment = PositionAlignment.Target(
+                positionAlignment = PositionAlignment.Target(),
+                positionOffset = PositionOffset.Target(
                     offset = DpOffset(x = offset, y = 0.dp)
                 )
             )
