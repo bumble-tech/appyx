@@ -18,7 +18,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -45,7 +45,7 @@ class CardsVisualisation<InteractionTarget : Any>(
     )
 
     private val votePass = TargetUiState(
-        position = PositionOutside.Target(
+        positionAlignment = PositionAlignment.Target(
             BiasAlignment.OutsideAlignment(-voteCardPositionMultiplier, 0)
         ),
         scale = Scale.Target(1f),
@@ -54,7 +54,7 @@ class CardsVisualisation<InteractionTarget : Any>(
     )
 
     private val voteLike = TargetUiState(
-        position = PositionOutside.Target(
+        positionAlignment = PositionAlignment.Target(
             BiasAlignment.OutsideAlignment(voteCardPositionMultiplier, 0)
         ),
         scale = Scale.Target(1f),

@@ -25,9 +25,9 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -48,44 +48,35 @@ class DragPredictionVisualisation<InteractionTarget : Any>(
         )
 
     companion object {
-        val offsetA = DpOffset(0.dp, 0.dp)
-        val offsetB = DpOffset(324.dp, 0.dp)
-        val offsetC = DpOffset(324.dp, 180.dp)
-        val offsetD = DpOffset(0.dp, 180.dp)
-
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
-                A -> uiStateA
-                B -> uiStateB
-                C -> uiStateC
-                D -> uiStateD
+                A -> topLeftCorner
+                B -> topRightCorner
+                C -> BottomRightCorner
+                D -> bottomLeftCorner
             }
 
-        // Top-left corner, A
-        private val uiStateA = TargetUiState(
-            position = PositionOutside.Target(DpOffset(0.dp, 0.dp)),
+        private val topLeftCorner = TargetUiState(
+            positionOffset = PositionOffset.Target(DpOffset(0.dp, 0.dp)),
             scale = Scale.Target(1f),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
-        // Top-right corner, B
-        private val uiStateB = TargetUiState(
-            position = PositionOutside.Target(DpOffset(180.dp, 30.dp)),
+        private val topRightCorner = TargetUiState(
+            positionOffset = PositionOffset.Target(DpOffset(180.dp, 30.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
-        // Bottom-right corner, C
-        private val uiStateC = TargetUiState(
-            position = PositionOutside.Target(DpOffset(180.dp, 180.dp)),
+        private val BottomRightCorner = TargetUiState(
+            positionOffset = PositionOffset.Target(DpOffset(180.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(90f),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
-        // Bottom-left corner, D
-        private val uiStateD = TargetUiState(
-            position = PositionOutside.Target(DpOffset(30.dp, 180.dp)),
+        private val bottomLeftCorner = TargetUiState(
+            positionOffset = PositionOffset.Target(DpOffset(30.dp, 180.dp)),
             scale = Scale.Target(2f, TransformOrigin(0f, 0f)),
             rotationZ = RotationZ.Target(180f),
             backgroundColor = BackgroundColor.Target(color_tertiary)
@@ -103,8 +94,8 @@ class DragPredictionVisualisation<InteractionTarget : Any>(
     class Gestures<InteractionTarget>(
         transitionBounds: TransitionBounds,
     ) : GestureFactory<InteractionTarget, TestDriveModel.State<InteractionTarget>> {
-        private val maxX = uiStateB.position.value.offset.x - uiStateA.position.value.offset.x
-        private val maxY = uiStateD.position.value.offset.y - uiStateA.position.value.offset.y
+        private val maxX = topRightCorner.positionOffset.value.offset.x - topLeftCorner.positionOffset.value.offset.x
+        private val maxY = bottomLeftCorner.positionOffset.value.offset.y - topLeftCorner.positionOffset.value.offset.y
 
         @Suppress("ComplexMethod")
         override fun createGesture(
