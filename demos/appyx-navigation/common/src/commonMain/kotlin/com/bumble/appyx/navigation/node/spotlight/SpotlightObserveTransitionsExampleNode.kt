@@ -87,8 +87,11 @@ class SpotlightObserveTransitionsExampleNode(
 
                         val alignment = motionPropertyRenderValue<PositionAlignment.Value, PositionAlignment>()
                         if (alignment != null) {
+                            val offsetPercentage =
+                                (alignment.outsideAlignment.horizontalBias * 100).toTwoPointPrecisionString()
+
                             Text(
-                                text = "Offset: ${(alignment.outsideAlignment.horizontalBias * 100).toTwoPointPrecisionString()}%",
+                                text = "Offset: $offsetPercentage%",
                                 fontSize = 20.sp,
                                 color = Color.Black,
                                 fontWeight = FontWeight.Bold
