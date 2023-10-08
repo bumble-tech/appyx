@@ -16,9 +16,11 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.cakes.model.Cake
 
 class CakeDetailsNode(
     buildContext: BuildContext,
+    private val cake: Cake,
     private val onClick: () -> Unit,
 ) : Node(
     buildContext = buildContext,
@@ -40,7 +42,7 @@ class CakeDetailsNode(
 
         ) {
             Text(
-                text = "Cake",
+                text = cake.name,
                 fontSize = 21.sp,
                 color = Color.Black,
                 fontWeight = FontWeight.Bold

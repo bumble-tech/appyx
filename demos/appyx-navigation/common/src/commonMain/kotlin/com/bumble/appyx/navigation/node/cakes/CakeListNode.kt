@@ -24,6 +24,8 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightH
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.toggleHeroMode
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.SpotlightHeroGestures
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.backdrop.SpotlightHeroBackdropVisualisation
+import com.bumble.appyx.navigation.node.cakes.model.Cake
+import com.bumble.appyx.navigation.node.cakes.model.cakes
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -32,7 +34,7 @@ class CakeListNode(
     private val spotlight: SpotlightHero<NavTarget> =
         SpotlightHero(
             model = SpotlightHeroModel(
-                items = List(7) { NavTarget.CakeDetails(it) },
+                items = cakes.map { NavTarget.CakeDetails(it) },
                 initialActiveIndex = 0f,
                 savedStateMap = buildContext.savedStateMap
             ),
@@ -47,14 +49,13 @@ class CakeListNode(
     sealed class NavTarget : Parcelable {
         @Parcelize
         data class CakeDetails(
-            // TODO create dedicated type
-            val index: Int
+            val cake: Cake
         ) : NavTarget()
     }
 
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is NavTarget.CakeDetails -> CakeDetailsNode(buildContext) {
+            is NavTarget.CakeDetails -> CakeDetailsNode(buildContext, navTarget.cake) {
                 spotlight.toggleHeroMode()
             }
         }
