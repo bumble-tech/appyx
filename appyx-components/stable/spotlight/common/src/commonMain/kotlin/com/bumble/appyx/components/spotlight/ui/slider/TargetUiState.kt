@@ -2,9 +2,10 @@ package com.bumble.appyx.components.spotlight.ui.slider
 
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
@@ -25,12 +26,15 @@ class TargetUiState(
     ) : this(
         positionInList = positionInList,
         positionAlignment = PositionAlignment.Target(
-            base.positionAlignment.value.copy(
-                outsideAlignment = OutsideAlignment(
-                    horizontalBias = positionInList.toFloat(),
-                    verticalBias = 0f
+            with(base.positionAlignment.value) {
+                copy(
+                    outsideAlignment = OutsideAlignment(
+                        horizontalBias = outsideAlignment.horizontalBias + positionInList.toFloat(),
+                        verticalBias = outsideAlignment.verticalBias
+                    )
                 )
-            )
+            }
+
         ),
         scale = base.scale,
         alpha = base.alpha,
@@ -52,6 +56,10 @@ class TargetUiState(
                 target = positionAlignment,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { scrollX ->
                     PositionAlignment.Value(
+                        insideAlignment = InsideAlignment(
+                          horizontalBias = 0f,
+                            verticalBias = 0f,
+                        ),
                         outsideAlignment = OutsideAlignment(
                             horizontalBias = scrollX,
                             verticalBias = 0f
