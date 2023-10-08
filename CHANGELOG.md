@@ -5,6 +5,7 @@
 ### API breaking changes
 
 - [#612](https://github.com/bumble-tech/appyx/pull/612) – Rename MotionController to Visualisation
+- [#617](https://github.com/bumble-tech/appyx/pull/617) – Unify inside & outside position alignment
 
 ### Changed
 
