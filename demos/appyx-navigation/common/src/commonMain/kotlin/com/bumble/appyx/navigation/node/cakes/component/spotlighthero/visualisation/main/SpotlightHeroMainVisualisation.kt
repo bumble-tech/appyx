@@ -14,6 +14,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignmen
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.SELECTED
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightHeroMainVisualisation<InteractionTarget : Any>(
@@ -40,6 +41,11 @@ class SpotlightHeroMainVisualisation<InteractionTarget : Any>(
         scale = Scale.Target(1f),
     )
 
+    private val selected: TargetUiState = TargetUiState(
+        positionAlignment = PositionAlignment.Target(InContainer),
+        scale = Scale.Target(1.5f),
+    )
+
     private val destroyed: TargetUiState = TargetUiState(
         positionAlignment = PositionAlignment.Target(OutsideBottom),
         scale = Scale.Target(0f),
@@ -54,6 +60,7 @@ class SpotlightHeroMainVisualisation<InteractionTarget : Any>(
                         base = when (it.value) {
                             CREATED -> created
                             STANDARD -> standard
+                            SELECTED -> selected
                             DESTROYED -> destroyed
                         },
                         positionInList = index

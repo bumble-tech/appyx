@@ -9,5 +9,5 @@ class MainNode(
     buildContext = buildContext,
     navTargets = MainNavItem.values().toList(),
     navTargetResolver = MainNavItem.resolver,
-    initialActiveElement = MainNavItem.HOME
+    initialActiveElement = MainNavItem.CAKES
 )

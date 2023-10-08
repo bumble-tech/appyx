@@ -1,7 +1,6 @@
 package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation
 
 import androidx.compose.animation.core.AnimationSpec
-import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation

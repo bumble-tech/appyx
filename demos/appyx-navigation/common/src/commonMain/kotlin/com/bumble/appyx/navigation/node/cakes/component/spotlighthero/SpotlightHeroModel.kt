@@ -13,14 +13,19 @@ import com.bumble.appyx.utils.multiplatform.RawValue
 
 class SpotlightHeroModel<InteractionTarget : Any>(
     items: List<InteractionTarget>,
+    initialMode: Mode = Mode.LIST,
     initialActiveIndex: Float = 0f,
     savedStateMap: SavedStateMap?,
 ) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
     savedStateMap = savedStateMap
 ) {
+    enum class Mode {
+        LIST, HERO
+    }
 
     @Parcelize
     data class State<InteractionTarget>(
+        val mode: Mode = Mode.LIST,
         val positions: @RawValue List<Position<InteractionTarget>>,
         val activeIndex: Float
     ) : Parcelable {
@@ -31,7 +36,7 @@ class SpotlightHeroModel<InteractionTarget : Any>(
         ) : Parcelable
 
         enum class ElementState {
-            CREATED, STANDARD, DESTROYED
+            CREATED, STANDARD, SELECTED, DESTROYED
         }
 
         fun hasPrevious(): Boolean =
@@ -43,6 +48,7 @@ class SpotlightHeroModel<InteractionTarget : Any>(
 
     override val initialState: State<InteractionTarget> =
         State(
+            mode = initialMode,
             positions = items.map {
                 State.Position(
                     elements = mapOf(it.asElement() to STANDARD)
