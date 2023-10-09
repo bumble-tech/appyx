@@ -4,7 +4,7 @@ plugins {
 }
 
 publishingPlugin {
-    artifactId = "utils-testing-android-viewmodel"
+    artifactId = "utils-node-viewmodel"
 }
 
 appyx {
@@ -17,6 +17,6 @@ appyx {
 
 dependencies {
     api(project(":appyx-navigation:appyx-navigation"))
-    api("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    api("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    api(libs.androidx.lifecycle.viewmodel.compose)
+    api(libs.androidx.lifecycle.viewmodel.ktx)
 }

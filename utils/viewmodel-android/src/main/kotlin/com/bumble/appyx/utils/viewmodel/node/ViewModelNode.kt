@@ -7,7 +7,7 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.utils.viewmodel.ActivityIntegrationPointWithViewModel
 
-class ViewModelNode(
+open class ViewModelNode(
     buildContext: BuildContext,
 ) : Node(buildContext), ViewModelStoreOwner {
 

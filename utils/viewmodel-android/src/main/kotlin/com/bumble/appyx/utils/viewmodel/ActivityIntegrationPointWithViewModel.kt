@@ -10,6 +10,4 @@ class ActivityIntegrationPointWithViewModel(
 ) : ActivityIntegrationPoint(activity, savedInstanceState) {
 
     val viewModel = IntegrationPointViewModel.getInstance(activity)
-
-    fun isChangingConfigurations(): Boolean = activity.isChangingConfigurations
 }

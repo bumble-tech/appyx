@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":appyx-interactions:appyx-interactions"))
     implementation(project(":appyx-components:stable:backstack:backstack"))
     implementation(project(":appyx-components:experimental:cards:cards"))
+    implementation(project(":utils:viewmodel-android"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

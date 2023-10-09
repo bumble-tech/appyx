@@ -82,7 +82,7 @@ include(
     ":utils:testing-ui-activity",
     ":utils:testing-unit-common",
     ":utils:multiplatform",
-    ":utils:viewmodel",
+    ":utils:viewmodel-android",
 )
 
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts

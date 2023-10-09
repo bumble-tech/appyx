@@ -1,4 +1,4 @@
-package com.bumble.appyx.utils.viewmodel.sample
+package com.bumble.appyx.navigation.node.viewModel
 
 import com.bumble.appyx.utils.viewmodel.IntegrationPointViewModel
 import kotlinx.coroutines.delay
