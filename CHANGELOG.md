@@ -4,6 +4,7 @@
 
 ### API breaking changes
 
+- [#618](https://github.com/bumble-tech/appyx/pull/618) – Do not create PermanentAppyxComponent inside ParentNode. Provide it via constructor to ParentNode
 - [#612](https://github.com/bumble-tech/appyx/pull/612) – Rename MotionController to Visualisation
 
 ### Changed
