@@ -53,6 +53,7 @@ include(
     ":demos:appyx-navigation:ios",
     ":demos:appyx-navigation:web",
     ":demos:common",
+    ":demos:image-loader:common",
     ":demos:navigation-compose",
     ":demos:mkdocs:appyx-interactions:interactions:sample1:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample2:web",

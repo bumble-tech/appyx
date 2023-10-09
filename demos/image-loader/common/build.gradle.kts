@@ -2,13 +2,10 @@ plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
     id("com.android.library")
-    id("kotlin-parcelize")
-    id("appyx-publish-multiplatform")
-    id("com.google.devtools.ksp")
 }
 
 appyx {
-    androidNamespace.set("com.bumble.appyx.demos.appyxnavigation.common")
+    androidNamespace.set("com.bumble.appyx.imageloader")
 }
 
 kotlin {
@@ -22,42 +19,34 @@ kotlin {
     }
     js(IR) {
         // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
-        moduleName = "demo-appyx-navigation-common"
+        moduleName = "appyx-navigation-imageloader"
         browser()
     }
+
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
                 api(compose.runtime)
                 api(compose.foundation)
-                api(compose.material3)
-                implementation(libs.kotlinx.serialization.json)
                 api(project(":appyx-interactions:appyx-interactions"))
-                api(project(":utils:customisations"))
-                api(project(":utils:material3"))
-                api(project(":utils:multiplatform"))
-                api(project(":demos:image-loader:common"))
-                implementation(project(":appyx-components:experimental:cards:cards"))
-                implementation(project(":appyx-components:experimental:modal:modal"))
-                implementation(project(":appyx-components:experimental:promoter:promoter"))
-                implementation(project(":appyx-components:stable:backstack:backstack"))
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
-            }
-        }
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
+                @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
+                implementation(compose.components.resources)
             }
         }
         val androidMain by getting {
             dependencies {
                 api(libs.androidx.appcompat)
                 api(libs.androidx.core)
+                api(libs.compose.runtime)
+                api(libs.compose.ui.tooling)
+
                 implementation(libs.androidx.activity.compose)
-                implementation(libs.coil.compose)
+                implementation(libs.androidx.lifecycle.java8)
+
             }
         }
         val desktopMain by getting {
@@ -83,21 +72,18 @@ kotlin {
 }
 
 android {
-    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     buildFeatures {
         compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.composeCompiler.get()
     }
-}
 
-dependencies {
-    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
-    add("kspAndroid", project(":ksp:mutable-ui-processor"))
-    add("kspDesktop", project(":ksp:mutable-ui-processor"))
-    add("kspJs", project(":ksp:mutable-ui-processor"))
-    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
-    add("kspIosX64", project(":ksp:mutable-ui-processor"))
-    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
+    dependencies {
+        val composeBom = platform(libs.compose.bom)
+
+        api(composeBom)
+
+        androidTestImplementation(composeBom)
+    }
 }
