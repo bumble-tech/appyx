@@ -5,17 +5,54 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
 data class Cake(
-    val name: String
+    val name: String,
+    val image: String,
+    val backgroundColor: Long,
+    val unsplashUrl: String,
+    val author: String,
 ) : Parcelable
 
 val cakes = listOf(
-    Cake("Cupcake"),
-    Cake("Red velvet cake"),
-    Cake("Chocolate cake"),
-    Cake("Apple pie"),
-    Cake("Donut"),
-    Cake("Strawberry cake"),
-    Cake("Blueberry muffin"),
-    Cake("Cheesecake"),
-    Cake("Macaroon"),
+    Cake(
+        name = "Macaron",
+        image = "macaron.png",
+        backgroundColor = 0xFF00bcd4,
+        unsplashUrl = "https://unsplash.com/photos/i5BY6W2ttts",
+        author = "Diana Polekhina"
+    ),
+    Cake(
+        name = "Mint cupcake",
+        image = "mint-cupcake.png",
+        backgroundColor = 0xFF8BC34A,
+        unsplashUrl = "https://unsplash.com/photos/Ao09kk2ovB0",
+        author = "Meritt Thomas"
+    ),
+    Cake(
+        name = "Fruit cake",
+        image = "fruit-cake.png",
+        backgroundColor = 0xFFFFC107,
+        unsplashUrl = "https://unsplash.com/photos/s8HpMrQtl8E",
+        author = "Dessy Dimcheva"
+    ),
+    Cake(
+        name = "Cheesecake",
+        image = "cheesecake.png",
+        backgroundColor = 0xFF607D8B,
+        unsplashUrl = "https://unsplash.com/photos/TB0Ao4CQRqc",
+        author = "Waranya Mooldee"
+    ),
+    Cake(
+        name = "Red velvet cupcake",
+        image = "red-cupcake.png",
+        backgroundColor = 0xFFF05D5E,
+        unsplashUrl = "https://unsplash.com/photos/MJPr6nOdppw",
+        author = "luisana zerpa"
+    ),
+    Cake(
+        name = "Donuts",
+        image = "donuts.png",
+        backgroundColor = 0xFFF5C5C8,
+        unsplashUrl = "https://unsplash.com/photos/PFzy4N0_R3M",
+        author = "Elena Koycheva"
+    ),
 )
