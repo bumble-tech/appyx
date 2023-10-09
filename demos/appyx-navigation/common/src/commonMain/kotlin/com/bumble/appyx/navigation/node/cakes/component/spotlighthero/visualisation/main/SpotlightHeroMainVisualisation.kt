@@ -1,26 +1,23 @@
 package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.main
 
-import androidx.compose.foundation.gestures.Orientation
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.CREATED
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.DESTROYED
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.STANDARD
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.Center
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopCenter
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.SELECTED
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.HERO
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.LIST
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightHeroMainVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
-    @Suppress("UnusedPrivateMember")
-    private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
@@ -31,24 +28,15 @@ class SpotlightHeroMainVisualisation<InteractionTarget : Any>(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
         )
 
-    private val created: TargetUiState = TargetUiState(
-        positionAlignment = PositionAlignment.Target(OutsideTop),
-        scale = Scale.Target(0f),
-    )
-
     private val standard: TargetUiState = TargetUiState(
-        positionAlignment = PositionAlignment.Target(InContainer),
-        scale = Scale.Target(1f),
+        positionAlignment = PositionAlignment.Target(Center),
+        heroProgress = HeroProgress.Target(0f)
     )
 
-    private val selected: TargetUiState = TargetUiState(
-        positionAlignment = PositionAlignment.Target(InContainer),
-        scale = Scale.Target(1.5f),
-    )
-
-    private val destroyed: TargetUiState = TargetUiState(
-        positionAlignment = PositionAlignment.Target(OutsideBottom),
-        scale = Scale.Target(0f),
+    private val heroElement: TargetUiState = TargetUiState(
+        positionAlignment = PositionAlignment.Target(TopCenter),
+        positionOffset = PositionOffset.Target(DpOffset(0.dp, (100).dp)),
+        heroProgress = HeroProgress.Target(1f)
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
@@ -57,11 +45,12 @@ class SpotlightHeroMainVisualisation<InteractionTarget : Any>(
                 MatchedTargetUiState(
                     element = it.key,
                     targetUiState = TargetUiState(
-                        base = when (it.value) {
-                            CREATED -> created
-                            STANDARD -> standard
-                            SELECTED -> selected
-                            DESTROYED -> destroyed
+                        base = when (mode) {
+                            LIST -> standard
+                            HERO -> when (index.toFloat()) {
+                                activeIndex -> heroElement
+                                else -> standard
+                            }
                         },
                         positionInList = index
                     )

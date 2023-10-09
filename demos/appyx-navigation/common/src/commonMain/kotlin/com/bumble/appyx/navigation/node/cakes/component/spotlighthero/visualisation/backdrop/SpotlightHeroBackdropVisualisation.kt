@@ -3,7 +3,7 @@ package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisa
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.core.ui.property.impl.AspectRatio
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
 import com.bumble.appyx.interactions.core.ui.property.impl.Height
@@ -17,7 +17,6 @@ import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.HERO
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.LIST
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.interactions.core.ui.property.impl.AspectRatio
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
@@ -53,14 +52,6 @@ class SpotlightHeroBackdropVisualisation<InteractionTarget : Any>(
         heroProgress = HeroProgress.Target(1f)
     )
 
-    private val hidden: TargetUiState = TargetUiState(
-        positionAlignment = PositionAlignment.Target(Center),
-        aspectRatio = AspectRatio.Target(0.75f),
-        height = Height.Target(0.5f),
-        alpha = Alpha.Target(0f),
-        heroProgress = HeroProgress.Target(0f)
-    )
-
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
@@ -71,7 +62,7 @@ class SpotlightHeroBackdropVisualisation<InteractionTarget : Any>(
                             LIST -> standard
                             HERO -> when (index.toFloat()) {
                                 activeIndex -> heroElement
-                                else -> hidden
+                                else -> standard
                             }
                         },
                         positionInList = index
