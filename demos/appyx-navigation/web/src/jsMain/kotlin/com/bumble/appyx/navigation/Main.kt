@@ -5,6 +5,8 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,6 +27,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.WebNodeHost
+import com.bumble.appyx.navigation.navigator.LocalNavigator
+import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.main.MainNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -38,12 +42,13 @@ import org.jetbrains.skiko.wasm.onWasmReady
 fun main() {
     val events: Channel<Unit> = Channel()
     onWasmReady {
-        BrowserViewportWindow("Navigation Demo") {
+        BrowserViewportWindow("Appyx navigation demo") {
             val requester = remember { FocusRequester() }
             var hasFocus by remember { mutableStateOf(false) }
 
             var screenSize by remember { mutableStateOf(ScreenSize(0.dp, 0.dp)) }
             val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
+            val navigator = Navigator()
 
             AppyxSampleAppTheme {
                 Surface(
@@ -58,13 +63,16 @@ fun main() {
                         .focusable()
                         .onFocusChanged { hasFocus = it.hasFocus }
                 ) {
-                    WebNodeHost(
-                        screenSize = screenSize,
-                        onBackPressedEvents = events.receiveAsFlow(),
-                    ) { buildContext ->
-                        MainNode(
-                            buildContext = buildContext,
-                        )
+                    CompositionLocalProvider(LocalNavigator provides navigator) {
+                        WebNodeHost(
+                            screenSize = screenSize,
+                            onBackPressedEvents = events.receiveAsFlow(),
+                        ) { buildContext ->
+                            MainNode(
+                                buildContext = buildContext,
+                                plugins = listOf(navigator)
+                            )
+                        }
                     }
                 }
 
