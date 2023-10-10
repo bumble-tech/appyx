@@ -97,8 +97,9 @@ abstract class BaseVisualisation<InteractionTarget : Any, ModelState, MutableUiS
 
         cleanUpCacheForDestroyedElements(matchedTargetUiStates)
 
+        val isRecreating = mutableUiStateCache.isEmpty()
         coroutineScope.launch {
-            updateViewpoint(update)
+            updateViewpoint(update, isRecreating)
         }
 
 
@@ -193,17 +194,24 @@ abstract class BaseVisualisation<InteractionTarget : Any, ModelState, MutableUiS
         }
     }
 
-    private suspend fun updateViewpoint(update: Update<ModelState>) {
+    private suspend fun updateViewpoint(
+        update: Update<ModelState>,
+        isRecreating: Boolean
+    ) {
         viewpointDimensions.forEach { (fieldOfState, viewpointDimension) ->
             val targetValue = fieldOfState(update.currentTargetState)
-            viewpointDimension.animateTo(
-                targetValue,
-                spring(
-                    stiffness = currentSpringSpec.stiffness,
-                    dampingRatio = currentSpringSpec.dampingRatio
-                )
-            ) {
-                AppyxLogger.d(TAG, "Viewpoint animateTo (Update) – $targetValue")
+            if (isRecreating) {
+                viewpointDimension.snapTo(targetValue)
+            } else {
+                viewpointDimension.animateTo(
+                    targetValue,
+                    spring(
+                        stiffness = currentSpringSpec.stiffness,
+                        dampingRatio = currentSpringSpec.dampingRatio
+                    )
+                ) {
+                    AppyxLogger.d(TAG, "Viewpoint animateTo (Update) – $targetValue")
+                }
             }
         }
     }
