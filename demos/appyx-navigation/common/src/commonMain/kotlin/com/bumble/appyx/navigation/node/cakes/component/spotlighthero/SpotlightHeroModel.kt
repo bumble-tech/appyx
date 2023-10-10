@@ -44,6 +44,9 @@ class SpotlightHeroModel<InteractionTarget : Any>(
 
         fun hasNext(): Boolean =
             activeIndex <= positions.lastIndex - 1
+
+        val activeElement: InteractionTarget =
+            positions[activeIndex.toInt()].elements.firstNotNullOf { it.key.interactionTarget }
     }
 
     override val initialState: State<InteractionTarget> =
