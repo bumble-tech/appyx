@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import com.bumble.appyx.navigation.integration.ActivityIntegrationPoint
 
 class ActivityIntegrationPointWithViewModel(
-    private val activity: ComponentActivity,
+    activity: ComponentActivity,
     savedInstanceState: Bundle?,
 ) : ActivityIntegrationPoint(activity, savedInstanceState) {
 
