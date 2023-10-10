@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
@@ -161,11 +160,7 @@ fun <InteractionTarget : Any> TestDriveUi(
             Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .align(targetUiState.position.value.alignment)
-                    .offset(
-                        targetUiState.position.value.offset.x,
-                        targetUiState.position.value.offset.y
-                    )
+                    .align(targetUiState.positionAlignment.value)
                     .border(2.dp, targetUiState.backgroundColor.value)
                     .semantics {
                         contentDescription = TEST_DRIVE_EXPERIMENT_TEST_HELPER

@@ -40,8 +40,7 @@ import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 
 private val defaultExtraTouch = 48f.dp
@@ -181,18 +180,12 @@ fun elementOffset(
     elementSize: IntSize,
     containerSize: IntSize,
 ): IntOffset {
-
-    val positionInside = motionPropertyRenderValue<PositionInside.Value, PositionInside>()
-    val positionOutside = motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()
+    val positionAlignment = motionPropertyRenderValue<PositionAlignment.Value, PositionAlignment>()
     val layoutDirection = LocalLayoutDirection.current
 
-    val positionInsideOffset = positionInside?.let {
-        it.alignment.align(elementSize, containerSize, layoutDirection)
+    val alignmentOffset = positionAlignment?.let {
+        it.align(elementSize, containerSize, layoutDirection)
     } ?: IntOffset.Zero
 
-    val positionOutsideOffset = positionOutside?.let {
-        it.alignment.align(elementSize, containerSize, layoutDirection)
-    } ?: IntOffset.Zero
-
-    return positionInsideOffset + positionOutsideOffset
+    return alignmentOffset
 }

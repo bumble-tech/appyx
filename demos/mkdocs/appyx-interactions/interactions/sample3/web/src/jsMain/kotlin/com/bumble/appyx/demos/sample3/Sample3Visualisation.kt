@@ -26,8 +26,12 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.BottomEnd
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.BottomStart
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopEnd
+import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -53,28 +57,32 @@ class Sample3Visualisation<InteractionTarget : Any>(
         fun TestDriveModel.State.ElementState.toTargetUiState(): TargetUiState =
             when (this) {
                 A -> topLeftCorner
-                B -> uiStateB
-                C -> uiStateC
-                D -> uiStateD
+                B -> topRightCorner
+                C -> bottomRightCorner
+                D -> bottomLeftCorner
             }
 
         private val topLeftCorner = TargetUiState(
-            position = PositionInside.Target(alignment = InsideAlignment.TopStart),
+            positionAlignment = PositionAlignment.Target(TopStart),
+            positionOffset = PositionOffset.Target(DpOffset.Zero),
             backgroundColor = BackgroundColor.Target(color_primary)
         )
 
-        private val uiStateB = TargetUiState(
-            position = PositionInside.Target(alignment = InsideAlignment.TopEnd),
+        private val topRightCorner = TargetUiState(
+            positionAlignment = PositionAlignment.Target(TopEnd),
+            positionOffset = PositionOffset.Target(DpOffset.Zero),
             backgroundColor = BackgroundColor.Target(color_dark)
         )
 
-        private val uiStateC = TargetUiState(
-            position = PositionInside.Target(alignment = InsideAlignment.BottomEnd, bottomOffset),
+        private val bottomRightCorner = TargetUiState(
+            positionAlignment = PositionAlignment.Target(BottomEnd),
+            positionOffset = PositionOffset.Target(bottomOffset),
             backgroundColor = BackgroundColor.Target(color_secondary)
         )
 
-        private val uiStateD = TargetUiState(
-            position = PositionInside.Target(alignment = InsideAlignment.BottomStart, bottomOffset),
+        private val bottomLeftCorner = TargetUiState(
+            positionAlignment = PositionAlignment.Target(BottomStart),
+            positionOffset = PositionOffset.Target(bottomOffset),
             backgroundColor = BackgroundColor.Target(color_tertiary)
         )
     }

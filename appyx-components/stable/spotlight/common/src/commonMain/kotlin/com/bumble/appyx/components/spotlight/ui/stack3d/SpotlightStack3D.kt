@@ -1,6 +1,7 @@
 package com.bumble.appyx.components.spotlight.ui.stack3d
 
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.CREATED
@@ -15,7 +16,8 @@ import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.mapState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
@@ -42,21 +44,24 @@ class SpotlightStack3D<InteractionTarget : Any>(
         )
 
     private val created: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideTop),
+        positionAlignment = PositionAlignment.Target(OutsideTop),
+        positionOffset = PositionOffset.Target(DpOffset.Zero),
         scale = Scale.Target(2.5f),
         alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(0f),
     )
 
     private val standard: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(InContainer),
+        positionAlignment = PositionAlignment.Target(InContainer),
+        positionOffset = PositionOffset.Target(DpOffset.Zero),
         scale = Scale.Target(1f),
         alpha = Alpha.Target(1f),
         zIndex = ZIndex.Target(0f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideBottom),
+        positionAlignment = PositionAlignment.Target(OutsideBottom),
+        positionOffset = PositionOffset.Target(DpOffset.Zero),
         scale = Scale.Target(0.25f),
         alpha = Alpha.Target(0f),
         zIndex = ZIndex.Target(0f),

@@ -29,7 +29,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.dragDirection8
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -60,22 +60,22 @@ class TestDriveSimpleVisualisation<InteractionTarget : Any>(
             }
 
         private val topLeftCorner = TargetUiState(
-            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopStart),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.TopStart),
             backgroundColor = BackgroundColor.Target(md_red_500)
         )
 
         private val topRightCorner = TargetUiState(
-            position = PositionInside.Target(BiasAlignment.InsideAlignment.TopEnd),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.TopEnd),
             backgroundColor = BackgroundColor.Target(md_light_green_500)
         )
 
         private val bottomRightCorner = TargetUiState(
-            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterEnd),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.CenterEnd),
             backgroundColor = BackgroundColor.Target(md_yellow_500)
         )
 
         private val bottomLeftCorner = TargetUiState(
-            position = PositionInside.Target(BiasAlignment.InsideAlignment.CenterStart),
+            positionAlignment = PositionAlignment.Target(BiasAlignment.InsideAlignment.CenterStart),
             backgroundColor = BackgroundColor.Target(md_light_blue_500)
         )
     }

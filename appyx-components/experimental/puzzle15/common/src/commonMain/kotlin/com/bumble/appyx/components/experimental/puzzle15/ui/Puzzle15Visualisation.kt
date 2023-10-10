@@ -15,7 +15,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.fractionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
@@ -35,8 +35,8 @@ class Puzzle15Visualisation(
             MatchedTargetUiState(
                 element = tileElements,
                 targetUiState = TargetUiState(
-                    position = PositionInside.Target(
-                        alignment = fractionAlignment(
+                    positionAlignment = PositionAlignment.Target(
+                        insideAlignment = fractionAlignment(
                             horizontalBiasFraction = (index % CELLS_COUNT).toFloat() / (CELLS_COUNT - 1),
                             verticalBiasFraction = (index / CELLS_COUNT).toFloat() / (CELLS_COUNT - 1)
                         )
