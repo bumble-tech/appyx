@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.utils.viewmodel.ActivityIntegrationPointWithViewModel
+import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModel
 
 open class ViewModelNode(
     buildContext: BuildContext,
@@ -20,7 +20,7 @@ open class ViewModelNode(
     init {
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onDestroy() {
-                if (!(integrationPoint as ActivityIntegrationPointWithViewModel).isChangingConfigurations()) {
+                if (!(integrationPoint as ActivityIntegrationPointWithViewModel).isChangingConfigurations) {
                     (integrationPoint as ActivityIntegrationPointWithViewModel).viewModel.clear(id)
                 }
             }

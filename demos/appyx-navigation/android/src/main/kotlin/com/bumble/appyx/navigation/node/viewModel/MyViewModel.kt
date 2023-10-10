@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.node.viewModel
 
-import com.bumble.appyx.utils.viewmodel.IntegrationPointViewModel
+import com.bumble.appyx.utils.viewmodel.integration.IntegrationPointViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

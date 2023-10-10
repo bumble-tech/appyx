@@ -1,4 +1,4 @@
-package com.bumble.appyx.utils.viewmodel
+package com.bumble.appyx.utils.viewmodel.integration
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
