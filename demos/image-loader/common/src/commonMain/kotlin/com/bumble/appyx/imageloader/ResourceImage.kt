@@ -34,7 +34,7 @@ fun ResourceImage(
     image?.let {
         Image(
             bitmap = it,
-            contentDescription = null,
+            contentDescription = contentDescription,
             modifier = modifier,
             contentScale = contentScale
         )

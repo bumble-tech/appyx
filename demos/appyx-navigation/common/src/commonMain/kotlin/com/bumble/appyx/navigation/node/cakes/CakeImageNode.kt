@@ -48,7 +48,8 @@ class CakeImageNode(
             ResourceImage(
                 path = cake.image,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds
+                contentScale = ContentScale.FillBounds,
+                contentDescription = cake.name
             )
         }
     }
