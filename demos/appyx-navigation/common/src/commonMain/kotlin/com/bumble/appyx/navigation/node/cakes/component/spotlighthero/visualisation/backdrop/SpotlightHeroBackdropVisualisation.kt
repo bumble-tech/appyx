@@ -21,14 +21,11 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisat
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightHeroBackdropVisualisation<InteractionTarget : Any>(
-    uiContext: UiContext,
+    uiContext: UiContext
 ) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val scrollX = GenericFloatProperty(
-        uiContext.coroutineScope,
-        Target(0f)
-    )
+    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX

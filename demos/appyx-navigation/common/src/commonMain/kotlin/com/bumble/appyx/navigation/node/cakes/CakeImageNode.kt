@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import com.bumble.appyx.imageloader.ResourceImage
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -38,6 +39,7 @@ class CakeImageNode(
                 .fillMaxWidth()
                 .aspectRatio(1f)
                 .padding(24.dp)
+                .zIndex(10f)
                 .clickable(
                     onClick = { onClick() },
                     indication = null,

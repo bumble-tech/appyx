@@ -17,10 +17,12 @@ import kotlinx.coroutines.flow.StateFlow
 class AspectRatio(
     coroutineScope: CoroutineScope,
     target: Target,
+    visibilityThreshold: Float = 0.001f,
     displacement: StateFlow<Float> = MutableStateFlow(0f),
 ) : MotionProperty<Float, AnimationVector1D>(
     coroutineScope = coroutineScope,
     animatable = Animatable(target.value),
+    visibilityThreshold = visibilityThreshold,
     displacement = displacement
 ), Interpolatable<AspectRatio.Target> {
 

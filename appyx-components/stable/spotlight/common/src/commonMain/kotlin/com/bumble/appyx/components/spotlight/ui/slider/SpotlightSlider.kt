@@ -18,6 +18,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
+import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
@@ -33,10 +34,7 @@ class SpotlightSlider<InteractionTarget : Any>(
 ) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val scrollX = GenericFloatProperty(
-        uiContext.coroutineScope,
-        GenericFloatProperty.Target(0f)
-    ) // TODO sync this with the model's initial value rather than assuming 0
+    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX

@@ -1,19 +1,25 @@
 package com.bumble.appyx.navigation.node.cakes
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
-import androidx.compose.foundation.background
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.model.plus
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -65,14 +71,16 @@ class CakeListNode(
 ) {
 
     sealed class NavTarget : Parcelable {
+        abstract val cake: Cake
+
         @Parcelize
         data class Backdrop(
-            val cake: Cake
+            override val cake: Cake
         ) : NavTarget()
 
         @Parcelize
         data class CakeImage(
-            val cake: Cake
+            override val cake: Cake
         ) : NavTarget()
     }
 
@@ -81,6 +89,7 @@ class CakeListNode(
             is NavTarget.Backdrop -> CakeBackdropNode(buildContext, navTarget.cake) {
                 toggleHeroMode()
             }
+
             is NavTarget.CakeImage -> CakeImageNode(buildContext, navTarget.cake) {
                 toggleHeroMode()
             }
@@ -93,7 +102,7 @@ class CakeListNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val mode = spotlightBackDrop.mode.collectAsState(LIST)
+        val mode = spotlightBackDrop.mode.collectAsState()
         val width by animateFloatAsState(
             targetValue = when (mode.value) {
                 LIST -> 0.6f
@@ -102,25 +111,42 @@ class CakeListNode(
             animationSpec = animationSpec
         )
 
+
         Box(
-            modifier = modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
+            modifier = modifier.fillMaxSize()
         ) {
             AppyxComponent(
                 appyxComponent = spotlightBackDrop,
                 draggables = listOf(spotlightBackDrop, spotlightMain),
                 modifier = Modifier
+                    .align(Alignment.Center)
                     .fillMaxWidth(width)
                     .fillMaxHeight(1f)
-                    .background(Color.DarkGray)
             )
             AppyxComponent(
                 appyxComponent = spotlightMain,
                 draggables = listOf(spotlightBackDrop, spotlightMain),
                 modifier = Modifier
+                    .align(Alignment.Center)
                     .fillMaxWidth(width)
                     .fillMaxHeight(1f)
             )
+
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .padding(24.dp)
+            ) {
+                AnimatedVisibility(
+                    visible = mode.value == HERO,
+                    enter = fadeIn() + slideIn { IntOffset(x = 0, y = 20) },
+                    exit = fadeOut() + slideOut { IntOffset(x = 0, y = 20) },
+                ) {
+                    val currentTarget = spotlightMain.activeElement.collectAsState().value
+                    CakeDetailsSheet(currentTarget.cake)
+                }
+            }
         }
     }
 }
