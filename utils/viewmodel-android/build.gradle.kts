@@ -17,11 +17,11 @@ appyx {
 
 dependencies {
     api(project(":appyx-navigation:appyx-navigation"))
-    api(libs.androidx.activity.compose)
+    api(libs.androidx.activity)
     api(libs.androidx.appcompat)
     api(libs.androidx.lifecycle.viewmodel)
     debugApi(libs.compose.runtime)
-    implementation(libs.androidx.core)
+    implementation(libs.androidx.core.core)
     implementation(libs.androidx.lifecycle.common)
     releaseImplementation(libs.compose.runtime)
 }
