@@ -17,8 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
-import com.bumble.appyx.interactions.permanent.PermanentModel
 import com.bumble.appyx.navigation.colors
+import com.bumble.appyx.navigation.composable.PermanentChild
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -29,9 +29,17 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PermanentChildNode(
     buildContext: BuildContext,
+    private val permanentAppyxComponent: PermanentAppyxComponent<InteractionTarget> =
+        PermanentAppyxComponent(
+            savedStateMap = buildContext.savedStateMap,
+            initialTargets = listOf(
+                InteractionTarget.Child1,
+                InteractionTarget.Child2
+            )
+        )
 ) : ParentNode<PermanentChildNode.InteractionTarget>(
     buildContext = buildContext,
-    appyxComponent = PermanentAppyxComponent(model = PermanentModel(buildContext.savedStateMap))
+    appyxComponent = permanentAppyxComponent
 ) {
     sealed class InteractionTarget : Parcelable {
         @Parcelize
@@ -61,6 +69,7 @@ class PermanentChildNode(
                     )
                 }
             }
+
             is InteractionTarget.Child2 -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
@@ -88,8 +97,14 @@ class PermanentChildNode(
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {
-            PermanentChild(interactionTarget = InteractionTarget.Child1)
-            PermanentChild(interactionTarget = InteractionTarget.Child2)
+            PermanentChild(
+                permanentAppyxComponent = permanentAppyxComponent,
+                interactionTarget = InteractionTarget.Child1
+            )
+            PermanentChild(
+                permanentAppyxComponent = permanentAppyxComponent,
+                interactionTarget = InteractionTarget.Child2
+            )
         }
     }
 }
