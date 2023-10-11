@@ -30,6 +30,8 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightH
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.HERO
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.LIST
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.activate
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.setHeroMode
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.toggleHeroMode
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.SpotlightHeroGestures
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.backdrop.SpotlightHeroBackdropVisualisation
@@ -38,6 +40,7 @@ import com.bumble.appyx.navigation.node.cakes.model.Cake
 import com.bumble.appyx.navigation.node.cakes.model.cakes
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
+import kotlinx.coroutines.delay
 
 private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
 
@@ -111,7 +114,6 @@ class CakeListNode(
             animationSpec = animationSpec
         )
 
-
         Box(
             modifier = modifier.fillMaxSize()
         ) {
@@ -148,5 +150,33 @@ class CakeListNode(
                 }
             }
         }
+    }
+
+    suspend fun goToRandomOtherCake(delay: Long = 0): CakeListNode = executeAction {
+        var index: Int
+        do {
+            index = cakes.indices.random()
+        } while (index == spotlightMain.activeIndex.value.toInt())
+
+        goToCake(cakes[index])
+        delay(delay)
+    }
+
+    suspend fun goToCake(cake: Cake): CakeListNode = executeAction {
+        val index = cakes.indexOf(cake).toFloat()
+        spotlightMain.activate(index)
+        spotlightBackDrop.activate(index)
+    }
+
+    suspend fun leaveHeroMode(delay: Long = 0): CakeListNode = executeAction {
+        spotlightMain.setHeroMode(LIST)
+        spotlightBackDrop.setHeroMode(LIST)
+        delay(delay)
+    }
+
+    suspend fun enterHeroMode(delay: Long = 0): CakeListNode = executeAction {
+        spotlightMain.setHeroMode(HERO)
+        spotlightBackDrop.setHeroMode(HERO)
+        delay(delay)
     }
 }

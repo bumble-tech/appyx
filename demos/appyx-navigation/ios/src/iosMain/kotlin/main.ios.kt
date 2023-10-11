@@ -8,6 +8,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -17,6 +18,8 @@ import androidx.compose.ui.window.ComposeUIViewController
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.integration.MainIntegrationPoint
+import com.bumble.appyx.navigation.navigator.LocalNavigator
+import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.main.MainNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +30,7 @@ import kotlinx.coroutines.launch
 val backEvents: Channel<Unit> = Channel()
 
 private val integrationPoint = MainIntegrationPoint()
+private val navigator = Navigator()
 
 @Suppress("FunctionNaming")
 fun MainViewController() = ComposeUIViewController {
@@ -42,14 +46,16 @@ fun MainViewController() = ComposeUIViewController {
                 BackButton(coroutineScope)
 
                 Box(modifier = Modifier.fillMaxSize()) {
-                    IosNodeHost(
-                        modifier = Modifier,
-                        onBackPressedEvents = backEvents.receiveAsFlow(),
-                        integrationPoint = remember { integrationPoint }
-                    ) { buildContext ->
-                        MainNode(
-                            buildContext = buildContext,
-                        )
+                    CompositionLocalProvider(LocalNavigator provides navigator) {
+                        IosNodeHost(
+                            modifier = Modifier,
+                            onBackPressedEvents = backEvents.receiveAsFlow(),
+                            integrationPoint = remember { integrationPoint }
+                        ) { buildContext ->
+                            MainNode(
+                                buildContext = buildContext,
+                            )
+                        }
                     }
                 }
             }

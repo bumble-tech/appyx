@@ -54,7 +54,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
             defaultAnimationSpec = animationSpec
         )
     },
-    private val spotlight: Spotlight<NavTarget> = Spotlight(
+    protected val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = navTargets,
             initialActiveIndex = navTargets.indexOf(initialActiveElement).toFloat(),
