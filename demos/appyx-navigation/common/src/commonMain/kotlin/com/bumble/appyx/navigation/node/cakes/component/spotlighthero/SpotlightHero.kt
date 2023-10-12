@@ -9,6 +9,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.mapState
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -17,8 +18,8 @@ import kotlinx.coroutines.flow.StateFlow
 open class SpotlightHero<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: SpotlightHeroModel<InteractionTarget>,
-    visualisation: (UiContext) -> Visualisation<InteractionTarget, SpotlightHeroModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, SpotlightHeroModel.State<InteractionTarget>> = {
+    visualisation: (UiContext) -> Visualisation<InteractionTarget, State<InteractionTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
         GestureFactory.Noop()
     },
     animationSpec: AnimationSpec<Float> = spring(),
@@ -29,7 +30,7 @@ open class SpotlightHero<InteractionTarget : Any>(
     ),
     disableAnimations: Boolean = false,
     isDebug: Boolean = false
-) : BaseAppyxComponent<InteractionTarget, SpotlightHeroModel.State<InteractionTarget>>(
+) : BaseAppyxComponent<InteractionTarget, State<InteractionTarget>>(
     scope = scope,
     model = model,
     visualisation = visualisation,
@@ -37,6 +38,7 @@ open class SpotlightHero<InteractionTarget : Any>(
     defaultAnimationSpec = animationSpec,
     gestureSettleConfig = gestureSettleConfig,
     disableAnimations = disableAnimations,
+    backPressStrategy = ExitHeroModeStrategy(scope),
     isDebug = isDebug
 ) {
     val activeIndex: StateFlow<Float> = model.output
@@ -47,5 +49,4 @@ open class SpotlightHero<InteractionTarget : Any>(
 
     val mode: StateFlow<SpotlightHeroModel.Mode> = model.output
         .mapState(scope) { it.currentTargetState.mode }
-
 }
