@@ -28,11 +28,11 @@ val cakes = listOf(
         author = "Meritt Thomas"
     ),
     Cake(
-        name = "Fruit cake",
-        image = "fruit-cake.png",
+        name = "Fruit tart",
+        image = "tart.png",
         backgroundColor = 0xFFFFC107,
-        unsplashUrl = "https://unsplash.com/photos/s8HpMrQtl8E",
-        author = "Dessy Dimcheva"
+        unsplashUrl = "https://unsplash.com/photos/OrkEasJeY74",
+        author = "Kim Daniels"
     ),
     Cake(
         name = "Cheesecake",
