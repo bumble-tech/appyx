@@ -31,6 +31,8 @@ class CartItemsNode(
         val cartItems = cart.items.collectAsState(emptyMap())
         if (cartItems.value.isEmpty()) {
             CartEmptyContent()
+        } else {
+            CartContent(cartItems.value)
         }
     }
 
