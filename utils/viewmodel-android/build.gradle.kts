@@ -23,5 +23,6 @@ dependencies {
     debugApi(libs.compose.runtime)
     implementation(libs.androidx.core.core)
     implementation(libs.androidx.lifecycle.common)
+    implementation(project(":utils:multiplatform"))
     releaseImplementation(libs.compose.runtime)
 }
