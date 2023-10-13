@@ -7,7 +7,6 @@ import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
-import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModel
 
 abstract class ViewModelParentNode(
@@ -18,10 +17,7 @@ abstract class ViewModelParentNode(
     appyxComponent = node
 ), ViewModelStoreOwner {
 
-    sealed class InteractionTarget : Parcelable {
-        @Parcelize
-        abstract class Child(val index: Int) : InteractionTarget()
-    }
+    abstract class InteractionTarget : Parcelable
 
     private val nodeViewModelStore by lazy {
         (integrationPoint as ActivityIntegrationPointWithViewModel).viewModel.getViewModelStoreForNode(
