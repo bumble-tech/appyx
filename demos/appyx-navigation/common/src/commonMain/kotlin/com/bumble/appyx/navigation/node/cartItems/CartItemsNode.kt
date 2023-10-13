@@ -16,7 +16,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
+import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.cakes.model.Cake
 import com.bumble.appyx.navigation.node.cakes.model.Cart
 
 class CartItemsNode(
@@ -29,14 +31,20 @@ class CartItemsNode(
     @Composable
     override fun View(modifier: Modifier) {
         val cartItems = cart.items.collectAsState(emptyMap())
+        val navigator = LocalNavigator.current
+
+        val clearCartAction = { cart.clear() }
+        val goToCakeAction: (Cake) -> Unit = { navigator.goToCake(it) }
+
         if (cartItems.value.isEmpty()) {
-            CartEmptyContent()
+            CartEmptyContent(navigator)
+        } else {
+            CartContent(cartItems.value, clearCartAction, goToCakeAction)
         }
     }
 
     @Composable
-    private fun CartEmptyContent() {
-        val navigator = LocalNavigator.current
+    private fun CartEmptyContent(navigator: Navigator) {
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,

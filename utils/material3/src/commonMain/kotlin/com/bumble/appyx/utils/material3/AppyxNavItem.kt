@@ -46,9 +46,7 @@ class AppyxNavItem(
                         Badge {
                             Text(
                                 text = badgeText,
-                                modifier = Modifier.semantics {
-                                    contentDescription = badgeText
-                                }
+                                color = MaterialTheme.colorScheme.primaryContainer,
                             )
                         }
                     }
