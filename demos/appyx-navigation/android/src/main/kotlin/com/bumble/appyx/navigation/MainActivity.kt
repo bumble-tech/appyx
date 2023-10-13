@@ -1,5 +1,7 @@
 package com.bumble.appyx.navigation
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -17,12 +19,11 @@ import com.bumble.appyx.navigation.integration.NodeActivity
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
+import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.main.MainNode
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
-import com.bumble.appyx.navigation.navigator.Navigator
-import com.bumble.appyx.navigation.navigator.LocalNavigator
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
@@ -34,6 +35,7 @@ class MainActivity : NodeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+
         setContent {
             AppyxSampleAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -45,11 +47,22 @@ class MainActivity : NodeActivity() {
                         ) {
                             MainNode(
                                 buildContext = it,
-                                plugins = listOf(navigator)
+                                plugins = listOf(navigator, NodeReadyObserver {
+                                    handleDeepLinks(intent?.data)
+                                })
                             )
                         }
                     }
                 }
+            }
+        }
+    }
+
+    private fun handleDeepLinks(uri: Uri?) {
+        if (intent?.action == Intent.ACTION_VIEW) {
+            when {
+                // adb shell am start -a "android.intent.action.VIEW" -d "appyx://randomcake"
+                (uri?.host == "randomcake") -> navigator.goToARandomCake()
             }
         }
     }
