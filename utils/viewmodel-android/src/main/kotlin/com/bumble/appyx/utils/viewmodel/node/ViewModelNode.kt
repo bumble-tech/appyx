@@ -27,7 +27,6 @@ open class ViewModelNode(
         })
     }
 
-
     override val viewModelStore: ViewModelStore
         get() = nodeViewModelStore
 }

@@ -9,15 +9,13 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModel
 
-abstract class ViewModelParentNode(
+abstract class ViewModelParentNode<InteractionTarget : Any>(
     buildContext: BuildContext,
     node: AppyxComponent<InteractionTarget, *>,
-) : ParentNode<ViewModelParentNode.InteractionTarget>(
+) : ParentNode<InteractionTarget>(
     buildContext = buildContext,
     appyxComponent = node
 ), ViewModelStoreOwner {
-
-    abstract class InteractionTarget : Parcelable
 
     private val nodeViewModelStore by lazy {
         (integrationPoint as ActivityIntegrationPointWithViewModel).viewModel.getViewModelStoreForNode(
