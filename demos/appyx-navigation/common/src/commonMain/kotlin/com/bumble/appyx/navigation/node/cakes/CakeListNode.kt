@@ -13,11 +13,20 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Badge
+import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.model.plus
@@ -37,15 +46,18 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisat
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.backdrop.SpotlightHeroBackdropVisualisation
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.main.SpotlightHeroMainVisualisation
 import com.bumble.appyx.navigation.node.cakes.model.Cake
+import com.bumble.appyx.navigation.node.cakes.model.Cart
 import com.bumble.appyx.navigation.node.cakes.model.cakes
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.map
 
 private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
 
 class CakeListNode(
     buildContext: BuildContext,
+    private val cart: Cart,
     private val spotlightBackDrop: SpotlightHero<NavTarget> =
         SpotlightHero(
             model = SpotlightHeroModel(
@@ -113,6 +125,7 @@ class CakeListNode(
             },
             animationSpec = animationSpec
         )
+        val itemsInCart = cart.items.map { it.values.sum() }.collectAsState(0)
 
         Box(
             modifier = modifier.fillMaxSize()
@@ -146,9 +159,50 @@ class CakeListNode(
                     exit = fadeOut() + slideOut { IntOffset(x = 0, y = 20) },
                 ) {
                     val currentTarget = spotlightMain.activeElement.collectAsState().value
-                    CakeDetailsSheet(currentTarget.cake)
+                    val selectedCake = currentTarget.cake
+                    CakeDetailsSheet(
+                        cake = selectedCake,
+                        addToCartAction = { cart.add(selectedCake) }
+                    )
                 }
             }
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                contentAlignment = Alignment.TopEnd,
+            ) {
+                AnimatedVisibility(
+                    visible = itemsInCart.value != 0
+                ) {
+                    Cart(itemsInCart.value)
+                }
+            }
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    @Composable
+    private fun Cart(itemsInCart: Int) {
+        BadgedBox(
+            badge = {
+                Badge {
+                    val badgeNumber = itemsInCart.toString()
+                    Text(
+                        text = badgeNumber,
+                        modifier = Modifier.semantics {
+                            contentDescription = "$badgeNumber items in cart"
+                        }
+                    )
+                }
+            }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ShoppingCart,
+                contentDescription = "Shopping cart"
+            )
+
         }
     }
 

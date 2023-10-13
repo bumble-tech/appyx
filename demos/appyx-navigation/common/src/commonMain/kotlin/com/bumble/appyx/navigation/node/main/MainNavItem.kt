@@ -9,6 +9,7 @@ import androidx.compose.material.icons.outlined.Cake
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import com.bumble.appyx.navigation.node.cakes.CakeListNode
+import com.bumble.appyx.navigation.node.cakes.model.Cart
 import com.bumble.appyx.navigation.node.home.HomeNode
 import com.bumble.appyx.navigation.node.profile.ProfileNode
 import com.bumble.appyx.utils.material3.AppyxNavItem
@@ -20,13 +21,13 @@ enum class MainNavItem : Parcelable {
     CAKES, HOME, PROFILE;
 
     companion object {
-        val resolver: (MainNavItem) -> AppyxNavItem = { navBarItem ->
+        fun resolver(cart: Cart): (MainNavItem) -> AppyxNavItem = { navBarItem ->
             when (navBarItem) {
                 CAKES -> AppyxNavItem(
                     text = "Cakes",
                     unselectedIcon = Outlined.Cake,
                     selectedIcon = Filled.Cake,
-                    node = { CakeListNode(it) }
+                    node = { CakeListNode(it, cart) }
                 )
 
                 HOME -> AppyxNavItem(
