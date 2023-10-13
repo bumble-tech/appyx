@@ -37,6 +37,7 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisat
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.backdrop.SpotlightHeroBackdropVisualisation
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.main.SpotlightHeroMainVisualisation
 import com.bumble.appyx.navigation.node.cakes.model.Cake
+import com.bumble.appyx.navigation.node.cakes.model.Cart
 import com.bumble.appyx.navigation.node.cakes.model.cakes
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -46,6 +47,7 @@ private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
 
 class CakeListNode(
     buildContext: BuildContext,
+    private val cart: Cart,
     private val spotlightBackDrop: SpotlightHero<NavTarget> =
         SpotlightHero(
             model = SpotlightHeroModel(
@@ -146,7 +148,11 @@ class CakeListNode(
                     exit = fadeOut() + slideOut { IntOffset(x = 0, y = 20) },
                 ) {
                     val currentTarget = spotlightMain.activeElement.collectAsState().value
-                    CakeDetailsSheet(currentTarget.cake)
+                    val selectedCake = currentTarget.cake
+                    CakeDetailsSheet(
+                        cake = selectedCake,
+                        addToCartAction = { cart.add(selectedCake) }
+                    )
                 }
             }
         }

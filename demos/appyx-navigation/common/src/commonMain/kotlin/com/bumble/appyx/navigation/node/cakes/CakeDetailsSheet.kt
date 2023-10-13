@@ -26,6 +26,7 @@ import com.bumble.appyx.navigation.node.cakes.model.Cake
 @Composable
 fun CakeDetailsSheet(
     cake: Cake,
+    addToCartAction: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -56,7 +57,7 @@ fun CakeDetailsSheet(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Button(onClick = {}) {
+                Button(onClick = addToCartAction) {
                     Row {
                         Icon(
                             Icons.Filled.ShoppingCart,

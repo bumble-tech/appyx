@@ -27,4 +27,11 @@ class Navigator : NodeReadyObserver<MainNode> {
                 .enterHeroMode()
         }
     }
+
+    fun goToCakes() {
+        lifecycleScope.launch {
+            mainNode
+                .goToCakes(delay = 500)
+        }
+    }
 }
