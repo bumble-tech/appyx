@@ -42,6 +42,6 @@ open class Spotlight<InteractionTarget : Any>(
     val activeIndex: StateFlow<Float> = model.output
         .mapState(scope) { it.currentTargetState.activeIndex }
 
-    val activeElement: StateFlow<InteractionTarget> = model.output
+    val activeElement: StateFlow<InteractionTarget?> = model.output
         .mapState(scope) { it.currentTargetState.activeElement }
 }
