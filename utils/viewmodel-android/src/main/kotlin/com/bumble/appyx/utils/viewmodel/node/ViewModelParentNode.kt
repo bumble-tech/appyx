@@ -6,7 +6,6 @@ import com.bumble.appyx.interactions.core.model.AppyxComponent
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModel
 
 abstract class ViewModelParentNode<InteractionTarget : Any>(
