@@ -46,6 +46,10 @@ tasks.register<Copy>("copyResources") {
     include("**/*")
 }
 
+tasks.named("jsBrowserProductionExecutableDistributeResources") {
+    dependsOn("copyResources")
+}
+
 tasks.named("jsMainClasses") {
     dependsOn("copyResources")
 }
