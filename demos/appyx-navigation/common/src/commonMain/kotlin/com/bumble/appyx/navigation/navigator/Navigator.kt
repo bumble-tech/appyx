@@ -1,6 +1,7 @@
 package com.bumble.appyx.navigation.navigator
 
 import androidx.compose.runtime.compositionLocalOf
+import com.bumble.appyx.navigation.node.cakes.model.Cake
 import com.bumble.appyx.navigation.node.main.MainNode
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +33,16 @@ class Navigator : NodeReadyObserver<MainNode> {
         lifecycleScope.launch {
             mainNode
                 .goToCakes(delay = 500)
+        }
+    }
+
+    fun goToCake(cake: Cake) {
+        lifecycleScope.launch {
+            mainNode
+                .onCakes()
+                .goToCake(cake)
+                .enterHeroMode(delay = 500)
+            mainNode.goToCakes()
         }
     }
 }

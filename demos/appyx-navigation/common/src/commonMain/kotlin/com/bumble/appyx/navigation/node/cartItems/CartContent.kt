@@ -1,5 +1,6 @@
 package com.bumble.appyx.navigation.node.cartItems
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,6 +31,7 @@ import com.bumble.appyx.navigation.node.cakes.model.Cake
 fun CartContent(
     cartItems: Map<Cake, Int>,
     clearCartAction: () -> Unit,
+    goToCakeAction: (Cake) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -55,7 +57,7 @@ fun CartContent(
                 key = { index -> cartList[index].first }
             ) { index ->
                 Spacer(modifier = Modifier.requiredHeight(8.dp))
-                CartListItem(cartList[index])
+                CartListItem(cakeToQuantity = cartList[index], goToCakeAction = goToCakeAction)
             }
         }
 
@@ -64,7 +66,10 @@ fun CartContent(
 }
 
 @Composable
-private fun CartListItem(cakeToQuantity: Pair<Cake, Int>) {
+private fun CartListItem(
+    cakeToQuantity: Pair<Cake, Int>,
+    goToCakeAction: (Cake) -> Unit,
+) {
     val cake = cakeToQuantity.first
     val quantity = cakeToQuantity.second
     Card {
@@ -76,7 +81,11 @@ private fun CartListItem(cakeToQuantity: Pair<Cake, Int>) {
         ) {
             ResourceImage(
                 path = cake.image,
-                modifier = Modifier.width(50.dp).height(50.dp),
+                modifier = Modifier
+                    .width(50.dp)
+                    .height(50.dp)
+                    .clickable { goToCakeAction.invoke(cake) }
+                ,
                 contentScale = ContentScale.FillWidth,
                 contentDescription = cake.name
             )

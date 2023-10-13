@@ -32,6 +32,10 @@ class MainNode(
         return attachChild {}
     }
 
+    suspend fun onCakes(): CakeListNode {
+        return attachChild {}
+    }
+
     suspend fun goToHome(): HomeNode = attachChild {
         spotlight.activate(mainNavItems.indexOf(HOME).toFloat())
     }
