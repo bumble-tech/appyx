@@ -29,10 +29,11 @@ class CartItemsNode(
     @Composable
     override fun View(modifier: Modifier) {
         val cartItems = cart.items.collectAsState(emptyMap())
+        val clearCartAction = { cart.clear() }
         if (cartItems.value.isEmpty()) {
             CartEmptyContent()
         } else {
-            CartContent(cartItems.value)
+            CartContent(cartItems.value, clearCartAction)
         }
     }
 
