@@ -35,7 +35,7 @@ sealed class Events {
 
 fun main() = application {
     val events: Channel<Events> = Channel()
-    val windowState = rememberWindowState(size = DpSize(480.dp, 658.dp))
+    val windowState = rememberWindowState(size = DpSize(480.dp, 820.dp))
     val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
     val navigator = Navigator()
 
