@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     spec.summary                  = 'appyx-navigation iOS module'
     spec.vendored_frameworks      = 'build/cocoapods/framework/ios.framework'
     spec.libraries                = 'c++'
-    spec.ios.deployment_target = '16.4'
+    spec.ios.deployment_target = '17.0'
                 
                 
     spec.pod_target_xcconfig = {
@@ -35,5 +35,5 @@ Pod::Spec.new do |spec|
             SCRIPT
         }
     ]
-                
+    spec.resources = ['build/processedResources/ios/main/**']
 end
