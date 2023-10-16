@@ -1,11 +1,18 @@
 package com.bumble.appyx.navigation
 
 import BrowserViewportWindow
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.focusable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,46 +48,59 @@ import org.jetbrains.skiko.wasm.onWasmReady
 
 fun main() {
     val events: Channel<Unit> = Channel()
+    val navigator = Navigator()
     onWasmReady {
         BrowserViewportWindow("Appyx navigation demo") {
-            val requester = remember { FocusRequester() }
-            var hasFocus by remember { mutableStateOf(false) }
+            ForceChangeToCodeGen(events, navigator)
+        }
+    }
+}
 
-            var screenSize by remember { mutableStateOf(ScreenSize(0.dp, 0.dp)) }
-            val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
-            val navigator = Navigator()
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+private fun ForceChangeToCodeGen(events: Channel<Unit>, navigator: Navigator) {
+    AppyxSampleAppTheme {
+        val requester = remember { FocusRequester() }
+        var hasFocus by remember { mutableStateOf(false) }
 
-            AppyxSampleAppTheme {
-                Surface(
-                    color = MaterialTheme.colorScheme.background,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .onSizeChanged { screenSize = ScreenSize(it.width.dp, it.height.dp) }
-                        .onKeyEvent {
-                            onKeyEvent(it, events, eventScope)
-                        }
-                        .focusRequester(requester)
-                        .focusable()
-                        .onFocusChanged { hasFocus = it.hasFocus }
-                ) {
-                    CompositionLocalProvider(LocalNavigator provides navigator) {
-                        WebNodeHost(
-                            screenSize = screenSize,
-                            onBackPressedEvents = events.receiveAsFlow(),
-                        ) { buildContext ->
-                            MainNode(
-                                buildContext = buildContext,
-                                plugins = listOf(navigator)
-                            )
-                        }
-                    }
+        var screenSize by remember { mutableStateOf(ScreenSize(0.dp, 0.dp)) }
+        val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
+
+        // invisible component changes JS codegen to avoid a code generation bug
+        // this task: demos:appyx-navigation:web:jsBrowserProductionWebpack
+        // https://github.com/JetBrains/compose-multiplatform/issues/3426
+        HorizontalPager(0, modifier = Modifier.size(0.dp)) {
+
+        }
+
+        Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .onSizeChanged { screenSize = ScreenSize(it.width.dp, it.height.dp) }
+                .onKeyEvent {
+                    onKeyEvent(it, events, eventScope)
                 }
-
-                if (!hasFocus) {
-                    LaunchedEffect(Unit) {
-                        requester.requestFocus()
-                    }
+                .focusRequester(requester)
+                .focusable()
+                .onFocusChanged { hasFocus = it.hasFocus },
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            CompositionLocalProvider(LocalNavigator provides navigator) {
+                WebNodeHost(
+                    screenSize = screenSize,
+                    onBackPressedEvents = events.receiveAsFlow(),
+                ) { buildContext ->
+                    MainNode(
+                        buildContext = buildContext,
+                        plugins = listOf(navigator)
+                    )
                 }
+            }
+        }
+
+        if (!hasFocus) {
+            LaunchedEffect(Unit) {
+                requester.requestFocus()
             }
         }
     }
