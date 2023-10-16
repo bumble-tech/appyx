@@ -12,7 +12,6 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlig
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.abs
 
@@ -24,7 +23,6 @@ class TargetUiState(
     val positionOffset: PositionOffset.Target = PositionOffset.Target(DpOffset.Zero),
     val scale: Scale.Target = Scale.Target(1f),
     val rotationY: RotationY.Target = RotationY.Target(0f),
-    val heroProgress: HeroProgress.Target,
 ) {
     /**
      * Take item's own position in the list of elements into account
@@ -47,7 +45,6 @@ class TargetUiState(
         positionOffset = base.positionOffset,
         scale = base.scale,
         rotationY = base.rotationY,
-        heroProgress = base.heroProgress
     )
 
     /**
@@ -90,7 +87,6 @@ class TargetUiState(
                     scaleUpTo(cutOffCenterSigned(positionInList.toFloat(), scroll, 0.15f), 15f, 1f)
                 }
             ),
-            heroProgress = HeroProgress(uiContext.coroutineScope, heroProgress)
         )
     }
 }

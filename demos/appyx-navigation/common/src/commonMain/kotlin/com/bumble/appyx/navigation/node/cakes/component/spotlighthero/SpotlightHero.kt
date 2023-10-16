@@ -2,6 +2,8 @@ package com.bumble.appyx.navigation.node.cakes.component.spotlighthero
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
@@ -10,15 +12,22 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.mapState
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
+
+interface SpotlightHeroVisualisation<InteractionTarget : Any> : Visualisation<InteractionTarget, State<InteractionTarget>> {
+    val heroProgress: HeroProgress
+}
 
 open class SpotlightHero<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
     model: SpotlightHeroModel<InteractionTarget>,
-    visualisation: (UiContext) -> Visualisation<InteractionTarget, State<InteractionTarget>>,
+    visualisation: (UiContext) -> SpotlightHeroVisualisation<InteractionTarget>,
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
         GestureFactory.Noop()
     },
@@ -49,4 +58,20 @@ open class SpotlightHero<InteractionTarget : Any>(
 
     val mode: StateFlow<SpotlightHeroModel.Mode> = model.output
         .mapState(scope) { it.currentTargetState.mode }
+
+    private var _heroProgress: MutableStateFlow<StateFlow<Float>> =
+        MutableStateFlow(MutableStateFlow(0f))
+
+    @Composable
+    fun heroProgress(): Float =
+        _heroProgress
+            .collectAsState().value
+            .collectAsState().value
+
+    override fun onVisualisationReady(visualisation: Visualisation<InteractionTarget, State<InteractionTarget>>) {
+        super.onVisualisationReady(visualisation)
+        _heroProgress.update {
+            (visualisation as SpotlightHeroVisualisation).heroProgress.renderValueFlow
+        }
+    }
 }

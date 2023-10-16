@@ -5,7 +5,6 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.AspectRatio
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
-import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
 import com.bumble.appyx.interactions.core.ui.property.impl.Height
 import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
@@ -17,18 +16,22 @@ import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.HERO
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.LIST
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroVisualisation
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightHeroBackdropVisualisation<InteractionTarget : Any>(
     uiContext: UiContext
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : SpotlightHeroVisualisation<InteractionTarget>,
+    BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f))
+    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
+    override val heroProgress = HeroProgress(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollX
+            { state: State<InteractionTarget> -> state.activeIndex } to scrollX,
+            { state: State<InteractionTarget> -> state.heroProgress() } to heroProgress
         )
 
     private val standard: TargetUiState = TargetUiState(
@@ -36,7 +39,6 @@ class SpotlightHeroBackdropVisualisation<InteractionTarget : Any>(
         aspectRatio = AspectRatio.Target(0.75f),
         height = Height.Target(0.5f),
         roundedCorners = RoundedCorners.Target(5),
-        heroProgress = HeroProgress.Target(0f)
     )
 
     private val heroElement: TargetUiState = TargetUiState(
@@ -46,8 +48,13 @@ class SpotlightHeroBackdropVisualisation<InteractionTarget : Any>(
         height = Height.Target(1f),
         scale = Scale.Target(1.65f),
         roundedCorners = RoundedCorners.Target(100),
-        heroProgress = HeroProgress.Target(1f)
     )
+
+    private fun State<InteractionTarget>.heroProgress(): Float =
+        when (mode) {
+            LIST -> 0f
+            HERO -> 1f
+        }
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
         return positions.flatMapIndexed { index, position ->

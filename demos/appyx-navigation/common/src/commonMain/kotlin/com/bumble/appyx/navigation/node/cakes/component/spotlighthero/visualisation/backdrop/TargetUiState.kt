@@ -5,6 +5,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.cutOffCenterSigned
 import com.bumble.appyx.interactions.core.ui.math.scaleUpTo
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.core.ui.property.impl.AspectRatio
 import com.bumble.appyx.interactions.core.ui.property.impl.Height
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
@@ -15,8 +16,6 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlig
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
-import com.bumble.appyx.interactions.core.ui.property.impl.AspectRatio
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
 import kotlinx.coroutines.flow.StateFlow
 
 @Suppress("MagicNumber")
@@ -31,7 +30,6 @@ class TargetUiState(
     val rotationY: RotationY.Target = RotationY.Target(0f),
     val alpha: Alpha.Target = Alpha.Target(1f),
     val roundedCorners: RoundedCorners.Target = RoundedCorners.Target(0),
-    val heroProgress: HeroProgress.Target,
 ) {
     /**
      * Take item's own position in the list of elements into account
@@ -58,7 +56,6 @@ class TargetUiState(
         roundedCorners = base.roundedCorners,
         rotationY = base.rotationY,
         alpha = base.alpha,
-        heroProgress = base.heroProgress
     )
 
     /**
@@ -102,7 +99,6 @@ class TargetUiState(
                 }
             ),
             alpha = Alpha(uiContext.coroutineScope, alpha),
-            heroProgress = HeroProgress(uiContext.coroutineScope, heroProgress)
         )
     }
 }

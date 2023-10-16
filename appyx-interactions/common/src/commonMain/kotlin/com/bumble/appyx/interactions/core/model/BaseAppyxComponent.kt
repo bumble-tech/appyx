@@ -185,7 +185,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         }
     }
 
-    private fun onVisualisationReady(visualisation: Visualisation<InteractionTarget, ModelState>) {
+    protected open fun onVisualisationReady(visualisation: Visualisation<InteractionTarget, ModelState>) {
         visualisation.updateBounds(transitionBounds)
         observeAnimationChanges(visualisation)
         observeVisualisation(visualisation)

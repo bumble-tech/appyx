@@ -2,7 +2,6 @@ package com.bumble.appyx.navigation.node.cakes
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -15,12 +14,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.model.plus
+import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -108,14 +107,8 @@ class CakeListNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val mode = spotlightBackDrop.mode.collectAsState()
-        val width by animateFloatAsState(
-            targetValue = when (mode.value) {
-                LIST -> 0.6f
-                HERO -> 1f
-            },
-            animationSpec = animationSpec
-        )
+        val heroProgress = spotlightMain.heroProgress()
+        val width = lerpFloat(0.6f, 1f, heroProgress)
 
         Box(
             modifier = modifier.fillMaxSize()
@@ -134,7 +127,7 @@ class CakeListNode(
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxWidth(width)
-                    .fillMaxHeight(1f)
+                    .fillMaxHeight(1f),
             )
 
             Box(
@@ -144,7 +137,7 @@ class CakeListNode(
                     .padding(24.dp)
             ) {
                 AnimatedVisibility(
-                    visible = mode.value == HERO,
+                    visible = heroProgress > 0.9f,
                     enter = fadeIn() + slideIn { IntOffset(x = 0, y = 20) },
                     exit = fadeOut() + slideOut { IntOffset(x = 0, y = 20) },
                 ) {
