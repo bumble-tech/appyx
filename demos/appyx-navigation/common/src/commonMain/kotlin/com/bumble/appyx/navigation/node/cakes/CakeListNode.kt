@@ -42,6 +42,7 @@ import com.bumble.appyx.navigation.node.cakes.model.cakes
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import kotlinx.coroutines.delay
+import kotlin.math.abs
 
 private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
 
@@ -162,7 +163,7 @@ class CakeListNode(
         var index: Int
         do {
             index = cakes.indices.random()
-        } while (index == spotlightMain.activeIndex.value.toInt())
+        } while (abs(index - spotlightMain.activeIndex.value.toInt()) < 2)
 
         goToCake(cakes[index])
         delay(delay)
