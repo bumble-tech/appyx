@@ -14,8 +14,6 @@ class Cart {
             it.toMutableMap().apply {
                 this[cake] = (this[cake] ?: 0) + 1
             }
-
-            it
         }
     }
 
