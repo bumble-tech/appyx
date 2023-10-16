@@ -12,17 +12,13 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.mapState
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.SpotlightHeroVisualisation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-
-interface SpotlightHeroVisualisation<InteractionTarget : Any> : Visualisation<InteractionTarget, State<InteractionTarget>> {
-    val heroProgress: HeroProgress
-}
 
 open class SpotlightHero<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),

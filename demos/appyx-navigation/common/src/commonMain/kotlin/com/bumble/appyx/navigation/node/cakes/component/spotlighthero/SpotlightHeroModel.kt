@@ -1,17 +1,16 @@
 package com.bumble.appyx.navigation.node.cakes.component.spotlighthero
 
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.STANDARD
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
 import com.bumble.appyx.interactions.core.state.SavedStateMap
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue
 
 class SpotlightHeroModel<InteractionTarget : Any>(
-    items: List<InteractionTarget>,
+    items: List<Pair<InteractionTarget, InteractionTarget>>,
     initialMode: Mode = Mode.LIST,
     initialActiveIndex: Float = 0f,
     savedStateMap: SavedStateMap?,
@@ -31,12 +30,9 @@ class SpotlightHeroModel<InteractionTarget : Any>(
 
         @Parcelize
         data class Position<InteractionTarget>(
-            val elements: Map<Element<InteractionTarget>, ElementState> = mapOf()
+            val backdrop: Element<InteractionTarget>,
+            val main: Element<InteractionTarget>,
         ) : Parcelable
-
-        enum class ElementState {
-            STANDARD
-        }
 
         fun hasPrevious(): Boolean =
             activeIndex >= 1
@@ -45,7 +41,7 @@ class SpotlightHeroModel<InteractionTarget : Any>(
             activeIndex <= positions.lastIndex - 1
 
         val activeElement: InteractionTarget =
-            positions[activeIndex.toInt()].elements.firstNotNullOf { it.key.interactionTarget }
+            positions[activeIndex.toInt()].main.interactionTarget
     }
 
     override val initialState: State<InteractionTarget> =
@@ -53,7 +49,8 @@ class SpotlightHeroModel<InteractionTarget : Any>(
             mode = initialMode,
             positions = items.map {
                 State.Position(
-                    elements = mapOf(it.asElement() to STANDARD)
+                    backdrop = it.first.asElement(),
+                    main = it.second.asElement(),
                 )
             },
             activeIndex = initialActiveIndex
@@ -69,8 +66,7 @@ class SpotlightHeroModel<InteractionTarget : Any>(
 
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         positions
-            .flatMap { it.elements.entries }
-            .map { it.key }
+            .flatMap { listOf(it.backdrop, it.main) }
             .toSet()
 
     override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =

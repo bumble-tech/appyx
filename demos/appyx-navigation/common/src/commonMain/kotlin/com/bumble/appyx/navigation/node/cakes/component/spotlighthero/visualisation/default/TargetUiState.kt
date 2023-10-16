@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.backdrop
+package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.default
 
 import androidx.compose.ui.unit.DpOffset
 import com.bumble.appyx.interactions.core.ui.context.UiContext
@@ -16,12 +16,15 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlig
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.math.abs
 
 @Suppress("MagicNumber")
 @MutableUiStateSpecs
 class TargetUiState(
     private val positionInList: Int = 0,
+    private val addScaleEffect: Boolean = false,
     val positionAlignment: PositionAlignment.Target = PositionAlignment.Target(Center),
     val positionOffset: PositionOffset.Target = PositionOffset.Target(DpOffset.Zero),
     val aspectRatio: AspectRatio.Target = AspectRatio.Target(0.75f),
@@ -38,6 +41,7 @@ class TargetUiState(
         base: TargetUiState,
         positionInList: Int
     ) : this(
+        addScaleEffect = base.addScaleEffect,
         positionInList = positionInList,
         positionAlignment = PositionAlignment.Target(
             with(base.positionAlignment.value) {
@@ -91,7 +95,12 @@ class TargetUiState(
             ),
             aspectRatio = AspectRatio(uiContext.coroutineScope, aspectRatio),
             height = Height(uiContext.coroutineScope, height),
-            scale = Scale(uiContext.coroutineScope, scale),
+            scale = Scale(uiContext.coroutineScope, scale, displacement = when (addScaleEffect) {
+                true -> scrollX.mapState(uiContext.coroutineScope) {
+                    (abs(positionInList - it) - 0.15f).coerceIn(0f, 0.25f)
+                }
+                false -> MutableStateFlow(0f)
+            }),
             roundedCorners = RoundedCorners(uiContext.coroutineScope, roundedCorners),
             rotationY = RotationY(uiContext.coroutineScope, rotationY,
                 displacement = scrollX.mapState(uiContext.coroutineScope) { scroll ->

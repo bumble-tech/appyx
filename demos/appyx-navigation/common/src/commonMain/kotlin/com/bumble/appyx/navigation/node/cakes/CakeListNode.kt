@@ -18,7 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.model.plus
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -33,8 +32,7 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.setHeroMode
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.toggleHeroMode
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.SpotlightHeroGestures
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.backdrop.SpotlightHeroBackdropVisualisation
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.main.SpotlightHeroMainVisualisation
+import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.default.SpotlightHeroDefaultVisualisation
 import com.bumble.appyx.navigation.node.cakes.model.Cake
 import com.bumble.appyx.navigation.node.cakes.model.Cart
 import com.bumble.appyx.navigation.node.cakes.model.cakes
@@ -48,31 +46,20 @@ private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
 class CakeListNode(
     buildContext: BuildContext,
     private val cart: Cart,
-    private val spotlightBackDrop: SpotlightHero<NavTarget> =
+    private val spotlight: SpotlightHero<NavTarget> =
         SpotlightHero(
             model = SpotlightHeroModel(
-                items = cakes.map { NavTarget.Backdrop(it) },
+                items = cakes.map { NavTarget.Backdrop(it) to NavTarget.CakeImage(it) },
                 initialActiveIndex = 0f,
                 savedStateMap = buildContext.savedStateMap
             ),
             animationSpec = animationSpec,
-            visualisation = { SpotlightHeroBackdropVisualisation(it) },
+            visualisation = { SpotlightHeroDefaultVisualisation(it) },
             gestureFactory = { SpotlightHeroGestures(it) }
         ),
-    private val spotlightMain: SpotlightHero<NavTarget> =
-        SpotlightHero(
-            model = SpotlightHeroModel(
-                items = cakes.map { NavTarget.CakeImage(it) },
-                initialActiveIndex = 0f,
-                savedStateMap = buildContext.savedStateMap
-            ),
-            animationSpec = animationSpec,
-            visualisation = { SpotlightHeroMainVisualisation(it) },
-            gestureFactory = { SpotlightHeroGestures(it) }
-        )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
-    appyxComponent = spotlightBackDrop + spotlightMain
+    appyxComponent = spotlight
 ) {
 
     sealed class NavTarget : Parcelable {
@@ -101,33 +88,23 @@ class CakeListNode(
         }
 
     private fun toggleHeroMode() {
-        spotlightBackDrop.toggleHeroMode()
-        spotlightMain.toggleHeroMode()
+        spotlight.toggleHeroMode()
     }
 
     @Composable
     override fun View(modifier: Modifier) {
-        val heroProgress = spotlightMain.heroProgress()
+        val heroProgress = spotlight.heroProgress()
         val width = lerpFloat(0.6f, 1f, heroProgress)
 
         Box(
             modifier = modifier.fillMaxSize()
         ) {
             AppyxComponent(
-                appyxComponent = spotlightBackDrop,
-                draggables = listOf(spotlightBackDrop, spotlightMain),
+                appyxComponent = spotlight,
                 modifier = Modifier
                     .align(Alignment.Center)
                     .fillMaxWidth(width)
                     .fillMaxHeight(1f)
-            )
-            AppyxComponent(
-                appyxComponent = spotlightMain,
-                draggables = listOf(spotlightBackDrop, spotlightMain),
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .fillMaxWidth(width)
-                    .fillMaxHeight(1f),
             )
 
             Box(
@@ -141,7 +118,7 @@ class CakeListNode(
                     enter = fadeIn() + slideIn { IntOffset(x = 0, y = 20) },
                     exit = fadeOut() + slideOut { IntOffset(x = 0, y = 20) },
                 ) {
-                    val currentTarget = spotlightMain.activeElement.collectAsState().value
+                    val currentTarget = spotlight.activeElement.collectAsState().value
                     val selectedCake = currentTarget.cake
                     CakeDetailsSheet(
                         cake = selectedCake,
@@ -156,7 +133,7 @@ class CakeListNode(
         var index: Int
         do {
             index = cakes.indices.random()
-        } while (abs(index - spotlightMain.activeIndex.value.toInt()) < 2)
+        } while (abs(index - spotlight.activeIndex.value.toInt()) < 2)
 
         goToCake(cakes[index])
         delay(delay)
@@ -164,19 +141,16 @@ class CakeListNode(
 
     suspend fun goToCake(cake: Cake): CakeListNode = executeAction {
         val index = cakes.indexOf(cake).toFloat()
-        spotlightMain.activate(index)
-        spotlightBackDrop.activate(index)
+        spotlight.activate(index)
     }
 
     suspend fun leaveHeroMode(delay: Long = 0): CakeListNode = executeAction {
-        spotlightMain.setHeroMode(LIST)
-        spotlightBackDrop.setHeroMode(LIST)
+        spotlight.setHeroMode(LIST)
         delay(delay)
     }
 
     suspend fun enterHeroMode(delay: Long = 0): CakeListNode = executeAction {
-        spotlightMain.setHeroMode(HERO)
-        spotlightBackDrop.setHeroMode(HERO)
+        spotlight.setHeroMode(HERO)
         delay(delay)
     }
 }
