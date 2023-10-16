@@ -119,7 +119,7 @@ abstract class BaseVisualisation<InteractionTarget : Any, ModelState, MutableUiS
                     ObserveElementAnimationChanges(mutableUiState, t1)
                     ManageAnimations(mutableUiState, t1, update)
                 },
-                motionProperties = mutableUiState.motionProperties,
+                motionProperties = mutableUiState.motionProperties + viewpointDimensions.map { it.second },
                 modifier = mutableUiState.modifier,
                 progress = MutableStateFlow(1f),
             )
@@ -253,7 +253,7 @@ abstract class BaseVisualisation<InteractionTarget : Any, ModelState, MutableUiS
                     Box(modifier = mutableUiState.visibilityModifier)
                     InterpolateUiState(segmentProgress, mutableUiState, t0, t1, initialProgress)
                 },
-                motionProperties = mutableUiState.motionProperties,
+                motionProperties = mutableUiState.motionProperties + viewpointDimensions.map { it.second },
                 modifier = mutableUiState.modifier,
                 progress = segmentProgress,
             )
