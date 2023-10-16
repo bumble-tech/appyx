@@ -12,7 +12,7 @@ import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.integration.MainIntegrationPoint
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
-import com.bumble.appyx.navigation.node.main.MainNode
+import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.flow.flowOf
 
@@ -37,7 +37,7 @@ fun MainViewController() = ComposeUIViewController {
                             onBackPressedEvents = flowOf(),
                             integrationPoint = integrationPoint
                         ) { buildContext ->
-                            MainNode(
+                            RootNode(
                                 buildContext = buildContext,
                                 plugins = listOf(navigator),
                             )

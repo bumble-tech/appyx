@@ -19,7 +19,7 @@ import androidx.compose.ui.window.rememberWindowState
 import com.bumble.appyx.navigation.integration.DesktopNodeHost
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
-import com.bumble.appyx.navigation.node.main.MainNode
+import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +54,7 @@ fun main() = application {
                             if (it is Events.OnBackPressed) Unit else null
                         }
                     ) { buildContext ->
-                        MainNode(
+                        RootNode(
                             buildContext = buildContext,
                             plugins = listOf(navigator)
                         )

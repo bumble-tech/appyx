@@ -20,7 +20,7 @@ import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
-import com.bumble.appyx.navigation.node.main.MainNode
+import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
@@ -45,7 +45,7 @@ class MainActivity : NodeActivity() {
                             lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                             integrationPoint = appyxV2IntegrationPoint,
                         ) {
-                            MainNode(
+                            RootNode(
                                 buildContext = it,
                                 plugins = listOf(navigator, NodeReadyObserver {
                                     handleDeepLinks(intent?.data)
@@ -77,7 +77,7 @@ class MainActivity : NodeActivity() {
 fun DefaultPreview() {
     AppyxSampleAppTheme {
         Column {
-            MainNode(
+            RootNode(
                 buildContext = BuildContext.root(null),
             ).Compose()
         }

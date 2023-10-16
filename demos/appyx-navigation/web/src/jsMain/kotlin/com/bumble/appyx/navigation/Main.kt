@@ -3,12 +3,8 @@ package com.bumble.appyx.navigation
 import BrowserViewportWindow
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.focusable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -36,7 +32,7 @@ import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.WebNodeHost
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
-import com.bumble.appyx.navigation.node.main.MainNode
+import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -90,7 +86,7 @@ private fun ForceChangeToCodeGen(events: Channel<Unit>, navigator: Navigator) {
                     screenSize = screenSize,
                     onBackPressedEvents = events.receiveAsFlow(),
                 ) { buildContext ->
-                    MainNode(
+                    RootNode(
                         buildContext = buildContext,
                         plugins = listOf(navigator)
                     )
