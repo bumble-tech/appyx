@@ -25,7 +25,10 @@ enum class MainNavItem : Parcelable {
     CAKES, HOME, PROFILE, CART;
 
     companion object {
-        fun resolver(cart: Cart): (MainNavItem) -> AppyxNavItem = { navBarItem ->
+        fun resolver(
+            cart: Cart,
+            onLogout: () -> Unit
+        ): (MainNavItem) -> AppyxNavItem = { navBarItem ->
             when (navBarItem) {
                 CAKES -> AppyxNavItem(
                     text = "Cakes",
@@ -45,7 +48,7 @@ enum class MainNavItem : Parcelable {
                     text = "Profile",
                     unselectedIcon = Outlined.Person,
                     selectedIcon = Filled.Person,
-                    node = { ProfileNode(it) }
+                    node = { ProfileNode(it, onLogout) }
                 )
 
                 CART -> AppyxNavItem(

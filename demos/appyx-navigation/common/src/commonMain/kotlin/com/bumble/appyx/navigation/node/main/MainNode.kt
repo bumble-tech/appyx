@@ -17,11 +17,12 @@ private val mainNavItems = MainNavItem.values().toList()
 
 class MainNode(
     buildContext: BuildContext,
+    onLogout: () -> Unit,
     plugins: List<Plugin> = listOf(),
 ) : AppyxMaterial3NavNode<MainNavItem>(
     buildContext = buildContext,
     navTargets = mainNavItems,
-    navTargetResolver = MainNavItem.resolver(Cart()),
+    navTargetResolver = MainNavItem.resolver(Cart(), onLogout),
     initialActiveElement = CAKES,
     plugins = plugins
 ) {

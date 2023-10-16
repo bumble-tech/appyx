@@ -1,7 +1,10 @@
 package com.bumble.appyx.navigation.node.profile
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +23,7 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class ProfileNode(
     buildContext: BuildContext,
+    private val onLogout: () -> Unit,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.ProfileChild),
@@ -39,13 +43,21 @@ class ProfileNode(
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is NavTarget.ProfileChild -> node(buildContext) { modifier ->
-                Box(
+                Column(
                     modifier = modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
                         text = "Profile",
                     )
+                    Button(
+                        onClick = onLogout
+                    ) {
+                        Text(
+                            text = "Log out",
+                        )
+                    }
                 }
             }
         }

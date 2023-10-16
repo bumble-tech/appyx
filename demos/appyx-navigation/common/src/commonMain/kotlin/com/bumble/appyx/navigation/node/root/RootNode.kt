@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.replace
+import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.composable.AppyxComponent
@@ -25,7 +26,7 @@ class RootNode(
             initialTargets = listOf(NavTarget.Main),
             savedStateMap = buildContext.savedStateMap,
         ),
-        visualisation = { BackStackSlider(it) }
+        visualisation = { BackStackFader(it) }
     ),
     plugins: List<Plugin> = listOf(),
 ) : ParentNode<NavTarget>(
@@ -44,7 +45,9 @@ class RootNode(
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is NavTarget.LoggedOut -> LoggedOutNode(buildContext)
-            is NavTarget.Main -> MainNode(buildContext)
+            is NavTarget.Main -> MainNode(buildContext, onLogout = {
+                backStack.replace(NavTarget.LoggedOut)
+            })
         }
 
     @Composable
