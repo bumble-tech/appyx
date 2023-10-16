@@ -1,7 +1,6 @@
 package com.bumble.appyx.navigation.node.cakes.component.spotlighthero
 
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.DESTROYED
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State.ElementState.STANDARD
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
@@ -36,7 +35,7 @@ class SpotlightHeroModel<InteractionTarget : Any>(
         ) : Parcelable
 
         enum class ElementState {
-            CREATED, STANDARD, SELECTED, DESTROYED
+            STANDARD
         }
 
         fun hasPrevious(): Boolean =
@@ -62,43 +61,18 @@ class SpotlightHeroModel<InteractionTarget : Any>(
 
     override fun State<InteractionTarget>.removeDestroyedElement(
         element: Element<InteractionTarget>
-    ): State<InteractionTarget> {
-        val newPositions = positions.map { position ->
-            val newElements = position
-                .elements
-                .filterNot { mapEntry ->
-                    mapEntry.key == element && mapEntry.value == DESTROYED
-                }
+    ): State<InteractionTarget> =
+        this
 
-            position.copy(elements = newElements)
-        }
-        return copy(positions = newPositions)
-    }
-
-    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> {
-        val newPositions = positions.map { position ->
-            val newElements = position
-                .elements
-                .filterNot { mapEntry ->
-                    mapEntry.value == DESTROYED
-                }
-
-            position.copy(elements = newElements)
-        }
-        return copy(positions = newPositions)
-    }
+    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =
+        this
 
     override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
         positions
             .flatMap { it.elements.entries }
-            .filter { it.value != DESTROYED }
             .map { it.key }
             .toSet()
 
     override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
-        positions
-            .flatMap { it.elements.entries }
-            .filter { it.value == DESTROYED }
-            .map { it.key }
-            .toSet()
+        emptySet()
 }
