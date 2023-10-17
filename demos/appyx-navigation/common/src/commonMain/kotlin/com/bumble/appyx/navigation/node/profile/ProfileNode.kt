@@ -23,6 +23,7 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class ProfileNode(
     buildContext: BuildContext,
+    private val user: User,
     private val onLogout: () -> Unit,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
@@ -49,7 +50,7 @@ class ProfileNode(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "Profile",
+                        text = "Hello ${user.name}!",
                     )
                     Button(
                         onClick = onLogout

@@ -2,6 +2,7 @@ package com.bumble.appyx.navigation.navigator
 
 import androidx.compose.runtime.compositionLocalOf
 import com.bumble.appyx.navigation.node.cakes.Cake
+import com.bumble.appyx.navigation.node.profile.User
 import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import kotlinx.coroutines.CoroutineScope
@@ -22,7 +23,7 @@ class Navigator : NodeReadyObserver<RootNode> {
     fun goToARandomCake() {
         lifecycleScope.launch {
             rootNode
-                .goToMain()
+                .goToMain(User.Dummy)
                 .goToCakes(delay = 500)
                 .leaveHeroMode(delay = 500)
                 .goToRandomOtherCake(delay = 500)
@@ -33,14 +34,14 @@ class Navigator : NodeReadyObserver<RootNode> {
     fun goToCakes() {
         lifecycleScope.launch {
             rootNode
-                .goToMain()
+                .goToMain(User.Dummy)
                 .goToCakes(delay = 500)
         }
     }
 
     fun goToCake(cake: Cake) {
         lifecycleScope.launch {
-            val main = rootNode.goToMain()
+            val main = rootNode.goToMain(User.Dummy)
             main
                 .onCakes()
                 .goToCake(cake)

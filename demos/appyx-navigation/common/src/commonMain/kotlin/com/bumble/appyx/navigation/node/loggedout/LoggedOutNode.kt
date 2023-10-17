@@ -5,8 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.components.backstack.BackStack
@@ -19,12 +25,13 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.loggedout.LoggedOutNode.NavTarget
 import com.bumble.appyx.navigation.node.node
+import com.bumble.appyx.navigation.node.profile.User
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class LoggedOutNode(
     buildContext: BuildContext,
-    private val onLogin: () -> Unit,
+    private val onLogin: (User) -> Unit,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Splash),
@@ -85,6 +92,7 @@ class LoggedOutNode(
         }
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     private fun LoginScreen(modifier: Modifier) {
         Column(
@@ -92,14 +100,22 @@ class LoggedOutNode(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            var name by remember { mutableStateOf("Cake lover") }
+
             Text(
                 text = "Login",
             )
-            Text(
-                text = "Name",
+            TextField(
+                value = name,
+                onValueChange = { name = it },
+                label = { Text("Name") }
             )
             Button(
-                onClick = onLogin
+                onClick = {
+                    onLogin(
+                        User(name = name)
+                    )
+                }
             ) {
                 Text(
                     text = "Enter",

@@ -15,6 +15,7 @@ import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.node.checkout.CheckoutNode
 import com.bumble.appyx.navigation.node.home.HomeNode
 import com.bumble.appyx.navigation.node.profile.ProfileNode
+import com.bumble.appyx.navigation.node.profile.User
 import com.bumble.appyx.utils.material3.AppyxNavItem
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -26,6 +27,7 @@ enum class MainNavItem : Parcelable {
 
     companion object {
         fun resolver(
+            user: User,
             cart: Cart,
             onLogout: () -> Unit
         ): (MainNavItem) -> AppyxNavItem = { navBarItem ->
@@ -48,7 +50,7 @@ enum class MainNavItem : Parcelable {
                     text = "Profile",
                     unselectedIcon = Outlined.Person,
                     selectedIcon = Filled.Person,
-                    node = { ProfileNode(it, onLogout) }
+                    node = { ProfileNode(it, user, onLogout) }
                 )
 
                 CART -> AppyxNavItem(

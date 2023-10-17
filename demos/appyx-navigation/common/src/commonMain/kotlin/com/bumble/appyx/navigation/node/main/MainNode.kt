@@ -10,6 +10,7 @@ import com.bumble.appyx.navigation.node.main.MainNavItem.CAKES
 import com.bumble.appyx.navigation.node.main.MainNavItem.HOME
 import com.bumble.appyx.navigation.node.main.MainNavItem.PROFILE
 import com.bumble.appyx.navigation.node.profile.ProfileNode
+import com.bumble.appyx.navigation.node.profile.User
 import com.bumble.appyx.utils.material3.AppyxMaterial3NavNode
 import kotlinx.coroutines.delay
 
@@ -17,12 +18,17 @@ private val mainNavItems = MainNavItem.values().toList()
 
 class MainNode(
     buildContext: BuildContext,
+    private val user: User,
     onLogout: () -> Unit,
     plugins: List<Plugin> = listOf(),
 ) : AppyxMaterial3NavNode<MainNavItem>(
     buildContext = buildContext,
     navTargets = mainNavItems,
-    navTargetResolver = MainNavItem.resolver(Cart(), onLogout),
+    navTargetResolver = MainNavItem.resolver(
+        user = user,
+        cart = Cart(),
+        onLogout = onLogout
+    ),
     initialActiveElement = CAKES,
     plugins = plugins
 ) {
