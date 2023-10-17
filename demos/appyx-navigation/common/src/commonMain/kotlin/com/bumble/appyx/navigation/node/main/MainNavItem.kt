@@ -11,7 +11,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingCart
 import com.bumble.appyx.navigation.node.cakes.CakeListNode
-import com.bumble.appyx.navigation.node.cakes.model.Cart
+import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.node.checkout.CheckoutNode
 import com.bumble.appyx.navigation.node.home.HomeNode
 import com.bumble.appyx.navigation.node.profile.ProfileNode

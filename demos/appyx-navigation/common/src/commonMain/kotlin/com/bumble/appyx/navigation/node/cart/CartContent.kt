@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cartItems
+package com.bumble.appyx.navigation.node.cart
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -25,7 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.imageloader.ResourceImage
-import com.bumble.appyx.navigation.node.cakes.model.Cake
+import com.bumble.appyx.navigation.node.cakes.Cake
 
 @Composable
 fun CartContent(

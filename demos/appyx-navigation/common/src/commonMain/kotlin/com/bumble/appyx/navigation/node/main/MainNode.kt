@@ -4,7 +4,7 @@ import com.bumble.appyx.components.spotlight.operation.activate
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.cakes.CakeListNode
-import com.bumble.appyx.navigation.node.cakes.model.Cart
+import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.node.home.HomeNode
 import com.bumble.appyx.navigation.node.main.MainNavItem.CAKES
 import com.bumble.appyx.navigation.node.main.MainNavItem.HOME

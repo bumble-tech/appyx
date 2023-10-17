@@ -1,5 +1,6 @@
-package com.bumble.appyx.navigation.node.cakes.model
+package com.bumble.appyx.navigation.node.cart
 
+import com.bumble.appyx.navigation.node.cakes.Cake
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update

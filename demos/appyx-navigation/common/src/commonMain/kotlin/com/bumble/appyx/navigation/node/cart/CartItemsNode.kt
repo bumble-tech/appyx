@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cartItems
+package com.bumble.appyx.navigation.node.cart
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,8 +18,7 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.cakes.model.Cake
-import com.bumble.appyx.navigation.node.cakes.model.Cart
+import com.bumble.appyx.navigation.node.cakes.Cake
 
 class CartItemsNode(
     buildContext: BuildContext,

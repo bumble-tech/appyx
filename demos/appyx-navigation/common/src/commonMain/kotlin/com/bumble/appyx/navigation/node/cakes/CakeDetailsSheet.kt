@@ -21,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.node.cakes.model.Cake
 
 @Composable
 fun CakeDetailsSheet(

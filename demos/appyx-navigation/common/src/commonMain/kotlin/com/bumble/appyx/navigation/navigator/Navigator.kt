@@ -1,7 +1,7 @@
 package com.bumble.appyx.navigation.navigator
 
 import androidx.compose.runtime.compositionLocalOf
-import com.bumble.appyx.navigation.node.cakes.model.Cake
+import com.bumble.appyx.navigation.node.cakes.Cake
 import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import kotlinx.coroutines.CoroutineScope

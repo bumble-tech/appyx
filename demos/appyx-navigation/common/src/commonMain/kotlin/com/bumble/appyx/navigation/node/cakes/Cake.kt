@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cakes.model
+package com.bumble.appyx.navigation.node.cakes
 
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize

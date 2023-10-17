@@ -33,9 +33,7 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.toggleHeroMode
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.SpotlightHeroGestures
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.default.SpotlightHeroDefaultVisualisation
-import com.bumble.appyx.navigation.node.cakes.model.Cake
-import com.bumble.appyx.navigation.node.cakes.model.Cart
-import com.bumble.appyx.navigation.node.cakes.model.cakes
+import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import kotlinx.coroutines.delay

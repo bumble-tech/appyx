@@ -9,8 +9,8 @@ import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.cakes.model.Cart
-import com.bumble.appyx.navigation.node.cartItems.CartItemsNode
+import com.bumble.appyx.navigation.node.cart.Cart
+import com.bumble.appyx.navigation.node.cart.CartItemsNode
 import com.bumble.appyx.navigation.node.checkout.CheckoutNode.NavTarget
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
