@@ -16,6 +16,7 @@ import com.bumble.appyx.utils.material3.AppyxNavItem
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
+@Suppress("ForbiddenComment")
 //TODO: Fix gradle issue with using extended material icons
 @Parcelize
 enum class MainNavItem : Parcelable {
