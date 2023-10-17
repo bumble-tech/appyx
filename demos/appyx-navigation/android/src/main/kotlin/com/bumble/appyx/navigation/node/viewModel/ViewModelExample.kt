@@ -1,11 +1,11 @@
 package com.bumble.appyx.navigation.node.viewModel
 
-import androidx.lifecycle.ViewModel
+import com.bumble.appyx.utils.viewmodel.integration.IntegrationPointViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 
-class ViewModelExample : ViewModel() {
+class ViewModelExample : IntegrationPointViewModel() {
     private val _uiState = MutableStateFlow(UiState(0))
     val uiState: Flow<UiState> = _uiState
 
