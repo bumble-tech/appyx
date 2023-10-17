@@ -2,13 +2,8 @@ package com.bumble.appyx.interactions.bottomnav
 
 import androidx.compose.material.icons.Icons.Filled
 import androidx.compose.material.icons.Icons.Outlined
-import androidx.compose.material.icons.filled.Extension
-import androidx.compose.material.icons.filled.Style
-import androidx.compose.material.icons.filled.ViewCarousel
-import androidx.compose.material.icons.outlined.Extension
-import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.Style
-import androidx.compose.material.icons.outlined.ViewCarousel
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import com.bumble.appyx.components.experimental.cards.android.DatingCards
@@ -21,6 +16,7 @@ import com.bumble.appyx.utils.material3.AppyxNavItem
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
+//TODO: Fix gradle issue with using extended material icons
 @Parcelize
 enum class MainNavItem : Parcelable {
     CARDS, SPOTLIGHT, TEST_DRIVE, PUZZLE;
@@ -30,30 +26,30 @@ enum class MainNavItem : Parcelable {
             when (navBarItem) {
                 CARDS -> AppyxNavItem(
                     text = "Cards",
-                    unselectedIcon = Outlined.Style,
-                    selectedIcon = Filled.Style,
+                    unselectedIcon = Outlined.Star,
+                    selectedIcon = Filled.Star,
                     iconModifier = Modifier.rotate(180f),
                     node = { node(it) { DatingCards() } }
                 )
 
                 SPOTLIGHT -> AppyxNavItem(
                     text = "Spotlight",
-                    unselectedIcon = Outlined.ViewCarousel,
-                    selectedIcon = Filled.ViewCarousel,
+                    unselectedIcon = Outlined.Star,
+                    selectedIcon = Filled.Star,
                     node = { node(it) { SpotlightExperiment { SpotlightSliderRotation(it) } } }
                 )
 
                 TEST_DRIVE -> AppyxNavItem(
                     text = "TestDrive",
-                    unselectedIcon = Outlined.GridView,
+                    unselectedIcon = Outlined.Star,
                     selectedIcon = Filled.GridViewCustom,
                     node = { node(it) { TestDriveExperiment() } }
                 )
 
                 PUZZLE -> AppyxNavItem(
                     text = "Puzzle",
-                    unselectedIcon = Outlined.Extension,
-                    selectedIcon = Filled.Extension,
+                    unselectedIcon = Outlined.Star,
+                    selectedIcon = Filled.Star,
                     node = { node(it) { Puzzle15() } }
                 )
 

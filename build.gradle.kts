@@ -44,8 +44,6 @@ dependencyAnalysis {
 
                     // Convenience for convention plugins to avoid needing to define this.
                     "org.junit.jupiter:junit-jupiter-api",
-
-                    ":demos:appyx-interactions:android",
                 )
             }
         }
