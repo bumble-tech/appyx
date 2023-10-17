@@ -4,10 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import com.bumble.appyx.navigation.integration.ActivityIntegrationPoint
 
-class ActivityIntegrationPointWithViewModel(
+open class ActivityIntegrationPointWithViewModel(
     activity: ComponentActivity,
     savedInstanceState: Bundle?,
 ) : ActivityIntegrationPoint(activity, savedInstanceState) {
 
-    val viewModel = IntegrationPointViewModel.getInstance(activity)
+    open val viewModel = IntegrationPointViewModel.getInstance(activity)
 }

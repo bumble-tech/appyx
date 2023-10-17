@@ -2,7 +2,6 @@ package com.bumble.appyx.navigation.node.viewModel
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -20,9 +19,13 @@ import com.bumble.appyx.utils.viewmodel.integration.ViewModelNodeActivity
 @ExperimentalComposeUiApi
 class ViewModelExampleActivity : ViewModelNodeActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun createIntegrationPoint(savedInstanceState: Bundle?) =
+        ActivityIntegrationPointWithExampleViewModel(
+            activity = this,
+            savedInstanceState = savedInstanceState
+        )
 
-        val viewModel: ViewModelExample by viewModels()
+    override fun onCreate(savedInstanceState: Bundle?) {
 
         installSplashScreen()
         super.onCreate(savedInstanceState)

@@ -1,5 +1,8 @@
 package com.bumble.appyx.navigation.node.viewModel
 
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.get
 import com.bumble.appyx.utils.viewmodel.integration.IntegrationPointViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,6 +15,12 @@ class ViewModelExample : IntegrationPointViewModel() {
     fun incrementCounter() {
         _uiState.getAndUpdate { value ->
             UiState(value.counter + 1)
+        }
+    }
+
+    companion object {
+        fun getInstance(viewModelStoreOwner: ViewModelStoreOwner): ViewModelExample {
+            return ViewModelProvider(viewModelStoreOwner).get()
         }
     }
 }

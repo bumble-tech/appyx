@@ -20,6 +20,7 @@ class ViewModelNodeExample(buildContext: BuildContext) : ViewModelNode(buildCont
     @Composable
     @Override
     override fun View(modifier: Modifier) {
+        val viewModel = (integrationPoint as ActivityIntegrationPointWithExampleViewModel).viewModel
         val uiState by viewModel.uiState.collectAsState(initial = UiState(0))
 
         Column(
