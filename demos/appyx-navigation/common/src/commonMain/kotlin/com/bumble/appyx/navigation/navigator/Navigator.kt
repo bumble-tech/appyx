@@ -20,10 +20,18 @@ class Navigator : NodeReadyObserver<RootNode> {
         lifecycleScope = node.lifecycleScope
     }
 
+    /**
+     * For demonstration purposes only.
+     */
+    fun goToARandomCakeWithDummyUser() {
+        rootNode.onLogin(User.Dummy)
+        goToARandomCake()
+    }
+
     fun goToARandomCake() {
         lifecycleScope.launch {
             rootNode
-                .goToMain(User.Dummy)
+                .waitForMainAttached()
                 .goToCakes(delay = 500)
                 .leaveHeroMode(delay = 500)
                 .goToRandomOtherCake(delay = 500)
@@ -34,14 +42,14 @@ class Navigator : NodeReadyObserver<RootNode> {
     fun goToCakes() {
         lifecycleScope.launch {
             rootNode
-                .goToMain(User.Dummy)
+                .waitForMainAttached()
                 .goToCakes(delay = 500)
         }
     }
 
     fun goToCake(cake: Cake) {
         lifecycleScope.launch {
-            val main = rootNode.goToMain(User.Dummy)
+            val main = rootNode.waitForMainAttached()
             main
                 .onCakes()
                 .goToCake(cake)

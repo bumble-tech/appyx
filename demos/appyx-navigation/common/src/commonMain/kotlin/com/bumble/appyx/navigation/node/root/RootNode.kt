@@ -17,22 +17,17 @@ import com.bumble.appyx.navigation.node.profile.User
 import com.bumble.appyx.navigation.node.root.RootNode.NavTarget
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
-import kotlinx.coroutines.delay
 
 class RootNode(
     buildContext: BuildContext,
+    allowDummyLogin: Boolean = true,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(
-                NavTarget.Main(
-                    /**
-                     * Passing an initial dummy user. This is just for demonstration purposes
-                     * so that we can show the main part of the app directly after launch
-                     * and not the login screen.
-                     * Of course in real life you would want to fetch an authenticated user first.
-                     */
-                    user = User.Dummy
-                )
+                when (allowDummyLogin) {
+                    true -> NavTarget.Main(user = User.Dummy)
+                    false -> NavTarget.LoggedOut
+                }
             ),
             savedStateMap = buildContext.savedStateMap,
         ),
@@ -63,7 +58,7 @@ class RootNode(
         when (navTarget) {
             is NavTarget.LoggedOut -> LoggedOutNode(
                 buildContext = buildContext,
-                onLogin = { user -> backStack.replace(NavTarget.Main(user)) }
+                onLogin = { user -> onLogin(user) }
             )
             is NavTarget.Main -> MainNode(
                 buildContext = buildContext,
@@ -80,10 +75,13 @@ class RootNode(
         )
     }
 
-    suspend fun goToMain(user: User, delay: Long = 0): MainNode {
+    fun onLogin(user: User): RootNode {
         backStack.replace(NavTarget.Main(user))
-        delay(delay)
-        return attachChild {}
+        return this
     }
+
+
+    suspend fun waitForMainAttached(): MainNode =
+        waitForChildAttached()
 }
 

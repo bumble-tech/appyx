@@ -47,6 +47,18 @@ class MainActivity : NodeActivity() {
                         ) {
                             RootNode(
                                 buildContext = it,
+                                /**
+                                 * For demonstration purposes only.
+                                 * When launching directly, we won't have a deep link.
+                                 * We allow skipping the login screen so that we can immediately
+                                 * show the internal screens that can only be accessed
+                                 * with a User object.
+                                 *
+                                 * When launching from a deep link however, we'll want to
+                                 * demonstrate one of the use-cases of waiting for login though,
+                                 * so we won't do the dummy login.
+                                 */
+                                allowDummyLogin = (intent?.data == null),
                                 plugins = listOf(navigator, NodeReadyObserver {
                                     handleDeepLinks(intent?.data)
                                 })
@@ -62,7 +74,10 @@ class MainActivity : NodeActivity() {
         if (intent?.action == Intent.ACTION_VIEW) {
             when {
                 // adb shell am start -a "android.intent.action.VIEW" -d "appyx://randomcake"
-                (uri?.host == "randomcake") -> navigator.goToARandomCake()
+                (uri?.host == "randomcake") -> navigator.goToARandomCakeWithDummyUser()
+
+                // adb shell am start -a "android.intent.action.VIEW" -d "appyx://randomcake-wait"
+                (uri?.host == "randomcake-wait") -> navigator.goToARandomCake()
             }
         }
     }
