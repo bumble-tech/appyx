@@ -4,6 +4,7 @@
 
 ### API breaking changes
 
+- [#618](https://github.com/bumble-tech/appyx/pull/618) – Do not create PermanentAppyxComponent inside ParentNode. Provide it via constructor to ParentNode
 - [#612](https://github.com/bumble-tech/appyx/pull/612) – Rename MotionController to Visualisation
 - [#617](https://github.com/bumble-tech/appyx/pull/617) – Unify inside & outside position alignment
 
@@ -11,6 +12,10 @@
 
 - [#620](https://github.com/bumble-tech/appyx/pull/620) – Updated Compose to 1.5.3 & Kotlin to 1.9.10
 - [#611](https://github.com/bumble-tech/appyx/pull/611) – Lower position and rotation animation default round-off thresholds
+
+### Added
+
+- [#615](https://github.com/bumble-tech/appyx/pull/615) – Material navigation helpers
 
 ---
 

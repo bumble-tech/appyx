@@ -37,7 +37,6 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 
-@ExperimentalMaterialApi
 @Composable
 @Suppress("LongMethod", "MagicNumber")
 fun SpotlightExperiment(
@@ -166,7 +165,6 @@ fun <InteractionTarget : Any> SpotlightUi(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SpotlightExperimentInVertical(
     visualisation: (UiContext) -> BaseVisualisation<Target, SpotlightModel.State<Target>, *, *>

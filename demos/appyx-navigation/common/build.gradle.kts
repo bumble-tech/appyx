@@ -39,6 +39,7 @@ kotlin {
                 api(project(":appyx-navigation:appyx-navigation"))
                 api(project(":utils:customisations"))
                 api(project(":utils:multiplatform"))
+                api(project(":utils:material3"))
                 implementation(project(":appyx-components:experimental:cards:cards"))
                 implementation(project(":appyx-components:experimental:modal:modal"))
                 implementation(project(":appyx-components:experimental:promoter:promoter"))

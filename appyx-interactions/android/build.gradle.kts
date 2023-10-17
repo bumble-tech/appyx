@@ -9,6 +9,7 @@ appyx {
 
 dependencies {
     val composeBom = platform(libs.compose.bom)
+    api(libs.compose.material3)
 
     api(project(":appyx-interactions:appyx-interactions"))
     api(libs.compose.ui.test.junit4.android)
