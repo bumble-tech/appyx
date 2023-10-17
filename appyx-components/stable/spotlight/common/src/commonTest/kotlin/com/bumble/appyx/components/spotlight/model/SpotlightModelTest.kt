@@ -83,6 +83,29 @@ class SpotlightModelTest {
     }
 
     @Test
+    fun GIVEN_empty_spotlight_WHEN_updated_with_element_THEN_provides_correct_activeElement() {
+        val spotlight = SpotlightModel(
+            items = listOf(),
+            savedStateMap = null
+        )
+
+        val newElements = listOf(Child1, Child2)
+        val newActiveIndex = 1f
+
+        spotlight.operation(
+            UpdateElements(
+                items = newElements,
+                initialActiveIndex = newActiveIndex
+            )
+        )
+
+        assertEquals(
+            expected = Child2,
+            actual = spotlight.output.value.currentTargetState.activeElement,
+        )
+    }
+
+    @Test
     fun GIVEN_spotlight_WHEN_updated_with_elements_different_size_THEN_state_contains_element() {
         val spotlight = SpotlightModel(
             items = listOf(Child1),

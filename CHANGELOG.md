@@ -12,6 +12,10 @@
 
 - [#611](https://github.com/bumble-tech/appyx/pull/611) – Lower position and rotation animation default round-off thresholds
 
+### Added
+
+- [#615](https://github.com/bumble-tech/appyx/pull/615) – Material navigation helpers
+
 ---
 
 ## 2.0.0-alpha08
