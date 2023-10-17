@@ -43,7 +43,9 @@ dependencyAnalysis {
                     ":utils:testing-ui-activity",
 
                     // Convenience for convention plugins to avoid needing to define this.
-                    "org.junit.jupiter:junit-jupiter-api"
+                    "org.junit.jupiter:junit-jupiter-api",
+
+                    ":demos:appyx-interactions:android",
                 )
             }
         }

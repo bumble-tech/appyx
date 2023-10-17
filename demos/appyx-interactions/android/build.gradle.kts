@@ -28,7 +28,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.ui)
 
     implementation(libs.compose.material.icons.extended)
     implementation(libs.google.material)
