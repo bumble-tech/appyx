@@ -56,7 +56,6 @@ fun main() = application {
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 private fun onKeyEvent(
     keyEvent: KeyEvent,
     events: Channel<Events>,

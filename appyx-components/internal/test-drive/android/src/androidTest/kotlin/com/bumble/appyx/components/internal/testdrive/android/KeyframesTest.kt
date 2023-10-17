@@ -103,9 +103,6 @@ class KeyframesTest {
         composeTestRule.snapshot("${javaClass.simpleName}_${nameRule.methodName}")
     }
 
-    @OptIn(
-        ExperimentalMaterialApi::class
-    )
     @Test
     @Ignore("This test attempts to find flickers and artifacts that were fixed in the past. However the artifacts do not show up when running this test")
     fun validate_that_no_artefacts_appear_during_animation() {

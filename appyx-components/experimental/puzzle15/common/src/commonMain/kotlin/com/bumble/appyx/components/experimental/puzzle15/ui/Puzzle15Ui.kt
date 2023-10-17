@@ -44,7 +44,6 @@ import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.Children
 
 @Suppress("MagicNumber", "LongMethod")
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun Puzzle15Ui(
     screenWidthPx: Int,

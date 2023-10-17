@@ -119,7 +119,6 @@ private fun FrameWindowScope.TitleBar(
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 private fun onKeyEvent(
     keyEvent: KeyEvent,
     events: Channel<Events>,
