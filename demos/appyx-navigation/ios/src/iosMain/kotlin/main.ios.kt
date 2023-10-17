@@ -1,7 +1,9 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
@@ -12,7 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.navigation.integration.IosNodeHost
@@ -36,7 +37,7 @@ fun MainViewController() = ComposeUIViewController {
         Scaffold(
             modifier = Modifier
                 .background(Color.Black)
-                .padding(top = 60.dp)
+                .windowInsetsPadding(WindowInsets.statusBars)
         ) {
             Box {
                 BackButton(coroutineScope)
