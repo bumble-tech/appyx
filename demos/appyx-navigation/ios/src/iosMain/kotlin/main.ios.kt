@@ -69,7 +69,7 @@ fun MainViewController() = ComposeUIViewController {
 @Composable
 private fun BackButton(
     coroutineScope: CoroutineScope,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ) {
     IconButton(
         onClick = {
