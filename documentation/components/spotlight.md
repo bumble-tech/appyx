@@ -17,7 +17,7 @@ Class: `SpotlightSlider`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -34,7 +34,7 @@ Class: `SpotlightSliderScale`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderscale/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderscale/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:sliderscale:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -50,7 +50,7 @@ Class: `SpotlightSliderRotation`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderrotation/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/sliderrotation/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:sliderrotation:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -66,7 +66,7 @@ Class: `SpotlightStack3D`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/stack3d/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/stack3d/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:stack3d:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -82,7 +82,7 @@ Class: `SpotlightFader`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/fader/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/fader/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:fader:web:jsBrowserDistribution",
         width=512,
         height=384,
