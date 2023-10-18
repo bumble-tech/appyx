@@ -44,6 +44,9 @@ dependencyAnalysis {
 
                     // Convenience for convention plugins to avoid needing to define this.
                     "org.junit.jupiter:junit-jupiter-api",
+
+                    // This is used in:demos:appyx-interactions:android. But raised as unused.
+                    "androidx.compose.material:material-icons-extended",
                 )
             }
         }
