@@ -118,7 +118,7 @@ jobs:
           -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
       - name: Upload failed instrumentation artifacts
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: instrumentation-failures
           path: |
@@ -152,7 +152,7 @@ jobs:
           -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
       - name: Upload failed screenshot artifacts
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: screenshot-failures
           path: |

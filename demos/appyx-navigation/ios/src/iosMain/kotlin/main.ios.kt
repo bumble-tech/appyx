@@ -1,7 +1,9 @@
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.Icon
@@ -37,10 +39,14 @@ fun MainViewController() = ComposeUIViewController {
         Scaffold(
             modifier = Modifier
                 .background(Color.Black)
-                .windowInsetsPadding(WindowInsets.statusBars)
         ) {
             Box {
-                BackButton(coroutineScope)
+                BackButton(
+                    coroutineScope = coroutineScope,
+                    modifier = Modifier.padding(
+                        top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+                    )
+                )
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     IosNodeHost(
@@ -61,14 +67,17 @@ fun MainViewController() = ComposeUIViewController {
 }
 
 @Composable
-private fun BackButton(coroutineScope: CoroutineScope) {
+private fun BackButton(
+    coroutineScope: CoroutineScope,
+    modifier: Modifier,
+) {
     IconButton(
         onClick = {
             coroutineScope.launch {
                 backEvents.send(Unit)
             }
         },
-        modifier = Modifier.zIndex(99f)
+        modifier = modifier.zIndex(99f)
     ) {
         Icon(
             imageVector = Icons.Default.ArrowBack,
