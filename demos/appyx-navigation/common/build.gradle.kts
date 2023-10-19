@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
-    id("appyx-publish-multiplatform")
     id("com.google.devtools.ksp")
 }
 
