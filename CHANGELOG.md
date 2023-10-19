@@ -2,6 +2,12 @@
 
 ## Pending changes
 
+–
+
+---
+
+## 2.0.0-alpha09
+
 ### API breaking changes
 
 - [#618](https://github.com/bumble-tech/appyx/pull/618) – Do not create PermanentAppyxComponent inside ParentNode. Provide it via constructor to ParentNode
@@ -17,6 +23,8 @@
 
 - [#615](https://github.com/bumble-tech/appyx/pull/615) – Material navigation helpers
 
+<div style="text-align: center"><small>19 Oct 2023</small></div>
+
 ---
 
 ## 2.0.0-alpha08
@@ -24,6 +32,8 @@
 ### Fixed
 
 - [#608](https://github.com/bumble-tech/appyx/pull/608) – Setting default value to NodeCustomisationDirectory in IosNodeHost
+
+<div style="text-align: center"><small>4 Oct 2023</small></div>
 
 ---
 
