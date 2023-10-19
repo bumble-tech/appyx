@@ -1,6 +1,5 @@
 package com.bumble.appyx.components.internal.testdrive.android
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
