@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.imageloader.ResourceImage
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
+import com.bumble.appyx.navigation.ui.EmbeddableResourceImage
 
 class CakeImageNode(
     buildContext: BuildContext,
@@ -44,7 +44,7 @@ class CakeImageNode(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            ResourceImage(
+            EmbeddableResourceImage(
                 path = cake.image,
                 modifier = Modifier
                     .fillMaxSize()

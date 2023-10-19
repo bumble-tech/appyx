@@ -19,6 +19,7 @@ import org.jetbrains.compose.resources.resource
 @Composable
 fun ResourceImage(
     path: String,
+    fallbackUrl: String = path,
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Fit
@@ -26,9 +27,19 @@ fun ResourceImage(
     var image: ImageBitmap? by remember { mutableStateOf(null) }
     LaunchedEffect(Unit) {
         image = withContext(Dispatchers.Default) {
-            resource(path)
-                .readBytes()
-                .toImageBitmap()
+            try {
+                resource(path)
+                    .readBytes()
+                    .toImageBitmap()
+            } catch (e: Throwable) {
+                try {
+                    resource(fallbackUrl)
+                        .readBytes()
+                        .toImageBitmap()
+                } catch (e: Throwable) {
+                    null
+                }
+            }
         }
     }
     image?.let {
