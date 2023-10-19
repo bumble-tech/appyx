@@ -5,14 +5,14 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModel
+import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModelStoreProvider
 
 open class ViewModelNode(
     buildContext: BuildContext,
 ) : Node(buildContext), ViewModelStoreOwner {
 
     private val nodeViewModelStore by lazy {
-        (integrationPoint as ActivityIntegrationPointWithViewModel).viewModel.getViewModelStoreForNode(
+        (integrationPoint as ActivityIntegrationPointWithViewModelStoreProvider).viewModelStoreProvider.getViewModelStoreForNode(
             id
         )
     }
@@ -20,8 +20,8 @@ open class ViewModelNode(
     init {
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onDestroy() {
-                if (!(integrationPoint as ActivityIntegrationPointWithViewModel).isChangingConfigurations) {
-                    (integrationPoint as ActivityIntegrationPointWithViewModel).viewModel.clear(id)
+                if (!(integrationPoint as ActivityIntegrationPointWithViewModelStoreProvider).isChangingConfigurations) {
+                    (integrationPoint as ActivityIntegrationPointWithViewModelStoreProvider).viewModelStoreProvider.clear(id)
                 }
             }
         })

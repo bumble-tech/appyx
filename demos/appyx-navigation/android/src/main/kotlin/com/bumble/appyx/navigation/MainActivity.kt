@@ -12,17 +12,17 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import com.bumble.appyx.navigation.integration.NodeActivity
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.container.ContainerNode
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
+import com.bumble.appyx.utils.viewmodel.integration.ViewModelNodeActivity
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
-class MainActivity : NodeActivity() {
+class MainActivity : ViewModelNodeActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()

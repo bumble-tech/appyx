@@ -1,16 +1,17 @@
 package com.bumble.appyx.navigation.node.viewModel
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.get
-import com.bumble.appyx.utils.viewmodel.integration.IntegrationPointViewModel
-import kotlinx.coroutines.flow.Flow
+import androidx.lifecycle.viewmodel.CreationExtras
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 
-class ViewModelExample : IntegrationPointViewModel() {
-    private val _uiState = MutableStateFlow(UiState(0))
-    val uiState: Flow<UiState> = _uiState
+class ViewModelExample(startCounterValue: Int = 0) : ViewModel() {
+    private val _uiState = MutableStateFlow(UiState(startCounterValue))
+    val uiState: StateFlow<UiState> = _uiState
 
     fun incrementCounter() {
         _uiState.getAndUpdate { value ->
@@ -19,8 +20,15 @@ class ViewModelExample : IntegrationPointViewModel() {
     }
 
     companion object {
-        fun getInstance(viewModelStoreOwner: ViewModelStoreOwner): ViewModelExample {
-            return ViewModelProvider(viewModelStoreOwner).get()
+        object StartCounterKey : CreationExtras.Key<Int>
+
+        val Factory: ViewModelProvider.Factory = viewModelFactory {
+            initializer {
+                val startCounterValue = this[StartCounterKey] ?: 0
+                ViewModelExample(
+                    startCounterValue
+                )
+            }
         }
     }
 }

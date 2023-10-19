@@ -20,11 +20,11 @@ import com.bumble.appyx.navigation.integrationpoint.IntegrationPointProvider
  */
 open class ViewModelNodeActivity : AppCompatActivity(), IntegrationPointProvider {
 
-    override lateinit var appyxV2IntegrationPoint: ActivityIntegrationPointWithViewModel
+    override lateinit var appyxV2IntegrationPoint: ActivityIntegrationPointWithViewModelStoreProvider
         protected set
 
     protected open fun createIntegrationPoint(savedInstanceState: Bundle?) =
-        ActivityIntegrationPointWithViewModel(
+        ActivityIntegrationPointWithViewModelStoreProvider(
             activity = this,
             savedInstanceState = savedInstanceState
         )

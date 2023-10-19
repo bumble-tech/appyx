@@ -12,15 +12,39 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.utils.viewmodel.node.ViewModelNode
+import com.bumble.appyx.utils.viewmodel.node.viewModels
 
-class ViewModelNodeExample(buildContext: BuildContext) : ViewModelNode(buildContext) {
+class ViewModelExampleNode(
+    buildContext: BuildContext,
+    private val startCounterValue: Int = (buildContext.savedStateMap?.getValue("startCounterValue") as? Int) ?: 10
+) : ViewModelNode(buildContext) {
+
+    private val viewModel: ViewModelExample by viewModels(
+        factoryProducer = {
+            viewModelFactory {
+                initializer {
+                    ViewModelExample(
+                        startCounterValue
+                    )
+                }
+            }
+        }
+    )
+
+    override fun onSaveInstanceState(state: MutableSavedStateMap) {
+        state["startCounterValue"] = viewModel.uiState.value.counter
+        super.onSaveInstanceState(state)
+    }
+
 
     @Composable
     @Override
     override fun View(modifier: Modifier) {
-        val viewModel = (integrationPoint as ActivityIntegrationPointWithExampleViewModel).viewModel
         val uiState by viewModel.uiState.collectAsState(initial = UiState(0))
 
         Column(
@@ -39,7 +63,6 @@ class ViewModelNodeExample(buildContext: BuildContext) : ViewModelNode(buildCont
             ) {
                 Text("Increment")
             }
-
         }
     }
 }

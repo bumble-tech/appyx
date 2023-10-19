@@ -19,14 +19,7 @@ import com.bumble.appyx.utils.viewmodel.integration.ViewModelNodeActivity
 @ExperimentalComposeUiApi
 class ViewModelExampleActivity : ViewModelNodeActivity() {
 
-    override fun createIntegrationPoint(savedInstanceState: Bundle?) =
-        ActivityIntegrationPointWithExampleViewModel(
-            activity = this,
-            savedInstanceState = savedInstanceState
-        )
-
     override fun onCreate(savedInstanceState: Bundle?) {
-
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
@@ -36,10 +29,11 @@ class ViewModelExampleActivity : ViewModelNodeActivity() {
                         lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                         integrationPoint = appyxV2IntegrationPoint,
                     ) {
-                        ViewModelNodeExample(buildContext = it)
+                        ViewModelExampleNode(it)
                     }
                 }
             }
         }
     }
+
 }

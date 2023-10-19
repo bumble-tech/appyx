@@ -21,6 +21,7 @@ dependencies {
     api(libs.androidx.activity)
     api(libs.androidx.appcompat)
     api(libs.androidx.lifecycle.viewmodel)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     debugApi(libs.compose.runtime)
     implementation(libs.androidx.core.core)
     implementation(libs.androidx.lifecycle.common)

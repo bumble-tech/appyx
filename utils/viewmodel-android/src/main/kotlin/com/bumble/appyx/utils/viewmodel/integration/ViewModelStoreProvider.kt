@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.get
 
-open class IntegrationPointViewModel : ViewModel() {
+open class ViewModelStoreProvider : ViewModel() {
     private val viewModelStores = mutableMapOf<String, ViewModelStore>()
     fun clear(nodeId: String) {
         val viewModelStore = viewModelStores.remove(nodeId)
@@ -23,7 +23,7 @@ open class IntegrationPointViewModel : ViewModel() {
         viewModelStores.getOrPut(nodeId) { ViewModelStore() }
 
     companion object {
-        fun getInstance(viewModelStoreOwner: ViewModelStoreOwner): IntegrationPointViewModel {
+        fun getInstance(viewModelStoreOwner: ViewModelStoreOwner): ViewModelStoreProvider {
             return ViewModelProvider(viewModelStoreOwner).get()
         }
     }

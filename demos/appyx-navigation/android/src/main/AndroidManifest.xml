@@ -8,7 +8,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Appyx">
         <activity
-            android:name="com.bumble.appyx.navigation.MainActivity"
+            android:name="com.bumble.appyx.navigation.node.viewModel.ViewModelExampleActivity"
             android:exported="true"
             android:theme="@style/Theme.Appyx.Starting">
             <intent-filter>

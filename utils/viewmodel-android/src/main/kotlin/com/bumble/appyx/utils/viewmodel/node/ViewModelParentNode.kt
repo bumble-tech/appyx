@@ -6,7 +6,7 @@ import com.bumble.appyx.interactions.core.model.AppyxComponent
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModel
+import com.bumble.appyx.utils.viewmodel.integration.ActivityIntegrationPointWithViewModelStoreProvider
 
 abstract class ViewModelParentNode<InteractionTarget : Any>(
     buildContext: BuildContext,
@@ -17,7 +17,7 @@ abstract class ViewModelParentNode<InteractionTarget : Any>(
 ), ViewModelStoreOwner {
 
     private val nodeViewModelStore by lazy {
-        (integrationPoint as ActivityIntegrationPointWithViewModel).viewModel.getViewModelStoreForNode(
+        (integrationPoint as ActivityIntegrationPointWithViewModelStoreProvider).viewModelStoreProvider.getViewModelStoreForNode(
             id
         )
     }
@@ -25,8 +25,8 @@ abstract class ViewModelParentNode<InteractionTarget : Any>(
     init {
         lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
             override fun onDestroy() {
-                if (!(integrationPoint as ActivityIntegrationPointWithViewModel).isChangingConfigurations) {
-                    (integrationPoint as ActivityIntegrationPointWithViewModel).viewModel.clear(id)
+                if (!(integrationPoint as ActivityIntegrationPointWithViewModelStoreProvider).isChangingConfigurations) {
+                    (integrationPoint as ActivityIntegrationPointWithViewModelStoreProvider).viewModelStoreProvider.clear(id)
                 }
             }
         })
