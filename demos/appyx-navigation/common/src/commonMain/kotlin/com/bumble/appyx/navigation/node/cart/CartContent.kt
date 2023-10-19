@@ -24,8 +24,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.imageloader.ResourceImage
 import com.bumble.appyx.navigation.node.cakes.Cake
+import com.bumble.appyx.navigation.ui.EmbeddableResourceImage
 
 @Composable
 fun CartContent(
@@ -79,7 +79,7 @@ private fun CartListItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            ResourceImage(
+            EmbeddableResourceImage(
                 path = cake.image,
                 modifier = Modifier
                     .width(50.dp)
