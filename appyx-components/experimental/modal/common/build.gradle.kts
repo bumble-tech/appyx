@@ -12,7 +12,7 @@ appyx {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
 
