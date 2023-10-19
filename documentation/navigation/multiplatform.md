@@ -230,7 +230,6 @@ In the above [desktop](#desktop) and [web](#web) examples there is a reference t
 You can configure any `KeyEvent` to trigger a back event via the events `Channel`. In this example the `OnBackPressed` event is launched when the backspace key is pressed down:
 
 ```kotlin
-@OptIn(ExperimentalComposeUiApi::class)
 private fun onKeyEvent(
     keyEvent: KeyEvent,
     events: Channel<Events>,

@@ -7,7 +7,7 @@ struct iOSApp: App {
 		    ZStack {
 		        Color.white.ignoresSafeArea(.all) // status bar color
 			    ContentView()
-			}.preferredColorScheme(.light)
+            }
 		}
 	}
 }

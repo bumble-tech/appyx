@@ -21,6 +21,8 @@ kotlin {
             baseName = "ios"
             isStatic = true
         }
+        license = "Apache License, Version 2.0"
+        authors = "https://github.com/bumble-tech/"
     }
 
     sourceSets {

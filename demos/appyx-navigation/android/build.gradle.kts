@@ -52,7 +52,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.ui)
     implementation(libs.google.material)
     implementation(libs.coil.compose)
 }

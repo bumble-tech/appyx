@@ -53,7 +53,7 @@ title: Appyx Navigation – Overview
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
         width=512,
         height=384,

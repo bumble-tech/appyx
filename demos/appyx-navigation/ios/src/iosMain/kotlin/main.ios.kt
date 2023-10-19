@@ -26,7 +26,7 @@ fun MainViewController() = ComposeUIViewController {
         Scaffold(
             modifier = Modifier
                 .background(Color.Black)
-                .padding(top = 60.dp)
+//                .padding(top = 60.dp)
         ) {
             Box {
 

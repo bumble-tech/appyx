@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
-    id("appyx-publish-multiplatform")
 }
 
 appyx {
@@ -11,7 +10,7 @@ appyx {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
@@ -45,7 +44,7 @@ kotlin {
                 implementation(libs.coil.compose)
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.junit)
             }

@@ -17,7 +17,6 @@ dependencies {
     api(composeBom)
     api(project(":appyx-navigation:appyx-navigation"))
     api(project(":appyx-components:stable:backstack:backstack"))
-    api(libs.compose.ui.ui)
 
     implementation(composeBom)
     implementation(libs.androidx.navigation.compose)

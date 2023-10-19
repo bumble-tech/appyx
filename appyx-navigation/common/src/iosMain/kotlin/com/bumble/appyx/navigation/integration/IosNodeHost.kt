@@ -15,11 +15,13 @@ import com.bumble.appyx.navigation.platform.OnBackPressedDispatcherOwner
 import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
+import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.cinterop.useContents
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import platform.UIKit.UIScreen
 
+@OptIn(ExperimentalForeignApi::class)
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
 fun <N : Node> IosNodeHost(

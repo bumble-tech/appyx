@@ -22,7 +22,8 @@ kotlin {
             baseName = "ios"
             isStatic = true
         }
-        extraSpecAttributes["resources"] = "['build/processedResources/ios/main/**']"
+        license = "Apache License, Version 2.0"
+        authors = "https://github.com/bumble-tech/"
     }
 
     sourceSets {
@@ -56,7 +57,7 @@ tasks.register<Copy>("copyResources") {
     from("../common/src/commonMain/resources")
 
     // Output for iOS resources
-    into("$buildDir/processedResources/ios/main")
+    into("$buildDir/compose/ios/ios/compose-resources")
 
     include("**/*")
 }

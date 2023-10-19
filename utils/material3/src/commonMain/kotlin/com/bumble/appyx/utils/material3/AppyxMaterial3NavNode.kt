@@ -90,7 +90,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
 
     @Composable
     override fun View(modifier: Modifier) {
-        val selectedIndex = spotlight.activeIndex.collectAsState(-1f).value.toInt()
+        val selectedIndex = spotlight.activeIndex.collectAsState().value.toInt()
         val screenSize = LocalScreenSize.current
         var containerSize by remember { mutableStateOf(screenSize) }
         val density = LocalDensity.current
