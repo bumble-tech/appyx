@@ -16,7 +16,7 @@ Try this interactive sample! You can either:
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample1/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample1/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-interactions:interactions:sample1:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -140,7 +140,7 @@ Adding this new UI property will result in the below sample **with no additional
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample2/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample2/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-interactions:interactions:sample2:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -178,7 +178,7 @@ Appyx supports two main operation modes: `Keyframe` and `Immediate`. The main di
 You can achieve a very different effect by spamming the buttons a few times:
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample3/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample3/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-interactions:interactions:sample3:web:jsBrowserDistribution",
         width=512,
         height=384,

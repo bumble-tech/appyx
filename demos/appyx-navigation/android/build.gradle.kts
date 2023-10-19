@@ -52,6 +52,5 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.ui)
     implementation(libs.google.material)
 }

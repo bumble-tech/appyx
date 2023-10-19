@@ -11,6 +11,7 @@
 ### Changed
 
 - [#611](https://github.com/bumble-tech/appyx/pull/611) – Lower position and rotation animation default round-off thresholds
+- [#620](https://github.com/bumble-tech/appyx/pull/620) – Updated Compose to 1.5.3 & Kotlin to 1.9.10
 
 ### Added
 

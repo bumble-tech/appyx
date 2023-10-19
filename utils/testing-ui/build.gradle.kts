@@ -22,7 +22,7 @@ dependencies {
     api(project(":appyx-navigation:appyx-navigation"))
     api(project(":utils:testing-ui-activity"))
     api(libs.androidx.test.rules)
-    api(libs.compose.ui.test.junit4)
+    api(libs.compose.ui.test.junit4.android)
 
     implementation(libs.androidx.lifecycle.java8)
 }

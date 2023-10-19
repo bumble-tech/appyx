@@ -1,6 +1,5 @@
 package com.bumble.appyx.interactions.core.modifiers
 
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEvent
 import androidx.compose.ui.input.pointer.PointerEventPass
@@ -9,7 +8,6 @@ import androidx.compose.ui.node.PointerInputModifierNode
 import androidx.compose.ui.platform.InspectorInfo
 import androidx.compose.ui.unit.IntSize
 
-@OptIn(ExperimentalComposeUiApi::class)
 class OnPointerEventNode(var callback: (PointerEvent) -> Unit) :
     PointerInputModifierNode, Modifier.Node() {
     override fun onPointerEvent(
@@ -29,14 +27,12 @@ class OnPointerEventNode(var callback: (PointerEvent) -> Unit) :
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 data class PointerInputElement(
     val callback: (PointerEvent) -> Unit
 ) : ModifierNodeElement<OnPointerEventNode>() {
     override fun create() = OnPointerEventNode(callback)
-    override fun update(node: OnPointerEventNode): OnPointerEventNode {
+    override fun update(node: OnPointerEventNode) {
         node.callback = callback
-        return node
     }
 
     override fun InspectorInfo.inspectableProperties() {
