@@ -6,6 +6,7 @@ import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -64,7 +65,7 @@ private fun ForceChangeToCodeGen(events: Channel<Unit>, navigator: Navigator) {
         // invisible component changes JS codegen to avoid a code generation bug
         // this task: demos:appyx-navigation:web:jsBrowserProductionWebpack
         // https://github.com/JetBrains/compose-multiplatform/issues/3426
-        HorizontalPager(0, modifier = Modifier.size(0.dp)) {
+        HorizontalPager(state = rememberPagerState { 0 }, modifier = Modifier.size(0.dp)) {
 
         }
 
