@@ -59,9 +59,11 @@ fun CartContent(
                 Spacer(modifier = Modifier.requiredHeight(8.dp))
                 CartListItem(cakeToQuantity = cartList[index], goToCakeAction = goToCakeAction)
             }
+            item("Actions" ) {
+                CartActions(clearCartAction)
+            }
         }
 
-        CartActions(clearCartAction)
     }
 }
 
@@ -118,7 +120,6 @@ private fun CartActions(clearCartAction: () -> Unit) {
     ) {
         Button(
             onClick = clearCartAction,
-            modifier = Modifier.weight(1f),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
         ) {
             Text("Clear cart")
