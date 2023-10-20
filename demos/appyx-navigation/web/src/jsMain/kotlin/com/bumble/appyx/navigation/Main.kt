@@ -62,13 +62,6 @@ private fun ForceChangeToCodeGen(events: Channel<Unit>, navigator: Navigator) {
         var screenSize by remember { mutableStateOf(ScreenSize(0.dp, 0.dp)) }
         val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
 
-        // invisible component changes JS codegen to avoid a code generation bug
-        // this task: demos:appyx-navigation:web:jsBrowserProductionWebpack
-        // https://github.com/JetBrains/compose-multiplatform/issues/3426
-        HorizontalPager(state = rememberPagerState { 0 }, modifier = Modifier.size(0.dp)) {
-
-        }
-
         Surface(
             modifier = Modifier
                 .fillMaxSize()
