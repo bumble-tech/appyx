@@ -85,6 +85,7 @@ include(
     ":utils:testing-unit-common",
     ":utils:material3",
     ":utils:multiplatform",
+    ":utils:viewmodel-android",
 )
 
 // do not remove this. Otherwise all multiplatform modules will produce clashing artifacts
