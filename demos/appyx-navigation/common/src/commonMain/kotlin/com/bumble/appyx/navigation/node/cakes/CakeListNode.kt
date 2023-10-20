@@ -44,15 +44,16 @@ private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
 class CakeListNode(
     buildContext: BuildContext,
     private val cart: Cart,
+    private val model: SpotlightHeroModel<NavTarget> = SpotlightHeroModel(
+        items = cakes.map { NavTarget.Backdrop(it) to NavTarget.CakeImage(it) },
+        initialActiveIndex = 0f,
+        savedStateMap = buildContext.savedStateMap
+    ),
     private val spotlight: SpotlightHero<NavTarget> =
         SpotlightHero(
-            model = SpotlightHeroModel(
-                items = cakes.map { NavTarget.Backdrop(it) to NavTarget.CakeImage(it) },
-                initialActiveIndex = 0f,
-                savedStateMap = buildContext.savedStateMap
-            ),
+            model = model,
             animationSpec = animationSpec,
-            visualisation = { SpotlightHeroDefaultVisualisation(it) },
+            visualisation = { SpotlightHeroDefaultVisualisation(it, model.currentState) },
             gestureFactory = { SpotlightHeroGestures(it) }
         ),
 ) : ParentNode<NavTarget>(

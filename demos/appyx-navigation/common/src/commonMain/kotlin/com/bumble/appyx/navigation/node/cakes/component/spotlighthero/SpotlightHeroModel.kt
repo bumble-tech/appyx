@@ -56,6 +56,9 @@ class SpotlightHeroModel<InteractionTarget : Any>(
             activeIndex = initialActiveIndex
         )
 
+    val currentState: State<InteractionTarget>
+        get() = output.value.currentTargetState
+
     override fun State<InteractionTarget>.removeDestroyedElement(
         element: Element<InteractionTarget>
     ): State<InteractionTarget> =

@@ -22,13 +22,14 @@ import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisat
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(
-    uiContext: UiContext
+    uiContext: UiContext,
+    initialState: State<InteractionTarget>
 ) : SpotlightHeroVisualisation<InteractionTarget>,
     BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
-    override val heroProgress = HeroProgress(uiContext.coroutineScope, GenericFloatProperty.Target(0f))
+    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(initialState.activeIndex))
+    override val heroProgress = HeroProgress(uiContext.coroutineScope, GenericFloatProperty.Target(initialState.heroProgress()))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX,

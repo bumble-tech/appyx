@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.update
 
 open class SpotlightHero<InteractionTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    model: SpotlightHeroModel<InteractionTarget>,
+    private val model: SpotlightHeroModel<InteractionTarget>,
     visualisation: (UiContext) -> SpotlightHeroVisualisation<InteractionTarget>,
     gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
         GestureFactory.Noop()
@@ -46,6 +46,9 @@ open class SpotlightHero<InteractionTarget : Any>(
     backPressStrategy = ExitHeroModeStrategy(scope),
     isDebug = isDebug
 ) {
+    val currentState: State<InteractionTarget>
+        get() = model.currentState
+
     val activeIndex: StateFlow<Float> = model.output
         .mapState(scope) { it.currentTargetState.activeIndex }
 
