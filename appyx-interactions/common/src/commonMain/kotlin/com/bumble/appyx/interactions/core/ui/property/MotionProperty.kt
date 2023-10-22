@@ -11,6 +11,9 @@ import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.SystemClock
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -79,7 +82,8 @@ abstract class MotionProperty<T, V : AnimationVector>(
         displacement.combine(
             internalValueFlow
         ) { displacement, value ->
-            calculateRenderValue(value, displacement)
+            renderValue = calculateRenderValue(value, displacement)
+            renderValue
         }.stateIn(
             scope = coroutineScope,
             started = SharingStarted.Eagerly,
@@ -94,8 +98,8 @@ abstract class MotionProperty<T, V : AnimationVector>(
     /**
      * Render-ready value that contains applied displacements on top of the [internalValue].
      */
-    val renderValue: T
-        get() = renderValueFlow.value
+    var renderValue: T by mutableStateOf(animatable.value)
+        private set
 
     abstract val modifier: Modifier
 

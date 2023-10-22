@@ -5,13 +5,10 @@ import androidx.compose.animation.core.AnimationVector2D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.TwoWayConverter
 import androidx.compose.foundation.layout.offset
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -79,21 +76,12 @@ class PositionOffset(
             offset = base.offset - displacement.offset
         )
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            val value = renderValueFlow.collectAsState()
-            val boxScope = requireNotNull(LocalBoxScope.current)
-            with(boxScope) {
-                this@composed
-                    .offset {
-                        IntOffset(
-                            x = (value.value.offset.x.value * density).roundToInt(),
-                            y = (value.value.offset.y.value * density).roundToInt(),
-                        )
-                    }
-            }
-
-        }
+    override val modifier: Modifier = Modifier.offset {
+        IntOffset(
+            x = (renderValue.offset.x.value * density).roundToInt(),
+            y = (renderValue.offset.y.value * density).roundToInt(),
+        )
+    }
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         val progress = easingTransform(end.easing, fraction)

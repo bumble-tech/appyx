@@ -5,10 +5,7 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clip
 import com.bumble.appyx.interactions.core.ui.math.lerpInt
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -39,11 +36,7 @@ class RoundedCorners(
     override fun calculateRenderValue(base: Int, displacement: Int): Int =
         base - displacement
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            val value by renderValueFlow.collectAsState()
-            this.clip(RoundedCornerShape(value))
-        }
+    override val modifier: Modifier = Modifier.clip(RoundedCornerShape(renderValue))
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(
