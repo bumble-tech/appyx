@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero
+package com.bumble.appyx.navigation.component.spotlighthero
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.spring
@@ -11,8 +11,8 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.mapState
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.SpotlightHeroVisualisation
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.State
+import com.bumble.appyx.navigation.component.spotlighthero.visualisation.SpotlightHeroVisualisation
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

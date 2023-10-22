@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property
+package com.bumble.appyx.navigation.component.spotlighthero.visualisation.property
 
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import kotlinx.coroutines.CoroutineScope
