@@ -32,6 +32,7 @@ fun CartContent(
     cartItems: Map<Cake, Int>,
     clearCartAction: () -> Unit,
     goToCakeAction: (Cake) -> Unit,
+    checkoutAction: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -61,7 +62,7 @@ fun CartContent(
             }
         }
 
-        CartActions(clearCartAction)
+        CartActions(clearCartAction, checkoutAction)
     }
 }
 
@@ -110,7 +111,7 @@ private fun CartListItem(
 }
 
 @Composable
-private fun CartActions(clearCartAction: () -> Unit) {
+private fun CartActions(clearCartAction: () -> Unit, checkoutAction: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -125,7 +126,7 @@ private fun CartActions(clearCartAction: () -> Unit) {
         }
         Spacer(modifier = Modifier.requiredWidth(4.dp))
         Button(
-            onClick = {},
+            onClick = checkoutAction,
             modifier = Modifier.weight(1f)
         ) {
             Text("Checkout")

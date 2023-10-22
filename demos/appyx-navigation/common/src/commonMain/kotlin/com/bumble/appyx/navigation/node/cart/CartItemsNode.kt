@@ -23,6 +23,7 @@ import com.bumble.appyx.navigation.node.cakes.Cake
 class CartItemsNode(
     buildContext: BuildContext,
     private val cart: Cart,
+    private val checkoutAction: () -> Unit,
 ) : Node(
     buildContext = buildContext,
 ) {
@@ -38,7 +39,12 @@ class CartItemsNode(
         if (cartItems.value.isEmpty()) {
             CartEmptyContent(navigator)
         } else {
-            CartContent(cartItems.value, clearCartAction, goToCakeAction)
+            CartContent(
+                cartItems = cartItems.value,
+                clearCartAction = clearCartAction,
+                goToCakeAction = goToCakeAction,
+                checkoutAction = checkoutAction,
+            )
         }
     }
 
