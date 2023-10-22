@@ -18,6 +18,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -30,13 +31,16 @@ import com.bumble.appyx.navigation.ui.EmbeddableResourceImage
 @Composable
 fun CartContent(
     cartItems: Map<Cake, Int>,
-    clearCartAction: () -> Unit,
-    goToCakeAction: (Cake) -> Unit,
+    onClearCart: () -> Unit,
+    onCheckout: () -> Unit,
+    onGoToCake: (Cake) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxSize()
     ) {
+        val cartList = remember(cartItems) { cartItems.toList() }
+
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
@@ -50,17 +54,21 @@ fun CartContent(
                     textAlign = TextAlign.Center
                 )
             }
-            val cartList = cartItems.map { it.key to it.value }
-            item("Spacer" ) { Spacer(modifier = Modifier.requiredHeight(8.dp)) }
+            item("Spacer" ) {
+                Spacer(modifier = Modifier.requiredHeight(8.dp))
+            }
             items(
                 count = cartList.size,
                 key = { index -> cartList[index].first }
             ) { index ->
                 Spacer(modifier = Modifier.requiredHeight(8.dp))
-                CartListItem(cakeToQuantity = cartList[index], goToCakeAction = goToCakeAction)
+                CartListItem(
+                    cakeToQuantity = cartList[index],
+                    onCakeClicked = onGoToCake
+                )
             }
             item("Actions" ) {
-                CartActions(clearCartAction)
+                CartActions(onClearCart, onCheckout)
             }
         }
 
@@ -70,7 +78,7 @@ fun CartContent(
 @Composable
 private fun CartListItem(
     cakeToQuantity: Pair<Cake, Int>,
-    goToCakeAction: (Cake) -> Unit,
+    onCakeClicked: (Cake) -> Unit,
 ) {
     val cake = cakeToQuantity.first
     val quantity = cakeToQuantity.second
@@ -86,7 +94,7 @@ private fun CartListItem(
                 modifier = Modifier
                     .width(50.dp)
                     .height(50.dp)
-                    .clickable { goToCakeAction.invoke(cake) }
+                    .clickable { onCakeClicked.invoke(cake) }
                 ,
                 contentScale = ContentScale.FillWidth,
                 contentDescription = cake.name
@@ -112,21 +120,24 @@ private fun CartListItem(
 }
 
 @Composable
-private fun CartActions(clearCartAction: () -> Unit) {
+private fun CartActions(
+    onClearCart: () -> Unit,
+    onCheckout: () -> Unit,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
     ) {
         Button(
-            onClick = clearCartAction,
+            onClick = onClearCart,
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
         ) {
             Text("Clear cart")
         }
         Spacer(modifier = Modifier.requiredWidth(4.dp))
         Button(
-            onClick = {},
+            onClick = onCheckout,
             modifier = Modifier.weight(1f)
         ) {
             Text("Checkout")
