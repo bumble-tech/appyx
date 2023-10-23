@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.payment
+package com.bumble.appyx.navigation.node.checkout
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 
-class PaymentNode(
+class ShippingDetailsNode(
     buildContext: BuildContext,
     private val confirmAction: () -> Unit,
 ) : Node(
@@ -27,11 +27,11 @@ class PaymentNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        PaymentDetails(modifier)
+        ShippingDetails(modifier)
     }
 
     @Composable
-    private fun PaymentDetails(modifier: Modifier) {
+    private fun ShippingDetails(modifier: Modifier) {
         Surface {
             Column(
                 modifier = modifier.fillMaxSize().padding(16.dp)
@@ -43,24 +43,24 @@ class PaymentNode(
                 ) {
                     item("Header") {
                         Text(
-                            text = "Payment Details",
+                            text = "Shipping Details",
                             style = MaterialTheme.typography.headlineLarge,
                             textAlign = TextAlign.Center
                         )
                     }
                     item("Spacer" ) { Spacer(modifier = Modifier.requiredHeight(8.dp)) }
 
-                    item("Card no") {
-                        PaymentText(header = "Card number:", value = "4555 2212 3323 1213")
-                    }
-                    item("Expiry") {
-                        PaymentText(header = "Expiry:", value = "12/25")
-                    }
                     item("Name") {
-                        PaymentText(header = "Card holder name:", value = "One who desires cake")
+                        ShippingText(header = "Name:", value = "Cake wisher")
                     }
-                    item("CVV") {
-                        PaymentText(header = "CVV:", value = "***")
+                    item("Address") {
+                        ShippingText(header = "Address:", value = "London")
+                    }
+                    item("Postcode") {
+                        ShippingText(header = "Postcode:", value = "SW1")
+                    }
+                    item("Country") {
+                        ShippingText(header = "Country:", value = "United Kingdom")
                     }
                 }
 
@@ -70,7 +70,7 @@ class PaymentNode(
     }
 
     @Composable
-    private fun PaymentText(
+    private fun ShippingText(
         header: String,
         value: String,
         modifier: Modifier = Modifier,
@@ -86,16 +86,13 @@ class PaymentNode(
     }
 
     @Composable
-    private fun ConfirmAction(
-        confirmAction: () -> Unit,
-        modifier: Modifier = Modifier
-    ) {
+    private fun ConfirmAction(action: () -> Unit, modifier: Modifier = Modifier) {
         Button(
-            onClick = confirmAction,
+            onClick = action,
             modifier = modifier
                 .fillMaxWidth()
         ) {
-            Text("Process Payment")
+            Text("Confirm Order")
         }
     }
 }

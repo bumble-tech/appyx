@@ -7,9 +7,6 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
-import com.bumble.appyx.components.backstack.operation.newRoot
-import com.bumble.appyx.components.backstack.operation.push
-import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -17,8 +14,6 @@ import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.node.checkout.CheckoutNode.NavTarget
 import com.bumble.appyx.navigation.node.orderconfirmed.OrderConfirmedNode
-import com.bumble.appyx.navigation.node.payment.PaymentNode
-import com.bumble.appyx.navigation.node.shippingdetails.ShippingDetailsNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -62,14 +57,14 @@ class CheckoutNode(
             is NavTarget.Address -> AddressNode(buildContext) {
                 backStack.push(NavTarget.Shipping)
             }
-            is NavTarget.Shipping -> ShippingNode(buildContext) {
+            is NavTarget.Shipping -> ShippingDetailsNode(buildContext) {
                 backStack.push(NavTarget.Payment)
             }
             is NavTarget.Payment -> PaymentNode(buildContext) {
                 cart.clear()
                 backStack.newRoot(NavTarget.Success)
             }
-            is NavTarget.Success -> SuccessNode(buildContext) {
+            is NavTarget.Success -> OrderConfirmedNode(buildContext) {
                 backStack.newRoot(NavTarget.CartItems)
             }
         }
