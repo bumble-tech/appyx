@@ -71,7 +71,6 @@ fun CartContent(
                 CartActions(onClearCart, onCheckout)
             }
         }
-
     }
 }
 
