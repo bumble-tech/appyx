@@ -42,7 +42,8 @@ class OrderConfirmedNode(
             Icon(
                 imageVector = Icons.Outlined.CheckCircle,
                 contentDescription = "Order confirmed icon",
-                modifier = Modifier.size(72.dp)
+                modifier = Modifier.size(72.dp),
+                tint = MaterialTheme.colorScheme.primary
             )
             Text(text = "Order confirmed!", style = MaterialTheme.typography.titleMedium)
             LaunchedEffect(Unit) {
