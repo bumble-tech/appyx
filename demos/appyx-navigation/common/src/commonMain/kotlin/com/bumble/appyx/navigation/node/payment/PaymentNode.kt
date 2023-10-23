@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,38 +32,40 @@ class PaymentNode(
 
     @Composable
     private fun PaymentDetails(modifier: Modifier) {
-        Column(
-            modifier = modifier.fillMaxSize().padding(16.dp)
-        ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
+        Surface {
+            Column(
+                modifier = modifier.fillMaxSize().padding(16.dp)
             ) {
-                item("Header") {
-                    Text(
-                        text = "Payment Details",
-                        style = MaterialTheme.typography.headlineLarge,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                item("Spacer" ) { Spacer(modifier = Modifier.requiredHeight(8.dp)) }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                ) {
+                    item("Header") {
+                        Text(
+                            text = "Payment Details",
+                            style = MaterialTheme.typography.headlineLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    item("Spacer" ) { Spacer(modifier = Modifier.requiredHeight(8.dp)) }
 
-                item("Card no") {
-                    PaymentText(header = "Card number:", value = "4555 2212 3323 1213")
+                    item("Card no") {
+                        PaymentText(header = "Card number:", value = "4555 2212 3323 1213")
+                    }
+                    item("Expiry") {
+                        PaymentText(header = "Expiry:", value = "12/25")
+                    }
+                    item("Name") {
+                        PaymentText(header = "Card holder name:", value = "One who desires cake")
+                    }
+                    item("CVV") {
+                        PaymentText(header = "CVV:", value = "***")
+                    }
                 }
-                item("Expiry") {
-                    PaymentText(header = "Expiry:", value = "12/25")
-                }
-                item("Name") {
-                    PaymentText(header = "Card holder name:", value = "One who desires cake")
-                }
-                item("CVV") {
-                    PaymentText(header = "CVV:", value = "***")
-                }
+
+                ConfirmAction(confirmAction)
             }
-
-            ConfirmAction(confirmAction)
         }
     }
 

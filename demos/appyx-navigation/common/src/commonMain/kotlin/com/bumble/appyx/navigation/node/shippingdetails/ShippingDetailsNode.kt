@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -31,38 +32,40 @@ class ShippingDetailsNode(
 
     @Composable
     private fun ShippingDetails(modifier: Modifier) {
-        Column(
-            modifier = modifier.fillMaxSize().padding(16.dp)
-        ) {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f),
+        Surface {
+            Column(
+                modifier = modifier.fillMaxSize().padding(16.dp)
             ) {
-                item("Header") {
-                    Text(
-                        text = "Shipping Details",
-                        style = MaterialTheme.typography.headlineLarge,
-                        textAlign = TextAlign.Center
-                    )
-                }
-                item("Spacer" ) { Spacer(modifier = Modifier.requiredHeight(8.dp)) }
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f),
+                ) {
+                    item("Header") {
+                        Text(
+                            text = "Shipping Details",
+                            style = MaterialTheme.typography.headlineLarge,
+                            textAlign = TextAlign.Center
+                        )
+                    }
+                    item("Spacer" ) { Spacer(modifier = Modifier.requiredHeight(8.dp)) }
 
-                item("Name") {
-                    ShippingText(header = "Name:", value = "Cake wisher")
+                    item("Name") {
+                        ShippingText(header = "Name:", value = "Cake wisher")
+                    }
+                    item("Address") {
+                        ShippingText(header = "Address:", value = "London")
+                    }
+                    item("Postcode") {
+                        ShippingText(header = "Postcode:", value = "SW1")
+                    }
+                    item("Country") {
+                        ShippingText(header = "Country:", value = "United Kingdom")
+                    }
                 }
-                item("Address") {
-                    ShippingText(header = "Address:", value = "London")
-                }
-                item("Postcode") {
-                    ShippingText(header = "Postcode:", value = "SW1")
-                }
-                item("Country") {
-                    ShippingText(header = "Country:", value = "United Kingdom")
-                }
+
+                ConfirmAction(confirmAction)
             }
-
-            ConfirmAction(confirmAction)
         }
     }
 
