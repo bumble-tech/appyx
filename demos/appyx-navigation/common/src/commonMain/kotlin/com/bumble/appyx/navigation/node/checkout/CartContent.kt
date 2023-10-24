@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
-import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,8 +34,8 @@ import androidx.compose.material3.SwipeToDismiss
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDismissState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -91,13 +89,9 @@ fun CartContent(
                 CartListItem(
                     cakeToQuantity = cartList[index],
                     onGoToCake = onGoToCake,
-                    onPlusOneCake = plusOneCake,
-                    onMinusOneCake = minusOneCake,
-                    onDeleteCake = deleteCake,
-                )
-                CartListItem(
-                    cakeToQuantity = cartList[index],
-                    onCakeClicked = onGoToCake
+                    onPlusOneCake = onPlusOneCake,
+                    onMinusOneCake = onMinusOneCake,
+                    onDeleteCake = onDeleteCake,
                 )
             }
             item("Actions") {
@@ -111,7 +105,7 @@ fun CartContent(
 @Composable
 private fun LazyItemScope.CartListItem(
     cakeToQuantity: Pair<Cake, Int>,
-    onCakeClicked: (Cake) -> Unit,
+    onGoToCake: (Cake) -> Unit,
     onPlusOneCake: (Cake) -> Unit,
     onMinusOneCake: (Cake) -> Unit,
     onDeleteCake: (Cake) -> Unit,
@@ -128,7 +122,7 @@ private fun LazyItemScope.CartListItem(
             DismissValue.DismissedToStart -> {
                 coroutineScope.launch {
                     delay(250)
-                    deleteCakeAction(cake)
+                    onDeleteCake(cake)
                 }
                 true
             }
@@ -144,9 +138,9 @@ private fun LazyItemScope.CartListItem(
             CardItem(
                 cake = cake,
                 quantity = quantity,
-                goToCakeAction = goToCakeAction,
-                plusOneCakeAction = plusOneCakeAction,
-                minusOneCakeAction = minusOneCakeAction,
+                onGoToCake = onGoToCake,
+                plusOneCakeAction = onPlusOneCake,
+                minusOneCakeAction = onMinusOneCake,
             )
         },
     )
@@ -176,11 +170,10 @@ private fun LazyItemScope.CartItemDismissBackground() {
 private fun CardItem(
     cake: Cake,
     quantity: Int,
-    goToCakeAction: (Cake) -> Unit,
+    onGoToCake: (Cake) -> Unit,
     plusOneCakeAction: (Cake) -> Unit,
     minusOneCakeAction: (Cake) -> Unit,
 ) {
-    val imageSize = 50.dp
     Card {
         Row(
             modifier = Modifier
@@ -193,7 +186,7 @@ private fun CardItem(
                     path = cake.image,
                     modifier = Modifier
                         .clickable(
-                            onClick = { onCakeClicked.invoke(cake) },
+                            onClick = { onGoToCake.invoke(cake) },
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null,
                         ),
