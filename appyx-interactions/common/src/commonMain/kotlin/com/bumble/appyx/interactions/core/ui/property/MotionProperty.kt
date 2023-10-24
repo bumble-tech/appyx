@@ -52,15 +52,23 @@ abstract class MotionProperty<T, V : AnimationVector>(
     private var lastVelocity = animatable.velocity
 
     /**
+     * Render-ready value that contains applied displacements on top of the [internalValue].
+     * Backed by compose androidx.compose.runtime.State
+     */
+    var renderValue: T by mutableStateOf(animatable.value)
+        private set
+
+    /**
      * Contains the previous value of [lastVelocity]. To be used in initial velocity instead of it,
      * as the values in the last animation frame can jump due to snapping if within threshold of target value,
      * and that would result in unrealistic speeds.
      */
     private var previousVelocity = animatable.velocity
+
     private var lastTime = 0L
 
-    private val internalValueFlow = MutableStateFlow(animatable.value)
 
+    private val internalValueFlow = MutableStateFlow(animatable.value)
 
     /**
      * Contains the unmodified internal value of the [MotionProperty] backed by its [Animatable].
@@ -94,12 +102,6 @@ abstract class MotionProperty<T, V : AnimationVector>(
      * @return Should return the result of a subtraction [base - displacement] interpreted for <T>
      */
     abstract fun calculateRenderValue(base: T, displacement: T): T
-
-    /**
-     * Render-ready value that contains applied displacements on top of the [internalValue].
-     */
-    var renderValue: T by mutableStateOf(animatable.value)
-        private set
 
     abstract val modifier: Modifier
 
