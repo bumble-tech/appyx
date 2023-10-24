@@ -6,14 +6,14 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.push
-import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
+import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
+import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.node.checkout.CheckoutNode.NavTarget
-import com.bumble.appyx.navigation.node.orderconfirmed.OrderConfirmedNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -25,8 +25,7 @@ class CheckoutNode(
             initialTargets = listOf(NavTarget.CartItems),
             savedStateMap = buildContext.savedStateMap,
         ),
-        visualisation = { BackStack3D(it) },
-        gestureFactory = { BackStack3D.Gestures(it) }
+        visualisation = { BackStackSlider(it) },
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,

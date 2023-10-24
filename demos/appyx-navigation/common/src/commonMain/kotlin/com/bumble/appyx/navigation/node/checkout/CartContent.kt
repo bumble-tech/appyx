@@ -1,16 +1,17 @@
 package com.bumble.appyx.navigation.node.checkout
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -88,16 +89,20 @@ private fun CartListItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            EmbeddableResourceImage(
-                path = cake.image,
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
-                    .clickable { onCakeClicked.invoke(cake) }
-                ,
-                contentScale = ContentScale.FillWidth,
-                contentDescription = cake.name
-            )
+            Box(modifier = Modifier.size(50.dp)) {
+                EmbeddableResourceImage(
+                    path = cake.image,
+                    modifier = Modifier
+                        .clickable(
+                            onClick = { onCakeClicked.invoke(cake) },
+                            interactionSource = remember { MutableInteractionSource() },
+                            indication = null,
+                        )
+                    ,
+                    contentScale = ContentScale.FillWidth,
+                    contentDescription = cake.name
+                )
+            }
             Column(
                 modifier = Modifier.padding(start = 8.dp)
             ) {
