@@ -17,7 +17,7 @@ import com.bumble.appyx.interactions.core.ui.math.smoothstep
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
+import com.bumble.appyx.navigation.component.spotlighthero.visualisation.property.HeroProgress
 
 class CakeBackdropNode(
     buildContext: BuildContext,

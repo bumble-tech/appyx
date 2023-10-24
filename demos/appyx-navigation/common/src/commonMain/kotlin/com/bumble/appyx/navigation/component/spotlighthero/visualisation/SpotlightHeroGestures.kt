@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation
+package com.bumble.appyx.navigation.component.spotlighthero.visualisation
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -7,12 +7,12 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.HERO
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.LIST
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.Next
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.Previous
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation.SetHeroMode
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.Mode.HERO
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.Mode.LIST
+import com.bumble.appyx.navigation.component.spotlighthero.operation.Next
+import com.bumble.appyx.navigation.component.spotlighthero.operation.Previous
+import com.bumble.appyx.navigation.component.spotlighthero.operation.SetHeroMode
 
 class SpotlightHeroGestures<InteractionTarget>(
     transitionBounds: TransitionBounds,

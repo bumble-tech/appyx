@@ -1,19 +1,20 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation
+package com.bumble.appyx.navigation.component.spotlighthero.operation
 
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHero
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHero
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
+
 @Parcelize
-class Next<InteractionTarget>(
+class Last<InteractionTarget : Any>(
     override var mode: Operation.Mode = Operation.Mode.IMPOSED
 ) : BaseOperation<SpotlightHeroModel.State<InteractionTarget>>() {
 
     override fun isApplicable(state: SpotlightHeroModel.State<InteractionTarget>): Boolean =
-        state.hasNext()
+        true
 
     override fun createFromState(
         baseLineState: SpotlightHeroModel.State<InteractionTarget>
@@ -24,13 +25,13 @@ class Next<InteractionTarget>(
         fromState: SpotlightHeroModel.State<InteractionTarget>
     ): SpotlightHeroModel.State<InteractionTarget> =
         fromState.copy(
-            activeIndex = fromState.activeIndex + 1f
+            activeIndex = fromState.positions.lastIndex.toFloat(),
         )
 }
 
-fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.next(
+fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.last(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.IMPOSED
 ) {
-    operation(Next(mode), animationSpec)
+    operation(Last(mode), animationSpec)
 }
