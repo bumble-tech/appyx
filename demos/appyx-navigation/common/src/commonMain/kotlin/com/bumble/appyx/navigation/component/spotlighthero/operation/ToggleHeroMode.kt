@@ -1,12 +1,12 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.operation
+package com.bumble.appyx.navigation.component.spotlighthero.operation
 
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.interactions.core.model.transition.BaseOperation
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHero
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.HERO
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.LIST
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHero
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.Mode.HERO
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.Mode.LIST
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.State
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize

@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.default
+package com.bumble.appyx.navigation.component.spotlighthero.visualisation.default
 
 import androidx.compose.ui.unit.DpOffset
 import com.bumble.appyx.interactions.core.ui.context.UiContext

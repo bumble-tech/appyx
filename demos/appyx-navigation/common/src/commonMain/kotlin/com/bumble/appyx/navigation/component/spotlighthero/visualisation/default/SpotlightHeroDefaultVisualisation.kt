@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.default
+package com.bumble.appyx.navigation.component.spotlighthero.visualisation.default
 
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -14,11 +14,11 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignmen
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.HERO
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.Mode.LIST
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.SpotlightHeroVisualisation
-import com.bumble.appyx.navigation.node.cakes.component.spotlighthero.visualisation.property.HeroProgress
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.Mode.HERO
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.Mode.LIST
+import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.State
+import com.bumble.appyx.navigation.component.spotlighthero.visualisation.SpotlightHeroVisualisation
+import com.bumble.appyx.navigation.component.spotlighthero.visualisation.property.HeroProgress
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(

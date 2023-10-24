@@ -1,12 +1,8 @@
 package com.bumble.appyx.navigation
 
-import BrowserViewportWindow
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -16,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -28,6 +25,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.CanvasBasedWindow
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.WebNodeHost
 import com.bumble.appyx.navigation.navigator.LocalNavigator
@@ -42,11 +40,12 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import org.jetbrains.skiko.wasm.onWasmReady
 
+@OptIn(ExperimentalComposeUiApi::class)
 fun main() {
     val events: Channel<Unit> = Channel()
     val navigator = Navigator()
     onWasmReady {
-        BrowserViewportWindow("Appyx navigation demo") {
+        CanvasBasedWindow("Appyx navigation demo") {
             ForceChangeToCodeGen(events, navigator)
         }
     }
