@@ -18,6 +18,27 @@ class Cart {
         }
     }
 
+    fun minusOrDelete(cake: Cake) {
+        mutableItems.update {
+            it.toMutableMap().apply {
+                val currentQuantity = this[cake]
+                if (currentQuantity != null && currentQuantity > 1) {
+                    this[cake] = currentQuantity - 1
+                } else {
+                    this.remove(cake)
+                }
+            }
+        }
+    }
+
+    fun delete(cake: Cake) {
+        mutableItems.update {
+            it.toMutableMap().apply {
+                this.remove(cake)
+            }
+        }
+    }
+
     fun clear() {
         mutableItems.value = emptyMap()
     }

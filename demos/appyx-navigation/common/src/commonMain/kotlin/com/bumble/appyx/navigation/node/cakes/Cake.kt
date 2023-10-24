@@ -1,8 +1,10 @@
 package com.bumble.appyx.navigation.node.cakes
 
+import androidx.compose.runtime.Immutable
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
+@Immutable
 @Parcelize
 data class Cake(
     val name: String,

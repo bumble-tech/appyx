@@ -1,5 +1,6 @@
 package com.bumble.appyx.navigation.node.cart
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,16 +36,24 @@ class CartItemsNode(
 
         val clearCartAction = { cart.clear() }
         val goToCakeAction: (Cake) -> Unit = { navigator.goToCake(it) }
+        val plusOneCakeAction: (Cake) -> Unit = { cart.add(it) }
+        val minusOneCakeAction: (Cake) -> Unit = { cart.minusOrDelete(it) }
+        val deleteCakeAction: (Cake) -> Unit = { cart.delete(it) }
 
-        if (cartItems.value.isEmpty()) {
-            CartEmptyContent(navigator)
-        } else {
-            CartContent(
-                cartItems = cartItems.value,
-                clearCartAction = clearCartAction,
-                goToCakeAction = goToCakeAction,
-                checkoutAction = checkoutAction,
-            )
+        Crossfade(cartItems.value.isEmpty()) { isCartEmpty ->
+            if (isCartEmpty) {
+                CartEmptyContent(navigator)
+            } else {
+                CartContent(
+                    cartItems = cartItems.value,
+                    clearCartAction = clearCartAction,
+                    goToCakeAction = goToCakeAction,
+                    plusOneCakeAction = plusOneCakeAction,
+                    minusOneCakeAction = minusOneCakeAction,
+                    deleteCakeAction = deleteCakeAction,
+                    checkoutAction = checkoutAction,
+                )
+            }
         }
     }
 
