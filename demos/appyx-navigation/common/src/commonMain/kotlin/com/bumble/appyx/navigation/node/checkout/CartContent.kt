@@ -240,13 +240,15 @@ private fun ActionButton(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CartActions(
+private fun LazyItemScope.CartActions(
     onClearCart: () -> Unit,
     onCheckout: () -> Unit,
 ) {
     Row(
         modifier = Modifier
+            .animateItemPlacement()
             .fillMaxWidth()
             .padding(16.dp),
     ) {
