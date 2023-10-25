@@ -2,7 +2,9 @@
 
 ## Pending changes
 
-–
+### Added
+
+– [#625](https://github.com/bumble-tech/appyx/pull/625) – Navigation sample app
 
 ---
 
