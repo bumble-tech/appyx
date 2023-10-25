@@ -15,12 +15,13 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.resource
 
+@Suppress("TooGenericExceptionCaught", "SwallowedException")
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun ResourceImage(
     path: String,
-    fallbackUrl: String = path,
     modifier: Modifier = Modifier,
+    fallbackUrl: String = path,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Fit
 ) {
