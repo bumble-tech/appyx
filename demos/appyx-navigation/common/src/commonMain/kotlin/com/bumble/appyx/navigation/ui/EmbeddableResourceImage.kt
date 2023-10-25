@@ -9,5 +9,5 @@ expect fun EmbeddableResourceImage(
     path: String,
     contentDescription: String,
     contentScale: ContentScale,
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 )

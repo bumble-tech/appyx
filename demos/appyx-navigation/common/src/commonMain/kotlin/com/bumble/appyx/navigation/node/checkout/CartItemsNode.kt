@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.navigation.collections.toImmutableMap
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
@@ -50,7 +51,7 @@ class CartItemsNode(
                     CartEmptyContent(navigator)
                 } else {
                     CartContent(
-                        cartItems = cartItems.value,
+                        cartItems = cartItems.value.toImmutableMap(),
                         onClearCart = onClearCart,
                         onGoToCake = onGoToCake,
                         onPlusOneCake = onPlusOneCake,

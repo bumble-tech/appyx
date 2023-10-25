@@ -43,6 +43,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.navigation.collections.ImmutableList
+import com.bumble.appyx.navigation.collections.ImmutableMap
 import com.bumble.appyx.navigation.node.cakes.Cake
 import com.bumble.appyx.navigation.ui.EmbeddableResourceImage
 import com.bumble.appyx.navigation.ui.md_red_200
@@ -51,7 +53,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun CartContent(
-    cartItems: Map<Cake, Int>,
+    cartItems: ImmutableMap<Cake, Int>,
     onClearCart: () -> Unit,
     onCheckout: () -> Unit,
     onGoToCake: (Cake) -> Unit,
