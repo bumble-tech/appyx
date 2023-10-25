@@ -8,12 +8,14 @@ import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.node.checkout.CheckoutNode.NavTarget
+import com.bumble.appyx.navigation.platform.getPlatformName
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -25,7 +27,20 @@ class CheckoutNode(
             initialTargets = listOf(NavTarget.CartItems),
             savedStateMap = buildContext.savedStateMap,
         ),
-        visualisation = { BackStackSlider(it) },
+        visualisation = {
+            if (getPlatformName() == IOS_PLATFORM_NAME) {
+                BackStackParallax(it)
+            } else {
+                BackStackSlider(it)
+            }
+        },
+        gestureFactory = {
+            if (getPlatformName() == IOS_PLATFORM_NAME) {
+                BackStackParallax.Gestures(it)
+            } else {
+                GestureFactory.Noop()
+            }
+        }
     )
 ) : ParentNode<NavTarget>(
     buildContext = buildContext,
@@ -53,16 +68,20 @@ class CheckoutNode(
             is NavTarget.CartItems -> CartItemsNode(buildContext, cart) {
                 backStack.push(NavTarget.Address)
             }
+
             is NavTarget.Address -> AddressNode(buildContext) {
                 backStack.push(NavTarget.Shipping)
             }
+
             is NavTarget.Shipping -> ShippingDetailsNode(buildContext) {
                 backStack.push(NavTarget.Payment)
             }
+
             is NavTarget.Payment -> PaymentNode(buildContext) {
                 cart.clear()
                 backStack.newRoot(NavTarget.Success)
             }
+
             is NavTarget.Success -> OrderConfirmedNode(buildContext) {
                 backStack.newRoot(NavTarget.CartItems)
             }
@@ -74,6 +93,10 @@ class CheckoutNode(
             appyxComponent = backStack,
             modifier = Modifier
         )
+    }
+
+    companion object{
+        private const val IOS_PLATFORM_NAME = "iOS"
     }
 }
 
