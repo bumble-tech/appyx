@@ -43,7 +43,6 @@ dependencies {
     implementation(project(":demos:common"))
     implementation(project(":demos:sandbox-appyx-navigation:common"))
     implementation(project(":appyx-interactions:appyx-interactions"))
-    implementation(project(":appyx-components:stable:backstack:backstack"))
     implementation(project(":appyx-components:experimental:cards:cards"))
 
     implementation(libs.androidx.activity.compose)
@@ -52,7 +51,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.java8)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling)
-    implementation(libs.compose.ui.ui)
     implementation(libs.google.material)
     implementation(libs.coil.compose)
 }
