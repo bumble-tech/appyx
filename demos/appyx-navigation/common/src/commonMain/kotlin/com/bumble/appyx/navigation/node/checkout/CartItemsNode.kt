@@ -42,19 +42,23 @@ class CartItemsNode(
         val onMinusOneCake: (Cake) -> Unit = { cart.minusOrDelete(it) }
         val onDeleteCake: (Cake) -> Unit = { cart.delete(it) }
 
-        Crossfade(cartItems.value.isEmpty()) { isCartEmpty ->
-            if (isCartEmpty) {
-                CartEmptyContent(navigator)
-            } else {
-                CartContent(
-                    cartItems = cartItems.value,
-                    onClearCart = onClearCart,
-                    onGoToCake = onGoToCake,
-                    onPlusOneCake = onPlusOneCake,
-                    onMinusOneCake = onMinusOneCake,
-                    onDeleteCake = onDeleteCake,
-                    onCheckout = onCheckout,
-                )
+        Surface(
+            modifier = modifier.fillMaxSize()
+        ) {
+            Crossfade(cartItems.value.isEmpty()) { isCartEmpty ->
+                if (isCartEmpty) {
+                    CartEmptyContent(navigator)
+                } else {
+                    CartContent(
+                        cartItems = cartItems.value,
+                        onClearCart = onClearCart,
+                        onGoToCake = onGoToCake,
+                        onPlusOneCake = onPlusOneCake,
+                        onMinusOneCake = onMinusOneCake,
+                        onDeleteCake = onDeleteCake,
+                        onCheckout = onCheckout,
+                    )
+                }
             }
         }
     }
