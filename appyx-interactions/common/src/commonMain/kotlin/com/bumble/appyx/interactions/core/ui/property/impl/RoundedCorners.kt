@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@Suppress("MagicNumber")
 class RoundedCorners(
     coroutineScope: CoroutineScope,
     target: Target,
