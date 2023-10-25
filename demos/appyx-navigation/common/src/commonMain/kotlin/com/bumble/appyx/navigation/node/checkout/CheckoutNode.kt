@@ -15,6 +15,7 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.node.checkout.CheckoutNode.NavTarget
+import com.bumble.appyx.navigation.platform.IOS_PLATFORM_NAME
 import com.bumble.appyx.navigation.platform.getPlatformName
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -94,9 +95,4 @@ class CheckoutNode(
             modifier = Modifier
         )
     }
-
-    companion object{
-        private const val IOS_PLATFORM_NAME = "iOS"
-    }
 }
-
