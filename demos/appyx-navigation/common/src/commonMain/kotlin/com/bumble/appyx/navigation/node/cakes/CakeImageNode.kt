@@ -30,7 +30,6 @@ class CakeImageNode(
     @Composable
     override fun View(modifier: Modifier) {
         val interactionSource = remember { MutableInteractionSource() }
-        val heroProgress = motionPropertyRenderValue<Float, HeroProgress>() ?: 0f
 
         Box(
             modifier = modifier

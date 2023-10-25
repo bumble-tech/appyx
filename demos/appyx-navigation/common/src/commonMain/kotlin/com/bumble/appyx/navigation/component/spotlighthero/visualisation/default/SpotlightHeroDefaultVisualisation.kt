@@ -28,8 +28,14 @@ class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(
     BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
-    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(initialState.activeIndex))
-    override val heroProgress = HeroProgress(uiContext.coroutineScope, GenericFloatProperty.Target(initialState.heroProgress()))
+    private val scrollX = GenericFloatProperty(
+        coroutineScope = uiContext.coroutineScope,
+        target = GenericFloatProperty.Target(initialState.activeIndex)
+    )
+    override val heroProgress = HeroProgress(
+        coroutineScope = uiContext.coroutineScope,
+        target = GenericFloatProperty.Target(initialState.heroProgress())
+    )
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX,

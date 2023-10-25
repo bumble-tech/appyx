@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.navigation.collections.toImmutableList
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.checkout.Address.AddressOne
@@ -50,7 +51,7 @@ class AddressNode(
     }
 
     @Composable
-    private fun AddressSelection(modifier: Modifier) {
+    private fun AddressSelection(modifier: Modifier = Modifier) {
         var selectedAddress by remember { mutableStateOf<CheckoutFormField>(AddressOne) }
 
         Surface(
@@ -58,7 +59,7 @@ class AddressNode(
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Column(
-                    modifier = modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Text(
@@ -68,7 +69,7 @@ class AddressNode(
                     )
                     Spacer(modifier = Modifier.requiredHeight(4.dp))
                     Options(
-                        values = addresses,
+                        values = addresses.toImmutableList(),
                         selected = selectedAddress,
                         onUpdate = { selectedAddress = it }
                     )

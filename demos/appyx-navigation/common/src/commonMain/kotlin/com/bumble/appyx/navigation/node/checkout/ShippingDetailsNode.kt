@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.navigation.collections.toImmutableList
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.checkout.ShippingMethod.Pony
@@ -54,7 +55,7 @@ class ShippingDetailsNode(
     }
 
     @Composable
-    private fun ShippingDetails(modifier: Modifier) {
+    private fun ShippingDetails(modifier: Modifier = Modifier) {
         var shippingMethod by remember { mutableStateOf<CheckoutFormField>(Pony) }
 
         Surface(
@@ -62,7 +63,7 @@ class ShippingDetailsNode(
         ) {
             Box(contentAlignment = Alignment.Center) {
                 Column(
-                    modifier = modifier.padding(16.dp),
+                    modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
                     Text(
@@ -72,7 +73,7 @@ class ShippingDetailsNode(
                     )
                     Spacer(modifier = Modifier.requiredHeight(4.dp))
                     Options(
-                        values = shippingMethods,
+                        values = shippingMethods.toImmutableList(),
                         selected = shippingMethod,
                         onUpdate = { shippingMethod = it }
                     )

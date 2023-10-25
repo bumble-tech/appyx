@@ -8,6 +8,7 @@ import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@Suppress("CompositionLocalAllowlist")
 val LocalNavigator = compositionLocalOf { Navigator() }
 
 class Navigator : NodeReadyObserver<RootNode> {

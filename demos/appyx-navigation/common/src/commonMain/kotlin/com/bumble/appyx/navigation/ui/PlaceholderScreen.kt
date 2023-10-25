@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun PlaceholderScreen(
-    modifier: Modifier = Modifier,
     title: String,
     buttonText: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier

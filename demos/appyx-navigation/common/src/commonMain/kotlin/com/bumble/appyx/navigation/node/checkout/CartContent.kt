@@ -68,7 +68,7 @@ fun CartContent(
         val cartList = remember(cartItems) { cartItems.toList() }
 
         LazyColumn(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
                 .weight(1f),
