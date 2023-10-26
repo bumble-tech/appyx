@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
+@Suppress("MagicNumber")
 class AppyxNavItem(
     val text: @Composable (isSelected: Boolean) -> Unit,
     val icon: @Composable (isSelected: Boolean) -> Unit,

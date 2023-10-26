@@ -43,6 +43,8 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
+import com.bumble.appyx.navigation.collections.ImmutableList
+import com.bumble.appyx.navigation.collections.immutableListOf
 import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.node.ParentNode
 import kotlin.math.roundToInt
@@ -53,8 +55,8 @@ internal val defaultExtraTouch = 48.dp
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
-    draggables: List<Draggable> = listOf(appyxComponent),
     modifier: Modifier = Modifier,
+    draggables: ImmutableList<Draggable> = immutableListOf(appyxComponent),
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = GestureValidator.defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
