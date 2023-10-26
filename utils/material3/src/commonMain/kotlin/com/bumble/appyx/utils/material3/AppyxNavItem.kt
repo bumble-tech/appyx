@@ -29,13 +29,12 @@ class AppyxNavItem(
     val icon: @Composable (isSelected: Boolean) -> Unit,
     val node: (buildContext: BuildContext) -> Node
 ) {
-    @OptIn(ExperimentalMaterial3Api::class)
     constructor(
         text: String,
         unselectedIcon: ImageVector,
         selectedIcon: ImageVector,
         badgeText: Flow<String?> = MutableStateFlow(null),
-        iconModifier: Modifier = Modifier,
+        modifier: Modifier = Modifier,
         hasScaleAnimation: Boolean = true,
         node: (buildContext: BuildContext) -> Node
     ) : this(
@@ -46,41 +45,63 @@ class AppyxNavItem(
             )
         },
         icon = { isSelected ->
-            BadgedBox(
-                badge = {
-                    val badgeCurrentText = badgeText.collectAsState(null).value
-                    val scale = if (hasScaleAnimation) {
-                        var animated by remember { mutableStateOf(false) }
-                        DisposableEffect(badgeCurrentText) {
-                            animated = true
-                            onDispose { animated = false }
-                        }
-                        animateFloatAsState(
-                            targetValue = if (animated) 1.2f else 1f,
-                            finishedListener = { animated = false },
-                        ).value
-                    } else {
-                        1f
-                    }
-
-                    if (badgeCurrentText != null) {
-                        Badge(Modifier.scale(scale)) {
-                            Text(
-                                text = badgeCurrentText,
-                                color = MaterialTheme.colorScheme.primaryContainer,
-                            )
-                        }
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = if (isSelected) selectedIcon else unselectedIcon,
-                    contentDescription = text,
-                    modifier = iconModifier,
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                )
-            }
+            BadgedIcon(
+                badgeText = badgeText,
+                hasScaleAnimation = hasScaleAnimation,
+                isSelected = isSelected,
+                selectedIcon = selectedIcon,
+                unselectedIcon = unselectedIcon,
+                text = text,
+                modifier = modifier
+            )
         },
         node = node
     )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BadgedIcon(
+    badgeText: Flow<String?>,
+    hasScaleAnimation: Boolean,
+    isSelected: Boolean,
+    selectedIcon: ImageVector,
+    unselectedIcon: ImageVector,
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    BadgedBox(
+        modifier = modifier,
+        badge = {
+            val badgeCurrentText = badgeText.collectAsState(null).value
+            val scale = if (hasScaleAnimation) {
+                var animated by remember { mutableStateOf(false) }
+                DisposableEffect(badgeCurrentText) {
+                    animated = true
+                    onDispose { animated = false }
+                }
+                animateFloatAsState(
+                    targetValue = if (animated) 1.2f else 1f,
+                    finishedListener = { animated = false },
+                ).value
+            } else {
+                1f
+            }
+
+            if (badgeCurrentText != null) {
+                Badge(Modifier.scale(scale)) {
+                    Text(
+                        text = badgeCurrentText,
+                        color = MaterialTheme.colorScheme.primaryContainer,
+                    )
+                }
+            }
+        }
+    ) {
+        Icon(
+            imageVector = if (isSelected) selectedIcon else unselectedIcon,
+            contentDescription = text,
+            tint = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }
 }
