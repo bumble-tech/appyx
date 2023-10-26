@@ -24,6 +24,7 @@ import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
+import com.google.android.material.snackbar.Snackbar
 
 @ExperimentalUnitApi
 @ExperimentalAnimationApi
@@ -35,6 +36,7 @@ class MainActivity : NodeActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        checkDebugBuild()
 
         setContent {
             AppyxSampleAppTheme {
@@ -78,6 +80,20 @@ class MainActivity : NodeActivity() {
 
                 // adb shell am start -a "android.intent.action.VIEW" -d "appyx://randomcake-wait"
                 (uri?.host == "randomcake-wait") -> navigator.goToARandomCake()
+            }
+        }
+    }
+
+    private fun checkDebugBuild() {
+        if (BuildConfig.DEBUG) {
+            val snackbar = Snackbar.make(
+                findViewById(android.R.id.content),
+                "Heads up! For better performance, run the app using the Release build.",
+                Snackbar.LENGTH_INDEFINITE
+            )
+            snackbar.apply {
+                setAction("OK") { snackbar.dismiss() }
+                show()
             }
         }
     }
