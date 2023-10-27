@@ -8,7 +8,7 @@ title: Appyx – Overview
 ![badge-jvm](https://img.shields.io/badge/platform-jvm-orange)
 ![badge-macos](https://img.shields.io/badge/platform-macos-purple)
 ![badge-js](https://img.shields.io/badge/platform-js-yellow)
-![badge-ios](https://img.shields.io/badge/platform-🔄ios🔄-lightgray)
+![badge-ios](https://img.shields.io/badge/platform-ios-lightgray)
 
 Model-driven navigation + UI components with gesture control for Compose Multiplatform.
 
@@ -40,7 +40,7 @@ Appyx is a collection of libraries:
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -63,7 +63,7 @@ Appyx is a collection of libraries:
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample2/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample2/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-interactions:interactions:sample2:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -84,7 +84,7 @@ Back stack, Spotlight (pager), and other UI components built using [Appyx Intera
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
         width=512,
         height=384,

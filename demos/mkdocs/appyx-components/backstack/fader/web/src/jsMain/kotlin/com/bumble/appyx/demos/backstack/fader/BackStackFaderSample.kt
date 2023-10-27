@@ -32,7 +32,7 @@ fun BackStackFaderSample(
     val backStack = BackStack(
         scope = coroutineScope,
         model = model,
-        motionController = { BackStackFader(it) },
+        visualisation = { BackStackFader(it) },
         gestureFactory = { GestureFactory.Noop() },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow * 2),
     )

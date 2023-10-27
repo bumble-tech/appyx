@@ -110,7 +110,7 @@ class SpotlightTest(private val testParam: TestParam) {
                 initialActiveIndex = initialActiveIndex,
                 savedStateMap = null
             ),
-            motionController = { SpotlightSlider(uiContext = it) },
+            visualisation = { SpotlightSlider(uiContext = it) },
             scope = CoroutineScope(Dispatchers.Unconfined),
             disableAnimations = disableAnimations,
         )

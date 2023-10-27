@@ -27,7 +27,7 @@ Check [its own page for more details](backstack.md).
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -45,7 +45,7 @@ Check [its own page for more details](spotlight.md).
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -64,7 +64,7 @@ Check [its own page for more details](experimental.md).
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/experimental/puzzle15/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/experimental/puzzle15/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:experimental:puzzle15:web:jsBrowserDistribution",
         width=512,
         height=384,

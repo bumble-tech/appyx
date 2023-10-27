@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Button
@@ -27,9 +26,9 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.internal.testdrive.operation.next
-import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController
-import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationMotionController.Companion.toTargetUiState
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
+import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationVisualisation
+import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationVisualisation.Companion.toTargetUiState
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleVisualisation
 import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
@@ -61,8 +60,8 @@ fun <InteractionTarget : Any> TestDriveExperiment(
             model = model,
             progressAnimationSpec = spring(stiffness = Spring.StiffnessLow),
             animateSettle = true,
-            motionController = {
-                TestDriveRotationMotionController(
+            visualisation = {
+                TestDriveRotationVisualisation(
                     it,
                     uiAnimationSpec = spring(
                         stiffness = Spring.StiffnessLow,
@@ -71,7 +70,7 @@ fun <InteractionTarget : Any> TestDriveExperiment(
                     ),
                 )
             },
-            gestureFactory = { TestDriveSimpleMotionController.Gestures(it) }
+            gestureFactory = { TestDriveSimpleVisualisation.Gestures(it) }
         )
     }
 
@@ -161,11 +160,7 @@ fun <InteractionTarget : Any> TestDriveUi(
             Box(
                 modifier = Modifier
                     .size(60.dp)
-                    .align(targetUiState.position.value.alignment)
-                    .offset(
-                        targetUiState.position.value.offset.x,
-                        targetUiState.position.value.offset.y
-                    )
+                    .align(targetUiState.positionAlignment.value)
                     .border(2.dp, targetUiState.backgroundColor.value)
                     .semantics {
                         contentDescription = TEST_DRIVE_EXPERIMENT_TEST_HELPER

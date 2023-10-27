@@ -51,7 +51,7 @@ fun Widgets(
                 items = items,
                 savedStateMap = null
             ),
-            motionController = { WidgetsStack3D(it) },
+            visualisation = { WidgetsStack3D(it) },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
             gestureFactory = {
                 SpotlightSlider.Gestures(

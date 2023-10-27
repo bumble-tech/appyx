@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
-import com.bumble.appyx.components.experimental.cards.ui.CardsMotionController
+import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
 import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
@@ -30,8 +30,8 @@ fun DatingCards(modifier: Modifier = Modifier) {
                 },
                 savedStateMap = null
             ),
-            motionController = { CardsMotionController(it) },
-            gestureFactory = { CardsMotionController.Gestures(it) },
+            visualisation = { CardsVisualisation(it) },
+            gestureFactory = { CardsVisualisation.Gestures(it) },
             animateSettle = true
         )
     }

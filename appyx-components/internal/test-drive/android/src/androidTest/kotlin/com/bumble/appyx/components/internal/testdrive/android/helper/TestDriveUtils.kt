@@ -14,7 +14,7 @@ import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.components.internal.testdrive.TestDrive
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel
 import com.bumble.appyx.components.internal.testdrive.TestDriveUi
-import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleMotionController
+import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleVisualisation
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget
@@ -38,15 +38,15 @@ fun ComposeContentTestRule.createTestDrive(
     return TestDrive(
         scope = CoroutineScope(Dispatchers.Unconfined),
         model = model,
-        motionController = {
-            TestDriveSimpleMotionController(
+        visualisation = {
+            TestDriveSimpleVisualisation(
                 uiContext = it,
                 uiAnimationSpec = uiAnimationSpec
             )
         },
         progressAnimationSpec = animationSpec ?: spring(),
         gestureFactory = {
-            TestDriveSimpleMotionController.Gestures(it)
+            TestDriveSimpleVisualisation.Gestures(it)
         },
     ).also { setupTestDrive(it, model) }
 }

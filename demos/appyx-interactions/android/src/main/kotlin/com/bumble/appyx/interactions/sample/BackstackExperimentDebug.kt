@@ -38,7 +38,7 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
                 ),
                 savedStateMap = null
             ),
-            motionController = { BackStackFader(it) },
+            visualisation = { BackStackFader(it) },
             isDebug = false
         )
     }

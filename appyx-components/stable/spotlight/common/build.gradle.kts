@@ -12,7 +12,7 @@ appyx {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
@@ -25,6 +25,11 @@ kotlin {
         moduleName = "appyx-components-stable-spotlight-commons"
         browser()
     }
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -39,12 +44,22 @@ kotlin {
                 implementation(kotlin("test"))
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.junit)
             }
         }
         val desktopMain by getting
+
+        val iosX64Main by getting
+        val iosArm64Main by getting
+        val iosSimulatorArm64Main by getting
+        val iosMain by creating {
+            dependsOn(commonMain)
+            iosX64Main.dependsOn(this)
+            iosArm64Main.dependsOn(this)
+            iosSimulatorArm64Main.dependsOn(this)
+        }
     }
 }
 
@@ -53,4 +68,7 @@ dependencies {
     add("kspAndroid", project(":ksp:mutable-ui-processor"))
     add("kspDesktop", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
+    add("kspIosX64", project(":ksp:mutable-ui-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
 }

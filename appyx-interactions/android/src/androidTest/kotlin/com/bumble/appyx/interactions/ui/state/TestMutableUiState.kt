@@ -4,7 +4,8 @@ import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionInside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
 import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
@@ -13,13 +14,15 @@ import kotlinx.coroutines.launch
 
 class TestMutableUiState(
     uiContext: UiContext,
-    val position: PositionInside,
+    val positionAlignment: PositionAlignment,
+    val positionOffset: PositionOffset,
 ) : BaseMutableUiState<TestTargetUiState>(
     uiContext = uiContext,
-    motionProperties = listOf(position),
+    motionProperties = listOf(positionAlignment),
 ) {
     override val combinedMotionPropertyModifier: Modifier = Modifier
-        .then(position.modifier)
+        .then(positionAlignment.modifier)
+        .then(positionOffset.modifier)
 
     override suspend fun animateTo(
         scope: CoroutineScope,
@@ -28,8 +31,14 @@ class TestMutableUiState(
     ) {
         listOf(
             scope.async {
-                position.animateTo(
-                    target.position.value,
+                positionAlignment.animateTo(
+                    target.positionAlignment.value,
+                    spring(springSpec.dampingRatio, springSpec.stiffness),
+                )
+            },
+            scope.async {
+                positionOffset.animateTo(
+                    target.positionOffset.value,
                     spring(springSpec.dampingRatio, springSpec.stiffness),
                 )
             },
@@ -37,7 +46,8 @@ class TestMutableUiState(
     }
 
     override suspend fun snapTo(target: TestTargetUiState) {
-        position.snapTo(target.position.value)
+        positionAlignment.snapTo(target.positionAlignment.value)
+        positionOffset.snapTo(target.positionOffset.value)
     }
 
     override fun lerpTo(
@@ -47,7 +57,8 @@ class TestMutableUiState(
         fraction: Float,
     ) {
         scope.launch {
-            position.lerpTo(start.position, end.position, fraction)
+            positionAlignment.lerpTo(start.positionAlignment, end.positionAlignment, fraction)
+            positionOffset.lerpTo(start.positionOffset, end.positionOffset, fraction)
         }
     }
 }

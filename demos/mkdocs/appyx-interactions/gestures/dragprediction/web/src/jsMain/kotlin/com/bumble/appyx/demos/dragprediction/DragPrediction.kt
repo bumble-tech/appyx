@@ -43,7 +43,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.B
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
-import com.bumble.appyx.demos.dragprediction.DragPredictionMotionController.Companion.toTargetUiState
+import com.bumble.appyx.demos.dragprediction.DragPredictionVisualisation.Companion.toTargetUiState
 import com.bumble.appyx.demos.dragprediction.InteractionTarget.Child1
 import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
@@ -68,8 +68,8 @@ fun DragPrediction(
             scope = coroutineScope,
             model = model,
             progressAnimationSpec = spring(visibilityThreshold = 0.001f),
-            motionController = { DragPredictionMotionController(it) },
-            gestureFactory = { DragPredictionMotionController.Gestures(it) },
+            visualisation = { DragPredictionVisualisation(it) },
+            gestureFactory = { DragPredictionVisualisation.Gestures(it) },
             gestureSettleConfig = GestureSettleConfig(0.25f)
         )
     }
@@ -162,8 +162,8 @@ fun Target(
             modifier = modifier
                 .size(60.dp)
                 .offset(
-                    targetUiState.position.value.offset.x,
-                    targetUiState.position.value.offset.y
+                    targetUiState.positionOffset.value.offset.x,
+                    targetUiState.positionOffset.value.offset.y
                 )
                 .scale(targetUiState.scale.value)
                 .rotate(targetUiState.rotationZ.value)

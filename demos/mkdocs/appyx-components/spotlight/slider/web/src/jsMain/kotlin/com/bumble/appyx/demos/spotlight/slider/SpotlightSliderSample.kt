@@ -32,7 +32,7 @@ fun SpotlightSliderSample(
         Spotlight(
             scope = coroutineScope,
             model = model,
-            motionController = { SpotlightSlider(it) },
+            visualisation = { SpotlightSlider(it) },
             gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     val actions = mapOf(

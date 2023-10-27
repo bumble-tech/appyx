@@ -19,58 +19,174 @@ repositories {
 
 ## Appyx Navigation
 
+Adding the gradle dependency in a non-multiplatform project:
+
 ```groovy
 dependencies {
-    // Multiplatform
-    implementation "com.bumble.appyx:appyx-navigation:$version"
-
-    // Platform-specific
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:appyx-navigation-android:$version"
     implementation "com.bumble.appyx:appyx-navigation-desktop:$version"
     implementation "com.bumble.appyx:appyx-navigation-js:$version"
+
+    // For iOS, you need separate dependencies for Simulator, x86 & Arm
+    implementation "com.bumble.appyx:appyx-navigation-iossimulatorarm64:$version"
+    implementation "com.bumble.appyx:appyx-navigation-iosx64:$version"
+    implementation "com.bumble.appyx:appyx-navigation-iosarm64:$version"
+}
+```
+
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation "com.bumble.appyx:appyx-navigation:$version"
+            }
+        }
+    }
 }
 ```
 
 ## Appyx Interactions
 
+Adding the gradle dependency in a non-multiplatform project:
+
 ```groovy
 dependencies {
-    // Multiplatform
-    implementation "com.bumble.appyx:appyx-interactions:$version"
-    
-    // Platform-specific
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:appyx-interactions-android:$version"
     implementation "com.bumble.appyx:appyx-interactions-desktop:$version"
     implementation "com.bumble.appyx:appyx-interactions-js:$version"
+
+    // For iOS, you need separate dependencies for Simulator, x86 & Arm
+    implementation "com.bumble.appyx:appyx-interactions-iossimulatorarm64:$version"
+    implementation "com.bumble.appyx:appyx-interactions-iosx64:$version"
+    implementation "com.bumble.appyx:appyx-interactions-iosarm64:$version"
 }
 ```
 
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                implementation "com.bumble.appyx:appyx-interactions:$version"
+            }
+        }
+    }
+}
+```
 
 ## Appyx Components
 
 ### Back stack
 
+Adding the gradle dependency in a non-multiplatform project:
+
 ```groovy
 dependencies {
-    // Pick one (for your platform)
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:backstack-android:$version"
     implementation "com.bumble.appyx:backstack-desktop:$version"
     implementation "com.bumble.appyx:backstack-js:$version"
+
+    // For iOS, you need separate dependencies for Simulator, x86 & Arm
+    implementation "com.bumble.appyx:backstack-iossimulatorarm64:$version"
+    implementation "com.bumble.appyx:backstack-iosx64:$version"
+    implementation "com.bumble.appyx:backstack-iosarm64:$version"
+}
+```
+
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // Use api, not implementation!
+                api "com.bumble.appyx:backstack:$version"
+            }
+        }
+
+    }
 }
 ```
 
 ### Spotlight
 
+Adding the gradle dependency in a non-multiplatform project:
+
 ```groovy
 dependencies {
-    // Pick one (for your platform)
+    // Platform-specific (pick the right one for your platform)
     implementation "com.bumble.appyx:spotlight-android:$version"
     implementation "com.bumble.appyx:spotlight-desktop:$version"
     implementation "com.bumble.appyx:spotlight-js:$version"
+
+    // For iOS, you need separate dependencies for Simulator, x86 & Arm
+    implementation "com.bumble.appyx:spotlight-iossimulatorarm64:$version"
+    implementation "com.bumble.appyx:spotlight-iosx64:$version"
+    implementation "com.bumble.appyx:spotlight-iosarm64:$version"
+}
+```
+
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // Use api, not implementation!
+                api "com.bumble.appyx:spotlight:$version"
+            }
+        }
+
+    }
 }
 ```
 
 ## Utils and interop with other libraries
+
+### Material 3 support
+
+Support for [Navigation bar](https://m3.material.io/components/navigation-bar/overview), [Navigation rail](https://m3.material.io/components/navigation-rail/overview) to use easily together with **Appyx Navigation**.
+
+See more in [Material 3 support](../navigation/features/material3.md).
+
+Adding the gradle dependency in a non-multiplatform project:
+
+```groovy
+dependencies {
+    // Platform-specific (pick the right one for your platform)
+    implementation "com.bumble.appyx:utils-material3-android:$version"
+    implementation "com.bumble.appyx:utils-material3-desktop:$version"
+    implementation "com.bumble.appyx:utils-material3-js:$version"
+    implementation "com.bumble.appyx:utils-material3-iosarm64:$version"
+    implementation "com.bumble.appyx:utils-material3-iossimulatorarm64:$version"
+    implementation "com.bumble.appyx:utils-material3-iosx64:$version"
+}
+```
+
+Adding the gradle dependency in a multiplatform project:
+
+```groovy
+kotlin {
+    sourceSets {
+        val commonMain by getting {
+            dependencies {
+                // Use api, not implementation!
+                api "com.bumble.appyx:utils-material3:$version"
+            }
+        }
+    }
+}
+```
 
 ### RxJava 2
 

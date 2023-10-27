@@ -45,10 +45,12 @@ include(
     ":appyx-navigation:common",
     ":demos:appyx-interactions:android",
     ":demos:appyx-interactions:desktop",
+    ":demos:appyx-interactions:ios",
     ":demos:appyx-interactions:web",
     ":demos:appyx-navigation:common",
     ":demos:appyx-navigation:android",
     ":demos:appyx-navigation:desktop",
+    ":demos:appyx-navigation:ios",
     ":demos:appyx-navigation:web",
     ":demos:common",
     ":demos:navigation-compose",
@@ -81,6 +83,7 @@ include(
     ":utils:testing-ui",
     ":utils:testing-ui-activity",
     ":utils:testing-unit-common",
+    ":utils:material3",
     ":utils:multiplatform",
 )
 

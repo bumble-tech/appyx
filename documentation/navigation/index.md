@@ -30,6 +30,7 @@ title: Appyx Navigation – Overview
 - [ChildAware](features/childaware.md)
 - [Deep link navigation](features/deep-linking.md)
 - [Lifecycle](features/lifecycle.md)
+- [Material 3 support](features/material3.md)
 - [Plugins](features/plugins.md)
 - [Scoped DI](features/scoped-di.md)
 - [Surviving configuration changes](features/surviving-configuration-changes.md)
@@ -52,7 +53,7 @@ title: Appyx Navigation – Overview
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
         width=512,
         height=384,

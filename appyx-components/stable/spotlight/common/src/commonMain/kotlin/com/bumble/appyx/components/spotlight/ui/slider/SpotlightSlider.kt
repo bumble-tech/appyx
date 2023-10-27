@@ -22,15 +22,15 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightSlider<InteractionTarget : Any>(
     uiContext: UiContext,
     @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
     private val scrollX = GenericFloatProperty(
@@ -43,19 +43,19 @@ class SpotlightSlider<InteractionTarget : Any>(
         )
 
     private val created: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideTop),
+        positionAlignment = PositionAlignment.Target(OutsideTop),
         scale = Scale.Target(0f),
         alpha = Alpha.Target(1f),
     )
 
     private val standard: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(InContainer),
+        positionAlignment = PositionAlignment.Target(InContainer),
         scale = Scale.Target(1f),
         alpha = Alpha.Target(1f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideBottom),
+        positionAlignment = PositionAlignment.Target(OutsideBottom),
         scale = Scale.Target(0f),
         alpha = Alpha.Target(0f),
     )
