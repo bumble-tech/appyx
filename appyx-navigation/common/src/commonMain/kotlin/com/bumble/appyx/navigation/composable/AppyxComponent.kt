@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.round
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.core.model.progress.Draggable
 import com.bumble.appyx.interactions.core.model.removedElements
 import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
 import com.bumble.appyx.interactions.core.ui.LocalBoxScope
@@ -42,6 +43,8 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
+import com.bumble.appyx.navigation.collections.ImmutableList
+import com.bumble.appyx.navigation.collections.immutableListOf
 import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.node.ParentNode
 import kotlin.math.roundToInt
@@ -53,6 +56,7 @@ internal val defaultExtraTouch = 48.dp
 fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
+    draggables: ImmutableList<Draggable> = immutableListOf(appyxComponent),
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = GestureValidator.defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
@@ -102,7 +106,13 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     ) {
         CompositionLocalProvider(LocalBoxScope provides this@Box) {
             childrenBlock(
-                ChildrenTransitionScope(containerSize, appyxComponent, gestureExtraTouchArea, gestureValidator)
+                ChildrenTransitionScope(
+                    containerSize = containerSize,
+                    appyxComponent = appyxComponent,
+                    draggables = draggables,
+                    gestureExtraTouchArea = gestureExtraTouchArea,
+                    gestureValidator = gestureValidator
+                )
             )
         }
     }
@@ -111,6 +121,7 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
 class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
     private val containerSize: IntSize,
     private val appyxComponent: BaseAppyxComponent<InteractionTarget, NavState>,
+    private val draggables: List<Draggable>,
     private val gestureExtraTouchArea: Dp,
     private val gestureValidator: GestureValidator
 ) {
@@ -163,7 +174,9 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
                                         .pointerInput(appyxComponent) {
                                             detectDragGesturesOrCancellation(
                                                 onDragStart = { position ->
-                                                    appyxComponent.onStartDrag(position)
+                                                    draggables.forEach {
+                                                        it.onStartDrag(position)
+                                                    }
                                                 },
                                                 onDrag = { change, dragAmount ->
                                                     if (gestureValidator.isGestureValid(
@@ -172,15 +185,21 @@ class ChildrenTransitionScope<InteractionTarget : Any, NavState : Any>(
                                                         )
                                                     ) {
                                                         change.consume()
-                                                        appyxComponent.onDrag(dragAmount, density)
+                                                        draggables.forEach {
+                                                            it.onDrag(dragAmount, density)
+                                                        }
                                                         true
                                                     } else {
-                                                        appyxComponent.onDragEnd()
+                                                        draggables.forEach {
+                                                            it.onDragEnd()
+                                                        }
                                                         false
                                                     }
                                                 },
                                                 onDragEnd = {
-                                                    appyxComponent.onDragEnd()
+                                                    draggables.forEach {
+                                                        it.onDragEnd()
+                                                    }
                                                 },
                                             )
                                         }

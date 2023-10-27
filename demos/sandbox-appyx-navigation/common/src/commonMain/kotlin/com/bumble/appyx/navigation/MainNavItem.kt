@@ -28,7 +28,7 @@ enum class MainNavItem : Parcelable {
                     text = "Back stack",
                     unselectedIcon = Outlined.WebStories,
                     selectedIcon = Filled.WebStories,
-                    iconModifier = Modifier.rotate(180f),
+                    modifier = Modifier.rotate(180f),
                     node = { BackStackExamplesNode(it) }
                 )
 
@@ -43,7 +43,7 @@ enum class MainNavItem : Parcelable {
                     text = "Promoter",
                     unselectedIcon = Outlined.GridView,
                     selectedIcon = Filled.GridViewCustom,
-                    iconModifier = Modifier.rotate(45f),
+                    modifier = Modifier.rotate(45f),
                     node = { PromoterNode(it) }
                 )
             }
