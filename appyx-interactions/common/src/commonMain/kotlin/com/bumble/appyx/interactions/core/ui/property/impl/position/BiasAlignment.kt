@@ -32,31 +32,31 @@ sealed class BiasAlignment(
         companion object {
 
             @Stable
-            val InContainer = OutsideAlignment(0f, 0f)
-
-            @Stable
-            val OutsideLeft = OutsideAlignment(-1f, 0f)
-
-            @Stable
             val OutsideTopLeft = OutsideAlignment(-1f, -1f)
 
             @Stable
-            val OutsideBottomLeft = OutsideAlignment(-1f, 1f)
-
-            @Stable
-            val OutsideRight = OutsideAlignment(1f, 0f)
-
-            @Stable
-            val OutsideBottomRight = OutsideAlignment(1f, 1f)
+            val OutsideTop = OutsideAlignment(0f, -1f)
 
             @Stable
             val OutsideTopRight = OutsideAlignment(1f, -1f)
 
             @Stable
+            val OutsideLeft = OutsideAlignment(-1f, 0f)
+
+            @Stable
+            val InContainer = OutsideAlignment(0f, 0f)
+
+            @Stable
+            val OutsideRight = OutsideAlignment(1f, 0f)
+
+            @Stable
+            val OutsideBottomLeft = OutsideAlignment(-1f, 1f)
+
+            @Stable
             val OutsideBottom = OutsideAlignment(0f, 1f)
 
             @Stable
-            val OutsideTop = OutsideAlignment(0f, -1f)
+            val OutsideBottomRight = OutsideAlignment(1f, 1f)
         }
 
         override fun align(

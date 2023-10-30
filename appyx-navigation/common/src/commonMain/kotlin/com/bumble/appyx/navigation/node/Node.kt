@@ -96,7 +96,7 @@ open class Node internal constructor(
     }
 
     protected suspend inline fun <reified T : Node> executeAction(
-        crossinline action: () -> Unit
+        crossinline action: suspend () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
         action()
         this@Node as T

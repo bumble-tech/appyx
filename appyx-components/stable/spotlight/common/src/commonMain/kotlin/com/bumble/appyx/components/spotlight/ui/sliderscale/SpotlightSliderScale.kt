@@ -24,7 +24,7 @@ class SpotlightSliderScale<InteractionTarget : Any>(
     uiContext = uiContext
 ) {
     @Suppress("MaxLineLength")
-    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f)) // TODO sync this with the model's initial value rather than assuming 0
+    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f))
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX

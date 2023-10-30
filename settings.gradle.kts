@@ -53,6 +53,7 @@ include(
     ":demos:appyx-navigation:ios",
     ":demos:appyx-navigation:web",
     ":demos:common",
+    ":demos:image-loader:common",
     ":demos:navigation-compose",
     ":demos:mkdocs:appyx-interactions:interactions:sample1:web",
     ":demos:mkdocs:appyx-interactions:interactions:sample2:web",
@@ -73,6 +74,11 @@ include(
     ":demos:mkdocs:appyx-components:spotlight:sliderscale:web",
     ":demos:mkdocs:appyx-components:spotlight:stack3d:web",
     ":demos:mkdocs:common",
+    ":demos:sandbox-appyx-navigation:common",
+    ":demos:sandbox-appyx-navigation:android",
+    ":demos:sandbox-appyx-navigation:desktop",
+    ":demos:sandbox-appyx-navigation:ios",
+    ":demos:sandbox-appyx-navigation:web",
     ":ksp:mutable-ui-processor",
     ":utils:customisations",
     ":utils:interop-ribs",
@@ -98,4 +104,4 @@ project(":appyx-components:experimental:promoter:common").name = "promoter"
 project(":appyx-components:experimental:puzzle15:common").name = "puzzle15"
 project(":appyx-components:experimental:puzzle15:web").name = "puzzle15-web"
 project(":appyx-components:internal:test-drive:common").name = "test-drive"
-project(":demos:appyx-navigation:web").name = "navigation-web"
+project(":demos:sandbox-appyx-navigation:web").name = "navigation-web"
