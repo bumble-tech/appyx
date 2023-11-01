@@ -1,4 +1,5 @@
 import SwiftUI
+import ios
 
 @main
 struct iOSApp: App {
@@ -7,6 +8,9 @@ struct iOSApp: App {
 		    ZStack {
 		        Color.white.ignoresSafeArea(.all) // status bar color
 			    ContentView()
+            }
+            .onOpenURL { incomingURL in
+                Main_iosKt.handleDeepLinks(url: incomingURL)
             }
 		}
 	}
