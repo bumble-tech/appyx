@@ -27,7 +27,7 @@ class AssembleFlipBenchmark {
                 FrameTimingMetric()
             ),
             compilationMode = CompilationMode.DEFAULT,
-            iterations = 5
+            iterations = 3
         ) {
             pressHome()
             startActivityAndWait()
@@ -37,6 +37,10 @@ class AssembleFlipBenchmark {
             device.waitUntilIdle()
 
             device.findObject(By.text("Flip")).click()
+
+            device.waitUntilIdle()
+
+            device.findObject(By.text("Scatter")).click()
 
             device.waitUntilIdle()
         }
