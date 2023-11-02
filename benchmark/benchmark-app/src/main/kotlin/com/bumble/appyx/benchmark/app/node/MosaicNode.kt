@@ -1,3 +1,5 @@
+@file:Suppress("MagicNumber")
+
 package com.bumble.appyx.benchmark.app.node
 
 import androidx.compose.animation.core.Spring
@@ -45,7 +47,6 @@ private val animationSpec = spring<Float>(
     dampingRatio = Spring.DampingRatioNoBouncy
 )
 
-@Suppress("MagicNumber")
 class MosaicNode(
     buildContext: BuildContext,
     private val config: MosaicConfig,
