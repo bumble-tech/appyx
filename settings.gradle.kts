@@ -10,6 +10,7 @@ pluginManagement {
         kotlin("multiplatform")
         id("org.jetbrains.compose")
         id("com.google.devtools.ksp")
+        id("com.android.test")
     }
     includeBuild("plugins")
 }
@@ -43,6 +44,8 @@ include(
     ":appyx-interactions:common",
     ":appyx-navigation:android",
     ":appyx-navigation:common",
+    ":benchmark:benchmark-app",
+    ":benchmark:benchmark-test",
     ":demos:appyx-interactions:android",
     ":demos:appyx-interactions:desktop",
     ":demos:appyx-interactions:ios",
