@@ -1,7 +1,6 @@
 package com.bumble.appyx.benchmark.app.mosaic
 
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.SCATTERED
-import com.bumble.appyx.benchmark.app.node.MosaicPiece
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.Elements
 import com.bumble.appyx.interactions.core.asElements

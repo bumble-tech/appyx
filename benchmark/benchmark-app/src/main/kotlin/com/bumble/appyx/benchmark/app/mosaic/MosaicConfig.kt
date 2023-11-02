@@ -1,5 +1,6 @@
-package com.bumble.appyx.benchmark.app.node
+package com.bumble.appyx.benchmark.app.mosaic
 
+@Suppress("MagicNumber")
 enum class MosaicConfig(
     val columns: Int,
     val rows: Int

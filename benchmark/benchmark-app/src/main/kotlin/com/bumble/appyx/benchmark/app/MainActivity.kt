@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import com.bumble.appyx.benchmark.app.node.MosaicConfig
+import com.bumble.appyx.benchmark.app.mosaic.MosaicConfig
 import com.bumble.appyx.benchmark.app.node.MosaicNode
 import com.bumble.appyx.navigation.integration.NodeActivity
 import com.bumble.appyx.navigation.integration.NodeHost

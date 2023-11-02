@@ -10,7 +10,6 @@ import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.CAROUSEL
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.FLIPPED
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.SCATTERED
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.State
-import com.bumble.appyx.benchmark.app.node.MosaicPiece
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.smoothstep
 import com.bumble.appyx.interactions.core.ui.property.impl.AngularPosition
@@ -26,6 +25,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 import kotlin.math.min
 import kotlin.random.Random
 
+@Suppress("MagicNumber")
 class MosaicVisualisation(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float>

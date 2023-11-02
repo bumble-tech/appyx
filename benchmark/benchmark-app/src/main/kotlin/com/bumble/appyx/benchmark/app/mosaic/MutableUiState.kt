@@ -16,6 +16,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
+@Suppress("LongParameterList")
 class MutableUiState(
     uiContext: UiContext,
     val position: PositionAlignment,

@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.benchmark.app.mosaic.MosaicComponent
+import com.bumble.appyx.benchmark.app.mosaic.MosaicConfig
+import com.bumble.appyx.benchmark.app.mosaic.MosaicPiece
 import com.bumble.appyx.benchmark.app.mosaic.operation.assemble
 import com.bumble.appyx.benchmark.app.mosaic.operation.carousel
 import com.bumble.appyx.benchmark.app.mosaic.operation.flip
@@ -43,6 +45,7 @@ private val animationSpec = spring<Float>(
     dampingRatio = Spring.DampingRatioNoBouncy
 )
 
+@Suppress("MagicNumber")
 class MosaicNode(
     buildContext: BuildContext,
     private val config: MosaicConfig,

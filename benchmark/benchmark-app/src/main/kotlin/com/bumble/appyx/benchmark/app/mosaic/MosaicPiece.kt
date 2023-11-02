@@ -1,4 +1,4 @@
-package com.bumble.appyx.benchmark.app.node
+package com.bumble.appyx.benchmark.app.mosaic
 
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
