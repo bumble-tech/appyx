@@ -78,7 +78,6 @@ class MosaicNode(
                     .fillMaxHeight(1f / config.rows)
             ) {
                 FlashCard(
-                    flash = Color.White,
                     front = { modifier ->
                         Box(
                             modifier = modifier

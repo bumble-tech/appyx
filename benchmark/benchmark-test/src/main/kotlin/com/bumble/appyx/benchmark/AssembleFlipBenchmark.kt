@@ -40,6 +40,10 @@ class AssembleFlipBenchmark {
 
             device.waitUntilIdle()
 
+            device.findObject(By.text("Carousel")).click()
+
+            device.waitUntilIdle()
+
             device.findObject(By.text("Scatter")).click()
 
             device.waitUntilIdle()
