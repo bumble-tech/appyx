@@ -36,7 +36,7 @@ kotlin {
                 implementation(libs.kotlinx.serialization.json)
                 api(project(":appyx-interactions:appyx-interactions"))
                 api(project(":utils:utils-material3"))
-                api(project(":utils:customisations"))
+                api(project(":utils:utils-customisations"))
                 api(project(":utils:utils-multiplatform"))
                 implementation(project(":appyx-components:experimental:cards:cards"))
                 implementation(project(":appyx-components:experimental:modal:modal"))
