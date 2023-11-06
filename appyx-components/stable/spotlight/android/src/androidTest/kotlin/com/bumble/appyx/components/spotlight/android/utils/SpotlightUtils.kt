@@ -40,7 +40,7 @@ fun ComposeContentTestRule.createSpotlight(
     return Spotlight(
         scope = CoroutineScope(Dispatchers.Unconfined),
         model = model,
-        visualisation = { SpotlightSlider(it) },
+        visualisation = { SpotlightSlider(it, model.initialState) },
         gestureFactory = { SpotlightSlider.Gestures(it) },
         animationSpec = animationSpec
     ).also { setupSpotlight(it) }

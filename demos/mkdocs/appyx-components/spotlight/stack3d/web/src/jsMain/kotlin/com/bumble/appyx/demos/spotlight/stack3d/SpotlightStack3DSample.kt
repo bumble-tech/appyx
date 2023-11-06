@@ -37,7 +37,7 @@ fun SpotlightStack3DSample(
         Spotlight(
             scope = coroutineScope,
             model = model,
-            visualisation = { SpotlightStack3D(it) },
+            visualisation = { SpotlightStack3D(it, model.initialState) },
             gestureFactory = {
                 SpotlightSlider.Gestures(
                     transitionBounds = it,

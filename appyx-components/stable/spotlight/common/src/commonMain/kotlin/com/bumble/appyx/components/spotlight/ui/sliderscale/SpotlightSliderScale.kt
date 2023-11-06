@@ -18,13 +18,17 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightSliderScale<InteractionTarget : Any>(
     uiContext: UiContext,
+    initialState: State<InteractionTarget>,
     @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
 ) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
     @Suppress("MaxLineLength")
-    private val scrollX = GenericFloatProperty(uiContext.coroutineScope, Target(0f))
+    private val scrollX = GenericFloatProperty(
+        coroutineScope = uiContext.coroutineScope,
+        target = Target(initialState.activeIndex),
+    )
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX

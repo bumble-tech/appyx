@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,6 +26,7 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
+import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
@@ -43,7 +43,6 @@ fun SpotlightExperiment(
     modifier: Modifier = Modifier,
     orientation: Orientation = Orientation.Horizontal,
     reverseOrientation: Boolean = false,
-    visualisation: (UiContext) -> BaseVisualisation<Target, SpotlightModel.State<Target>, *, *>
 ) {
     val items = listOf(
         Target.Child1,
@@ -68,12 +67,13 @@ fun SpotlightExperiment(
         Target.Child6,
         Target.Child7,
     )
+    val model = SpotlightModel(
+        items = items,
+        savedStateMap = null,
+    )
     val spotlight = Spotlight(
-        model = SpotlightModel(
-            items = items,
-            savedStateMap = null
-        ),
-        visualisation = visualisation,
+        model = model,
+        visualisation = { SpotlightSliderRotation(it, model.initialState) },
         gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
         gestureSettleConfig = GestureSettleConfig(
@@ -166,13 +166,10 @@ fun <InteractionTarget : Any> SpotlightUi(
 }
 
 @Composable
-fun SpotlightExperimentInVertical(
-    visualisation: (UiContext) -> BaseVisualisation<Target, SpotlightModel.State<Target>, *, *>
-) {
+fun SpotlightExperimentInVertical() {
     SpotlightExperiment(
         orientation = Orientation.Vertical,
         reverseOrientation = true,
-        visualisation = visualisation
     )
 }
 
