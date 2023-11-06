@@ -2,7 +2,9 @@
 
 ## Pending changes
 
-–
+### API breaking changes
+
+- [#630](https://github.com/bumble-tech/appyx/pull/630) – Pass initial state into Spotlights visualisations
 
 ---
 
