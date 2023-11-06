@@ -22,7 +22,7 @@ dependencies {
     implementation(project(":appyx-components:experimental:modal:modal"))
     implementation(project(":appyx-components:experimental:puzzle15:android"))
     implementation(project(":appyx-components:internal:test-drive:android"))
-    implementation(project(":utils:material3"))
+    implementation(project(":utils:utils-material3"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)

@@ -22,6 +22,11 @@ internal class AndroidAppyxPublishPlugin : ProjectPlugin() {
         }
     }
 
+    override fun apply(project: Project) {
+        project.extensions.create("publishingPlugin", ProjectPluginExtension::class.java)
+        super.apply(project)
+    }
+
     override fun PublicationContainer.createPublications(project: Project) {
         create<MavenPublication>("androidRelease") {
             val artifactId = project.extensions.getByType(ProjectPluginExtension::class.java).artifactId
