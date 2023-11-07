@@ -52,7 +52,7 @@ class SpotlightObserveTransitionsExampleNode(
     ),
     private val spotlight: Spotlight<InteractionTarget> = Spotlight(
         model = model,
-        visualisation = { SpotlightSliderRotation(it, model.initialState) },
+        visualisation = { SpotlightSliderRotation(it, model.currentState) },
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
 ) : ParentNode<InteractionTarget>(

@@ -43,7 +43,7 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
     val spotlight = remember {
         Spotlight(
             model = model,
-            visualisation = { SpotlightSlider(it, model.initialState) },
+            visualisation = { SpotlightSlider(it, model.currentState) },
             gestureFactory = { SpotlightSlider.Gestures(it) },
             isDebug = true
         )

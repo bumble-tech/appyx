@@ -45,7 +45,7 @@ class SpotlightDebugNode(
     ),
     private val spotlight: Spotlight<InteractionTarget> = Spotlight(
         model = model,
-        visualisation = { SpotlightSlider(it, model.initialState) },
+        visualisation = { SpotlightSlider(it, model.currentState) },
         isDebug = true
     )
 ) : ParentNode<InteractionTarget>(

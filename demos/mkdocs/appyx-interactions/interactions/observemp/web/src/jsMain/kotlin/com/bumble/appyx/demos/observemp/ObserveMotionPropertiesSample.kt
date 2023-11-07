@@ -51,7 +51,7 @@ fun ObserveMotionPropertiesSample(
         Spotlight(
             scope = coroutineScope,
             model = model,
-            visualisation = { SpotlightSliderRotation(it, model.initialState) },
+            visualisation = { SpotlightSliderRotation(it, model.currentState) },
             gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     }

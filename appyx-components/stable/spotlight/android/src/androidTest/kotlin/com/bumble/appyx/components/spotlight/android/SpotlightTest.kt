@@ -111,7 +111,7 @@ class SpotlightTest(private val testParam: TestParam) {
         )
         spotlight = Spotlight(
             model = model,
-            visualisation = { SpotlightSlider(uiContext = it, initialState = model.initialState) },
+            visualisation = { SpotlightSlider(uiContext = it, initialState = model.currentState) },
             scope = CoroutineScope(Dispatchers.Unconfined),
             disableAnimations = disableAnimations,
         )
