@@ -30,10 +30,10 @@ import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRo
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.sample.android.SampleChildren
 import com.bumble.appyx.interactions.theme.appyx_dark
-import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 
@@ -43,6 +43,7 @@ fun SpotlightExperiment(
     modifier: Modifier = Modifier,
     orientation: Orientation = Orientation.Horizontal,
     reverseOrientation: Boolean = false,
+    visualisationType: SpotlightVisualisationType = SpotlightVisualisationType.SLIDER_ROTATION,
 ) {
     val items = listOf(
         Target.Child1,
@@ -73,7 +74,7 @@ fun SpotlightExperiment(
     )
     val spotlight = Spotlight(
         model = model,
-        visualisation = { SpotlightSliderRotation(it, model.initialState) },
+        visualisation = { visualisationType.toVisualisation(it, model.currentState) },
         gestureFactory = { SpotlightSlider.Gestures(it, orientation, reverseOrientation) },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 4),
         gestureSettleConfig = GestureSettleConfig(
