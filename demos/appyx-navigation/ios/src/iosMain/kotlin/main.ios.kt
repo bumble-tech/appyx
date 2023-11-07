@@ -15,7 +15,7 @@ import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.flow.flowOf
-
+import platform.Foundation.NSURL
 
 private val integrationPoint = MainIntegrationPoint()
 private val navigator = Navigator()
@@ -49,4 +49,17 @@ fun MainViewController() = ComposeUIViewController {
     }
 }.also { uiViewController ->
     integrationPoint.setViewController(uiViewController)
+}
+
+@Suppress("FunctionNaming")
+fun handleDeepLinks(url: NSURL) {
+    if (url.scheme == "appyx") {
+        when (url.host) {
+            // xcrun simctl openurl booted 'appyx://randomcake'
+            ("randomcake") -> navigator.goToARandomCakeWithDummyUser()
+
+            // xcrun simctl openurl booted 'appyx://randomcake-wait'
+            ("randomcake-wait") -> navigator.goToARandomCake()
+        }
+    }
 }
