@@ -8,10 +8,6 @@ import org.gradle.kotlin.dsl.configure
 import org.gradle.plugins.signing.SigningExtension
 
 
-open class ProjectPluginExtension {
-    var artifactId: String = ""
-}
-
 internal abstract class ProjectPlugin : Plugin<Project> {
 
     companion object {
@@ -20,7 +16,6 @@ internal abstract class ProjectPlugin : Plugin<Project> {
     }
 
     override fun apply(project: Project) {
-        project.extensions.create("publishingPlugin", ProjectPluginExtension::class.java)
         project.pluginManager.apply {
             apply("maven-publish")
             apply("signing")
