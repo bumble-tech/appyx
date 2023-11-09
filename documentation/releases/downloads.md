@@ -10,7 +10,7 @@ title: Downloads
 
 ## Repository
 
-```groovy
+```kotlin
 repositories {
     mavenCentral()
 }
@@ -21,7 +21,7 @@ repositories {
 
 Adding the gradle dependency in a non-multiplatform project:
 
-```groovy
+```kotlin
 dependencies {
     // Platform-specific (pick the right one for your platform)
     implementation("com.bumble.appyx:appyx-navigation-android:$version")
@@ -37,7 +37,7 @@ dependencies {
 
 Adding the gradle dependency in a multiplatform project:
 
-```groovy
+```kotlin
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -53,7 +53,7 @@ kotlin {
 
 Adding the gradle dependency in a non-multiplatform project:
 
-```groovy
+```kotlin
 dependencies {
     // Platform-specific (pick the right one for your platform)
     implementation("com.bumble.appyx:appyx-interactions-android:$version")
@@ -69,7 +69,7 @@ dependencies {
 
 Adding the gradle dependency in a multiplatform project:
 
-```groovy
+```kotlin
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -87,7 +87,7 @@ kotlin {
 
 Adding the gradle dependency in a non-multiplatform project:
 
-```groovy
+```kotlin
 dependencies {
     // Platform-specific (pick the right one for your platform)
     implementation("com.bumble.appyx:backstack-android:$version")
@@ -103,7 +103,7 @@ dependencies {
 
 Adding the gradle dependency in a multiplatform project:
 
-```groovy
+```kotlin
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -121,7 +121,7 @@ kotlin {
 
 Adding the gradle dependency in a non-multiplatform project:
 
-```groovy
+```kotlin
 dependencies {
     // Platform-specific (pick the right one for your platform)
     implementation("com.bumble.appyx:spotlight-android:$version")
@@ -137,7 +137,7 @@ dependencies {
 
 Adding the gradle dependency in a multiplatform project:
 
-```groovy
+```kotlin
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -161,7 +161,7 @@ See more in [Material 3 support](../navigation/features/material3.md).
 
 Adding the gradle dependency in a non-multiplatform project:
 
-```groovy
+```kotlin
 dependencies {
     // Platform-specific (pick the right one for your platform)
     implementation("com.bumble.appyx:utils-material3-android:$version")
@@ -175,7 +175,7 @@ dependencies {
 
 Adding the gradle dependency in a multiplatform project:
 
-```groovy
+```kotlin
 kotlin {
     sourceSets {
         val commonMain by getting {
@@ -190,7 +190,7 @@ kotlin {
 
 ### RxJava 2
 
-```groovy
+```kotlin
 dependencies {
     // Optional support for RxJava 2/3
     implementation("com.bumble.appyx:utils-interop-rx2:$version")
@@ -199,7 +199,7 @@ dependencies {
 
 ### RxJava 3
 
-```groovy
+```kotlin
 dependencies {
     implementation("com.bumble.appyx:utils-interop-rx3:$version")
 }
@@ -207,7 +207,7 @@ dependencies {
 
 ### badoo/RIBs
 
-```groovy
+```kotlin
 repositories {
     // Don't forget to add this, since badoo/RIBs is hosted on jitpack:
     maven(url = "https://jitpack.io")
@@ -221,7 +221,7 @@ dependencies {
 
 ### Testing
 
-```groovy
+```kotlin
 // Test rules and utility classes for testing on Android
 debugImplementation("com.bumble.appyx:utils-testing-ui-activity:$version")
 androidTestImplementation("com.bumble.appyx:utils-testing-ui:$version")
