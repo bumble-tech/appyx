@@ -46,13 +46,14 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class SpotlightNode(
     buildContext: BuildContext,
+    private val model: SpotlightModel<InteractionTarget> = SpotlightModel(
+        items = List(7) { InteractionTarget.Child(it) },
+        initialActiveIndex = 0f,
+        savedStateMap = buildContext.savedStateMap,
+    ),
     private val spotlight: Spotlight<InteractionTarget> = Spotlight(
-        model = SpotlightModel(
-            items = List(7) { InteractionTarget.Child(it) },
-            initialActiveIndex = 0f,
-            savedStateMap = buildContext.savedStateMap
-        ),
-        visualisation = { SpotlightSlider(it) },
+        model = model,
+        visualisation = { SpotlightSlider(it, model.currentState) },
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
 ) : ParentNode<InteractionTarget>(

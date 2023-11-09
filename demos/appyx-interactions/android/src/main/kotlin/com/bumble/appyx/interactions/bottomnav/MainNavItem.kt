@@ -8,14 +8,12 @@ import androidx.compose.material.icons.filled.ViewCarousel
 import androidx.compose.material.icons.outlined.Cake
 import androidx.compose.material.icons.outlined.Extension
 import androidx.compose.material.icons.outlined.GridView
-import androidx.compose.material.icons.outlined.Style
 import androidx.compose.material.icons.outlined.ViewCarousel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import com.bumble.appyx.components.experimental.cards.android.DatingCards
 import com.bumble.appyx.components.experimental.puzzle15.android.Puzzle15
 import com.bumble.appyx.components.internal.testdrive.android.TestDriveExperiment
-import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.interactions.sample.SpotlightExperiment
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.material3.AppyxNavItem
@@ -41,7 +39,7 @@ enum class MainNavItem : Parcelable {
                     text = "Spotlight",
                     unselectedIcon = Outlined.ViewCarousel,
                     selectedIcon = Filled.ViewCarousel,
-                    node = { node(it) { SpotlightExperiment { SpotlightSliderRotation(it) } } }
+                    node = { node(it) { SpotlightExperiment() } }
                 )
 
                 TEST_DRIVE -> AppyxNavItem(

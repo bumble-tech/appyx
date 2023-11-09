@@ -33,7 +33,7 @@ fun SpotlightSliderRotationSample(
         Spotlight(
             scope = coroutineScope,
             model = model,
-            visualisation = { SpotlightSliderRotation(it) },
+            visualisation = { SpotlightSliderRotation(it, model.currentState) },
             gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     val actions = mapOf(
