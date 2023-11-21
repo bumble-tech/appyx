@@ -41,6 +41,16 @@
     aspect-ratio: 4 / 3;
 }
 
+.compose_mpp_sample_app {
+    width: fit-content;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    overflow:hidden;
+    line-height: 0;
+    margin: auto;
+}
+
 @media (max-width: 543px) {
     .compose_mpp_sample {
         width: 256px;

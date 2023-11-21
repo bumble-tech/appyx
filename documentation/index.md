@@ -40,14 +40,14 @@ Appyx is a collection of libraries:
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/dist/js/productionExecutable",
-        compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
-        width=512,
-        height=384,
-        target_directory="samples/documentation-components-backstack-parallax",
+        project_output_directory="demos/appyx-navigation/web/build/dist/js/productionExecutable",
+        compile_task=":demos:appyx-navigation:web:jsBrowserDistribution",
+        width=256,
+        height=500,
+        target_directory="samples/documentation-appyx-navigation",
         html_file_name="index.html",
-        classname="compose_mpp_sample",
-)
+        classname="compose_mpp_sample_app",
+    )
 }}
 
 

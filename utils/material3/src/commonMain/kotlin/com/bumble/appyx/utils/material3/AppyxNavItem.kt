@@ -40,7 +40,8 @@ class AppyxNavItem(
         text = {
             Text(
                 text = text,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.titleSmall
             )
         },
         icon = { isSelected ->
