@@ -42,7 +42,7 @@ Appyx is a collection of libraries:
     compose_mpp_sample(
         project_output_directory="demos/appyx-navigation/web/build/dist/js/productionExecutable",
         compile_task=":demos:appyx-navigation:web:jsBrowserDistribution",
-        width=256,
+        width=512,
         height=500,
         target_directory="samples/documentation-appyx-navigation",
         html_file_name="index.html",
