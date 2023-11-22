@@ -64,7 +64,7 @@ fun CakeDetailsSheet(
                         )
                         Spacer(Modifier.width(4.dp))
                         Text(
-                            "Add to cart",
+                            text = "Add to cart",
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     }

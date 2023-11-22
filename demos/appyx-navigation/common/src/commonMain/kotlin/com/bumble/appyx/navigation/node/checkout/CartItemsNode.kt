@@ -81,7 +81,7 @@ class CartItemsNode(
                 navigator.goToCakes()
             }) {
                 Text(
-                    "Get some cakes!",
+                    text = "Get some cakes!",
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
