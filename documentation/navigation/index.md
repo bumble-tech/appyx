@@ -10,7 +10,7 @@ title: Appyx Navigation – Overview
 - Leverages the transitions and gesture-based capabilities of [Appyx Interactions](../interactions/index.md) to build beautiful, custom navigation.
 - Use any component for navigation, whether pre-built ([Appyx Components](../components/index.md)), or custom-built by you ([Appyx Interactions](../interactions/index.md)).
 
-<img src="https://i.imgur.com/hKvOs3w.gif" width="450">
+<img src="/appyx/assets/navigation/tree-animated.gif" width="450">
 
 
 ## Quick start
