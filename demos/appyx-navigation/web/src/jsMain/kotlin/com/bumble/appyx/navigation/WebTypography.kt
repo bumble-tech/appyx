@@ -6,15 +6,15 @@ import com.bumble.appyx.navigation.ui.typography
 
 internal val webTypography = typography.copy(
     bodySmall = typography.bodySmall.copy(
-        fontSize = 4.sp,
+        fontSize = 8.sp,
         fontFamily = FontFamily.SansSerif,
     ),
     bodyMedium = typography.bodyMedium.copy(
-        fontSize = 6.sp,
+        fontSize = 10.sp,
         fontFamily = FontFamily.SansSerif,
     ),
     bodyLarge = typography.bodyLarge.copy(
-        fontSize = 8.sp,
+        fontSize = 12.sp,
         fontFamily = FontFamily.SansSerif,
     ),
     titleSmall = typography.titleSmall.copy(
@@ -30,15 +30,15 @@ internal val webTypography = typography.copy(
         fontFamily = FontFamily.SansSerif,
     ),
     headlineSmall = typography.headlineSmall.copy(
-        fontSize = 12.sp,
-        fontFamily = FontFamily.SansSerif,
-    ),
-    headlineMedium = typography.headlineMedium.copy(
         fontSize = 14.sp,
         fontFamily = FontFamily.SansSerif,
     ),
-    headlineLarge = typography.headlineLarge.copy(
+    headlineMedium = typography.headlineMedium.copy(
         fontSize = 16.sp,
+        fontFamily = FontFamily.SansSerif,
+    ),
+    headlineLarge = typography.headlineLarge.copy(
+        fontSize = 18.sp,
         fontFamily = FontFamily.SansSerif,
     ),
 )

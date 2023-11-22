@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -31,17 +32,25 @@ class HomeNode(
         ) {
             val navigator = LocalNavigator.current
 
-            Column {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Text(
                     text = "Navigator demo",
                     style = MaterialTheme.typography.headlineSmall,
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
                 )
                 Spacer(Modifier.size(16.dp))
-                Button(onClick = {
-                    navigator.goToARandomCake()
-                }) {
-                    Text("Go to a random cake")
+                Button(
+                    onClick = {
+                        navigator.goToARandomCake()
+                    },
+                ) {
+                    Text(
+                        text = "Go to a random cake",
+                        style = MaterialTheme.typography.bodyMedium,
+                    )
                 }
             }
         }

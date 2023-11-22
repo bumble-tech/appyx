@@ -10,13 +10,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.CircleShape
@@ -43,7 +46,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.collections.ImmutableList
 import com.bumble.appyx.navigation.collections.ImmutableMap
 import com.bumble.appyx.navigation.node.cakes.Cake
 import com.bumble.appyx.navigation.ui.EmbeddableResourceImage
@@ -180,7 +182,7 @@ private fun CardItem(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Box(modifier = Modifier.size(50.dp)) {
@@ -233,12 +235,19 @@ private fun ActionButton(
     action: (Cake) -> Unit,
 ) {
     Button(
-        modifier = Modifier.size(24.dp),
+        modifier = Modifier
+            .heightIn(min = 12.dp, max = 24.dp)
+            .widthIn(min = 12.dp, max = 24.dp)
+            .aspectRatio(1f),
         onClick = { action(cake) },
         contentPadding = PaddingValues(0.dp),
         shape = CircleShape,
     ) {
-        Text(text = text, fontWeight = FontWeight.Bold)
+        Text(
+            text = text,
+            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 
@@ -258,14 +267,20 @@ private fun LazyItemScope.CartActions(
             onClick = onClearCart,
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
         ) {
-            Text("Clear cart")
+            Text(
+                text = "Clear cart",
+                style = MaterialTheme.typography.bodySmall
+            )
         }
         Spacer(modifier = Modifier.requiredWidth(4.dp))
         Button(
             onClick = onCheckout,
             modifier = Modifier.weight(1f)
         ) {
-            Text("Checkout")
+            Text(
+                text = "Checkout",
+                style = MaterialTheme.typography.bodySmall
+            )
         }
     }
 }
