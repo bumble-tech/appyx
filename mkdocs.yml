@@ -19,6 +19,7 @@ nav:
   - Home: index.md
   - Appyx Navigation:
       - Overview: navigation/index.md
+      - Sample app: navigation/sample-app.md
       - Quick start guide: navigation/quick-start.md
       - Concepts:
           - Model-driven navigation: navigation/concepts/model-driven-navigation.md
