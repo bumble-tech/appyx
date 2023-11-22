@@ -80,7 +80,10 @@ class CartItemsNode(
             Button(onClick = {
                 navigator.goToCakes()
             }) {
-                Text("Get some cakes!")
+                Text(
+                    "Get some cakes!",
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
     }
