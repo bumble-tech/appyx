@@ -41,6 +41,7 @@ class BackStackParallax<InteractionTarget : Any>(
     private val bottom = TargetUiState(
         offsetMultiplier = -0.2f,
         colorOverlay = ColorOverlay.Target(0.7f),
+        alpha = Alpha.Target(value = 0f, easing = { fraction -> if (fraction == 1f) 1f else 0f })
     )
 
     private val top = TargetUiState(
