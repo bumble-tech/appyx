@@ -6,6 +6,10 @@
 
 - [#630](https://github.com/bumble-tech/appyx/pull/630) – Pass initial state into Spotlights visualisations
 
+### Fixed
+
+- [#638](https://github.com/bumble-tech/appyx/pull/638) - Setting alpha to 0 for bottom element when animation is finished
+
 ---
 
 ## 2.0.0-alpha09
