@@ -36,7 +36,7 @@ fun SpotlightFaderSample(
         Spotlight(
             scope = coroutineScope,
             model = model,
-            motionController = { SpotlightFader(it) },
+            visualisation = { SpotlightFader(it) },
             gestureFactory = { SpotlightSlider.Gestures(it) },
         )
     val animationSpec: AnimationSpec<Float> = spring(stiffness = Spring.StiffnessVeryLow * 2)

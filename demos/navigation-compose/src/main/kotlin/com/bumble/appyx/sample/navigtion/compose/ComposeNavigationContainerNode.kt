@@ -26,7 +26,7 @@ internal class ComposeNavigationContainerNode(
             initialTargets = listOf(InteractionTarget.Main),
             savedStateMap = buildContext.savedStateMap
         ),
-        motionController = { BackStackSlider(it) }
+        visualisation = { BackStackSlider(it) }
     )
 ) : ParentNode<ComposeNavigationContainerNode.InteractionTarget>(
     appyxComponent = backStack,

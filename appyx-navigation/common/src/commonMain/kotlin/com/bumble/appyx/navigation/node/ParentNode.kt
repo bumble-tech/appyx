@@ -1,22 +1,13 @@
 package com.bumble.appyx.navigation.node
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.AppyxComponent
-import com.bumble.appyx.interactions.core.model.plus
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
-import com.bumble.appyx.interactions.permanent.PermanentModel
-import com.bumble.appyx.interactions.permanent.operation.addUnique
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
@@ -26,14 +17,11 @@ import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.ChildNodeCreationManager
 import com.bumble.appyx.navigation.children.ChildrenCallback
 import com.bumble.appyx.navigation.children.nodeOrNull
-import com.bumble.appyx.navigation.composable.ChildRenderer
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.mapState
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.navigation.Resolver
 import com.bumble.appyx.navigation.platform.PlatformBackHandler
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -45,7 +33,7 @@ import kotlin.reflect.KClass
 @Suppress("TooManyFunctions")
 @Stable
 abstract class ParentNode<InteractionTarget : Any>(
-    appyxComponent: AppyxComponent<InteractionTarget, *>,
+    val appyxComponent: AppyxComponent<InteractionTarget, *>,
     buildContext: BuildContext,
     view: ParentNodeView<InteractionTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
@@ -56,12 +44,6 @@ abstract class ParentNode<InteractionTarget : Any>(
     buildContext = buildContext,
     plugins = plugins + appyxComponent + childAware
 ), Resolver<InteractionTarget> {
-
-    private val permanentAppyxComponent = PermanentAppyxComponent<InteractionTarget>(
-        model = PermanentModel(buildContext.savedStateMap)
-    )
-    val appyxComponent: AppyxComponent<InteractionTarget, *> =
-        appyxComponent + permanentAppyxComponent
 
     private val childNodeCreationManager = ChildNodeCreationManager<InteractionTarget>(
         savedStateMap = buildContext.savedStateMap,
@@ -86,37 +68,6 @@ abstract class ParentNode<InteractionTarget : Any>(
 
     fun childOrCreate(element: Element<InteractionTarget>): ChildEntry.Initialized<InteractionTarget> =
         childNodeCreationManager.childOrCreate(element)
-
-    @Composable
-    fun PermanentChild(
-        interactionTarget: InteractionTarget,
-        decorator: @Composable (child: ChildRenderer) -> Unit
-    ) {
-
-        LaunchedEffect(interactionTarget) {
-            permanentAppyxComponent.addUnique(interactionTarget)
-        }
-        val scope = rememberCoroutineScope()
-        val child by remember(interactionTarget, this) {
-            children
-                .mapState(scope, SharingStarted.WhileSubscribed()) { childrenMap ->
-                    childrenMap
-                        .keys
-                        .find { it.interactionTarget == interactionTarget }
-                        ?.let { childOrCreate(it) }
-                }
-        }.collectAsState()
-
-
-        child?.let {
-            decorator(PermanentChildRender(it.node))
-        }
-    }
-
-    @Composable
-    fun PermanentChild(interactionTarget: InteractionTarget) {
-        PermanentChild(interactionTarget) { child -> child() }
-    }
 
     override fun updateLifecycleState(state: Lifecycle.State) {
         super.updateLifecycleState(state)
@@ -204,8 +155,6 @@ abstract class ParentNode<InteractionTarget : Any>(
     // TODO save/restore state properly
     override fun onSaveInstanceState(state: MutableSavedStateMap) {
         super.onSaveInstanceState(state)
-        // permanentNavModel is not provided as a plugin, store manually
-//        permanentNavModel.saveInstanceState(state)
         childNodeCreationManager.saveChildrenState(state)
     }
 
@@ -239,26 +188,6 @@ abstract class ParentNode<InteractionTarget : Any>(
 
     companion object {
         const val ATTACH_WORKFLOW_SYNC_TIMEOUT = 5000L
-        const val KEY_PERMANENT_NAV_MODEL = "PermanentNavModel"
-    }
-
-    private class PermanentChildRender(private val node: Node) : ChildRenderer {
-
-        @Suppress(
-            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
-        )
-        @Composable
-        override operator fun invoke(modifier: Modifier) {
-            node.Compose(modifier)
-        }
-
-        @Suppress(
-            "ComposableNaming" // This wants to be 'Invoke' but that won't work with 'operator'.
-        )
-        @Composable
-        override operator fun invoke() {
-            invoke(modifier = Modifier)
-        }
     }
 
 }

@@ -16,12 +16,14 @@ kotlin {
         version = "1.0.0"
         summary = "appyx-navigation iOS module"
         homepage = "https://bumble-tech.github.io/appyx/navigation/"
-        ios.deploymentTarget = "16.4"
+        ios.deploymentTarget = "17.0"
         podfile = project.file("../iosApp/Podfile")
         framework {
             baseName = "ios"
             isStatic = true
         }
+        license = "Apache License, Version 2.0"
+        authors = "https://github.com/bumble-tech/"
     }
 
     sourceSets {
@@ -48,6 +50,28 @@ compose.experimental {
         projectName = "Appyx"
         bundleIdPrefix = "com.bumble.appyx"
     }
+}
+
+tasks.register<Copy>("copyResources") {
+    // Dirs containing files we want to copy
+    from("../common/src/commonMain/resources")
+
+    // Output for iOS resources
+    into("$buildDir/compose/ios/ios/compose-resources")
+
+    include("**/*")
+}
+
+tasks.named("compileKotlinIosArm64") {
+    dependsOn("copyResources")
+}
+
+tasks.named("compileKotlinIosSimulatorArm64") {
+    dependsOn("copyResources")
+}
+
+tasks.named("compileKotlinIosX64") {
+    dependsOn("copyResources")
 }
 
 dependencies {

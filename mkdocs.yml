@@ -19,6 +19,7 @@ nav:
   - Home: index.md
   - Appyx Navigation:
       - Overview: navigation/index.md
+      - Sample app: navigation/sample-app.md
       - Quick start guide: navigation/quick-start.md
       - Concepts:
           - Model-driven navigation: navigation/concepts/model-driven-navigation.md
@@ -29,6 +30,7 @@ nav:
           - Deep linking: navigation/features/deep-linking.md
           - Scoped DI: navigation/features/scoped-di.md
           - Lifecycle: navigation/features/lifecycle.md
+          - Material 3 support: navigation/features/material3.md
           - Plugins: navigation/features/plugins.md
           - ChildAware API: navigation/features/childaware.md
           - Surviving configuration changes: navigation/features/surviving-configuration-changes.md

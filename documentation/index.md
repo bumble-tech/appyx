@@ -40,14 +40,14 @@ Appyx is a collection of libraries:
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
-        compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
+        project_output_directory="demos/appyx-navigation/web/build/dist/js/productionExecutable",
+        compile_task=":demos:appyx-navigation:web:jsBrowserDistribution",
         width=512,
-        height=384,
-        target_directory="samples/documentation-components-backstack-parallax",
+        height=500,
+        target_directory="samples/documentation-appyx-navigation",
         html_file_name="index.html",
-        classname="compose_mpp_sample",
-)
+        classname="compose_mpp_sample_app",
+    )
 }}
 
 
@@ -63,7 +63,7 @@ Appyx is a collection of libraries:
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample2/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-interactions/interactions/sample2/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-interactions:interactions:sample2:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -84,7 +84,7 @@ Back stack, Spotlight (pager), and other UI components built using [Appyx Intera
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/spotlight/slider/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:spotlight:slider:web:jsBrowserDistribution",
         width=512,
         height=384,

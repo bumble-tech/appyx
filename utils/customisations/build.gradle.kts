@@ -8,12 +8,8 @@ appyx {
     androidNamespace.set("com.bumble.appyx.utils.customisation")
 }
 
-publishingPlugin {
-    artifactId = "utils-customisations"
-}
-
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {

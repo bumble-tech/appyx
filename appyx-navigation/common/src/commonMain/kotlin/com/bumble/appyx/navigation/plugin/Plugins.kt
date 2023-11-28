@@ -12,8 +12,8 @@ interface NodeAware<N : Node> : NodeReadyObserver<N> {
     val node: N
 }
 
-interface NodeReadyObserver<N : Node> : Plugin {
-    fun init(node: N) {}
+fun interface NodeReadyObserver<N : Node> : Plugin {
+    fun init(node: N)
 }
 
 interface NodeLifecycleAware : Plugin {

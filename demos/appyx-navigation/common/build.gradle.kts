@@ -3,7 +3,6 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("kotlin-parcelize")
-    id("appyx-publish-multiplatform")
     id("com.google.devtools.ksp")
 }
 
@@ -12,7 +11,7 @@ appyx {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
@@ -36,9 +35,10 @@ kotlin {
                 api(compose.material3)
                 implementation(libs.kotlinx.serialization.json)
                 api(project(":appyx-interactions:appyx-interactions"))
-                api(project(":appyx-navigation:appyx-navigation"))
-                api(project(":utils:customisations"))
-                api(project(":utils:multiplatform"))
+                api(project(":utils:utils-customisations"))
+                api(project(":utils:utils-material3"))
+                api(project(":utils:utils-multiplatform"))
+                api(project(":demos:image-loader:common"))
                 implementation(project(":appyx-components:experimental:cards:cards"))
                 implementation(project(":appyx-components:experimental:modal:modal"))
                 implementation(project(":appyx-components:experimental:promoter:promoter"))
@@ -82,6 +82,7 @@ kotlin {
 }
 
 android {
+    sourceSets["main"].resources.srcDirs("src/commonMain/resources")
     buildFeatures {
         compose = true
     }

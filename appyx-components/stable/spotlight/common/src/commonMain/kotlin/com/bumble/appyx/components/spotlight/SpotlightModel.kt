@@ -39,6 +39,9 @@ class SpotlightModel<InteractionTarget : Any>(
 
         fun hasNext(): Boolean =
             activeIndex <= positions.lastIndex - 1
+
+        val activeElement: InteractionTarget? =
+            positions.getOrNull(activeIndex.toInt())?.elements?.firstNotNullOf { it.key.interactionTarget }
     }
 
     override val initialState: State<InteractionTarget> =
@@ -50,6 +53,9 @@ class SpotlightModel<InteractionTarget : Any>(
             },
             activeIndex = initialActiveIndex
         )
+
+    val currentState: State<InteractionTarget>
+        get() = output.value.currentTargetState
 
     override fun State<InteractionTarget>.removeDestroyedElement(
         element: Element<InteractionTarget>

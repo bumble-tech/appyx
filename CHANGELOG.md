@@ -2,7 +2,53 @@
 
 ## Pending changes
 
-- [#494](https://github.com/bumble-tech/appyx/pull/599) Added isContinuous flag to GestureFactory
+### API breaking changes
+
+- [#630](https://github.com/bumble-tech/appyx/pull/630) – Pass initial state into Spotlights visualisations
+
+---
+
+## 2.0.0-alpha09
+
+### API breaking changes
+
+- [#618](https://github.com/bumble-tech/appyx/pull/618) – Do not create PermanentAppyxComponent inside ParentNode. Provide it via constructor to ParentNode
+- [#612](https://github.com/bumble-tech/appyx/pull/612) – Rename MotionController to Visualisation
+- [#617](https://github.com/bumble-tech/appyx/pull/617) – Unify inside & outside position alignment
+
+### Changed
+
+- [#611](https://github.com/bumble-tech/appyx/pull/611) – Lower position and rotation animation default round-off thresholds
+- [#620](https://github.com/bumble-tech/appyx/pull/620) – Updated Compose to 1.5.3 & Kotlin to 1.9.10
+
+### Added
+
+- [#615](https://github.com/bumble-tech/appyx/pull/615) – Material navigation helpers
+
+<div style="text-align: center"><small>19 Oct 2023</small></div>
+
+---
+
+## 2.0.0-alpha08
+
+### Fixed
+
+- [#608](https://github.com/bumble-tech/appyx/pull/608) – Setting default value to NodeCustomisationDirectory in IosNodeHost
+
+<div style="text-align: center"><small>4 Oct 2023</small></div>
+
+---
+
+## 2.0.0-alpha07
+
+### Added
+
+- [#601](https://github.com/bumble-tech/appyx/pull/601) – iOS support and target apps
+- [#599](https://github.com/bumble-tech/appyx/pull/599) Added isContinuous flag to GestureFactory
+
+<div style="text-align: center"><small>4 Oct 2023</small></div>
+
+---
 
 ## 2.0.0-alpha06
 
@@ -19,7 +65,6 @@
 ### Added
 
 - [#579](https://github.com/bumble-tech/appyx/pull/579) – Expose `AndroidLifecycle` in `PlatformLifecycleRegistry` for Android
-- [#601](https://github.com/bumble-tech/appyx/pull/601) – iOS support and target apps  
 
 ### Fixed
  
@@ -48,6 +93,11 @@
 
 ## 2.0.0-alpha03
 
+### API breaking changes
+
+- [#562](https://github.com/bumble-tech/appyx/issues/562) – Implement custom alignment to remove screen size knowledge when offsetting element in MotionController
+- [#562](https://github.com/bumble-tech/appyx/pull/565) – Remove UiContext parameter from MotionProperty and provide BoxScope via composition local
+
 ### Added
 
 - [#551](https://github.com/bumble-tech/appyx/pull/551) - Support Multiplatform in **:appyx-navigation**
@@ -56,11 +106,6 @@
 ### Fixed
 
 - [#560](https://github.com/bumble-tech/appyx/issues/560) – Don't remove destroyed elements on update automatically
-
-### Changed
-
-- [#562](https://github.com/bumble-tech/appyx/issues/562) – Implement custom alignment to remove screen size knowledge when offsetting element in MotionController
-- [#562](https://github.com/bumble-tech/appyx/pull/565) – Remove UiContext parameter from MotionProperty and provide BoxScope via composition local
 
 <div style="text-align: center"><small>17 Aug 2023</small></div>
 

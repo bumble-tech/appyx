@@ -23,7 +23,7 @@ Class: `BackStackSlider`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/slider/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/slider/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:slider:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -39,7 +39,7 @@ Class: `BackStackParallax`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/parallax/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:parallax:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -55,7 +55,7 @@ Class: `BackStack3D`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/stack3d/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/stack3d/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:stack3d:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -71,7 +71,7 @@ Class: `BackStackFader`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/backstack/fader/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/backstack/fader/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:backstack:fader:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -131,7 +131,7 @@ private val backStack: BackStack<InteractionTarget> = BackStack(
         initialTargets = listOf(InteractionTarget.SomeElement),
         savedStateMap = buildContext.savedStateMap
     ),
-    motionController = { BackStackSlider(it) } // or other visualisations 
+    visualisation = { BackStackSlider(it) } // or other visualisations 
 )
 ```
 

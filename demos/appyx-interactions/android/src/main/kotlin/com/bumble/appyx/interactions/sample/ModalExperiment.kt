@@ -19,14 +19,14 @@ import com.bumble.appyx.components.modal.Modal
 import com.bumble.appyx.components.modal.ModalModel
 import com.bumble.appyx.components.modal.operation.add
 import com.bumble.appyx.components.modal.operation.show
-import com.bumble.appyx.components.modal.ui.ModalMotionController
+import com.bumble.appyx.components.modal.ui.ModalVisualisation
 import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.theme.appyx_dark
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 import kotlin.math.roundToInt
 import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 
@@ -35,7 +35,7 @@ import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 @Suppress("LongMethod", "MagicNumber")
 fun ModalExperiment(
     modifier: Modifier = Modifier,
-    motionController: (UiContext) -> BaseMotionController<Target, ModalModel.State<Target>, *, *>
+    visualisation: (UiContext) -> BaseVisualisation<Target, ModalModel.State<Target>, *, *>
 ) {
     val items = listOf(Target.Child1)
     val modal = Modal(
@@ -43,8 +43,8 @@ fun ModalExperiment(
             initialElements = items,
             savedStateMap = null
         ),
-        motionController = motionController,
-        gestureFactory = { ModalMotionController.Gestures(it) },
+        visualisation = visualisation,
+        gestureFactory = { ModalVisualisation.Gestures(it) },
         gestureSettleConfig = GestureSettleConfig(
             completionThreshold = 0.2f,
             completeGestureSpec = spring(),

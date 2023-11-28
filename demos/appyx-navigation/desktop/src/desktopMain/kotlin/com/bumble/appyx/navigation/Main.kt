@@ -3,8 +3,8 @@ package com.bumble.appyx.navigation
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
@@ -16,7 +16,9 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.bumble.appyx.navigation.integration.DesktopNodeHost
-import com.bumble.appyx.navigation.node.container.ContainerNode
+import com.bumble.appyx.navigation.navigator.LocalNavigator
+import com.bumble.appyx.navigation.navigator.Navigator
+import com.bumble.appyx.navigation.node.root.RootNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,31 +34,36 @@ sealed class Events {
 
 fun main() = application {
     val events: Channel<Events> = Channel()
-    val windowState = rememberWindowState(size = DpSize(480.dp, 658.dp))
+    val windowState = rememberWindowState(size = DpSize(420.dp, 820.dp))
     val eventScope = remember { CoroutineScope(SupervisorJob() + Dispatchers.Main) }
+    val navigator = Navigator()
+
     Window(
+        title = "Appyx navigation demo",
         state = windowState,
         onCloseRequest = ::exitApplication,
         onKeyEvent = { onKeyEvent(it, events, eventScope) },
     ) {
         AppyxSampleAppTheme {
             Surface(color = MaterialTheme.colorScheme.background) {
-                DesktopNodeHost(
-                    windowState = windowState,
-                    onBackPressedEvents = events.receiveAsFlow().mapNotNull {
-                        if (it is Events.OnBackPressed) Unit else null
+                CompositionLocalProvider(LocalNavigator provides navigator) {
+                    DesktopNodeHost(
+                        windowState = windowState,
+                        onBackPressedEvents = events.receiveAsFlow().mapNotNull {
+                            if (it is Events.OnBackPressed) Unit else null
+                        }
+                    ) { buildContext ->
+                        RootNode(
+                            buildContext = buildContext,
+                            plugins = listOf(navigator)
+                        )
                     }
-                ) { buildContext ->
-                    ContainerNode(
-                        buildContext = buildContext,
-                    )
                 }
             }
         }
     }
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 private fun onKeyEvent(
     keyEvent: KeyEvent,
     events: Channel<Events>,

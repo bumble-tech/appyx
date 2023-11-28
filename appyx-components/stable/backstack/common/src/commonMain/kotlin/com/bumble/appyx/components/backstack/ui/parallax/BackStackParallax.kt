@@ -17,13 +17,13 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
 import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 @Suppress("MagicNumber")
 class BackStackParallax<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {

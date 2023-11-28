@@ -11,11 +11,11 @@ Other uses of the library to create complex transitions and gestures.
 
 ### Dating Cards
 
-Class: `CardsMotionController`
+Class: `CardsVisualisation`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/experimental/datingcards/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/experimental/datingcards/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:experimental:datingcards:web:jsBrowserDistribution",
         width=512,
         height=384,
@@ -27,11 +27,11 @@ Class: `CardsMotionController`
 
 ### Puzzle 15
 
-Class: `Puzzle15MotionController`
+Class: `Puzzle15Visualisation`
 
 {{
     compose_mpp_sample(
-        project_output_directory="demos/mkdocs/appyx-components/experimental/puzzle15/web/build/distributions",
+        project_output_directory="demos/mkdocs/appyx-components/experimental/puzzle15/web/build/dist/js/productionExecutable",
         compile_task=":demos:mkdocs:appyx-components:experimental:puzzle15:web:jsBrowserDistribution",
         width=512,
         height=384,

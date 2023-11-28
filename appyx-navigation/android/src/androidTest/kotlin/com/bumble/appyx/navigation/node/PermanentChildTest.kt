@@ -8,9 +8,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.hasTestTag
-import com.bumble.appyx.interactions.core.model.EmptyAppyxComponent
+import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.AppyxTestScenario
 import com.bumble.appyx.navigation.children.nodeOrNull
+import com.bumble.appyx.navigation.composable.PermanentChild
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.PermanentChildTest.TestParentNode.InteractionTarget
 import com.bumble.appyx.utils.multiplatform.Parcelable
@@ -21,25 +22,40 @@ import org.junit.Test
 
 class PermanentChildTest {
 
+    var nodeFactory: (buildContext: BuildContext) -> TestParentNode = {
+        TestParentNode(buildContext = it)
+    }
+
     @get:Rule
     val rule = AppyxTestScenario { buildContext ->
-        TestParentNode(buildContext)
+        nodeFactory(buildContext)
     }
 
     @Test
-    fun permanent_child_is_rendered() {
+    fun `WHEN_permanent_model_contains_relevant_nav_key_THEN_permanent_child_is_rendered`() {
+        createPermanentAppyxComponentWithInteractionKey()
         rule.start()
 
         rule.onNode(hasTestTag(InteractionTarget::class.java.name)).assertExists()
     }
 
     @Test
-    fun permanent_child_is_reused_when_visibility_switched() {
+    fun `WHEN_permanent_model_does_not_contain_relevant_nav_key_THEN_permanent_child_is_not_rendered`() {
+        rule.start()
+
+        rule.onNode(hasTestTag(InteractionTarget::class.java.name))
+            .assertDoesNotExist()
+    }
+
+    @Test
+    fun `WHEN_visibility_switched_THEN_permanent_child_is_reused`() {
+        createPermanentAppyxComponentWithInteractionKey()
         rule.start()
         rule.node.renderPermanentChild = false
         val childNodes = rule.node.children.value.values.map { it.nodeOrNull }
 
-        rule.onNode(hasTestTag(InteractionTarget::class.java.name)).assertDoesNotExist()
+        rule.onNode(hasTestTag(InteractionTarget::class.java.name))
+            .assertDoesNotExist()
 
         rule.node.renderPermanentChild = true
 
@@ -47,11 +63,26 @@ class PermanentChildTest {
         assertEquals(childNodes, rule.node.children.value.values.map { it.nodeOrNull })
     }
 
+    private fun createPermanentAppyxComponentWithInteractionKey() {
+        nodeFactory = {
+            TestParentNode(
+                buildContext = it,
+                permanentAppyxComponent = PermanentAppyxComponent(
+                    savedStateMap = null,
+                    listOf(InteractionTarget)
+                )
+            )
+        }
+
+    }
+
     class TestParentNode(
         buildContext: BuildContext,
+        private val permanentAppyxComponent: PermanentAppyxComponent<InteractionTarget> =
+            PermanentAppyxComponent(savedStateMap = buildContext.savedStateMap)
     ) : ParentNode<InteractionTarget>(
         buildContext = buildContext,
-        appyxComponent = EmptyAppyxComponent(),
+        appyxComponent = permanentAppyxComponent
     ) {
 
         @Parcelize
@@ -73,7 +104,7 @@ class PermanentChildTest {
         @Composable
         override fun View(modifier: Modifier) {
             if (renderPermanentChild) {
-                PermanentChild(InteractionTarget)
+                PermanentChild(permanentAppyxComponent, InteractionTarget)
             }
         }
     }

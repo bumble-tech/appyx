@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
+@Suppress("MagicNumber")
 class RoundedCorners(
     coroutineScope: CoroutineScope,
     target: Target,
@@ -42,7 +43,7 @@ class RoundedCorners(
     override val modifier: Modifier
         get() = Modifier.composed {
             val value by renderValueFlow.collectAsState()
-            this.clip(RoundedCornerShape(value))
+            this.clip(RoundedCornerShape(value.coerceIn(0, 100)))
         }
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {

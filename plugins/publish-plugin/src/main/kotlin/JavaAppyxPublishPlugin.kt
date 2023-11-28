@@ -7,6 +7,12 @@ import org.gradle.kotlin.dsl.create
 import org.gradle.kotlin.dsl.get
 
 internal class JavaAppyxPublishPlugin : ProjectPlugin() {
+
+    override fun apply(project: Project) {
+        project.extensions.create("publishingPlugin", ProjectPluginExtension::class.java)
+        super.apply(project)
+    }
+
     override fun configureDocAndSources(project: Project) {
         project.configure<JavaPluginExtension> {
             withJavadocJar()

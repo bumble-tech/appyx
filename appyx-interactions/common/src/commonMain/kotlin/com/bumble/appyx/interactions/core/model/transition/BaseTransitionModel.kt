@@ -63,9 +63,12 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
         state[key] = this.output.value.currentTargetState
     }
 
-    override val output: StateFlow<Output<ModelState>> by lazy {
+    final override val output: StateFlow<Output<ModelState>> by lazy {
         state
     }
+
+    private val _isIdle: MutableStateFlow<Boolean> = MutableStateFlow(true)
+    val isIdle: StateFlow<Boolean> = _isIdle
 
     private var enforcedMode: Operation.Mode? = null
 
@@ -73,6 +76,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
         AppyxLogger.d("BaseTransitionModel", "Relaxing mode")
         enforcedMode = null
         removeDestroyedElements()
+        _isIdle.update { true }
     }
 
     override fun cleanUpElement(element: Element<InteractionTarget>) {
@@ -108,12 +112,16 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                 enforcedMode = IMMEDIATE
                 createUpdate(operation)
             }
+
             IMPOSED -> {
                 impose(operation)
             }
+
             KEYFRAME -> {
                 createSegment(operation)
             }
+        }.also {
+            _isIdle.update { false }
         }
 
     private fun createUpdate(operation: Operation<ModelState>): Boolean {
@@ -164,6 +172,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                     }
                 }
             }
+
             is Update -> {
                 if (operation.isApplicable(currentState.currentTargetState)) {
                     val newState = currentState.deriveUpdate(
@@ -203,6 +212,7 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
                 AppyxLogger.d(TAG, "Not in keyframe state, ignoring setProgress")
                 return
             }
+
             is Keyframes -> {
                 //Do not produce new state because progress is observed
                 currentState.setProgress(progress) {
@@ -217,10 +227,13 @@ abstract class BaseTransitionModel<InteractionTarget, ModelState : Parcelable>(
     override fun onSettled(direction: SettleDirection, animate: Boolean) {
         when (val currentState = state.value) {
             is Update -> {
+                _isIdle.update { true }
                 AppyxLogger.d(TAG, "Not in keyframe state, nothing to do")
                 return
             }
+
             is Keyframes -> {
+                _isIdle.update { true }
                 val newState = Update(
                     currentTargetState = when (direction) {
                         SettleDirection.REVERT -> currentState.currentSegment.fromState.removeDestroyedElements()

@@ -12,7 +12,7 @@ appyx {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
@@ -36,7 +36,7 @@ kotlin {
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
-                api(project(":utils:multiplatform"))
+                api(project(":utils:utils-multiplatform"))
                 implementation(libs.kotlinx.serialization.json)
             }
         }
@@ -51,7 +51,7 @@ kotlin {
                 api(libs.androidx.core)
             }
         }
-        val androidTest by getting {
+        val androidUnitTest by getting {
             dependencies {
                 implementation(libs.junit)
             }

@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.spotlight.Spotlight
@@ -28,7 +29,7 @@ import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.demos.common.colors
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import kotlin.math.roundToInt
 
@@ -50,7 +51,7 @@ fun ObserveMotionPropertiesSample(
         Spotlight(
             scope = coroutineScope,
             model = model,
-            motionController = { SpotlightSliderRotation(it) },
+            visualisation = { SpotlightSliderRotation(it, model.currentState) },
             gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     }
@@ -106,19 +107,25 @@ fun <InteractionTarget : Any> ModalUi(
                 color = Color.White
             )
             val alignment =
-                motionPropertyRenderValue<PositionOutside.Value, PositionOutside>()?.alignment
+                motionPropertyRenderValue<PositionAlignment.Value, PositionAlignment>()
             if (alignment != null) {
+                val offsetPercentage = roundFloatToTwoDecimals(
+                    alignment.outsideAlignment.horizontalBias * 100
+                )
+
                 Text(
-                    text = "Offset: ${roundFloatToTwoDecimals(alignment.horizontalBias * 100)}%",
+                    text = "Offset:\n$offsetPercentage%",
                     fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
                     color = Color.White
                 )
             }
             val rotationY = motionPropertyRenderValue<Float, RotationY>()
             if (rotationY != null) {
                 Text(
-                    text = "${roundFloatToTwoDecimals(rotationY)}°",
+                    text = "Rotation:\n${roundFloatToTwoDecimals(rotationY)}°",
                     fontSize = 12.sp,
+                    textAlign = TextAlign.Center,
                     color = Color.White
                 )
             }

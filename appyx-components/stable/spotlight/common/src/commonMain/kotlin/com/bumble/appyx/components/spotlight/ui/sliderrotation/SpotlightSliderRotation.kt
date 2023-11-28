@@ -9,48 +9,48 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOutside
+import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideBottom
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideTop
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
-import com.bumble.appyx.transitionmodel.BaseMotionController
+import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightSliderRotation<InteractionTarget : Any>(
     uiContext: UiContext,
+    initialState: State<InteractionTarget>,
     @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseMotionController<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
     uiContext = uiContext
 ) {
     private val scrollX = GenericFloatProperty(
-        uiContext.coroutineScope,
-        Target(0f)
-    ) // TODO sync this with the model's initial value rather than assuming 0
+        coroutineScope = uiContext.coroutineScope,
+        target = Target(initialState.activeIndex),
+    )
     override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
         listOf(
             { state: State<InteractionTarget> -> state.activeIndex } to scrollX
         )
 
     private val created: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideTop),
+        positionAlignment = PositionAlignment.Target(OutsideTop),
         scale = Scale.Target(0f),
         rotationY = RotationY.Target(0f),
         alpha = Alpha.Target(1f),
     )
 
     private val standard: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(InContainer),
+        positionAlignment = PositionAlignment.Target(InContainer),
         scale = Scale.Target(1f),
         rotationY = RotationY.Target(0f),
         alpha = Alpha.Target(1f),
     )
 
     private val destroyed: TargetUiState = TargetUiState(
-        position = PositionOutside.Target(OutsideBottom),
+        positionAlignment = PositionAlignment.Target(OutsideBottom),
         scale = Scale.Target(0f),
         rotationY = RotationY.Target(0f),
         alpha = Alpha.Target(0f),

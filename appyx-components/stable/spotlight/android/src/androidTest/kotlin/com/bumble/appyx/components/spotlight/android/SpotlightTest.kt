@@ -98,19 +98,20 @@ class SpotlightTest(private val testParam: TestParam) {
         disableAnimations: Boolean = false,
         initialActiveIndex: Float = 0f,
     ) {
-        spotlight = Spotlight(
-            model = SpotlightModel(
-                items = listOf(
-                    InteractionTarget.Child1,
-                    InteractionTarget.Child2,
-                    InteractionTarget.Child3,
-                    InteractionTarget.Child4,
-                    InteractionTarget.Child5
-                ),
-                initialActiveIndex = initialActiveIndex,
-                savedStateMap = null
+        val model = SpotlightModel(
+            items = listOf(
+                InteractionTarget.Child1,
+                InteractionTarget.Child2,
+                InteractionTarget.Child3,
+                InteractionTarget.Child4,
+                InteractionTarget.Child5
             ),
-            motionController = { SpotlightSlider(uiContext = it) },
+            initialActiveIndex = initialActiveIndex,
+            savedStateMap = null
+        )
+        spotlight = Spotlight(
+            model = model,
+            visualisation = { SpotlightSlider(uiContext = it, initialState = model.currentState) },
             scope = CoroutineScope(Dispatchers.Unconfined),
             disableAnimations = disableAnimations,
         )
