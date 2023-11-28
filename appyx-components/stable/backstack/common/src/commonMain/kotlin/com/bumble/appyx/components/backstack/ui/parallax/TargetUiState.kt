@@ -21,7 +21,7 @@ class TargetUiState(
         offsetMultiplier: Float,
         colorOverlay: ColorOverlay.Target = ColorOverlay.Target(0f),
         shadow: Shadow.Target = Shadow.Target(0f),
-        alpha: Alpha.Target = Alpha.Target(1f),
+        alpha: Alpha.Target,
     ) : this(
         positionAlignment = PositionAlignment.Target(
             OutsideAlignment(

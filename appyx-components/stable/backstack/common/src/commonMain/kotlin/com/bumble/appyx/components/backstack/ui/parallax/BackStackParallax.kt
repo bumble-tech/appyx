@@ -36,6 +36,7 @@ class BackStackParallax<InteractionTarget : Any>(
     private val right = TargetUiState(
         offsetMultiplier = 1f,
         shadow = Shadow.Target(value = 0f, easing = slowOutFastInEasing),
+        alpha = Alpha.Target(1f),
     )
 
     private val bottom = TargetUiState(
@@ -47,6 +48,7 @@ class BackStackParallax<InteractionTarget : Any>(
     private val top = TargetUiState(
         offsetMultiplier = 0f,
         shadow = Shadow.Target(25f),
+        alpha = Alpha.Target(value = 1f, easing = { fraction -> if (fraction == 0f) 0f else 1f })
     )
 
     override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
