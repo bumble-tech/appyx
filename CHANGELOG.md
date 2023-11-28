@@ -8,7 +8,7 @@
 
 ### Fixed
 
-- [#638](https://github.com/bumble-tech/appyx/pull/638) - Setting alpha to 0 for bottom element when animation is finished
+- [#638](https://github.com/bumble-tech/appyx/pull/638) - Fix visibility issue for bottom element in BackStackParallax
 
 ---
 
