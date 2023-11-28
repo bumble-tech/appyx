@@ -316,10 +316,18 @@ This is a Kotlin module that contains the logic common for Android, Desktop, iOS
 This is a Kotlin module that builds into an Android application. It uses Gradle as the build system.
 The `android` module depends on and uses the `common` module as a regular Android library.
 
+### desktop
+
+This module builds into a Desktop application.
+
 ### ios
 
 This is an Xcode project that builds into an iOS application.
 The `:demos:appyx-navigation` module depends on and uses the `:demos:appyx-navigation:common` module as a CocoaPods dependency.
+
+### web
+
+This module builds into a Web app.
 
 ## Run your application
 
@@ -337,12 +345,16 @@ To run your application on an Android emulator:
 
 To run your application on an iOS simulator in Android Studio, modify the `iOS` run configuration:
 
+{==
+
 1. In the list of run configurations, select **Edit Configurations**:
 2. Navigate to **iOS Application** | **iosApp**.
 3. Select the desired `.xcworkspace` file under `XCode project file` which can be found in `/demos/appyx-navigation/iosApp/iosApp.xcworkspace`.
 4. Ensure `Xcode project scheme` is set to `iosApp`.
 5. In the **Execution target** list, select your target device. Click **OK**.
 6. The `iosApp` run configuration is now available. Click **Run** next to your virtual device.
+
+==}
 
 #### Running on a real device
 
@@ -358,13 +370,19 @@ KDoctor will list all Team IDs currently configured on your system.
 
 To run the application, set the `TEAM_ID`:
 
+{==
+
 1. In the project, navigate to the `iosApp/Configuration/Config.xcconfig` file.
 2. Set your `TEAM_ID`.
 3. Re-open the project in Android Studio. It should show the registered iOS device in the `iosApp` run configuration.
 
+==}
+
 ### On Desktop
 
 To run the application as a JVM target on desktop:
+
+{==
 
 1. In the list of run configurations, select **Edit Configurations**.
 2. Click **Add new configuration** and select **Gradle**.
@@ -372,12 +390,18 @@ To run the application as a JVM target on desktop:
 4. Select the desired target under `Gradle project` to be executed (for example: `appyx:demos:appyx-navigation:desktop`).
 5. The desktop configuration for the desired target is now available. Click **Run** to execute.
 
+==}
+
 ### On Web
 
 To run the application on web:
+
+{==
 
 1. In the list of run configurations, select **Edit Configurations**.
 2. Click **Add new configuration** and select **Gradle**.
 3. Set `jsBrowserDevelopmentRun` under `Run`.
 4. Select the desired target under `Gradle project` to be executed (for example: `appyx:demos:appyx-navigation:web`).
 5. The web configuration for the desired target is now available. Click **Run** to execute.
+
+==}
