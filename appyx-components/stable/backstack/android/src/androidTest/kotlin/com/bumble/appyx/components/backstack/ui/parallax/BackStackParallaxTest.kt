@@ -36,7 +36,7 @@ class BackStackParallaxTest {
         with(visualisation.mapUpdate(backStackModel.output.value as Update<BackStackModel.State<InteractionTarget>>)) {
             Assert.assertFalse(get(0).visibleState.value) // Child #1 should be false
             Assert.assertFalse(get(1).visibleState.value) // Child #2 should be false
-            Assert.assertTrue(get(2).visibleState.value)  // Child #3 should be true
+            Assert.assertFalse(get(2).visibleState.value)  // Child #3 should be false
             Assert.assertTrue(get(3).visibleState.value)  // Child #4 should be true
         }
     }

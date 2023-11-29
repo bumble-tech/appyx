@@ -6,6 +6,10 @@
 
 - [#630](https://github.com/bumble-tech/appyx/pull/630) – Pass initial state into Spotlights visualisations
 
+### Fixed
+
+- [#638](https://github.com/bumble-tech/appyx/pull/638) - Fix visibility issue for bottom element in BackStackParallax
+
 ---
 
 ## 2.0.0-alpha09
