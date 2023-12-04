@@ -37,7 +37,7 @@ class MosaicVisualisation(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
     override fun State.toUiTargets(): List<MatchedTargetUiState<MosaicPiece, TargetUiState>> =
         pieces.mapIndexed { idx, piece ->

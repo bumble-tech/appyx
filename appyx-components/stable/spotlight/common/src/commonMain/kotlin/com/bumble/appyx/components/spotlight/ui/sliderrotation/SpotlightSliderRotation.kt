@@ -78,6 +78,6 @@ class SpotlightSliderRotation<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext, scrollX.renderValueFlow)
+        targetUiState.toMutableUiState(uiContext, scrollX.renderValueFlow)
 }
 

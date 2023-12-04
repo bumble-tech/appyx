@@ -91,7 +91,7 @@ class Sample1Visualisation<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
     class Gestures<InteractionTarget>(
         private val transitionBounds: TransitionBounds,

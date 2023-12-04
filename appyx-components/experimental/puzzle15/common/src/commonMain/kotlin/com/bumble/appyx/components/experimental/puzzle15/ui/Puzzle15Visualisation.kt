@@ -50,7 +50,7 @@ class Puzzle15Visualisation(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
     class Gestures(
         bounds: TransitionBounds,

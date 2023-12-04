@@ -65,7 +65,7 @@ class ModalVisualisation<InteractionTarget : Any>(
     override fun mutableUiStateFor(
         uiContext: UiContext,
         targetUiState: TargetUiState
-    ): MutableUiState = targetUiState.toMutableState(uiContext)
+    ): MutableUiState = targetUiState.toMutableUiState(uiContext)
 
     class Gestures<InteractionTarget : Any>(
         transitionBounds: TransitionBounds,

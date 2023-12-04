@@ -44,7 +44,7 @@ class WidgetsStack3D<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(
+        targetUiState.toMutableUiState(
             uiContext = uiContext,
             scrollX = scrollY.renderValueFlow.mapState(uiContext.coroutineScope) { it - targetUiState.positionInList },
             itemWidth = transitionBounds.widthDp,

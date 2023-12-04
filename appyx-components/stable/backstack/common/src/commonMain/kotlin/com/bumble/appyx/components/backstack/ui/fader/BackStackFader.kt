@@ -32,5 +32,5 @@ class BackStackFader<InteractionTarget : Any>(
         }
 
     override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 }

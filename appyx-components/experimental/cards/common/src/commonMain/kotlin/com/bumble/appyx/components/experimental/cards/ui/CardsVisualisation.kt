@@ -98,7 +98,7 @@ class CardsVisualisation<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
 
     class Gestures<InteractionTarget>(

@@ -68,6 +68,6 @@ class SpotlightSliderScale<InteractionTarget : Any>(
     }
 
     override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
-        targetUiState.toMutableState(uiContext, scrollX.renderValueFlow)
+        targetUiState.toMutableUiState(uiContext, scrollX.renderValueFlow)
 }
 

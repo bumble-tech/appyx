@@ -12,7 +12,7 @@ class TargetUiState(
         alpha = base.alpha,
     )
 
-    fun toMutableState(
+    fun toMutableUiState(
         uiContext: UiContext,
     ): MutableUiState =
         MutableUiState(
