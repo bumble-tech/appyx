@@ -7,6 +7,7 @@
 - [#630](https://github.com/bumble-tech/appyx/pull/630) – Pass initial state into Spotlights visualisations
 - [#643](https://github.com/bumble-tech/appyx/pull/643) – Unify AppyxComponent composable between appyx-navigation and appyx-interactions modules
 - Rename KSP generated method: targetUiState.toMutableState -> toMutableUiState
+- Swap order of TargetUiState, MutableUiState in generics
 
 ### Fixed
 
