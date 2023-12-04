@@ -29,7 +29,7 @@ import kotlin.random.Random
 class MosaicVisualisation(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float>
-) : BaseVisualisation<MosaicPiece, State, MutableUiState, TargetUiState>(
+) : BaseVisualisation<MosaicPiece, State, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {

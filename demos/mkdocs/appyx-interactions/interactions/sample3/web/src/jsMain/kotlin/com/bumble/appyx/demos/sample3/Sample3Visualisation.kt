@@ -39,7 +39,7 @@ import com.bumble.appyx.utils.multiplatform.AppyxLogger
 class Sample3Visualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, TestDriveModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {

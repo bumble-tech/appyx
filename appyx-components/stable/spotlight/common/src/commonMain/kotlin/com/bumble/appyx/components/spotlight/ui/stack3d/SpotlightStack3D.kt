@@ -26,7 +26,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 class SpotlightStack3D<InteractionTarget : Any>(
     uiContext: UiContext,
     initialState: State<InteractionTarget>,
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
 ) {
     private var width: Dp = 0.dp

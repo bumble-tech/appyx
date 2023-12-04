@@ -11,7 +11,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 class BackStackFader<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, BackStackModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, BackStackModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {

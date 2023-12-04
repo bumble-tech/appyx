@@ -15,7 +15,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class WidgetsStack3D<InteractionTarget : Any>(
     uiContext: UiContext,
-) : BaseVisualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
 ) {
     private val scrollY = GenericFloatProperty(uiContext.coroutineScope, GenericFloatProperty.Target(0f))

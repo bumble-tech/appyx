@@ -15,7 +15,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 class SpotlightFader<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {

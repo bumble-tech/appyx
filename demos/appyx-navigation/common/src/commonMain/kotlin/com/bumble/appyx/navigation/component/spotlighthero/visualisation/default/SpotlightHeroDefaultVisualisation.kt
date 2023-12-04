@@ -25,7 +25,7 @@ class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     initialState: State<InteractionTarget>
 ) : SpotlightHeroVisualisation<InteractionTarget>,
-    BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+    BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext
 ) {
     private val scrollX = GenericFloatProperty(

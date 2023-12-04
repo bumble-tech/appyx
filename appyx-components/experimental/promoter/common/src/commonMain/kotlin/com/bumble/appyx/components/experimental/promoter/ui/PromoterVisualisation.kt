@@ -24,7 +24,7 @@ import kotlin.math.min
 class PromoterVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, PromoterModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, PromoterModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {

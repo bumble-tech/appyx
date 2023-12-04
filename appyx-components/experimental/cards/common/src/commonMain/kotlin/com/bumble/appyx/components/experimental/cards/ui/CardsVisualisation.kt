@@ -27,7 +27,7 @@ import com.bumble.appyx.utils.multiplatform.AppyxLogger
 class CardsVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, CardsModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, CardsModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {

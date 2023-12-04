@@ -28,7 +28,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 class BackStack3D<InteractionTarget : Any>(
     uiContext: UiContext,
     private val itemsInStack: Int = 3,
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
 ) {
 
