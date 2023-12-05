@@ -255,12 +255,19 @@ When this button is clicked, it triggers the back event through the `backEvents`
 
 Setting up the environment for execution
 
-> **Warning**
-> For running the iOS target, you need a Mac with macOS to write and run iOS-specific code on simulated or real devices.
-> This is an Apple requirement.
->
-> The instructions here are tweaked and inspired from the [Compose-Multiplatform-iOS template](https://github.com/JetBrains/compose-multiplatform-ios-android-template).
-> To work with this project, you need the following:
+{==
+
+**Warning**
+
+In order to launch the iOS target, you need a Mac with macOS to write and run iOS-specific code on simulated or real devices.
+
+This is an Apple requirement.
+
+The instructions here are tweaked and inspired from the [Compose-Multiplatform-iOS template](https://github.com/JetBrains/compose-multiplatform-ios-android-template).
+
+==}
+
+To work with this project, you need the following:
 
 * A machine running a recent version of macOS
 * [Xcode](https://apps.apple.com/us/app/xcode/id497799835)
