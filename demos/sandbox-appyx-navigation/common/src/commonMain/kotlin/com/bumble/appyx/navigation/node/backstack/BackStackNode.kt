@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -31,6 +31,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
+import com.bumble.appyx.navigation.ColorSaver
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.modality.BuildContext
@@ -73,7 +74,8 @@ class BackStackNode(
     override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
         when (interactionTarget) {
             is InteractionTarget.Child -> node(buildContext) {
-                val backgroundColor = remember { colors.shuffled().random() }
+                val backgroundColor =
+                    rememberSaveable(saver = ColorSaver) { colors.shuffled().random() }
 
                 Box(
                     modifier = Modifier
