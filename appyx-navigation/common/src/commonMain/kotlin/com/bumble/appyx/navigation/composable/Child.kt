@@ -34,7 +34,6 @@ private class ChildRendererImpl<InteractionTarget : Any>(
     override operator fun invoke(modifier: Modifier) {
         Box(modifier = elementUiModel.modifier) {
             node.Compose(modifier = modifier)
-
         }
     }
 
