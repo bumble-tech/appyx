@@ -1,47 +1,39 @@
 package com.bumble.appyx.navigation.composable
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 
 @Composable
 fun <InteractionTarget : Any> ParentNode<InteractionTarget>.Child(
-    elementUiModel: ElementUiModel<InteractionTarget>,
-    decorator: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<InteractionTarget>) -> Unit
+    element: Element<InteractionTarget>,
+    decorator: @Composable (child: ChildRenderer, element: Element<InteractionTarget>) -> Unit
 ) {
-    val navElement = elementUiModel.element
-    val childEntry = remember(navElement.id) { childOrCreate(navElement) }
+    val childEntry = remember(element.id) { childOrCreate(element) }
     decorator(
         ChildRendererImpl(
-            node = childEntry.node,
-            elementUiModel = elementUiModel
+            node = childEntry.node
         ),
-        elementUiModel
+        element
     )
 }
 
-private class ChildRendererImpl<InteractionTarget : Any>(
-    private val node: Node,
-    private val elementUiModel: ElementUiModel<InteractionTarget>
+private class ChildRendererImpl(
+    private val node: Node
 ) : ChildRenderer {
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke(modifier: Modifier) {
-        Box(modifier = elementUiModel.modifier) {
-            node.Compose(modifier = modifier)
-        }
+        node.Compose(modifier = modifier)
     }
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke() {
-        Box(modifier = elementUiModel.modifier) {
-            node.Compose(modifier = Modifier)
-        }
+        node.Compose(modifier = Modifier)
     }
 }

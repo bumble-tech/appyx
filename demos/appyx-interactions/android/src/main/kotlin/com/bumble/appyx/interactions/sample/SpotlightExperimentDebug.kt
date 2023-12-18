@@ -2,7 +2,6 @@ package com.bumble.appyx.interactions.sample
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.ExperimentalMaterialApi
@@ -76,11 +75,9 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
                 vertical = 12.dp
             ),
             appyxComponent = spotlight,
-            element = {
+            child = { element ->
                 Element(
-                    elementUiModel = it,
-                    modifier = Modifier
-                        .fillMaxSize()
+                    element = element
                 )
             }
         )

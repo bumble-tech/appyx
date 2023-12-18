@@ -5,9 +5,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.node.ParentNode
 import kotlin.math.roundToInt
@@ -20,12 +20,12 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    gestureValidator: GestureValidator = GestureValidator.defaultValidator,
+    gestureValidator: GestureValidator = GestureValidator.permissiveValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
-    decorator: (@Composable (
-        child: ChildRenderer,
-        elementUiModel: ElementUiModel<InteractionTarget>
-    ) -> Unit) = { child, _ -> child() }
+    isGestureBoundingBoxTransformed: Boolean = false,
+    decorator: @Composable (child: ChildRenderer, element: Element<InteractionTarget>) -> Unit = { child, _ ->
+        child()
+    }
 ) {
     val density = LocalDensity.current
     val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
@@ -38,8 +38,9 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
         modifier,
         clipToBounds,
         gestureValidator,
-        gestureExtraTouchArea
-    ) { elementUiModel ->
-        Child(elementUiModel, decorator)
+        gestureExtraTouchArea,
+        isGestureBoundingBoxTransformed
+    ) { element ->
+        Child(element, decorator)
     }
 }

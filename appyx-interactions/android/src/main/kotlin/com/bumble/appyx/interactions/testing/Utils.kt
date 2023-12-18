@@ -63,14 +63,15 @@ private fun <InteractionTarget : Any, ModelState : Any> TestChildrenUi(
                 ),
             appyxComponent = appyxComponent,
             clipToBounds = clipToBounds,
-        ) {
+        ) { element ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 Text(
-                    text = "${it.element.interactionTarget}",
-                    modifier = Modifier.align(Alignment.Center),
+                    text = "${element.interactionTarget}",
+                    modifier = Modifier
+                        .align(Alignment.Center),
                     color = Color.White
                 )
             }

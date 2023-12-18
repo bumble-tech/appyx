@@ -13,7 +13,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.Drag
 import com.bumble.appyx.interactions.core.ui.gesture.Gesture
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.gesture.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.Scale
 import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex

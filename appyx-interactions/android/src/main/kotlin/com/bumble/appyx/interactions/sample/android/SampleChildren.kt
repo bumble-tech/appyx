@@ -1,13 +1,14 @@
 package com.bumble.appyx.interactions.sample.android
 
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import com.bumble.appyx.interactions.core.AppyxComponent
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.sample.Children
 import com.bumble.appyx.interactions.sample.SampleElement
 import com.bumble.appyx.interactions.sample.colors
 import kotlin.math.roundToInt
@@ -22,31 +23,29 @@ fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
-        SampleElement(colors = colors, elementUiModel = it)
+    child: @Composable BoxScope.(Element<InteractionTarget>) -> Unit = { element ->
+        SampleElement(colors = colors, element = element)
     },
 ) {
-    Children(
+    AppyxComponent(
         appyxComponent = appyxComponent,
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         modifier = modifier,
         clipToBounds = clipToBounds,
-        childWrapper = { elementUiModel ->
-            element(elementUiModel)
-        },
+        child = child
     )
 }
 
 @Composable
 fun Element(
-    elementUiModel: ElementUiModel<*>,
+    element: Element<*>,
     modifier: Modifier = Modifier,
     color: Color? = Color.Unspecified,
     contentDescription: String? = null
 ) {
     SampleElement(
-        elementUiModel = elementUiModel,
+        element = element,
         modifier = modifier,
         colors = colors,
         color = color,

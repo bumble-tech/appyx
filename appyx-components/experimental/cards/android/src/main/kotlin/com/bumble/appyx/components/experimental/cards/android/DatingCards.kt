@@ -47,10 +47,11 @@ fun DatingCards(modifier: Modifier = Modifier) {
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         appyxComponent = cards,
         gestureValidator = permissiveValidator,
-    ) { elementUiModel ->
+    ) { element ->
         ProfileCard(
-            profile = elementUiModel.element.interactionTarget.profile,
-            modifier = Modifier.fillMaxSize().then(elementUiModel.modifier)
+            profile = element.interactionTarget.profile,
+            modifier = Modifier
+                .fillMaxSize()
         )
     }
 }

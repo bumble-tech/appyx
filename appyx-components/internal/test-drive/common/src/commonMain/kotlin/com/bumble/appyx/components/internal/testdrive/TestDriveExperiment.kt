@@ -139,10 +139,11 @@ fun <InteractionTarget : Any> TestDriveUi(
             screenHeightPx = screenHeightPx,
             appyxComponent = testDrive,
             gestureValidator = gestureValidator,
-        ) { elementUiModel ->
+            isGestureBoundingBoxTransformed = true
+        ) {
             Box(
-                modifier = Modifier.size(60.dp)
-                    .then(elementUiModel.modifier)
+                modifier = Modifier
+                    .size(60.dp)
             )
         }
 

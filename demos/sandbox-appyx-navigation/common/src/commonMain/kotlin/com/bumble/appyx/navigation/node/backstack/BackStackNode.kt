@@ -30,7 +30,6 @@ import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import com.bumble.appyx.navigation.ColorSaver
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxComponent
@@ -89,7 +88,6 @@ class BackStackNode(
                         )
                         .background(backgroundColor)
                         .padding(24.dp)
-                        .gestureModifier(backStack, interactionTarget.index.toString())
                 ) {
                     Text(
                         text = interactionTarget.index.toString(),

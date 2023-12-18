@@ -11,7 +11,7 @@ import com.bumble.appyx.components.internal.testdrive.ui.md_light_green_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.gesture.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment

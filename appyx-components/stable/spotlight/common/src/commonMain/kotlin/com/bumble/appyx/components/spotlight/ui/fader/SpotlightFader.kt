@@ -6,7 +6,7 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.C
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.gesture.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
