@@ -3,9 +3,7 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.Easing
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
@@ -41,10 +39,7 @@ class Alpha(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            this.alpha(renderValueFlow.collectAsState().value)
-        }
+    override val modifier: Modifier = Modifier.alpha(renderValue)
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(

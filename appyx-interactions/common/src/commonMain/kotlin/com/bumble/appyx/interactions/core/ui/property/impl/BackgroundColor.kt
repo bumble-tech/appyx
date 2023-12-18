@@ -5,9 +5,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.animation.core.Easing
 import androidx.compose.foundation.background
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -44,10 +42,7 @@ class BackgroundColor(
     override fun calculateRenderValue(base: Color, displacement: Color): Color =
         base
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            this.background(color = renderValueFlow.collectAsState().value)
-        }
+    override val modifier: Modifier = Modifier.background(color = renderValue)
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(

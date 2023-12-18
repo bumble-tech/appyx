@@ -5,9 +5,7 @@ import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.VectorConverter
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -36,10 +34,7 @@ class Height(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            this.fillMaxHeight(renderValueFlow.collectAsState().value)
-        }
+    override val modifier: Modifier = Modifier.fillMaxHeight(renderValue)
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(

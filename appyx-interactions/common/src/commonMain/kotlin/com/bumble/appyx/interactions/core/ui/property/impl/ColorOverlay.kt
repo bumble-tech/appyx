@@ -3,9 +3,7 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.Easing
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -37,16 +35,12 @@ class ColorOverlay(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            val alpha = renderValueFlow.collectAsState().value
+    override val modifier: Modifier = Modifier
+        .drawWithContent {
+            drawContent()
+            val alpha = renderValue
             if (alpha > 0) {
-                this.drawWithContent {
-                    drawContent()
-                    drawRect(color.copy(alpha = alpha))
-                }
-            } else {
-                this
+                drawRect(color.copy(alpha = alpha))
             }
         }
 

@@ -11,6 +11,9 @@ import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.SystemClock
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
@@ -49,15 +52,23 @@ abstract class MotionProperty<T, V : AnimationVector>(
     private var lastVelocity = animatable.velocity
 
     /**
+     * Render-ready value that contains applied displacements on top of the [internalValue].
+     * Backed by compose androidx.compose.runtime.State
+     */
+    var renderValue: T by mutableStateOf(animatable.value)
+        private set
+
+    /**
      * Contains the previous value of [lastVelocity]. To be used in initial velocity instead of it,
      * as the values in the last animation frame can jump due to snapping if within threshold of target value,
      * and that would result in unrealistic speeds.
      */
     private var previousVelocity = animatable.velocity
+
     private var lastTime = 0L
 
-    private val internalValueFlow = MutableStateFlow(animatable.value)
 
+    private val internalValueFlow = MutableStateFlow(animatable.value)
 
     /**
      * Contains the unmodified internal value of the [MotionProperty] backed by its [Animatable].
@@ -79,7 +90,8 @@ abstract class MotionProperty<T, V : AnimationVector>(
         displacement.combine(
             internalValueFlow
         ) { displacement, value ->
-            calculateRenderValue(value, displacement)
+            renderValue = calculateRenderValue(value, displacement)
+            renderValue
         }.stateIn(
             scope = coroutineScope,
             started = SharingStarted.Eagerly,
@@ -90,12 +102,6 @@ abstract class MotionProperty<T, V : AnimationVector>(
      * @return Should return the result of a subtraction [base - displacement] interpreted for <T>
      */
     abstract fun calculateRenderValue(base: T, displacement: T): T
-
-    /**
-     * Render-ready value that contains applied displacements on top of the [internalValue].
-     */
-    val renderValue: T
-        get() = renderValueFlow.value
 
     abstract val modifier: Modifier
 

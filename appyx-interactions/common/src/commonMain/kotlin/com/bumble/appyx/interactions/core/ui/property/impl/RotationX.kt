@@ -4,10 +4,7 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.VectorConverter
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -41,14 +38,10 @@ class RotationX(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            val value by renderValueFlow.collectAsState()
-            this.graphicsLayer {
-                rotationX = value
-                transformOrigin = origin
-            }
-        }
+    override val modifier: Modifier = Modifier.graphicsLayer {
+        rotationX = renderValue
+        transformOrigin = origin
+    }
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(

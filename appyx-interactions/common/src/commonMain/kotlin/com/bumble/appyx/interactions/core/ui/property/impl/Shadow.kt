@@ -3,9 +3,7 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.animation.core.Easing
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
@@ -36,10 +34,8 @@ class Shadow(
     override fun calculateRenderValue(base: Float, displacement: Float): Float =
         base - displacement
 
-    override val modifier: Modifier
-        get() = Modifier.composed {
-            this.shadow(elevation = renderValueFlow.collectAsState().value.dp, clip = false)
-        }
+
+    override val modifier: Modifier = Modifier.shadow(elevation = renderValue.dp, clip = false)
 
     override suspend fun lerpTo(start: Target, end: Target, fraction: Float) {
         snapTo(
