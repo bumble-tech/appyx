@@ -74,13 +74,12 @@ fun <InteractionTarget : Any> SpotlightUi(
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
-        child = { element, childModifier ->
+        child = { element ->
             Element(
                 color = color,
                 element = element,
                 contentDescription =
-                "${SPOTLIGHT_EXPERIMENT_TEST_HELPER}_${element.id}",
-                modifier = childModifier
+                "${SPOTLIGHT_EXPERIMENT_TEST_HELPER}_${element.id}"
             )
         }
     )
