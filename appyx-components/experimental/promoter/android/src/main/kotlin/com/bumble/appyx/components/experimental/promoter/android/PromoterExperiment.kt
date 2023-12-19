@@ -84,7 +84,7 @@ fun PromoterExperiment(modifier: Modifier = Modifier) {
                 ),
             child = {
                 Element(
-                    elementUiModel = it,
+                    element = it,
                     modifier = Modifier.size(100.dp)
                 )
             },

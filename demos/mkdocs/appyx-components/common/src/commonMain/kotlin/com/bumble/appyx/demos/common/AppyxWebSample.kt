@@ -24,11 +24,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.demos.common.InteractionTarget.Element
 import com.bumble.appyx.interactions.core.AppyxComponent
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import kotlin.random.Random
 
 sealed class InteractionTarget {
@@ -55,9 +54,9 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
     actions: Map<String, () -> Unit>,
     modifier: Modifier = Modifier,
     childSize: ChildSize = ChildSize.SMALL,
-    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
+    child: @Composable (Element<InteractionTarget>) -> Unit = {
         ModalUi(
-            elementUiModel = it,
+            element = it,
             isChildMaxSize = childSize == ChildSize.MAX
         )
     }
@@ -89,8 +88,8 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxWebSample(
                     appyxComponent = appyxComponent,
                     screenWidthPx = screenWidthPx,
                     screenHeightPx = screenHeightPx,
-                ) { elementUiModel ->
-                    element(elementUiModel)
+                ) {
+                    child(it)
                 }
             }
         }
@@ -127,7 +126,7 @@ val colors = listOf(
 
 @Composable
 fun <InteractionTarget : Any> ModalUi(
-    elementUiModel: ElementUiModel<InteractionTarget>,
+    element: Element<InteractionTarget>,
     isChildMaxSize: Boolean,
     modifier: Modifier = Modifier
 ) {
@@ -135,10 +134,9 @@ fun <InteractionTarget : Any> ModalUi(
         modifier = modifier
             .fillMaxSize()
             .padding(if (isChildMaxSize) 0.dp else 8.dp)
-            .then(elementUiModel.modifier)
             .background(
-                color = when (val target = elementUiModel.element.interactionTarget) {
-                    is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
+                color = when (val target = element.interactionTarget) {
+                    is com.bumble.appyx.demos.common.InteractionTarget.Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
                     else -> {
                         Color.Cyan
                     }
@@ -148,7 +146,7 @@ fun <InteractionTarget : Any> ModalUi(
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = elementUiModel.element.interactionTarget.toString(),
+            text = element.interactionTarget.toString(),
             fontSize = 12.sp,
             color = Color.White
         )

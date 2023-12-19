@@ -199,10 +199,9 @@ fun <InteractionTarget : Any> ModelUi(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-    ) { elementUiModel ->
+    ) {
         Box(
             modifier = Modifier.size(60.dp)
-                .then(elementUiModel.modifier)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),
