@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextAlign.Companion
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.spotlight.Spotlight
@@ -52,7 +51,7 @@ fun ObserveMotionPropertiesSample(
         Spotlight(
             scope = coroutineScope,
             model = model,
-            visualisation = { SpotlightSliderRotation(it) },
+            visualisation = { SpotlightSliderRotation(it, model.currentState) },
             gestureFactory = { SpotlightSlider.Gestures(it) }
         )
     }

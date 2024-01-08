@@ -3,7 +3,7 @@ plugins {
 }
 
 appyx {
-    namespace.set("com.bumble.appyx.demos.appyxnavigation")
+    namespace.set("com.bumble.appyx.demos.navigation")
 
     buildFeatures {
         compose.set(true)
@@ -25,7 +25,7 @@ android {
             signingConfig = signingConfigs.findByName("sampleConfig")
         }
         release {
-            isMinifyEnabled = true
+            isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -40,16 +40,13 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     implementation(composeBom)
-    implementation(project(":demos:common"))
     implementation(project(":demos:appyx-navigation:common"))
-    implementation(project(":appyx-interactions:appyx-interactions"))
-    implementation(project(":appyx-components:experimental:cards:cards"))
+    implementation(project(":appyx-components:stable:backstack:backstack"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.java8)
-    implementation(libs.coil.compose)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling)
     implementation(libs.google.material)

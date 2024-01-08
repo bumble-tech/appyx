@@ -10,10 +10,6 @@ appyx {
     androidNamespace.set("com.bumble.appyx.utils.multiplatform")
 }
 
-publishingPlugin {
-    artifactId = "utils-multiplatform"
-}
-
 kotlin {
     androidTarget {
         publishLibraryVariants("release")

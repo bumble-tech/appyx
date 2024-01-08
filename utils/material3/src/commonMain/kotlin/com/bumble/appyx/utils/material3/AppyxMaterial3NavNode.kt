@@ -16,7 +16,13 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onPlaced
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
@@ -32,6 +38,7 @@ import com.bumble.appyx.navigation.children.ChildAwareImpl
 import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.composable.AppyxComponent
 import com.bumble.appyx.navigation.integration.LocalScreenSize
+import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.ScreenSize.WindowSizeClass.COMPACT
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.EmptyParentNodeView
@@ -54,7 +61,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
             defaultAnimationSpec = animationSpec
         )
     },
-    private val spotlight: Spotlight<NavTarget> = Spotlight(
+    protected val spotlight: Spotlight<NavTarget> = Spotlight(
         model = SpotlightModel(
             items = navTargets,
             initialActiveIndex = navTargets.indexOf(initialActiveElement).toFloat(),
@@ -84,10 +91,22 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     @Composable
     override fun View(modifier: Modifier) {
         val selectedIndex = spotlight.activeIndex.collectAsState().value.toInt()
+        val screenSize = LocalScreenSize.current
+        var containerSize by remember { mutableStateOf(screenSize) }
+        val density = LocalDensity.current
 
         Scaffold(
+            modifier = Modifier
+                .onPlaced {
+                    containerSize = with(density) {
+                        ScreenSize(
+                            it.size.width.toDp(),
+                            it.size.height.toDp()
+                        )
+                    }
+                },
             bottomBar = {
-                if (shouldUseNavigationBar()) {
+                if (shouldUseNavigationBar(containerSize)) {
                     NavigationBar(selectedIndex)
                 }
             },
@@ -99,7 +118,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
                         .padding(paddingValues)
                 ) {
                     Row {
-                        if (shouldUseNavigationRail()) {
+                        if (shouldUseNavigationRail(containerSize)) {
                             NavigationRail(selectedIndex)
                         }
                         CurrentNavItem()
@@ -110,12 +129,12 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     }
 
     @Composable
-    open fun shouldUseNavigationBar(): Boolean =
-        LocalScreenSize.current.windowSizeClass == COMPACT
+    open fun shouldUseNavigationBar(screenSize: ScreenSize): Boolean =
+        screenSize.windowSizeClass == COMPACT
 
     @Composable
-    open fun shouldUseNavigationRail(): Boolean =
-        !shouldUseNavigationBar()
+    open fun shouldUseNavigationRail(size: ScreenSize): Boolean =
+        !shouldUseNavigationBar(size)
 
     @Composable
     fun CurrentNavItem() {

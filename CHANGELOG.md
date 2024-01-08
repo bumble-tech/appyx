@@ -2,7 +2,14 @@
 
 ## Pending changes
 
-–
+### API breaking changes
+
+- [#630](https://github.com/bumble-tech/appyx/pull/630) – Pass initial state into Spotlights visualisations
+- [#643](https://github.com/bumble-tech/appyx/pull/643) – Unify AppyxComponent composable between appyx-navigation and appyx-interactions modules
+
+### Fixed
+
+- [#638](https://github.com/bumble-tech/appyx/pull/638) - Fix visibility issue for bottom element in BackStackParallax
 
 ---
 

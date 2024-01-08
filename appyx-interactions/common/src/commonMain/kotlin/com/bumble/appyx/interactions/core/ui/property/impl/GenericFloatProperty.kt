@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.core.ui.property.impl
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -12,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlin.jvm.JvmInline
 
-class GenericFloatProperty(
+open class GenericFloatProperty(
     coroutineScope: CoroutineScope,
     target: Target,
     displacement: StateFlow<Float> = MutableStateFlow(0f),

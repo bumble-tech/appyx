@@ -9,10 +9,6 @@ appyx {
     androidNamespace.set("com.bumble.appyx.utils.material3")
 }
 
-publishingPlugin {
-    artifactId = "utils-material3"
-}
-
 kotlin {
     androidTarget {
         publishLibraryVariants("release")

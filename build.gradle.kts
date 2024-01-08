@@ -22,6 +22,7 @@ plugins {
     id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
     id("org.jetbrains.compose") version libs.versions.composePlugin.get() apply false
     id("org.jetbrains.kotlin.android") version libs.versions.kotlin.get() apply false
+    id("com.android.test") version libs.versions.agp.get() apply false
 }
 
 dependencyAnalysis {
@@ -71,7 +72,7 @@ allprojects {
     configurations.all {
         resolutionStrategy.dependencySubstitution {
             substitute(module("com.bumble.appyx:customisations"))
-                .using(project(":utils:customisations"))
+                .using(project(":utils:utils-customisations"))
                 .because("RIBs uses Appyx customisations as external dependency")
         }
     }
@@ -79,6 +80,8 @@ allprojects {
 
 val buildNonMkdocsTask = tasks.register("buildNonMkdocs")
 val jsBrowserDistributionMkdocsTask = tasks.register("jsBrowserDistributionMkdocs")
+
+val conventionalPluginsWhiteList = listOf("benchmark-test")
 
 subprojects {
     // Allows avoiding building these modules as part of CI as they are also built for mkdocs.
@@ -120,6 +123,7 @@ subprojects {
         }
     }
 
+
     afterEvaluate {
         // Ensure that all project modules use convention plugins
         if (childProjects.isEmpty()) {
@@ -127,7 +131,8 @@ subprojects {
                 !pluginManager.hasPlugin("com.bumble.appyx.android.library") &&
                 !pluginManager.hasPlugin("com.bumble.appyx.multiplatform")
             ) {
-                error("'$path' module must use a convention plugin")
+                if (!conventionalPluginsWhiteList.contains(project.name))
+                    error("'$path' module must use a convention plugin")
             }
         }
     }

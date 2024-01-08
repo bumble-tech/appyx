@@ -26,21 +26,24 @@ import com.bumble.appyx.interactions.theme.appyx_dark
 @ExperimentalMaterialApi
 @Composable
 fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
+    val model = remember {
+        SpotlightModel(
+            items = listOf(
+                InteractionTarget.Child1,
+                InteractionTarget.Child2,
+                InteractionTarget.Child3,
+                InteractionTarget.Child4,
+                InteractionTarget.Child5,
+                InteractionTarget.Child6,
+                InteractionTarget.Child7
+            ),
+            savedStateMap = null
+        )
+    }
     val spotlight = remember {
         Spotlight(
-            model = SpotlightModel(
-                items = listOf(
-                    InteractionTarget.Child1,
-                    InteractionTarget.Child2,
-                    InteractionTarget.Child3,
-                    InteractionTarget.Child4,
-                    InteractionTarget.Child5,
-                    InteractionTarget.Child6,
-                    InteractionTarget.Child7
-                ),
-                savedStateMap = null
-            ),
-            visualisation = { SpotlightSlider(it) },
+            model = model,
+            visualisation = { SpotlightSlider(it, model.currentState) },
             gestureFactory = { SpotlightSlider.Gestures(it) },
             isDebug = true
         )
