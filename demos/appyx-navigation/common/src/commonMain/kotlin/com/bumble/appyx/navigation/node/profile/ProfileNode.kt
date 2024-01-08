@@ -44,8 +44,8 @@ class ProfileNode(
         object ProfileChild : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
+    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is NavTarget.ProfileChild -> node(buildContext) { modifier ->
                 Column(
                     modifier = modifier.fillMaxSize(),

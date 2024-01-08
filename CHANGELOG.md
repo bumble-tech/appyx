@@ -2,9 +2,11 @@
 
 ## Pending changes
 
-### Detailed migration guide
+{==
 
-[2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
+Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
+
+==}
 
 ### API breaking changes
 

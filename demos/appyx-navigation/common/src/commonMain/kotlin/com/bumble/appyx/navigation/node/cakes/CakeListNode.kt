@@ -75,13 +75,13 @@ class CakeListNode(
         ) : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
-            is NavTarget.Backdrop -> CakeBackdropNode(buildContext, navTarget.cake) {
+    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
+        when (reference) {
+            is NavTarget.Backdrop -> CakeBackdropNode(buildContext, reference.cake) {
                 toggleHeroMode()
             }
 
-            is NavTarget.CakeImage -> CakeImageNode(buildContext, navTarget.cake) {
+            is NavTarget.CakeImage -> CakeImageNode(buildContext, reference.cake) {
                 toggleHeroMode()
             }
         }

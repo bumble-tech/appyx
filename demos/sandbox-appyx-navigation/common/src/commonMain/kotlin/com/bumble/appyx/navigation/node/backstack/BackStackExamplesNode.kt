@@ -66,8 +66,8 @@ class BackStackExamplesNode(
         object BackStack3D : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is InteractionTarget.BackStackPicker -> node(buildContext) {
                 BackStackPicker(it)
             }

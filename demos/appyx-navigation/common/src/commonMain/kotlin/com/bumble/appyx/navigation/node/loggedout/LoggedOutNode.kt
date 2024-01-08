@@ -71,8 +71,8 @@ class LoggedOutNode(
         object Login : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
+    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is NavTarget.Splash -> node(buildContext) { modifier ->
                 SplashScreen(modifier)
             }

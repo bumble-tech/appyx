@@ -73,8 +73,8 @@ class PromoterNode(
         class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
@@ -86,7 +86,7 @@ class PromoterNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = interactionTarget.index.toString(),
+                        text = reference.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold

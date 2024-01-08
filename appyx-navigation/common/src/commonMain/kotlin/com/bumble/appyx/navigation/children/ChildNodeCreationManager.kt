@@ -181,7 +181,7 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             ChildEntry.Initialized(
                 key = key,
                 node = parentNode
-                    .resolve(key.interactionTarget, childBuildContext(savedState))
+                    .buildChildNode(key.interactionTarget, childBuildContext(savedState))
                     .build()
             )
         }
@@ -192,8 +192,8 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
             is ChildEntry.Suspended ->
                 ChildEntry.Initialized(
                     key = key,
-                    node = parentNode.resolve(
-                        interactionTarget = key.interactionTarget,
+                    node = parentNode.buildChildNode(
+                        reference = key.interactionTarget,
                         buildContext = childBuildContext(savedState),
                     ).build()
                 )

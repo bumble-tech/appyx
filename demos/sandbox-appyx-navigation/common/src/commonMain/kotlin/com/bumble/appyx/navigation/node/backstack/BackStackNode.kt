@@ -71,8 +71,8 @@ class BackStackNode(
         class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is InteractionTarget.Child -> node(buildContext) {
                 val backgroundColor =
                     rememberSaveable(saver = ColorSaver) { colors.shuffled().random() }
@@ -89,10 +89,10 @@ class BackStackNode(
                         )
                         .background(backgroundColor)
                         .padding(24.dp)
-                        .gestureModifier(backStack, interactionTarget.index.toString())
+                        .gestureModifier(backStack, reference.index.toString())
                 ) {
                     Text(
-                        text = interactionTarget.index.toString(),
+                        text = reference.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold

@@ -54,15 +54,15 @@ class RootNode(
         ) : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-        when (navTarget) {
+    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is NavTarget.LoggedOut -> LoggedOutNode(
                 buildContext = buildContext,
                 onLogin = { user -> onLogin(user) }
             )
             is NavTarget.Main -> MainNode(
                 buildContext = buildContext,
-                user = navTarget.user,
+                user = reference.user,
                 onLogout = { backStack.replace(NavTarget.LoggedOut) }
             )
         }

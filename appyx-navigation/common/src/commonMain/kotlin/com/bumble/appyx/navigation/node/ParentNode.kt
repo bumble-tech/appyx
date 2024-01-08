@@ -20,7 +20,7 @@ import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.navigation.Resolver
+import com.bumble.appyx.navigation.navigation.ChildNodeBuilder
 import com.bumble.appyx.navigation.platform.PlatformBackHandler
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -43,7 +43,7 @@ abstract class ParentNode<InteractionTarget : Any>(
     view = view,
     buildContext = buildContext,
     plugins = plugins + appyxComponent + childAware
-), Resolver<InteractionTarget> {
+), ChildNodeBuilder<InteractionTarget> {
 
     private val childNodeCreationManager = ChildNodeCreationManager<InteractionTarget>(
         savedStateMap = buildContext.savedStateMap,

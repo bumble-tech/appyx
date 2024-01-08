@@ -76,8 +76,8 @@ class ContainerNode(
     }
 
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is InteractionTarget.Selector -> node(buildContext) { modifier ->
                 Selector(modifier)
             }

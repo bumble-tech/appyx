@@ -70,7 +70,7 @@ class MosaicNode(
     appyxComponent = mosaic
 ) {
 
-    override fun resolve(mosaicPiece: MosaicPiece, buildContext: BuildContext): Node =
+    override fun buildChildNode(mosaicPiece: MosaicPiece, buildContext: BuildContext): Node =
         node(buildContext) { modifier ->
             Box(
                 modifier = modifier

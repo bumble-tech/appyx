@@ -38,8 +38,8 @@ internal class ComposeNavigationContainerNode(
         object Main : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is InteractionTarget.Main -> node(buildContext) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),

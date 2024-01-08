@@ -49,8 +49,8 @@ class PermanentChildNode(
         object Child2 : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is InteractionTarget.Child1 -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(

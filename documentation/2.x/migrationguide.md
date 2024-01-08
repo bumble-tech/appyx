@@ -144,8 +144,8 @@ class RootNode(
 
 -    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
 -        when (navTarget) {
-+    override fun resolve(interactionTarget: NavTarget, buildContext: BuildContext): Node =
-+        when (interactionTarget) {
++    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
++        when (reference) {
             is Child1 -> Child1Node(buildContext) { backStack.push(Child2) }
             is Child2 -> Child2Node(buildContext)
         }

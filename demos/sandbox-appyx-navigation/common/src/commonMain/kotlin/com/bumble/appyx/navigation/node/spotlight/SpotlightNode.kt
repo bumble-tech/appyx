@@ -67,8 +67,8 @@ class SpotlightNode(
         class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
+        when (reference) {
             is InteractionTarget.Child -> node(buildContext) { modifier ->
                 val backgroundColorIdx = rememberSaveable { colors.shuffled().indices.random() }
                 val backgroundColor = colors[backgroundColorIdx]
@@ -84,7 +84,7 @@ class SpotlightNode(
 
                 ) {
                     Text(
-                        text = "${interactionTarget.index} – Clicked: $clicked",
+                        text = "${reference.index} – Clicked: $clicked",
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
