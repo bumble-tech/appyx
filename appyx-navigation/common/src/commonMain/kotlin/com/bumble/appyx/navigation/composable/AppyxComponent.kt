@@ -5,6 +5,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.interactions.core.AppyxInteractionsComponent
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -31,7 +32,7 @@ fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.Ap
     val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
     val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
 
-    com.bumble.appyx.interactions.core.AppyxComponent(
+    AppyxInteractionsComponent(
         appyxComponent,
         screenWidthPx,
         screenHeightPx,
