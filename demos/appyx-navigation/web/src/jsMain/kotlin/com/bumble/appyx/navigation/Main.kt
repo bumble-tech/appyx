@@ -83,7 +83,7 @@ private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
                 .onFocusChanged { hasFocus = it.hasFocus },
             color = MaterialTheme.colorScheme.background,
         ) {
-            CompositionLocalProvider(LocalNavigator provides navigator) {
+            ProvideScopeConfiguration(navigator, screenSize) {
                 BlackContainer {
                     WebNodeHost(
                         screenSize = screenSize,
