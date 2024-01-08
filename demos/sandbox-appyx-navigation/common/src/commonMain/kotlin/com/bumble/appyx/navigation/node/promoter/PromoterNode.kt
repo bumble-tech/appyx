@@ -33,7 +33,7 @@ import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisatio
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -103,7 +103,7 @@ class PromoterNode(
             modifier = modifier
                 .fillMaxSize()
         ) {
-            AppyxComponent(
+            AppyxNavigationComponent(
                 appyxComponent = promoter,
                 modifier = Modifier
                     .weight(0.9f)

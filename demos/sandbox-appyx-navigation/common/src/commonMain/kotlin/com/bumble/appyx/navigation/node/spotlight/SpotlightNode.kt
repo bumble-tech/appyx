@@ -34,7 +34,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -100,7 +100,7 @@ class SpotlightNode(
                 .fillMaxSize()
                 .background(appyx_dark)
         ) {
-            AppyxComponent(
+            AppyxNavigationComponent(
                 appyxComponent = spotlight,
                 modifier = Modifier
                     .padding(

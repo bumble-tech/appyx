@@ -35,7 +35,7 @@ import com.bumble.appyx.benchmark.app.mosaic.operation.flip
 import com.bumble.appyx.benchmark.app.mosaic.operation.scatter
 import com.bumble.appyx.benchmark.app.ui.FlashCard
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -104,7 +104,7 @@ class MosaicNode(
                 .background(Color.Black)
                 .padding(24.dp),
         ) {
-            AppyxComponent(
+            AppyxNavigationComponent(
                 appyxComponent = mosaic,
                 modifier = Modifier
                     .align(Alignment.Center)

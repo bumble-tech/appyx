@@ -17,7 +17,7 @@ import kotlin.math.roundToInt
 internal val defaultExtraTouch = 48.dp
 
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxComponent(
+fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxNavigationComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
