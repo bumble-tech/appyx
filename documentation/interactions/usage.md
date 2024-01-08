@@ -66,13 +66,22 @@ fun SomeComposable() {
 
 ## Rendering the AppyxComponent
 
-You can render your component with the `AppyxComponent` composable. Make sure to apply `elementUiModel.modifier`  if you override the optional `element` rendering.
+### In the scope of Appyx Interactions 
+
+You can render your component with the `AppyxInteractionsComponent` composable. 
+
+Make sure to:
+
+- Apply `elementUiModel.modifier` if you override the optional `element` rendering.
+- Provide `screenWidthPx` and `screenWidthPx`
 
 ```kotlin
 @Composable
 fun SomeComposable() {
-    AppyxComponent(
+    AppyxInteractionsComponent(
         appyxComponent = yourComponent,
+        screenWidthPx = TODO(),
+        screenHeightPx = TODO(),
         clipToBounds = false,
         modifier = Modifier,
         element = { elementUiModel ->
@@ -84,6 +93,42 @@ fun SomeComposable() {
     )
 }
 ```
+
+### In the scope of Appyx Navigation
+
+Appyx Navigation extends on the functionality of `AppyxInteractionsComponent` and adds `AppyxNavigationComponent` as a wrapper around it. 
+
+For client code usage they're almost identical. However, you should always use the latter when using Appyx Navigation as it makes sure the related child `Nodes` are lifecycled properly.
+
+Also note:
+
+- This composable is only accessible inside of a `ParentNode`.
+- You should use it inside the `View` composable.
+- You don't need to specify screen dimensions.
+
+
+```kotlin
+class YourNode(
+    /*...*/
+) : ParentNode<T> {
+
+    @Composable
+    override fun View(modifier: Modifier) {
+        AppyxNavigationComponent(
+            appyxComponent = yourComponent,
+            modifier = modifier
+        )   
+    }
+}
+```
+
+### When to use which?
+
+You should use `AppyxInteractionsComponent` if you're adding standalone Appyx components to your project without using navigation.
+
+You should always use `AppyxNavigationComponent` if you're using Appyx Navigation.
+
+
 
 ## Interacting with the AppyxComponent
 
