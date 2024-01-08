@@ -24,6 +24,8 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
 import com.bumble.appyx.navigation.integration.ScreenSize
@@ -53,8 +55,8 @@ fun main() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun ForceChangeToCodeGen(events: Channel<Unit>, navigator: Navigator) {
-    AppyxSampleAppTheme {
+private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
+    AppyxSampleAppTheme(darkTheme = true) {
         val requester = remember { FocusRequester() }
         var hasFocus by remember { mutableStateOf(false) }
 
@@ -73,15 +75,19 @@ private fun ForceChangeToCodeGen(events: Channel<Unit>, navigator: Navigator) {
                 .onFocusChanged { hasFocus = it.hasFocus },
             color = MaterialTheme.colorScheme.background,
         ) {
-            CompositionLocalProvider(LocalNavigator provides navigator) {
-                WebNodeHost(
-                    screenSize = screenSize,
-                    onBackPressedEvents = events.receiveAsFlow(),
-                ) { buildContext ->
-                    RootNode(
-                        buildContext = buildContext,
-                        plugins = listOf(navigator)
-                    )
+            CompositionLocalProvider(LocalDensity provides screenSize.calculateDensityFromScreenSize()) {
+                CompositionLocalProvider(LocalNavigator provides navigator) {
+                    BlackContainer {
+                        WebNodeHost(
+                            screenSize = screenSize,
+                            onBackPressedEvents = events.receiveAsFlow(),
+                        ) { buildContext ->
+                            RootNode(
+                                buildContext = buildContext,
+                                plugins = listOf(navigator)
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -90,6 +96,34 @@ private fun ForceChangeToCodeGen(events: Channel<Unit>, navigator: Navigator) {
             LaunchedEffect(Unit) {
                 requester.requestFocus()
             }
+        }
+    }
+}
+
+private fun ScreenSize.calculateDensityFromScreenSize(): Density =
+    if (widthDp.value < 1500) {
+        console.log("Going small! ${widthDp.value}")
+        Density(1.2f, 1f)
+    } else {
+        console.log("Going big! ${widthDp.value}")
+        Density(1.8f, 1.2f)
+    }
+
+@Composable
+private fun BlackContainer(content: @Composable () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .aspectRatio(0.56f)
+                .border(4.dp, color_primary, containerShape)
+                .clip(containerShape)
+        ) {
+            content()
         }
     }
 }
