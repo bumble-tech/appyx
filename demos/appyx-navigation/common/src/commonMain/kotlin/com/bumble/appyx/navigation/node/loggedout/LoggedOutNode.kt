@@ -110,6 +110,7 @@ class LoggedOutNode(
                 ) {
                     Text(
                         text = "Log in",
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
             }

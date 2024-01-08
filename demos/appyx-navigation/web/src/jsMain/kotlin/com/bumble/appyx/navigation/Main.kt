@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Box
@@ -35,6 +34,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
+import com.bumble.appyx.demos.appyxSample
 import com.bumble.appyx.demos.common.color_primary
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.WebNodeHost
@@ -48,7 +48,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import org.jetbrains.skiko.wasm.onWasmReady
 
 private val containerShape = RoundedCornerShape(8)
 
@@ -56,17 +55,16 @@ private val containerShape = RoundedCornerShape(8)
 fun main() {
     val events: Channel<Unit> = Channel()
     val navigator = Navigator()
-    onWasmReady {
+    appyxSample {
         CanvasBasedWindow("Appyx navigation demo") {
             CakeApp(events, navigator)
         }
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
-    AppyxSampleAppTheme {
+    AppyxSampleAppTheme(darkTheme = true) {
         val requester = remember { FocusRequester() }
         var hasFocus by remember { mutableStateOf(false) }
 
@@ -85,7 +83,7 @@ private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
                 .onFocusChanged { hasFocus = it.hasFocus },
             color = MaterialTheme.colorScheme.background,
         ) {
-            ProvideScopeConfiguration(navigator, screenSize) {
+            CompositionLocalProvider(LocalNavigator provides navigator) {
                 BlackContainer {
                     WebNodeHost(
                         screenSize = screenSize,
@@ -104,6 +102,25 @@ private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
             LaunchedEffect(Unit) {
                 requester.requestFocus()
             }
+        }
+    }
+}
+
+@Composable
+private fun BlackContainer(content: @Composable () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .aspectRatio(0.56f)
+                .border(4.dp, color_primary, containerShape)
+                .clip(containerShape)
+        ) {
+            content()
         }
     }
 }
@@ -130,25 +147,6 @@ private fun ScreenSize.calculateDensityFromScreenSize(): Density =
         console.log("Going big! ${widthDp.value}")
         Density(1.8f, 1.2f)
     }
-
-@Composable
-private fun BlackContainer(content: @Composable () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Box(
-            modifier = Modifier
-                .aspectRatio(0.56f)
-                .border(4.dp, color_primary, containerShape)
-                .clip(containerShape)
-        ) {
-            content()
-        }
-    }
-}
 
 private fun onKeyEvent(
     keyEvent: KeyEvent,

@@ -62,6 +62,7 @@ class ProfileNode(
                     ) {
                         Text(
                             text = "Log out",
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 }
