@@ -14,6 +14,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":demos:common"))
+                implementation(project(":demos:mkdocs:appyx-components:common"))
                 implementation(project(":demos:appyx-navigation:common"))
                 implementation(project(":appyx-interactions:appyx-interactions"))
                 implementation(project(":appyx-navigation:appyx-navigation"))
