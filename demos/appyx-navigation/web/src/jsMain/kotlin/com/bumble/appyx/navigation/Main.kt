@@ -141,10 +141,8 @@ private fun ProvideScopeConfiguration(
 
 private fun ScreenSize.calculateDensityFromScreenSize(): Density =
     if (widthDp.value < 1500) {
-        console.log("Going small! ${widthDp.value}")
         Density(1.2f, 1f)
     } else {
-        console.log("Going big! ${widthDp.value}")
         Density(1.8f, 1.2f)
     }
 
