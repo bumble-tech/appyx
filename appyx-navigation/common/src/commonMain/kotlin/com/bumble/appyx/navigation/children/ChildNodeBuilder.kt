@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.navigation
+package com.bumble.appyx.navigation.children
 
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
