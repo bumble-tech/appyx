@@ -5,7 +5,6 @@ import androidx.compose.runtime.Stable
 import com.bumble.appyx.navigation.integration.activitystarter.ActivityStarter
 import com.bumble.appyx.navigation.integration.permissionrequester.PermissionRequester
 import com.bumble.appyx.navigation.integration.requestcode.RequestCodeRegistry
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 
 @Stable
 abstract class AndroidIntegrationPoint(

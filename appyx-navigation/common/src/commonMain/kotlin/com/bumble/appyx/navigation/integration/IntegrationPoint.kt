@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.integrationpoint
+package com.bumble.appyx.navigation.integration
 
 import androidx.compose.runtime.Stable
 import com.bumble.appyx.navigation.navigation.upnavigation.UpNavigationHandler

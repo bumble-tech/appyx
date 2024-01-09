@@ -86,7 +86,7 @@ Artifacts have a `utils-` prefix:
 -import com.bumble.appyx.core.integrationpoint.NodeActivity
 
 +import com.bumble.appyx.navigation.integration.NodeHost
-+import com.bumble.appyx.navigation.integrationpoint.NodeActivity
++import com.bumble.appyx.navigation.integration.NodeActivity
 
     class MainActivity : NodeActivity() {
          super.onCreate(savedInstanceState)
@@ -171,7 +171,7 @@ class RootNode(
 -import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 
 +import com.bumble.appyx.navigation.integration.NodeHost
-+import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
++import com.bumble.appyx.navigation.integration.IntegrationPointStub
 
 @Preview
 @Composable

@@ -20,7 +20,7 @@ import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.navigation.ChildNodeBuilder
+import com.bumble.appyx.navigation.children.ChildNodeBuilder
 import com.bumble.appyx.navigation.platform.PlatformBackHandler
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
