@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.platform
 
-import androidx.compose.runtime.AtomicReference
+import kotlin.concurrent.AtomicReference
 
 interface Cancellable {
     /**
@@ -39,7 +39,7 @@ abstract class OnBackPressedCallback(
      * added to.
      */
     fun remove() {
-        for (cancellable in cancellablesReference.get()) {
+        for (cancellable in cancellablesReference.value) {
             cancellable.cancel()
         }
     }
@@ -49,10 +49,10 @@ abstract class OnBackPressedCallback(
      */
     abstract fun handleOnBackPressed()
     fun addCancellable(cancellable: Cancellable) {
-        cancellablesReference.set(cancellablesReference.get() + cancellable)
+        cancellablesReference.getAndSet(cancellablesReference.value + cancellable)
     }
 
     fun removeCancellable(cancellable: Cancellable) {
-        cancellablesReference.set(cancellablesReference.get() - cancellable)
+        cancellablesReference.getAndSet(cancellablesReference.value - cancellable)
     }
 }
