@@ -193,7 +193,7 @@ internal class ChildNodeCreationManager<ChildReference : Any>(
                 ChildEntry.Initialized(
                     key = key,
                     node = parentNode.buildChildNode(
-                        reference = key.interactionTarget,
+                        navTarget = key.interactionTarget,
                         buildContext = childBuildContext(savedState),
                     ).build()
                 )

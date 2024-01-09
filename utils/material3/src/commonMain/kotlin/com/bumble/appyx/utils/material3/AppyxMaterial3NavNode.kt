@@ -82,9 +82,9 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     plugins = plugins
 ) {
 
-    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         navTargetResolver
-            .invoke(reference)
+            .invoke(navTarget)
             .node
             .invoke(buildContext)
 

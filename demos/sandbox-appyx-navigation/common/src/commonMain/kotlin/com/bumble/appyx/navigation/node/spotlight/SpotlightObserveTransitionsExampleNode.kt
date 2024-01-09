@@ -66,8 +66,8 @@ class SpotlightObserveTransitionsExampleNode(
         class Child(val index: Int) : InteractionTarget()
     }
 
-    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
-        when (reference) {
+    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             is InteractionTarget.Child -> node(buildContext) { modifier ->
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
@@ -78,7 +78,7 @@ class SpotlightObserveTransitionsExampleNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = reference.index.toString(),
+                        text = navTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold

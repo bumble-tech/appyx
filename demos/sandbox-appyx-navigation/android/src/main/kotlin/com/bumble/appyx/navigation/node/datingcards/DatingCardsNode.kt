@@ -44,8 +44,8 @@ class DatingCardsNode(
         class ProfileCard(val profile: Profile) : InteractionTarget()
     }
 
-    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
-        ProfileCardNode(buildContext, (reference as InteractionTarget.ProfileCard).profile)
+    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+        ProfileCardNode(buildContext, (navTarget as InteractionTarget.ProfileCard).profile)
 
     @Composable
     override fun View(modifier: Modifier) {

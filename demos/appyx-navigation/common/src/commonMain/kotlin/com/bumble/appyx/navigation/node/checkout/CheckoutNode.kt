@@ -64,8 +64,8 @@ class CheckoutNode(
         object Success : NavTarget()
     }
 
-    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
-        when (reference) {
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             is NavTarget.CartItems -> CartItemsNode(buildContext, cart) {
                 backStack.push(NavTarget.Address)
             }

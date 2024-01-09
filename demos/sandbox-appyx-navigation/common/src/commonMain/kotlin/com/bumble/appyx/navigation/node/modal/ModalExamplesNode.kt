@@ -55,8 +55,8 @@ class ModalExamplesNode(
         object Child : InteractionTarget()
     }
 
-    override fun buildChildNode(reference: InteractionTarget, buildContext: BuildContext): Node =
-        when (reference) {
+    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             is InteractionTarget.Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
