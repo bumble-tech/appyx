@@ -20,7 +20,7 @@ import com.bumble.appyx.components.modal.ModalModel
 import com.bumble.appyx.components.modal.operation.add
 import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalVisualisation
-import com.bumble.appyx.interactions.core.AppyxInteractionsComponent
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
@@ -84,7 +84,7 @@ fun <InteractionTarget : Any> ModalUi(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
-    AppyxInteractionsComponent(
+    AppyxInteractionsContainer(
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         clipToBounds = false,

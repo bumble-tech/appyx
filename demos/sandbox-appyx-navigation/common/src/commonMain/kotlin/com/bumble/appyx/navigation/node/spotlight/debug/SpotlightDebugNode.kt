@@ -25,7 +25,7 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.composable.KnobControl
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
@@ -99,7 +99,7 @@ class SpotlightDebugNode(
             KnobControl(onValueChange = {
                 spotlight.setNormalisedProgress(it)
             })
-            AppyxNavigationComponent(
+            AppyxNavigationContainer(
                 appyxComponent = spotlight,
                 modifier = Modifier.padding(
                     horizontal = 64.dp,

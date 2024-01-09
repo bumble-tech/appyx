@@ -23,7 +23,7 @@ import com.bumble.appyx.components.modal.operation.revert
 import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalVisualisation
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -82,7 +82,7 @@ class ModalExamplesNode(
                 .background(appyx_dark),
             verticalArrangement = Arrangement.Bottom
         ) {
-            AppyxNavigationComponent(
+            AppyxNavigationContainer(
                 appyxComponent = modal,
                 modifier = Modifier
                     .fillMaxSize()

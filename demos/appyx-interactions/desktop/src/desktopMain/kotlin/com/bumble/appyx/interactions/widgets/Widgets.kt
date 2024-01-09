@@ -19,7 +19,7 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.Events
-import com.bumble.appyx.interactions.core.AppyxInteractionsComponent
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -94,7 +94,7 @@ private fun WidgetsUi(
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
 ) {
-    AppyxInteractionsComponent(
+    AppyxInteractionsContainer(
         clipToBounds = false,
         appyxComponent = spotlight,
         modifier = modifier

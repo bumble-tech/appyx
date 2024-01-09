@@ -39,7 +39,7 @@ Check also [Multiplatform](../navigation/multiplatform.md) documentation and the
 ## Rough equivalents
 
 - 1.x → 2.x
-- `NavModel` → `AppyxNavigationComponent`
+- `NavModel` → `AppyxComponent`
 - `TransitionHandler` → `Visualisation`
 
 
@@ -115,7 +115,7 @@ Artifacts have a `utils-` prefix:
 +import com.bumble.appyx.components.backstack.BackStackModel
 +import com.bumble.appyx.components.backstack.operation.push
 +import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
-+import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
++import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 +import com.bumble.appyx.navigation.modality.BuildContext
 +import com.bumble.appyx.navigation.node.Node
 +import com.bumble.appyx.navigation.node.ParentNode
@@ -155,7 +155,7 @@ class RootNode(
 -        Children(
 -            navModel = backStack,
 -            transitionHandler = rememberBackstackFader(transitionSpec = { spring() }),
-+        AppyxNavigationComponent(
++        AppyxNavigationContainer(
 +            appyxComponent = backStack,
             modifier = Modifier.fillMaxSize()
         )

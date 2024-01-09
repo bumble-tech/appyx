@@ -25,7 +25,7 @@ import com.bumble.appyx.components.experimental.promoter.Promoter
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
 import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisation
-import com.bumble.appyx.interactions.core.AppyxInteractionsComponent
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
@@ -74,7 +74,7 @@ fun PromoterExperiment(modifier: Modifier = Modifier) {
         val screenWidthPx = (LocalConfiguration.current.screenWidthDp * density.density).roundToInt()
         val screenHeightPx = (LocalConfiguration.current.screenHeightDp * density.density).roundToInt()
 
-        AppyxInteractionsComponent(
+        AppyxInteractionsContainer(
             appyxComponent = promoter,
             modifier = Modifier
                 .weight(0.9f)

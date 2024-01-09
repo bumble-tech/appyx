@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
-import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -71,7 +71,7 @@ class ProfileNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxNavigationComponent(
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier
         )

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
-import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -49,7 +49,7 @@ class DatingCardsNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxNavigationComponent(
+        AppyxNavigationContainer(
             modifier = modifier
                 .fillMaxSize()
                 .background(appyx_dark)

@@ -146,7 +146,7 @@ override fun View(modifier: Modifier) {
         modifier = modifier
     ) {
         // Let's include the elements of our component into the composition
-        AppyxNavigationComponent(
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier.weight(0.9f)
         )

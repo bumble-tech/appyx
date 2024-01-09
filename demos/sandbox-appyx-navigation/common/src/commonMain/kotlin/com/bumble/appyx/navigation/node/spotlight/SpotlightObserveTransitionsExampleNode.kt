@@ -33,7 +33,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -119,7 +119,7 @@ class SpotlightObserveTransitionsExampleNode(
                 .fillMaxSize()
                 .background(appyx_dark)
         ) {
-            AppyxNavigationComponent(
+            AppyxNavigationContainer(
                 appyxComponent = spotlight,
                 modifier = Modifier
                     .padding(

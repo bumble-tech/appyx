@@ -68,7 +68,7 @@ fun SomeComposable() {
 
 ### In the scope of Appyx Interactions 
 
-You can render your component with the `AppyxInteractionsComponent` composable. 
+You can render your component with the `AppyxInteractionsContainer` composable. 
 
 Make sure to:
 
@@ -78,7 +78,7 @@ Make sure to:
 ```kotlin
 @Composable
 fun SomeComposable() {
-    AppyxInteractionsComponent(
+    AppyxInteractionsContainer(
         appyxComponent = yourComponent,
         screenWidthPx = TODO(),
         screenHeightPx = TODO(),
@@ -96,7 +96,7 @@ fun SomeComposable() {
 
 ### In the scope of Appyx Navigation
 
-Appyx Navigation extends on the functionality of `AppyxInteractionsComponent` and adds `AppyxNavigationComponent` as a wrapper around it. 
+Appyx Navigation extends on the functionality of `AppyxInteractionsContainer` and adds `AppyxNavigationContainer` as a wrapper around it. 
 
 For client code usage they're almost identical. However, you should always use the latter when using Appyx Navigation as it makes sure the related child `Nodes` are lifecycled properly.
 
@@ -114,7 +114,7 @@ class YourNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxNavigationComponent(
+        AppyxNavigationContainer(
             appyxComponent = yourComponent,
             modifier = modifier
         )   
@@ -124,9 +124,9 @@ class YourNode(
 
 ### When to use which?
 
-You should use `AppyxInteractionsComponent` if you're adding standalone Appyx components to your project without using navigation.
+You should use `AppyxInteractionsContainer` if you're adding standalone Appyx components to your project without using navigation.
 
-You should always use `AppyxNavigationComponent` if you're using Appyx Navigation.
+You should always use `AppyxNavigationContainer` if you're using Appyx Navigation.
 
 
 

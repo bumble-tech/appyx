@@ -33,7 +33,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import com.bumble.appyx.navigation.ColorSaver
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -108,7 +108,7 @@ class BackStackNode(
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {
-            AppyxNavigationComponent(
+            AppyxNavigationContainer(
                 clipToBounds = true,
                 appyxComponent = backStack,
                 modifier = Modifier
