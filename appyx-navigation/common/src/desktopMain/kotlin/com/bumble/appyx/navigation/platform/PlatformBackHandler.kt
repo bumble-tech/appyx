@@ -8,6 +8,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
+import com.bumble.appyx.navigation.navigation.backnavigation.OnBackPressedCallback
 
 @Suppress("CompositionLocalAllowlist")
 val LocalOnBackPressedDispatcherOwner: ProvidableCompositionLocal<OnBackPressedDispatcherOwner> =

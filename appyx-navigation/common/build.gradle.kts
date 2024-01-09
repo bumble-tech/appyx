@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.compose")
     id("com.android.library")
     id("appyx-publish-multiplatform")
+    id("kotlinx-atomicfu")
 }
 
 appyx {

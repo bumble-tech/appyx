@@ -1,6 +1,6 @@
-package com.bumble.appyx.navigation.platform
+package com.bumble.appyx.navigation.navigation.backnavigation
 
-import java.util.concurrent.CopyOnWriteArrayList
+import kotlinx.atomicfu.atomic
 
 interface Cancellable {
     /**
@@ -31,15 +31,14 @@ abstract class OnBackPressedCallback(
      *
      * @return Whether this callback should be considered enabled.
      */
-    private val cancellables: CopyOnWriteArrayList<Cancellable> =
-        CopyOnWriteArrayList<Cancellable>()
+    private val cancellables = atomic(emptyList<Cancellable>())
 
     /**
      * Removes this callback from any [OnBackPressedDispatcher] it is currently
      * added to.
      */
     fun remove() {
-        for (cancellable in cancellables) {
+        for (cancellable in cancellables.value) {
             cancellable.cancel()
         }
     }
@@ -48,12 +47,11 @@ abstract class OnBackPressedCallback(
      * Callback for handling the [OnBackPressedDispatcher.onBackPressed] event.
      */
     abstract fun handleOnBackPressed()
-    
     fun addCancellable(cancellable: Cancellable) {
-        cancellables.add(cancellable)
+        cancellables.getAndSet(cancellables.value + cancellable)
     }
 
     fun removeCancellable(cancellable: Cancellable) {
-        cancellables.remove(cancellable)
+        cancellables.getAndSet(cancellables.value - cancellable)
     }
 }

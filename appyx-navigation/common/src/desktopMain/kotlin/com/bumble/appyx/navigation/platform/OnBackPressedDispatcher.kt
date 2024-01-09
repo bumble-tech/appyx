@@ -1,5 +1,7 @@
 package com.bumble.appyx.navigation.platform
 
+import com.bumble.appyx.navigation.navigation.backnavigation.Cancellable
+import com.bumble.appyx.navigation.navigation.backnavigation.OnBackPressedCallback
 import java.util.ArrayDeque
 
 /**

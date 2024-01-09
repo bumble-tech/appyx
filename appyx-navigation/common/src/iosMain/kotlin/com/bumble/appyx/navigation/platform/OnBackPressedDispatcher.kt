@@ -1,6 +1,8 @@
 package com.bumble.appyx.navigation.platform
 
 import androidx.compose.ui.util.fastForEachReversed
+import com.bumble.appyx.navigation.navigation.backnavigation.Cancellable
+import com.bumble.appyx.navigation.navigation.backnavigation.OnBackPressedCallback
 
 /**
  * Adapted from Android's OnBackPressedDispatcher.

@@ -26,6 +26,7 @@ uuid = "9.0.0"
 uiautomator = "2.2.0"
 benchmark-macro-junit4 = "1.2.0"
 junit-junit = "4.13.2"
+atomicfu = "0.22.0"
 
 [libraries]
 androidx-activity-compose = "androidx.activity:activity-compose:1.7.2"
@@ -95,6 +96,7 @@ junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+plugin-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "atomicfu" }
 
 detekt-compose = "com.twitter.compose.rules:detekt:0.0.26"
 toolargetool = "com.gu.android:toolargetool:0.3.0"
