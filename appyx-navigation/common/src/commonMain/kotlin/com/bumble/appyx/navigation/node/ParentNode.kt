@@ -32,25 +32,25 @@ import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
-abstract class ParentNode<InteractionTarget : Any>(
-    val appyxComponent: AppyxComponent<InteractionTarget, *>,
+abstract class ParentNode<ChildReference : Any>(
+    val appyxComponent: AppyxComponent<ChildReference, *>,
     buildContext: BuildContext,
-    view: ParentNodeView<InteractionTarget> = EmptyParentNodeView(),
+    view: ParentNodeView<ChildReference> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-    private val childAware: ChildAware<ParentNode<InteractionTarget>> = ChildAwareImpl(),
+    private val childAware: ChildAware<ParentNode<ChildReference>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
     view = view,
     buildContext = buildContext,
     plugins = plugins + appyxComponent + childAware
-), ChildNodeBuilder<InteractionTarget> {
+), ChildNodeBuilder<ChildReference> {
 
-    private val childNodeCreationManager = ChildNodeCreationManager<InteractionTarget>(
+    private val childNodeCreationManager = ChildNodeCreationManager<ChildReference>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
         keepMode = childKeepMode,
     )
-    val children: StateFlow<ChildEntryMap<InteractionTarget>>
+    val children: StateFlow<ChildEntryMap<ChildReference>>
         get() = childNodeCreationManager.children
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
@@ -66,7 +66,7 @@ abstract class ParentNode<InteractionTarget : Any>(
         childNodeLifecycleManager.launch()
     }
 
-    fun childOrCreate(element: Element<InteractionTarget>): ChildEntry.Initialized<InteractionTarget> =
+    fun childOrCreate(element: Element<ChildReference>): ChildEntry.Initialized<ChildReference> =
         childNodeCreationManager.childOrCreate(element)
 
     override fun updateLifecycleState(state: Lifecycle.State) {

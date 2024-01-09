@@ -99,11 +99,11 @@ class PermanentChildNode(
         ) {
             PermanentChild(
                 permanentAppyxComponent = permanentAppyxComponent,
-                interactionTarget = InteractionTarget.Child1
+                reference = InteractionTarget.Child1
             )
             PermanentChild(
                 permanentAppyxComponent = permanentAppyxComponent,
-                interactionTarget = InteractionTarget.Child2
+                reference = InteractionTarget.Child2
             )
         }
     }

@@ -12,18 +12,18 @@ import com.bumble.appyx.navigation.node.ParentNode
 import kotlinx.coroutines.flow.SharingStarted
 
 @Composable
-fun <InteractionTarget : Any> ParentNode<InteractionTarget>.PermanentChild(
-    permanentAppyxComponent: PermanentAppyxComponent<InteractionTarget>,
-    interactionTarget: InteractionTarget,
+fun <ChildReference : Any> ParentNode<ChildReference>.PermanentChild(
+    permanentAppyxComponent: PermanentAppyxComponent<ChildReference>,
+    reference: ChildReference,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
-    val child by remember(interactionTarget, permanentAppyxComponent) {
+    val child by remember(reference, permanentAppyxComponent) {
         children
             .mapState(scope, SharingStarted.WhileSubscribed()) { childrenMap ->
                 childrenMap
                     .keys
-                    .find { it.interactionTarget == interactionTarget }
+                    .find { it.interactionTarget == reference }
                     ?.let { childOrCreate(it) }
             }
     }.collectAsState()

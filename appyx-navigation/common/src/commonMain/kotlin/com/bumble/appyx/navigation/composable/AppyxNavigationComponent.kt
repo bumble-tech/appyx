@@ -17,15 +17,15 @@ import kotlin.math.roundToInt
 internal val defaultExtraTouch = 48.dp
 
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> ParentNode<InteractionTarget>.AppyxNavigationComponent(
-    appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
+fun <ChildReference : Any, ModelState : Any> ParentNode<ChildReference>.AppyxNavigationComponent(
+    appyxComponent: BaseAppyxComponent<ChildReference, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = GestureValidator.defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
     decorator: (@Composable (
         child: ChildRenderer,
-        elementUiModel: ElementUiModel<InteractionTarget>
+        elementUiModel: ElementUiModel<ChildReference>
     ) -> Unit) = { child, _ -> child() }
 ) {
     val density = LocalDensity.current
