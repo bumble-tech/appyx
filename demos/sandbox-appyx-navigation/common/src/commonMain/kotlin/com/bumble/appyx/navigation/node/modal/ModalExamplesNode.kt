@@ -27,7 +27,7 @@ import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.modal.ModalExamplesNode.InteractionTarget
+import com.bumble.appyx.navigation.node.modal.ModalExamplesNode.NavTarget
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
@@ -38,26 +38,26 @@ import kotlin.random.Random
 
 class ModalExamplesNode(
     buildContext: BuildContext,
-    private val modal: Modal<InteractionTarget> = Modal(
+    private val modal: Modal<NavTarget> = Modal(
         model = ModalModel(
-            initialElements = listOf(InteractionTarget.Child),
+            initialElements = listOf(NavTarget.Child),
             savedStateMap = buildContext.savedStateMap
         ),
         visualisation = { ModalVisualisation(it) }
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = modal
 ) {
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Child : InteractionTarget()
+        object Child : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+            is NavTarget.Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -101,7 +101,7 @@ class ModalExamplesNode(
                     modifier = Modifier
                         .padding(horizontal = 4.dp),
                 ) {
-                    modal.add(InteractionTarget.Child)
+                    modal.add(NavTarget.Child)
                 }
                 TextButton(
                     text = "Show",

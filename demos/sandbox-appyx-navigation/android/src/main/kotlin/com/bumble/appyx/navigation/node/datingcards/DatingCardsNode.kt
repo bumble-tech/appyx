@@ -13,7 +13,7 @@ import com.bumble.appyx.navigation.composable.AppyxNavigationComponent
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode.InteractionTarget
+import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode.NavTarget
 import com.bumble.appyx.navigation.node.profilecard.ProfileCardNode
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.samples.common.profile.Profile
@@ -22,11 +22,11 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class DatingCardsNode(
     buildContext: BuildContext,
-    private val cards: Cards<InteractionTarget> =
+    private val cards: Cards<NavTarget> =
         Cards(
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
-                    InteractionTarget.ProfileCard(it)
+                    NavTarget.ProfileCard(it)
                 },
                 savedStateMap = buildContext.savedStateMap
             ),
@@ -34,18 +34,18 @@ class DatingCardsNode(
             gestureFactory = { CardsVisualisation.Gestures(it) },
         )
 
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = cards
 ) {
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class ProfileCard(val profile: Profile) : InteractionTarget()
+        class ProfileCard(val profile: Profile) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
-        ProfileCardNode(buildContext, (navTarget as InteractionTarget.ProfileCard).profile)
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+        ProfileCardNode(buildContext, (navTarget as NavTarget.ProfileCard).profile)
 
     @Composable
     override fun View(modifier: Modifier) {

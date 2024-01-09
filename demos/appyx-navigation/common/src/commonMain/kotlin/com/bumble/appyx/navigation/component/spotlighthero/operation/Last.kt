@@ -9,27 +9,27 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 
 @Parcelize
-class Last<InteractionTarget : Any>(
+class Last<NavTarget : Any>(
     override var mode: Operation.Mode = Operation.Mode.IMPOSED
-) : BaseOperation<SpotlightHeroModel.State<InteractionTarget>>() {
+) : BaseOperation<SpotlightHeroModel.State<NavTarget>>() {
 
-    override fun isApplicable(state: SpotlightHeroModel.State<InteractionTarget>): Boolean =
+    override fun isApplicable(state: SpotlightHeroModel.State<NavTarget>): Boolean =
         true
 
     override fun createFromState(
-        baseLineState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        baseLineState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         baseLineState
 
     override fun createTargetState(
-        fromState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        fromState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         fromState.copy(
             activeIndex = fromState.positions.lastIndex.toFloat(),
         )
 }
 
-fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.last(
+fun <NavTarget : Any> SpotlightHero<NavTarget>.last(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.IMPOSED
 ) {

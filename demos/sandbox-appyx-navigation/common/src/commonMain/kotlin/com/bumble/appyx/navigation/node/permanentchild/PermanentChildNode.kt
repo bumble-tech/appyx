@@ -29,29 +29,29 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PermanentChildNode(
     buildContext: BuildContext,
-    private val permanentAppyxComponent: PermanentAppyxComponent<InteractionTarget> =
+    private val permanentAppyxComponent: PermanentAppyxComponent<NavTarget> =
         PermanentAppyxComponent(
             savedStateMap = buildContext.savedStateMap,
             initialTargets = listOf(
-                InteractionTarget.Child1,
-                InteractionTarget.Child2
+                NavTarget.Child1,
+                NavTarget.Child2
             )
         )
-) : ParentNode<PermanentChildNode.InteractionTarget>(
+) : ParentNode<PermanentChildNode.NavTarget>(
     buildContext = buildContext,
     appyxComponent = permanentAppyxComponent
 ) {
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Child1 : InteractionTarget()
+        object Child1 : NavTarget()
 
         @Parcelize
-        object Child2 : InteractionTarget()
+        object Child2 : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is InteractionTarget.Child1 -> node(buildContext) {
+            is NavTarget.Child1 -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
@@ -70,7 +70,7 @@ class PermanentChildNode(
                 }
             }
 
-            is InteractionTarget.Child2 -> node(buildContext) {
+            is NavTarget.Child2 -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
@@ -99,11 +99,11 @@ class PermanentChildNode(
         ) {
             PermanentChild(
                 permanentAppyxComponent = permanentAppyxComponent,
-                reference = InteractionTarget.Child1
+                navTarget = NavTarget.Child1
             )
             PermanentChild(
                 permanentAppyxComponent = permanentAppyxComponent,
-                reference = InteractionTarget.Child2
+                navTarget = NavTarget.Child2
             )
         }
     }

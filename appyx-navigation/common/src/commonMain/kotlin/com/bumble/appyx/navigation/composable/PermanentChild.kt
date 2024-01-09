@@ -14,16 +14,16 @@ import kotlinx.coroutines.flow.SharingStarted
 @Composable
 fun <NavTarget : Any> ParentNode<NavTarget>.PermanentChild(
     permanentAppyxComponent: PermanentAppyxComponent<NavTarget>,
-    reference: NavTarget,
+    navTarget: NavTarget,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
-    val child by remember(reference, permanentAppyxComponent) {
+    val child by remember(navTarget, permanentAppyxComponent) {
         children
             .mapState(scope, SharingStarted.WhileSubscribed()) { childrenMap ->
                 childrenMap
                     .keys
-                    .find { it.interactionTarget == reference }
+                    .find { it.interactionTarget == navTarget }
                     ?.let { childOrCreate(it) }
             }
     }.collectAsState()

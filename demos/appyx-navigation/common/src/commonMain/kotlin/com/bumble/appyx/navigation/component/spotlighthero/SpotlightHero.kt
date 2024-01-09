@@ -20,11 +20,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-open class SpotlightHero<InteractionTarget : Any>(
+open class SpotlightHero<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    private val model: SpotlightHeroModel<InteractionTarget>,
-    visualisation: (UiContext) -> SpotlightHeroVisualisation<InteractionTarget>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
+    private val model: SpotlightHeroModel<NavTarget>,
+    visualisation: (UiContext) -> SpotlightHeroVisualisation<NavTarget>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, State<NavTarget>> = {
         GestureFactory.Noop()
     },
     animationSpec: AnimationSpec<Float> = spring(),
@@ -35,7 +35,7 @@ open class SpotlightHero<InteractionTarget : Any>(
     ),
     disableAnimations: Boolean = false,
     isDebug: Boolean = false
-) : BaseAppyxComponent<InteractionTarget, State<InteractionTarget>>(
+) : BaseAppyxComponent<NavTarget, State<NavTarget>>(
     scope = scope,
     model = model,
     visualisation = visualisation,
@@ -46,13 +46,13 @@ open class SpotlightHero<InteractionTarget : Any>(
     backPressStrategy = ExitHeroModeStrategy(scope),
     isDebug = isDebug
 ) {
-    val currentState: State<InteractionTarget>
+    val currentState: State<NavTarget>
         get() = model.currentState
 
     val activeIndex: StateFlow<Float> = model.output
         .mapState(scope) { it.currentTargetState.activeIndex }
 
-    val activeElement: StateFlow<InteractionTarget> = model.output
+    val activeElement: StateFlow<NavTarget> = model.output
         .mapState(scope) { it.currentTargetState.activeElement }
 
     val mode: StateFlow<SpotlightHeroModel.Mode> = model.output
@@ -67,7 +67,7 @@ open class SpotlightHero<InteractionTarget : Any>(
             .collectAsState().value
             .collectAsState().value
 
-    override fun onVisualisationReady(visualisation: Visualisation<InteractionTarget, State<InteractionTarget>>) {
+    override fun onVisualisationReady(visualisation: Visualisation<NavTarget, State<NavTarget>>) {
         super.onVisualisationReady(visualisation)
         _heroProgress.update {
             (visualisation as SpotlightHeroVisualisation).heroProgress.renderValueFlow

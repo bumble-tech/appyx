@@ -39,37 +39,37 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.spotlight.SpotlightNode.InteractionTarget
+import com.bumble.appyx.navigation.node.spotlight.SpotlightNode.NavTarget
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class SpotlightNode(
     buildContext: BuildContext,
-    private val model: SpotlightModel<InteractionTarget> = SpotlightModel(
-        items = List(7) { InteractionTarget.Child(it) },
+    private val model: SpotlightModel<NavTarget> = SpotlightModel(
+        items = List(7) { NavTarget.Child(it) },
         initialActiveIndex = 0f,
         savedStateMap = buildContext.savedStateMap,
     ),
-    private val spotlight: Spotlight<InteractionTarget> = Spotlight(
+    private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = model,
         visualisation = { SpotlightSlider(it, model.currentState) },
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = spotlight
 ) {
-    private val newItems = List(7) { InteractionTarget.Child(it * 3) }
+    private val newItems = List(7) { NavTarget.Child(it * 3) }
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is InteractionTarget.Child -> node(buildContext) { modifier ->
+            is NavTarget.Child -> node(buildContext) { modifier ->
                 val backgroundColorIdx = rememberSaveable { colors.shuffled().indices.random() }
                 val backgroundColor = colors[backgroundColorIdx]
                 var clicked by rememberSaveable { mutableStateOf(false) }

@@ -9,12 +9,12 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue
 
-class SpotlightHeroModel<InteractionTarget : Any>(
-    items: List<Pair<InteractionTarget, InteractionTarget>>,
+class SpotlightHeroModel<NavTarget : Any>(
+    items: List<Pair<NavTarget, NavTarget>>,
     initialMode: Mode = Mode.LIST,
     initialActiveIndex: Float = 0f,
     savedStateMap: SavedStateMap?,
-) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
+) : BaseTransitionModel<NavTarget, State<NavTarget>>(
     savedStateMap = savedStateMap
 ) {
     enum class Mode {
@@ -22,16 +22,16 @@ class SpotlightHeroModel<InteractionTarget : Any>(
     }
 
     @Parcelize
-    data class State<InteractionTarget>(
+    data class State<NavTarget>(
         val mode: Mode = Mode.LIST,
-        val positions: @RawValue List<Position<InteractionTarget>>,
+        val positions: @RawValue List<Position<NavTarget>>,
         val activeIndex: Float
     ) : Parcelable {
 
         @Parcelize
-        data class Position<InteractionTarget>(
-            val backdrop: Element<InteractionTarget>,
-            val main: Element<InteractionTarget>,
+        data class Position<NavTarget>(
+            val backdrop: Element<NavTarget>,
+            val main: Element<NavTarget>,
         ) : Parcelable
 
         fun hasPrevious(): Boolean =
@@ -40,11 +40,11 @@ class SpotlightHeroModel<InteractionTarget : Any>(
         fun hasNext(): Boolean =
             activeIndex <= positions.lastIndex - 1
 
-        val activeElement: InteractionTarget =
-            positions[activeIndex.toInt()].main.interactionTarget
+        val activeElement: NavTarget =
+            positions[activeIndex.toInt()].main.NavTarget
     }
 
-    override val initialState: State<InteractionTarget> =
+    override val initialState: State<NavTarget> =
         State(
             mode = initialMode,
             positions = items.map {
@@ -56,22 +56,22 @@ class SpotlightHeroModel<InteractionTarget : Any>(
             activeIndex = initialActiveIndex
         )
 
-    val currentState: State<InteractionTarget>
+    val currentState: State<NavTarget>
         get() = output.value.currentTargetState
 
-    override fun State<InteractionTarget>.removeDestroyedElement(
-        element: Element<InteractionTarget>
-    ): State<InteractionTarget> =
+    override fun State<NavTarget>.removeDestroyedElement(
+        element: Element<NavTarget>
+    ): State<NavTarget> =
         this
 
-    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
         this
 
-    override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
+    override fun State<NavTarget>.availableElements(): Set<Element<NavTarget>> =
         positions
             .flatMap { listOf(it.backdrop, it.main) }
             .toSet()
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
+    override fun State<NavTarget>.destroyedElements(): Set<Element<NavTarget>> =
         emptySet()
 }

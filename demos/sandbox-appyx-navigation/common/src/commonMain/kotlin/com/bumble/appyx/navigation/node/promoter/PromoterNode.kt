@@ -38,14 +38,14 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget
-import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget.Child
+import com.bumble.appyx.navigation.node.promoter.PromoterNode.NavTarget
+import com.bumble.appyx.navigation.node.promoter.PromoterNode.NavTarget.Child
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PromoterNode(
     buildContext: BuildContext,
-    private val promoter: Promoter<InteractionTarget> = Promoter(
+    private val promoter: Promoter<NavTarget> = Promoter(
         model = PromoterModel(
             savedStateMap = buildContext.savedStateMap
         ),
@@ -56,7 +56,7 @@ class PromoterNode(
         },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = promoter
 ) {
@@ -68,12 +68,12 @@ class PromoterNode(
         promoter.addFirst(Child(4))
     }
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }

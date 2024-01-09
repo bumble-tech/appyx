@@ -31,24 +31,24 @@ import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode.InteractionTarget
+import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode.NavTarget
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class SpotlightDebugNode(
     buildContext: BuildContext,
-    private val model: SpotlightModel<InteractionTarget> = SpotlightModel(
-        items = List(7) { InteractionTarget.Child(it + 1) },
+    private val model: SpotlightModel<NavTarget> = SpotlightModel(
+        items = List(7) { NavTarget.Child(it + 1) },
         initialActiveIndex = 0f,
         savedStateMap = buildContext.savedStateMap
     ),
-    private val spotlight: Spotlight<InteractionTarget> = Spotlight(
+    private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = model,
         visualisation = { SpotlightSlider(it, model.currentState) },
         isDebug = true
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = spotlight
 ) {
@@ -62,14 +62,14 @@ class SpotlightDebugNode(
         spotlight.first()
     }
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+            is NavTarget.Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
