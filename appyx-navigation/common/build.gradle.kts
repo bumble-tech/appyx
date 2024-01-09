@@ -54,7 +54,6 @@ kotlin {
 
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.lifecycle.java8)
-
             }
         }
         val desktopMain by getting {
