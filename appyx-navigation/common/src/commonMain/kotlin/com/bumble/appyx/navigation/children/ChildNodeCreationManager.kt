@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 /**
  * Initializes and removes nodes based on parent node's navModel.
  *
- * Lifecycle of these nodes is managed in [com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager].
+ * Lifecycle of these nodes is managed in [com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager].
  */
 internal class ChildNodeCreationManager<NavTarget : Any>(
     private var savedStateMap: SavedStateMap?,

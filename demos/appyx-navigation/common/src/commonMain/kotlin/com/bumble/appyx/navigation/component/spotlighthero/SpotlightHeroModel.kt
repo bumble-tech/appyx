@@ -41,7 +41,7 @@ class SpotlightHeroModel<NavTarget : Any>(
             activeIndex <= positions.lastIndex - 1
 
         val activeElement: NavTarget =
-            positions[activeIndex.toInt()].main.NavTarget
+            positions[activeIndex.toInt()].main.interactionTarget
     }
 
     override val initialState: State<NavTarget> =
