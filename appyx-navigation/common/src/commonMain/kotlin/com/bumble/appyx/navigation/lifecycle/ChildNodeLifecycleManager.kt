@@ -16,9 +16,9 @@ import kotlinx.coroutines.launch
  * Hosts [PlatformLifecycleRegistry] to manage the current node lifecycle
  * and updates lifecycle of children nodes when updated.
  */
-internal class ChildNodeLifecycleManager<ChildReference : Any>(
-    private val appyxComponent: AppyxComponent<ChildReference, *>,
-    private val children: StateFlow<ChildEntryMap<ChildReference>>,
+internal class ChildNodeLifecycleManager<NavTarget : Any>(
+    private val appyxComponent: AppyxComponent<NavTarget, *>,
+    private val children: StateFlow<ChildEntryMap<NavTarget>>,
     private val keepMode: ChildEntry.KeepMode,
     private val coroutineScope: CoroutineScope,
 ) {

@@ -32,25 +32,25 @@ import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
-abstract class ParentNode<ChildReference : Any>(
-    val appyxComponent: AppyxComponent<ChildReference, *>,
+abstract class ParentNode<NavTarget : Any>(
+    val appyxComponent: AppyxComponent<NavTarget, *>,
     buildContext: BuildContext,
-    view: ParentNodeView<ChildReference> = EmptyParentNodeView(),
+    view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-    private val childAware: ChildAware<ParentNode<ChildReference>> = ChildAwareImpl(),
+    private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
     view = view,
     buildContext = buildContext,
     plugins = plugins + appyxComponent + childAware
-), ChildNodeBuilder<ChildReference> {
+), ChildNodeBuilder<NavTarget> {
 
-    private val childNodeCreationManager = ChildNodeCreationManager<ChildReference>(
+    private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
         keepMode = childKeepMode,
     )
-    val children: StateFlow<ChildEntryMap<ChildReference>>
+    val children: StateFlow<ChildEntryMap<NavTarget>>
         get() = childNodeCreationManager.children
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
@@ -66,7 +66,7 @@ abstract class ParentNode<ChildReference : Any>(
         childNodeLifecycleManager.launch()
     }
 
-    fun childOrCreate(element: Element<ChildReference>): ChildEntry.Initialized<ChildReference> =
+    fun childOrCreate(element: Element<NavTarget>): ChildEntry.Initialized<NavTarget> =
         childNodeCreationManager.childOrCreate(element)
 
     override fun updateLifecycleState(state: Lifecycle.State) {

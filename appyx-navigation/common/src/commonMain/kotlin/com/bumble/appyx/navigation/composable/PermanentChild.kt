@@ -12,9 +12,9 @@ import com.bumble.appyx.navigation.node.ParentNode
 import kotlinx.coroutines.flow.SharingStarted
 
 @Composable
-fun <ChildReference : Any> ParentNode<ChildReference>.PermanentChild(
-    permanentAppyxComponent: PermanentAppyxComponent<ChildReference>,
-    reference: ChildReference,
+fun <NavTarget : Any> ParentNode<NavTarget>.PermanentChild(
+    permanentAppyxComponent: PermanentAppyxComponent<NavTarget>,
+    reference: NavTarget,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
