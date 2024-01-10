@@ -15,10 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.ComposeUIViewController
 import androidx.compose.ui.zIndex
+import com.bumble.appyx.demos.sandbox.navigation.node.container.MainNavNode
+import com.bumble.appyx.demos.sandbox.navigation.ui.AppyxSampleAppTheme
 import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.integration.MainIntegrationPoint
-import com.bumble.appyx.navigation.node.container.MainNavNode
-import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
