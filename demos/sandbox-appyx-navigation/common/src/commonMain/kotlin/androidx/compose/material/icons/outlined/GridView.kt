@@ -21,7 +21,7 @@ import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.ui.graphics.vector.ImageVector
 
-public val Icons.Outlined.GridView: ImageVector
+internal val Icons.Outlined.GridView: ImageVector
     get() {
         if (_gridView != null) {
             return _gridView!!

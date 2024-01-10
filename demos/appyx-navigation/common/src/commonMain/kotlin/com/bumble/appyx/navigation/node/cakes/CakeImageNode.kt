@@ -13,10 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.component.spotlighthero.visualisation.property.HeroProgress
 import com.bumble.appyx.navigation.ui.EmbeddableResourceImage
 
 class CakeImageNode(
