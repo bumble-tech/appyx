@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
-  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <ManuallySuppressedIssues />
   <CurrentIssues>
     <ID>MaxLineLength:ChildNodeCreationManager.kt$ChildNodeCreationManager$val navModelKeepKeys: Set&lt;NavKey&lt;NavTarget&gt;&gt; = state.navTransition.targetState.map { navElement -&gt; navElement.key }.toSet()</ID>
     <ID>UnusedPrivateClass:ParentNode.kt$ParentNode$PermanentChildRender : ChildRenderer</ID>

@@ -1,3 +1,5 @@
+package com.bumble.appyx.navigation.integration
+
 // From Slack by OliverO
 // See: https://kotlinlang.slack.com/archives/C01F2HV7868/p1660083429206369?thread_ts=1660083398.571449&cid=C01F2HV7868
 // adapted with scaling fix from https://github.com/OliverO2/compose-counting-grid/blob/master/src/frontendJsMain/kotlin/BrowserViewportWindow.kt
