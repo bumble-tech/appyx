@@ -1,5 +1,3 @@
-package com.bumble.appyx.navigation.integration
-
 // From Slack by OliverO
 // See: https://kotlinlang.slack.com/archives/C01F2HV7868/p1660083429206369?thread_ts=1660083398.571449&cid=C01F2HV7868
 // adapted with scaling fix from https://github.com/OliverO2/compose-counting-grid/blob/master/src/frontendJsMain/kotlin/BrowserViewportWindow.kt
@@ -9,6 +7,8 @@ package com.bumble.appyx.navigation.integration
     "INVISIBLE_REFERENCE",
     "EXPOSED_PARAMETER_TYPE"
 ) // WORKAROUND: ComposeWindow and ComposeLayer are internal
+
+package com.bumble.appyx.navigation.integration
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.ComposeWindow
