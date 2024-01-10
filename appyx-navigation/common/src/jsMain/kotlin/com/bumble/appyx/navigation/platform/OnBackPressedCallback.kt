@@ -1,7 +1,5 @@
 package com.bumble.appyx.navigation.platform
 
-import androidx.compose.runtime.AtomicReference
-
 interface Cancellable {
     /**
      * Cancel the subscription. This call should be idempotent, making it safe to
@@ -31,15 +29,14 @@ abstract class OnBackPressedCallback(
      *
      * @return Whether this callback should be considered enabled.
      */
-    private val cancellablesReference: AtomicReference<List<Cancellable>> =
-        AtomicReference(emptyList())
+    private val cancellables: MutableList<Cancellable> = mutableListOf()
 
     /**
      * Removes this callback from any [OnBackPressedDispatcher] it is currently
      * added to.
      */
     fun remove() {
-        for (cancellable in cancellablesReference.get()) {
+        for (cancellable in cancellables) {
             cancellable.cancel()
         }
     }
@@ -49,10 +46,14 @@ abstract class OnBackPressedCallback(
      */
     abstract fun handleOnBackPressed()
     fun addCancellable(cancellable: Cancellable) {
-        cancellablesReference.set(cancellablesReference.get() + cancellable)
+        run {
+            cancellables.add(cancellable)
+        }
     }
 
     fun removeCancellable(cancellable: Cancellable) {
-        cancellablesReference.set(cancellablesReference.get() - cancellable)
+        run {
+            cancellables.remove(cancellable)
+        }
     }
 }
