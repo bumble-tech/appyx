@@ -1,9 +1,9 @@
-package com.bumble.appyx.samples.common.profile
+package com.bumble.appyx.demos.common.profile
 
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Immutable
-import com.bumble.appyx.samples.common.R
+import com.bumble.appyx.demos.common.R
 import kotlinx.parcelize.Parcelize
 import kotlin.random.Random
 

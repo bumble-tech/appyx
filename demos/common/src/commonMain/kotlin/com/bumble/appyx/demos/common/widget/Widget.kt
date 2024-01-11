@@ -1,4 +1,4 @@
-package com.bumble.appyx.samples.common.widget
+package com.bumble.appyx.demos.common.widget
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

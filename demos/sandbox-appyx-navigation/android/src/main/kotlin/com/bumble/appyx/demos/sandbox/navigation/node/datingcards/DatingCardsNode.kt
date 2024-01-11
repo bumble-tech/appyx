@@ -9,15 +9,15 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
+import com.bumble.appyx.demos.common.profile.Profile
+import com.bumble.appyx.demos.sandbox.navigation.node.datingcards.DatingCardsNode.NavTarget
+import com.bumble.appyx.demos.sandbox.navigation.node.datingcards.DatingCardsNode.NavTarget.ProfileCard
+import com.bumble.appyx.demos.sandbox.navigation.node.profilecard.ProfileCardNode
 import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.demos.sandbox.navigation.node.datingcards.DatingCardsNode.NavTarget
-import com.bumble.appyx.demos.sandbox.navigation.node.datingcards.DatingCardsNode.NavTarget.ProfileCard
-import com.bumble.appyx.demos.sandbox.navigation.node.profilecard.ProfileCardNode
-import com.bumble.appyx.samples.common.profile.Profile
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
