@@ -4,9 +4,9 @@ import com.bumble.appyx.interactions.core.model.AppyxComponent
 import com.bumble.appyx.interactions.core.model.progress.InstantProgressController
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
-import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.interactions.permanent.PermanentModel.State
 import com.bumble.appyx.mapState
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

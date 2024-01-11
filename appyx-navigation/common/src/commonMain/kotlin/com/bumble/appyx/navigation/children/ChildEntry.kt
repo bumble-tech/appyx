@@ -2,7 +2,7 @@ package com.bumble.appyx.navigation.children
 
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 
 // custom equals/hashCode for MutableStateFlow and equality checks
 sealed class ChildEntry<T> {

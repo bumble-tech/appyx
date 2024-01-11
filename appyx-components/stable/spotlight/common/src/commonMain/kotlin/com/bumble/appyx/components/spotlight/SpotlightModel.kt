@@ -6,10 +6,10 @@ import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.S
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 
 class SpotlightModel<InteractionTarget : Any>(
     items: List<InteractionTarget>,
