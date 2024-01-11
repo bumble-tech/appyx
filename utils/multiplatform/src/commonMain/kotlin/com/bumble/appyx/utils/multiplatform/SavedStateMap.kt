@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.state
+package com.bumble.appyx.utils.multiplatform
 
 /**
  * Restored from [android.os.Bundle] state.
