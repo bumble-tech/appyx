@@ -58,7 +58,7 @@ class BackStack3D<InteractionTarget : Any>(
         )
 
     private fun incoming(height: Dp): TargetUiState = TargetUiState(
-        positionAlignment = PositionAlignment.Target(TopCenter, ),
+        positionAlignment = PositionAlignment.Target(TopCenter),
         positionOffset = PositionOffset.Target(DpOffset(0f.dp, height)),
         scale = Scale.Target(1f, origin = TransformOrigin(0.5f, 0.0f)),
         alpha = Alpha.Target(0f),

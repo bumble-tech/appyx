@@ -21,7 +21,7 @@ import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
 import androidx.compose.ui.graphics.vector.ImageVector
 
-public val Icons.Outlined.ViewCarousel: ImageVector
+internal val Icons.Outlined.ViewCarousel: ImageVector
     get() {
         if (_viewCarousel != null) {
             return _viewCarousel!!

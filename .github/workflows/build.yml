@@ -116,6 +116,7 @@ jobs:
           -Dorg.gradle.workers.max=1
           -Pandroid.testoptions.manageddevices.emulator.gpu="swiftshader_indirect"
           -Pandroid.experimental.testOptions.managedDevices.emulator.showKernelLogging=true
+          -Dorg.gradle.jvmargs=-Xmx2048m
       - name: Upload failed instrumentation artifacts
         if: failure()
         uses: actions/upload-artifact@v3
