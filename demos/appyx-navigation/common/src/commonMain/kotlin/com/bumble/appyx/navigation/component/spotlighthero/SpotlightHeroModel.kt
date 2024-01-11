@@ -3,11 +3,11 @@ package com.bumble.appyx.navigation.component.spotlighthero
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.interactions.core.state.SavedStateMap
 import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.State
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 
 class SpotlightHeroModel<InteractionTarget : Any>(
     items: List<Pair<InteractionTarget, InteractionTarget>>,
