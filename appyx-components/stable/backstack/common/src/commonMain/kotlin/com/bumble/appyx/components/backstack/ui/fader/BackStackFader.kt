@@ -3,7 +3,7 @@ package com.bumble.appyx.components.backstack.ui.fader
 import androidx.compose.animation.core.SpringSpec
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation

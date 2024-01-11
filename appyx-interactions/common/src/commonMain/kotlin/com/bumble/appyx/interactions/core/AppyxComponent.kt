@@ -61,7 +61,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxComponent(
     gestureValidator: GestureValidator = defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
     isGestureBoundingBoxTransformed: Boolean = false,
-    child: @Composable BoxScope.(Element<InteractionTarget>) -> Unit = { _ ->
+    elementUi: @Composable BoxScope.(Element<InteractionTarget>) -> Unit = { _ ->
         Text(
             modifier = Modifier
                 .align(Alignment.Center),
@@ -132,25 +132,25 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxComponent(
                                 when {
                                     !isGesturesEnabled -> {
                                         Box(modifier = elementUiModel.modifier) {
-                                            child(elementUiModel.element)
+                                            elementUi(elementUiModel.element)
                                         }
                                     }
 
                                     isGesturesEnabled && isGestureBoundingBoxTransformed ->
-                                        ChildGestureSupportTransformBoundingBox(
+                                        ChildWithGestureTransformedBoundingBox(
                                             appyxComponent = appyxComponent,
                                             containerSize = containerSize,
                                             gestureExtraTouchAreaPx = gestureExtraTouchAreaPx,
                                             gestureValidator = gestureValidator,
                                             elementUiModel = elementUiModel,
-                                            child = child
+                                            child = elementUi
                                         )
 
                                     isGesturesEnabled && !isGestureBoundingBoxTransformed ->
-                                        ChildGestureSupportWithoutTransformation(
+                                        ChildWithGesture(
                                             appyxComponent = appyxComponent,
                                             elementUiModel = elementUiModel,
-                                            child = child
+                                            child = elementUi
                                         )
                                 }
                             }
@@ -163,7 +163,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxComponent(
 }
 
 @Composable
-private fun <InteractionTarget : Any, ModelState : Any> ChildGestureSupportWithoutTransformation(
+private fun <InteractionTarget : Any, ModelState : Any> ChildWithGesture(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     elementUiModel: ElementUiModel<InteractionTarget>,
     child: @Composable BoxScope.(Element<InteractionTarget>) -> Unit
@@ -195,7 +195,7 @@ private fun <InteractionTarget : Any, ModelState : Any> ChildGestureSupportWitho
 }
 
 @Composable
-private fun <InteractionTarget : Any, ModelState : Any> ChildGestureSupportTransformBoundingBox(
+private fun <InteractionTarget : Any, ModelState : Any> ChildWithGestureTransformedBoundingBox(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     containerSize: State<IntSize>,
     gestureExtraTouchAreaPx: Float,

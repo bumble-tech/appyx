@@ -144,6 +144,7 @@ fun <InteractionTarget : Any> ModelUi(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
+        isGestureBoundingBoxTransformed = true
     ) {
         Box(
             modifier = Modifier

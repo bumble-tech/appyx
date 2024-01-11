@@ -17,7 +17,7 @@ import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.sample.android.Element
-import com.bumble.appyx.interactions.sample.android.SampleChildren
+import com.bumble.appyx.interactions.sample.android.SampleAppyxComponent
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -67,14 +67,14 @@ fun <InteractionTarget : Any> SpotlightUi(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
-    SampleChildren(
+    SampleAppyxComponent(
         appyxComponent = spotlight,
         modifier = modifier
             .padding(
                 horizontal = 64.dp,
                 vertical = 12.dp
             ),
-        child = { element ->
+        elementUi = { element ->
             Element(
                 color = color,
                 element = element,

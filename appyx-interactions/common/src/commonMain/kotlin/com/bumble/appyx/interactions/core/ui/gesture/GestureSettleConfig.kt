@@ -1,9 +1,8 @@
 package com.bumble.appyx.interactions.core.ui.gesture
 
 import androidx.compose.animation.core.AnimationSpec
-import androidx.compose.animation.core.SpringSpec
-import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Immutable
+import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
 
 @Immutable
 data class GestureSettleConfig(
@@ -11,5 +10,3 @@ data class GestureSettleConfig(
     val completeGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
     val revertGestureSpec: AnimationSpec<Float> = DefaultAnimationSpec,
 )
-
-val DefaultAnimationSpec: SpringSpec<Float> = spring()

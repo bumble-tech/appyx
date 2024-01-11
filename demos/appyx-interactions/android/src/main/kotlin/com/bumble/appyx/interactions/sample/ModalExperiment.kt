@@ -89,7 +89,7 @@ fun <InteractionTarget : Any> ModalUi(
         clipToBounds = false,
         appyxComponent = modal,
         modifier = modifier,
-        child = { element ->
+        elementUi = { element ->
             Element(
                 color = color,
                 element = element

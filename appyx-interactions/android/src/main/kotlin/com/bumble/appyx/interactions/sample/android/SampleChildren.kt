@@ -19,11 +19,11 @@ import kotlin.math.roundToInt
  * For real-life use-cases use the [Children] wrapper directly.
  */
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
+fun <InteractionTarget : Any, ModelState : Any> SampleAppyxComponent(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
-    child: @Composable BoxScope.(Element<InteractionTarget>) -> Unit = { element ->
+    elementUi: @Composable BoxScope.(Element<InteractionTarget>) -> Unit = { element ->
         SampleElement(colors = colors, element = element)
     },
 ) {
@@ -33,7 +33,7 @@ fun <InteractionTarget : Any, ModelState : Any> SampleChildren(
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
         modifier = modifier,
         clipToBounds = clipToBounds,
-        child = child
+        elementUi = elementUi
     )
 }
 

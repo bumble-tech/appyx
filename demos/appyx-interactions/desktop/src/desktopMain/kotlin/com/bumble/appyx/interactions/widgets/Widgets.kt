@@ -105,7 +105,7 @@ private fun WidgetsUi(
             ),
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        child = {
+        elementUi = {
             WidgetTypeElement(
                 element = it,
                 modifier = Modifier
