@@ -1,6 +1,7 @@
 package com.bumble.appyx.interactions.core.state
 
 import androidx.compose.runtime.saveable.SaverScope
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 
 class MutableSavedStateMapImpl(
     private val map: MutableMap<String, Any?> = HashMap(),
