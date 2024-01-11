@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -6,6 +8,12 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-demos-backstack-stack3d-web"
+        browser()
+        binaries.executable()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         moduleName = "appyx-demos-backstack-stack3d-web"
         browser()
         binaries.executable()
@@ -26,6 +34,11 @@ kotlin {
                 implementation(project(":demos:mkdocs:common"))
             }
         }
+        val wasmJsMain by getting {
+            dependencies {
+                implementation(project(":demos:mkdocs:common"))
+            }
+        }
     }
 }
 
@@ -36,4 +49,5 @@ compose.experimental {
 dependencies {
     add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
 }

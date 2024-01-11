@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -10,6 +12,12 @@ kotlin {
         browser()
         binaries.executable()
     }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        moduleName = "appyx-interactions-gestures-incompletedrag-web"
+        browser()
+        binaries.executable()
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -18,10 +26,6 @@ kotlin {
                 api(compose.material)
                 implementation(project(":appyx-interactions:appyx-interactions"))
                 implementation(project(":appyx-components:internal:test-drive:test-drive"))
-            }
-        }
-        val jsMain by getting {
-            dependencies {
                 implementation(project(":demos:mkdocs:common"))
             }
         }
@@ -35,4 +39,5 @@ compose.experimental {
 dependencies {
     add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
 }
