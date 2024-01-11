@@ -45,12 +45,12 @@ kotlin {
     }
 }
 
-compose.experimental {
-    uikit.application {
-        projectName = "Appyx"
-        bundleIdPrefix = "com.bumble.appyx"
-    }
-}
+//compose.experimental {
+//    uikit.application {
+//        projectName = "Appyx"
+//        bundleIdPrefix = "com.bumble.appyx"
+//    }
+//}
 
 tasks.register<Copy>("copyResources") {
     // Dirs containing files we want to copy

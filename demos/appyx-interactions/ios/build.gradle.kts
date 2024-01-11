@@ -47,10 +47,10 @@ kotlin {
 }
 
 compose.experimental {
-    uikit.application {
-        projectName = "Appyx"
-        bundleIdPrefix = "com.bumble.appyx"
-    }
+//    uikit.application {
+//        projectName = "Appyx"
+//        bundleIdPrefix = "com.bumble.appyx"
+//    }
 }
 
 dependencies {
