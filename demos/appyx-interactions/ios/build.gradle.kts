@@ -54,7 +54,7 @@ compose.experimental {
 }
 
 dependencies {
-    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
-    add("kspIosX64", project(":ksp:mutable-ui-processor"))
-    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
+    add("kspIosArm64", project(":ksp:appyx-compiler"))
+    add("kspIosX64", project(":ksp:appyx-compiler"))
+    add("kspIosSimulatorArm64", project(":ksp:appyx-compiler"))
 }

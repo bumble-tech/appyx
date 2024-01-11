@@ -90,11 +90,11 @@ android {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
-    add("kspAndroid", project(":ksp:mutable-ui-processor"))
-    add("kspDesktop", project(":ksp:mutable-ui-processor"))
-    add("kspJs", project(":ksp:mutable-ui-processor"))
-    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
-    add("kspIosX64", project(":ksp:mutable-ui-processor"))
-    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
+    add("kspCommonMainMetadata", project(":ksp:appyx-compiler"))
+    add("kspAndroid", project(":ksp:appyx-compiler"))
+    add("kspDesktop", project(":ksp:appyx-compiler"))
+    add("kspJs", project(":ksp:appyx-compiler"))
+    add("kspIosArm64", project(":ksp:appyx-compiler"))
+    add("kspIosX64", project(":ksp:appyx-compiler"))
+    add("kspIosSimulatorArm64", project(":ksp:appyx-compiler"))
 }
