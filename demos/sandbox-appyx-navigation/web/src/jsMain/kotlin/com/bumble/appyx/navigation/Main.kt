@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation
 
-import BrowserViewportWindow
 import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +22,7 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.navigation.integration.BrowserViewportWindow
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.WebNodeHost
 import com.bumble.appyx.navigation.node.container.MainNavNode

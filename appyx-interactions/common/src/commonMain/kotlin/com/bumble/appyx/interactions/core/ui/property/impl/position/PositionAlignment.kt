@@ -4,17 +4,14 @@ import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector4D
 import androidx.compose.animation.core.Easing
 import androidx.compose.animation.core.TwoWayConverter
-import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.LayoutDirection
 import com.bumble.appyx.interactions.core.ui.LocalBoxScope
-import com.bumble.appyx.interactions.core.ui.math.lerpDpOffset
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.property.Interpolatable
 import com.bumble.appyx.interactions.core.ui.property.MotionProperty
@@ -26,7 +23,6 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlig
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlin.math.roundToInt
 
 @Suppress("MagicNumber")
 class PositionAlignment(
@@ -56,7 +52,7 @@ class PositionAlignment(
             layoutDirection: LayoutDirection
         ): IntOffset =
             insideAlignment.align(size, space, layoutDirection) +
-                outsideAlignment.align(size, space, layoutDirection)
+                    outsideAlignment.align(size, space, layoutDirection)
 
         companion object {
             val VectorConverter: TwoWayConverter<Value, AnimationVector4D> =

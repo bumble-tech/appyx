@@ -25,11 +25,13 @@ import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
 import com.bumble.appyx.navigation.plugin.UpNavigationHandler
 import com.bumble.appyx.navigation.plugin.plugins
-import com.bumble.appyx.navigation.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import com.bumble.appyx.navigation.store.RetainedInstanceStore
 import com.bumble.appyx.utils.multiplatform.BuildFlags
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.withContext
+import kotlin.experimental.ExperimentalObjCRefinement
+import kotlin.native.HiddenFromObjC
 
 @Suppress("TooManyFunctions")
 @Stable
@@ -121,7 +123,14 @@ open class Node internal constructor(
         }
     }
 
+    /**
+     * Exposing this method to ObjC causes compilation time errors while targeting iOS, that's why
+     * we've to annotate this method with @HiddenFromObjC. More details in the thread below:
+     * https://kotlinlang.slack.com/archives/C05FPNA6P27/p1699883454768869.
+     */
     @Composable
+    @OptIn(ExperimentalObjCRefinement::class)
+    @HiddenFromObjC
     protected open fun DerivedSetup() {
 
     }

@@ -6,6 +6,7 @@
 
 - [#630](https://github.com/bumble-tech/appyx/pull/630) – Pass initial state into Spotlights visualisations
 - [#643](https://github.com/bumble-tech/appyx/pull/643) – Unify AppyxComponent composable between appyx-navigation and appyx-interactions modules
+- [#651](https://github.com/bumble-tech/appyx/pull/651) - Keep only one instance of SaveStateMap typealias and moved it to `com.bumble.appyx.utils.multiplatform` package
 - [#644](https://github.com/bumble-tech/appyx/pull/644) – Refactor AppyxComponent and application of draggable modifier 
 
 ### Fixed

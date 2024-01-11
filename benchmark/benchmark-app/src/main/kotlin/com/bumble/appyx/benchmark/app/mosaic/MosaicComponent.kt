@@ -4,7 +4,7 @@ import androidx.compose.animation.core.SpringSpec
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.State
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
-import com.bumble.appyx.navigation.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob

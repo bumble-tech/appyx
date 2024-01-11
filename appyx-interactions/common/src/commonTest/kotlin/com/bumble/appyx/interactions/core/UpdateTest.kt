@@ -1,12 +1,11 @@
 package com.bumble.appyx.interactions.core
 
-import com.bumble.appyx.InteractionTarget
 import com.bumble.appyx.InteractionTarget.Child1
 import com.bumble.appyx.InteractionTarget.Child2
 import com.bumble.appyx.interactions.core.TestTransitionModel.State
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
-import com.bumble.appyx.interactions.core.model.transition.StateTransition
 import com.bumble.appyx.interactions.core.model.transition.Segment
+import com.bumble.appyx.interactions.core.model.transition.StateTransition
 import com.bumble.appyx.interactions.core.model.transition.Update
 import kotlin.test.Test
 import kotlin.test.assertEquals
