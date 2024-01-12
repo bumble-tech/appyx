@@ -8,7 +8,7 @@ import com.bumble.appyx.components.backstack.operation.replace
 import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.loggedout.LoggedOutNode
@@ -19,7 +19,7 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class RootNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     allowDummyLogin: Boolean = true,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
@@ -29,13 +29,13 @@ class RootNode(
                     false -> NavTarget.LoggedOut
                 }
             ),
-            savedStateMap = buildContext.savedStateMap,
+            savedStateMap = nodeContext.savedStateMap,
         ),
         visualisation = { BackStackFader(it) }
     ),
     plugins: List<Plugin> = listOf(),
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack,
     plugins = plugins
 ) {
@@ -54,14 +54,14 @@ class RootNode(
         ) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
             is NavTarget.LoggedOut -> LoggedOutNode(
-                buildContext = buildContext,
+                nodeContext = nodeContext,
                 onLogin = { user -> onLogin(user) }
             )
             is NavTarget.Main -> MainNode(
-                buildContext = buildContext,
+                nodeContext = nodeContext,
                 user = navTarget.user,
                 onLogout = { backStack.replace(NavTarget.LoggedOut) }
             )

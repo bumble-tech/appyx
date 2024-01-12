@@ -4,7 +4,7 @@ import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.IntegrationPoint
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.utils.interop.ribs.InteropNodeImpl.Companion.InteropNodeKey
@@ -27,7 +27,7 @@ class InteropBuilder<N : Node>(
 
         val appyxNode = nodeFactory
             .create(
-                buildContext = BuildContext.root(
+                nodeContext = NodeContext.root(
                     savedStateMap = stateMap,
                     customisations = buildParams.buildContext.customisations
                 )

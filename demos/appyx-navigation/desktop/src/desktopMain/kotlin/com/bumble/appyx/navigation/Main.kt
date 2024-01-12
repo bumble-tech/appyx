@@ -52,9 +52,9 @@ fun main() = application {
                         onBackPressedEvents = events.receiveAsFlow().mapNotNull {
                             if (it is Events.OnBackPressed) Unit else null
                         }
-                    ) { buildContext ->
+                    ) { nodeContext ->
                         RootNode(
-                            buildContext = buildContext,
+                            nodeContext = nodeContext,
                             plugins = listOf(navigator)
                         )
                     }

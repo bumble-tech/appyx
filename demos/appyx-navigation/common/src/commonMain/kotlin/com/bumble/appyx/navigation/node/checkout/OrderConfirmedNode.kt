@@ -16,16 +16,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
 class OrderConfirmedNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val postViewAction: () -> Unit,
 ) : Node(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
 ) {
 
     @Composable

@@ -74,7 +74,7 @@ internal fun AppyxRoute(onGoogleNavigationClick: () -> Unit) {
         integrationPoint = LocalIntegrationPoint.current,
     ) {
         ComposeNavigationContainerNode(
-            buildContext = it,
+            nodeContext = it,
             onGoogleNavigationClick = onGoogleNavigationClick
         )
     }

@@ -2,13 +2,13 @@ package com.bumble.appyx.navigation.node
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 
 open class ComposableNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val composable: @Composable (Modifier) -> Unit
 ) : Node(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
 ) {
 
     @Composable
@@ -17,5 +17,5 @@ open class ComposableNode(
     }
 }
 
-fun node(buildContext: BuildContext, composable: @Composable (Modifier) -> Unit): Node =
-    ComposableNode(buildContext, composable)
+fun node(nodeContext: NodeContext, composable: @Composable (Modifier) -> Unit): Node =
+    ComposableNode(nodeContext, composable)

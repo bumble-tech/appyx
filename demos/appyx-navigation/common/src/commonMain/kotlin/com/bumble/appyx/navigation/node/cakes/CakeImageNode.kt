@@ -13,16 +13,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.ui.EmbeddableResourceImage
 
 class CakeImageNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val cake: Cake,
     private val onClick: () -> Unit,
 ) : Node(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
 ) {
 
     @Composable

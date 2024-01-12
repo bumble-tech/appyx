@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.cakes.CakeListNode.NavTarget
@@ -42,12 +42,12 @@ import kotlin.math.abs
 private val animationSpec = spring<Float>(stiffness = Spring.StiffnessLow)
 
 class CakeListNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val cart: Cart,
     private val model: SpotlightHeroModel<NavTarget> = SpotlightHeroModel(
         items = cakes.map { NavTarget.Backdrop(it) to NavTarget.CakeImage(it) },
         initialActiveIndex = 0f,
-        savedStateMap = buildContext.savedStateMap
+        savedStateMap = nodeContext.savedStateMap
     ),
     private val spotlight: SpotlightHero<NavTarget> =
         SpotlightHero(
@@ -57,7 +57,7 @@ class CakeListNode(
             gestureFactory = { SpotlightHeroGestures(it) }
         ),
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = spotlight
 ) {
 
@@ -75,13 +75,13 @@ class CakeListNode(
         ) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Backdrop -> CakeBackdropNode(buildContext, navTarget.cake) {
+            is NavTarget.Backdrop -> CakeBackdropNode(nodeContext, navTarget.cake) {
                 toggleHeroMode()
             }
 
-            is NavTarget.CakeImage -> CakeImageNode(buildContext, navTarget.cake) {
+            is NavTarget.CakeImage -> CakeImageNode(nodeContext, navTarget.cake) {
                 toggleHeroMode()
             }
         }

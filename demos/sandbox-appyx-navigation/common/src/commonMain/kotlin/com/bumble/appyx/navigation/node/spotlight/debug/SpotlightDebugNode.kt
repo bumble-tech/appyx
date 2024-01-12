@@ -27,7 +27,7 @@ import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.composable.KnobControl
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
@@ -37,11 +37,11 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class SpotlightDebugNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val model: SpotlightModel<NavTarget> = SpotlightModel(
         items = List(7) { NavTarget.Child(it + 1) },
         initialActiveIndex = 0f,
-        savedStateMap = buildContext.savedStateMap
+        savedStateMap = nodeContext.savedStateMap
     ),
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = model,
@@ -49,7 +49,7 @@ class SpotlightDebugNode(
         isDebug = true
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = spotlight
 ) {
 
@@ -67,9 +67,9 @@ class SpotlightDebugNode(
         class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Child -> node(buildContext) {
+            is NavTarget.Child -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier

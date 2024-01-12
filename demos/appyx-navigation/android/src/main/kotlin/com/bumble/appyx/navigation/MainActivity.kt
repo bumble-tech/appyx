@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.ExperimentalUnitApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.bumble.appyx.navigation.integration.NodeActivity
 import com.bumble.appyx.navigation.integration.NodeHost
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.root.RootNode
@@ -48,7 +48,7 @@ class MainActivity : NodeActivity() {
                             integrationPoint = appyxV2IntegrationPoint,
                         ) {
                             RootNode(
-                                buildContext = it,
+                                nodeContext = it,
                                 /**
                                  * For demonstration purposes only.
                                  * When launching directly, we won't have a deep link.
@@ -109,7 +109,7 @@ fun DefaultPreview() {
     AppyxSampleAppTheme {
         Column {
             RootNode(
-                buildContext = BuildContext.root(null),
+                nodeContext = NodeContext.root(null),
             ).Compose()
         }
     }

@@ -25,7 +25,7 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
         setContent {
             NodeHost(integrationPoint = appyxIntegrationPoint) {
                 RootNode(
-                    buildContext = it,
+                    nodeContext = it,
                     plugins = listOf(object : NodeReadyObserver<RootNode> {
                         override fun init(node: RootNode) {
                             rootNode = node

@@ -92,7 +92,7 @@ class MainActivity : NodeActivity() {
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
                     integrationPoint = appyxV2IntegrationPoint
                 ) {
-                    RootNode(buildContext = it)
+                    RootNode(nodeContext = it)
                 }
             }
         }
@@ -124,7 +124,7 @@ fun main() = application {
                         if (it is Events.OnBackPressed) Unit else null
                     }
                 ) { 
-                    RootNode(buildContext = it)
+                    RootNode(nodeContext = it)
                 }
             }
         }
@@ -162,7 +162,7 @@ fun main() {
                         screenSize = screenSize,
                         onBackPressedEvents = events.receiveAsFlow(),
                     ) { 
-                        RootNode(buildContext = it)
+                        RootNode(nodeContext = it)
                     }
                 }
 
@@ -191,7 +191,7 @@ fun MainViewController() = ComposeUIViewController {
             onBackPressedEvents = backEvents.receiveAsFlow()
         ) {
             RootNode(
-                buildContext = it
+               nodeContext = it
             )
         }
     }

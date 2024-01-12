@@ -12,7 +12,7 @@ import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.AppyxTestScenario
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.composable.PermanentChild
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.PermanentChildTest.TestParentNode.Child
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -22,13 +22,13 @@ import org.junit.Test
 
 class PermanentChildTest {
 
-    var nodeFactory: (buildContext: BuildContext) -> TestParentNode = {
-        TestParentNode(buildContext = it)
+    var nodeFactory: (nodeContext: NodeContext) -> TestParentNode = {
+        TestParentNode(nodeContext = it)
     }
 
     @get:Rule
-    val rule = AppyxTestScenario { buildContext ->
-        nodeFactory(buildContext)
+    val rule = AppyxTestScenario { nodeContext ->
+        nodeFactory(nodeContext)
     }
 
     @Test
@@ -66,7 +66,7 @@ class PermanentChildTest {
     private fun createPermanentAppyxComponentWithInteractionKey() {
         nodeFactory = {
             TestParentNode(
-                buildContext = it,
+                nodeContext = it,
                 permanentAppyxComponent = PermanentAppyxComponent(
                     savedStateMap = null,
                     listOf(Child)
@@ -77,11 +77,11 @@ class PermanentChildTest {
     }
 
     class TestParentNode(
-        buildContext: BuildContext,
+        nodeContext: NodeContext,
         private val permanentAppyxComponent: PermanentAppyxComponent<Child> =
-            PermanentAppyxComponent(savedStateMap = buildContext.savedStateMap)
+            PermanentAppyxComponent(savedStateMap = nodeContext.savedStateMap)
     ) : ParentNode<Child>(
-        buildContext = buildContext,
+        nodeContext = nodeContext,
         appyxComponent = permanentAppyxComponent
     ) {
 
@@ -90,8 +90,8 @@ class PermanentChildTest {
 
         var renderPermanentChild by mutableStateOf(true)
 
-        override fun buildChildNode(navTarget: Child, buildContext: BuildContext): Node =
-            node(buildContext) { modifier ->
+        override fun buildChildNode(navTarget: Child, nodeContext: NodeContext): Node =
+            node(nodeContext) { modifier ->
                 BasicText(
                     text = navTarget.toString(),
                     modifier = modifier.testTag(Child::class.java.name),

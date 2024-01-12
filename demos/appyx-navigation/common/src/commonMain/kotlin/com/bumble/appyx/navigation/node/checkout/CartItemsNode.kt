@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.collections.toImmutableMap
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.Node
@@ -25,11 +25,11 @@ import com.bumble.appyx.navigation.node.cakes.Cake
 import com.bumble.appyx.navigation.node.cart.Cart
 
 class CartItemsNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val cart: Cart,
     private val onCheckout: () -> Unit,
 ) : Node(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
 ) {
 
     @Composable

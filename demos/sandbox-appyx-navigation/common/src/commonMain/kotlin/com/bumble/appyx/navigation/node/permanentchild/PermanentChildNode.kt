@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.PermanentChild
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
@@ -28,17 +28,17 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PermanentChildNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val permanentAppyxComponent: PermanentAppyxComponent<NavTarget> =
         PermanentAppyxComponent(
-            savedStateMap = buildContext.savedStateMap,
+            savedStateMap = nodeContext.savedStateMap,
             initialTargets = listOf(
                 NavTarget.Child1,
                 NavTarget.Child2
             )
         )
 ) : ParentNode<PermanentChildNode.NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = permanentAppyxComponent
 ) {
     sealed class NavTarget : Parcelable {
@@ -49,9 +49,9 @@ class PermanentChildNode(
         object Child2 : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Child1 -> node(buildContext) {
+            is NavTarget.Child1 -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
@@ -70,7 +70,7 @@ class PermanentChildNode(
                 }
             }
 
-            is NavTarget.Child2 -> node(buildContext) {
+            is NavTarget.Child2 -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
