@@ -54,12 +54,12 @@ import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
-abstract class ParentNode<NavTarget : Any>(
+abstract class Node<NavTarget : Any>(
     val appyxComponent: AppyxComponent<NavTarget, *>,
     private val nodeContext: NodeContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-    private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
+    private val childAware: ChildAware<Node<NavTarget>> = ChildAwareImpl(),
     private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = listOf(),
 ) : NodeLifecycle,
@@ -71,7 +71,7 @@ abstract class ParentNode<NavTarget : Any>(
         nodeContext: NodeContext,
         view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
         childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-        childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
+        childAware: ChildAware<Node<NavTarget>> = ChildAwareImpl(),
         plugins: List<Plugin> = emptyList()
     ) : this(
         appyxComponent,
@@ -99,7 +99,7 @@ abstract class ParentNode<NavTarget : Any>(
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
-    val parent: ParentNode<*>? =
+    val parent: Node<*>? =
         when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
@@ -151,7 +151,7 @@ abstract class ParentNode<NavTarget : Any>(
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
         updateLifecycleState(Lifecycle.State.CREATED)
-        plugins<NodeReadyObserver<ParentNode<*>>>().forEach { it.init(this) }
+        plugins<NodeReadyObserver<Node<*>>>().forEach { it.init(this) }
         plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
         childNodeCreationManager.launch(this)
         childNodeLifecycleManager.launch()
@@ -226,7 +226,7 @@ abstract class ParentNode<NavTarget : Any>(
         crossinline action: suspend () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
         action()
-        this@ParentNode as T
+        this@Node as T
     }
 
     /**
@@ -278,7 +278,7 @@ abstract class ParentNode<NavTarget : Any>(
             }
         }
 
-    open fun onChildFinished(child: ParentNode<*>) {
+    open fun onChildFinished(child: Node<*>) {
         // TODO warn unhandled child
     }
 

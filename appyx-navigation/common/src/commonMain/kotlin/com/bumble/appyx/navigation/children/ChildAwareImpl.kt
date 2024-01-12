@@ -5,7 +5,7 @@ import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-class ChildAwareImpl<N : ParentNode<*>> : ChildAware<N> {
+class ChildAwareImpl<N : Node<*>> : ChildAware<N> {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
@@ -29,7 +29,7 @@ class ChildAwareImpl<N : ParentNode<*>> : ChildAware<N> {
         this.node = node
         lifecycle = node.lifecycle
         coroutineScope = lifecycle.coroutineScope
-        if (node is ParentNode<*>) {
+        if (node is Node<*>) {
             children = node.children
             coroutineScope.launch { observeChanges() }
         } else {

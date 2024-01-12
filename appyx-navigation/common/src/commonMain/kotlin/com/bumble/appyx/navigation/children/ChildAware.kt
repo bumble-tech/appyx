@@ -1,11 +1,10 @@
 package com.bumble.appyx.navigation.children
 
-import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.plugin.NodeAware
 import kotlin.reflect.KClass
 
-interface ChildAware<N: ParentNode<*>> : NodeAware<N> {
+interface ChildAware<N: Node<*>> : NodeAware<N> {
 
     fun <T : Any> whenChildAttached(
         child: KClass<T>,

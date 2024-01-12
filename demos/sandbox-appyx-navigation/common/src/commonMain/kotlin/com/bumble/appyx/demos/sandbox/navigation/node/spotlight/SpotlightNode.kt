@@ -39,7 +39,7 @@ import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -56,7 +56,7 @@ class SpotlightNode(
         visualisation = { SpotlightSlider(it, model.currentState) },
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
-) : ParentNode<NavTarget>(
+) : Node<NavTarget>(
     nodeContext = nodeContext,
     appyxComponent = spotlight
 ) {

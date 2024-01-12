@@ -14,7 +14,7 @@ import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import kotlinx.parcelize.Parcelize
 
@@ -28,7 +28,7 @@ internal class ComposeNavigationContainerNode(
         ),
         visualisation = { BackStackSlider(it) }
     )
-) : ParentNode<ComposeNavigationContainerNode.InteractionTarget>(
+) : Node<ComposeNavigationContainerNode.InteractionTarget>(
     appyxComponent = backStack,
     nodeContext = nodeContext,
 ) {

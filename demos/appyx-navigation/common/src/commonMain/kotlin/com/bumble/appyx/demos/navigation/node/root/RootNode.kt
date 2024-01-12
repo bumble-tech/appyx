@@ -14,7 +14,7 @@ import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -34,7 +34,7 @@ class RootNode(
         visualisation = { BackStackFader(it) }
     ),
     plugins: List<Plugin> = listOf(),
-) : ParentNode<NavTarget>(
+) : Node<NavTarget>(
     nodeContext = nodeContext,
     appyxComponent = backStack,
     plugins = plugins

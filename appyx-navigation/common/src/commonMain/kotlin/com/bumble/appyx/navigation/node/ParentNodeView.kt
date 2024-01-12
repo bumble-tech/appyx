@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 interface ParentNodeView<NavTarget : Any> : NodeView {
 
     @Composable
-    fun ParentNode<NavTarget>.NodeView(modifier: Modifier)
+    fun Node<NavTarget>.NodeView(modifier: Modifier)
 
     /**
      * Do not override this function. Parent views should implement NodeView method.
@@ -14,7 +14,7 @@ interface ParentNodeView<NavTarget : Any> : NodeView {
     @Suppress("UNCHECKED_CAST")
     @Composable
     override fun Content(modifier: Modifier) {
-        val node = LocalNode.current as? ParentNode<NavTarget>
+        val node = LocalNode.current as? Node<NavTarget>
             ?: error("${this::class} is not provided to the appropriate ParentNode")
         node.NodeView(modifier = modifier)
     }

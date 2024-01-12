@@ -12,6 +12,6 @@ object EmptyNodeView : NodeView {
 class EmptyParentNodeView<NavTarget : Any> : ParentNodeView<NavTarget> {
 
     @Composable
-    override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) = Unit
+    override fun Node<NavTarget>.NodeView(modifier: Modifier) = Unit
 
 }

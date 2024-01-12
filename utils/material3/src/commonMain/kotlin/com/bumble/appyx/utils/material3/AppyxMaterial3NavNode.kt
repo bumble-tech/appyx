@@ -43,7 +43,7 @@ import com.bumble.appyx.navigation.integration.ScreenSize.WindowSizeClass.COMPAC
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.EmptyParentNodeView
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNodeView
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,9 +71,9 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     ),
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-    childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
+    childAware: ChildAware<Node<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
-) : ParentNode<NavTarget>(
+) : Node<NavTarget>(
     appyxComponent = spotlight,
     nodeContext = nodeContext,
     view = view,

@@ -8,7 +8,7 @@ open class LeafNode(
     nodeContext: NodeContext,
     view: ParentNodeView<Nothing> = EmptyParentNodeView(),
     plugins: List<Plugin> = listOf(),
-) : ParentNode<Nothing>(
+) : Node<Nothing>(
     appyxComponent = PermanentAppyxComponent(
         savedStateMap = nodeContext.savedStateMap
     ),

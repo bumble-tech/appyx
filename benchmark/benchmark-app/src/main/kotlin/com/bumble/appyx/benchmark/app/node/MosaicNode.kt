@@ -38,7 +38,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRA
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import kotlin.random.Random
 
@@ -65,7 +65,7 @@ class MosaicNode(
         savedStateMap = nodeContext.savedStateMap,
         defaultAnimationSpec = animationSpec
     )
-) : ParentNode<MosaicPiece>(
+) : Node<MosaicPiece>(
     nodeContext = nodeContext,
     appyxComponent = mosaic
 ) {

@@ -13,7 +13,7 @@ import com.bumble.appyx.navigation.AppyxTestScenario
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.composable.PermanentChild
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.PermanentChildTest.TestParentNode.Child
+import com.bumble.appyx.navigation.node.PermanentChildTest.TestNode.Child
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import org.junit.Assert.assertEquals
@@ -22,8 +22,8 @@ import org.junit.Test
 
 class PermanentChildTest {
 
-    var nodeFactory: (nodeContext: NodeContext) -> TestParentNode = {
-        TestParentNode(nodeContext = it)
+    var nodeFactory: (nodeContext: NodeContext) -> TestNode = {
+        TestNode(nodeContext = it)
     }
 
     @get:Rule
@@ -65,7 +65,7 @@ class PermanentChildTest {
 
     private fun createPermanentAppyxComponentWithInteractionKey() {
         nodeFactory = {
-            TestParentNode(
+            TestNode(
                 nodeContext = it,
                 permanentAppyxComponent = PermanentAppyxComponent(
                     savedStateMap = null,
@@ -76,11 +76,11 @@ class PermanentChildTest {
 
     }
 
-    class TestParentNode(
+    class TestNode(
         nodeContext: NodeContext,
         private val permanentAppyxComponent: PermanentAppyxComponent<Child> =
             PermanentAppyxComponent(savedStateMap = nodeContext.savedStateMap)
-    ) : ParentNode<Child>(
+    ) : Node<Child>(
         nodeContext = nodeContext,
         appyxComponent = permanentAppyxComponent
     ) {

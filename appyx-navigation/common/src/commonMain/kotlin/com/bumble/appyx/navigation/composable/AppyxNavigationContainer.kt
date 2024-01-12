@@ -10,14 +10,14 @@ import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.integration.LocalScreenSize
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import kotlin.math.roundToInt
 
 
 internal val defaultExtraTouch = 48.dp
 
 @Composable
-fun <NavTarget : Any, ModelState : Any> ParentNode<NavTarget>.AppyxNavigationContainer(
+fun <NavTarget : Any, ModelState : Any> Node<NavTarget>.AppyxNavigationContainer(
     appyxComponent: BaseAppyxComponent<NavTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,

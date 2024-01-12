@@ -22,7 +22,7 @@ import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.composable.PermanentChild
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -37,7 +37,7 @@ class PermanentChildNode(
                 NavTarget.Child2
             )
         )
-) : ParentNode<PermanentChildNode.NavTarget>(
+) : Node<PermanentChildNode.NavTarget>(
     nodeContext = nodeContext,
     appyxComponent = permanentAppyxComponent
 ) {

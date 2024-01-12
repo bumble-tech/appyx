@@ -38,7 +38,7 @@ import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.AbstractNode
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -62,7 +62,7 @@ class BackStackNode(
         gestureFactory = gestureFactory,
         gestureSettleConfig = gestureSettleConfig,
     )
-) : ParentNode<BackStackNode.NavTarget>(
+) : Node<BackStackNode.NavTarget>(
     nodeContext = nodeContext,
     appyxComponent = backStack,
 ) {

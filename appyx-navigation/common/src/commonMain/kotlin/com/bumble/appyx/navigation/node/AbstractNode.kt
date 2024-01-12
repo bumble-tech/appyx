@@ -64,7 +64,7 @@ abstract class AbstractNode internal constructor(
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
 
-    val parent: ParentNode<*>? =
+    val parent: Node<*>? =
         when (ancestryInfo) {
             is AncestryInfo.Child -> ancestryInfo.anchor
             is AncestryInfo.Root -> null
