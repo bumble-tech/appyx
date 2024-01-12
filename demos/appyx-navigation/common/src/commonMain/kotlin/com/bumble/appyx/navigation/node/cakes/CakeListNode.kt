@@ -19,7 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -75,7 +75,7 @@ class CakeListNode(
         ) : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is NavTarget.Backdrop -> CakeBackdropNode(buildContext, navTarget.cake) {
                 toggleHeroMode()
@@ -98,7 +98,7 @@ class CakeListNode(
         Box(
             modifier = modifier.fillMaxSize()
         ) {
-            AppyxComponent(
+            AppyxNavigationContainer(
                 appyxComponent = spotlight,
                 modifier = Modifier
                     .align(Alignment.Center)

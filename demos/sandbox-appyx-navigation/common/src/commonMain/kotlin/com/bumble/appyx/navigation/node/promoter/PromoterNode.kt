@@ -33,19 +33,19 @@ import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisatio
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget
-import com.bumble.appyx.navigation.node.promoter.PromoterNode.InteractionTarget.Child
+import com.bumble.appyx.navigation.node.promoter.PromoterNode.NavTarget
+import com.bumble.appyx.navigation.node.promoter.PromoterNode.NavTarget.Child
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PromoterNode(
     buildContext: BuildContext,
-    private val promoter: Promoter<InteractionTarget> = Promoter(
+    private val promoter: Promoter<NavTarget> = Promoter(
         model = PromoterModel(
             savedStateMap = buildContext.savedStateMap
         ),
@@ -56,7 +56,7 @@ class PromoterNode(
         },
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = promoter
 ) {
@@ -68,13 +68,13 @@ class PromoterNode(
         promoter.addFirst(Child(4))
     }
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             is Child -> node(buildContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
@@ -86,7 +86,7 @@ class PromoterNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = interactionTarget.index.toString(),
+                        text = navTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -103,7 +103,7 @@ class PromoterNode(
             modifier = modifier
                 .fillMaxSize()
         ) {
-            AppyxComponent(
+            AppyxNavigationContainer(
                 appyxComponent = promoter,
                 modifier = Modifier
                     .weight(0.9f)

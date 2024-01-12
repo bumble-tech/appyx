@@ -10,8 +10,8 @@ import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.Appyx
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
+import com.bumble.appyx.navigation.integration.IntegrationPoint
+import com.bumble.appyx.navigation.integration.IntegrationPointStub
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.LifecycleLogger

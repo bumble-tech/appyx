@@ -20,7 +20,7 @@ import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.navigation.Resolver
+import com.bumble.appyx.navigation.children.ChildNodeBuilder
 import com.bumble.appyx.navigation.platform.PlatformBackHandler
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -32,25 +32,25 @@ import kotlin.reflect.KClass
 
 @Suppress("TooManyFunctions")
 @Stable
-abstract class ParentNode<InteractionTarget : Any>(
-    val appyxComponent: AppyxComponent<InteractionTarget, *>,
+abstract class ParentNode<NavTarget : Any>(
+    val appyxComponent: AppyxComponent<NavTarget, *>,
     buildContext: BuildContext,
-    view: ParentNodeView<InteractionTarget> = EmptyParentNodeView(),
+    view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
-    private val childAware: ChildAware<ParentNode<InteractionTarget>> = ChildAwareImpl(),
+    private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
     view = view,
     buildContext = buildContext,
     plugins = plugins + appyxComponent + childAware
-), Resolver<InteractionTarget> {
+), ChildNodeBuilder<NavTarget> {
 
-    private val childNodeCreationManager = ChildNodeCreationManager<InteractionTarget>(
+    private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = buildContext.savedStateMap,
         customisations = buildContext.customisations,
         keepMode = childKeepMode,
     )
-    val children: StateFlow<ChildEntryMap<InteractionTarget>>
+    val children: StateFlow<ChildEntryMap<NavTarget>>
         get() = childNodeCreationManager.children
 
     private val childNodeLifecycleManager = ChildNodeLifecycleManager(
@@ -66,7 +66,7 @@ abstract class ParentNode<InteractionTarget : Any>(
         childNodeLifecycleManager.launch()
     }
 
-    fun childOrCreate(element: Element<InteractionTarget>): ChildEntry.Initialized<InteractionTarget> =
+    fun childOrCreate(element: Element<NavTarget>): ChildEntry.Initialized<NavTarget> =
         childNodeCreationManager.childOrCreate(element)
 
     override fun updateLifecycleState(state: Lifecycle.State) {

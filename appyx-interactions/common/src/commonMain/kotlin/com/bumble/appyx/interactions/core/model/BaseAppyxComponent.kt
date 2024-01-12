@@ -139,7 +139,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 
     override fun onAddedToComposition(scope: CoroutineScope) {
         animationScope = scope
-        createAnimatedInputSource(scope)
+        createAnimatedProgressController(scope)
         createdDebugInputSource()
     }
 
@@ -149,7 +149,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         animationScope?.cancel()
     }
 
-    private fun createAnimatedInputSource(scope: CoroutineScope) {
+    private fun createAnimatedProgressController(scope: CoroutineScope) {
         animated = AnimatedProgressController(
             model = model,
             coroutineScope = scope,

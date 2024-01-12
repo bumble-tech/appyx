@@ -3,7 +3,7 @@ package com.bumble.appyx.utils.interop.ribs
 import com.badoo.ribs.builder.SimpleBuilder
 import com.badoo.ribs.core.modality.BuildParams
 import com.bumble.appyx.navigation.integration.NodeFactory
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
+import com.bumble.appyx.navigation.integration.IntegrationPoint
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build

@@ -33,7 +33,7 @@ import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import com.bumble.appyx.navigation.ColorSaver
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -47,33 +47,33 @@ import kotlin.random.Random
 
 class BackStackNode(
     buildContext: BuildContext,
-    visualisation: (UiContext) -> Visualisation<InteractionTarget, State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, State<InteractionTarget>> = {
+    visualisation: (UiContext) -> Visualisation<NavTarget, State<NavTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, State<NavTarget>> = {
         GestureFactory.Noop()
     },
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
     private val isMaxSize: Boolean = false,
-    private val backStack: BackStack<InteractionTarget> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(InteractionTarget.Child(1)),
+            initialTargets = listOf(NavTarget.Child(1)),
             savedStateMap = buildContext.savedStateMap
         ),
         visualisation = visualisation,
         gestureFactory = gestureFactory,
         gestureSettleConfig = gestureSettleConfig,
     )
-) : ParentNode<BackStackNode.InteractionTarget>(
+) : ParentNode<BackStackNode.NavTarget>(
     buildContext = buildContext,
     appyxComponent = backStack,
 ) {
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> node(buildContext) {
                 val backgroundColor =
                     rememberSaveable(saver = ColorSaver) { colors.shuffled().random() }
 
@@ -89,10 +89,10 @@ class BackStackNode(
                         )
                         .background(backgroundColor)
                         .padding(24.dp)
-                        .gestureModifier(backStack, interactionTarget.index.toString())
+                        .gestureModifier(backStack, navTarget.index.toString())
                 ) {
                     Text(
-                        text = interactionTarget.index.toString(),
+                        text = navTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -108,7 +108,7 @@ class BackStackNode(
                 .fillMaxWidth()
                 .background(appyx_dark)
         ) {
-            AppyxComponent(
+            AppyxNavigationContainer(
                 clipToBounds = true,
                 appyxComponent = backStack,
                 modifier = Modifier
@@ -130,16 +130,16 @@ class BackStackNode(
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
                 TextButton(text = "Push") {
-                    backStack.push(InteractionTarget.Child(Random.nextInt(20)))
+                    backStack.push(NavTarget.Child(Random.nextInt(20)))
                 }
                 TextButton(text = "Pop") {
                     backStack.pop()
                 }
                 TextButton(text = "Replace") {
-                    backStack.replace(InteractionTarget.Child(Random.nextInt(20)))
+                    backStack.replace(NavTarget.Child(Random.nextInt(20)))
                 }
                 TextButton(text = "New root") {
-                    backStack.newRoot(InteractionTarget.Child(Random.nextInt(20)))
+                    backStack.newRoot(NavTarget.Child(Random.nextInt(20)))
                 }
             }
         }

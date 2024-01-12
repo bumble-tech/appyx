@@ -13,7 +13,7 @@ class TargetUiState(
     val corner: RoundedCorners.Target,
 ) {
 
-    fun toMutableState(
+    fun toMutableUiState(
         uiContext: UiContext
     ): MutableUiState =
         MutableUiState(

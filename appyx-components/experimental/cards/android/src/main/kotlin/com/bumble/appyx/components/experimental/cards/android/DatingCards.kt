@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
-import com.bumble.appyx.interactions.core.AppyxComponent
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
@@ -38,7 +38,7 @@ fun DatingCards(modifier: Modifier = Modifier) {
 
     AppyxComponentSetup(cards)
 
-    AppyxComponent(
+    AppyxInteractionsContainer(
         modifier = modifier
             .fillMaxSize()
             .background(appyx_dark)

@@ -14,17 +14,17 @@ import com.bumble.appyx.navigation.component.spotlighthero.operation.Next
 import com.bumble.appyx.navigation.component.spotlighthero.operation.Previous
 import com.bumble.appyx.navigation.component.spotlighthero.operation.SetHeroMode
 
-class SpotlightHeroGestures<InteractionTarget>(
+class SpotlightHeroGestures<NavTarget>(
     transitionBounds: TransitionBounds,
-) : GestureFactory<InteractionTarget, SpotlightHeroModel.State<InteractionTarget>> {
+) : GestureFactory<NavTarget, SpotlightHeroModel.State<NavTarget>> {
     private val width = transitionBounds.widthPx.toFloat()
     private val height = transitionBounds.heightPx.toFloat()
 
     override fun createGesture(
-        state: SpotlightHeroModel.State<InteractionTarget>,
+        state: SpotlightHeroModel.State<NavTarget>,
         delta: Offset,
         density: Density
-    ): Gesture<InteractionTarget, SpotlightHeroModel.State<InteractionTarget>> =
+    ): Gesture<NavTarget, SpotlightHeroModel.State<NavTarget>> =
         when (dragDirection4(delta)) {
             Drag.Direction4.LEFT -> Gesture(
                 operation = Next(),

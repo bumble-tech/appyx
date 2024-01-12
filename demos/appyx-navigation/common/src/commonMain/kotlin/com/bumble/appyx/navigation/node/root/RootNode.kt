@@ -7,7 +7,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.replace
 import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.interactions.core.plugin.Plugin
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -54,7 +54,7 @@ class RootNode(
         ) : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is NavTarget.LoggedOut -> LoggedOutNode(
                 buildContext = buildContext,
@@ -69,7 +69,7 @@ class RootNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxComponent(
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier
         )

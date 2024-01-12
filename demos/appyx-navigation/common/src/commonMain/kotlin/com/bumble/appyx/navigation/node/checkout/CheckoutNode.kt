@@ -9,7 +9,7 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -64,7 +64,7 @@ class CheckoutNode(
         object Success : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is NavTarget.CartItems -> CartItemsNode(buildContext, cart) {
                 backStack.push(NavTarget.Address)
@@ -90,7 +90,7 @@ class CheckoutNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxComponent(
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier
         )

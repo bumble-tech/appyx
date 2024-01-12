@@ -36,7 +36,7 @@ import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
 import com.bumble.appyx.navigation.children.ChildEntry
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.ScreenSize.WindowSizeClass.COMPACT
@@ -82,7 +82,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     plugins = plugins
 ) {
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
         navTargetResolver
             .invoke(navTarget)
             .node
@@ -138,7 +138,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
 
     @Composable
     fun CurrentNavItem() {
-        AppyxComponent(
+        AppyxNavigationContainer(
             appyxComponent = spotlight
         )
     }

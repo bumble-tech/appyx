@@ -23,7 +23,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 @Suppress("MagicNumber")
 class ModalVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
-) : BaseVisualisation<InteractionTarget, ModalModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, ModalModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext
 ) {
 
@@ -65,7 +65,7 @@ class ModalVisualisation<InteractionTarget : Any>(
     override fun mutableUiStateFor(
         uiContext: UiContext,
         targetUiState: TargetUiState
-    ): MutableUiState = targetUiState.toMutableState(uiContext)
+    ): MutableUiState = targetUiState.toMutableUiState(uiContext)
 
     class Gestures<InteractionTarget : Any>(
         transitionBounds: TransitionBounds,

@@ -10,10 +10,10 @@ import com.bumble.appyx.navigation.component.spotlighthero.operation.SetHeroMode
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-class ExitHeroModeStrategy<InteractionTarget : Any>(
+class ExitHeroModeStrategy<NavTarget : Any>(
     val scope: CoroutineScope,
     val animationSpec: AnimationSpec<Float>? = null
-) : BaseBackPressHandlerStrategy<InteractionTarget, SpotlightHeroModel.State<InteractionTarget>>() {
+) : BaseBackPressHandlerStrategy<NavTarget, SpotlightHeroModel.State<NavTarget>>() {
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy {
         transitionModel.output.mapState(scope) { output ->
