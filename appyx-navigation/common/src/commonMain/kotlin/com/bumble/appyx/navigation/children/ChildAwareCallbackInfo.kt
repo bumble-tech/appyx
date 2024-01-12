@@ -3,14 +3,14 @@ package com.bumble.appyx.navigation.children
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.MinimumCombinedLifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 import kotlin.reflect.KClass
 import kotlin.reflect.cast
 import kotlin.reflect.safeCast
 
 internal sealed class ChildAwareCallbackInfo {
 
-    abstract fun onRegistered(activeNodes: List<AbstractNode>)
+    abstract fun onRegistered(activeNodes: List<Node<*>>)
 
     class Single<T : Any>(
         private val child: KClass<T>,
@@ -18,7 +18,7 @@ internal sealed class ChildAwareCallbackInfo {
         private val parentLifecycle: Lifecycle,
     ) : ChildAwareCallbackInfo() {
 
-        fun onNewNodeAppeared(newNode: AbstractNode) {
+        fun onNewNodeAppeared(newNode: Node<*>) {
             if (parentLifecycle.isDestroyed) return
             val castedNode = child.safeCast(newNode)
             if (castedNode != null) {
@@ -31,7 +31,7 @@ internal sealed class ChildAwareCallbackInfo {
             }
         }
 
-        override fun onRegistered(activeNodes: List<AbstractNode>) {
+        override fun onRegistered(activeNodes: List<Node<*>>) {
             activeNodes.forEach { node ->
                 onNewNodeAppeared(node)
             }
@@ -47,9 +47,9 @@ internal sealed class ChildAwareCallbackInfo {
     ) : ChildAwareCallbackInfo() {
 
         fun onNewNodeAppeared(
-            activeNodes: Collection<AbstractNode>,
-            newNode: AbstractNode,
-            ignoreNodes: Set<AbstractNode>,
+            activeNodes: Collection<Node<*>>,
+            newNode: Node<*>,
+            ignoreNodes: Set<Node<*>>,
         ) {
             val second = getOther(newNode) ?: return
             activeNodes
@@ -57,7 +57,7 @@ internal sealed class ChildAwareCallbackInfo {
                 .forEach { notify(newNode, it) }
         }
 
-        override fun onRegistered(activeNodes: List<AbstractNode>) {
+        override fun onRegistered(activeNodes: List<Node<*>>) {
             activeNodes.forEachIndexed { index, node ->
                 onNewNodeAppeared(
                     // Do not include already handled nodes to avoid call duplication
@@ -68,7 +68,7 @@ internal sealed class ChildAwareCallbackInfo {
             }
         }
 
-        private fun notify(node1: AbstractNode, node2: AbstractNode) {
+        private fun notify(node1: Node<*>, node2: Node<*>) {
             if (parentLifecycle.isDestroyed) return
             val lifecycle =
                 MinimumCombinedLifecycle(
@@ -83,7 +83,7 @@ internal sealed class ChildAwareCallbackInfo {
             }
         }
 
-        private fun getOther(node: AbstractNode): KClass<*>? =
+        private fun getOther(node: Node<*>): KClass<*>? =
             when {
                 child1.isInstance(node) -> child2
                 child2.isInstance(node) -> child1

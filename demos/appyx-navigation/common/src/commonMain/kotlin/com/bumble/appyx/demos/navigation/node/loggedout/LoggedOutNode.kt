@@ -30,7 +30,6 @@ import com.bumble.appyx.demos.navigation.platform.getPlatformName
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
@@ -71,7 +70,7 @@ class LoggedOutNode(
         object Login : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node<*> =
         when (navTarget) {
             is NavTarget.Splash -> node(nodeContext) { modifier ->
                 SplashScreen(modifier)

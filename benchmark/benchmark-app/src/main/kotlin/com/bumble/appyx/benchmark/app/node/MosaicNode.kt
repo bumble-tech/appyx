@@ -37,7 +37,6 @@ import com.bumble.appyx.benchmark.app.ui.FlashCard
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import kotlin.random.Random
@@ -70,7 +69,7 @@ class MosaicNode(
     appyxComponent = mosaic
 ) {
 
-    override fun buildChildNode(mosaicPiece: MosaicPiece, nodeContext: NodeContext): AbstractNode =
+    override fun buildChildNode(mosaicPiece: MosaicPiece, nodeContext: NodeContext): Node<*> =
         node(nodeContext) { modifier ->
             Box(
                 modifier = modifier

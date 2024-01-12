@@ -2,9 +2,9 @@ package com.bumble.appyx.navigation.integration
 
 import androidx.compose.runtime.Stable
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 
 @Stable
-fun interface NodeFactory<N : AbstractNode> {
+fun interface NodeFactory<N : Node<*>> {
     fun create(nodeContext: NodeContext): N
 }

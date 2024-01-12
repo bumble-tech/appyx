@@ -11,12 +11,12 @@ import com.badoo.ribs.compose.ComposeView
 import com.badoo.ribs.core.view.RibView
 import com.badoo.ribs.core.view.ViewFactory
 import com.badoo.ribs.core.view.ViewFactoryBuilder
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.utils.interop.ribs.InteropView.Dependency
 
 interface InteropView : RibView {
 
-    interface Dependency<N : AbstractNode> {
+    interface Dependency<N : Node<*>> {
         val appyxNode: N
         val onBackPressedDispatcherOwner: OnBackPressedDispatcherOwner
     }
@@ -25,7 +25,7 @@ interface InteropView : RibView {
 internal class InteropViewImpl private constructor(
     override val context: Context,
     lifecycle: Lifecycle,
-    private val appyxNode: AbstractNode,
+    private val appyxNode: Node<*>,
     private val onBackPressedDispatcherOwner: OnBackPressedDispatcherOwner,
 ) : InteropView, ComposeRibView(context, lifecycle) {
 
@@ -38,7 +38,7 @@ internal class InteropViewImpl private constructor(
             }
         }
 
-    class Factory<N : AbstractNode> : ViewFactoryBuilder<Dependency<N>, InteropView> {
+    class Factory<N : Node<*>> : ViewFactoryBuilder<Dependency<N>, InteropView> {
         override fun invoke(deps: Dependency<N>): ViewFactory<InteropView> =
             ViewFactory {
                 InteropViewImpl(

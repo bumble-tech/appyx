@@ -1,12 +1,12 @@
 package com.bumble.appyx.utils.testing.unit.common.helper
 
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 
-fun <N : AbstractNode> N.nodeTestHelper() = NodeTestHelper(this)
+fun <N : Node<*>> N.nodeTestHelper() = NodeTestHelper(this)
 
-open class NodeTestHelper<N : AbstractNode>(private val node: N) {
+open class NodeTestHelper<N : Node<*>>(private val node: N) {
 
     private val nodeLifecycle
         get() = node.lifecycle

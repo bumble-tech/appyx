@@ -21,7 +21,6 @@ import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.composable.PermanentChild
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
@@ -49,7 +48,7 @@ class PermanentChildNode(
         object Child2 : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node<*> =
         when (navTarget) {
             is NavTarget.Child1 -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }

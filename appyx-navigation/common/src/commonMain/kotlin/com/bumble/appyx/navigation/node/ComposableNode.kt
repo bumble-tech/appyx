@@ -7,7 +7,7 @@ import com.bumble.appyx.navigation.modality.NodeContext
 open class ComposableNode(
     nodeContext: NodeContext,
     private val composable: @Composable (Modifier) -> Unit
-) : AbstractNode(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
 
@@ -17,5 +17,5 @@ open class ComposableNode(
     }
 }
 
-fun node(nodeContext: NodeContext, composable: @Composable (Modifier) -> Unit): AbstractNode =
+fun node(nodeContext: NodeContext, composable: @Composable (Modifier) -> Unit): Node<*> =
     ComposableNode(nodeContext, composable)

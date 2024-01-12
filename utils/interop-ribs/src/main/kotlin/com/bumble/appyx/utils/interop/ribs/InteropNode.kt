@@ -7,13 +7,13 @@ import androidx.lifecycle.LifecycleEventObserver
 import com.badoo.ribs.core.Rib
 import com.badoo.ribs.core.modality.BuildParams
 import com.badoo.ribs.core.view.ViewFactory
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.platform.toCommonState
 import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.utils.interop.ribs.InteropNode.Customisation
 import com.bumble.appyx.utils.interop.ribs.InteropViewImpl.Factory
 
-interface InteropNode<N : AbstractNode> : Rib {
+interface InteropNode<N : Node<*>> : Rib {
     val appyxNode: N
 
     class Customisation(
@@ -21,7 +21,7 @@ interface InteropNode<N : AbstractNode> : Rib {
     ) : NodeCustomisation
 }
 
-internal class InteropNodeImpl<N : AbstractNode>(
+internal class InteropNodeImpl<N : Node<*>>(
     buildParams: BuildParams<*>,
     override val appyxNode: N,
     private val backPressHandler: InteropBackPressHandler = InteropBackPressHandler(),

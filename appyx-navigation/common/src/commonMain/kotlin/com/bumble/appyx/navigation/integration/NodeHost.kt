@@ -13,20 +13,20 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
 /**
- * Composable function to host [AbstractNode].
+ * Composable function to host [Node<*>].
  *
  * Aligns lifecycle and manages state restoration.
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : AbstractNode> NodeHost(
+fun <N : Node<*>> NodeHost(
     lifecycle: Lifecycle,
     integrationPoint: IntegrationPoint,
     screenSize: ScreenSize,
@@ -52,7 +52,7 @@ fun <N : AbstractNode> NodeHost(
 }
 
 @Composable
-internal fun <N : AbstractNode> rememberNode(
+internal fun <N : Node<*>> rememberNode(
     factory: NodeFactory<N>,
     customisations: NodeCustomisationDirectory,
     integrationPoint: IntegrationPoint,

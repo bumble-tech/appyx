@@ -222,7 +222,7 @@ abstract class Node<NavTarget : Any>(
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
 
 
-    protected suspend inline fun <reified T : AbstractNode> executeAction(
+    protected suspend inline fun <reified T : Node<*>> executeAction(
         crossinline action: suspend () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
         action()
@@ -236,7 +236,7 @@ abstract class Node<NavTarget : Any>(
      * As the result we're doing it asynchronously with timeout after which exception is thrown if
      * expected node has not appeared in the children list.
      */
-    protected suspend inline fun <reified T : AbstractNode> attachChild(
+    protected suspend inline fun <reified T : Node<*>> attachChild(
         timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
@@ -259,7 +259,7 @@ abstract class Node<NavTarget : Any>(
      * when this happens this job can hang indefinitely therefore you need to provide timeout if
      * you need one.
      */
-    protected suspend inline fun <reified T : AbstractNode> waitForChildAttached(): T =
+    protected suspend inline fun <reified T : Node<*>> waitForChildAttached(): T =
         suspendCancellableCoroutine { continuation ->
             lifecycleScope.launch {
                 children.collect { childMap ->

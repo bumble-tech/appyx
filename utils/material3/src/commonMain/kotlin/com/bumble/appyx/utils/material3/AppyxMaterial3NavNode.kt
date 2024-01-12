@@ -42,7 +42,6 @@ import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.ScreenSize.WindowSizeClass.COMPACT
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.EmptyParentNodeView
-import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNodeView
 
@@ -82,7 +81,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     plugins = plugins
 ) {
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node<*> =
         navTargetResolver
             .invoke(navTarget)
             .node

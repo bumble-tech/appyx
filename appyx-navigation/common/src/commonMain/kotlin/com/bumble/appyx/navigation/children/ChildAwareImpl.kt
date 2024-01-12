@@ -4,7 +4,6 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
-import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.withPrevious
 import kotlinx.coroutines.CoroutineScope
@@ -43,7 +42,7 @@ class ChildAwareImpl<N : Node<*>> : ChildAware<N> {
             .withPrevious()
             .collect { (previous, current) ->
                 val newNodes = current - previous.orEmpty()
-                val visitedSet = HashSet<AbstractNode>()
+                val visitedSet = HashSet<Node<*>>()
                 newNodes.forEach { node ->
                     notifyWhenChanged(node, current, visitedSet)
                     visitedSet.add(node)
@@ -78,7 +77,7 @@ class ChildAwareImpl<N : Node<*>> : ChildAware<N> {
         callback.onRegistered(getCreatedNodes(children.value))
     }
 
-    private fun notifyWhenChanged(child: AbstractNode, nodes: Collection<AbstractNode>, ignore: Set<AbstractNode>) {
+    private fun notifyWhenChanged(child: Node<*>, nodes: Collection<Node<*>>, ignore: Set<Node<*>>) {
         for (callback in callbacks) {
             when (callback) {
                 is ChildAwareCallbackInfo.Double<*, *> -> callback.onNewNodeAppeared(

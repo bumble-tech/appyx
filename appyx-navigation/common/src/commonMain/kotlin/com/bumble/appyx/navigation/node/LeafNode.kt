@@ -16,7 +16,7 @@ open class LeafNode(
     view = view,
     plugins = plugins,
 ) {
-    override fun buildChildNode(navTarget: Nothing, nodeContext: NodeContext): AbstractNode {
+    override fun buildChildNode(navTarget: Nothing, nodeContext: NodeContext): Node<*> {
         error("A leaf node should never have to build a child node")
     }
 }

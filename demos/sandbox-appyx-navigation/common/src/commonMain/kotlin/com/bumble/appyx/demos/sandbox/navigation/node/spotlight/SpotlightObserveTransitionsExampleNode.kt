@@ -37,7 +37,6 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlig
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
@@ -66,7 +65,7 @@ class SpotlightObserveTransitionsExampleNode(
         class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node<*> =
         when (navTarget) {
             is NavTarget.Child -> node(nodeContext) { modifier ->
                 val backgroundColor = remember { colors.shuffled().random() }

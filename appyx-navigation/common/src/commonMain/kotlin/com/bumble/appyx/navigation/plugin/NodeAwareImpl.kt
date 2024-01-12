@@ -1,9 +1,9 @@
 package com.bumble.appyx.navigation.plugin
 
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 
 
-class NodeAwareImpl<N : AbstractNode> : NodeAware<N> {
+class NodeAwareImpl<N : Node<*>> : NodeAware<N> {
     override lateinit var node: N
         private set
 

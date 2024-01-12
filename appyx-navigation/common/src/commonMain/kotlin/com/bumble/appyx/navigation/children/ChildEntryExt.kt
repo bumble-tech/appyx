@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.children
 
-import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.Node
 
-val <T> ChildEntry<T>.nodeOrNull: AbstractNode?
+val <T> ChildEntry<T>.nodeOrNull: Node<*>?
     get() =
         when (this) {
             is ChildEntry.Initialized -> node
