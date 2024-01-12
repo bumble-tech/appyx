@@ -1,12 +1,17 @@
 package com.bumble.appyx.navigation.node
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.saveable.SaverScope
+import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.AppyxComponent
 import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
@@ -21,7 +26,24 @@ import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.children.ChildNodeBuilder
+import com.bumble.appyx.navigation.integration.IntegrationPoint
+import com.bumble.appyx.navigation.integration.IntegrationPointStub
+import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
+import com.bumble.appyx.navigation.lifecycle.LifecycleLogger
+import com.bumble.appyx.navigation.lifecycle.LocalCommonLifecycleOwner
+import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
+import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
+import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.platform.PlatformBackHandler
+import com.bumble.appyx.navigation.plugin.Destroyable
+import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
+import com.bumble.appyx.navigation.plugin.NodeReadyObserver
+import com.bumble.appyx.navigation.plugin.UpNavigationHandler
+import com.bumble.appyx.navigation.plugin.plugins
+import com.bumble.appyx.navigation.store.RetainedInstanceStore
+import com.bumble.appyx.utils.multiplatform.BuildFlags
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -34,16 +56,70 @@ import kotlin.reflect.KClass
 @Stable
 abstract class ParentNode<NavTarget : Any>(
     val appyxComponent: AppyxComponent<NavTarget, *>,
-    nodeContext: NodeContext,
+    private val nodeContext: NodeContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
+    private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = listOf(),
-) : AbstractNode(
-    view = view,
-    nodeContext = nodeContext,
-    plugins = plugins + appyxComponent + childAware
-), ChildNodeBuilder<NavTarget> {
+) : NodeLifecycle,
+    NodeView by view,
+    ChildNodeBuilder<NavTarget> {
+
+    constructor(
+        appyxComponent: AppyxComponent<NavTarget, *>,
+        nodeContext: NodeContext,
+        view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
+        childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
+        childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
+        plugins: List<Plugin> = emptyList()
+    ) : this(
+        appyxComponent,
+        nodeContext,
+        view,
+        childKeepMode,
+        childAware,
+        RetainedInstanceStore,
+        plugins
+    )
+
+    @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
+    private val nodeLifecycle = NodeLifecycleImpl(this)
+
+    private var wasBuilt = false
+
+    val id: String
+        get() = nodeContext.identifier
+
+    val plugins: List<Plugin> = plugins + listOfNotNull(this as? Plugin)
+
+    val ancestryInfo: AncestryInfo =
+        nodeContext.ancestryInfo
+
+    val isRoot: Boolean =
+        ancestryInfo == AncestryInfo.Root
+
+    val parent: ParentNode<*>? =
+        when (ancestryInfo) {
+            is AncestryInfo.Child -> ancestryInfo.anchor
+            is AncestryInfo.Root -> null
+        }
+
+    override val lifecycle get() = nodeLifecycle.lifecycle
+
+    override val lifecycleScope: CoroutineScope by lazy { lifecycle.coroutineScope }
+
+    var integrationPoint: IntegrationPoint = IntegrationPointStub()
+        get() {
+            return if (isRoot) field
+            else parent?.integrationPoint ?: error(
+                "Non-root Node should have a parent"
+            )
+        }
+        set(value) {
+            check(isRoot) { "Only a root Node can have an integration point" }
+            field = value
+        }
 
     private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
         savedStateMap = nodeContext.savedStateMap,
@@ -60,8 +136,23 @@ abstract class ParentNode<NavTarget : Any>(
         coroutineScope = lifecycleScope,
     )
 
-    override fun onBuilt() {
-        super.onBuilt()
+    init {
+        if (BuildFlags.DEBUG) {
+            lifecycle.addObserver(LifecycleLogger(this))
+        }
+        lifecycle.addObserver(object : DefaultPlatformLifecycleObserver {
+            override fun onCreate() {
+                if (!wasBuilt) error("onBuilt was not invoked for $this")
+            }
+        })
+    }
+
+    open fun onBuilt() {
+        require(!wasBuilt) { "onBuilt was already invoked" }
+        wasBuilt = true
+        updateLifecycleState(Lifecycle.State.CREATED)
+        plugins<NodeReadyObserver<ParentNode<*>>>().forEach { it.init(this) }
+        plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
         childNodeCreationManager.launch(this)
         childNodeLifecycleManager.launch()
     }
@@ -70,7 +161,22 @@ abstract class ParentNode<NavTarget : Any>(
         childNodeCreationManager.childOrCreate(element)
 
     override fun updateLifecycleState(state: Lifecycle.State) {
-        super.updateLifecycleState(state)
+        if (lifecycle.currentState == state) return
+        if (lifecycle.currentState == Lifecycle.State.DESTROYED && state != Lifecycle.State.DESTROYED) {
+            Appyx.reportException(
+                IllegalStateException(
+                    "Trying to change lifecycle state of already destroyed node ${this::class}"
+                )
+            )
+            return
+        }
+        nodeLifecycle.updateLifecycleState(state)
+        if (state == Lifecycle.State.DESTROYED) {
+            if (!integrationPoint.isChangingConfigurations) {
+                retainedInstanceStore.clearStore(id)
+            }
+            plugins<Destroyable>().forEach { it.destroy() }
+        }
         childNodeLifecycleManager.propagateLifecycleToChildren(state)
 
         // TODO move to plugins
@@ -80,7 +186,18 @@ abstract class ParentNode<NavTarget : Any>(
     }
 
     @Composable
-    override fun DerivedSetup() {
+    fun Compose(modifier: Modifier = Modifier) {
+        CompositionLocalProvider(
+            LocalNode provides this,
+            LocalCommonLifecycleOwner provides this,
+        ) {
+            DerivedSetup()
+            Content(modifier)
+        }
+    }
+
+    @Composable
+    private fun DerivedSetup() {
         AppyxComponentSetup(appyxComponent = appyxComponent)
         BackHandler()
     }
@@ -96,8 +213,21 @@ abstract class ParentNode<NavTarget : Any>(
         }
     }
 
-    override fun performUpNavigation(): Boolean =
-        appyxComponent.handleBackPress() || super.performUpNavigation()
+    fun performUpNavigation(): Boolean =
+        appyxComponent.handleBackPress() ||
+            handleUpNavigationByPlugins() ||
+            parent?.performUpNavigation() == true
+
+    private fun handleUpNavigationByPlugins(): Boolean =
+        plugins<UpNavigationHandler>().any { it.handleUpNavigation() }
+
+
+    protected suspend inline fun <reified T : AbstractNode> executeAction(
+        crossinline action: suspend () -> Unit
+    ): T = withContext(lifecycleScope.coroutineContext) {
+        action()
+        this@ParentNode as T
+    }
 
     /**
      * attachChild executes provided action e.g. backstack.push(NodeANavTarget) and waits for the specific
@@ -148,13 +278,45 @@ abstract class ParentNode<NavTarget : Any>(
             }
         }
 
-    open fun onChildFinished(child: AbstractNode) {
+    open fun onChildFinished(child: ParentNode<*>) {
         // TODO warn unhandled child
     }
 
+    /**
+     * Triggers parents up navigation (back navigation by default).
+     *
+     * This method is useful for different cases like:
+     * - Close button on the screen which leads back to the previous screen.
+     * - Blocker screen that intercepts back button clicks but closes itself when condition is met.
+     *
+     * To properly handle blocker case this method skips the current node plugins (like router),
+     * and invokes the parent directly.
+     */
+    fun navigateUp() {
+        require(parent != null || isRoot) {
+            "Can't navigate up, neither parent nor integration point is presented"
+        }
+        if (parent?.performUpNavigation() != true) {
+            integrationPoint.handleUpNavigation()
+        }
+    }
+
+    fun saveInstanceState(scope: SaverScope): SavedStateMap {
+        val writer = MutableSavedStateMapImpl(saverScope = scope)
+        onSaveInstanceState(writer)
+        plugins
+            .filterIsInstance<SavesInstanceState>()
+            .forEach { it.saveInstanceState(writer) }
+        return writer.savedState
+    }
+
+    fun finish() {
+        parent?.onChildFinished(this) ?: integrationPoint.onRootFinished()
+    }
+
     // TODO save/restore state properly
-    override fun onSaveInstanceState(state: MutableSavedStateMap) {
-        super.onSaveInstanceState(state)
+    fun onSaveInstanceState(state: MutableSavedStateMap) {
+        nodeContext.onSaveInstanceState(state)
         childNodeCreationManager.saveChildrenState(state)
     }
 

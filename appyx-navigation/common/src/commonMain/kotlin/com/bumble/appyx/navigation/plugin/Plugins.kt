@@ -3,16 +3,20 @@ package com.bumble.appyx.navigation.plugin
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.plugin.BackPressHandler.OnBackPressedCallback
 
-inline fun <reified P : Plugin> AbstractNode.plugins(): List<P> =
+inline fun <reified P : Plugin> ParentNode<*>.plugins(): List<P> =
     this.plugins.filterIsInstance<P>()
 
-interface NodeAware<N : AbstractNode> : NodeReadyObserver<N> {
+//inline fun <reified P : Plugin> AbstractNode.plugins(): List<P> =
+//    this.plugins.filterIsInstance<P>()
+
+interface NodeAware<N : ParentNode<*>> : NodeReadyObserver<N> {
     val node: N
 }
 
-fun interface NodeReadyObserver<N : AbstractNode> : Plugin {
+fun interface NodeReadyObserver<N : ParentNode<*>> : Plugin {
     fun init(node: N)
 }
 

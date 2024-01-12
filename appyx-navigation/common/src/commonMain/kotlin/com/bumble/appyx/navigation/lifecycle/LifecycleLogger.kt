@@ -1,9 +1,10 @@
 package com.bumble.appyx.navigation.lifecycle
 
 import com.bumble.appyx.navigation.node.AbstractNode
+import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
-internal class LifecycleLogger(private val node: AbstractNode) : DefaultPlatformLifecycleObserver {
+internal class LifecycleLogger(private val node: ParentNode<*>) : DefaultPlatformLifecycleObserver {
 
 
     override fun onCreate() {

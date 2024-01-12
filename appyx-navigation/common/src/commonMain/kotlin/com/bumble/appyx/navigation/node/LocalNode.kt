@@ -2,4 +2,4 @@ package com.bumble.appyx.navigation.node
 
 import androidx.compose.runtime.compositionLocalOf
 
-val LocalNode = compositionLocalOf<AbstractNode?> { null }
+val LocalNode = compositionLocalOf<ParentNode<*>?> { null }
