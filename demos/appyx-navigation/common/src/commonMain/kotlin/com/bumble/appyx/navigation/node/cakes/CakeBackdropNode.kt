@@ -28,7 +28,7 @@ class CakeBackdropNode(
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         val heroProgress = motionPropertyRenderValue<Float, HeroProgress>() ?: 0f
 
         Box(

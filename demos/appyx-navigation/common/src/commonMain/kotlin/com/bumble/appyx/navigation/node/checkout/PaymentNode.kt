@@ -50,7 +50,7 @@ class PaymentNode(
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         PaymentDetails(modifier)
     }
 

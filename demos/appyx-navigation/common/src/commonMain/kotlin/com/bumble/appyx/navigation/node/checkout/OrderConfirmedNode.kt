@@ -29,7 +29,7 @@ class OrderConfirmedNode(
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Surface {
             PaymentDetails(modifier)
         }

@@ -70,7 +70,7 @@ class ProfileNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier

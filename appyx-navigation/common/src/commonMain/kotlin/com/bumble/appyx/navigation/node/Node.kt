@@ -119,7 +119,7 @@ open class Node internal constructor(
             LocalCommonLifecycleOwner provides this,
         ) {
             DerivedSetup()
-            View(modifier)
+            Content(modifier)
         }
     }
 

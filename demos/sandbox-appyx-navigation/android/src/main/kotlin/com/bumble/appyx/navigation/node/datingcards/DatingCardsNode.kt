@@ -48,7 +48,7 @@ class DatingCardsNode(
         ProfileCardNode(nodeContext, (navTarget as NavTarget.ProfileCard).profile)
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             modifier = modifier
                 .fillMaxSize()

@@ -113,7 +113,7 @@ class SpotlightObserveTransitionsExampleNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()

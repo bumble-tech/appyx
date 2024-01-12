@@ -30,7 +30,7 @@ class ProfileCardNode(
 
     @Composable
     @Override
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         ProfileCard(
             profile = profile,
             modifier = modifier

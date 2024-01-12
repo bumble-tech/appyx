@@ -33,7 +33,7 @@ class CartItemsNode(
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         val cartItems = cart.items.collectAsState(emptyMap())
         val navigator = LocalNavigator.current
 

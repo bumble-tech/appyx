@@ -39,7 +39,7 @@ class RootNode(
     nodeContext = nodeContext
 ) {
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Text("Hello world!")
     }
 }
@@ -141,7 +141,7 @@ Since we passed the back stack to the `ParentNode`, all such changes will be imm
 
 ```kotlin
 @Composable
-override fun View(modifier: Modifier) {
+override fun Content(modifier: Modifier) {
     Column(
         modifier = modifier
     ) {
@@ -222,7 +222,7 @@ class SomeChildNode(
     nodeContext = nodeContext
 ) {
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Text("This is SomeChildNode")
     }
 }

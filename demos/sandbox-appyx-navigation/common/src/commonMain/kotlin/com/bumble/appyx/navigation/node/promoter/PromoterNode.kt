@@ -96,7 +96,7 @@ class PromoterNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         var index by remember { mutableStateOf(5) }
 
         Column(

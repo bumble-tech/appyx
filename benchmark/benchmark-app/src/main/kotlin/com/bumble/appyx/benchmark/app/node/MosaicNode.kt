@@ -97,7 +97,7 @@ class MosaicNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Box(
             modifier = modifier
                 .fillMaxSize()

@@ -90,7 +90,7 @@ class SpotlightDebugNode(
 
     @ExperimentalMaterialApi
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier
                 .fillMaxWidth()

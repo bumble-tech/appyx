@@ -99,7 +99,7 @@ class PermanentChildTest {
             }
 
         @Composable
-        override fun View(modifier: Modifier) {
+        override fun Content(modifier: Modifier) {
             if (renderPermanentChild) {
                 PermanentChild(permanentAppyxComponent, Child)
             }

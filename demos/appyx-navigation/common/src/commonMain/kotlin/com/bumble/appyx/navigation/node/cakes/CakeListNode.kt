@@ -91,7 +91,7 @@ class CakeListNode(
     }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         val heroProgress = spotlight.heroProgress()
         val width = lerpFloat(0.6f, 1f, heroProgress)
 

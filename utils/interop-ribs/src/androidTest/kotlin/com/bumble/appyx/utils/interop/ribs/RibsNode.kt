@@ -102,7 +102,7 @@ class AppyxNode(
     var shouldInterceptBackPress by mutableStateOf(true)
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Box(modifier = modifier.testTag(s)) {
             BackHandler(shouldInterceptBackPress) {
                 shouldInterceptBackPress = false

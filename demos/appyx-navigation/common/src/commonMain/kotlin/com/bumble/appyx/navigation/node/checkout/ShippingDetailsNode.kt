@@ -50,7 +50,7 @@ class ShippingDetailsNode(
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         ShippingDetails(modifier)
     }
 

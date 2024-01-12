@@ -54,7 +54,7 @@ internal class ComposeNavigationContainerNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             modifier = modifier.fillMaxWidth(),
             appyxComponent = backStack

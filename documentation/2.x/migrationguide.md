@@ -156,7 +156,7 @@ class RootNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
 -        Children(
 -            navModel = backStack,
 -            transitionHandler = rememberBackstackFader(transitionSpec = { spring() }),

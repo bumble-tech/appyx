@@ -26,7 +26,7 @@ class CakeImageNode(
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         val interactionSource = remember { MutableInteractionSource() }
 
         Box(
