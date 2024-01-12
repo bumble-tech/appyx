@@ -13,7 +13,7 @@ import com.bumble.appyx.demos.navigation.node.root.RootNode.NavTarget
 import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -54,7 +54,7 @@ class RootNode(
         ) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
         when (navTarget) {
             is NavTarget.LoggedOut -> LoggedOutNode(
                 nodeContext = nodeContext,

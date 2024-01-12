@@ -96,7 +96,7 @@ class RibsNodeRouter(
 class AppyxNode(
     nodeContext: NodeContext,
     private val s: String,
-) : com.bumble.appyx.navigation.node.Node(
+) : com.bumble.appyx.navigation.node.AbstractNode(
     nodeContext,
 ) {
     var shouldInterceptBackPress by mutableStateOf(true)

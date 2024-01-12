@@ -13,7 +13,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import kotlinx.parcelize.Parcelize
@@ -38,7 +38,7 @@ internal class ComposeNavigationContainerNode(
         object Main : InteractionTarget()
     }
 
-    override fun buildChildNode(navTarget: InteractionTarget, nodeContext: NodeContext): Node =
+    override fun buildChildNode(navTarget: InteractionTarget, nodeContext: NodeContext): AbstractNode =
         when (navTarget) {
             is InteractionTarget.Main -> node(nodeContext) {
                 Column(

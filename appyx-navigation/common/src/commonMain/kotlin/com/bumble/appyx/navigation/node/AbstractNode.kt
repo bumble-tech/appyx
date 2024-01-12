@@ -35,7 +35,7 @@ import kotlin.native.HiddenFromObjC
 
 @Suppress("TooManyFunctions")
 @Stable
-open class Node internal constructor(
+abstract class AbstractNode internal constructor(
     private val nodeContext: NodeContext,
     val view: NodeView = EmptyNodeView,
     private val retainedInstanceStore: RetainedInstanceStore,
@@ -97,18 +97,18 @@ open class Node internal constructor(
         })
     }
 
-    protected suspend inline fun <reified T : Node> executeAction(
+    protected suspend inline fun <reified T : AbstractNode> executeAction(
         crossinline action: suspend () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
         action()
-        this@Node as T
+        this@AbstractNode as T
     }
 
     open fun onBuilt() {
         require(!wasBuilt) { "onBuilt was already invoked" }
         wasBuilt = true
         updateLifecycleState(Lifecycle.State.CREATED)
-        plugins<NodeReadyObserver<Node>>().forEach { it.init(this) }
+        plugins<NodeReadyObserver<AbstractNode>>().forEach { it.init(this) }
         plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
     }
 
@@ -191,7 +191,7 @@ open class Node internal constructor(
     }
 
     open fun performUpNavigation(): Boolean =
-        handleUpNavigationByPlugins() || (parent as? Node)?.performUpNavigation() == true
+        handleUpNavigationByPlugins() || (parent as? AbstractNode)?.performUpNavigation() == true
 
     private fun handleUpNavigationByPlugins(): Boolean =
         plugins<UpNavigationHandler>().any { it.handleUpNavigation() }

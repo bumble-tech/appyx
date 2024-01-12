@@ -39,7 +39,7 @@ abstract class ParentNode<NavTarget : Any>(
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
-) : Node(
+) : AbstractNode(
     view = view,
     nodeContext = nodeContext,
     plugins = plugins + appyxComponent + childAware
@@ -106,7 +106,7 @@ abstract class ParentNode<NavTarget : Any>(
      * As the result we're doing it asynchronously with timeout after which exception is thrown if
      * expected node has not appeared in the children list.
      */
-    protected suspend inline fun <reified T : Node> attachChild(
+    protected suspend inline fun <reified T : AbstractNode> attachChild(
         timeout: Long = ATTACH_WORKFLOW_SYNC_TIMEOUT,
         crossinline action: () -> Unit
     ): T = withContext(lifecycleScope.coroutineContext) {
@@ -129,7 +129,7 @@ abstract class ParentNode<NavTarget : Any>(
      * when this happens this job can hang indefinitely therefore you need to provide timeout if
      * you need one.
      */
-    protected suspend inline fun <reified T : Node> waitForChildAttached(): T =
+    protected suspend inline fun <reified T : AbstractNode> waitForChildAttached(): T =
         suspendCancellableCoroutine { continuation ->
             lifecycleScope.launch {
                 children.collect { childMap ->
@@ -148,7 +148,7 @@ abstract class ParentNode<NavTarget : Any>(
             }
         }
 
-    open fun onChildFinished(child: Node) {
+    open fun onChildFinished(child: AbstractNode) {
         // TODO warn unhandled child
     }
 

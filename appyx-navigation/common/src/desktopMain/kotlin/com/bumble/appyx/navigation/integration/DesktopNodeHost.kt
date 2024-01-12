@@ -8,7 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.WindowState
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.platform.LocalOnBackPressedDispatcherOwner
 import com.bumble.appyx.navigation.platform.OnBackPressedDispatcher
 import com.bumble.appyx.navigation.platform.OnBackPressedDispatcherOwner
@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
- * Composable function to host [Node].
+ * Composable function to host [AbstractNode].
  *
  * This convenience wrapper uses [WindowState] to provide [ScreenSize] and provides an
  * [OnBackPressedDispatcherOwner] hooked up to the [.onBackPressedEvents] flow to simplify
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> DesktopNodeHost(
+fun <N : AbstractNode> DesktopNodeHost(
     windowState: WindowState,
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,

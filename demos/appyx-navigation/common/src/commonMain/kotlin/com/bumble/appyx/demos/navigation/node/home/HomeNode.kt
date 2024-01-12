@@ -16,11 +16,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.demos.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 class HomeNode(
     nodeContext: NodeContext,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
 

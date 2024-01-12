@@ -18,7 +18,7 @@ import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.demos.navigation.node.profile.ProfileNode.NavTarget
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
@@ -44,7 +44,7 @@ class ProfileNode(
         object ProfileChild : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
         when (navTarget) {
             is NavTarget.ProfileChild -> node(nodeContext) { modifier ->
                 Column(

@@ -1,3 +1,3 @@
 package com.bumble.appyx.navigation.node
 
-fun <T : Node> T.build(): T = also { it.onBuilt() }
+fun <T : AbstractNode> T.build(): T = also { it.onBuilt() }

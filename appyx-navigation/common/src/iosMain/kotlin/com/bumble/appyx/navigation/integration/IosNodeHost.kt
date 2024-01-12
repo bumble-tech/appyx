@@ -7,7 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.platform.LocalOnBackPressedDispatcherOwner
 import com.bumble.appyx.navigation.platform.OnBackPressedDispatcher
 import com.bumble.appyx.navigation.platform.OnBackPressedDispatcherOwner
@@ -23,7 +23,7 @@ import platform.UIKit.UIScreen
 @OptIn(ExperimentalForeignApi::class)
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> IosNodeHost(
+fun <N : AbstractNode> IosNodeHost(
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,
     integrationPoint: IntegrationPoint,

@@ -32,7 +32,7 @@ import com.bumble.appyx.demos.navigation.node.cart.Cart
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
@@ -75,7 +75,7 @@ class CakeListNode(
         ) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
         when (navTarget) {
             is NavTarget.Backdrop -> CakeBackdropNode(nodeContext, navTarget.cake) {
                 toggleHeroMode()

@@ -25,7 +25,7 @@ import com.bumble.appyx.demos.navigation.node.checkout.Address.AddressThree
 import com.bumble.appyx.demos.navigation.node.checkout.Address.AddressTwo
 import com.bumble.appyx.navigation.collections.toImmutableList
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 sealed class Address(override val value: String): CheckoutFormField {
     object AddressOne : Address("Address one")
@@ -42,7 +42,7 @@ private val addresses = listOf(
 class AddressNode(
     nodeContext: NodeContext,
     private val onAddressSelected: () -> Unit,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext
 ) {
     @Composable

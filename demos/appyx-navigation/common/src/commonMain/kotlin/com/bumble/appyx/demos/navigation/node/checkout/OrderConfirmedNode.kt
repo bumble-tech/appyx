@@ -17,14 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 import kotlinx.coroutines.delay
 import kotlin.time.Duration.Companion.seconds
 
 class OrderConfirmedNode(
     nodeContext: NodeContext,
     private val postViewAction: () -> Unit,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
 

@@ -90,7 +90,7 @@ class PermanentChildTest {
 
         var renderPermanentChild by mutableStateOf(true)
 
-        override fun buildChildNode(navTarget: Child, nodeContext: NodeContext): Node =
+        override fun buildChildNode(navTarget: Child, nodeContext: NodeContext): AbstractNode =
             node(nodeContext) { modifier ->
                 BasicText(
                     text = navTarget.toString(),

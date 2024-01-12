@@ -26,7 +26,7 @@ import com.bumble.appyx.demos.sandbox.navigation.node.spotlight.SpotlightObserve
 import com.bumble.appyx.demos.sandbox.navigation.ui.TextButton
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.utils.multiplatform.Parcelable
@@ -76,7 +76,7 @@ class ContainerNode(
     }
 
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): AbstractNode =
         when (navTarget) {
             is NavTarget.Selector -> node(nodeContext) { modifier ->
                 Selector(modifier)

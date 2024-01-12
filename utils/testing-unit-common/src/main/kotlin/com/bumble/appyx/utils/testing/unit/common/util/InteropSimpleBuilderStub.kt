@@ -3,18 +3,18 @@ package com.bumble.appyx.utils.testing.unit.common.util
 import com.bumble.appyx.navigation.builder.SimpleBuilder
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class InteropSimpleBuilderStub(
-    val delegate: (NodeContext) -> Node = { _ -> NodeStub() },
+    val delegate: (NodeContext) -> AbstractNode = { _ -> NodeStub() },
 ) : SimpleBuilder() {
 
-    var lastNode: Node? = null
+    var lastNode: AbstractNode? = null
         private set
 
-    override fun build(nodeContext: NodeContext): Node =
+    override fun build(nodeContext: NodeContext): AbstractNode =
         delegate(nodeContext).also {
             lastNode = it
         }

@@ -5,11 +5,11 @@ import com.badoo.ribs.core.modality.BuildParams
 import com.bumble.appyx.navigation.integration.NodeFactory
 import com.bumble.appyx.navigation.integration.IntegrationPoint
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.AbstractNode
 import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.utils.interop.ribs.InteropNodeImpl.Companion.InteropNodeKey
 
-class InteropBuilder<N : Node>(
+class InteropBuilder<N : AbstractNode>(
     private val nodeFactory: NodeFactory<N>,
     private val integrationPoint: IntegrationPoint
 ) : SimpleBuilder<InteropNode<N>>() {
