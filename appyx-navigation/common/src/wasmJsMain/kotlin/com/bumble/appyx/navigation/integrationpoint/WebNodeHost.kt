@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.integration
+package com.bumble.appyx.navigation.integrationpoint
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -6,6 +6,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.navigation.integration.NodeFactory
+import com.bumble.appyx.navigation.integration.NodeHost
+import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.platform.LocalOnBackPressedDispatcherOwner

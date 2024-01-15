@@ -22,9 +22,9 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.integration.BrowserViewportWindow
+import com.bumble.appyx.navigation.integrationpoint.BrowserViewportWindow
 import com.bumble.appyx.navigation.integration.ScreenSize
-import com.bumble.appyx.navigation.integration.WebNodeHost
+import com.bumble.appyx.navigation.integrationpoint.WebNodeHost
 import com.bumble.appyx.navigation.node.container.MainNavNode
 import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.CoroutineScope

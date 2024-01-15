@@ -1,6 +1,4 @@
-package com.bumble.appyx.navigation.integration
-
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
+package com.bumble.appyx.navigation.integrationpoint
 
 class MainIntegrationPoint : IntegrationPoint() {
     override val isChangingConfigurations: Boolean

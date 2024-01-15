@@ -35,7 +35,7 @@ import androidx.compose.ui.window.CanvasBasedWindow
 import com.bumble.appyx.demos.appyxSample
 import com.bumble.appyx.demos.common.color_primary
 import com.bumble.appyx.navigation.integration.ScreenSize
-import com.bumble.appyx.navigation.integration.WebNodeHost
+import com.bumble.appyx.navigation.integrationpoint.WebNodeHost
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.navigator.Navigator
 import com.bumble.appyx.navigation.node.root.RootNode

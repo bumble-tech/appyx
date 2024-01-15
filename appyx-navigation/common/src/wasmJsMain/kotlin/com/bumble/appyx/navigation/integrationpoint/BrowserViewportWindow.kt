@@ -8,7 +8,7 @@
     "EXPOSED_PARAMETER_TYPE"
 ) // WORKAROUND: ComposeWindow and ComposeLayer are internal
 
-package com.bumble.appyx.navigation.integration
+package com.bumble.appyx.navigation.integrationpoint
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.ComposeWindow
