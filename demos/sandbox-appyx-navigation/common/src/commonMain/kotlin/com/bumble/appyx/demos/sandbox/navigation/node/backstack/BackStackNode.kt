@@ -25,6 +25,8 @@ import com.bumble.appyx.components.backstack.operation.newRoot
 import com.bumble.appyx.components.backstack.operation.pop
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.operation.replace
+import com.bumble.appyx.demos.sandbox.navigation.ColorSaver
+import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.ui.TextButton
 import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
 import com.bumble.appyx.interactions.core.ui.Visualisation
@@ -73,7 +75,7 @@ class BackStackNode(
         when (navTarget) {
             is NavTarget.Child -> node(nodeContext) {
                 val backgroundColor =
-                    rememberSaveable(saver = com.bumble.appyx.demos.sandbox.navigation.ColorSaver) { com.bumble.appyx.demos.sandbox.navigation.colors.shuffled().random() }
+                    rememberSaveable(saver = ColorSaver) { colors.shuffled().random() }
 
                 Box(
                     modifier = Modifier

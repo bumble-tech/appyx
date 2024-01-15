@@ -29,6 +29,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
+import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.node.spotlight.SpotlightObserveTransitionsExampleNode.NavTarget
 import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
@@ -68,7 +69,7 @@ class SpotlightObserveTransitionsExampleNode(
     override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
             is NavTarget.Child -> node(nodeContext) { modifier ->
-                val backgroundColor = remember { com.bumble.appyx.demos.sandbox.navigation.colors.shuffled().random() }
+                val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = modifier
                         .fillMaxSize()

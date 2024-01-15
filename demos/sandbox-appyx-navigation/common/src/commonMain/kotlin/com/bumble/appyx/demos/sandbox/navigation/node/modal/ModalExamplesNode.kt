@@ -22,6 +22,7 @@ import com.bumble.appyx.components.modal.operation.fullScreen
 import com.bumble.appyx.components.modal.operation.revert
 import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalVisualisation
+import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.node.modal.ModalExamplesNode.NavTarget
 import com.bumble.appyx.demos.sandbox.navigation.ui.TextButton
 import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
@@ -57,7 +58,7 @@ class ModalExamplesNode(
     override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
             is NavTarget.Child -> node(nodeContext) {
-                val backgroundColor = remember { com.bumble.appyx.demos.sandbox.navigation.colors.shuffled().random() }
+                val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
                     modifier = Modifier

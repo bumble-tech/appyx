@@ -30,6 +30,7 @@ import com.bumble.appyx.components.experimental.promoter.Promoter
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
 import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisation
+import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.node.promoter.PromoterNode.NavTarget
 import com.bumble.appyx.demos.sandbox.navigation.node.promoter.PromoterNode.NavTarget.Child
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
@@ -75,7 +76,7 @@ class PromoterNode(
     override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
             is Child -> node(nodeContext) {
-                val backgroundColor = remember { com.bumble.appyx.demos.sandbox.navigation.colors.shuffled().random() }
+                val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
                     modifier = Modifier

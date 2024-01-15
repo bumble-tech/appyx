@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.composable.PermanentChild
@@ -51,7 +52,7 @@ class PermanentChildNode(
     override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
             is NavTarget.Child1 -> node(nodeContext) {
-                val backgroundColor = remember { com.bumble.appyx.demos.sandbox.navigation.colors.shuffled().random() }
+                val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -70,7 +71,7 @@ class PermanentChildNode(
             }
 
             is NavTarget.Child2 -> node(nodeContext) {
-                val backgroundColor = remember { com.bumble.appyx.demos.sandbox.navigation.colors.shuffled().random() }
+                val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
