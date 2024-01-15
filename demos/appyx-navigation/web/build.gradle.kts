@@ -47,7 +47,7 @@ dependencies {
     add("kspWasmJs", project(":ksp:mutable-ui-processor"))
 }
 
-tasks.register<Copy>("copyResources") {
+tasks.register<Copy>("jsCopyResources") {
     // Dirs containing files we want to copy
     from("../common/src/commonMain/resources")
 
@@ -58,17 +58,27 @@ tasks.register<Copy>("copyResources") {
 }
 
 tasks.named("jsBrowserProductionExecutableDistributeResources") {
-    dependsOn("copyResources")
+    dependsOn("jsCopyResources")
 }
 
 tasks.named("jsMainClasses") {
-    dependsOn("copyResources")
+    dependsOn("jsCopyResources")
+}
+
+tasks.register<Copy>("wasmJsCopyResources") {
+    // Dirs containing files we want to copy
+    from("../common/src/commonMain/resources")
+
+    // Output for web resources
+    into("$buildDir/processedResources/wasmJs/main")
+
+    include("**/*")
 }
 
 tasks.named("wasmJsBrowserProductionExecutableDistributeResources") {
-    dependsOn("copyResources")
+    dependsOn("wasmJsCopyResources")
 }
 
 tasks.named("wasmJsMainClasses") {
-    dependsOn("copyResources")
+    dependsOn("wasmJsCopyResources")
 }
