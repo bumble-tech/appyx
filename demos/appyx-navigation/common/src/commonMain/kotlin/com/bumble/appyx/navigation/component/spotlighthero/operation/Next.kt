@@ -8,27 +8,27 @@ import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
-class Next<InteractionTarget>(
+class Next<NavTarget>(
     override var mode: Operation.Mode = Operation.Mode.IMPOSED
-) : BaseOperation<SpotlightHeroModel.State<InteractionTarget>>() {
+) : BaseOperation<SpotlightHeroModel.State<NavTarget>>() {
 
-    override fun isApplicable(state: SpotlightHeroModel.State<InteractionTarget>): Boolean =
+    override fun isApplicable(state: SpotlightHeroModel.State<NavTarget>): Boolean =
         state.hasNext()
 
     override fun createFromState(
-        baseLineState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        baseLineState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         baseLineState
 
     override fun createTargetState(
-        fromState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        fromState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         fromState.copy(
             activeIndex = fromState.activeIndex + 1f
         )
 }
 
-fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.next(
+fun <NavTarget : Any> SpotlightHero<NavTarget>.next(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.IMPOSED
 ) {

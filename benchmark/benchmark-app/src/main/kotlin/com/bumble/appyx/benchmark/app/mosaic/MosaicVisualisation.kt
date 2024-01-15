@@ -29,7 +29,7 @@ import kotlin.random.Random
 class MosaicVisualisation(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float>
-) : BaseVisualisation<MosaicPiece, State, MutableUiState, TargetUiState>(
+) : BaseVisualisation<MosaicPiece, State, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {
@@ -37,7 +37,7 @@ class MosaicVisualisation(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
     override fun State.toUiTargets(): List<MatchedTargetUiState<MosaicPiece, TargetUiState>> =
         pieces.mapIndexed { idx, piece ->

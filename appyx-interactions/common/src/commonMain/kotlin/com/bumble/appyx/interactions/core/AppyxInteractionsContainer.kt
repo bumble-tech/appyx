@@ -50,7 +50,7 @@ private val defaultExtraTouch = 48f.dp
 
 @Suppress("LongMethod")
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> AppyxComponent(
+fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     screenWidthPx: Int,
     screenHeightPx: Int,

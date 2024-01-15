@@ -24,7 +24,7 @@ import com.badoo.ribs.routing.resolution.Resolution
 import com.badoo.ribs.routing.router.Router
 import com.badoo.ribs.routing.source.backstack.BackStack
 import com.badoo.ribs.routing.source.backstack.operation.push
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
+import com.bumble.appyx.navigation.integration.IntegrationPoint
 import com.bumble.appyx.navigation.modality.BuildContext
 import kotlinx.parcelize.Parcelize
 import java.util.UUID

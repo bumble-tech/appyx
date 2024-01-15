@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -38,8 +38,8 @@ internal class ComposeNavigationContainerNode(
         object Main : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
+    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
             is InteractionTarget.Main -> node(buildContext) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -55,7 +55,7 @@ internal class ComposeNavigationContainerNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxComponent(
+        AppyxNavigationContainer(
             modifier = modifier.fillMaxWidth(),
             appyxComponent = backStack
         )

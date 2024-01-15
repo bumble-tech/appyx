@@ -96,11 +96,11 @@ class RootNode(
 ) {
 ```
 
-`ParentNode` expects us to implement the abstract method `resolve`. This is how we relate navigation targets to actual children. Let's use these helper methods to define some placeholders for the time being – we'll soon make them more appealing:
+`ParentNode` expects us to implement the abstract method `buildChildNode`. This is how we relate navigation targets to actual children. Let's use these helper methods to define some placeholders for the time being – we'll soon make them more appealing:
 
 ```kotlin
-override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-    when (navTarget) {
+override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
+    when (reference) {
         NavTarget.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
         NavTarget.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
         NavTarget.Child3 -> node(buildContext) { Text(text = "Placeholder for child 3") }
@@ -140,16 +140,13 @@ backStack.pop()                     // will remove the currently active child an
 Since we passed the back stack to the `ParentNode`, all such changes will be immediately reflected. We only need to add it to the composition:
 
 ```kotlin
-// Pay attention to the import:
-import com.bumble.appyx.navigation.composable.AppyxComponent
-
 @Composable
 override fun View(modifier: Modifier) {
     Column(
         modifier = modifier
     ) {
         // Let's include the elements of our component into the composition
-        AppyxComponent(
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier.weight(0.9f)
         )
@@ -231,11 +228,11 @@ class SomeChildNode(
 }
 ```
 
-Now we can update the `resolve` method in `RootNode` so that the target `Child3` refers to this node. It should work out of the box:
+Now we can update the `buildChildNode` method in `RootNode` so that the target `Child3` refers to this node. It should work out of the box:
 
 ```kotlin
-override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-    when (navTarget) {
+override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
+    when (reference) {
         NavTarget.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
         NavTarget.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
         NavTarget.Child3 -> SomeChildNode(buildContext)

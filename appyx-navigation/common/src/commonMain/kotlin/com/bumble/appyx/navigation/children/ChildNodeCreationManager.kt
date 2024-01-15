@@ -18,19 +18,19 @@ import kotlinx.coroutines.launch
 /**
  * Initializes and removes nodes based on parent node's navModel.
  *
- * Lifecycle of these nodes is managed in [com.bumble.appyx.core.lifecycle.ChildNodeLifecycleManager].
+ * Lifecycle of these nodes is managed in [com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager].
  */
-internal class ChildNodeCreationManager<InteractionTarget : Any>(
+internal class ChildNodeCreationManager<NavTarget : Any>(
     private var savedStateMap: SavedStateMap?,
     private val customisations: NodeCustomisationDirectory,
     private val keepMode: ChildEntry.KeepMode,
 ) {
-    private lateinit var parentNode: ParentNode<InteractionTarget>
+    private lateinit var parentNode: ParentNode<NavTarget>
     private val _children =
-        MutableStateFlow<Map<Element<InteractionTarget>, ChildEntry<InteractionTarget>>>(emptyMap())
-    val children: StateFlow<ChildEntryMap<InteractionTarget>> = _children.asStateFlow()
+        MutableStateFlow<Map<Element<NavTarget>, ChildEntry<NavTarget>>>(emptyMap())
+    val children: StateFlow<ChildEntryMap<NavTarget>> = _children.asStateFlow()
 
-    fun launch(parentNode: ParentNode<InteractionTarget>) {
+    fun launch(parentNode: ParentNode<NavTarget>) {
         this.parentNode = parentNode
         savedStateMap.restoreChildren()?.also { restoredMap ->
             _children.update { restoredMap }
@@ -39,12 +39,12 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
         syncAppyxComponentWithChildren(parentNode)
     }
 
-    private fun syncAppyxComponentWithChildren(parentNode: ParentNode<InteractionTarget>) {
+    private fun syncAppyxComponentWithChildren(parentNode: ParentNode<NavTarget>) {
         parentNode.lifecycle.coroutineScope.launch {
             parentNode.appyxComponent.elements.collect { state ->
-                val appyxComponentKeepKeys: Set<Element<InteractionTarget>>
-                val appyxComponentSuspendKeys: Set<Element<InteractionTarget>>
-                val appyxComponentKeys: Set<Element<InteractionTarget>>
+                val appyxComponentKeepKeys: Set<Element<NavTarget>>
+                val appyxComponentSuspendKeys: Set<Element<NavTarget>>
+                val appyxComponentKeys: Set<Element<NavTarget>>
                 when (keepMode) {
                     ChildEntry.KeepMode.KEEP -> {
                         appyxComponentKeepKeys =
@@ -71,9 +71,9 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
     }
 
     private fun updateChildren(
-        appyxComponentElements: Set<Element<InteractionTarget>>,
-        appyxComponentKeepElements: Set<Element<InteractionTarget>>,
-        appyxComponentSuspendElements: Set<Element<InteractionTarget>>,
+        appyxComponentElements: Set<Element<NavTarget>>,
+        appyxComponentKeepElements: Set<Element<NavTarget>>,
+        appyxComponentSuspendElements: Set<Element<NavTarget>>,
     ) {
         _children.update { map ->
             val localElements = map.keys
@@ -117,7 +117,7 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
     }
 
     @Suppress("ForbiddenComment")
-    fun childOrCreate(element: Element<InteractionTarget>): ChildEntry.Initialized<InteractionTarget> {
+    fun childOrCreate(element: Element<NavTarget>): ChildEntry.Initialized<NavTarget> {
         // TODO: Should not allow child creation and throw exception instead to avoid desynchronisation
         val value = _children.value
         val child = value[element] ?: error(
@@ -140,8 +140,8 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
         }
     }
 
-    private fun SavedStateMap?.restoreChildren(): ChildEntryMap<InteractionTarget>? =
-        (this?.get(KEY_CHILDREN_STATE) as? Map<Element<InteractionTarget>, SavedStateMap>)?.mapValues {
+    private fun SavedStateMap?.restoreChildren(): ChildEntryMap<NavTarget>? =
+        (this?.get(KEY_CHILDREN_STATE) as? Map<Element<NavTarget>, SavedStateMap>)?.mapValues {
             // Always restore in suspended mode, they will be unsuspended or destroyed on the first sync cycle
             childEntry(it.key, it.value, true)
         }
@@ -171,36 +171,36 @@ internal class ChildNodeCreationManager<InteractionTarget : Any>(
         )
 
     private fun childEntry(
-        key: Element<InteractionTarget>,
+        key: Element<NavTarget>,
         savedState: SavedStateMap?,
         suspended: Boolean,
-    ): ChildEntry<InteractionTarget> =
+    ): ChildEntry<NavTarget> =
         if (suspended) {
             ChildEntry.Suspended(key, savedState)
         } else {
             ChildEntry.Initialized(
                 key = key,
                 node = parentNode
-                    .resolve(key.interactionTarget, childBuildContext(savedState))
+                    .buildChildNode(key.interactionTarget, childBuildContext(savedState))
                     .build()
             )
         }
 
-    private fun ChildEntry<InteractionTarget>.initialize(): ChildEntry.Initialized<InteractionTarget> =
+    private fun ChildEntry<NavTarget>.initialize(): ChildEntry.Initialized<NavTarget> =
         when (this) {
             is ChildEntry.Initialized -> this
             is ChildEntry.Suspended ->
                 ChildEntry.Initialized(
                     key = key,
-                    node = parentNode.resolve(
-                        interactionTarget = key.interactionTarget,
+                    node = parentNode.buildChildNode(
+                        navTarget = key.interactionTarget,
                         buildContext = childBuildContext(savedState),
                     ).build()
                 )
         }
 
     @Suppress("ForbiddenComment")
-    private fun ChildEntry<InteractionTarget>.suspend(): ChildEntry.Suspended<InteractionTarget> =
+    private fun ChildEntry<NavTarget>.suspend(): ChildEntry.Suspended<NavTarget> =
         when (this) {
             is ChildEntry.Suspended -> this
             is ChildEntry.Initialized ->

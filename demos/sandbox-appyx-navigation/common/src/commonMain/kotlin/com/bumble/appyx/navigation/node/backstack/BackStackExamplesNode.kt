@@ -21,11 +21,11 @@ import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.BuildContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.InteractionTarget
+import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.NavTarget
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
@@ -35,53 +35,53 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class BackStackExamplesNode(
     buildContext: BuildContext,
-    private val backStack: BackStack<InteractionTarget> = BackStack(
+    private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(InteractionTarget.BackStackPicker),
+            initialTargets = listOf(NavTarget.BackStackPicker),
             savedStateMap = buildContext.savedStateMap
         ),
         visualisation = { BackStackSlider(it) }
     )
-) : ParentNode<InteractionTarget>(
+) : ParentNode<NavTarget>(
     buildContext = buildContext,
     appyxComponent = backStack
 ) {
 
     private val padding = mutableStateOf(16)
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object BackStackPicker : InteractionTarget()
+        object BackStackPicker : NavTarget()
 
         @Parcelize
-        object BackStackSlider : InteractionTarget()
+        object BackStackSlider : NavTarget()
 
         @Parcelize
-        object BackStackFader : InteractionTarget()
+        object BackStackFader : NavTarget()
 
         @Parcelize
-        object BackstackParallax : InteractionTarget()
+        object BackstackParallax : NavTarget()
 
         @Parcelize
-        object BackStack3D : InteractionTarget()
+        object BackStack3D : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.BackStackPicker -> node(buildContext) {
+    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+        when (navTarget) {
+            is NavTarget.BackStackPicker -> node(buildContext) {
                 BackStackPicker(it)
             }
-            is InteractionTarget.BackStackFader -> BackStackNode(buildContext, {
+            is NavTarget.BackStackFader -> BackStackNode(buildContext, {
                 BackStackFader(
                     it
                 )
             })
-            is InteractionTarget.BackStackSlider -> BackStackNode(buildContext, {
+            is NavTarget.BackStackSlider -> BackStackNode(buildContext, {
                 BackStackSlider(
                     it
                 )
             })
-            is InteractionTarget.BackstackParallax -> BackStackNode(
+            is NavTarget.BackstackParallax -> BackStackNode(
                 buildContext = buildContext,
                 visualisation = { BackStackParallax(uiContext = it) },
                 gestureFactory = { BackStackParallax.Gestures(it) },
@@ -89,7 +89,7 @@ class BackStackExamplesNode(
             ).also {
                 padding.value = 0
             }
-            is InteractionTarget.BackStack3D -> BackStackNode(
+            is NavTarget.BackStack3D -> BackStackNode(
                 buildContext = buildContext,
                 visualisation = { BackStack3D(it) },
                 gestureFactory = { BackStack3D.Gestures(it) },
@@ -112,16 +112,16 @@ class BackStackExamplesNode(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 TextButton(text = "BackStack slider") {
-                    backStack.push(InteractionTarget.BackStackSlider)
+                    backStack.push(NavTarget.BackStackSlider)
                 }
                 TextButton(text = "BackStack fader") {
-                    backStack.push(InteractionTarget.BackStackFader)
+                    backStack.push(NavTarget.BackStackFader)
                 }
                 TextButton(text = "BackStack parallax") {
-                    backStack.push(InteractionTarget.BackstackParallax)
+                    backStack.push(NavTarget.BackstackParallax)
                 }
                 TextButton(text = "BackStack 3D") {
-                    backStack.push(InteractionTarget.BackStack3D)
+                    backStack.push(NavTarget.BackStack3D)
                 }
             }
         }
@@ -129,7 +129,7 @@ class BackStackExamplesNode(
 
     @Composable
     override fun View(modifier: Modifier) {
-        AppyxComponent(
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier
                 .fillMaxSize()

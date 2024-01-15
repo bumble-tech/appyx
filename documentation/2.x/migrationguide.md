@@ -86,7 +86,7 @@ Artifacts have a `utils-` prefix:
 -import com.bumble.appyx.core.integrationpoint.NodeActivity
 
 +import com.bumble.appyx.navigation.integration.NodeHost
-+import com.bumble.appyx.navigation.integrationpoint.NodeActivity
++import com.bumble.appyx.navigation.integration.NodeActivity
 
     class MainActivity : NodeActivity() {
          super.onCreate(savedInstanceState)
@@ -115,7 +115,7 @@ Artifacts have a `utils-` prefix:
 +import com.bumble.appyx.components.backstack.BackStackModel
 +import com.bumble.appyx.components.backstack.operation.push
 +import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
-+import com.bumble.appyx.navigation.composable.AppyxComponent
++import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 +import com.bumble.appyx.navigation.modality.BuildContext
 +import com.bumble.appyx.navigation.node.Node
 +import com.bumble.appyx.navigation.node.ParentNode
@@ -144,8 +144,8 @@ class RootNode(
 
 -    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
 -        when (navTarget) {
-+    override fun resolve(interactionTarget: NavTarget, buildContext: BuildContext): Node =
-+        when (interactionTarget) {
++    override fun buildChildNode(reference: NavTarget, buildContext: BuildContext): Node =
++        when (reference) {
             is Child1 -> Child1Node(buildContext) { backStack.push(Child2) }
             is Child2 -> Child2Node(buildContext)
         }
@@ -155,7 +155,7 @@ class RootNode(
 -        Children(
 -            navModel = backStack,
 -            transitionHandler = rememberBackstackFader(transitionSpec = { spring() }),
-+        AppyxComponent(
++        AppyxNavigationContainer(
 +            appyxComponent = backStack,
             modifier = Modifier.fillMaxSize()
         )
@@ -171,7 +171,7 @@ class RootNode(
 -import com.bumble.appyx.core.integrationpoint.IntegrationPointStub
 
 +import com.bumble.appyx.navigation.integration.NodeHost
-+import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
++import com.bumble.appyx.navigation.integration.IntegrationPointStub
 
 @Preview
 @Composable

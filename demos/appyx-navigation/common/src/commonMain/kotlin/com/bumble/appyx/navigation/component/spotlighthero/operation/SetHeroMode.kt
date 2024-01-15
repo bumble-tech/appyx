@@ -9,24 +9,24 @@ import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.St
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
-class SetHeroMode<InteractionTarget>(
+class SetHeroMode<NavTarget>(
     private val heroMode: SpotlightHeroModel.Mode,
     override var mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<State<InteractionTarget>>() {
+) : BaseOperation<State<NavTarget>>() {
 
-    override fun isApplicable(state: State<InteractionTarget>): Boolean =
+    override fun isApplicable(state: State<NavTarget>): Boolean =
         state.mode != heroMode
 
-    override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
         fromState.copy(
             mode = heroMode
         )
 }
 
-fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.setHeroMode(
+fun <NavTarget : Any> SpotlightHero<NavTarget>.setHeroMode(
     heroMode: SpotlightHeroModel.Mode,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.IMMEDIATE

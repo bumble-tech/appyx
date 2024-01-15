@@ -9,5 +9,5 @@ class DummyParentNode<InteractionTarget : Any> : ParentNode<InteractionTarget>(
     appyxComponent = EmptyAppyxComponent(),
     buildContext = BuildContext.root(savedStateMap = null)
 ) {
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext) = node(buildContext) { }
+    override fun buildChildNode(navTarget: InteractionTarget, buildContext: BuildContext) = node(buildContext) { }
 }

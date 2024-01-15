@@ -112,7 +112,7 @@ class MutableUiState(
     }
 }
 
-fun TargetUiState.toMutableState(uiContext: UiContext): MutableUiState = MutableUiState(
+fun TargetUiState.toMutableUiState(uiContext: UiContext): MutableUiState = MutableUiState(
     uiContext = uiContext,
     position = PositionAlignment(uiContext.coroutineScope, position),
     positionOffset = PositionOffset(uiContext.coroutineScope, positionOffset),
