@@ -41,10 +41,10 @@ First, we need to define how to programmatically attach `Onboarding` to the `Roo
 
 ```kotlin
 class RootNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     backStack: BackStack<NavTarget>
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack,
 ) {
     
@@ -87,10 +87,10 @@ Unlike `Root`, `Onboarding` uses [Spotlight](../../components/spotlight.md) inst
 
 ```kotlin
 class OnboardingNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     spotlight: Spotlight<NavTarget>
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = spotlight,
 ) {
 
@@ -145,7 +145,7 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
         setContent {
             NodeHost(integrationPoint = appyxIntegrationPoint) {
                 RootNode(
-                    buildContext = it,
+                    nodeContext = it,
                     navigator = this@ExplicitNavigationExampleActivity,
                     plugins = listOf(object : NodeReadyObserver<RootNode> {
                         override fun init(node: RootNode) {
@@ -182,9 +182,9 @@ A typical case building an explicit navigation chain that relies on `Logged in` 
 
 ```kotlin
 class RootNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext
+    nodeContext = nodeContext
 ) {
     
     suspend fun waitForLoggedIn(): LoggedInNode = 

@@ -12,7 +12,7 @@ To keep the framework agnostic of any specific approach / pattern you want to us
 
 ```kotlin
 abstract class Node(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     val view: NodeView = EmptyNodeView,
     plugins: List<Plugin> = emptyList() // <--
 )

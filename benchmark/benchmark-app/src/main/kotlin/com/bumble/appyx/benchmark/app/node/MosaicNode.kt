@@ -36,7 +36,7 @@ import com.bumble.appyx.benchmark.app.mosaic.operation.scatter
 import com.bumble.appyx.benchmark.app.ui.FlashCard
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
@@ -48,7 +48,7 @@ private val animationSpec = spring<Float>(
 )
 
 class MosaicNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val config: MosaicConfig,
     private val mosaic: MosaicComponent = MosaicComponent(
         gridRows = config.rows,
@@ -62,16 +62,16 @@ class MosaicNode(
                     entryId = sequentialIdx
                 )
             },
-        savedStateMap = buildContext.savedStateMap,
+        savedStateMap = nodeContext.savedStateMap,
         defaultAnimationSpec = animationSpec
     )
 ) : ParentNode<MosaicPiece>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = mosaic
 ) {
 
-    override fun buildChildNode(mosaicPiece: MosaicPiece, buildContext: BuildContext): Node =
-        node(buildContext) { modifier ->
+    override fun buildChildNode(mosaicPiece: MosaicPiece, nodeContext: NodeContext): Node =
+        node(nodeContext) { modifier ->
             Box(
                 modifier = modifier
                     .fillMaxWidth(1f / config.columns)
@@ -97,7 +97,7 @@ class MosaicNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Box(
             modifier = modifier
                 .fillMaxSize()

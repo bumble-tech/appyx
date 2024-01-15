@@ -61,9 +61,9 @@ fun main() {
                     WebNodeHost(
                         screenSize = screenSize,
                         onBackPressedEvents = events.receiveAsFlow(),
-                    ) { buildContext ->
+                    ) { nodeContext ->
                         MainNavNode(
-                            buildContext = buildContext,
+                            nodeContext = nodeContext,
                         )
                     }
                 }

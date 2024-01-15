@@ -14,18 +14,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.navigator.LocalNavigator
 import com.bumble.appyx.navigation.node.Node
 
 class HomeNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
 ) : Node(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Box(
             modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

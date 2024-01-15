@@ -3,7 +3,7 @@ package com.bumble.appyx.navigation.children
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.navigation.modality.AncestryInfo
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.utils.multiplatform.SavedStateMap
@@ -163,8 +163,8 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
         }
     }
 
-    private fun childBuildContext(savedState: SavedStateMap?): BuildContext =
-        BuildContext(
+    private fun childContext(savedState: SavedStateMap?): NodeContext =
+        NodeContext(
             ancestryInfo = AncestryInfo.Child(parentNode),
             savedStateMap = savedState,
             customisations = customisations.getSubDirectoryOrSelf(parentNode::class),
@@ -181,7 +181,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
             ChildEntry.Initialized(
                 key = key,
                 node = parentNode
-                    .buildChildNode(key.interactionTarget, childBuildContext(savedState))
+                    .buildChildNode(key.interactionTarget, childContext(savedState))
                     .build()
             )
         }
@@ -194,7 +194,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
                     key = key,
                     node = parentNode.buildChildNode(
                         navTarget = key.interactionTarget,
-                        buildContext = childBuildContext(savedState),
+                        nodeContext = childContext(savedState),
                     ).build()
                 )
         }

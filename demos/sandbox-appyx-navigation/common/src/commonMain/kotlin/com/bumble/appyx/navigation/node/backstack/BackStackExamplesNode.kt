@@ -22,7 +22,7 @@ import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode.NavTarget
@@ -34,16 +34,16 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 
 class BackStackExamplesNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.BackStackPicker),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = nodeContext.savedStateMap
         ),
         visualisation = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack
 ) {
 
@@ -66,23 +66,23 @@ class BackStackExamplesNode(
         object BackStack3D : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.BackStackPicker -> node(buildContext) {
+            is NavTarget.BackStackPicker -> node(nodeContext) {
                 BackStackPicker(it)
             }
-            is NavTarget.BackStackFader -> BackStackNode(buildContext, {
+            is NavTarget.BackStackFader -> BackStackNode(nodeContext, {
                 BackStackFader(
                     it
                 )
             })
-            is NavTarget.BackStackSlider -> BackStackNode(buildContext, {
+            is NavTarget.BackStackSlider -> BackStackNode(nodeContext, {
                 BackStackSlider(
                     it
                 )
             })
             is NavTarget.BackstackParallax -> BackStackNode(
-                buildContext = buildContext,
+                nodeContext = nodeContext,
                 visualisation = { BackStackParallax(uiContext = it) },
                 gestureFactory = { BackStackParallax.Gestures(it) },
                 isMaxSize = true
@@ -90,7 +90,7 @@ class BackStackExamplesNode(
                 padding.value = 0
             }
             is NavTarget.BackStack3D -> BackStackNode(
-                buildContext = buildContext,
+                nodeContext = nodeContext,
                 visualisation = { BackStack3D(it) },
                 gestureFactory = { BackStack3D.Gestures(it) },
                 gestureSettleConfig = GestureSettleConfig(completionThreshold = 0.2f),
@@ -128,7 +128,7 @@ class BackStackExamplesNode(
     }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier

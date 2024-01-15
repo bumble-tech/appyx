@@ -34,7 +34,7 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlig
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
@@ -44,11 +44,11 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class SpotlightObserveTransitionsExampleNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val model: SpotlightModel<NavTarget> = SpotlightModel(
         items = List(7) { NavTarget.Child(it) },
         initialActiveIndex = 0f,
-        savedStateMap = buildContext.savedStateMap
+        savedStateMap = nodeContext.savedStateMap
     ),
     private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = model,
@@ -56,7 +56,7 @@ class SpotlightObserveTransitionsExampleNode(
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = spotlight
 ) {
     private val newItems = List(7) { NavTarget.Child(it * 3) }
@@ -66,9 +66,9 @@ class SpotlightObserveTransitionsExampleNode(
         class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Child -> node(buildContext) { modifier ->
+            is NavTarget.Child -> node(nodeContext) { modifier ->
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = modifier
@@ -113,7 +113,7 @@ class SpotlightObserveTransitionsExampleNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()

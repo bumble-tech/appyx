@@ -61,7 +61,7 @@ enum class MainNavItem : Parcelable {
 
 ```kotlin
 AppyxMaterial3NavNode<MainNavItem>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     navTargets = MainNavItem.values().toList(),
     navTargetResolver = MainNavItem.resolver
 )

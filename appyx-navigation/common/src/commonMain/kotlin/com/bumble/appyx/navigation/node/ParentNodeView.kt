@@ -13,7 +13,7 @@ interface ParentNodeView<NavTarget : Any> : NodeView {
      */
     @Suppress("UNCHECKED_CAST")
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         val node = LocalNode.current as? ParentNode<NavTarget>
             ?: error("${this::class} is not provided to the appropriate ParentNode")
         node.NodeView(modifier = modifier)

@@ -113,7 +113,7 @@ class YourNode(
 ) : ParentNode<T> {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             appyxComponent = yourComponent,
             modifier = modifier

@@ -41,7 +41,7 @@ class MainActivity : NodeActivity() {
                         integrationPoint = appyxV2IntegrationPoint,
                     ) {
                         AppyxMaterial3NavNode(
-                            buildContext = it,
+                            nodeContext = it,
                             navTargets = MainNavItem.values().toList(),
                             navTargetResolver = MainNavItem.resolver,
                             initialActiveElement = MainNavItem.CARDS

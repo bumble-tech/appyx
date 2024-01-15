@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.navigation.collections.toImmutableList
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.checkout.PaymentOption.Card
 import com.bumble.appyx.navigation.node.checkout.PaymentOption.HugsHighFives
@@ -43,14 +43,14 @@ private val paymentOptions = listOf(
 )
 
 class PaymentNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val onPaymentConfirmed: () -> Unit,
 ) : Node(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
 ) {
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         PaymentDetails(modifier)
     }
 
