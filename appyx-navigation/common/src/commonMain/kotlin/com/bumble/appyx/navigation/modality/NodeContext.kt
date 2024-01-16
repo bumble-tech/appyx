@@ -7,19 +7,19 @@ import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
-data class BuildContext(
+data class NodeContext(
     val ancestryInfo: AncestryInfo,
     val savedStateMap: SavedStateMap?,
     val customisations: NodeCustomisationDirectory,
 ) {
     companion object {
-        private const val IDENTIFIER_KEY = "build.context.identifier"
+        private const val IDENTIFIER_KEY = "appyx.node.context.identifier"
 
         fun root(
             savedStateMap: SavedStateMap?,
             customisations: NodeCustomisationDirectory = NodeCustomisationDirectoryImpl()
-        ): BuildContext =
-            BuildContext(
+        ): NodeContext =
+            NodeContext(
                 ancestryInfo = AncestryInfo.Root,
                 savedStateMap = savedStateMap,
                 customisations = customisations

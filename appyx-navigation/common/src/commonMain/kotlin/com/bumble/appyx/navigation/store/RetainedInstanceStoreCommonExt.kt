@@ -1,11 +1,11 @@
 package com.bumble.appyx.navigation.store
 
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 
 /**
- * Obtains or creates an instance of a class using the identifier from the BuildContext.
+ * Obtains or creates an instance of a class using the identifier from the [NodeContext].
  */
-inline fun <reified T : Any> BuildContext.getRetainedInstance(
+inline fun <reified T : Any> NodeContext.getRetainedInstance(
     key: String,
     noinline disposer: (T) -> Unit = {},
     noinline factory: () -> T

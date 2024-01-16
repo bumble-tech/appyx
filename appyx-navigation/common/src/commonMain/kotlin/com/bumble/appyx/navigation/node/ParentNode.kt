@@ -19,7 +19,7 @@ import com.bumble.appyx.navigation.children.ChildrenCallback
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.lifecycle.ChildNodeLifecycleManager
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.children.ChildNodeBuilder
 import com.bumble.appyx.navigation.platform.PlatformBackHandler
 import kotlinx.coroutines.flow.StateFlow
@@ -34,20 +34,20 @@ import kotlin.reflect.KClass
 @Stable
 abstract class ParentNode<NavTarget : Any>(
     val appyxComponent: AppyxComponent<NavTarget, *>,
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     view: ParentNodeView<NavTarget> = EmptyParentNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<ParentNode<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
 ) : Node(
     view = view,
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     plugins = plugins + appyxComponent + childAware
 ), ChildNodeBuilder<NavTarget> {
 
     private val childNodeCreationManager = ChildNodeCreationManager<NavTarget>(
-        savedStateMap = buildContext.savedStateMap,
-        customisations = buildContext.customisations,
+        savedStateMap = nodeContext.savedStateMap,
+        customisations = nodeContext.customisations,
         keepMode = childKeepMode,
     )
     val children: StateFlow<ChildEntryMap<NavTarget>>

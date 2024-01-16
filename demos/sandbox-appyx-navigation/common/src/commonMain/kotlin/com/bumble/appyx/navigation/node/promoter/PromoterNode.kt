@@ -34,7 +34,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDI
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
@@ -44,10 +44,10 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class PromoterNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val promoter: Promoter<NavTarget> = Promoter(
         model = PromoterModel(
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = nodeContext.savedStateMap
         ),
         visualisation = {
             PromoterVisualisation(
@@ -57,7 +57,7 @@ class PromoterNode(
         animationSpec = spring(stiffness = Spring.StiffnessVeryLow / 20)
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = promoter
 ) {
 
@@ -73,9 +73,9 @@ class PromoterNode(
         class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is Child -> node(buildContext) {
+            is Child -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -96,7 +96,7 @@ class PromoterNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         var index by remember { mutableStateOf(5) }
 
         Column(

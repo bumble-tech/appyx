@@ -8,5 +8,5 @@ import androidx.compose.ui.Modifier
 interface NodeView {
 
     @Composable
-    fun View(modifier: Modifier)
+    fun Content(modifier: Modifier)
 }

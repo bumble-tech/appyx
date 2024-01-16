@@ -24,7 +24,7 @@ import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalVisualisation
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.modal.ModalExamplesNode.NavTarget
@@ -37,16 +37,16 @@ import kotlin.random.Random
 
 
 class ModalExamplesNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val modal: Modal<NavTarget> = Modal(
         model = ModalModel(
             initialElements = listOf(NavTarget.Child),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = nodeContext.savedStateMap
         ),
         visualisation = { ModalVisualisation(it) }
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = modal
 ) {
 
@@ -55,9 +55,9 @@ class ModalExamplesNode(
         object Child : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Child -> node(buildContext) {
+            is NavTarget.Child -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -75,7 +75,7 @@ class ModalExamplesNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()

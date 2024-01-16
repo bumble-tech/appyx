@@ -19,18 +19,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.samples.common.profile.Profile
 
 class ProfileCardNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val profile: Profile
-) : Node(buildContext) {
+) : Node(nodeContext) {
 
     @Composable
     @Override
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         ProfileCard(
             profile = profile,
             modifier = modifier

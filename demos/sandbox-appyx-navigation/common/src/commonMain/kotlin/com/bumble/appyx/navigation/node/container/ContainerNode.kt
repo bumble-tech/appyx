@@ -16,7 +16,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
@@ -33,17 +33,17 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class ContainerNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Selector),
-            savedStateMap = buildContext.savedStateMap,
+            savedStateMap = nodeContext.savedStateMap,
         ),
         visualisation = { BackStackSlider(it) }
     )
 
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack
 ) {
     sealed class NavTarget : Parcelable {
@@ -76,23 +76,23 @@ class ContainerNode(
     }
 
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Selector -> node(buildContext) { modifier ->
+            is NavTarget.Selector -> node(nodeContext) { modifier ->
                 Selector(modifier)
             }
 
-            is NavTarget.PermanentChild -> PermanentChildNode(buildContext)
-//            is NavTarget.DatingCards -> DatingCardsNode(buildContext)
-            is NavTarget.SpotlightExperiment -> SpotlightNode(buildContext)
+            is NavTarget.PermanentChild -> PermanentChildNode(nodeContext)
+//            is NavTarget.DatingCards -> DatingCardsNode(nodeContext)
+            is NavTarget.SpotlightExperiment -> SpotlightNode(nodeContext)
             is NavTarget.ObservingTransitionsExample -> SpotlightObserveTransitionsExampleNode(
-                buildContext
+                nodeContext
             )
 
-            is NavTarget.BackStack -> BackStackExamplesNode(buildContext)
-            is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
-            is NavTarget.Modal -> ModalExamplesNode(buildContext)
-            is NavTarget.PromoterExperiment -> PromoterNode(buildContext)
+            is NavTarget.BackStack -> BackStackExamplesNode(nodeContext)
+            is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(nodeContext)
+            is NavTarget.Modal -> ModalExamplesNode(nodeContext)
+            is NavTarget.PromoterExperiment -> PromoterNode(nodeContext)
         }
 
 
@@ -139,7 +139,7 @@ class ContainerNode(
     }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = modifier

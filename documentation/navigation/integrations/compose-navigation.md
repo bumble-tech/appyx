@@ -56,7 +56,7 @@ internal fun AppyxRoute(
 ) {
     NodeHost(integrationPoint = LocalIntegrationPoint.current) {
         RootNode(
-            buildContext = it,
+            nodeContext = it,
             // use this in the Node / some child Node,
             // in business logic or in the view on some button:
             onNavigateToGoogleRoute = onNavigateToGoogleRoute 

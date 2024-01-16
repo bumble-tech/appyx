@@ -16,7 +16,7 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
@@ -25,18 +25,18 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class ProfileNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val user: User,
     private val onLogout: () -> Unit,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.ProfileChild),
-            savedStateMap = buildContext.savedStateMap,
+            savedStateMap = nodeContext.savedStateMap,
         ),
         visualisation = { BackStackSlider(it) }
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack
 ) {
     sealed class NavTarget : Parcelable {
@@ -44,9 +44,9 @@ class ProfileNode(
         object ProfileChild : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.ProfileChild -> node(buildContext) { modifier ->
+            is NavTarget.ProfileChild -> node(nodeContext) { modifier ->
                 Column(
                     modifier = modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.Center,
@@ -70,7 +70,7 @@ class ProfileNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier

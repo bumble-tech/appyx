@@ -48,8 +48,8 @@ class BackStackParallaxTest {
         )
         backStack = BackStack(
             model = backStackModel,
-            visualisation = { buildContext ->
-                BackStackParallax<InteractionTarget>(buildContext).also {
+            visualisation = { uiContext ->
+                BackStackParallax<InteractionTarget>(uiContext).also {
                     visualisation = it
                 }
             },

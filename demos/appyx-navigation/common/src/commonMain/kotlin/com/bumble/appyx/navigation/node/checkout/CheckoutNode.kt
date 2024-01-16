@@ -10,7 +10,7 @@ import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.cart.Cart
@@ -21,12 +21,12 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class CheckoutNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val cart: Cart,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.CartItems),
-            savedStateMap = buildContext.savedStateMap,
+            savedStateMap = nodeContext.savedStateMap,
         ),
         visualisation = {
             if (getPlatformName() == IOS_PLATFORM_NAME) {
@@ -44,7 +44,7 @@ class CheckoutNode(
         }
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack
 ) {
     sealed class NavTarget : Parcelable {
@@ -64,32 +64,32 @@ class CheckoutNode(
         object Success : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.CartItems -> CartItemsNode(buildContext, cart) {
+            is NavTarget.CartItems -> CartItemsNode(nodeContext, cart) {
                 backStack.push(NavTarget.Address)
             }
 
-            is NavTarget.Address -> AddressNode(buildContext) {
+            is NavTarget.Address -> AddressNode(nodeContext) {
                 backStack.push(NavTarget.Shipping)
             }
 
-            is NavTarget.Shipping -> ShippingDetailsNode(buildContext) {
+            is NavTarget.Shipping -> ShippingDetailsNode(nodeContext) {
                 backStack.push(NavTarget.Payment)
             }
 
-            is NavTarget.Payment -> PaymentNode(buildContext) {
+            is NavTarget.Payment -> PaymentNode(nodeContext) {
                 cart.clear()
                 backStack.newRoot(NavTarget.Success)
             }
 
-            is NavTarget.Success -> OrderConfirmedNode(buildContext) {
+            is NavTarget.Success -> OrderConfirmedNode(nodeContext) {
                 backStack.newRoot(NavTarget.CartItems)
             }
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier

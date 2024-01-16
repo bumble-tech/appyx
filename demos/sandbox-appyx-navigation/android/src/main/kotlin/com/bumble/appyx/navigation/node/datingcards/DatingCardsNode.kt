@@ -10,7 +10,7 @@ import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.datingcards.DatingCardsNode.NavTarget
@@ -21,21 +21,21 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class DatingCardsNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val cards: Cards<NavTarget> =
         Cards(
             model = CardsModel(
                 initialItems = Profile.allProfiles.shuffled().map {
                     NavTarget.ProfileCard(it)
                 },
-                savedStateMap = buildContext.savedStateMap
+                savedStateMap = nodeContext.savedStateMap
             ),
             visualisation = { CardsVisualisation(it) },
             gestureFactory = { CardsVisualisation.Gestures(it) },
         )
 
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = cards
 ) {
 
@@ -44,11 +44,11 @@ class DatingCardsNode(
         class ProfileCard(val profile: Profile) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
-        ProfileCardNode(buildContext, (navTarget as NavTarget.ProfileCard).profile)
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+        ProfileCardNode(nodeContext, (navTarget as NavTarget.ProfileCard).profile)
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         AppyxNavigationContainer(
             modifier = modifier
                 .fillMaxSize()

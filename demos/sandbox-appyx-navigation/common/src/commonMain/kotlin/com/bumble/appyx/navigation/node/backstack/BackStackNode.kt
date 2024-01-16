@@ -34,7 +34,7 @@ import com.bumble.appyx.interactions.core.ui.helper.gestureModifier
 import com.bumble.appyx.navigation.ColorSaver
 import com.bumble.appyx.navigation.colors
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
@@ -46,7 +46,7 @@ import kotlin.random.Random
 
 
 class BackStackNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     visualisation: (UiContext) -> Visualisation<NavTarget, State<NavTarget>>,
     gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, State<NavTarget>> = {
         GestureFactory.Noop()
@@ -56,14 +56,14 @@ class BackStackNode(
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Child(1)),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = nodeContext.savedStateMap
         ),
         visualisation = visualisation,
         gestureFactory = gestureFactory,
         gestureSettleConfig = gestureSettleConfig,
     )
 ) : ParentNode<BackStackNode.NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack,
 ) {
     sealed class NavTarget : Parcelable {
@@ -71,9 +71,9 @@ class BackStackNode(
         class Child(val index: Int) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Child -> node(buildContext) {
+            is NavTarget.Child -> node(nodeContext) {
                 val backgroundColor =
                     rememberSaveable(saver = ColorSaver) { colors.shuffled().random() }
 
@@ -102,7 +102,7 @@ class BackStackNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier = modifier
                 .fillMaxWidth()

@@ -86,9 +86,9 @@ private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
                     WebNodeHost(
                         screenSize = screenSize,
                         onBackPressedEvents = events.receiveAsFlow(),
-                    ) { buildContext ->
+                    ) { nodeContext ->
                         RootNode(
-                            buildContext = buildContext,
+                            nodeContext = nodeContext,
                             plugins = listOf(navigator)
                         )
                     }
