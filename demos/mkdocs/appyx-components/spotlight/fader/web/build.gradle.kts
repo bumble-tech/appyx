@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -6,6 +8,12 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-components-spotlight-fader-web"
+        browser()
+        binaries.executable()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         moduleName = "appyx-components-spotlight-fader-web"
         browser()
         binaries.executable()
@@ -19,10 +27,6 @@ kotlin {
                 implementation(project(":appyx-interactions:appyx-interactions"))
                 implementation(project(":appyx-components:stable:spotlight:spotlight"))
                 implementation(project(":demos:mkdocs:appyx-components:common"))
-            }
-        }
-        val jsMain by getting {
-            dependencies {
                 implementation(project(":demos:mkdocs:common"))
             }
         }
@@ -36,4 +40,5 @@ compose.experimental {
 dependencies {
     add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
 }

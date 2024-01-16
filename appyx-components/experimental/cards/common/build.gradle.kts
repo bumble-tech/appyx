@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -21,6 +23,12 @@ kotlin {
         }
     }
     js(IR) {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-components-experimental-cards-commons"
+        browser()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
         moduleName = "appyx-components-experimental-cards-commons"
         browser()
@@ -61,6 +69,7 @@ dependencies {
     add("kspAndroid", project(":ksp:mutable-ui-processor"))
     add("kspDesktop", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
     add("kspIosArm64", project(":ksp:mutable-ui-processor"))
     add("kspIosX64", project(":ksp:mutable-ui-processor"))
     add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))

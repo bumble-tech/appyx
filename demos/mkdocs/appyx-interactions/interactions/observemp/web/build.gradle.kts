@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -6,6 +8,12 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-interactions-observemp-web"
+        browser()
+        binaries.executable()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         moduleName = "appyx-interactions-observemp-web"
         browser()
         binaries.executable()
@@ -31,4 +39,5 @@ compose.experimental {
 dependencies {
     add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
 }

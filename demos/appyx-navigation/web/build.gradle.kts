@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -6,6 +8,12 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "appyx-demos-navigation-web"
+        browser()
+        binaries.executable()
+    }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         moduleName = "appyx-demos-navigation-web"
         browser()
         binaries.executable()
@@ -36,9 +44,10 @@ compose.experimental {
 dependencies {
     add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
 }
 
-tasks.register<Copy>("copyResources") {
+tasks.register<Copy>("jsCopyResources") {
     // Dirs containing files we want to copy
     from("../common/src/commonMain/resources")
 
@@ -49,9 +58,27 @@ tasks.register<Copy>("copyResources") {
 }
 
 tasks.named("jsBrowserProductionExecutableDistributeResources") {
-    dependsOn("copyResources")
+    dependsOn("jsCopyResources")
 }
 
 tasks.named("jsMainClasses") {
-    dependsOn("copyResources")
+    dependsOn("jsCopyResources")
+}
+
+tasks.register<Copy>("wasmJsCopyResources") {
+    // Dirs containing files we want to copy
+    from("../common/src/commonMain/resources")
+
+    // Output for web resources
+    into("$buildDir/processedResources/wasmJs/main")
+
+    include("**/*")
+}
+
+tasks.named("wasmJsBrowserProductionExecutableDistributeResources") {
+    dependsOn("wasmJsCopyResources")
+}
+
+tasks.named("wasmJsMainClasses") {
+    dependsOn("wasmJsCopyResources")
 }

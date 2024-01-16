@@ -43,12 +43,12 @@ kotlin {
     }
 }
 
-compose.experimental {
-    uikit.application {
-        projectName = "Appyx"
-        bundleIdPrefix = "com.bumble.appyx"
-    }
-}
+//compose.experimental {
+//    uikit.application {
+//        projectName = "Appyx"
+//        bundleIdPrefix = "com.bumble.appyx"
+//    }
+//}
 
 dependencies {
     add("kspIosArm64", project(":ksp:mutable-ui-processor"))

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -24,6 +26,12 @@ kotlin {
         moduleName = "appyx-components-internal-testdrive-common"
         browser()
     }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-components-internal-testdrive-common"
+        browser()
+    }
     sourceSets {
         val commonMain by getting {
             dependencies {
@@ -41,6 +49,7 @@ kotlin {
         val androidMain by getting
         val desktopMain by getting
         val jsMain by getting
+        val wasmJsMain by getting
     }
 }
 
@@ -49,4 +58,5 @@ dependencies {
     add("kspAndroid", project(":ksp:mutable-ui-processor"))
     add("kspDesktop", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
 }

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -5,6 +7,13 @@ plugins {
 
 kotlin {
     js(IR) {
+        moduleName = "demos-mkdocs-common"
+        browser()
+        binaries.executable()
+    }
+
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
         moduleName = "demos-mkdocs-common"
         browser()
         binaries.executable()

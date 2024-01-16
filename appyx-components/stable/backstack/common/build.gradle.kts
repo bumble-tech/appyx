@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.targets.js.dsl.ExperimentalWasmDsl
+
 plugins {
     id("com.bumble.appyx.multiplatform")
     id("org.jetbrains.compose")
@@ -25,6 +27,12 @@ kotlin {
         moduleName = "appyx-components-stable-backstack-commons"
         browser()
     }
+    @OptIn(ExperimentalWasmDsl::class)
+    wasmJs {
+        // Adding moduleName as a workaround for this issue: https://youtrack.jetbrains.com/issue/KT-51942
+        moduleName = "appyx-components-stable-backstack-commons"
+        browser()
+    }
 
     iosX64()
     iosArm64()
@@ -47,6 +55,7 @@ kotlin {
         val androidMain by getting
         val desktopMain by getting
         val jsMain by getting
+        val wasmJsMain by getting
 
         val iosX64Main by getting
         val iosArm64Main by getting
@@ -65,6 +74,7 @@ dependencies {
     add("kspAndroid", project(":ksp:mutable-ui-processor"))
     add("kspDesktop", project(":ksp:mutable-ui-processor"))
     add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspWasmJs", project(":ksp:mutable-ui-processor"))
     add("kspIosArm64", project(":ksp:mutable-ui-processor"))
     add("kspIosX64", project(":ksp:mutable-ui-processor"))
     add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
