@@ -4,6 +4,7 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
+import com.bumble.appyx.navigation.node.LeafNode
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.withPrevious
 import kotlinx.coroutines.CoroutineScope
@@ -28,11 +29,11 @@ class ChildAwareImpl<N : Node<*>> : ChildAware<N> {
         this.node = node
         lifecycle = node.lifecycle
         coroutineScope = lifecycle.coroutineScope
-        if (node is Node<*>) {
+        if (node is LeafNode) {
+            children = MutableStateFlow(emptyMap())
+        } else {
             children = node.children
             coroutineScope.launch { observeChanges() }
-        } else {
-            children = MutableStateFlow(emptyMap())
         }
     }
 
