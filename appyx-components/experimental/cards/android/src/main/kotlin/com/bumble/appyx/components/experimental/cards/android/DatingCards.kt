@@ -12,12 +12,12 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.experimental.cards.Cards
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
+import com.bumble.appyx.demos.common.profile.Profile
+import com.bumble.appyx.demos.common.profile.ProfileCard
 import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.theme.appyx_dark
-import com.bumble.appyx.samples.common.profile.Profile
-import com.bumble.appyx.samples.common.profile.ProfileCard
 import kotlin.math.roundToInt
 
 @Composable
