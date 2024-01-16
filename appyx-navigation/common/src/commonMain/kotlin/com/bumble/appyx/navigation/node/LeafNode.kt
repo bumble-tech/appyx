@@ -6,7 +6,7 @@ import com.bumble.appyx.navigation.modality.NodeContext
 
 open class LeafNode(
     nodeContext: NodeContext,
-    view: ParentNodeView<Nothing> = EmptyParentNodeView(),
+    view: NodeView<Nothing> = EmptyNodeView(),
     plugins: List<Plugin> = listOf(),
 ) : Node<Nothing>(
     appyxComponent = PermanentAppyxComponent(

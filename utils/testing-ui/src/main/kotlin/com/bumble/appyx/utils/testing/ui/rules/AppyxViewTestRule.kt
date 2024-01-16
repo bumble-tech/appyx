@@ -15,7 +15,7 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-open class AppyxViewTestRule<View : NodeView>(
+open class AppyxViewTestRule<View : NodeView<*>>(
     viewFactory: ViewFactory<View>,
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule()
 ) : ActivityTestRule<AppyxTestActivity>(

@@ -3,15 +3,9 @@ package com.bumble.appyx.navigation.node
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-object EmptyNodeView : NodeView {
+class EmptyNodeView<NavTarget : Any> : NodeView<NavTarget> {
 
     @Composable
-    override fun Content(modifier: Modifier) = Unit
-}
-
-class EmptyParentNodeView<NavTarget : Any> : ParentNodeView<NavTarget> {
-
-    @Composable
-    override fun Node<NavTarget>.NodeView(modifier: Modifier) = Unit
+    override fun Node<NavTarget>.NodeContent(modifier: Modifier) = Unit
 
 }
