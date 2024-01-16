@@ -39,6 +39,5 @@ class Modal<InteractionTarget : Any>(
     backPressStrategy = backPressStrategy,
     defaultAnimationSpec = animationSpec,
     gestureSettleConfig = gestureSettleConfig,
-    disableAnimations = disableAnimations,
-    isDebug = isDebug
+    disableAnimations = disableAnimations
 )

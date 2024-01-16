@@ -66,10 +66,6 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .background(appyx_dark)
     ) {
-        KnobControl(onValueChange = {
-            spotlight.setNormalisedProgress(it)
-        })
-
         SampleChildren(
             modifier = Modifier.padding(
                 horizontal = 64.dp,

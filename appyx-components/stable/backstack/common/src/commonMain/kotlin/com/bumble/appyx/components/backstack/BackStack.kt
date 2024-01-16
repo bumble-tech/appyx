@@ -35,7 +35,6 @@ class BackStack<InteractionTarget : Any>(
     gestureSettleConfig = gestureSettleConfig,
     backPressStrategy = backPressStrategy,
     defaultAnimationSpec = animationSpec,
-    disableAnimations = disableAnimations,
-    isDebug = isDebug
+    disableAnimations = disableAnimations
 )
 
