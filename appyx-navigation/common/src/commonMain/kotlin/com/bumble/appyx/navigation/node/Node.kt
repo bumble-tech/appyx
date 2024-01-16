@@ -57,19 +57,19 @@ import kotlin.reflect.KClass
 abstract class Node<NavTarget : Any>(
     val appyxComponent: AppyxComponent<NavTarget, *>,
     private val nodeContext: NodeContext,
-    view: NodeView<NavTarget> = EmptyNodeView(),
+    view: NodeView = EmptyNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     private val childAware: ChildAware<Node<NavTarget>> = ChildAwareImpl(),
     private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = listOf(),
 ) : NodeLifecycle,
-    NodeView<NavTarget> by view,
+    NodeView by view,
     ChildNodeBuilder<NavTarget> {
 
     constructor(
         appyxComponent: AppyxComponent<NavTarget, *>,
         nodeContext: NodeContext,
-        view: NodeView<NavTarget> = EmptyNodeView(),
+        view: NodeView = EmptyNodeView(),
         childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
         childAware: ChildAware<Node<NavTarget>> = ChildAwareImpl(),
         plugins: List<Plugin> = emptyList()

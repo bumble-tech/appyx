@@ -68,7 +68,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
         ),
         visualisation = visualisation
     ),
-    view: NodeView<NavTarget> = EmptyNodeView(),
+    view: NodeView = EmptyNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
     childAware: ChildAware<Node<NavTarget>> = ChildAwareImpl(),
     plugins: List<Plugin> = listOf(),
