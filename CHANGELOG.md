@@ -15,6 +15,7 @@ Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
 - [#643](https://github.com/bumble-tech/appyx/pull/643) – Unify AppyxComponent composable between appyx-navigation and appyx-interactions modules
 - [#651](https://github.com/bumble-tech/appyx/pull/651) - Keep only one instance of SaveStateMap typealias and moved it to `com.bumble.appyx.utils.multiplatform` package 
 - [#654](https://github.com/bumble-tech/appyx/pull/654) - Renamings 
+- [#657](https://github.com/bumble-tech/appyx/pull/657) - Rename ParentNode & Node to Node and LeafNode 
 
 ### Fixed
 
