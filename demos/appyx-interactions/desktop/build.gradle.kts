@@ -48,5 +48,5 @@ compose.desktop {
 }
 
 dependencies {
-    add("kspDesktop", project(":ksp:mutable-ui-processor"))
+    add("kspDesktop", project(":ksp:appyx-processor"))
 }
