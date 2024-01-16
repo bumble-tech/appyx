@@ -6,5 +6,5 @@ import androidx.compose.ui.Modifier
 class EmptyNodeView : NodeView {
 
     @Composable
-    override fun Content(modifier: Modifier) {}
+    override fun Content(modifier: Modifier) = Unit
 }
