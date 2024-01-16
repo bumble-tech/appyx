@@ -51,7 +51,7 @@ compose.experimental {
 }
 
 dependencies {
-    add("kspIosArm64", project(":ksp:appyx-compiler"))
-    add("kspIosX64", project(":ksp:appyx-compiler"))
-    add("kspIosSimulatorArm64", project(":ksp:appyx-compiler"))
+    add("kspIosArm64", project(":ksp:appyx-processor"))
+    add("kspIosX64", project(":ksp:appyx-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:appyx-processor"))
 }

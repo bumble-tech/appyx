@@ -34,8 +34,8 @@ compose.experimental {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":ksp:appyx-compiler"))
-    add("kspJs", project(":ksp:appyx-compiler"))
+    add("kspCommonMainMetadata", project(":ksp:appyx-processor"))
+    add("kspJs", project(":ksp:appyx-processor"))
 }
 
 tasks.register<Copy>("copyResources") {

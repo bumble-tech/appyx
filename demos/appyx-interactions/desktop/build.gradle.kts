@@ -48,5 +48,5 @@ compose.desktop {
 }
 
 dependencies {
-    add("kspDesktop", project(":ksp:appyx-compiler"))
+    add("kspDesktop", project(":ksp:appyx-processor"))
 }

@@ -90,11 +90,11 @@ android {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":ksp:appyx-compiler"))
-    add("kspAndroid", project(":ksp:appyx-compiler"))
-    add("kspDesktop", project(":ksp:appyx-compiler"))
-    add("kspJs", project(":ksp:appyx-compiler"))
-    add("kspIosArm64", project(":ksp:appyx-compiler"))
-    add("kspIosX64", project(":ksp:appyx-compiler"))
-    add("kspIosSimulatorArm64", project(":ksp:appyx-compiler"))
+    add("kspCommonMainMetadata", project(":ksp:appyx-processor"))
+    add("kspAndroid", project(":ksp:appyx-processor"))
+    add("kspDesktop", project(":ksp:appyx-processor"))
+    add("kspJs", project(":ksp:appyx-processor"))
+    add("kspIosArm64", project(":ksp:appyx-processor"))
+    add("kspIosX64", project(":ksp:appyx-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:appyx-processor"))
 }

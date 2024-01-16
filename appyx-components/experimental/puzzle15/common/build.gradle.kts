@@ -45,8 +45,8 @@ kotlin {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":ksp:appyx-compiler"))
-    add("kspAndroid", project(":ksp:appyx-compiler"))
-    add("kspDesktop", project(":ksp:appyx-compiler"))
-    add("kspJs", project(":ksp:appyx-compiler"))
+    add("kspCommonMainMetadata", project(":ksp:appyx-processor"))
+    add("kspAndroid", project(":ksp:appyx-processor"))
+    add("kspDesktop", project(":ksp:appyx-processor"))
+    add("kspJs", project(":ksp:appyx-processor"))
 }
