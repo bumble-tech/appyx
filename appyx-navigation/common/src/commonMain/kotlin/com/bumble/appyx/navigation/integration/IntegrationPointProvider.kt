@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.integrationpoint
+package com.bumble.appyx.navigation.integration
 
 interface IntegrationPointProvider {
 

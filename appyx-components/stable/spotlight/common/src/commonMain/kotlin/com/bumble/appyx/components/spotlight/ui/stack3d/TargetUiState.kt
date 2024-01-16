@@ -37,7 +37,7 @@ class TargetUiState(
         zIndex = base.zIndex,
     )
 
-    fun toMutableState(
+    fun toMutableUiState(
         uiContext: UiContext,
         scrollX: StateFlow<Float>,
         itemHeight: Dp,

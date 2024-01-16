@@ -5,7 +5,7 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.Elements
 import com.bumble.appyx.interactions.core.asElements
 import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.navigation.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue

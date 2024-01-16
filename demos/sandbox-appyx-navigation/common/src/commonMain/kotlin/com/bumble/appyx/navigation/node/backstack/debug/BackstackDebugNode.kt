@@ -25,50 +25,50 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.operation.replace
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.composable.KnobControl
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode.InteractionTarget
+import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode.NavTarget
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class BackstackDebugNode(
-    buildContext: BuildContext,
-    private val backStack: BackStack<InteractionTarget> = BackStack(
+    nodeContext: NodeContext,
+    private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(InteractionTarget.Child(1)),
-            savedStateMap = buildContext.savedStateMap,
+            initialTargets = listOf(NavTarget.Child(1)),
+            savedStateMap = nodeContext.savedStateMap,
         ),
         visualisation = { BackStackSlider(it) }
     )
-) : ParentNode<InteractionTarget>(
-    buildContext = buildContext,
+) : ParentNode<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = backStack
 ) {
 
     init {
-        backStack.push(InteractionTarget.Child(2))
-        backStack.push(InteractionTarget.Child(3))
-        backStack.push(InteractionTarget.Child(4))
-        backStack.push(InteractionTarget.Child(5))
-        backStack.replace(InteractionTarget.Child(6))
+        backStack.push(NavTarget.Child(2))
+        backStack.push(NavTarget.Child(3))
+        backStack.push(NavTarget.Child(4))
+        backStack.push(NavTarget.Child(5))
+        backStack.replace(NavTarget.Child(6))
         backStack.pop()
         backStack.pop()
-        backStack.newRoot(InteractionTarget.Child(1))
+        backStack.newRoot(NavTarget.Child(1))
     }
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -79,7 +79,7 @@ class BackstackDebugNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = interactionTarget.index.toString(),
+                        text = navTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -90,7 +90,7 @@ class BackstackDebugNode(
 
     @ExperimentalMaterialApi
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier = modifier
                 .fillMaxWidth()
@@ -99,7 +99,7 @@ class BackstackDebugNode(
             KnobControl(onValueChange = {
                 backStack.setNormalisedProgress(it)
             })
-            AppyxComponent(
+            AppyxNavigationContainer(
                 appyxComponent = backStack,
                 modifier = Modifier
                     .fillMaxSize()

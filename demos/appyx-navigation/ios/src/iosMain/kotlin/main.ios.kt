@@ -34,9 +34,9 @@ fun MainViewController() = ComposeUIViewController {
                             modifier = Modifier,
                             onBackPressedEvents = flowOf(),
                             integrationPoint = integrationPoint
-                        ) { buildContext ->
+                        ) { nodeContext ->
                             RootNode(
-                                buildContext = buildContext,
+                                nodeContext = nodeContext,
                                 plugins = listOf(navigator),
                             )
                         }

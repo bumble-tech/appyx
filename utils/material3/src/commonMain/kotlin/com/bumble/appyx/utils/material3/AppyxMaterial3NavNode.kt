@@ -36,11 +36,11 @@ import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
 import com.bumble.appyx.navigation.children.ChildEntry
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.integration.ScreenSize
 import com.bumble.appyx.navigation.integration.ScreenSize.WindowSizeClass.COMPACT
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.EmptyParentNodeView
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
@@ -48,7 +48,7 @@ import com.bumble.appyx.navigation.node.ParentNodeView
 
 @OptIn(ExperimentalMaterial3Api::class)
 open class AppyxMaterial3NavNode<NavTarget : Any>(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val navTargets: List<NavTarget>,
     private val navTargetResolver: (NavTarget) -> AppyxNavItem,
     private val initialActiveElement: NavTarget = navTargets.first(),
@@ -65,7 +65,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
         model = SpotlightModel(
             items = navTargets,
             initialActiveIndex = navTargets.indexOf(initialActiveElement).toFloat(),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = nodeContext.savedStateMap
         ),
         visualisation = visualisation
     ),
@@ -75,21 +75,21 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
     plugins: List<Plugin> = listOf(),
 ) : ParentNode<NavTarget>(
     appyxComponent = spotlight,
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     view = view,
     childKeepMode = childKeepMode,
     childAware = childAware,
     plugins = plugins
 ) {
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         navTargetResolver
             .invoke(navTarget)
             .node
-            .invoke(buildContext)
+            .invoke(nodeContext)
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         val selectedIndex = spotlight.activeIndex.collectAsState().value.toInt()
         val screenSize = LocalScreenSize.current
         var containerSize by remember { mutableStateOf(screenSize) }
@@ -138,7 +138,7 @@ open class AppyxMaterial3NavNode<NavTarget : Any>(
 
     @Composable
     fun CurrentNavItem() {
-        AppyxComponent(
+        AppyxNavigationContainer(
             appyxComponent = spotlight
         )
     }

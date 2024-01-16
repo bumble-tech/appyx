@@ -129,7 +129,7 @@ sealed class InteractionTarget {
 private val backStack: BackStack<InteractionTarget> = BackStack(
     model = BackStackModel(
         initialTargets = listOf(InteractionTarget.SomeElement),
-        savedStateMap = buildContext.savedStateMap
+        savedStateMap = nodeContext.savedStateMap
     ),
     visualisation = { BackStackSlider(it) } // or other visualisations 
 )

@@ -23,7 +23,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 class BackStackParallax<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
@@ -76,7 +76,7 @@ class BackStackParallax<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
     class Gestures<InteractionTarget : Any>(
         private val transitionBounds: TransitionBounds,

@@ -40,7 +40,7 @@ class TargetUiState(
      *
      * TODO support RTL and Orientation.Vertical
      */
-    fun toMutableState(
+    fun toMutableUiState(
         uiContext: UiContext,
         scrollX: StateFlow<Float>
     ): MutableUiState = MutableUiState(

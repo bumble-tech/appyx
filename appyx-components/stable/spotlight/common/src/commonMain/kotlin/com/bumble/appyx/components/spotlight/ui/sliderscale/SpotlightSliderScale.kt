@@ -21,7 +21,7 @@ class SpotlightSliderScale<InteractionTarget : Any>(
     initialState: State<InteractionTarget>,
     @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext
 ) {
     @Suppress("MaxLineLength")
@@ -68,6 +68,6 @@ class SpotlightSliderScale<InteractionTarget : Any>(
     }
 
     override fun mutableUiStateFor(uiContext: UiContext, targetUiState: TargetUiState): MutableUiState =
-        targetUiState.toMutableState(uiContext, scrollX.renderValueFlow)
+        targetUiState.toMutableUiState(uiContext, scrollX.renderValueFlow)
 }
 

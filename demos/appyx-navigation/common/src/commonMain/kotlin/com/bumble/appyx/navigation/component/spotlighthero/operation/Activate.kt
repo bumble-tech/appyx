@@ -8,29 +8,29 @@ import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHero
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
-class Activate<InteractionTarget : Any>(
+class Activate<NavTarget : Any>(
     private val index: Float,
     override var mode: Operation.Mode = Operation.Mode.IMPOSED
-) : BaseOperation<SpotlightHeroModel.State<InteractionTarget>>() {
+) : BaseOperation<SpotlightHeroModel.State<NavTarget>>() {
 
-    override fun isApplicable(state: SpotlightHeroModel.State<InteractionTarget>): Boolean =
+    override fun isApplicable(state: SpotlightHeroModel.State<NavTarget>): Boolean =
         index != state.activeIndex &&
                 (index in 0f..state.positions.lastIndex.toFloat())
 
     override fun createFromState(
-        baseLineState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        baseLineState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         baseLineState
 
     override fun createTargetState(
-        fromState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        fromState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         fromState.copy(
             activeIndex = index,
         )
 }
 
-fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.activate(
+fun <NavTarget : Any> SpotlightHero<NavTarget>.activate(
     index: Float,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.IMPOSED

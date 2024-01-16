@@ -8,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.WindowState
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.platform.LocalOnBackPressedDispatcherOwner
 import com.bumble.appyx.navigation.platform.OnBackPressedDispatcher

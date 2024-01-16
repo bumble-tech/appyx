@@ -33,42 +33,42 @@ import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.spotlight.SpotlightObserveTransitionsExampleNode.InteractionTarget
+import com.bumble.appyx.navigation.node.spotlight.SpotlightObserveTransitionsExampleNode.NavTarget
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class SpotlightObserveTransitionsExampleNode(
-    buildContext: BuildContext,
-    private val model: SpotlightModel<InteractionTarget> = SpotlightModel(
-        items = List(7) { InteractionTarget.Child(it) },
+    nodeContext: NodeContext,
+    private val model: SpotlightModel<NavTarget> = SpotlightModel(
+        items = List(7) { NavTarget.Child(it) },
         initialActiveIndex = 0f,
-        savedStateMap = buildContext.savedStateMap
+        savedStateMap = nodeContext.savedStateMap
     ),
-    private val spotlight: Spotlight<InteractionTarget> = Spotlight(
+    private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = model,
         visualisation = { SpotlightSliderRotation(it, model.currentState) },
         gestureFactory = { SpotlightSlider.Gestures(it) }
     )
-) : ParentNode<InteractionTarget>(
-    buildContext = buildContext,
+) : ParentNode<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = spotlight
 ) {
-    private val newItems = List(7) { InteractionTarget.Child(it * 3) }
+    private val newItems = List(7) { NavTarget.Child(it * 3) }
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) { modifier ->
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> node(nodeContext) { modifier ->
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = modifier
@@ -78,7 +78,7 @@ class SpotlightObserveTransitionsExampleNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = interactionTarget.index.toString(),
+                        text = navTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -113,13 +113,13 @@ class SpotlightObserveTransitionsExampleNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .background(appyx_dark)
         ) {
-            AppyxComponent(
+            AppyxNavigationContainer(
                 appyxComponent = spotlight,
                 modifier = Modifier
                     .padding(

@@ -7,7 +7,7 @@ plugins {
 }
 
 appyx {
-    androidNamespace.set("com.bumble.appyx.demos.appyxnavigation.common")
+    androidNamespace.set("com.bumble.appyx.navigation.demo")
 }
 
 kotlin {

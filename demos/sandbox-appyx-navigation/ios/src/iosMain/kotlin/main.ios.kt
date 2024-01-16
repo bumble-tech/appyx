@@ -46,9 +46,9 @@ fun MainViewController() = ComposeUIViewController {
                         modifier = Modifier,
                         onBackPressedEvents = backEvents.receiveAsFlow(),
                         integrationPoint = remember { integrationPoint }
-                    ) { buildContext ->
+                    ) { nodeContext ->
                         MainNavNode(
-                            buildContext = buildContext,
+                            nodeContext = nodeContext,
                         )
                     }
                 }

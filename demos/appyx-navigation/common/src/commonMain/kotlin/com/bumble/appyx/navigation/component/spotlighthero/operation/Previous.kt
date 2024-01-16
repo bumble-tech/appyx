@@ -9,27 +9,27 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
 
 
 @Parcelize
-class Previous<InteractionTarget>(
+class Previous<NavTarget>(
     override var mode: Operation.Mode = Operation.Mode.IMPOSED
-) : BaseOperation<SpotlightHeroModel.State<InteractionTarget>>() {
+) : BaseOperation<SpotlightHeroModel.State<NavTarget>>() {
 
-    override fun isApplicable(state: SpotlightHeroModel.State<InteractionTarget>): Boolean =
+    override fun isApplicable(state: SpotlightHeroModel.State<NavTarget>): Boolean =
         state.hasPrevious()
 
     override fun createFromState(
-        baseLineState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        baseLineState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         baseLineState
 
     override fun createTargetState(
-        fromState: SpotlightHeroModel.State<InteractionTarget>
-    ): SpotlightHeroModel.State<InteractionTarget> =
+        fromState: SpotlightHeroModel.State<NavTarget>
+    ): SpotlightHeroModel.State<NavTarget> =
         fromState.copy(
             activeIndex = fromState.activeIndex - 1f,
         )
 }
 
-fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.previous(
+fun <NavTarget : Any> SpotlightHero<NavTarget>.previous(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.IMPOSED
 ) {

@@ -46,9 +46,9 @@ fun main() = application {
                     onBackPressedEvents = events.receiveAsFlow().mapNotNull {
                         if (it is Events.OnBackPressed) Unit else null
                     }
-                ) { buildContext ->
+                ) { nodeContext ->
                     MainNavNode(
-                        buildContext = buildContext,
+                        nodeContext = nodeContext,
                     )
                 }
             }

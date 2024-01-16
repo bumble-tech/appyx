@@ -21,11 +21,11 @@ import com.bumble.appyx.navigation.component.spotlighthero.visualisation.Spotlig
 import com.bumble.appyx.navigation.component.spotlighthero.visualisation.property.HeroProgress
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
-class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(
+class SpotlightHeroDefaultVisualisation<NavTarget : Any>(
     uiContext: UiContext,
-    initialState: State<InteractionTarget>
-) : SpotlightHeroVisualisation<InteractionTarget>,
-    BaseVisualisation<InteractionTarget, State<InteractionTarget>, MutableUiState, TargetUiState>(
+    initialState: State<NavTarget>
+) : SpotlightHeroVisualisation<NavTarget>,
+    BaseVisualisation<NavTarget, State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext
 ) {
     private val scrollX = GenericFloatProperty(
@@ -36,10 +36,10 @@ class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(
         coroutineScope = uiContext.coroutineScope,
         target = GenericFloatProperty.Target(initialState.heroProgress())
     )
-    override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
+    override val viewpointDimensions: List<Pair<(State<NavTarget>) -> Float, GenericFloatProperty>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollX,
-            { state: State<InteractionTarget> -> state.heroProgress() } to heroProgress
+            { state: State<NavTarget> -> state.activeIndex } to scrollX,
+            { state: State<NavTarget> -> state.heroProgress() } to heroProgress
         )
 
     private val backdropStandard: TargetUiState = TargetUiState(
@@ -69,13 +69,13 @@ class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(
         positionOffset = PositionOffset.Target(DpOffset(0.dp, 40.dp)),
     )
 
-    private fun State<InteractionTarget>.heroProgress(): Float =
+    private fun State<NavTarget>.heroProgress(): Float =
         when (mode) {
             LIST -> 0f
             HERO -> 1f
         }
 
-    override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun State<NavTarget>.toUiTargets(): List<MatchedTargetUiState<NavTarget, TargetUiState>> =
         positions.flatMapIndexed { index, position ->
             listOf(
                 MatchedTargetUiState(
@@ -112,6 +112,6 @@ class SpotlightHeroDefaultVisualisation<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext, scrollX.renderValueFlow)
+        targetUiState.toMutableUiState(uiContext, scrollX.renderValueFlow)
 }
 

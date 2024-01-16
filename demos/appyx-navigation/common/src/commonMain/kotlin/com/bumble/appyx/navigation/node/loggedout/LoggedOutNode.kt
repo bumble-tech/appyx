@@ -24,8 +24,8 @@ import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.navigation.composable.AppyxComponent
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.loggedout.LoggedOutNode.NavTarget
@@ -37,12 +37,12 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class LoggedOutNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val onLogin: (User) -> Unit,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(NavTarget.Splash),
-            savedStateMap = buildContext.savedStateMap,
+            savedStateMap = nodeContext.savedStateMap,
         ),
         visualisation = {
             if (getPlatformName() == IOS_PLATFORM_NAME) {
@@ -60,7 +60,7 @@ class LoggedOutNode(
         }
     )
 ) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+    nodeContext = nodeContext,
     appyxComponent = backStack
 ) {
     sealed class NavTarget : Parcelable {
@@ -71,20 +71,20 @@ class LoggedOutNode(
         object Login : NavTarget()
     }
 
-    override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
         when (navTarget) {
-            is NavTarget.Splash -> node(buildContext) { modifier ->
+            is NavTarget.Splash -> node(nodeContext) { modifier ->
                 SplashScreen(modifier)
             }
 
-            NavTarget.Login -> node(buildContext) { modifier ->
+            NavTarget.Login -> node(nodeContext) { modifier ->
                 LoginScreen(modifier)
             }
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
-        AppyxComponent(
+    override fun Content(modifier: Modifier) {
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier
         )

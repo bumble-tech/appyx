@@ -25,31 +25,31 @@ import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.composable.KnobControl
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
-import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode.InteractionTarget
+import com.bumble.appyx.navigation.node.spotlight.debug.SpotlightDebugNode.NavTarget
 import com.bumble.appyx.navigation.ui.appyx_dark
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class SpotlightDebugNode(
-    buildContext: BuildContext,
-    private val model: SpotlightModel<InteractionTarget> = SpotlightModel(
-        items = List(7) { InteractionTarget.Child(it + 1) },
+    nodeContext: NodeContext,
+    private val model: SpotlightModel<NavTarget> = SpotlightModel(
+        items = List(7) { NavTarget.Child(it + 1) },
         initialActiveIndex = 0f,
-        savedStateMap = buildContext.savedStateMap
+        savedStateMap = nodeContext.savedStateMap
     ),
-    private val spotlight: Spotlight<InteractionTarget> = Spotlight(
+    private val spotlight: Spotlight<NavTarget> = Spotlight(
         model = model,
         visualisation = { SpotlightSlider(it, model.currentState) },
         isDebug = true
     )
-) : ParentNode<InteractionTarget>(
-    buildContext = buildContext,
+) : ParentNode<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = spotlight
 ) {
 
@@ -62,14 +62,14 @@ class SpotlightDebugNode(
         spotlight.first()
     }
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        class Child(val index: Int) : InteractionTarget()
+        class Child(val index: Int) : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
                 Box(
                     modifier = Modifier
@@ -79,7 +79,7 @@ class SpotlightDebugNode(
                         .padding(24.dp)
                 ) {
                     Text(
-                        text = interactionTarget.index.toString(),
+                        text = navTarget.index.toString(),
                         fontSize = 21.sp,
                         color = Color.Black,
                         fontWeight = FontWeight.Bold
@@ -90,7 +90,7 @@ class SpotlightDebugNode(
 
     @ExperimentalMaterialApi
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier
                 .fillMaxWidth()
@@ -99,7 +99,7 @@ class SpotlightDebugNode(
             KnobControl(onValueChange = {
                 spotlight.setNormalisedProgress(it)
             })
-            AppyxComponent(
+            AppyxNavigationContainer(
                 appyxComponent = spotlight,
                 modifier = Modifier.padding(
                     horizontal = 64.dp,

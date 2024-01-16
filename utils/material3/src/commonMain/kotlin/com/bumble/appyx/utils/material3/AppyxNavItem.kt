@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class AppyxNavItem(
     val text: @Composable (isSelected: Boolean) -> Unit,
     val icon: @Composable (isSelected: Boolean) -> Unit,
-    val node: (buildContext: BuildContext) -> Node
+    val node: (nodeContext: NodeContext) -> Node
 ) {
     constructor(
         text: String,
@@ -35,7 +35,7 @@ class AppyxNavItem(
         badgeText: Flow<String?> = MutableStateFlow(null),
         modifier: Modifier = Modifier,
         hasScaleAnimation: Boolean = true,
-        node: (buildContext: BuildContext) -> Node
+        node: (nodeContext: NodeContext) -> Node
     ) : this(
         text = {
             Text(

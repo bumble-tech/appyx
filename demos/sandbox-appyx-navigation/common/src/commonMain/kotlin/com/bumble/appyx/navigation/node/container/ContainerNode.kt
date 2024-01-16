@@ -15,13 +15,13 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
-import com.bumble.appyx.navigation.composable.AppyxComponent
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.backstack.BackStackExamplesNode
 import com.bumble.appyx.navigation.node.backstack.debug.BackstackDebugNode
-import com.bumble.appyx.navigation.node.container.ContainerNode.InteractionTarget
+import com.bumble.appyx.navigation.node.container.ContainerNode.NavTarget
 import com.bumble.appyx.navigation.node.modal.ModalExamplesNode
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.node.permanentchild.PermanentChildNode
@@ -33,66 +33,66 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 class ContainerNode(
-    buildContext: BuildContext,
-    private val backStack: BackStack<InteractionTarget> = BackStack(
+    nodeContext: NodeContext,
+    private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
-            initialTargets = listOf(InteractionTarget.Selector),
-            savedStateMap = buildContext.savedStateMap,
+            initialTargets = listOf(NavTarget.Selector),
+            savedStateMap = nodeContext.savedStateMap,
         ),
         visualisation = { BackStackSlider(it) }
     )
 
-) : ParentNode<InteractionTarget>(
-    buildContext = buildContext,
+) : ParentNode<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = backStack
 ) {
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Selector : InteractionTarget()
+        object Selector : NavTarget()
 
         @Parcelize
-        object PermanentChild : InteractionTarget()
+        object PermanentChild : NavTarget()
 
 //        @Parcelize
-//        object DatingCards : InteractionTarget()
+//        object DatingCards : NavTarget()
 
         @Parcelize
-        object SpotlightExperiment : InteractionTarget()
+        object SpotlightExperiment : NavTarget()
 
         @Parcelize
-        object ObservingTransitionsExample : InteractionTarget()
+        object ObservingTransitionsExample : NavTarget()
 
         @Parcelize
-        object BackStackExperimentDebug : InteractionTarget()
+        object BackStackExperimentDebug : NavTarget()
 
         @Parcelize
-        object BackStack : InteractionTarget()
+        object BackStack : NavTarget()
 
         @Parcelize
-        object Modal : InteractionTarget()
+        object Modal : NavTarget()
 
         @Parcelize
-        object PromoterExperiment : InteractionTarget()
+        object PromoterExperiment : NavTarget()
     }
 
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.Selector -> node(buildContext) { modifier ->
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+        when (navTarget) {
+            is NavTarget.Selector -> node(nodeContext) { modifier ->
                 Selector(modifier)
             }
 
-            is InteractionTarget.PermanentChild -> PermanentChildNode(buildContext)
-//            is InteractionTarget.DatingCards -> DatingCardsNode(buildContext)
-            is InteractionTarget.SpotlightExperiment -> SpotlightNode(buildContext)
-            is InteractionTarget.ObservingTransitionsExample -> SpotlightObserveTransitionsExampleNode(
-                buildContext
+            is NavTarget.PermanentChild -> PermanentChildNode(nodeContext)
+//            is NavTarget.DatingCards -> DatingCardsNode(nodeContext)
+            is NavTarget.SpotlightExperiment -> SpotlightNode(nodeContext)
+            is NavTarget.ObservingTransitionsExample -> SpotlightObserveTransitionsExampleNode(
+                nodeContext
             )
 
-            is InteractionTarget.BackStack -> BackStackExamplesNode(buildContext)
-            is InteractionTarget.BackStackExperimentDebug -> BackstackDebugNode(buildContext)
-            is InteractionTarget.Modal -> ModalExamplesNode(buildContext)
-            is InteractionTarget.PromoterExperiment -> PromoterNode(buildContext)
+            is NavTarget.BackStack -> BackStackExamplesNode(nodeContext)
+            is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(nodeContext)
+            is NavTarget.Modal -> ModalExamplesNode(nodeContext)
+            is NavTarget.PromoterExperiment -> PromoterNode(nodeContext)
         }
 
 
@@ -111,36 +111,36 @@ class ContainerNode(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
 //                TextButton(text = "Dating Cards") {
-////                    backStack.push(InteractionTarget.DatingCards)
+////                    backStack.push(NavTarget.DatingCards)
 //                }
                 TextButton(text = "Spotlight") {
-                    backStack.push(InteractionTarget.SpotlightExperiment)
+                    backStack.push(NavTarget.SpotlightExperiment)
                 }
                 TextButton(text = "Observe transitions example") {
-                    backStack.push(InteractionTarget.ObservingTransitionsExample)
+                    backStack.push(NavTarget.ObservingTransitionsExample)
                 }
                 TextButton(text = "Backstack Examples") {
-                    backStack.push(InteractionTarget.BackStack)
+                    backStack.push(NavTarget.BackStack)
                 }
                 TextButton(text = "Backstack Debug") {
-                    backStack.push(InteractionTarget.BackStackExperimentDebug)
+                    backStack.push(NavTarget.BackStackExperimentDebug)
                 }
                 TextButton(text = "Promoter") {
-                    backStack.push(InteractionTarget.PromoterExperiment)
+                    backStack.push(NavTarget.PromoterExperiment)
                 }
                 TextButton(text = "Permanent Child") {
-                    backStack.push(InteractionTarget.PermanentChild)
+                    backStack.push(NavTarget.PermanentChild)
                 }
                 TextButton(text = "Modal") {
-                    backStack.push(InteractionTarget.Modal)
+                    backStack.push(NavTarget.Modal)
                 }
             }
         }
     }
 
     @Composable
-    override fun View(modifier: Modifier) {
-        AppyxComponent(
+    override fun Content(modifier: Modifier) {
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = modifier
                 .fillMaxSize()

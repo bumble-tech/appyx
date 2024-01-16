@@ -23,11 +23,11 @@ import com.bumble.appyx.components.modal.operation.revert
 import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalVisualisation
 import com.bumble.appyx.navigation.colors
-import com.bumble.appyx.navigation.composable.AppyxComponent
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
-import com.bumble.appyx.navigation.node.modal.ModalExamplesNode.InteractionTarget
+import com.bumble.appyx.navigation.node.modal.ModalExamplesNode.NavTarget
 import com.bumble.appyx.navigation.node.node
 import com.bumble.appyx.navigation.ui.TextButton
 import com.bumble.appyx.navigation.ui.appyx_dark
@@ -37,27 +37,27 @@ import kotlin.random.Random
 
 
 class ModalExamplesNode(
-    buildContext: BuildContext,
-    private val modal: Modal<InteractionTarget> = Modal(
+    nodeContext: NodeContext,
+    private val modal: Modal<NavTarget> = Modal(
         model = ModalModel(
-            initialElements = listOf(InteractionTarget.Child),
-            savedStateMap = buildContext.savedStateMap
+            initialElements = listOf(NavTarget.Child),
+            savedStateMap = nodeContext.savedStateMap
         ),
         visualisation = { ModalVisualisation(it) }
     )
-) : ParentNode<InteractionTarget>(
-    buildContext = buildContext,
+) : ParentNode<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = modal
 ) {
 
-    sealed class InteractionTarget : Parcelable {
+    sealed class NavTarget : Parcelable {
         @Parcelize
-        object Child : InteractionTarget()
+        object Child : NavTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.Child -> node(buildContext) {
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+        when (navTarget) {
+            is NavTarget.Child -> node(nodeContext) {
                 val backgroundColor = remember { colors.shuffled().random() }
 
                 Box(
@@ -75,14 +75,14 @@ class ModalExamplesNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Column(
             modifier = modifier
                 .fillMaxSize()
                 .background(appyx_dark),
             verticalArrangement = Arrangement.Bottom
         ) {
-            AppyxComponent(
+            AppyxNavigationContainer(
                 appyxComponent = modal,
                 modifier = Modifier
                     .fillMaxSize()
@@ -101,7 +101,7 @@ class ModalExamplesNode(
                     modifier = Modifier
                         .padding(horizontal = 4.dp),
                 ) {
-                    modal.add(InteractionTarget.Child)
+                    modal.add(NavTarget.Child)
                 }
                 TextButton(
                     text = "Show",

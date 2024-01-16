@@ -10,17 +10,17 @@ import com.bumble.appyx.navigation.component.spotlighthero.SpotlightHeroModel.St
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize
-class ToggleHeroMode<InteractionTarget>(
+class ToggleHeroMode<NavTarget>(
     override var mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<State<InteractionTarget>>() {
+) : BaseOperation<State<NavTarget>>() {
 
-    override fun isApplicable(state: State<InteractionTarget>): Boolean =
+    override fun isApplicable(state: State<NavTarget>): Boolean =
         true
 
-    override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
         baseLineState
 
-    override fun createTargetState(fromState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
         fromState.copy(
             mode = when (fromState.mode) {
                 LIST -> HERO
@@ -29,7 +29,7 @@ class ToggleHeroMode<InteractionTarget>(
         )
 }
 
-fun <InteractionTarget : Any> SpotlightHero<InteractionTarget>.toggleHeroMode(
+fun <NavTarget : Any> SpotlightHero<NavTarget>.toggleHeroMode(
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.IMMEDIATE
 ) {
