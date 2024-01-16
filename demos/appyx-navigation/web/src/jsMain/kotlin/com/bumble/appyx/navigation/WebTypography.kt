@@ -2,7 +2,7 @@ package com.bumble.appyx.navigation
 
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.navigation.ui.typography
+import com.bumble.appyx.demos.navigation.ui.typography
 
 internal val webTypography = typography.copy(
     bodySmall = typography.bodySmall.copy(
