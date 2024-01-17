@@ -6,12 +6,12 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.window.ComposeUIViewController
+import com.bumble.appyx.demos.navigation.navigator.LocalNavigator
+import com.bumble.appyx.demos.navigation.navigator.Navigator
+import com.bumble.appyx.demos.navigation.node.root.RootNode
+import com.bumble.appyx.demos.navigation.ui.AppyxSampleAppTheme
 import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.integration.MainIntegrationPoint
-import com.bumble.appyx.navigation.navigator.LocalNavigator
-import com.bumble.appyx.navigation.navigator.Navigator
-import com.bumble.appyx.navigation.node.root.RootNode
-import com.bumble.appyx.navigation.ui.AppyxSampleAppTheme
 import kotlinx.coroutines.flow.flowOf
 import platform.Foundation.NSURL
 
@@ -34,9 +34,9 @@ fun MainViewController() = ComposeUIViewController {
                             modifier = Modifier,
                             onBackPressedEvents = flowOf(),
                             integrationPoint = integrationPoint
-                        ) { buildContext ->
+                        ) { nodeContext ->
                             RootNode(
-                                buildContext = buildContext,
+                                nodeContext = nodeContext,
                                 plugins = listOf(navigator),
                             )
                         }

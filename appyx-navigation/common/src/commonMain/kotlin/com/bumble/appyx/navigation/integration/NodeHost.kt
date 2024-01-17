@@ -10,10 +10,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.utils.multiplatform.SavedStateMap
@@ -62,7 +61,7 @@ internal fun <N : Node> rememberNode(
     fun createNode(savedStateMap: SavedStateMap?): N =
         factory
             .create(
-                buildContext = BuildContext.root(
+                nodeContext = NodeContext.root(
                     savedStateMap = savedStateMap,
                     customisations = customisations
                 ),

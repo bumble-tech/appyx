@@ -50,7 +50,7 @@ open class AppyxViewTestRule<View : NodeView>(
             CompositionLocalProvider(
                 LocalNode provides DummyParentNode<Any>().build(),
             ) {
-                view.View(modifier = Modifier)
+                view.Content(modifier = Modifier)
             }
         }
     }

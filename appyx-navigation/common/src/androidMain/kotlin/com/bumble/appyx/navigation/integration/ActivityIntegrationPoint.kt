@@ -9,7 +9,6 @@ import com.bumble.appyx.navigation.integration.activitystarter.ActivityBoundary
 import com.bumble.appyx.navigation.integration.activitystarter.ActivityStarter
 import com.bumble.appyx.navigation.integration.permissionrequester.PermissionRequestBoundary
 import com.bumble.appyx.navigation.integration.permissionrequester.PermissionRequester
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPointProvider
 
 open class ActivityIntegrationPoint(
     private val activity: Activity,

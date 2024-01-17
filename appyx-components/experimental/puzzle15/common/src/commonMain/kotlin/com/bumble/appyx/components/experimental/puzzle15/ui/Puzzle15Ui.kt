@@ -37,7 +37,7 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.LEFT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.RIGHT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.UP
-import com.bumble.appyx.interactions.core.AppyxComponent
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
@@ -82,7 +82,7 @@ fun Puzzle15Ui(
                 .size(240.dp)
                 .border(4.dp, accentColor)
         ) {
-            AppyxComponent(
+            AppyxInteractionsContainer(
                 gestureValidator = GestureValidator.permissiveValidator,
                 screenWidthPx = screenWidthPx,
                 screenHeightPx = screenHeightPx,

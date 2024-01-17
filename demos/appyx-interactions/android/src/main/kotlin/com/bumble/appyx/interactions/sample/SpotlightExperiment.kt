@@ -27,7 +27,7 @@ import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.android.Element
-import com.bumble.appyx.interactions.sample.android.SampleAppyxComponent
+import com.bumble.appyx.interactions.sample.android.SampleAppyxContainer
 import com.bumble.appyx.interactions.theme.appyx_dark
 import com.bumble.appyx.interactions.sample.InteractionTarget as Target
 
@@ -131,7 +131,7 @@ fun <InteractionTarget : Any> SpotlightUi(
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
-    SampleAppyxComponent(
+    SampleAppyxContainer(
         clipToBounds = false,
         appyxComponent = spotlight,
         modifier = modifier

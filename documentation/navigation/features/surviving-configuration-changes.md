@@ -21,7 +21,7 @@ Every `Node` has access to the `RetainedInstanceStore` and manages these cases a
 
 ## Example
 
-Appyx provides extension methods on the `BuildContext` class (an instance which is passed to every `Node` upon creation) to access the `RetainedInstanceStore`. You can use these to:
+Appyx provides extension methods on the `NodeContext` class (an instance which is passed to every `Node` upon creation) to access the `RetainedInstanceStore`. You can use these to:
 
 - Create your retained objects (`factory`)
 - Define cleanup mechanisms (`disposer`) to be run when the retained object will be removed on `Activity` destroy.
@@ -36,25 +36,25 @@ Note: to use the rx2/rx3 `getRetainedDisposable` extension methods you see below
 
 ```kotlin
 import com.bumble.appyx.navigation.builder.Builder
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.store.getRetainedInstance
 import com.bumble.appyx.utils.interop.rx2.store.getRetainedDisposable
 
 class YourNodeBuilder : Builder<YourPayload>() {
 
-    override fun build(buildContext: BuildContext, payload: YourPayload): Node {
+    override fun build(nodeContext: NodeContext, payload: YourPayload): Node {
         // Case 1:
         // If your type implements an rx2/rx3 Disposable,
         // you don't need to pass a disposer:
-        val retainedFoo = buildContext.getRetainedDisposable {
+        val retainedFoo = nodeContext.getRetainedDisposable {
             Foo(payload)
         }
         
         // Case 2:
         // If your type doesn't implement an rx2/rx3 Disposable,
         // you can define a custom cleanup mechanism:
-        val retainedFoo = buildContext.getRetainedInstance(
+        val retainedFoo = nodeContext.getRetainedInstance(
             factory = { Foo(payload) },
             disposer = { it.cleanup() } // it: Foo
         )
@@ -62,7 +62,7 @@ class YourNodeBuilder : Builder<YourPayload>() {
         val view = YourNodeViewImpl()
 
         return YourNode(
-            buildContext = buildContext,
+            nodeContext = nodeContext,
             foo = retainedFoo, 
             view = view,
         )

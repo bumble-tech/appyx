@@ -29,16 +29,16 @@ import com.bumble.appyx.utils.interop.rx2.store.getRetainedDisposable
 
 class YourNodeBuilder : Builder<YourPayload>() {
 
-    override fun build(buildContext: BuildContext, payload: YourPayload): Node {
+    override fun build(nodeContext: NodeContext, payload: YourPayload): Node {
         
         // If your type implements an rx2/rx3 Disposable,
         // you don't need to pass a disposer:
-        val retainedFoo = buildContext.getRetainedDisposable {
+        val retainedFoo = nodeContext.getRetainedDisposable {
             Foo(payload)
         }
 
         return YourNode(
-            buildContext = buildContext,
+            nodeContext = nodeContext,
             foo = retainedFoo, 
             view = view,
         )

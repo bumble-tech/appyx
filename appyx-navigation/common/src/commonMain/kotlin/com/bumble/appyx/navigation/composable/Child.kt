@@ -8,9 +8,9 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.ParentNode
 
 @Composable
-fun <InteractionTarget : Any> ParentNode<InteractionTarget>.Child(
-    element: Element<InteractionTarget>,
-    decorator: @Composable (child: ChildRenderer, element: Element<InteractionTarget>) -> Unit
+fun <NavTarget : Any> ParentNode<NavTarget>.Child(
+    element: Element<NavTarget>,
+    decorator: @Composable (child: ChildRenderer, element: Element<NavTarget>) -> Unit
 ) {
     val childEntry = remember(element.id) { childOrCreate(element) }
     decorator(

@@ -32,7 +32,7 @@ kotlin {
 
 compose.desktop {
     application {
-        mainClass = "com.bumble.appyx.navigation.MainKt"
+        mainClass = "com.bumble.appyx.demos.navigation.MainKt"
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "AppyxNavigationDesktop"

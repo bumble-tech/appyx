@@ -6,7 +6,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
-import com.bumble.appyx.interactions.core.AppyxComponent
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.sample.SampleElement
@@ -19,7 +19,7 @@ import kotlin.math.roundToInt
  * For real-life use-cases use the [Children] wrapper directly.
  */
 @Composable
-fun <InteractionTarget : Any, ModelState : Any> SampleAppyxComponent(
+fun <InteractionTarget : Any, ModelState : Any> SampleAppyxContainer(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     modifier: Modifier = Modifier,
     clipToBounds: Boolean = false,
@@ -27,7 +27,7 @@ fun <InteractionTarget : Any, ModelState : Any> SampleAppyxComponent(
         SampleElement(colors = colors, element = element)
     },
 ) {
-    AppyxComponent(
+    AppyxInteractionsContainer(
         appyxComponent = appyxComponent,
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),

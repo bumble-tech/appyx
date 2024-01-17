@@ -27,7 +27,7 @@ class MainActivity : NodeActivity() {
                     integrationPoint = appyxV2IntegrationPoint,
                 ) {
                     MosaicNode(
-                        buildContext = it,
+                        nodeContext = it,
                         MosaicConfig.MOSAIC1
                     )
                 }

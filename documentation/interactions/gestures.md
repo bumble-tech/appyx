@@ -329,25 +329,21 @@ Here's an example that uses a `completionThreshold` value of `0.15f` (15%). Noti
 You can connect your gesture detection to your [AppyxComponent](appyxcomponent.md) in client code such as:
 
 ```kotlin
-@Composable
-fun SomeComposable() {
-    val appyxComponent = remember {
-        SomeAppyxComponent(
-            // Required
-            model = SomeTransitionModel(/*...*/),
-            visualisation = { SomeVisualisation(/*...*/) } ,
-            
-            // Optional
-            animationSpec = spring(stiffness = Spring.StiffnessLow),
-            gestureFactory = { SomeVisualisation.Gestures(/*...*/) },
-            gestureSettleConfig = GestureSettleConfig(
-                completionThreshold = 0.5f,
-                completeGestureSpec = spring(),
-                revertGestureSpec = spring(),
-            ),
-        )
-    }
-}
+val appyxComponent = 
+    SomeAppyxComponent(
+        // Required
+        model = SomeTransitionModel(/*...*/),
+        visualisation = { SomeVisualisation(/*...*/) } ,
+        
+        // Optional
+        animationSpec = spring(stiffness = Spring.StiffnessLow),
+        gestureFactory = { SomeVisualisation.Gestures(/*...*/) },
+        gestureSettleConfig = GestureSettleConfig(
+            completionThreshold = 0.5f,
+            completeGestureSpec = spring(),
+            revertGestureSpec = spring(),
+        ),
+    )
 ```
 
 Note that as stated above, gestures are usually come hand in hand with a specific visual representation, but you're not strictly limited to using the same ones. For example, you could use a combination of `SpotlightFader` + `SpotlightSlider.Gestures` to have cross-fading visuals controlled by swiping gestures.  

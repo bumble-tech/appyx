@@ -6,12 +6,12 @@ import androidx.compose.ui.Modifier
 object EmptyNodeView : NodeView {
 
     @Composable
-    override fun View(modifier: Modifier) = Unit
+    override fun Content(modifier: Modifier) = Unit
 }
 
-class EmptyParentNodeView<InteractionTarget : Any> : ParentNodeView<InteractionTarget> {
+class EmptyParentNodeView<NavTarget : Any> : ParentNodeView<NavTarget> {
 
     @Composable
-    override fun ParentNode<InteractionTarget>.NodeView(modifier: Modifier) = Unit
+    override fun ParentNode<NavTarget>.NodeView(modifier: Modifier) = Unit
 
 }

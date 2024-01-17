@@ -22,7 +22,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 class Puzzle15Visualisation(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<Tile, Puzzle15Model.State, MutableUiState, TargetUiState>(
+) : BaseVisualisation<Tile, Puzzle15Model.State, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {
@@ -50,7 +50,7 @@ class Puzzle15Visualisation(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
     class Gestures(
         bounds: TransitionBounds,

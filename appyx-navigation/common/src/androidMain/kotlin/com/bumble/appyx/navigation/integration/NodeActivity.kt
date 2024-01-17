@@ -3,7 +3,6 @@ package com.bumble.appyx.navigation.integration
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPointProvider
 
 /**
  * Helper class for root [Node] integration into projects using [AppCompatActivity].

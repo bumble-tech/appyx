@@ -1,5 +1,4 @@
 @file:Suppress("MatchingDeclarationName")
-
 package com.bumble.appyx.interactions.widgets
 
 import androidx.compose.animation.core.Spring
@@ -19,15 +18,15 @@ import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.next
 import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
+import com.bumble.appyx.demos.common.widget.CalendarWidget
+import com.bumble.appyx.demos.common.widget.TimerWidget
+import com.bumble.appyx.demos.common.widget.WeatherWidget
 import com.bumble.appyx.interactions.Events
-import com.bumble.appyx.interactions.core.AppyxComponent
 import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.widgets.ui.WidgetsStack3D
-import com.bumble.appyx.samples.common.widget.CalendarWidget
-import com.bumble.appyx.samples.common.widget.TimerWidget
-import com.bumble.appyx.samples.common.widget.WeatherWidget
 import kotlinx.coroutines.flow.Flow
 
 enum class WidgetsType {
@@ -95,7 +94,7 @@ private fun WidgetsUi(
     screenHeightPx: Int,
     modifier: Modifier = Modifier,
 ) {
-    AppyxComponent(
+    AppyxInteractionsContainer(
         clipToBounds = false,
         appyxComponent = spotlight,
         modifier = modifier

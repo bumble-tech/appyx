@@ -10,8 +10,8 @@ import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
 import com.bumble.appyx.navigation.Appyx
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPointStub
+import com.bumble.appyx.navigation.integration.IntegrationPoint
+import com.bumble.appyx.navigation.integration.IntegrationPointStub
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.LifecycleLogger
@@ -19,7 +19,7 @@ import com.bumble.appyx.navigation.lifecycle.LocalCommonLifecycleOwner
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.plugin.Destroyable
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.bumble.appyx.navigation.plugin.NodeReadyObserver
@@ -36,17 +36,17 @@ import kotlin.native.HiddenFromObjC
 @Suppress("TooManyFunctions")
 @Stable
 open class Node internal constructor(
-    private val buildContext: BuildContext,
+    private val nodeContext: NodeContext,
     val view: NodeView = EmptyNodeView,
     private val retainedInstanceStore: RetainedInstanceStore,
     plugins: List<Plugin> = emptyList()
 ) : NodeLifecycle, NodeView by view {
 
     constructor(
-        buildContext: BuildContext,
+        nodeContext: NodeContext,
         view: NodeView = EmptyNodeView,
         plugins: List<Plugin> = emptyList()
-    ) : this(buildContext, view, RetainedInstanceStore, plugins)
+    ) : this(nodeContext, view, RetainedInstanceStore, plugins)
 
     @Suppress("LeakingThis") // Implemented in the same way as in androidx.Fragment
     private val nodeLifecycle = NodeLifecycleImpl(this)
@@ -54,12 +54,12 @@ open class Node internal constructor(
     private var wasBuilt = false
 
     val id: String
-        get() = buildContext.identifier
+        get() = nodeContext.identifier
 
     val plugins: List<Plugin> = plugins + listOfNotNull(this as? Plugin)
 
     val ancestryInfo: AncestryInfo =
-        buildContext.ancestryInfo
+        nodeContext.ancestryInfo
 
     val isRoot: Boolean =
         ancestryInfo == AncestryInfo.Root
@@ -119,7 +119,7 @@ open class Node internal constructor(
             LocalCommonLifecycleOwner provides this,
         ) {
             DerivedSetup()
-            View(modifier)
+            Content(modifier)
         }
     }
 
@@ -164,7 +164,7 @@ open class Node internal constructor(
     }
 
     protected open fun onSaveInstanceState(state: MutableSavedStateMap) {
-        buildContext.onSaveInstanceState(state)
+        nodeContext.onSaveInstanceState(state)
     }
 
     fun finish() {

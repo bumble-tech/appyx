@@ -1,5 +1,5 @@
 target 'iosApp' do
   use_frameworks!
-  platform :ios, '14.1'
+  platform :ios, '17.0'
   pod 'ios', :path => '../ios'
 end

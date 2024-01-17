@@ -10,7 +10,7 @@ import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class BackStackSlider<InteractionTarget : Any>(
     uiContext: UiContext,
-) : BaseVisualisation<InteractionTarget, BackStackModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, BackStackModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
 ) {
 
@@ -47,5 +47,5 @@ class BackStackSlider<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 }
