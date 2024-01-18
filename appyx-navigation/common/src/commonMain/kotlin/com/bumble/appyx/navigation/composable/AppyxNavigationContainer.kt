@@ -34,7 +34,8 @@ fun <NavTarget : Any, ModelState : Any> AppyxNavigationContainer(
     val screenWidthPx = (LocalScreenSize.current.widthDp * density.density).value.roundToInt()
     val screenHeightPx = (LocalScreenSize.current.heightDp * density.density).value.roundToInt()
     val node = LocalNode.current as? Node<NavTarget>
-        ?: error("AppyxNavigationContainer called from outside the expected Node tree; LocalNode.current=${LocalNode.current}")
+        ?: error("AppyxNavigationContainer called from outside the expected Node tree;" +
+            "LocalNode.current=${LocalNode.current}")
 
         AppyxInteractionsContainer(
             appyxComponent,
