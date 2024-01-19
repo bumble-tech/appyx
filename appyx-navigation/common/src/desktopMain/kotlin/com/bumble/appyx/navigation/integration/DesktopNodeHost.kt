@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
- * Composable function to host [Node].
+ * Composable function to host [Node<*>].
  *
  * This convenience wrapper uses [WindowState] to provide [ScreenSize] and provides an
  * [OnBackPressedDispatcherOwner] hooked up to the [.onBackPressedEvents] flow to simplify
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> DesktopNodeHost(
+fun <N : Node<*>> DesktopNodeHost(
     windowState: WindowState,
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,

@@ -27,7 +27,7 @@ This allows you to make your app's business logic also composable by leveraging 
 
 ## Parent nodes, child nodes
 
-`ParentNodes` can have other `Nodes` as children. This means you can represent your whole application as a tree of Appyx nodes.
+`Nodes` can have other `Nodes` as children. This means you can represent your whole application as a tree of Appyx nodes.
 
 <img src="https://i.imgur.com/iwSxuZi.png" width="450">
 
@@ -36,7 +36,7 @@ You can go as granular or as high-level as it fits you. This allows to keep the 
 
 ## ChildAware API
 
-A `ParentNode` can react to dynamically added child `Nodes` in the tree: [ChildAware API](../features/childaware.md)
+A `Node` can react to dynamically added child `Nodes` in the tree: [ChildAware API](../features/childaware.md)
 
 
 ## Navigation in the tree
@@ -58,7 +58,7 @@ See [Implicit navigation](implicit-navigation.md) and [Explicit navigation](expl
 
 `AppyxComponent` operations will typically result in:
 
-- Adding or removing child `Nodes` of a `ParentNode`
+- Adding or removing child `Nodes` of a `Node`
 - Move them on and off the screen
 - Change their states
 
@@ -69,7 +69,7 @@ As an illustration:
 Here:
 
 - `Back stack` illustrates adding and removing child `Nodes`
-- `Tiles` illustrates changing the state of children and removing them from the `ParentNode`
+- `Tiles` illustrates changing the state of children and removing them from the `Node`
 
 These are just two examples, you're of course not limited to using them.
 

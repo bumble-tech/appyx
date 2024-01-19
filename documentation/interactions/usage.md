@@ -102,7 +102,7 @@ For client code usage they're almost identical. However, you should always use t
 
 Also note:
 
-- This composable is only accessible inside of a `ParentNode`.
+- This composable is only accessible inside of a `Node`.
 - You should use it inside the `View` composable.
 - You don't need to specify screen dimensions.
 
@@ -110,7 +110,7 @@ Also note:
 ```kotlin
 class YourNode(
     /*...*/
-) : ParentNode<T> {
+) : Node<T> {
 
     @Composable
     override fun Content(modifier: Modifier) {

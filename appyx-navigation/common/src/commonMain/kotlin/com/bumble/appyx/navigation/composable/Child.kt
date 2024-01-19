@@ -6,10 +6,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.ParentNode
 
 @Composable
-fun <NavTarget : Any> ParentNode<NavTarget>.Child(
+fun <NavTarget : Any> Node<NavTarget>.Child(
     elementUiModel: ElementUiModel<NavTarget>,
     decorator: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
 ) {
@@ -25,7 +24,7 @@ fun <NavTarget : Any> ParentNode<NavTarget>.Child(
 }
 
 private class ChildRendererImpl<NavTarget : Any>(
-    private val node: Node,
+    private val node: Node<*>,
     private val elementUiModel: ElementUiModel<NavTarget>
 ) : ChildRenderer {
 

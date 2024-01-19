@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 
 /**
- * Composable function to host [Node].
+ * Composable function to host [Node<*>].
  *
  * This convenience wrapper provides an [OnBackPressedDispatcherOwner] hooked up to the
  * [.onBackPressedEvents] flow to simplify implementing the global "go back" functionality
@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
  */
 @Suppress("ComposableParamOrder")
 @Composable
-fun <N : Node> WebNodeHost(
+fun <N : Node<*>> WebNodeHost(
     screenSize: ScreenSize,
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,

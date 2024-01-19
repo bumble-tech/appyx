@@ -12,13 +12,13 @@ import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
 
 /**
- * Composable function to host [Node].
+ * Composable function to host [Node<*>].
  *
  * This wrapper uses [LocalConfiguration] to provide [ScreenSize] automatically.
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> NodeHost(
+fun <N : Node<*>> NodeHost(
     lifecycle: Lifecycle,
     integrationPoint: IntegrationPoint,
     modifier: Modifier = Modifier,

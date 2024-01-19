@@ -4,7 +4,7 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
@@ -25,23 +25,23 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
     private val customisations: NodeCustomisationDirectory,
     private val keepMode: ChildEntry.KeepMode,
 ) {
-    private lateinit var parentNode: ParentNode<NavTarget>
+    private lateinit var node: Node<NavTarget>
     private val _children =
         MutableStateFlow<Map<Element<NavTarget>, ChildEntry<NavTarget>>>(emptyMap())
     val children: StateFlow<ChildEntryMap<NavTarget>> = _children.asStateFlow()
 
-    fun launch(parentNode: ParentNode<NavTarget>) {
-        this.parentNode = parentNode
+    fun launch(node: Node<NavTarget>) {
+        this.node = node
         savedStateMap.restoreChildren()?.also { restoredMap ->
             _children.update { restoredMap }
             savedStateMap = null
         }
-        syncAppyxComponentWithChildren(parentNode)
+        syncAppyxComponentWithChildren(node)
     }
 
-    private fun syncAppyxComponentWithChildren(parentNode: ParentNode<NavTarget>) {
-        parentNode.lifecycle.coroutineScope.launch {
-            parentNode.appyxComponent.elements.collect { state ->
+    private fun syncAppyxComponentWithChildren(node: Node<NavTarget>) {
+        node.lifecycle.coroutineScope.launch {
+            node.appyxComponent.elements.collect { state ->
                 val appyxComponentKeepKeys: Set<Element<NavTarget>>
                 val appyxComponentSuspendKeys: Set<Element<NavTarget>>
                 val appyxComponentKeys: Set<Element<NavTarget>>
@@ -165,9 +165,9 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
 
     private fun childContext(savedState: SavedStateMap?): NodeContext =
         NodeContext(
-            ancestryInfo = AncestryInfo.Child(parentNode),
+            ancestryInfo = AncestryInfo.Child(node),
             savedStateMap = savedState,
-            customisations = customisations.getSubDirectoryOrSelf(parentNode::class),
+            customisations = customisations.getSubDirectoryOrSelf(node::class),
         )
 
     private fun childEntry(
@@ -180,7 +180,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
         } else {
             ChildEntry.Initialized(
                 key = key,
-                node = parentNode
+                node = node
                     .buildChildNode(key.interactionTarget, childContext(savedState))
                     .build()
             )
@@ -192,7 +192,7 @@ internal class ChildNodeCreationManager<NavTarget : Any>(
             is ChildEntry.Suspended ->
                 ChildEntry.Initialized(
                     key = key,
-                    node = parentNode.buildChildNode(
+                    node = node.buildChildNode(
                         navTarget = key.interactionTarget,
                         nodeContext = childContext(savedState),
                     ).build()

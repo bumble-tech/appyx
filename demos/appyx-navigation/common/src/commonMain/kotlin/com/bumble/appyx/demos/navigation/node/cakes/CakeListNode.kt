@@ -33,7 +33,6 @@ import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import kotlinx.coroutines.delay
@@ -56,7 +55,7 @@ class CakeListNode(
             visualisation = { SpotlightHeroDefaultVisualisation(it, model.currentState) },
             gestureFactory = { SpotlightHeroGestures(it) }
         ),
-) : ParentNode<NavTarget>(
+) : Node<NavTarget>(
     nodeContext = nodeContext,
     appyxComponent = spotlight
 ) {
@@ -75,7 +74,7 @@ class CakeListNode(
         ) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node<*> =
         when (navTarget) {
             is NavTarget.Backdrop -> CakeBackdropNode(nodeContext, navTarget.cake) {
                 toggleHeroMode()

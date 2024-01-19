@@ -26,7 +26,7 @@ import com.bumble.appyx.demos.navigation.node.checkout.ShippingMethod.Snail
 import com.bumble.appyx.demos.navigation.node.checkout.ShippingMethod.Teleportation
 import com.bumble.appyx.navigation.collections.toImmutableList
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 sealed class ShippingMethod(override val value: String): CheckoutFormField {
     object Pony : ShippingMethod("Pony express")
@@ -45,7 +45,7 @@ private val shippingMethods = listOf(
 class ShippingDetailsNode(
     nodeContext: NodeContext,
     private val onShippingConfirmed: () -> Unit,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
 

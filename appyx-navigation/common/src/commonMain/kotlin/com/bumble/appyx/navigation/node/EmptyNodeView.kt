@@ -3,8 +3,8 @@ package com.bumble.appyx.navigation.node
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-interface NodeView {
+class EmptyNodeView : NodeView {
 
     @Composable
-    fun Content(modifier: Modifier)
+    override fun Content(modifier: Modifier) = Unit
 }

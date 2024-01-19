@@ -26,7 +26,7 @@ import com.bumble.appyx.demos.navigation.node.checkout.PaymentOption.Monopoly
 import com.bumble.appyx.demos.navigation.node.checkout.PaymentOption.PiggyBank
 import com.bumble.appyx.navigation.collections.toImmutableList
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 sealed class PaymentOption(override val value: String) : CheckoutFormField {
     object Card : PaymentOption("Card")
@@ -45,7 +45,7 @@ private val paymentOptions = listOf(
 class PaymentNode(
     nodeContext: NodeContext,
     private val onPaymentConfirmed: () -> Unit,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
 
