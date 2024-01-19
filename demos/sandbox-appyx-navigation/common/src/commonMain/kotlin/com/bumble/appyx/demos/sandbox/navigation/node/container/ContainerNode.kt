@@ -16,7 +16,6 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.demos.sandbox.navigation.node.backstack.BackStackExamplesNode
-import com.bumble.appyx.demos.sandbox.navigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.demos.sandbox.navigation.node.container.ContainerNode.NavTarget
 import com.bumble.appyx.demos.sandbox.navigation.node.modal.ModalExamplesNode
 import com.bumble.appyx.demos.sandbox.navigation.node.permanentchild.PermanentChildNode
@@ -62,9 +61,6 @@ class ContainerNode(
         object ObservingTransitionsExample : NavTarget()
 
         @Parcelize
-        object BackStackExperimentDebug : NavTarget()
-
-        @Parcelize
         object BackStack : NavTarget()
 
         @Parcelize
@@ -89,7 +85,6 @@ class ContainerNode(
             )
 
             is NavTarget.BackStack -> BackStackExamplesNode(nodeContext)
-            is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(nodeContext)
             is NavTarget.Modal -> ModalExamplesNode(nodeContext)
             is NavTarget.PromoterExperiment -> PromoterNode(nodeContext)
         }
@@ -120,9 +115,6 @@ class ContainerNode(
                 }
                 TextButton(text = "Backstack Examples") {
                     backStack.push(NavTarget.BackStack)
-                }
-                TextButton(text = "Backstack Debug") {
-                    backStack.push(NavTarget.BackStackExperimentDebug)
                 }
                 TextButton(text = "Promoter") {
                     backStack.push(NavTarget.PromoterExperiment)
