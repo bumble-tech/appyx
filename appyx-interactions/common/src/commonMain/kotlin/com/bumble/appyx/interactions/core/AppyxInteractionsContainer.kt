@@ -50,6 +50,11 @@ import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 
 private val defaultExtraTouch = 48f.dp
 
+enum class GesturesRelation {
+    Container,
+    Element
+}
+
 @Suppress("LongMethod")
 @Composable
 fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
@@ -60,7 +65,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
-    isGestureBoundingBoxTransformed: Boolean = false,
+    gestureRelativeTo: GesturesRelation = GesturesRelation.Container,
     elementUi: @Composable BoxScope.(Element<InteractionTarget>) -> Unit = { _ ->
         Text(
             modifier = Modifier
@@ -136,7 +141,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
                                         }
                                     }
 
-                                    isGesturesEnabled && isGestureBoundingBoxTransformed ->
+                                    gestureRelativeTo == GesturesRelation.Element ->
                                         ElementWithGestureTransformedBoundingBox(
                                             appyxComponent = appyxComponent,
                                             containerSize = containerSize,
@@ -146,7 +151,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
                                             elementUi = elementUi
                                         )
 
-                                    isGesturesEnabled && !isGestureBoundingBoxTransformed ->
+                                    gestureRelativeTo == GesturesRelation.Container ->
                                         ElementWithGesture(
                                             appyxComponent = appyxComponent,
                                             elementUiModel = elementUiModel,

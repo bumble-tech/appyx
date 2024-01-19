@@ -138,8 +138,7 @@ fun <InteractionTarget : Any> TestDriveUi(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             appyxComponent = testDrive,
-            gestureValidator = gestureValidator,
-            isGestureBoundingBoxTransformed = true
+            gestureValidator = gestureValidator
         ) {
             Box(
                 modifier = Modifier

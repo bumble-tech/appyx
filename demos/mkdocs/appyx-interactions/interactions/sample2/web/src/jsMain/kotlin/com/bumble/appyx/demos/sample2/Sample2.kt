@@ -38,6 +38,7 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.sample2.InteractionTarget.Child1
 import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.core.GesturesRelation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 
@@ -144,7 +145,7 @@ fun <InteractionTarget : Any> ModelUi(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        isGestureBoundingBoxTransformed = true
+        gestureRelativeTo = GesturesRelation.Element
     ) {
         Box(
             modifier = Modifier
