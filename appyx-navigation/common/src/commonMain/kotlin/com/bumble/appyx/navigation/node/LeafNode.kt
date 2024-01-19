@@ -1,7 +1,7 @@
 package com.bumble.appyx.navigation.node
 
+import com.bumble.appyx.interactions.core.model.EmptyAppyxComponent
 import com.bumble.appyx.interactions.core.plugin.Plugin
-import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.modality.NodeContext
 
 open class LeafNode(
@@ -9,9 +9,7 @@ open class LeafNode(
     view: NodeView = EmptyNodeView(),
     plugins: List<Plugin> = listOf(),
 ) : Node<Nothing>(
-    appyxComponent = PermanentAppyxComponent(
-        savedStateMap = nodeContext.savedStateMap
-    ),
+    appyxComponent = EmptyAppyxComponent(),
     nodeContext = nodeContext,
     view = view,
     plugins = plugins,
