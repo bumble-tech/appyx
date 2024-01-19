@@ -45,7 +45,6 @@ fun SpotlightExperimentDebug(modifier: Modifier = Modifier) {
             model = model,
             visualisation = { SpotlightSlider(it, model.currentState) },
             gestureFactory = { SpotlightSlider.Gestures(it) },
-            isDebug = true
         )
     }
 

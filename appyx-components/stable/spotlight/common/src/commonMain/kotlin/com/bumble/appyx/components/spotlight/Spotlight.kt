@@ -28,7 +28,6 @@ open class Spotlight<InteractionTarget : Any>(
         revertGestureSpec = animationSpec,
     ),
     disableAnimations: Boolean = false,
-    isDebug: Boolean = false
 ) : BaseAppyxComponent<InteractionTarget, SpotlightModel.State<InteractionTarget>>(
     scope = scope,
     model = model,

@@ -30,7 +30,6 @@ class Modal<InteractionTarget : Any>(
         revertGestureSpec = animationSpec,
     ),
     disableAnimations: Boolean = false,
-    isDebug: Boolean = false,
 ) : BaseAppyxComponent<InteractionTarget, ModalModel.State<InteractionTarget>>(
     scope = scope,
     model = model,

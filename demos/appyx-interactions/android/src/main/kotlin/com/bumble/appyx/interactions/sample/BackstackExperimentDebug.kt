@@ -39,7 +39,6 @@ fun BackStackExperimentDebug(modifier: Modifier = Modifier) {
                 savedStateMap = null
             ),
             visualisation = { BackStackFader(it) },
-            isDebug = false
         )
     }
 
