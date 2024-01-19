@@ -51,9 +51,6 @@ class ContainerNode(
         @Parcelize
         object PermanentChild : NavTarget()
 
-//        @Parcelize
-//        object DatingCards : NavTarget()
-
         @Parcelize
         object SpotlightExperiment : NavTarget()
 
@@ -78,7 +75,6 @@ class ContainerNode(
             }
 
             is NavTarget.PermanentChild -> PermanentChildNode(nodeContext)
-//            is NavTarget.DatingCards -> DatingCardsNode(nodeContext)
             is NavTarget.SpotlightExperiment -> SpotlightNode(nodeContext)
             is NavTarget.ObservingTransitionsExample -> SpotlightObserveTransitionsExampleNode(
                 nodeContext
@@ -104,9 +100,6 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-//                TextButton(text = "Dating Cards") {
-////                    backStack.push(NavTarget.DatingCards)
-//                }
                 TextButton(text = "Spotlight") {
                     backStack.push(NavTarget.SpotlightExperiment)
                 }
