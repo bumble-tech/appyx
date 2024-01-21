@@ -7,11 +7,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.platform.LocalOnBackPressedDispatcherOwner
 import com.bumble.appyx.navigation.platform.OnBackPressedDispatcher
 import com.bumble.appyx.navigation.platform.OnBackPressedDispatcherOwner
-import com.bumble.appyx.navigation.platform.PlatformLifecycleRegistry
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 import kotlinx.cinterop.ExperimentalForeignApi
@@ -27,12 +27,10 @@ fun <N : Node<*>> IosNodeHost(
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,
     integrationPoint: IntegrationPoint,
+    lifecycle: Lifecycle,
     customisations: NodeCustomisationDirectory = remember { NodeCustomisationDirectoryImpl(null) },
     factory: NodeFactory<N>,
 ) {
-    val platformLifecycleRegistry = remember {
-        PlatformLifecycleRegistry()
-    }
     val mainScreen = UIScreen.mainScreen
     val screenBounds = mainScreen.bounds
 
@@ -58,7 +56,7 @@ fun <N : Node<*>> IosNodeHost(
 
     CompositionLocalProvider(LocalOnBackPressedDispatcherOwner provides onBackPressedDispatcherOwner) {
         NodeHost(
-            lifecycle = platformLifecycleRegistry,
+            lifecycle = lifecycle,
             integrationPoint = integrationPoint,
             modifier = modifier,
             customisations = customisations,
