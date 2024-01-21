@@ -21,6 +21,7 @@ kotlin {
         framework {
             baseName = "ios"
             isStatic = true
+            export(project(":appyx-navigation:appyx-navigation"))
         }
         license = "Apache License, Version 2.0"
         authors = "https://github.com/bumble-tech/"
@@ -36,6 +37,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
                 implementation(project(":demos:appyx-navigation:common"))
+                api(project(":appyx-navigation:appyx-navigation"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)

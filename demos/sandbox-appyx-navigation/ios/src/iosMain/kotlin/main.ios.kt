@@ -19,6 +19,7 @@ import com.bumble.appyx.demos.sandbox.navigation.node.container.MainNavNode
 import com.bumble.appyx.demos.sandbox.navigation.ui.AppyxSampleAppTheme
 import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.integration.MainIntegrationPoint
+import com.bumble.appyx.navigation.platform.LifecycleHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -29,7 +30,7 @@ val backEvents: Channel<Unit> = Channel()
 private val integrationPoint = MainIntegrationPoint()
 
 @Suppress("FunctionNaming")
-fun MainViewController() = ComposeUIViewController {
+fun MainViewController(lifecycleHelper: LifecycleHelper) = ComposeUIViewController {
 
     AppyxSampleAppTheme {
         val coroutineScope = rememberCoroutineScope()
@@ -45,7 +46,8 @@ fun MainViewController() = ComposeUIViewController {
                     IosNodeHost(
                         modifier = Modifier,
                         onBackPressedEvents = backEvents.receiveAsFlow(),
-                        integrationPoint = remember { integrationPoint }
+                        lifecycle = lifecycleHelper.lifecycle,
+                        integrationPoint = remember { integrationPoint },
                     ) { nodeContext ->
                         MainNavNode(
                             nodeContext = nodeContext,

@@ -12,6 +12,7 @@ import com.bumble.appyx.demos.navigation.node.root.RootNode
 import com.bumble.appyx.demos.navigation.ui.AppyxSampleAppTheme
 import com.bumble.appyx.navigation.integration.IosNodeHost
 import com.bumble.appyx.navigation.integration.MainIntegrationPoint
+import com.bumble.appyx.navigation.platform.LifecycleHelper
 import kotlinx.coroutines.flow.flowOf
 import platform.Foundation.NSURL
 
@@ -19,7 +20,7 @@ private val integrationPoint = MainIntegrationPoint()
 private val navigator = Navigator()
 
 @Suppress("FunctionNaming")
-fun MainViewController() = ComposeUIViewController {
+fun MainViewController(lifecycleHelper: LifecycleHelper) = ComposeUIViewController {
     AppyxSampleAppTheme {
         Scaffold(
             modifier = Modifier
@@ -33,7 +34,8 @@ fun MainViewController() = ComposeUIViewController {
                         IosNodeHost(
                             modifier = Modifier,
                             onBackPressedEvents = flowOf(),
-                            integrationPoint = integrationPoint
+                            integrationPoint = integrationPoint,
+                            lifecycle = lifecycleHelper.lifecycle,
                         ) { nodeContext ->
                             RootNode(
                                 nodeContext = nodeContext,

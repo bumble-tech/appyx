@@ -21,6 +21,7 @@ kotlin {
         framework {
             baseName = "ios"
             isStatic = true
+            export(project(":appyx-navigation:appyx-navigation"))
         }
     }
 
@@ -34,6 +35,7 @@ kotlin {
             iosSimulatorArm64Main.dependsOn(this)
             dependencies {
                 implementation(project(":demos:sandbox-appyx-navigation:common"))
+                api(project(":appyx-navigation:appyx-navigation"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
