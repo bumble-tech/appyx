@@ -180,15 +180,18 @@ fun main() {
 
 ### iOS
 
+For a complete example on how to pass a `LifecycleHelper` class to `MainViewController` please refer to our [multiplatform starter kit](https://github.com/bumble-tech/appyx-starter-kit/tree/a7331be581a6727597eab35744fe1bcd26f3fa87/iosApp/iosApp)
+
 ```kotlin
 val backEvents: Channel<Unit> = Channel()
 
-fun MainViewController() = ComposeUIViewController {
+fun MainViewController(lifecycleHelper: LifecycleHelper) = ComposeUIViewController {
     YourAppTheme {
         IosNodeHost(
             modifier = Modifier,
+            lifecycle = lifecycleHelper.lifecycle,
             // See back handling section in the docs below!
-            onBackPressedEvents = backEvents.receiveAsFlow()
+            onBackPressedEvents = backEvents.receiveAsFlow(),
         ) {
             RootNode(
                nodeContext = it
