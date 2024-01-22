@@ -14,7 +14,6 @@ import com.bumble.appyx.interactions.core.plugin.Plugin
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
@@ -34,7 +33,7 @@ class RootNode(
         visualisation = { BackStackFader(it) }
     ),
     plugins: List<Plugin> = listOf(),
-) : ParentNode<NavTarget>(
+) : Node<NavTarget>(
     nodeContext = nodeContext,
     appyxComponent = backStack,
     plugins = plugins
@@ -54,7 +53,7 @@ class RootNode(
         ) : NavTarget()
     }
 
-    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node =
+    override fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node<*> =
         when (navTarget) {
             is NavTarget.LoggedOut -> LoggedOutNode(
                 nodeContext = nodeContext,

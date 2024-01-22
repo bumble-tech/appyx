@@ -23,7 +23,7 @@ import platform.UIKit.UIScreen
 @OptIn(ExperimentalForeignApi::class)
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> IosNodeHost(
+fun <N : Node<*>> IosNodeHost(
     onBackPressedEvents: Flow<Unit>,
     modifier: Modifier = Modifier,
     integrationPoint: IntegrationPoint,

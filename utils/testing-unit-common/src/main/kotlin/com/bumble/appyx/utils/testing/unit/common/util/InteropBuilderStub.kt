@@ -8,16 +8,16 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class InteropBuilderStub<P>(
-    val delegate: (NodeContext, P) -> Node = { _, _ -> NodeStub() },
+    val delegate: (NodeContext, P) -> Node<*> = { _, _ -> NodeStub() },
 ) : Builder<P>() {
 
-    var lastNode: Node? = null
+    var lastNode: Node<*>? = null
         private set
 
     var lastParam: P? = null
         private set
 
-    override fun build(nodeContext: NodeContext, payload: P): Node =
+    override fun build(nodeContext: NodeContext, payload: P): Node<*> =
         delegate(nodeContext, payload).also {
             lastNode = it
             lastParam = payload

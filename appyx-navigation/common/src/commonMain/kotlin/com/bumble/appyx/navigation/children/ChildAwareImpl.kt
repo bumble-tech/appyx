@@ -4,8 +4,8 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed
+import com.bumble.appyx.navigation.node.LeafNode
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.withPrevious
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
-class ChildAwareImpl<N : Node> : ChildAware<N> {
+class ChildAwareImpl<N : Node<*>> : ChildAware<N> {
 
     private val callbacks: MutableList<ChildAwareCallbackInfo> = ArrayList()
 
@@ -29,11 +29,11 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         this.node = node
         lifecycle = node.lifecycle
         coroutineScope = lifecycle.coroutineScope
-        if (node is ParentNode<*>) {
+        if (node is LeafNode) {
+            children = MutableStateFlow(emptyMap())
+        } else {
             children = node.children
             coroutineScope.launch { observeChanges() }
-        } else {
-            children = MutableStateFlow(emptyMap())
         }
     }
 
@@ -43,7 +43,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
             .withPrevious()
             .collect { (previous, current) ->
                 val newNodes = current - previous.orEmpty()
-                val visitedSet = HashSet<Node>()
+                val visitedSet = HashSet<Node<*>>()
                 newNodes.forEach { node ->
                     notifyWhenChanged(node, current, visitedSet)
                     visitedSet.add(node)
@@ -78,7 +78,7 @@ class ChildAwareImpl<N : Node> : ChildAware<N> {
         callback.onRegistered(getCreatedNodes(children.value))
     }
 
-    private fun notifyWhenChanged(child: Node, nodes: Collection<Node>, ignore: Set<Node>) {
+    private fun notifyWhenChanged(child: Node<*>, nodes: Collection<Node<*>>, ignore: Set<Node<*>>) {
         for (callback in callbacks) {
             when (callback) {
                 is ChildAwareCallbackInfo.Double<*, *> -> callback.onNewNodeAppeared(

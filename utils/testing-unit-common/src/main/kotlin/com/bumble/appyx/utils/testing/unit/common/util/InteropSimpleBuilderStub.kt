@@ -8,13 +8,13 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class InteropSimpleBuilderStub(
-    val delegate: (NodeContext) -> Node = { _ -> NodeStub() },
+    val delegate: (NodeContext) -> Node<*> = { _ -> NodeStub() },
 ) : SimpleBuilder() {
 
-    var lastNode: Node? = null
+    var lastNode: Node<*>? = null
         private set
 
-    override fun build(nodeContext: NodeContext): Node =
+    override fun build(nodeContext: NodeContext): Node<*> =
         delegate(nodeContext).also {
             lastNode = it
         }

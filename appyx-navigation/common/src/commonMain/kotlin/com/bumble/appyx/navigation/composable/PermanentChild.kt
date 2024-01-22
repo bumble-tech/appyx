@@ -8,11 +8,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.mapState
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import kotlinx.coroutines.flow.SharingStarted
 
 @Composable
-fun <NavTarget : Any> ParentNode<NavTarget>.PermanentChild(
+fun <NavTarget : Any> Node<NavTarget>.PermanentChild(
     permanentAppyxComponent: PermanentAppyxComponent<NavTarget>,
     navTarget: NavTarget,
     modifier: Modifier = Modifier

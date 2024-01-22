@@ -62,11 +62,11 @@ kotlin {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
-    add("kspAndroid", project(":ksp:mutable-ui-processor"))
-    add("kspDesktop", project(":ksp:mutable-ui-processor"))
-    add("kspJs", project(":ksp:mutable-ui-processor"))
-    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
-    add("kspIosX64", project(":ksp:mutable-ui-processor"))
-    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
+    add("kspCommonMainMetadata", project(":ksp:appyx-processor"))
+    add("kspAndroid", project(":ksp:appyx-processor"))
+    add("kspDesktop", project(":ksp:appyx-processor"))
+    add("kspJs", project(":ksp:appyx-processor"))
+    add("kspIosArm64", project(":ksp:appyx-processor"))
+    add("kspIosX64", project(":ksp:appyx-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:appyx-processor"))
 }
