@@ -2,7 +2,7 @@
 
 [versions]
 accompanist = "0.28.0"
-agp = "8.1.2"
+agp = "8.1.4"
 androidCompileSdk = "34"
 androidMinSdk = "21"
 androidTargetSdk = "32"
