@@ -30,6 +30,10 @@ dependencyAnalysis {
         all {
             onIncorrectConfiguration {
                 severity("fail")
+                exclude(
+                    // Should be ignored as it's raised in many modules as misconfigured.
+                    "org.jetbrains.kotlin:kotlin-stdlib",
+                )
             }
             onUnusedDependencies {
                 severity("fail")
@@ -48,6 +52,9 @@ dependencyAnalysis {
 
                     // This is used in:demos:appyx-interactions:android. But raised as unused.
                     "androidx.compose.material:material-icons-extended",
+
+                    // Should be ignored as it's raised in many modules as unused.
+                    "org.jetbrains.kotlin:kotlin-stdlib",
                 )
             }
         }
