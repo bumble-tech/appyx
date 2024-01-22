@@ -24,7 +24,6 @@ dependencies {
 
     androidTestImplementation(composeBom)
     androidTestImplementation(project(":utils:testing-ui-activity"))
-    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
 }

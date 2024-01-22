@@ -17,7 +17,6 @@ dependencies {
     implementation(project(":appyx-components:experimental:cards:cards"))
     implementation(composeBom)
 
-    androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.junit.api)
     androidTestImplementation(libs.compose.ui.test.manifest)
 }
