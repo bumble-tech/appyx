@@ -19,61 +19,61 @@ plugins {
     id("appyx-collect-sarif")
     id("com.android.application") version libs.versions.agp.get() apply false
     id("com.google.devtools.ksp") version libs.versions.ksp.get() apply false
-//    id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
+    id("com.autonomousapps.dependency-analysis") version libs.versions.dependencyAnalysis.get()
     id("org.jetbrains.compose") version libs.versions.composePlugin.get() apply false
     id("org.jetbrains.kotlin.android") version libs.versions.kotlin.get() apply false
     id("com.android.test") version libs.versions.agp.get() apply false
 }
 
-//dependencyAnalysis {
-//    issues {
-//        all {
-//            onIncorrectConfiguration {
-//                severity("fail")
-//                exclude(
-//                    // Should be ignored as it's raised in many modules as misconfigured.
-//                    "org.jetbrains.kotlin:kotlin-stdlib",
-//                )
-//            }
-//            onUnusedDependencies {
-//                severity("fail")
-//
-//                exclude(
-//                    // Needed for compose '@Preview'. The annotation is actually within
-//                    // androidx.compose.ui:ui-tooling-preview, hence the need to exclude.
-//                    "androidx.compose.ui:ui-tooling",
-//
-//                    // This is used to add the testing activity to the debug manifest
-//                    // However since not code is referenced, it is raised as unused.
-//                    ":utils:testing-ui-activity",
-//
-//                    // Convenience for convention plugins to avoid needing to define this.
-//                    "org.junit.jupiter:junit-jupiter-api",
-//
-//                    // This is used in:demos:appyx-interactions:android. But raised as unused.
-//                    "androidx.compose.material:material-icons-extended",
-//
-//                    // Should be ignored as it's raised in many modules as unused.
-//                    "org.jetbrains.kotlin:kotlin-stdlib",
-//                )
-//            }
-//        }
-//        project(":utils:testing-junit4") {
-//            onUnusedDependencies {
-//                severity("fail")
-//                // Not used by the module, but exposed via api to avoid adding two dependencies.
-//                exclude(":utils:testing-unit-common")
-//            }
-//        }
-//        project(":utils:testing-junit5") {
-//            onUnusedDependencies {
-//                severity("fail")
-//                // Not used by the module, but exposed via api to avoid adding two dependencies.
-//                exclude(":utils:testing-unit-common")
-//            }
-//        }
-//    }
-//}
+dependencyAnalysis {
+    issues {
+        all {
+            onIncorrectConfiguration {
+                severity("fail")
+                exclude(
+                    // Should be ignored as it's raised in many modules as misconfigured.
+                    "org.jetbrains.kotlin:kotlin-stdlib",
+                )
+            }
+            onUnusedDependencies {
+                severity("fail")
+
+                exclude(
+                    // Needed for compose '@Preview'. The annotation is actually within
+                    // androidx.compose.ui:ui-tooling-preview, hence the need to exclude.
+                    "androidx.compose.ui:ui-tooling",
+
+                    // This is used to add the testing activity to the debug manifest
+                    // However since not code is referenced, it is raised as unused.
+                    ":utils:testing-ui-activity",
+
+                    // Convenience for convention plugins to avoid needing to define this.
+                    "org.junit.jupiter:junit-jupiter-api",
+
+                    // This is used in:demos:appyx-interactions:android. But raised as unused.
+                    "androidx.compose.material:material-icons-extended",
+
+                    // Should be ignored as it's raised in many modules as unused.
+                    "org.jetbrains.kotlin:kotlin-stdlib",
+                )
+            }
+        }
+        project(":utils:testing-junit4") {
+            onUnusedDependencies {
+                severity("fail")
+                // Not used by the module, but exposed via api to avoid adding two dependencies.
+                exclude(":utils:testing-unit-common")
+            }
+        }
+        project(":utils:testing-junit5") {
+            onUnusedDependencies {
+                severity("fail")
+                // Not used by the module, but exposed via api to avoid adding two dependencies.
+                exclude(":utils:testing-unit-common")
+            }
+        }
+    }
+}
 
 allprojects {
     configurations.all {
