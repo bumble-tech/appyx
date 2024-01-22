@@ -14,9 +14,8 @@ appyx {
 dependencies {
     val composeBom = platform(libs.compose.bom)
 
-    api(composeBom)
-    api(project(":appyx-navigation:appyx-navigation"))
-    api(project(":appyx-components:stable:backstack:backstack"))
+    implementation(project(":appyx-navigation:appyx-navigation"))
+    implementation(project(":appyx-components:stable:backstack:backstack"))
 
     implementation(composeBom)
     implementation(libs.androidx.navigation.compose)
@@ -24,6 +23,7 @@ dependencies {
 
     androidTestImplementation(composeBom)
     androidTestImplementation(project(":utils:testing-ui-activity"))
+    androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.ui.test.junit4)
 }

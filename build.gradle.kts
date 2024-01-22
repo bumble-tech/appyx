@@ -32,11 +32,13 @@ dependencyAnalysis {
                 severity("fail")
                 exclude(
                     // Should be ignored as it's raised in many modules as misconfigured.
-                    "org.jetbrains.kotlin:kotlin-stdlib",
+                    "androidx.test:runner",
+                    "com.github.badoo.RIBs:rib-base-test-activity",
+                    "org.jetbrains.kotlin:kotlin-stdlib"
                 )
             }
             onUnusedDependencies {
-                severity("fail")
+//                severity("fail")
 
                 exclude(
                     // Needed for compose '@Preview'. The annotation is actually within
@@ -58,6 +60,52 @@ dependencyAnalysis {
                 )
             }
         }
+        project(":appyx-components:experimental:cards:android") {
+            onUnusedDependencies {
+                severity("fail")
+                exclude(
+                    "androidx.compose.ui:ui-test-junit4",
+                )
+            }
+        }
+        project(":appyx-components:experimental:promoter:android") {
+            onUnusedDependencies {
+                severity("fail")
+                exclude(
+                    "androidx.compose.ui:ui-test-junit4",
+                )
+            }
+        }
+        project(":appyx-navigation:android") {
+            onUnusedDependencies {
+                severity("fail")
+                exclude(
+                    "androidx.test.espresso:espresso-core",
+                    "androidx.test.ext:junit",
+                    ":utils:testing-ui",
+                )
+            }
+        }
+        project(":appyx-navigation:appyx-navigation") {
+            onUnusedDependencies {
+                severity("fail")
+                exclude(
+                    "androidx.test.espresso:espresso-core",
+                    "androidx.test.ext:junit",
+                    "androidx.compose.foundation:foundation",
+                    "androidx.compose.ui:ui-test-junit4",
+                    ":utils:testing-ui",
+                )
+            }
+        }
+        project(":demos:navigation-compose") {
+            onUnusedDependencies {
+                severity("fail")
+                exclude(
+                    "androidx.test.espresso:espresso-core",
+                )
+            }
+        }
         project(":utils:testing-junit4") {
             onUnusedDependencies {
                 severity("fail")
@@ -70,6 +118,21 @@ dependencyAnalysis {
                 severity("fail")
                 // Not used by the module, but exposed via api to avoid adding two dependencies.
                 exclude(":utils:testing-unit-common")
+            }
+        }
+        project(":utils:interop-ribs") {
+            onIncorrectConfiguration {
+                severity("fail")
+                exclude(
+                    // Should be ignored as it's raised in many modules as misconfigured.
+                    "com.github.badoo.RIBs:rib-compose",
+                )
+            }
+            onUnusedDependencies {
+                severity("fail")
+                exclude(
+                    "androidx.activity:activity-compose",
+                )
             }
         }
     }

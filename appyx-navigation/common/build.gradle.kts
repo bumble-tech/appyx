@@ -92,5 +92,10 @@ android {
         api(composeBom)
 
         androidTestImplementation(composeBom)
+        androidTestImplementation(libs.androidx.test.espresso.core)
+        androidTestImplementation(libs.androidx.test.junit)
+        androidTestImplementation(libs.compose.ui.test.junit4)
+        androidTestImplementation(libs.compose.foundation)
+        androidTestImplementation(project(":utils:testing-ui"))
     }
 }

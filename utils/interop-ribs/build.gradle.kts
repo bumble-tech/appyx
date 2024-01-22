@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     androidTestImplementation(composeBom)
+    androidTestImplementation(libs.androidx.activity.compose)
     androidTestImplementation(libs.androidx.test.espresso.core)
     androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.foundation.layout)

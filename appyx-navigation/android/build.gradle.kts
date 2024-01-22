@@ -22,6 +22,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.java8)
 
     androidTestImplementation(composeBom)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    androidTestImplementation(libs.androidx.test.junit)
     androidTestImplementation(libs.compose.foundation)
     androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(project(":utils:testing-ui"))
 }
