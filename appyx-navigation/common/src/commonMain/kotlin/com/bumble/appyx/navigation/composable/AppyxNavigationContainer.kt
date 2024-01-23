@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.GesturesReferencePoint
+import com.bumble.appyx.interactions.core.GestureReferencePoint
 import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.navigation.integration.LocalScreenSize
@@ -26,7 +26,7 @@ fun <NavTarget : Any, ModelState : Any> AppyxNavigationContainer(
     clipToBounds: Boolean = false,
     gestureValidator: GestureValidator = GestureValidator.defaultValidator,
     gestureExtraTouchArea: Dp = defaultExtraTouch,
-    gestureRelativeTo: GesturesReferencePoint = GesturesReferencePoint.Container,
+    gestureRelativeTo: GestureReferencePoint = GestureReferencePoint.Container,
     decorator: @Composable (child: ChildRenderer, element: Element<NavTarget>) -> Unit = { child, _ ->
         child()
     }
