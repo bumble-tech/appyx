@@ -30,6 +30,11 @@ dependencyAnalysis {
         all {
             onIncorrectConfiguration {
                 severity("fail")
+
+                exclude(
+                    // Should be ignored as it's raised in many modules due to misconfiguration.
+                    "org.jetbrains.kotlin:kotlin-stdlib"
+                )
             }
             onUnusedDependencies {
                 severity("fail")
@@ -45,6 +50,12 @@ dependencyAnalysis {
 
                     // Convenience for convention plugins to avoid needing to define this.
                     "org.junit.jupiter:junit-jupiter-api",
+
+                    // Some modules declare these dependencies but have not used them yet.
+                    "androidx.compose.ui:ui-test-junit4",
+                    "androidx.test.espresso:espresso-core",
+                    "androidx.test.ext:junit",
+                    ":utils:testing-ui",
 
                     // This is used in:demos:appyx-interactions:android. But raised as unused.
                     "androidx.compose.material:material-icons-extended",
@@ -63,6 +74,22 @@ dependencyAnalysis {
                 severity("fail")
                 // Not used by the module, but exposed via api to avoid adding two dependencies.
                 exclude(":utils:testing-unit-common")
+            }
+        }
+        project(":utils:interop-ribs") {
+            onIncorrectConfiguration {
+                severity("fail")
+                exclude(
+                    // Should be ignored, as they could potentially clash with dependencies
+                    // from client code.
+                    "com.github.badoo.RIBs:rib-compose",
+                )
+            }
+            onUnusedDependencies {
+                severity("fail")
+                exclude(
+                    "androidx.activity:activity-compose",
+                )
             }
         }
     }

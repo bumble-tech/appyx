@@ -1,46 +1,38 @@
 package com.bumble.appyx.navigation.composable
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.node.Node
 
 @Composable
 fun <NavTarget : Any> Node<NavTarget>.Child(
-    elementUiModel: ElementUiModel<NavTarget>,
-    decorator: @Composable (child: ChildRenderer, elementUiModel: ElementUiModel<NavTarget>) -> Unit
+    element: Element<NavTarget>,
+    decorator: @Composable (child: ChildRenderer, element: Element<NavTarget>) -> Unit
 ) {
-    val navElement = elementUiModel.element
-    val childEntry = remember(navElement.id) { childOrCreate(navElement) }
+    val childEntry = remember(element.id) { childOrCreate(element) }
     decorator(
         ChildRendererImpl(
-            node = childEntry.node,
-            elementUiModel = elementUiModel
+            node = childEntry.node
         ),
-        elementUiModel
+        element
     )
 }
 
-private class ChildRendererImpl<NavTarget : Any>(
+private class ChildRendererImpl(
     private val node: Node<*>,
-    private val elementUiModel: ElementUiModel<NavTarget>
 ) : ChildRenderer {
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke(modifier: Modifier) {
-        Box(modifier = elementUiModel.modifier) {
-            node.Compose(modifier = modifier)
-        }
+        node.Compose(modifier = modifier)
     }
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.
     @Composable
     override operator fun invoke() {
-        Box(modifier = elementUiModel.modifier) {
-            node.Compose(modifier = Modifier)
-        }
+        node.Compose(modifier = Modifier)
     }
 }

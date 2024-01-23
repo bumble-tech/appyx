@@ -1,4 +1,5 @@
 @file:Suppress("MatchingDeclarationName")
+
 package com.bumble.appyx.demos.dragprediction
 
 import androidx.compose.animation.animateColorAsState
@@ -195,10 +196,10 @@ fun <InteractionTarget : Any> ModelUi(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-    ) { elementUiModel ->
+        modifier = modifier
+    ) {
         Box(
             modifier = Modifier.size(60.dp)
-                .then(elementUiModel.modifier)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),

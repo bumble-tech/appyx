@@ -11,6 +11,17 @@ Pod::Spec.new do |spec|
     spec.ios.deployment_target = '16.4'
                 
                 
+    if !Dir.exist?('build/cocoapods/framework/ios.framework') || Dir.empty?('build/cocoapods/framework/ios.framework')
+        raise "
+
+        Kotlin framework 'ios' doesn't exist yet, so a proper Xcode project can't be generated.
+        'pod install' should be executed after running ':generateDummyFramework' Gradle task:
+
+            ./gradlew :demos:appyx-interactions:ios:generateDummyFramework
+
+        Alternatively, proper pod installation is performed during Gradle sync in the IDE (if Podfile location is set)"
+    end
+                
     spec.pod_target_xcconfig = {
         'KOTLIN_PROJECT_PATH' => ':demos:appyx-interactions:ios',
         'PRODUCT_MODULE_NAME' => 'ios',
