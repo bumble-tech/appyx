@@ -9,7 +9,7 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
 import com.bumble.appyx.utils.interop.ribs.InteropNodeImpl.Companion.InteropNodeKey
 
-class InteropBuilder<N : Node>(
+class InteropBuilder<N : Node<*>>(
     private val nodeFactory: NodeFactory<N>,
     private val integrationPoint: IntegrationPoint
 ) : SimpleBuilder<InteropNode<N>>() {

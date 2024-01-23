@@ -5,10 +5,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.ParentNode
 
 @Composable
-fun <NavTarget : Any> ParentNode<NavTarget>.Child(
+fun <NavTarget : Any> Node<NavTarget>.Child(
     element: Element<NavTarget>,
     decorator: @Composable (child: ChildRenderer, element: Element<NavTarget>) -> Unit
 ) {
@@ -22,7 +21,7 @@ fun <NavTarget : Any> ParentNode<NavTarget>.Child(
 }
 
 private class ChildRendererImpl(
-    private val node: Node
+    private val node: Node<*>,
 ) : ChildRenderer {
 
     @Suppress("ComposableNaming") // This wants to be 'Invoke' but that won't work with 'operator'.

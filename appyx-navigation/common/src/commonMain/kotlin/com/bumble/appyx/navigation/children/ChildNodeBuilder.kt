@@ -5,5 +5,5 @@ import com.bumble.appyx.navigation.node.Node
 
 fun interface ChildNodeBuilder<NavTarget> {
 
-    fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node
+    fun buildChildNode(navTarget: NavTarget, nodeContext: NodeContext): Node<*>
 }

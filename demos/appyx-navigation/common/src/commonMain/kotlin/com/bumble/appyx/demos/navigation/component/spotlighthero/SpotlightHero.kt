@@ -34,7 +34,6 @@ open class SpotlightHero<NavTarget : Any>(
         revertGestureSpec = animationSpec,
     ),
     disableAnimations: Boolean = false,
-    isDebug: Boolean = false
 ) : BaseAppyxComponent<NavTarget, State<NavTarget>>(
     scope = scope,
     model = model,
@@ -43,8 +42,7 @@ open class SpotlightHero<NavTarget : Any>(
     defaultAnimationSpec = animationSpec,
     gestureSettleConfig = gestureSettleConfig,
     disableAnimations = disableAnimations,
-    backPressStrategy = ExitHeroModeStrategy(scope),
-    isDebug = isDebug
+    backPressStrategy = ExitHeroModeStrategy(scope)
 ) {
     val currentState: State<NavTarget>
         get() = model.currentState

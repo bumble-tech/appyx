@@ -7,7 +7,7 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.plugin.NodeAware
 import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 
-open class Interactor<N : Node>(
+open class Interactor<N : Node<*>>(
     private val childAwareImpl: ChildAware<N> = ChildAwareImpl()
 ) : NodeAware<N>,
     NodeLifecycleAware,

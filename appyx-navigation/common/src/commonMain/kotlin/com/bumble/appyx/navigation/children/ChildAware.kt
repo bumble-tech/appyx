@@ -4,7 +4,7 @@ import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.plugin.NodeAware
 import kotlin.reflect.KClass
 
-interface ChildAware<N: Node> : NodeAware<N> {
+interface ChildAware<N: Node<*>> : NodeAware<N> {
 
     fun <T : Any> whenChildAttached(
         child: KClass<T>,

@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 class AppyxNavItem(
     val text: @Composable (isSelected: Boolean) -> Unit,
     val icon: @Composable (isSelected: Boolean) -> Unit,
-    val node: (nodeContext: NodeContext) -> Node
+    val node: (nodeContext: NodeContext) -> Node<*>
 ) {
     constructor(
         text: String,
@@ -35,7 +35,7 @@ class AppyxNavItem(
         badgeText: Flow<String?> = MutableStateFlow(null),
         modifier: Modifier = Modifier,
         hasScaleAnimation: Boolean = true,
-        node: (nodeContext: NodeContext) -> Node
+        node: (nodeContext: NodeContext) -> Node<*>
     ) : this(
         text = {
             Text(

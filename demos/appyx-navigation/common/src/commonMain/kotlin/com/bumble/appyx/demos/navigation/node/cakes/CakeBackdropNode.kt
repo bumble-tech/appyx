@@ -17,15 +17,16 @@ import com.bumble.appyx.demos.navigation.component.spotlighthero.visualisation.p
 import com.bumble.appyx.interactions.core.ui.math.smoothstep
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 class CakeBackdropNode(
     nodeContext: NodeContext,
     private val cake: Cake,
     private val onClick: () -> Unit,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
+
 
     @Composable
     override fun Content(modifier: Modifier) {

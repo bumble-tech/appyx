@@ -15,13 +15,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.bumble.appyx.demos.navigation.ui.EmbeddableResourceImage
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 class CakeImageNode(
     nodeContext: NodeContext,
     private val cake: Cake,
     private val onClick: () -> Unit,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
 

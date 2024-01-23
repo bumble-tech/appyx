@@ -22,13 +22,13 @@ import com.bumble.appyx.demos.navigation.node.cakes.Cake
 import com.bumble.appyx.demos.navigation.node.cart.Cart
 import com.bumble.appyx.navigation.collections.toImmutableMap
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 class CartItemsNode(
     nodeContext: NodeContext,
     private val cart: Cart,
     private val onCheckout: () -> Unit,
-) : Node(
+) : LeafNode(
     nodeContext = nodeContext,
 ) {
 

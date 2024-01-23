@@ -21,12 +21,14 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.bumble.appyx.demos.common.profile.Profile
 import com.bumble.appyx.navigation.modality.NodeContext
-import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.navigation.node.LeafNode
 
 class ProfileCardNode(
     nodeContext: NodeContext,
     private val profile: Profile
-) : Node(nodeContext) {
+) : LeafNode(
+    nodeContext = nodeContext
+) {
 
     @Composable
     @Override

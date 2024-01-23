@@ -20,13 +20,13 @@ import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
 /**
- * Composable function to host [Node].
+ * Composable function to host [Node<*>].
  *
  * Aligns lifecycle and manages state restoration.
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> NodeHost(
+fun <N : Node<*>> NodeHost(
     lifecycle: Lifecycle,
     integrationPoint: IntegrationPoint,
     screenSize: ScreenSize,
@@ -52,7 +52,7 @@ fun <N : Node> NodeHost(
 }
 
 @Composable
-internal fun <N : Node> rememberNode(
+internal fun <N : Node<*>> rememberNode(
     factory: NodeFactory<N>,
     customisations: NodeCustomisationDirectory,
     integrationPoint: IntegrationPoint,
