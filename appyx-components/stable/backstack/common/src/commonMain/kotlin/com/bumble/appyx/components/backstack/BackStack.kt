@@ -26,7 +26,6 @@ class BackStack<InteractionTarget : Any>(
     backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> =
         PopBackstackStrategy(scope),
     disableAnimations: Boolean = false,
-    isDebug: Boolean = false
 ) : BaseAppyxComponent<InteractionTarget, BackStackModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
@@ -35,7 +34,6 @@ class BackStack<InteractionTarget : Any>(
     gestureSettleConfig = gestureSettleConfig,
     backPressStrategy = backPressStrategy,
     defaultAnimationSpec = animationSpec,
-    disableAnimations = disableAnimations,
-    isDebug = isDebug
+    disableAnimations = disableAnimations
 )
 

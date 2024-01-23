@@ -16,7 +16,6 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.demos.sandbox.navigation.node.backstack.BackStackExamplesNode
-import com.bumble.appyx.demos.sandbox.navigation.node.backstack.debug.BackstackDebugNode
 import com.bumble.appyx.demos.sandbox.navigation.node.container.ContainerNode.NavTarget
 import com.bumble.appyx.demos.sandbox.navigation.node.modal.ModalExamplesNode
 import com.bumble.appyx.demos.sandbox.navigation.node.permanentchild.PermanentChildNode
@@ -52,17 +51,11 @@ class ContainerNode(
         @Parcelize
         object PermanentChild : NavTarget()
 
-//        @Parcelize
-//        object DatingCards : NavTarget()
-
         @Parcelize
         object SpotlightExperiment : NavTarget()
 
         @Parcelize
         object ObservingTransitionsExample : NavTarget()
-
-        @Parcelize
-        object BackStackExperimentDebug : NavTarget()
 
         @Parcelize
         object BackStack : NavTarget()
@@ -82,14 +75,12 @@ class ContainerNode(
             }
 
             is NavTarget.PermanentChild -> PermanentChildNode(nodeContext)
-//            is NavTarget.DatingCards -> DatingCardsNode(nodeContext)
             is NavTarget.SpotlightExperiment -> SpotlightNode(nodeContext)
             is NavTarget.ObservingTransitionsExample -> SpotlightObserveTransitionsExampleNode(
                 nodeContext
             )
 
             is NavTarget.BackStack -> BackStackExamplesNode(nodeContext)
-            is NavTarget.BackStackExperimentDebug -> BackstackDebugNode(nodeContext)
             is NavTarget.Modal -> ModalExamplesNode(nodeContext)
             is NavTarget.PromoterExperiment -> PromoterNode(nodeContext)
         }
@@ -109,9 +100,6 @@ class ContainerNode(
                 verticalArrangement = Arrangement.spacedBy(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-//                TextButton(text = "Dating Cards") {
-////                    backStack.push(NavTarget.DatingCards)
-//                }
                 TextButton(text = "Spotlight") {
                     backStack.push(NavTarget.SpotlightExperiment)
                 }
@@ -120,9 +108,6 @@ class ContainerNode(
                 }
                 TextButton(text = "Backstack Examples") {
                     backStack.push(NavTarget.BackStack)
-                }
-                TextButton(text = "Backstack Debug") {
-                    backStack.push(NavTarget.BackStackExperimentDebug)
                 }
                 TextButton(text = "Promoter") {
                     backStack.push(NavTarget.PromoterExperiment)

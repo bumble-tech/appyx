@@ -28,7 +28,6 @@ open class Spotlight<InteractionTarget : Any>(
         revertGestureSpec = animationSpec,
     ),
     disableAnimations: Boolean = false,
-    isDebug: Boolean = false
 ) : BaseAppyxComponent<InteractionTarget, SpotlightModel.State<InteractionTarget>>(
     scope = scope,
     model = model,
@@ -36,8 +35,7 @@ open class Spotlight<InteractionTarget : Any>(
     gestureFactory = gestureFactory,
     defaultAnimationSpec = animationSpec,
     gestureSettleConfig = gestureSettleConfig,
-    disableAnimations = disableAnimations,
-    isDebug = isDebug
+    disableAnimations = disableAnimations
 ) {
     val activeIndex: StateFlow<Float> = model.output
         .mapState(scope) { it.currentTargetState.activeIndex }
