@@ -2,6 +2,10 @@
 
 ## Pending changes
 
+---
+
+## 2.0.0-alpha10
+
 {==
 
 Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
