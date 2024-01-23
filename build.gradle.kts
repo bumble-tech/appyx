@@ -30,15 +30,14 @@ dependencyAnalysis {
         all {
             onIncorrectConfiguration {
                 severity("fail")
+
                 exclude(
-                    // Should be ignored as it's raised in many modules as misconfigured.
-                    "androidx.test:runner",
-                    "com.github.badoo.RIBs:rib-base-test-activity",
+                    // Should be ignored as it's raised in many modules due to misconfiguration.
                     "org.jetbrains.kotlin:kotlin-stdlib"
                 )
             }
             onUnusedDependencies {
-//                severity("fail")
+                severity("fail")
 
                 exclude(
                     // Needed for compose '@Preview'. The annotation is actually within
@@ -52,57 +51,14 @@ dependencyAnalysis {
                     // Convenience for convention plugins to avoid needing to define this.
                     "org.junit.jupiter:junit-jupiter-api",
 
+                    // Some modules declare these dependencies but have not used them yet.
+                    "androidx.compose.ui:ui-test-junit4",
+                    "androidx.test.espresso:espresso-core",
+                    "androidx.test.ext:junit",
+                    ":utils:testing-ui",
+
                     // This is used in:demos:appyx-interactions:android. But raised as unused.
                     "androidx.compose.material:material-icons-extended",
-
-                    // Should be ignored as it's raised in many modules as unused.
-                    "org.jetbrains.kotlin:kotlin-stdlib",
-                )
-            }
-        }
-        project(":appyx-components:experimental:cards:android") {
-            onUnusedDependencies {
-                severity("fail")
-                exclude(
-                    "androidx.compose.ui:ui-test-junit4",
-                )
-            }
-        }
-        project(":appyx-components:experimental:promoter:android") {
-            onUnusedDependencies {
-                severity("fail")
-                exclude(
-                    "androidx.compose.ui:ui-test-junit4",
-                )
-            }
-        }
-        project(":appyx-navigation:android") {
-            onUnusedDependencies {
-                severity("fail")
-                exclude(
-                    "androidx.test.espresso:espresso-core",
-                    "androidx.test.ext:junit",
-                    ":utils:testing-ui",
-                )
-            }
-        }
-        project(":appyx-navigation:appyx-navigation") {
-            onUnusedDependencies {
-                severity("fail")
-                exclude(
-                    "androidx.test.espresso:espresso-core",
-                    "androidx.test.ext:junit",
-                    "androidx.compose.foundation:foundation",
-                    "androidx.compose.ui:ui-test-junit4",
-                    ":utils:testing-ui",
-                )
-            }
-        }
-        project(":demos:navigation-compose") {
-            onUnusedDependencies {
-                severity("fail")
-                exclude(
-                    "androidx.test.espresso:espresso-core",
                 )
             }
         }
@@ -124,7 +80,8 @@ dependencyAnalysis {
             onIncorrectConfiguration {
                 severity("fail")
                 exclude(
-                    // Should be ignored as it's raised in many modules as misconfigured.
+                    // Should be ignored, as they could potentially clash with dependencies
+                    // from client code.
                     "com.github.badoo.RIBs:rib-compose",
                 )
             }
