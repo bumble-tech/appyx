@@ -22,10 +22,10 @@ import com.bumble.appyx.demos.common.widget.CalendarWidget
 import com.bumble.appyx.demos.common.widget.TimerWidget
 import com.bumble.appyx.demos.common.widget.WeatherWidget
 import com.bumble.appyx.interactions.Events
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.widgets.ui.WidgetsStack3D
 import kotlinx.coroutines.flow.Flow
 
@@ -104,9 +104,9 @@ private fun WidgetsUi(
             ),
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-        element = { elementUiModel ->
+        elementUi = {
             WidgetTypeElement(
-                elementUiModel = elementUiModel,
+                element = it,
                 modifier = Modifier
                     .fillMaxWidth()
                     .requiredHeight(240.dp)
@@ -117,33 +117,27 @@ private fun WidgetsUi(
 
 @Composable
 private fun WidgetTypeElement(
-    elementUiModel: ElementUiModel<WidgetsType>,
+    element: Element<WidgetsType>,
     modifier: Modifier = Modifier,
 ) {
-    when (elementUiModel.element.interactionTarget) {
+    when (element.interactionTarget) {
         WidgetsType.Weather ->
             WeatherWidget(
                 currentTemperature = 22.3f,
                 lowTemperature = 16.7f,
                 highTemperature = 31.4f,
                 painterResource("sky.png"),
-                modifier = Modifier
-                    .then(elementUiModel.modifier)
-                    .then(modifier)
+                modifier = modifier
             )
 
         WidgetsType.Timer ->
             TimerWidget(
-                modifier = Modifier
-                    .then(elementUiModel.modifier)
-                    .then(modifier)
+                modifier = modifier
             )
 
         WidgetsType.Calendar ->
             CalendarWidget(
-                modifier = Modifier
-                    .then(elementUiModel.modifier)
-                    .then(modifier)
+                modifier = modifier
             )
     }
 }

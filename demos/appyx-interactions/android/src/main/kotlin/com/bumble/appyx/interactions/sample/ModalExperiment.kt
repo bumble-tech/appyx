@@ -3,7 +3,6 @@ package com.bumble.appyx.interactions.sample
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Button
@@ -90,11 +89,10 @@ fun <InteractionTarget : Any> ModalUi(
         clipToBounds = false,
         appyxComponent = modal,
         modifier = modifier,
-        element = { elementUiModel ->
+        elementUi = { element ->
             Element(
                 color = color,
-                elementUiModel = elementUiModel,
-                modifier = Modifier.fillMaxSize()
+                element = element
             )
         }
     )
