@@ -49,6 +49,6 @@ composeOptions {
 }
 
 dependencies {
-    ksp("com.bumble.appyx:mutable-ui-processor:{latest version}")
+    ksp("com.bumble.appyx:appyx-processor:{latest version}")
 }
 ```
