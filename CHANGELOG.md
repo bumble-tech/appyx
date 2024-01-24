@@ -2,6 +2,12 @@
 
 ## Pending changes
 
+–
+
+---
+
+## 2.0.0-alpha10
+
 {==
 
 Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
@@ -22,6 +28,8 @@ Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
 ### Fixed
 
 - [#638](https://github.com/bumble-tech/appyx/pull/638) - Fix visibility issue for bottom element in BackStackParallax
+
+<div style="text-align: center"><small>24 Jan 2024</small></div>
 
 ---
 
