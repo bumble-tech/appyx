@@ -1,4 +1,4 @@
-import InteractionTarget.Element
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -19,9 +19,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import theme.color_primary
 import theme.md_amber_500
 import theme.md_blue_500
@@ -35,6 +35,7 @@ import theme.md_lime_500
 import theme.md_pink_500
 import theme.md_teal_500
 import kotlin.random.Random
+import SampleInteractionTarget.Element as SampleInteractionTargetElement
 
 @Suppress("UnstableCollections") // actions parameter
 @Composable
@@ -44,10 +45,8 @@ internal fun <InteractionTarget : Any, ModelState : Any> AppyxSample(
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     actions: Map<String, () -> Unit>,
     modifier: Modifier = Modifier,
-    element: @Composable (ElementUiModel<InteractionTarget>) -> Unit = {
-        ElementUi(
-            elementUiModel = it,
-        )
+    elementUi: @Composable (Element<InteractionTarget>) -> Unit = {
+        ElementUi(element = it)
     }
 ) {
     AppyxComponentSetup(appyxComponent)
@@ -61,8 +60,8 @@ internal fun <InteractionTarget : Any, ModelState : Any> AppyxSample(
             screenWidthPx = screenWidthPx,
             screenHeightPx = screenHeightPx,
             modifier = Modifier.weight(0.9f).clipToBounds()
-        ) { elementUiModel ->
-            element(elementUiModel)
+        ) { 
+            elementUi(it)
         }
         Row(
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -79,17 +78,16 @@ internal fun <InteractionTarget : Any, ModelState : Any> AppyxSample(
 }
 
 @Composable
-internal fun <InteractionTarget : Any> ElementUi(
-    elementUiModel: ElementUiModel<InteractionTarget>,
+internal fun <NavTarget : Any> ElementUi(
+    element: Element<NavTarget>,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .then(elementUiModel.modifier)
             .background(
-                color = when (val target = elementUiModel.element.interactionTarget) {
-                    is Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
+                color = when (val target = element.interactionTarget) {
+                    is SampleInteractionTargetElement -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
                     else -> {
                         Color.Cyan
                     }
@@ -98,7 +96,7 @@ internal fun <InteractionTarget : Any> ElementUi(
     ) {
         Text(
             modifier = Modifier.align(Alignment.Center),
-            text = elementUiModel.element.interactionTarget.toString(),
+            text = element.interactionTarget.toString(),
             fontSize = 12.sp,
             color = Color.Black
         )
@@ -121,8 +119,8 @@ private fun Action(
     }
 }
 
-internal sealed class InteractionTarget {
-    data class Element(val idx: Int = Random.nextInt(1, 100)) : InteractionTarget() {
+internal sealed class SampleInteractionTarget {
+    data class Element(val idx: Int = Random.nextInt(1, 100)) : SampleInteractionTarget() {
         override fun toString(): String =
             "Element $idx"
     }

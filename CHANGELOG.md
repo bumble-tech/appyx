@@ -17,6 +17,7 @@ Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
 - [#652](https://github.com/bumble-tech/appyx/pull/652) - KSP processor renamed from `mutable-ui-processor` to `appyx-processor`
 - [#654](https://github.com/bumble-tech/appyx/pull/654) - Renamings 
 - [#657](https://github.com/bumble-tech/appyx/pull/657) - Rename ParentNode & Node to Node and LeafNode 
+- [#644](https://github.com/bumble-tech/appyx/pull/644) – Refactor AppyxComponent and application of draggable modifier 
 - [#660](https://github.com/bumble-tech/appyx/pull/660) - Make IosNodeHost to receive a Lifecycle class to fix iOS lifecycle problems
 
 ### Fixed

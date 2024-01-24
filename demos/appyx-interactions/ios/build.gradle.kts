@@ -46,13 +46,6 @@ kotlin {
     }
 }
 
-compose.experimental {
-    uikit.application {
-        projectName = "Appyx"
-        bundleIdPrefix = "com.bumble.appyx"
-    }
-}
-
 dependencies {
     add("kspIosArm64", project(":ksp:appyx-processor"))
     add("kspIosX64", project(":ksp:appyx-processor"))

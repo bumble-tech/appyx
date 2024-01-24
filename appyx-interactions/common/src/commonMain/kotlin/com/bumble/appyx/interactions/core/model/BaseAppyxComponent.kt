@@ -8,7 +8,6 @@ import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BackPressHandlerStrategy
 import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.DontHandleBackPress
 import com.bumble.appyx.interactions.core.model.progress.AnimatedProgressController
-import com.bumble.appyx.interactions.core.model.progress.DebugProgressInputSource
 import com.bumble.appyx.interactions.core.model.progress.DragProgressController
 import com.bumble.appyx.interactions.core.model.progress.Draggable
 import com.bumble.appyx.interactions.core.model.progress.HasDefaultAnimationSpec
@@ -17,6 +16,7 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
@@ -24,8 +24,6 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
 import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
 import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 import kotlinx.coroutines.CoroutineScope
@@ -57,7 +55,6 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     private val backPressStrategy: BackPressHandlerStrategy<InteractionTarget, ModelState> = DontHandleBackPress(),
     private val animateSettle: Boolean = false,
     private val disableAnimations: Boolean = false,
-    private val isDebug: Boolean = false
 ) : AppyxComponent<InteractionTarget, ModelState>,
     HasDefaultAnimationSpec<Float>,
     Draggable,
@@ -83,12 +80,13 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 
     private val instant = InstantProgressController(model = model)
     private var animated: AnimatedProgressController<InteractionTarget, ModelState>? = null
-    private var debug: DebugProgressInputSource<InteractionTarget, ModelState>? = null
     private val drag = DragProgressController(
         model = model,
         gestureFactory = { _gestureFactory },
         defaultAnimationSpec = defaultAnimationSpec,
     )
+
+    val isGesturesEnabled = _gestureFactory !is GestureFactory.Noop
 
     private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
         MutableStateFlow(emptyList())
@@ -140,12 +138,11 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     override fun onAddedToComposition(scope: CoroutineScope) {
         animationScope = scope
         createAnimatedProgressController(scope)
-        createdDebugInputSource()
     }
 
     override fun onRemovedFromComposition() {
         // TODO finish unfinished transitions
-        if (isDebug) debug?.stopModel() else animated?.stopModel()
+        animated?.stopModel()
         animationScope?.cancel()
     }
 
@@ -155,12 +152,6 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
             coroutineScope = scope,
             defaultAnimationSpec = defaultAnimationSpec,
             animateSettle = animateSettle
-        )
-    }
-
-    private fun createdDebugInputSource() {
-        debug = DebugProgressInputSource(
-            transitionModel = model,
         )
     }
 
@@ -237,10 +228,8 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
             animationSpec
         )
         val animatedSource = animated
-        val debugSource = debug
         when {
-            (isDebug && debugSource != null) -> debugSource.operation(operation)
-            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(
+            animatedSource == null || disableAnimations -> instant.operation(
                 operation
             )
 
@@ -281,15 +270,11 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
     }
 
     private fun settle(gestureSettleConfig: GestureSettleConfig) {
-        if (isDebug) {
-            debug?.settle()
-        } else {
-            animated?.settle(
-                completionThreshold = gestureSettleConfig.completionThreshold,
-                completeGestureSpec = gestureSettleConfig.completeGestureSpec,
-                revertGestureSpec = gestureSettleConfig.revertGestureSpec,
-            )
-        }
+        animated?.settle(
+            completionThreshold = gestureSettleConfig.completionThreshold,
+            completeGestureSpec = gestureSettleConfig.completeGestureSpec,
+            revertGestureSpec = gestureSettleConfig.revertGestureSpec,
+        )
     }
 
     // TODO plugin?!
@@ -297,10 +282,6 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         visualisationObserverJob?.cancel()
         elementsJob.cancel()
         scope.cancel()
-    }
-
-    fun setNormalisedProgress(progress: Float) {
-        debug?.setNormalisedProgress(progress)
     }
 
     override fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()

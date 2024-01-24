@@ -22,9 +22,9 @@ enum class MainNavItem : Parcelable {
     BACKSTACK, SPOTLIGHT, PROMOTER;
 
     companion object {
-        val resolver: (com.bumble.appyx.demos.sandbox.navigation.MainNavItem) -> AppyxNavItem = { navBarItem ->
+        val resolver: (MainNavItem) -> AppyxNavItem = { navBarItem ->
             when (navBarItem) {
-                com.bumble.appyx.demos.sandbox.navigation.MainNavItem.BACKSTACK -> AppyxNavItem(
+                BACKSTACK -> AppyxNavItem(
                     text = "Back stack",
                     unselectedIcon = Outlined.WebStories,
                     selectedIcon = Filled.WebStories,
@@ -32,14 +32,14 @@ enum class MainNavItem : Parcelable {
                     node = { BackStackExamplesNode(it) }
                 )
 
-                com.bumble.appyx.demos.sandbox.navigation.MainNavItem.SPOTLIGHT -> AppyxNavItem(
+                SPOTLIGHT -> AppyxNavItem(
                     text = "Spotlight",
                     unselectedIcon = Outlined.ViewCarousel,
                     selectedIcon = Filled.ViewCarousel,
                     node = { SpotlightNode(it) }
                 )
 
-                com.bumble.appyx.demos.sandbox.navigation.MainNavItem.PROMOTER -> AppyxNavItem(
+                PROMOTER -> AppyxNavItem(
                     text = "Promoter",
                     unselectedIcon = Outlined.GridView,
                     selectedIcon = Filled.GridViewCustom,

@@ -1,4 +1,4 @@
-import InteractionTarget.Element
+import SampleInteractionTarget.Element
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.Composable
@@ -19,18 +19,20 @@ internal fun BackStackParallaxSample(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val model = remember {
-        BackStackModel<InteractionTarget>(
+        BackStackModel<SampleInteractionTarget>(
             initialTargets = List(1) { Element() },
             savedStateMap = null,
         )
     }
-    val backStack = BackStack(
+    val backStack = remember {
+        BackStack(
             scope = coroutineScope,
             model = model,
             visualisation = { BackStackParallax(it) },
             gestureFactory = { BackStackParallax.Gestures(it) },
             animationSpec = spring(stiffness = Spring.StiffnessVeryLow),
         )
+    }
     val actions = mapOf(
         "Pop" to { backStack.pop() },
         "Push" to { backStack.push(Element()) }
