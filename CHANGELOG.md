@@ -2,6 +2,8 @@
 
 ## Pending changes
 
+–
+
 ---
 
 ## 2.0.0-alpha10
