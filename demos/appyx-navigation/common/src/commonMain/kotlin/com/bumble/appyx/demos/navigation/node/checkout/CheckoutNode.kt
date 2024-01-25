@@ -12,7 +12,7 @@ import com.bumble.appyx.demos.navigation.node.cart.Cart
 import com.bumble.appyx.demos.navigation.node.checkout.CheckoutNode.NavTarget
 import com.bumble.appyx.demos.navigation.platform.IOS_PLATFORM_NAME
 import com.bumble.appyx.demos.navigation.platform.getPlatformName
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.GestureFactory
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node

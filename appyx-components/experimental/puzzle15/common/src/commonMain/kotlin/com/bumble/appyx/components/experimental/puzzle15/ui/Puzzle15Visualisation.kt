@@ -9,10 +9,10 @@ import com.bumble.appyx.components.experimental.puzzle15.Puzzle15Model.Tile
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.Drag
-import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
+import com.bumble.appyx.interactions.gesture.Drag
+import com.bumble.appyx.interactions.gesture.Gesture
+import com.bumble.appyx.interactions.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.dragDirection4
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.fractionAlignment
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment

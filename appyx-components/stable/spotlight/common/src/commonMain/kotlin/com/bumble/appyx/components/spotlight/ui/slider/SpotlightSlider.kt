@@ -11,11 +11,11 @@ import com.bumble.appyx.components.spotlight.operation.Next
 import com.bumble.appyx.components.spotlight.operation.Previous
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.Drag
-import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
-import com.bumble.appyx.interactions.core.ui.gesture.dragVerticalDirection
+import com.bumble.appyx.interactions.gesture.Drag
+import com.bumble.appyx.interactions.gesture.Gesture
+import com.bumble.appyx.interactions.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.dragHorizontalDirection
+import com.bumble.appyx.interactions.gesture.dragVerticalDirection
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty.Target

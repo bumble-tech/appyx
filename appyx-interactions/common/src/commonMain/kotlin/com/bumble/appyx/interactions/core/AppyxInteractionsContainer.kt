@@ -32,12 +32,12 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
-import com.bumble.appyx.interactions.core.gesture.GestureValidator
-import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
-import com.bumble.appyx.interactions.core.gesture.detectDragGesturesOrCancellation
+import com.bumble.appyx.interactions.gesture.GestureValidator
+import com.bumble.appyx.interactions.gesture.GestureValidator.Companion.defaultValidator
+import com.bumble.appyx.interactions.gesture.detectDragGesturesOrCancellation
+import com.bumble.appyx.interactions.gesture.onPointerEvent
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.model.removedElements
-import com.bumble.appyx.interactions.core.modifiers.onPointerEvent
 import com.bumble.appyx.interactions.core.ui.LocalBoxScope
 import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds

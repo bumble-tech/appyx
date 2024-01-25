@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.gesture
+package com.bumble.appyx.interactions.gesture
 
 import androidx.compose.runtime.Stable
 import androidx.compose.ui.geometry.Offset

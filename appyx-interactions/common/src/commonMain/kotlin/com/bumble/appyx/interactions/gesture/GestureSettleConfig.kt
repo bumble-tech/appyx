@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui.gesture
+package com.bumble.appyx.interactions.gesture
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.runtime.Immutable

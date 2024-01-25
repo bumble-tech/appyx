@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.gesture
+package com.bumble.appyx.interactions.gesture
 
 import androidx.compose.foundation.gestures.awaitDragOrCancellation
 import androidx.compose.foundation.gestures.awaitEachGesture

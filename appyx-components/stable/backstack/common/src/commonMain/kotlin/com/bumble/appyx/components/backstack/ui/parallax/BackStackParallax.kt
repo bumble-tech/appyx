@@ -8,10 +8,10 @@ import com.bumble.appyx.components.backstack.BackStackModel.State
 import com.bumble.appyx.components.backstack.operation.Pop
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.Drag
-import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
+import com.bumble.appyx.interactions.gesture.Drag
+import com.bumble.appyx.interactions.gesture.Gesture
+import com.bumble.appyx.interactions.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.dragHorizontalDirection
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay

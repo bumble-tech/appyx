@@ -10,8 +10,8 @@ import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
+import com.bumble.appyx.interactions.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.GestureSettleConfig
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

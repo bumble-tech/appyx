@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core.ui.gesture
+package com.bumble.appyx.interactions.gesture
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.Density
@@ -27,6 +27,6 @@ interface GestureFactory<InteractionTarget, ModelState> {
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, ModelState> =
-            Gesture.Noop()
+            com.bumble.appyx.interactions.gesture.Gesture.Noop()
     }
 }

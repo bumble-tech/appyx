@@ -22,7 +22,7 @@ import com.bumble.appyx.components.modal.operation.show
 import com.bumble.appyx.components.modal.ui.ModalVisualisation
 import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
+import com.bumble.appyx.interactions.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.theme.appyx_dark

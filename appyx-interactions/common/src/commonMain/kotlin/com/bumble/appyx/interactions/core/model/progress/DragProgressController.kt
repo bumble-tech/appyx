@@ -8,8 +8,8 @@ import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRA
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.COMPLETE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel.SettleDirection.REVERT
-import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.Gesture
+import com.bumble.appyx.interactions.gesture.GestureFactory
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 internal class DragProgressController<InteractionTarget : Any, State>(
