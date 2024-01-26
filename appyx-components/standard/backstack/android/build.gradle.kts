@@ -11,7 +11,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     androidTestImplementation(composeBom)
-    androidTestImplementation(project(":appyx-components:stable:backstack:backstack"))
+    androidTestImplementation(project(":appyx-components:standard:backstack:backstack"))
     androidTestImplementation(project(":appyx-interactions:android"))
     androidTestImplementation(project(":appyx-interactions:appyx-interactions"))
     androidTestImplementation(libs.compose.ui.test.junit4)

@@ -39,8 +39,8 @@ kotlin {
                 implementation(compose.material)
                 @OptIn(org.jetbrains.compose.ExperimentalComposeLibrary::class)
                 implementation(compose.components.resources)
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
-                implementation(project(":appyx-components:stable:backstack:backstack"))
+                implementation(project(":appyx-components:standard:spotlight:spotlight"))
+                implementation(project(":appyx-components:standard:backstack:backstack"))
             }
         }
     }

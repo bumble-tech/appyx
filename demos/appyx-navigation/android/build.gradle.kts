@@ -41,7 +41,7 @@ dependencies {
 
     implementation(composeBom)
     implementation(project(":demos:appyx-navigation:common"))
-    implementation(project(":appyx-components:stable:backstack:backstack"))
+    implementation(project(":appyx-components:standard:backstack:backstack"))
 
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.appcompat)
