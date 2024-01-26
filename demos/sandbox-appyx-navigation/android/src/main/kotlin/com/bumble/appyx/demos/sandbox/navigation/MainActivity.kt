@@ -33,7 +33,7 @@ class MainActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     NodeHost(
                         lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                        integrationPoint = appyxV2IntegrationPoint,
+                        integrationPoint = appyxIntegrationPoint,
                     ) {
                         MainNavNode(
                             nodeContext = it,

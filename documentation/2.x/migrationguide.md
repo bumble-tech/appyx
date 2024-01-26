@@ -80,27 +80,6 @@ Artifacts have a `utils-` prefix:
 ```
 
 
-### MainActivity
-
-```diff
--import com.bumble.appyx.core.integration.NodeHost
--import com.bumble.appyx.core.integrationpoint.NodeActivity
-
-+import com.bumble.appyx.navigation.integration.NodeHost
-+import com.bumble.appyx.navigation.integration.NodeActivity
-
-    class MainActivity : NodeActivity() {
-         super.onCreate(savedInstanceState)
-         setContent {
-             HelloAppyxTheme {
--                NodeHost(integrationPoint = appyxIntegrationPoint) {
-+                NodeHost(integrationPoint = appyxV2IntegrationPoint) {
-                     RootNode(it)
-                 }
-             }
-     }
-```
-
 ### Usage site (RootNode)
 
 ```diff

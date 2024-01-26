@@ -48,7 +48,7 @@ open class AppyxActivityTestRule<T : Node<*>>(
             decorator {
                 NodeHost(
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                    integrationPoint = activity.appyxV2IntegrationPoint,
+                    integrationPoint = activity.appyxIntegrationPoint,
                 ) { nodeContext ->
                     node = nodeFactory.create(nodeContext)
                     node

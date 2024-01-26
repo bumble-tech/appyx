@@ -38,7 +38,7 @@ class MainActivity : NodeActivity() {
                 ) {
                     NodeHost(
                         lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                        integrationPoint = appyxV2IntegrationPoint,
+                        integrationPoint = appyxIntegrationPoint,
                     ) {
                         AppyxMaterial3NavNode(
                             nodeContext = it,
