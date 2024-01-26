@@ -24,7 +24,7 @@ class ViewCustomisationsActivity : NodeActivity() {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Column {
                         NodeHost(
-                            integrationPoint = appyxIntegrationPoint,
+                            integrationPoint = appyxV1IntegrationPoint,
                             customisations = getCustomisations(hasCustomisedView)
                         ) {
                             ViewCustomisationExampleBuilder().build(buildContext = it)
