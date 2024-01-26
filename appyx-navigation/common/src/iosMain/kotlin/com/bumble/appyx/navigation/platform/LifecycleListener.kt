@@ -41,7 +41,10 @@ class LifecycleListener {
         }
     }
 
-    private fun addObserverFor(notification: platform.Foundation.NSNotificationName, block: () -> Unit) : NSObjectProtocol {
+    private fun addObserverFor(
+        notification: platform.Foundation.NSNotificationName,
+        block: () -> Unit
+    ) : NSObjectProtocol {
         return NSNotificationCenter.defaultCenter.addObserverForName(
             name = notification,
             `object` = null,
