@@ -47,7 +47,7 @@ class PermanentAppyxComponent<InteractionTarget : Any>(
         instant.operation(operation)
     }
 
-    override fun canHandeBackPress(): StateFlow<Boolean> = MutableStateFlow(false)
+    override fun canHandleBackPress(): StateFlow<Boolean> = MutableStateFlow(false)
 
     override fun handleBackPress(): Boolean = false
 

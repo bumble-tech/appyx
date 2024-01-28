@@ -26,7 +26,7 @@ interface AppyxComponent<InteractionTarget : Any, ModelState : Any> : SavesInsta
 
     fun onRemovedFromComposition()
 
-    fun canHandeBackPress(): StateFlow<Boolean>
+    fun canHandleBackPress(): StateFlow<Boolean>
 
     fun handleBackPress(): Boolean
 

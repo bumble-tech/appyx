@@ -286,7 +286,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 
     override fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
-    override fun canHandeBackPress(): StateFlow<Boolean> = backPressStrategy.canHandleBackPress
+    override fun canHandleBackPress(): StateFlow<Boolean> = backPressStrategy.canHandleBackPress
 
     override fun saveInstanceState(state: MutableSavedStateMap) {
         model.saveInstanceState(state)
