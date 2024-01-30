@@ -23,19 +23,19 @@ class LifecycleListener {
     }
 
     private fun startObserving() {
-        // GOES TO BACKGROUND
+        // Goes to background
         didEnterBackgroundNotificationObserver = addObserverFor(UIApplicationDidEnterBackgroundNotification) {
             created()
         }
-        // BECOMES INACTIVE
+        // Becomes inactive
         willResignActiveNotificationObserver = addObserverFor(UIApplicationWillResignActiveNotification) {
             started()
         }
-        // GETS FOCUS BACK / BECOMES ACTIVE
+        // Gets focus back / Becomes active
         didBecomeActiveNotificationObserver = addObserverFor(UIApplicationDidBecomeActiveNotification) {
             resumed()
         }
-        // IS ABOUT TO BE TERMINATED
+        // Is about to be terminated
         willTerminateNotificationObserver = addObserverFor(UIApplicationWillTerminateNotification) {
             destroyed()
         }
