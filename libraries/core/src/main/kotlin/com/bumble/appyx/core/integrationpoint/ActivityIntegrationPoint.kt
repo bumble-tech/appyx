@@ -61,7 +61,7 @@ open class ActivityIntegrationPoint(
                 "Activity ${activity::class.qualifiedName} does not implement IntegrationPointProvider"
             )
 
-            return integrationPointProvider.appyxIntegrationPoint
+            return integrationPointProvider.appyxV1IntegrationPoint
         }
 
         @Suppress("UNCHECKED_CAST")

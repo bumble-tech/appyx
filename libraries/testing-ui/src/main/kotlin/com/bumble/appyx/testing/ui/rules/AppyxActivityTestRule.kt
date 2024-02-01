@@ -44,7 +44,7 @@ open class AppyxActivityTestRule<T : Node>(
     override fun beforeActivityLaunched() {
         AppyxTestActivity.composableView = { activity ->
             decorator {
-                NodeHost(integrationPoint = activity.appyxIntegrationPoint, factory = { buildContext ->
+                NodeHost(integrationPoint = activity.appyxV1IntegrationPoint, factory = { buildContext ->
                     node = nodeFactory.create(buildContext)
                     node
                 })

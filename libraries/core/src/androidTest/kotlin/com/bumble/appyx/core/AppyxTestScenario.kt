@@ -30,7 +30,7 @@ class AppyxTestScenario<T : Node>(
         AppyxTestActivity.composableView = { activity ->
             decorator {
                 NodeHost(
-                    integrationPoint = activity.appyxIntegrationPoint,
+                    integrationPoint = activity.appyxV1IntegrationPoint,
                     factory = { buildContext ->
                         node = nodeFactory.create(buildContext)
                         awaitNode.countDown()

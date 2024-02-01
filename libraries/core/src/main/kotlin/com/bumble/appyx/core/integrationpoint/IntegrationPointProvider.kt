@@ -2,5 +2,5 @@ package com.bumble.appyx.core.integrationpoint
 
 interface IntegrationPointProvider {
 
-    val appyxIntegrationPoint: IntegrationPoint
+    val appyxV1IntegrationPoint: IntegrationPoint
 }

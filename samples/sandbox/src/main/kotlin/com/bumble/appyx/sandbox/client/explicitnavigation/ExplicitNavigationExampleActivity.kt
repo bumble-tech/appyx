@@ -59,7 +59,7 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colorScheme.background) {
                     Column {
-                        NodeHost(integrationPoint = appyxIntegrationPoint) {
+                        NodeHost(integrationPoint = appyxV1IntegrationPoint) {
                             RootNode(
                                 buildContext = it,
                                 navigator = this@ExplicitNavigationExampleActivity,

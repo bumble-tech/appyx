@@ -19,7 +19,7 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            NodeHost(integrationPoint = appyxIntegrationPoint) {
+            NodeHost(integrationPoint = appyxV1IntegrationPoint) {
                 RootNode(
                     buildContext = it,
                     plugins = listOf(object : NodeReadyObserver<RootNode> {
