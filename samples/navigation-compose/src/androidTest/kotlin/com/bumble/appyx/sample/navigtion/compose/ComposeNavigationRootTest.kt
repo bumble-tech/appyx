@@ -19,7 +19,7 @@ class ComposeNavigationRootTest {
             // 'integrationPoint' must be provided to ensure it can be accessed from within the
             // Jetpack compose navigation graph.
             CompositionLocalProvider(
-                LocalIntegrationPoint provides appyxTestActivity.appyxIntegrationPoint,
+                LocalIntegrationPoint provides appyxTestActivity.appyxV1IntegrationPoint,
             ) {
                 ComposeNavigationRoot()
             }
