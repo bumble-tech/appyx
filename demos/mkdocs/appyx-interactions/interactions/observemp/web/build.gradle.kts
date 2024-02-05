@@ -17,7 +17,7 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material)
                 implementation(project(":appyx-interactions:appyx-interactions"))
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
+                implementation(project(":appyx-components:standard:spotlight:spotlight"))
                 implementation(project(":demos:mkdocs:appyx-components:common"))
             }
         }

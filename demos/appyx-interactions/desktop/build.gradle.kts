@@ -16,7 +16,7 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(project(":appyx-interactions:appyx-interactions"))
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
+                implementation(project(":appyx-components:standard:spotlight:spotlight"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)
