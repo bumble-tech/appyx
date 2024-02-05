@@ -13,7 +13,7 @@ class EmptyAppyxComponent<InteractionTarget : Any> : AppyxComponent<InteractionT
 
     override fun onRemovedFromComposition() = Unit
 
-    override fun canHandeBackPress(): StateFlow<Boolean> = MutableStateFlow(false)
+    override fun canHandleBackPress(): StateFlow<Boolean> = MutableStateFlow(false)
 
     override fun handleBackPress(): Boolean = false
 

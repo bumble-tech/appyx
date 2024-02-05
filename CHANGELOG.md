@@ -3,6 +3,7 @@
 ## Pending changes
 
 - [#670](https://github.com/bumble-tech/appyx/pull/670) - Fixes ios lifecycle
+- [#673](https://github.com/bumble-tech/appyx/pull/673) – Fix canHandeBackPress typo
 
 ---
 
