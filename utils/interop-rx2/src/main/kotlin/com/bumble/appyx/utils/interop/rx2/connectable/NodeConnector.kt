@@ -2,14 +2,13 @@ package com.bumble.appyx.utils.interop.rx2.connectable
 
 import android.annotation.SuppressLint
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
 import com.jakewharton.rxrelay2.PublishRelay
 import com.jakewharton.rxrelay2.Relay
 import io.reactivex.Observer
 
-class NodeConnector<Input : Any, Output : Any> : Connectable<Input, Output>, NodeLifecycleAware {
+class NodeConnector<Input : Any, Output : Any> : Connectable<Input, Output> {
 
-    override fun onCreate(lifecycle: Lifecycle) {
+    override fun onSetupTooling(lifecycle: Lifecycle) {
         flushInputCache()
         flushOutputCache()
     }
