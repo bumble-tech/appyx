@@ -215,6 +215,7 @@ repositories {
 
 dependencies {
     implementation("com.bumble.appyx:utils-interop-ribs:$version")
+    implementation("com.bumble.appyx:utils-ribs-helpers:$version")
 }
 ```
 
