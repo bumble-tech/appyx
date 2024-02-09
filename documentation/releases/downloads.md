@@ -215,6 +215,13 @@ repositories {
 
 dependencies {
     implementation("com.bumble.appyx:utils-interop-ribs:$version")
+}
+```
+
+### RIBs like helpers
+
+```kotlin
+dependencies {
     implementation("com.bumble.appyx:utils-ribs-helpers:$version")
 }
 ```
