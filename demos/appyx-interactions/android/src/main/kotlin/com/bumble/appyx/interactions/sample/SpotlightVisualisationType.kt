@@ -3,6 +3,7 @@ package com.bumble.appyx.interactions.sample
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRotation
 import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget
 
 enum class SpotlightVisualisationType {
     SLIDER_ROTATION;

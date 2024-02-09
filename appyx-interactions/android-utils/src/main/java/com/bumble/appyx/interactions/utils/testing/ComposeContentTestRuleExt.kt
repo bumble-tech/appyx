@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.testing
+package com.bumble.appyx.interactions.utils.testing
 
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent

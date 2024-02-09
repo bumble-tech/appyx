@@ -29,12 +29,12 @@ import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.sample.InteractionTarget
-import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
-import com.bumble.appyx.interactions.sample.InteractionTarget.Child2
-import com.bumble.appyx.interactions.sample.InteractionTarget.Child3
-import com.bumble.appyx.interactions.sample.InteractionTarget.Child4
-import com.bumble.appyx.interactions.sample.android.Element
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget.Child1
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget.Child2
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget.Child3
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget.Child4
+import com.bumble.appyx.interactions.utils.ui.Element
 import kotlin.math.roundToInt
 
 

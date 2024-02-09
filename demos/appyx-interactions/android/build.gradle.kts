@@ -15,7 +15,7 @@ dependencies {
     val composeBom = platform(libs.compose.bom)
 
     implementation(composeBom)
-    implementation(project(":appyx-interactions:android"))
+    implementation(project(":appyx-interactions:android-utils"))
     implementation(project(":appyx-components:standard:spotlight:spotlight"))
     implementation(project(":appyx-components:experimental:cards:android"))
     implementation(project(":appyx-components:experimental:puzzle15:android"))

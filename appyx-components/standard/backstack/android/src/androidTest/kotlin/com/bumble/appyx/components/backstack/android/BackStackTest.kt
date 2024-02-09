@@ -14,10 +14,10 @@ import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
 import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.testing.InteractionTarget
-import com.bumble.appyx.interactions.testing.setupAppyxComponent
-import com.bumble.appyx.interactions.testing.waitUntilAnimationEnded
-import com.bumble.appyx.interactions.testing.waitUntilAnimationStarted
+import com.bumble.appyx.interactions.utils.testing.setupAppyxComponent
+import com.bumble.appyx.interactions.utils.testing.waitUntilAnimationEnded
+import com.bumble.appyx.interactions.utils.testing.waitUntilAnimationStarted
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert

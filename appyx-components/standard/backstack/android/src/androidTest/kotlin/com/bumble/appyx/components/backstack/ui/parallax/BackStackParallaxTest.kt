@@ -5,8 +5,8 @@ import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.push
 import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.testing.InteractionTarget
-import com.bumble.appyx.interactions.testing.setupAppyxComponent
+import com.bumble.appyx.interactions.utils.testing.setupAppyxComponent
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert

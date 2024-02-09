@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.components.internal.testdrive.TestDriveExperiment
-import com.bumble.appyx.interactions.sample.InteractionTarget
-import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget
+import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlin.math.roundToInt
 
 @Composable

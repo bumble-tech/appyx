@@ -9,5 +9,5 @@ appyx {
 
 dependencies {
     implementation(project(":appyx-components:experimental:puzzle15:puzzle15"))
-    implementation(project(":appyx-interactions:android"))
+    implementation(project(":appyx-interactions:android-utils"))
 }

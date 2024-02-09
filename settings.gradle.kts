@@ -40,6 +40,7 @@ include(
     ":appyx-components:experimental:puzzle15:web",
     ":appyx-interactions:android",
     ":appyx-interactions:common",
+    ":appyx-interactions:android-utils",
     ":appyx-navigation:android",
     ":appyx-navigation:common",
     ":benchmark:benchmark-app",

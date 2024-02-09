@@ -17,8 +17,8 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveUi
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleVisualisation
 import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.sample.InteractionTarget
-import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.interactions.utils.ui.InteractionTarget
+import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlin.math.roundToInt
