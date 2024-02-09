@@ -14,19 +14,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 
-class BackStack<InteractionTarget : Any>(
+class BackStack<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    val model: BackStackModel<InteractionTarget>,
-    visualisation: (UiContext) -> Visualisation<InteractionTarget, BackStackModel.State<InteractionTarget>>,
+    val model: BackStackModel<NavTarget>,
+    visualisation: (UiContext) -> Visualisation<NavTarget, BackStackModel.State<NavTarget>>,
     animationSpec: AnimationSpec<Float> = spring(),
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, BackStackModel.State<InteractionTarget>> = {
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, BackStackModel.State<NavTarget>> = {
         GestureFactory.Noop()
     },
     gestureSettleConfig: GestureSettleConfig = GestureSettleConfig(),
-    backPressStrategy: BackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>> =
+    backPressStrategy: BackPressHandlerStrategy<NavTarget, BackStackModel.State<NavTarget>> =
         PopBackstackStrategy(scope),
     disableAnimations: Boolean = false,
-) : BaseAppyxComponent<InteractionTarget, BackStackModel.State<InteractionTarget>>(
+) : BaseAppyxComponent<NavTarget, BackStackModel.State<NavTarget>>(
     scope = scope,
     model = model,
     visualisation = visualisation,
