@@ -1,13 +1,13 @@
 package com.bumble.appyx.components.spotlight.operation
 
-import com.bumble.appyx.components.spotlight.InteractionTarget
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child1
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child3
+import com.bumble.appyx.components.spotlight.TestTarget.Child1
+import com.bumble.appyx.components.spotlight.TestTarget.Child2
+import com.bumble.appyx.components.spotlight.TestTarget.Child3
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.Position
+import com.bumble.appyx.components.spotlight.TestTarget
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -24,7 +24,7 @@ class ActivateTest {
             activeIndex = 0f,
         )
 
-        val activate = Activate<InteractionTarget>(0f)
+        val activate = Activate<TestTarget>(0f)
 
         assertFalse(activate.isApplicable(state))
     }
@@ -39,7 +39,7 @@ class ActivateTest {
             activeIndex = 0f
         )
 
-        val activate = Activate<InteractionTarget>(2f)
+        val activate = Activate<TestTarget>(2f)
 
         assertFalse(activate.isApplicable(state))
     }
@@ -55,7 +55,7 @@ class ActivateTest {
             activeIndex = 0f
         )
 
-        val activate = Activate<InteractionTarget>(1f)
+        val activate = Activate<TestTarget>(1f)
 
         assertEquals(
             actual = activate.invoke(state).targetState.activeIndex,
