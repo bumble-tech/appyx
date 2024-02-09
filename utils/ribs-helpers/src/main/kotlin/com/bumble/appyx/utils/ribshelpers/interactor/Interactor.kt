@@ -1,4 +1,4 @@
-package com.bumble.appyx.navigation.clienthelper.interactor
+package com.bumble.appyx.utils.ribshelpers.interactor
 
 import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
 import com.bumble.appyx.navigation.children.ChildAware
