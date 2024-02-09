@@ -19,4 +19,5 @@ dependencies {
     api(project(":appyx-navigation:appyx-navigation"))
     implementation(project(":utils:utils-customisations"))
     implementation(libs.kotlin.test)
+    implementation(project(":utils:ribs-helpers"))
 }
