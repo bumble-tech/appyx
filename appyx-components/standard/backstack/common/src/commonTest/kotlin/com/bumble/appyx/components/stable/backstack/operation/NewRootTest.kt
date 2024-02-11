@@ -5,7 +5,7 @@ import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child2
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child3
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child4
 import com.bumble.appyx.components.stable.backstack.InteractionTarget.Child5
-import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.model.asElement
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.NewRoot
 import kotlin.test.Test

@@ -29,9 +29,9 @@ import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.operation.activate
 import com.bumble.appyx.components.spotlight.ui.fader.SpotlightFader
-import com.bumble.appyx.interactions.core.plugin.Plugin
-import com.bumble.appyx.interactions.core.ui.Visualisation
-import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.plugin.Plugin
+import com.bumble.appyx.interactions.ui.Visualisation
+import com.bumble.appyx.interactions.ui.context.UiContext
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl

@@ -6,13 +6,12 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.model.AppyxComponent
-import com.bumble.appyx.interactions.core.plugin.Plugin
-import com.bumble.appyx.interactions.core.plugin.SavesInstanceState
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.plugin.Plugin
+import com.bumble.appyx.interactions.plugin.SavesInstanceState
+import com.bumble.appyx.interactions.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.state.MutableSavedStateMapImpl
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.navigation.Appyx
 import com.bumble.appyx.navigation.children.ChildAware
 import com.bumble.appyx.navigation.children.ChildAwareImpl
@@ -55,7 +54,7 @@ import kotlin.reflect.KClass
 @Suppress("TooManyFunctions")
 @Stable
 abstract class Node<NavTarget : Any>(
-    val appyxComponent: AppyxComponent<NavTarget, *>,
+    val appyxComponent: com.bumble.appyx.interactions.model.AppyxComponent<NavTarget, *>,
     private val nodeContext: NodeContext,
     view: NodeView = EmptyNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
@@ -67,7 +66,7 @@ abstract class Node<NavTarget : Any>(
     ChildNodeBuilder<NavTarget> {
 
     constructor(
-        appyxComponent: AppyxComponent<NavTarget, *>,
+        appyxComponent: com.bumble.appyx.interactions.model.AppyxComponent<NavTarget, *>,
         nodeContext: NodeContext,
         view: NodeView = EmptyNodeView(),
         childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,

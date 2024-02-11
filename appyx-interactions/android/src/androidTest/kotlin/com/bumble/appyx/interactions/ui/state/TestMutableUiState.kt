@@ -3,10 +3,10 @@ package com.bumble.appyx.interactions.ui.state
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.animation.core.spring
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
-import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionOffset
+import com.bumble.appyx.interactions.ui.state.BaseMutableUiState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll

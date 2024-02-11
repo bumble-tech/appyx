@@ -34,20 +34,20 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
-import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.model.Element
 import com.bumble.appyx.interactions.gesture.GestureValidator
 import com.bumble.appyx.interactions.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.gesture.onPointerEvent
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
-import com.bumble.appyx.interactions.core.model.removedElements
-import com.bumble.appyx.interactions.core.ui.LocalBoxScope
-import com.bumble.appyx.interactions.core.ui.LocalMotionProperties
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
+import com.bumble.appyx.interactions.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.model.removedElements
+import com.bumble.appyx.interactions.ui.LocalBoxScope
+import com.bumble.appyx.interactions.ui.LocalMotionProperties
+import com.bumble.appyx.interactions.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.output.ElementUiModel
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.interactions.gesture.GestureReferencePoint
 
 private val defaultExtraTouch = 48f.dp

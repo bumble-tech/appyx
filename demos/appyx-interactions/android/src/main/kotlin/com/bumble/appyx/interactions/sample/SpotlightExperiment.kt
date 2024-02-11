@@ -25,7 +25,7 @@ import com.bumble.appyx.components.spotlight.operation.previous
 import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.gesture.GestureSettleConfig
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.android.Element
 import com.bumble.appyx.interactions.sample.android.SampleAppyxContainer
 import com.bumble.appyx.interactions.theme.appyx_dark

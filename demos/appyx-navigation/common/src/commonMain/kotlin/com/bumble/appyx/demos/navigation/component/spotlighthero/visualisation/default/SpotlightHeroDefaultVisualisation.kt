@@ -7,18 +7,18 @@ import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroMo
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel.State
 import com.bumble.appyx.demos.navigation.component.spotlighthero.visualisation.SpotlightHeroVisualisation
 import com.bumble.appyx.demos.navigation.component.spotlighthero.visualisation.property.HeroProgress
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.AspectRatio
-import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
-import com.bumble.appyx.interactions.core.ui.property.impl.Height
-import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.Center
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopCenter
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopEnd
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
-import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.property.impl.AspectRatio
+import com.bumble.appyx.interactions.ui.property.impl.GenericFloatProperty
+import com.bumble.appyx.interactions.ui.property.impl.Height
+import com.bumble.appyx.interactions.ui.property.impl.RoundedCorners
+import com.bumble.appyx.interactions.ui.property.impl.Scale
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.Center
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopCenter
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopEnd
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionOffset
+import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 class SpotlightHeroDefaultVisualisation<NavTarget : Any>(

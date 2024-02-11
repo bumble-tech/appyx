@@ -1,11 +1,11 @@
 package com.bumble.appyx.components.backstack.ui.slider
 
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideRight
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.OutsideRight
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 
 @MutableUiStateSpecs
 class TargetUiState(

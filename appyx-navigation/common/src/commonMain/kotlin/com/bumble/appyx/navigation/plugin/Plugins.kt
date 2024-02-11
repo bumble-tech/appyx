@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.plugin
 
-import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.plugin.Plugin
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.plugin.BackPressHandler.OnBackPressedCallback

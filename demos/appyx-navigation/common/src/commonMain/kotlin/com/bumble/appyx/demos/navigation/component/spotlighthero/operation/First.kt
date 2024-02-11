@@ -3,8 +3,8 @@ package com.bumble.appyx.demos.navigation.component.spotlighthero.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHero
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel
-import com.bumble.appyx.interactions.core.model.transition.BaseOperation
-import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.model.transition.BaseOperation
+import com.bumble.appyx.interactions.model.transition.Operation
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 

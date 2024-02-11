@@ -1,7 +1,7 @@
 package com.bumble.appyx.components.backstack.ui.fader
 
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 
 @Suppress("unused")
 @MutableUiStateSpecs

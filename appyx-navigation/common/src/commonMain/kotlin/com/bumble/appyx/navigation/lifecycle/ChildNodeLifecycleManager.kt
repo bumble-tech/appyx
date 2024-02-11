@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.interactions.core.model.AppyxComponent
+import com.bumble.appyx.interactions.model.AppyxComponent
 import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.nodeOrNull
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
  * and updates lifecycle of children nodes when updated.
  */
 internal class ChildNodeLifecycleManager<NavTarget : Any>(
-    private val appyxComponent: AppyxComponent<NavTarget, *>,
+    private val appyxComponent: com.bumble.appyx.interactions.model.AppyxComponent<NavTarget, *>,
     private val children: StateFlow<ChildEntryMap<NavTarget>>,
     private val keepMode: ChildEntry.KeepMode,
     private val coroutineScope: CoroutineScope,

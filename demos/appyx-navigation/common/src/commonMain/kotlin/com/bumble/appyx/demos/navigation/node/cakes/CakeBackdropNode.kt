@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.demos.navigation.component.spotlighthero.visualisation.property.HeroProgress
-import com.bumble.appyx.interactions.core.ui.math.smoothstep
-import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
+import com.bumble.appyx.interactions.ui.math.smoothstep
+import com.bumble.appyx.interactions.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.LeafNode
 

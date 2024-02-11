@@ -13,8 +13,8 @@ import com.bumble.appyx.components.internal.testdrive.ui.md_light_blue_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_light_green_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.ui.context.UiContext
 import com.bumble.appyx.interactions.gesture.Drag.Direction8.DOWN
 import com.bumble.appyx.interactions.gesture.Drag.Direction8.DOWNLEFT
 import com.bumble.appyx.interactions.gesture.Drag.Direction8.DOWNRIGHT
@@ -26,11 +26,11 @@ import com.bumble.appyx.interactions.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.gesture.Gesture
 import com.bumble.appyx.interactions.gesture.GestureFactory
 import com.bumble.appyx.interactions.gesture.dragDirection8
-import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.interactions.ui.DefaultAnimationSpec
+import com.bumble.appyx.interactions.ui.property.impl.BackgroundColor
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 

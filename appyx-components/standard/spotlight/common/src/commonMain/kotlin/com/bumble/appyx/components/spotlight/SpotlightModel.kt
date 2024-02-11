@@ -3,9 +3,9 @@ package com.bumble.appyx.components.spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel.State
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.model.asElement
+import com.bumble.appyx.interactions.model.transition.BaseTransitionModel
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue

@@ -27,10 +27,10 @@ import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRo
 import com.bumble.appyx.demos.common.AppyxWebSample
 import com.bumble.appyx.demos.common.InteractionTarget
 import com.bumble.appyx.demos.common.colors
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.ui.property.impl.RotationY
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.motionPropertyRenderValue
 import kotlin.math.roundToInt
 
 @Composable

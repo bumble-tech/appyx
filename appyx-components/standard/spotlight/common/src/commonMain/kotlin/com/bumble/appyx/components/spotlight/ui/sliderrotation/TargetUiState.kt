@@ -1,15 +1,15 @@
 package com.bumble.appyx.components.spotlight.ui.sliderrotation
 
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.math.cutOffCenter
-import com.bumble.appyx.interactions.core.ui.math.cutOffCenterSigned
-import com.bumble.appyx.interactions.core.ui.math.scaleUpTo
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.math.cutOffCenter
+import com.bumble.appyx.interactions.ui.math.cutOffCenterSigned
+import com.bumble.appyx.interactions.ui.math.scaleUpTo
+import com.bumble.appyx.interactions.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.ui.property.impl.RotationY
+import com.bumble.appyx.interactions.ui.property.impl.Scale
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
 

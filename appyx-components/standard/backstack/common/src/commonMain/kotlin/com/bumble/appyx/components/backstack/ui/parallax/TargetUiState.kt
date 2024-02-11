@@ -1,12 +1,12 @@
 package com.bumble.appyx.components.backstack.ui.parallax
 
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.ColorOverlay
-import com.bumble.appyx.interactions.core.ui.property.impl.Shadow
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.ui.property.impl.ColorOverlay
+import com.bumble.appyx.interactions.ui.property.impl.Shadow
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.OutsideAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.OutsideAlignment.Companion.InContainer
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 
 @Suppress("unused", "MemberVisibilityCanBePrivate", "MagicNumber")
 @MutableUiStateSpecs

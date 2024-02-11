@@ -29,9 +29,9 @@ import com.bumble.appyx.demos.sandbox.navigation.ColorSaver
 import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.ui.TextButton
 import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
-import com.bumble.appyx.interactions.core.ui.Visualisation
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.Visualisation
+import com.bumble.appyx.interactions.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.ui.context.UiContext
 import com.bumble.appyx.interactions.gesture.GestureFactory
 import com.bumble.appyx.interactions.gesture.GestureSettleConfig
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer

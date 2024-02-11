@@ -1,10 +1,10 @@
 package com.bumble.appyx.demos.sample3
 
-import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.property.impl.BackgroundColor
+import com.bumble.appyx.interactions.ui.property.impl.RoundedCorners
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionOffset
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 
 @Suppress("unused")
 @MutableUiStateSpecs

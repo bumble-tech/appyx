@@ -3,7 +3,7 @@ package com.bumble.appyx.components.backstack.backpresshandler
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.operation.Pop
-import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.interactions.model.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow

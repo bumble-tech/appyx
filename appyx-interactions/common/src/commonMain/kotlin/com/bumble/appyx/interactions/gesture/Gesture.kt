@@ -1,8 +1,8 @@
 package com.bumble.appyx.interactions.gesture
 
 import androidx.compose.ui.geometry.Offset
-import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.core.ui.math.proportionOf
+import com.bumble.appyx.interactions.model.transition.Operation
+import com.bumble.appyx.interactions.ui.math.proportionOf
 
 open class Gesture<InteractionTarget, ModelState> internal constructor(
     val operation: Operation<ModelState>,

@@ -26,7 +26,7 @@ import com.bumble.appyx.interactions.gesture.Drag.HorizontalDirection.RIGHT
 import com.bumble.appyx.interactions.gesture.Drag.VerticalDirection
 import com.bumble.appyx.interactions.gesture.Drag.VerticalDirection.DOWN
 import com.bumble.appyx.interactions.gesture.Drag.VerticalDirection.UP
-import com.bumble.appyx.interactions.core.ui.math.angleDegrees
+import com.bumble.appyx.interactions.ui.math.angleDegrees
 import kotlin.math.abs
 
 interface Drag {

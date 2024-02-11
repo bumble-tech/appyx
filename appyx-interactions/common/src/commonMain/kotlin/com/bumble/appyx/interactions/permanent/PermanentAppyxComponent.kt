@@ -1,9 +1,9 @@
 package com.bumble.appyx.interactions.permanent
 
-import com.bumble.appyx.interactions.core.model.AppyxComponent
-import com.bumble.appyx.interactions.core.model.progress.InstantProgressController
-import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.model.AppyxComponent
+import com.bumble.appyx.interactions.model.progress.InstantProgressController
+import com.bumble.appyx.interactions.model.transition.Operation
+import com.bumble.appyx.interactions.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.permanent.PermanentModel.State
 import com.bumble.appyx.mapState
 import com.bumble.appyx.utils.multiplatform.SavedStateMap
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 class PermanentAppyxComponent<InteractionTarget : Any>(
     val model: PermanentModel<InteractionTarget>,
     val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-) : AppyxComponent<InteractionTarget, State<InteractionTarget>> {
+) : com.bumble.appyx.interactions.model.AppyxComponent<InteractionTarget, State<InteractionTarget>> {
 
 
     constructor(
@@ -34,9 +34,9 @@ class PermanentAppyxComponent<InteractionTarget : Any>(
 
     private val instant = InstantProgressController(model = model)
 
-    override val elements: StateFlow<AppyxComponent.Elements<InteractionTarget>>
+    override val elements: StateFlow<com.bumble.appyx.interactions.model.AppyxComponent.Elements<InteractionTarget>>
         get() = model.elements.mapState(scope) { elements ->
-            AppyxComponent.Elements(onScreen = elements)
+            com.bumble.appyx.interactions.model.AppyxComponent.Elements(onScreen = elements)
         }
 
     override fun onAddedToComposition(scope: CoroutineScope) = Unit

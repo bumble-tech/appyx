@@ -32,9 +32,9 @@ import com.bumble.appyx.components.spotlight.ui.sliderrotation.SpotlightSliderRo
 import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.node.spotlight.SpotlightObserveTransitionsExampleNode.NavTarget
 import com.bumble.appyx.demos.sandbox.navigation.ui.appyx_dark
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
+import com.bumble.appyx.interactions.ui.property.impl.RotationY
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.motionPropertyRenderValue
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node

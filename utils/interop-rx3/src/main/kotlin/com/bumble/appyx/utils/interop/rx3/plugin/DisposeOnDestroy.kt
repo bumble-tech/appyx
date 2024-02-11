@@ -1,6 +1,6 @@
 package com.bumble.appyx.utils.interop.rx3.plugin
 
-import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.plugin.Plugin
 import com.bumble.appyx.navigation.plugin.Destroyable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable

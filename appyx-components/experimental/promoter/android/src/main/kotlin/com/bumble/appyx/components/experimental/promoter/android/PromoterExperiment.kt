@@ -26,9 +26,9 @@ import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.addFirst
 import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisation
 import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.sample.InteractionTarget
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child1
 import com.bumble.appyx.interactions.sample.InteractionTarget.Child2

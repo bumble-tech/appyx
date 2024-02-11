@@ -3,7 +3,7 @@ package com.bumble.appyx.components.spotlight.operation
 import com.bumble.appyx.components.spotlight.InteractionTarget
 import com.bumble.appyx.components.spotlight.InteractionTarget.Child1
 import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
-import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.model.asElement
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.Position

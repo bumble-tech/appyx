@@ -6,7 +6,7 @@ import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.Position
-import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.model.asElement
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

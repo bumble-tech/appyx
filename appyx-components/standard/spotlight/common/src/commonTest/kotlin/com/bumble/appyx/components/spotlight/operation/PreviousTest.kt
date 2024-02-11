@@ -7,7 +7,7 @@ import com.bumble.appyx.components.spotlight.InteractionTarget.Child3
 import com.bumble.appyx.components.spotlight.InteractionTarget.Child4
 import com.bumble.appyx.components.spotlight.InteractionTarget.Child5
 import com.bumble.appyx.components.spotlight.InteractionTarget.Child6
-import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.model.asElement
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import kotlin.test.Test
 import kotlin.test.assertEquals

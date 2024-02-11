@@ -1,9 +1,9 @@
 package com.bumble.appyx.demos.navigation.component.spotlighthero
 
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.model.asElement
+import com.bumble.appyx.interactions.model.transition.BaseTransitionModel
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue

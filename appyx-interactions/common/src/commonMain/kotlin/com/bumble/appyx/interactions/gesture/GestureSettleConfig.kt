@@ -2,7 +2,7 @@ package com.bumble.appyx.interactions.gesture
 
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.runtime.Immutable
-import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
+import com.bumble.appyx.interactions.ui.DefaultAnimationSpec
 
 @Immutable
 data class GestureSettleConfig(

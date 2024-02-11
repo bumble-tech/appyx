@@ -39,9 +39,9 @@ import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.incompletedrag.InteractionTarget.Child1
 import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.gesture.GestureReferencePoint
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.gesture.GestureSettleConfig
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 
 enum class InteractionTarget {
     Child1

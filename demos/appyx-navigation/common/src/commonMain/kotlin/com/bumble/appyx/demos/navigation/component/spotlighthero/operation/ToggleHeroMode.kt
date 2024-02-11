@@ -5,8 +5,8 @@ import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHero
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel.Mode.HERO
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel.Mode.LIST
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel.State
-import com.bumble.appyx.interactions.core.model.transition.BaseOperation
-import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.model.transition.BaseOperation
+import com.bumble.appyx.interactions.model.transition.Operation
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize

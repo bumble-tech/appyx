@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.children
 
-import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.model.Element
 import com.bumble.appyx.navigation.lifecycle.DefaultPlatformLifecycleObserver
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.isDestroyed

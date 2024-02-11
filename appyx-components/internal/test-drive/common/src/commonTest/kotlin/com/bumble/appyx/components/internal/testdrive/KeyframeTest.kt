@@ -1,7 +1,7 @@
 package com.bumble.appyx.components.internal.testdrive
 
 import com.bumble.appyx.components.internal.testdrive.operation.Next
-import com.bumble.appyx.interactions.core.model.transition.Keyframes
+import com.bumble.appyx.interactions.model.transition.Keyframes
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

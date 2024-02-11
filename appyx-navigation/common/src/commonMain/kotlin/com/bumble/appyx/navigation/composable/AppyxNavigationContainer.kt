@@ -6,9 +6,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.model.Element
 import com.bumble.appyx.interactions.gesture.GestureReferencePoint
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.gesture.GestureValidator
 import com.bumble.appyx.navigation.integration.LocalScreenSize
 import com.bumble.appyx.navigation.node.LocalNode

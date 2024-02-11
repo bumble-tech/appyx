@@ -11,8 +11,8 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.C
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.MoveTo
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.ui.context.UiContext
 import com.bumble.appyx.interactions.gesture.Drag.Direction8.DOWN
 import com.bumble.appyx.interactions.gesture.Drag.Direction8.DOWNLEFT
 import com.bumble.appyx.interactions.gesture.Drag.Direction8.DOWNRIGHT
@@ -24,16 +24,16 @@ import com.bumble.appyx.interactions.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.gesture.Gesture
 import com.bumble.appyx.interactions.gesture.GestureFactory
 import com.bumble.appyx.interactions.gesture.dragDirection8
-import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.BottomEnd
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopEnd
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
-import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.interactions.ui.DefaultAnimationSpec
+import com.bumble.appyx.interactions.ui.property.impl.BackgroundColor
+import com.bumble.appyx.interactions.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.BottomEnd
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopEnd
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.TopStart
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionOffset
+import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 

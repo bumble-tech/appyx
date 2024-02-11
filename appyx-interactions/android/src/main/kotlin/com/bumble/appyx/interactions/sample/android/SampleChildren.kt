@@ -7,8 +7,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.sample.SampleElement
 import com.bumble.appyx.interactions.sample.colors
 import kotlin.math.roundToInt

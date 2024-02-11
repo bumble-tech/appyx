@@ -5,7 +5,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.bumble.appyx.components.internal.testdrive.android.helper.createTestDrive
 import com.bumble.appyx.components.internal.testdrive.operation.Next
-import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.model.transition.Operation
 import com.bumble.appyx.interactions.testing.snapshot
 import org.junit.Ignore
 import org.junit.Rule

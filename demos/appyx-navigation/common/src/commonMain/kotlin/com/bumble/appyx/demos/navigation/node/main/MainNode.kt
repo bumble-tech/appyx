@@ -9,7 +9,7 @@ import com.bumble.appyx.demos.navigation.node.main.MainNavItem.HOME
 import com.bumble.appyx.demos.navigation.node.main.MainNavItem.PROFILE
 import com.bumble.appyx.demos.navigation.node.profile.ProfileNode
 import com.bumble.appyx.demos.navigation.node.profile.User
-import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.plugin.Plugin
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.store.getRetainedInstance
 import com.bumble.appyx.utils.material3.AppyxMaterial3NavNode
