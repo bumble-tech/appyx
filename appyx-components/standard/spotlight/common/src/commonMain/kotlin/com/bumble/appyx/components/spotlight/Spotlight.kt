@@ -14,11 +14,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.StateFlow
 
-open class Spotlight<InteractionTarget : Any>(
+open class Spotlight<NavTarget : Any>(
     scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-    model: SpotlightModel<InteractionTarget>,
-    visualisation: (UiContext) -> Visualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>>,
-    gestureFactory: (TransitionBounds) -> GestureFactory<InteractionTarget, SpotlightModel.State<InteractionTarget>> = {
+    model: SpotlightModel<NavTarget>,
+    visualisation: (UiContext) -> Visualisation<NavTarget, SpotlightModel.State<NavTarget>>,
+    gestureFactory: (TransitionBounds) -> GestureFactory<NavTarget, SpotlightModel.State<NavTarget>> = {
         GestureFactory.Noop()
     },
     animationSpec: AnimationSpec<Float> = spring(),
@@ -28,7 +28,7 @@ open class Spotlight<InteractionTarget : Any>(
         revertGestureSpec = animationSpec,
     ),
     disableAnimations: Boolean = false,
-) : BaseAppyxComponent<InteractionTarget, SpotlightModel.State<InteractionTarget>>(
+) : BaseAppyxComponent<NavTarget, SpotlightModel.State<NavTarget>>(
     scope = scope,
     model = model,
     visualisation = visualisation,
@@ -40,6 +40,6 @@ open class Spotlight<InteractionTarget : Any>(
     val activeIndex: StateFlow<Float> = model.output
         .mapState(scope) { it.currentTargetState.activeIndex }
 
-    val activeElement: StateFlow<InteractionTarget?> = model.output
+    val activeElement: StateFlow<NavTarget?> = model.output
         .mapState(scope) { it.currentTargetState.activeElement }
 }

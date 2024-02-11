@@ -8,11 +8,11 @@ import com.bumble.appyx.mapState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 
-class PopBackstackStrategy<InteractionTarget : Any>(
+class PopBackstackStrategy<NavTarget : Any>(
     val scope: CoroutineScope,
     val animationSpec: AnimationSpec<Float>? = null
 ) :
-    BaseBackPressHandlerStrategy<InteractionTarget, BackStackModel.State<InteractionTarget>>() {
+    BaseBackPressHandlerStrategy<NavTarget, BackStackModel.State<NavTarget>>() {
 
     override val canHandleBackPress: StateFlow<Boolean> by lazy {
         transitionModel.output.mapState(scope) { output ->
@@ -21,7 +21,7 @@ class PopBackstackStrategy<InteractionTarget : Any>(
     }
 
     override fun handleBackPress(): Boolean {
-        val pop = Pop<InteractionTarget>()
+        val pop = Pop<NavTarget>()
         //todo find a better way to check if operation is applicable
         return if (pop.isApplicable(transitionModel.output.value.currentTargetState)) {
             appyxComponent.operation(operation = Pop(), animationSpec)

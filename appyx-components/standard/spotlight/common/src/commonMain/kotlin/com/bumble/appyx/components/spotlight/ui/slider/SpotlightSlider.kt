@@ -27,21 +27,21 @@ import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlig
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
-class SpotlightSlider<InteractionTarget : Any>(
+class SpotlightSlider<NavTarget : Any>(
     uiContext: UiContext,
-    initialState: State<InteractionTarget>,
+    initialState: State<NavTarget>,
     @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
+) : BaseVisualisation<NavTarget, State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext
 ) {
     private val scrollX = GenericFloatProperty(
         coroutineScope = uiContext.coroutineScope,
         target = Target(initialState.activeIndex),
     )
-    override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
+    override val viewpointDimensions: List<Pair<(State<NavTarget>) -> Float, GenericFloatProperty>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollX
+            { state: State<NavTarget> -> state.activeIndex } to scrollX
         )
 
     private val created: TargetUiState = TargetUiState(
@@ -62,7 +62,7 @@ class SpotlightSlider<InteractionTarget : Any>(
         alpha = Alpha.Target(0f),
     )
 
-    override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun State<NavTarget>.toUiTargets(): List<MatchedTargetUiState<NavTarget, TargetUiState>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 MatchedTargetUiState(
@@ -87,19 +87,19 @@ class SpotlightSlider<InteractionTarget : Any>(
         targetUiState.toMutableUiState(uiContext, scrollX.renderValueFlow)
 
 
-    class Gestures<InteractionTarget>(
+    class Gestures<NavTarget>(
         transitionBounds: TransitionBounds,
         private val orientation: Orientation = Orientation.Horizontal,
         private val reverseOrientation: Boolean = false,
-    ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
+    ) : GestureFactory<NavTarget, State<NavTarget>> {
         private val width = transitionBounds.widthPx.toFloat()
         private val height = transitionBounds.heightPx.toFloat()
 
         override fun createGesture(
-            state: State<InteractionTarget>,
+            state: State<NavTarget>,
             delta: Offset,
             density: Density
-        ): Gesture<InteractionTarget, State<InteractionTarget>> = when (orientation) {
+        ): Gesture<NavTarget, State<NavTarget>> = when (orientation) {
             Orientation.Horizontal -> {
                 when (dragHorizontalDirection(delta)) {
                     Drag.HorizontalDirection.LEFT -> Gesture(

@@ -43,8 +43,8 @@ fun ComposeContentTestRule.createSpotlight(
     ).also { setupSpotlight(it) }
 }
 
-fun <InteractionTarget : Any> ComposeContentTestRule.setupSpotlight(
-    spotlight: Spotlight<InteractionTarget>,
+fun <NavTarget : Any> ComposeContentTestRule.setupSpotlight(
+    spotlight: Spotlight<NavTarget>,
 ) {
     setContent {
         Surface(
@@ -62,8 +62,8 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupSpotlight(
 }
 
 @Composable
-fun <InteractionTarget : Any> SpotlightUi(
-    spotlight: Spotlight<InteractionTarget>,
+fun <NavTarget : Any> SpotlightUi(
+    spotlight: Spotlight<NavTarget>,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {

@@ -23,10 +23,10 @@ import com.bumble.appyx.mapState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 @Suppress("MagicNumber")
-class SpotlightStack3D<InteractionTarget : Any>(
+class SpotlightStack3D<NavTarget : Any>(
     uiContext: UiContext,
-    initialState: State<InteractionTarget>,
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
+    initialState: State<NavTarget>,
+) : BaseVisualisation<NavTarget, State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
 ) {
     private var width: Dp = 0.dp
@@ -42,9 +42,9 @@ class SpotlightStack3D<InteractionTarget : Any>(
         coroutineScope = uiContext.coroutineScope,
         target = GenericFloatProperty.Target(initialState.activeIndex),
     )
-    override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
+    override val viewpointDimensions: List<Pair<(State<NavTarget>) -> Float, GenericFloatProperty>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollY
+            { state: State<NavTarget> -> state.activeIndex } to scrollY
         )
 
     private val created: TargetUiState = TargetUiState(
@@ -71,7 +71,7 @@ class SpotlightStack3D<InteractionTarget : Any>(
         zIndex = ZIndex.Target(0f),
     )
 
-    override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun State<NavTarget>.toUiTargets(): List<MatchedTargetUiState<NavTarget, TargetUiState>> =
         positions.flatMapIndexed { index, position ->
             position.elements.map {
                 MatchedTargetUiState(

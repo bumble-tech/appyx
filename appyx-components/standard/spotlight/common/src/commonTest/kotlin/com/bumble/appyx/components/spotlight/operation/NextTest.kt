@@ -1,13 +1,13 @@
 package com.bumble.appyx.components.spotlight.operation
 
-import com.bumble.appyx.components.spotlight.InteractionTarget
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child1
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child3
+import com.bumble.appyx.components.spotlight.TestTarget.Child1
+import com.bumble.appyx.components.spotlight.TestTarget.Child2
+import com.bumble.appyx.components.spotlight.TestTarget.Child3
 import com.bumble.appyx.interactions.core.asElement
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.Position
+import com.bumble.appyx.components.spotlight.TestTarget
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -25,7 +25,7 @@ class NextTest {
             activeIndex = 2f
         )
 
-        val next = Next<InteractionTarget>()
+        val next = Next<TestTarget>()
 
         assertFalse(next.isApplicable(state))
     }
@@ -41,7 +41,7 @@ class NextTest {
             activeIndex = 0f
         )
 
-        val next = Next<InteractionTarget>()
+        val next = Next<TestTarget>()
 
         assertEquals(
             actual = next.invoke(state).targetState.activeIndex,
