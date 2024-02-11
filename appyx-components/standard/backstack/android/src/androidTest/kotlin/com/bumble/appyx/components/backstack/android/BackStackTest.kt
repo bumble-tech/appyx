@@ -32,11 +32,11 @@ class BackStackTest(private val testParam: TestParam) {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var backStack: BackStack<NavTarget>
+    private lateinit var backStack: BackStack<TestTarget>
 
     companion object {
         data class TestParam(
-            val visualisation: (UiContext) -> Visualisation<NavTarget, BackStackModel.State<NavTarget>>
+            val visualisation: (UiContext) -> Visualisation<TestTarget, BackStackModel.State<TestTarget>>
         )
 
         @JvmStatic
@@ -133,7 +133,7 @@ class BackStackTest(private val testParam: TestParam) {
 
     private fun createBackStack(
         disableAnimations: Boolean,
-        visualisation: (UiContext) -> Visualisation<NavTarget, BackStackModel.State<NavTarget>>
+        visualisation: (UiContext) -> Visualisation<TestTarget, BackStackModel.State<TestTarget>>
     ) {
         backStack = BackStack(
             model = BackStackModel(

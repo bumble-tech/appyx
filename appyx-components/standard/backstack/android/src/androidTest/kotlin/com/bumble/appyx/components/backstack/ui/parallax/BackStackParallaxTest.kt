@@ -18,9 +18,9 @@ class BackStackParallaxTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var backStack: BackStack<NavTarget>
-    private lateinit var backStackModel: BackStackModel<NavTarget>
-    private lateinit var visualisation: BackStackParallax<NavTarget>
+    private lateinit var backStack: BackStack<TestTarget>
+    private lateinit var backStackModel: BackStackModel<TestTarget>
+    private lateinit var visualisation: BackStackParallax<TestTarget>
 
     @Test
     fun backStackParallax_resolves_visibility_to_false_when_element_is_not_top_most_stashed_one() {
@@ -33,7 +33,7 @@ class BackStackParallaxTest {
 
         composeTestRule.waitForIdle()
 
-        with(visualisation.mapUpdate(backStackModel.output.value as Update<BackStackModel.State<NavTarget>>)) {
+        with(visualisation.mapUpdate(backStackModel.output.value as Update<BackStackModel.State<TestTarget>>)) {
             Assert.assertFalse(get(0).visibleState.value) // Child #1 should be false
             Assert.assertFalse(get(1).visibleState.value) // Child #2 should be false
             Assert.assertFalse(get(2).visibleState.value)  // Child #3 should be false
@@ -49,7 +49,7 @@ class BackStackParallaxTest {
         backStack = BackStack(
             model = backStackModel,
             visualisation = { uiContext ->
-                BackStackParallax<NavTarget>(uiContext).also {
+                BackStackParallax<TestTarget>(uiContext).also {
                     visualisation = it
                 }
             },
