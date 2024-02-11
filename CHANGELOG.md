@@ -2,6 +2,12 @@
 
 ## Pending changes
 
+### API breaking changes
+
+- [#677](https://github.com/bumble-tech/appyx/pull/677) – Moved Builder, SimpleBuilder, Interactor to separate module
+
+### Fixed
+
 - [#670](https://github.com/bumble-tech/appyx/pull/670) - Fixes ios lifecycle
 - [#673](https://github.com/bumble-tech/appyx/pull/673) – Fix canHandeBackPress typo
 

@@ -1,9 +1,9 @@
 package com.bumble.appyx.utils.testing.unit.common.util
 
-import com.bumble.appyx.navigation.builder.SimpleBuilder
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.utils.ribshelpers.builder.SimpleBuilder
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
