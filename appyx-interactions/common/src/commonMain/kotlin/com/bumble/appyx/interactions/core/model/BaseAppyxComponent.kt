@@ -18,11 +18,14 @@ import com.bumble.appyx.interactions.core.model.transition.Operation
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.TransitionModel
 import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.TransitionBoundsAware
 import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.context.UiContextAware
+import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.helper.DisableAnimations
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
@@ -86,6 +89,8 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         gestureFactory = { _gestureFactory },
         defaultAnimationSpec = defaultAnimationSpec,
     )
+
+    val isGesturesEnabled = _gestureFactory !is GestureFactory.Noop
 
     private val _uiModels: MutableStateFlow<List<ElementUiModel<InteractionTarget>>> =
         MutableStateFlow(emptyList())
@@ -228,7 +233,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
         )
         val animatedSource = animated
         when {
-            animatedSource == null || DisableAnimations || disableAnimations -> instant.operation(
+            animatedSource == null || disableAnimations -> instant.operation(
                 operation
             )
 
@@ -285,7 +290,7 @@ open class BaseAppyxComponent<InteractionTarget : Any, ModelState : Any>(
 
     override fun handleBackPress(): Boolean = backPressStrategy.handleBackPress()
 
-    override fun canHandeBackPress(): StateFlow<Boolean> = backPressStrategy.canHandleBackPress
+    override fun canHandleBackPress(): StateFlow<Boolean> = backPressStrategy.canHandleBackPress
 
     override fun saveInstanceState(state: MutableSavedStateMap) {
         model.saveInstanceState(state)

@@ -35,7 +35,7 @@ kotlin {
                 api(compose.foundation)
                 api(compose.material3)
                 api(project(":appyx-navigation:appyx-navigation"))
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
+                implementation(project(":appyx-components:standard:spotlight:spotlight"))
             }
         }
         val androidMain by getting

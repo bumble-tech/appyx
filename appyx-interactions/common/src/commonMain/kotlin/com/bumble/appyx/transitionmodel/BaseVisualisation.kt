@@ -14,7 +14,7 @@ import com.bumble.appyx.interactions.core.model.transition.Update
 import com.bumble.appyx.interactions.core.ui.Visualisation
 import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
 import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.math.lerpFloat
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty

@@ -2,6 +2,19 @@
 
 ## Pending changes
 
+### API breaking changes
+
+- [#677](https://github.com/bumble-tech/appyx/pull/677) – Moved Builder, SimpleBuilder, Interactor to separate module
+
+### Fixed
+
+- [#670](https://github.com/bumble-tech/appyx/pull/670) - Fixes ios lifecycle
+- [#673](https://github.com/bumble-tech/appyx/pull/673) – Fix canHandeBackPress typo
+
+---
+
+## 2.0.0-alpha10
+
 {==
 
 Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
@@ -17,10 +30,13 @@ Please refer to [2.0.0-alpha10 – Migration guide](2.0.0-alpha10.md)
 - [#652](https://github.com/bumble-tech/appyx/pull/652) - KSP processor renamed from `mutable-ui-processor` to `appyx-processor`
 - [#654](https://github.com/bumble-tech/appyx/pull/654) - Renamings 
 - [#657](https://github.com/bumble-tech/appyx/pull/657) - Rename ParentNode & Node to Node and LeafNode 
+- [#644](https://github.com/bumble-tech/appyx/pull/644) – Refactor AppyxComponent and application of draggable modifier 
 
 ### Fixed
 
 - [#638](https://github.com/bumble-tech/appyx/pull/638) - Fix visibility issue for bottom element in BackStackParallax
+
+<div style="text-align: center"><small>24 Jan 2024</small></div>
 
 ---
 

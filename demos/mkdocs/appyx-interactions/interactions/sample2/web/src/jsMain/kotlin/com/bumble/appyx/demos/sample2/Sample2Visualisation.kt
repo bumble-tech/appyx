@@ -24,7 +24,7 @@ import com.bumble.appyx.interactions.gesture.Drag.Direction8.UPRIGHT
 import com.bumble.appyx.interactions.gesture.Gesture
 import com.bumble.appyx.interactions.gesture.GestureFactory
 import com.bumble.appyx.interactions.gesture.dragDirection8
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
+import com.bumble.appyx.interactions.core.ui.DefaultAnimationSpec
 import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
 import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
 import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
