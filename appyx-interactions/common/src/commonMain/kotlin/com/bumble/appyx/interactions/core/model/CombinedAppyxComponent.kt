@@ -34,14 +34,14 @@ class CombinedAppyxComponent<InteractionTarget : Any>(
 
     override fun handleBackPress(): Boolean {
         appyxComponents.forEach { appyxComponent ->
-            if (appyxComponent.canHandeBackPress().value)
+            if (appyxComponent.canHandleBackPress().value)
                 return appyxComponent.handleBackPress()
         }
         return false
     }
 
-    override fun canHandeBackPress(): StateFlow<Boolean> =
-        combineState(appyxComponents.map { it.canHandeBackPress() }, scope) { array ->
+    override fun canHandleBackPress(): StateFlow<Boolean> =
+        combineState(appyxComponents.map { it.canHandleBackPress() }, scope) { array ->
             array.any { it }
         }
 

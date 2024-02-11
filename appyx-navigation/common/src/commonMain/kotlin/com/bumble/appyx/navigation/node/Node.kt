@@ -206,7 +206,7 @@ abstract class Node<NavTarget : Any>(
     private fun BackHandler() {
         //todo support delegating to plugins
         val canHandleBack = appyxComponent
-            .canHandeBackPress()
+            .canHandleBackPress()
             .collectAsState(initial = false)
         PlatformBackHandler(enabled = canHandleBack.value) {
             appyxComponent.handleBackPress()

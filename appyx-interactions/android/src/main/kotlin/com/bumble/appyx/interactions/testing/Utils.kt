@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.sample.android.SampleChildren
+import com.bumble.appyx.interactions.sample.android.SampleAppyxContainer
 import com.bumble.appyx.interactions.theme.appyx_dark
 import kotlin.random.Random
 
@@ -54,7 +54,7 @@ private fun <InteractionTarget : Any, ModelState : Any> TestChildrenUi(
 ) {
     BoxWithConstraints {
         val padding = this.maxWidth * (1.0f - fraction) / 2
-        SampleChildren(
+        SampleAppyxContainer(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(horizontal = padding)
@@ -63,14 +63,15 @@ private fun <InteractionTarget : Any, ModelState : Any> TestChildrenUi(
                 ),
             appyxComponent = appyxComponent,
             clipToBounds = clipToBounds,
-        ) {
+        ) { element ->
             Box(
                 modifier = Modifier
                     .fillMaxSize()
             ) {
                 Text(
-                    text = "${it.element.interactionTarget}",
-                    modifier = Modifier.align(Alignment.Center),
+                    text = "${element.interactionTarget}",
+                    modifier = Modifier
+                        .align(Alignment.Center),
                     color = Color.White
                 )
             }

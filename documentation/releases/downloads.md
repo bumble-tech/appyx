@@ -218,6 +218,16 @@ dependencies {
 }
 ```
 
+### RIBs like helpers
+
+Adds client code helper classes like `Builder`, `SimpleBuilder`, and `Interactor`
+
+```kotlin
+dependencies {
+    implementation("com.bumble.appyx:utils-ribs-helpers:$version")
+}
+```
+
 
 ### Testing
 

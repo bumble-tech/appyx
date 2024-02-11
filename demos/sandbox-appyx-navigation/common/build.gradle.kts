@@ -11,7 +11,7 @@ appyx {
 }
 
 kotlin {
-    android {
+    androidTarget {
         publishLibraryVariants("release")
     }
     jvm("desktop") {
@@ -39,10 +39,9 @@ kotlin {
                 api(project(":utils:utils-customisations"))
                 api(project(":utils:utils-multiplatform"))
                 implementation(project(":appyx-components:experimental:cards:cards"))
-                implementation(project(":appyx-components:experimental:modal:modal"))
                 implementation(project(":appyx-components:experimental:promoter:promoter"))
-                implementation(project(":appyx-components:stable:backstack:backstack"))
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
+                implementation(project(":appyx-components:standard:backstack:backstack"))
+                implementation(project(":appyx-components:standard:spotlight:spotlight"))
             }
         }
         val commonTest by getting {

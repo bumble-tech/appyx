@@ -2,7 +2,6 @@ package com.bumble.appyx.components.experimental.puzzle15.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,7 +27,6 @@ import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.bumble.appyx.components.experimental.puzzle15.Puzzle15
@@ -39,8 +37,9 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.LEFT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.RIGHT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.UP
+import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.core.gesture.GestureValidator
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.sample.Children
 
 @Suppress("MagicNumber", "LongMethod")
 @Composable
@@ -83,74 +82,31 @@ fun Puzzle15Ui(
                 .size(240.dp)
                 .border(4.dp, accentColor)
         ) {
-            Children(
+            AppyxInteractionsContainer(
+                gestureValidator = GestureValidator.permissiveValidator,
                 screenWidthPx = screenWidthPx,
                 screenHeightPx = screenHeightPx,
                 appyxComponent = puzzle15,
-            ) { elementUiModel ->
-                if (elementUiModel.element.interactionTarget == Puzzle15Model.Tile.EmptyTile) {
+            ) { element ->
+                if (element.interactionTarget == Puzzle15Model.Tile.EmptyTile) {
                     Box(
-                        modifier = Modifier.size(60.dp)
-                            .then(
-                                elementUiModel.modifier
-                                    .background(color = Color.Transparent)
-                            )
+                        modifier = Modifier
+                            .size(60.dp)
+                            .background(color = Color.Transparent)
+
                     )
                 } else {
-                    val state = model.output.value
-                    val element =
-                        state.currentTargetState.items.find { it.id == elementUiModel.element.id }
-                    val index = state.currentTargetState.items.indexOf(element)
-                    val emptyTileIndex = state.currentTargetState.emptyTileIndex
-
-                    @Suppress("ComplexCondition")
-                    if (index == emptyTileIndex - 1 ||
-                        index == emptyTileIndex + 1 ||
-                        index == emptyTileIndex - 4 ||
-                        index == emptyTileIndex + 4
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .background(color = Color.White)
                     ) {
-                        Box(
-                            modifier = Modifier.size(60.dp)
-                                .then(
-                                    elementUiModel
-                                        .modifier
-                                        .background(color = Color.White)
-                                )
-                                .pointerInput(elementUiModel.element.id) {
-                                    this.interceptOutOfBoundsChildEvents = true
-                                    detectDragGestures(
-                                        onDrag = { change, dragAmount ->
-                                            change.consume()
-                                            puzzle15.onDrag(dragAmount, this)
-                                        },
-                                        onDragEnd = {
-                                            puzzle15.onDragEnd()
-                                        }
-                                    )
-                                }
-                        ) {
-                            Text(
-                                color = Color.Black,
-                                text = elementUiModel.element.interactionTarget.textValue(),
-                                modifier = Modifier.align(Alignment.Center),
-                                fontSize = 24.sp,
-                            )
-                        }
-                    } else {
-                        Box(
-                            modifier = Modifier.size(60.dp)
-                                .then(
-                                    elementUiModel.modifier
-                                        .background(color = Color.White)
-                                )
-                        ) {
-                            Text(
-                                color = Color.Black,
-                                text = elementUiModel.element.interactionTarget.textValue(),
-                                modifier = Modifier.align(Alignment.Center),
-                                fontSize = 24.sp,
-                            )
-                        }
+                        Text(
+                            color = Color.Black,
+                            text = element.interactionTarget.textValue(),
+                            modifier = Modifier.align(Alignment.Center),
+                            fontSize = 24.sp,
+                        )
                     }
                 }
             }
