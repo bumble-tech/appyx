@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.core
+package com.bumble.appyx.interactions.composable
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
+import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.gesture.GestureValidator
 import com.bumble.appyx.interactions.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.gesture.detectDragGesturesOrCancellation
@@ -47,13 +48,9 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.core.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.core.ui.property.motionPropertyRenderValue
+import com.bumble.appyx.interactions.gesture.GestureReferencePoint
 
 private val defaultExtraTouch = 48f.dp
-
-enum class GestureReferencePoint {
-    Container,
-    Element
-}
 
 @Suppress("LongMethod")
 @Composable

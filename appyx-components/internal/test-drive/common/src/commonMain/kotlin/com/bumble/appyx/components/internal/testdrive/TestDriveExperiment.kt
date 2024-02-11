@@ -29,7 +29,7 @@ import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationVisualisation
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationVisualisation.Companion.toTargetUiState
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleVisualisation
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.gesture.GestureValidator
 import com.bumble.appyx.interactions.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.core.model.transition.Keyframes

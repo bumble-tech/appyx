@@ -45,8 +45,8 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.sample3.InteractionTarget.Child1
 import com.bumble.appyx.demos.sample3.Sample3Visualisation.Companion.toTargetUiState
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.GestureReferencePoint
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.gesture.GestureReferencePoint
 import com.bumble.appyx.interactions.core.model.transition.Keyframes
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
 import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME

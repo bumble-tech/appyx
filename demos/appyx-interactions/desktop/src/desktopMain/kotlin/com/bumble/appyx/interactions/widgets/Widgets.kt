@@ -23,7 +23,7 @@ import com.bumble.appyx.demos.common.widget.TimerWidget
 import com.bumble.appyx.demos.common.widget.WeatherWidget
 import com.bumble.appyx.interactions.Events
 import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.widgets.ui.WidgetsStack3D

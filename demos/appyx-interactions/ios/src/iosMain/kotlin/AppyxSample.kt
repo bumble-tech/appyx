@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.core.Element
 import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
