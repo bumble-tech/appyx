@@ -33,7 +33,7 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":appyx-interactions:appyx-interactions"))
+                implementation(project(":appyx-navigation:appyx-navigation"))
                 api(compose.runtime)
                 api(compose.foundation)
                 api(compose.material)

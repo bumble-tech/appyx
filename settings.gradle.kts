@@ -86,6 +86,7 @@ include(
     ":utils:interop-ribs",
     ":utils:interop-rx2",
     ":utils:interop-rx3",
+    ":utils:ribs-helpers",
     ":utils:testing-junit4",
     ":utils:testing-junit5",
     ":utils:testing-ui",

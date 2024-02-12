@@ -17,24 +17,24 @@ import kotlin.math.max
 
 @Parcelize
 // TODO cleanup SpotlightModel.State.positions if a position doesn't contain more elements
-class UpdateElements<InteractionTarget : Any>(
-    private val items: @RawValue List<InteractionTarget>,
+class UpdateElements<NavTarget : Any>(
+    private val items: @RawValue List<NavTarget>,
     private val initialActiveIndex: Float? = null,
     override var mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<SpotlightModel.State<InteractionTarget>>() {
+) : BaseOperation<SpotlightModel.State<NavTarget>>() {
 
-    override fun isApplicable(state: SpotlightModel.State<InteractionTarget>): Boolean =
+    override fun isApplicable(state: SpotlightModel.State<NavTarget>): Boolean =
         true
 
     override fun createFromState(
-        baseLineState: SpotlightModel.State<InteractionTarget>
-    ): SpotlightModel.State<InteractionTarget> {
+        baseLineState: SpotlightModel.State<NavTarget>
+    ): SpotlightModel.State<NavTarget> {
         val positions = baseLineState.positions
         val newSize = max(positions.size, items.size)
-        val newPositions = ArrayList<Position<InteractionTarget>>(newSize)
+        val newPositions = ArrayList<Position<NavTarget>>(newSize)
         for (i in 0 until newSize) {
             val elementsForPosition =
-                mutableMapOf<Element<InteractionTarget>, SpotlightModel.State.ElementState>()
+                mutableMapOf<Element<NavTarget>, SpotlightModel.State.ElementState>()
             if (i < positions.size) {
                 elementsForPosition += positions[i].elements
             }
@@ -47,8 +47,8 @@ class UpdateElements<InteractionTarget : Any>(
     }
 
     override fun createTargetState(
-        fromState: SpotlightModel.State<InteractionTarget>
-    ): SpotlightModel.State<InteractionTarget> =
+        fromState: SpotlightModel.State<NavTarget>
+    ): SpotlightModel.State<NavTarget> =
         fromState.copy(
             positions = fromState.positions.map { position ->
                 position.copy(
@@ -65,8 +65,8 @@ class UpdateElements<InteractionTarget : Any>(
         )
 }
 
-fun <InteractionTarget : Any> Spotlight<InteractionTarget>.updateElements(
-    items: List<InteractionTarget>,
+fun <NavTarget : Any> Spotlight<NavTarget>.updateElements(
+    items: List<NavTarget>,
     initialActiveIndex: Float? = null,
     animationSpec: AnimationSpec<Float> = defaultAnimationSpec,
     mode: Operation.Mode = Operation.Mode.KEYFRAME

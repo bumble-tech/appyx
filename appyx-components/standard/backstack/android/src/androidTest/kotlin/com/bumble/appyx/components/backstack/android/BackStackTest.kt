@@ -17,7 +17,7 @@ import com.bumble.appyx.interactions.core.ui.context.UiContext
 import com.bumble.appyx.interactions.utils.testing.setupAppyxComponent
 import com.bumble.appyx.interactions.utils.testing.waitUntilAnimationEnded
 import com.bumble.appyx.interactions.utils.testing.waitUntilAnimationStarted
-import com.bumble.appyx.interactions.utils.ui.InteractionTarget
+import com.bumble.appyx.interactions.utils.testing.TestTarget
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert
@@ -32,11 +32,11 @@ class BackStackTest(private val testParam: TestParam) {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-    private lateinit var backStack: BackStack<InteractionTarget>
+    private lateinit var backStack: BackStack<TestTarget>
 
     companion object {
         data class TestParam(
-            val visualisation: (UiContext) -> Visualisation<InteractionTarget, BackStackModel.State<InteractionTarget>>
+            val visualisation: (UiContext) -> Visualisation<TestTarget, BackStackModel.State<TestTarget>>
         )
 
         @JvmStatic
@@ -55,9 +55,9 @@ class BackStackTest(private val testParam: TestParam) {
         composeTestRule.setupAppyxComponent(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
-        backStack.push(interactionTarget = InteractionTarget.Child2)
-        backStack.push(interactionTarget = InteractionTarget.Child3)
-        backStack.push(interactionTarget = InteractionTarget.Child4)
+        backStack.push(navTarget = TestTarget.Child2)
+        backStack.push(navTarget = TestTarget.Child3)
+        backStack.push(navTarget = TestTarget.Child4)
         backStack.pop(animationSpec = tweenTwoSec)
 
         // all operations finished
@@ -73,9 +73,9 @@ class BackStackTest(private val testParam: TestParam) {
         composeTestRule.setupAppyxComponent(backStack)
 
         val tweenTwoSec = tween<Float>(durationMillis = 2000)
-        backStack.push(interactionTarget = InteractionTarget.Child2)
-        backStack.push(interactionTarget = InteractionTarget.Child3)
-        backStack.push(interactionTarget = InteractionTarget.Child4)
+        backStack.push(navTarget = TestTarget.Child2)
+        backStack.push(navTarget = TestTarget.Child3)
+        backStack.push(navTarget = TestTarget.Child4)
         backStack.pop(animationSpec = tweenTwoSec)
 
         // last operation is not finished.  advanced time < 2000 (last operation animation spec)
@@ -89,9 +89,9 @@ class BackStackTest(private val testParam: TestParam) {
         createBackStack(disableAnimations = true, testParam.visualisation)
         composeTestRule.setupAppyxComponent(backStack)
 
-        backStack.push(interactionTarget = InteractionTarget.Child2)
-        backStack.push(interactionTarget = InteractionTarget.Child3)
-        backStack.push(interactionTarget = InteractionTarget.Child4)
+        backStack.push(navTarget = TestTarget.Child2)
+        backStack.push(navTarget = TestTarget.Child3)
+        backStack.push(navTarget = TestTarget.Child4)
         backStack.pop()
 
         Assert.assertEquals(3, backStack.elements.value.all.size)
@@ -106,17 +106,17 @@ class BackStackTest(private val testParam: TestParam) {
         val popSpringSpec = spring<Float>(stiffness = 10f)
 
         backStack.push(
-            interactionTarget = InteractionTarget.Child2,
+            navTarget = TestTarget.Child2,
             mode = Operation.Mode.IMMEDIATE,
             animationSpec = pushSpringSpec
         )
         // all subsequent operations will be in IMMEDIATE mode until settled
         backStack.push(
-            interactionTarget = InteractionTarget.Child3,
+            navTarget = TestTarget.Child3,
             animationSpec = pushSpringSpec
         )
         backStack.push(
-            interactionTarget = InteractionTarget.Child4,
+            navTarget = TestTarget.Child4,
             animationSpec = pushSpringSpec
         )
         backStack.pop(animationSpec = popSpringSpec)
@@ -133,11 +133,11 @@ class BackStackTest(private val testParam: TestParam) {
 
     private fun createBackStack(
         disableAnimations: Boolean,
-        visualisation: (UiContext) -> Visualisation<InteractionTarget, BackStackModel.State<InteractionTarget>>
+        visualisation: (UiContext) -> Visualisation<TestTarget, BackStackModel.State<TestTarget>>
     ) {
         backStack = BackStack(
             model = BackStackModel(
-                initialTargets = listOf(InteractionTarget.Child1),
+                initialTargets = listOf(TestTarget.Child1),
                 savedStateMap = null
             ),
             visualisation = visualisation,

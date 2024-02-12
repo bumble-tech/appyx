@@ -7,7 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import com.bumble.appyx.components.internal.testdrive.TestDriveExperiment
-import com.bumble.appyx.interactions.utils.ui.InteractionTarget
+import com.bumble.appyx.interactions.utils.testing.TestTarget
 import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlin.math.roundToInt
 
@@ -16,7 +16,7 @@ fun TestDriveExperiment(modifier: Modifier = Modifier) {
     TestDriveExperiment(
         screenWidthPx = (LocalConfiguration.current.screenWidthDp * LocalDensity.current.density).roundToInt(),
         screenHeightPx = (LocalConfiguration.current.screenHeightDp * LocalDensity.current.density).roundToInt(),
-        element = InteractionTarget.Child1,
+        element = TestTarget.Child1,
         modifier = modifier.fillMaxSize().background(appyx_dark),
     )
 }

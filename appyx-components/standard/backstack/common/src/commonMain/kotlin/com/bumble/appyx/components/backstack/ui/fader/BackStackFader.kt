@@ -8,10 +8,10 @@ import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
 import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
-class BackStackFader<InteractionTarget : Any>(
+class BackStackFader<NavTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, BackStackModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
+) : BaseVisualisation<NavTarget, BackStackModel.State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
@@ -23,8 +23,8 @@ class BackStackFader<InteractionTarget : Any>(
         alpha = Alpha.Target(0f)
     )
 
-    override fun BackStackModel.State<InteractionTarget>.toUiTargets():
-            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun BackStackModel.State<NavTarget>.toUiTargets():
+            List<MatchedTargetUiState<NavTarget, TargetUiState>> =
         listOf(
             MatchedTargetUiState(active, visible)
         ) + (created + stashed + destroyed).map {

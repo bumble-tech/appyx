@@ -12,7 +12,7 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.ShoppingCart
 import com.bumble.appyx.demos.navigation.node.cakes.CakeListNode
 import com.bumble.appyx.demos.navigation.node.cart.Cart
-import com.bumble.appyx.demos.navigation.node.checkout.CheckoutNode
+import com.bumble.appyx.demos.navigation.node.checkout.checkoutNode
 import com.bumble.appyx.demos.navigation.node.home.HomeNode
 import com.bumble.appyx.demos.navigation.node.profile.ProfileNode
 import com.bumble.appyx.demos.navigation.node.profile.User
@@ -65,7 +65,7 @@ enum class MainNavItem : Parcelable {
                             null
                         }
                     },
-                    node = { CheckoutNode(it, cart) }
+                    node = { checkoutNode(it, cart) }
                 )
             }
         }

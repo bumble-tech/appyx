@@ -15,20 +15,20 @@ import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.utils.testing.TestTarget
 import com.bumble.appyx.interactions.utils.ui.Element
-import com.bumble.appyx.interactions.utils.ui.InteractionTarget
 import com.bumble.appyx.interactions.utils.ui.SampleAppyxContainer
 import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 fun ComposeContentTestRule.createSpotlight(
-    items: List<InteractionTarget>,
+    items: List<TestTarget>,
     animationSpec: AnimationSpec<Float> = tween(
         durationMillis = 1000,
         easing = LinearEasing
     )
-): Spotlight<InteractionTarget> {
+): Spotlight<TestTarget> {
     val model = SpotlightModel(
         items = items,
         savedStateMap = null
@@ -43,8 +43,8 @@ fun ComposeContentTestRule.createSpotlight(
     ).also { setupSpotlight(it) }
 }
 
-fun <InteractionTarget : Any> ComposeContentTestRule.setupSpotlight(
-    spotlight: Spotlight<InteractionTarget>,
+fun <NavTarget : Any> ComposeContentTestRule.setupSpotlight(
+    spotlight: Spotlight<NavTarget>,
 ) {
     setContent {
         Surface(
@@ -62,8 +62,8 @@ fun <InteractionTarget : Any> ComposeContentTestRule.setupSpotlight(
 }
 
 @Composable
-fun <InteractionTarget : Any> SpotlightUi(
-    spotlight: Spotlight<InteractionTarget>,
+fun <NavTarget : Any> SpotlightUi(
+    spotlight: Spotlight<NavTarget>,
     modifier: Modifier = Modifier,
     color: Color = Color.Unspecified
 ) {
