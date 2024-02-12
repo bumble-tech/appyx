@@ -12,10 +12,10 @@ import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 
-class SpotlightFader<InteractionTarget : Any>(
+class SpotlightFader<NavTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, SpotlightModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
+) : BaseVisualisation<NavTarget, SpotlightModel.State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {
@@ -27,8 +27,8 @@ class SpotlightFader<InteractionTarget : Any>(
         alpha = Alpha.Target(1f),
     )
 
-    override fun SpotlightModel.State<InteractionTarget>.toUiTargets():
-            List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun SpotlightModel.State<NavTarget>.toUiTargets():
+            List<MatchedTargetUiState<NavTarget, TargetUiState>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 MatchedTargetUiState(

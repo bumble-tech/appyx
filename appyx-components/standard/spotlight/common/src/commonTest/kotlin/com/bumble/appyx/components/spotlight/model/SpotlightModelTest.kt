@@ -1,8 +1,8 @@
 package com.bumble.appyx.components.spotlight.model
 
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child1
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child3
+import com.bumble.appyx.components.spotlight.TestTarget.Child1
+import com.bumble.appyx.components.spotlight.TestTarget.Child2
+import com.bumble.appyx.components.spotlight.TestTarget.Child3
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.Next
 import com.bumble.appyx.components.spotlight.operation.UpdateElements

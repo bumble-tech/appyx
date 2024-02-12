@@ -18,21 +18,21 @@ import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.Out
 import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
-class SpotlightSliderRotation<InteractionTarget : Any>(
+class SpotlightSliderRotation<NavTarget : Any>(
     uiContext: UiContext,
-    initialState: State<InteractionTarget>,
+    initialState: State<NavTarget>,
     @Suppress("UnusedPrivateMember")
     private val orientation: Orientation = Orientation.Horizontal, // TODO support RTL
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
+) : BaseVisualisation<NavTarget, State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext
 ) {
     private val scrollX = GenericFloatProperty(
         coroutineScope = uiContext.coroutineScope,
         target = Target(initialState.activeIndex),
     )
-    override val viewpointDimensions: List<Pair<(State<InteractionTarget>) -> Float, GenericFloatProperty>> =
+    override val viewpointDimensions: List<Pair<(State<NavTarget>) -> Float, GenericFloatProperty>> =
         listOf(
-            { state: State<InteractionTarget> -> state.activeIndex } to scrollX
+            { state: State<NavTarget> -> state.activeIndex } to scrollX
         )
 
     private val created: TargetUiState = TargetUiState(
@@ -56,7 +56,7 @@ class SpotlightSliderRotation<InteractionTarget : Any>(
         alpha = Alpha.Target(0f),
     )
 
-    override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun State<NavTarget>.toUiTargets(): List<MatchedTargetUiState<NavTarget, TargetUiState>> {
         return positions.flatMapIndexed { index, position ->
             position.elements.map {
                 MatchedTargetUiState(

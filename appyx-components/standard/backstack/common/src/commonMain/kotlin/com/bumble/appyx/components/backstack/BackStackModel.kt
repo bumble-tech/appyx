@@ -9,56 +9,56 @@ import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.SavedStateMap
 
-class BackStackModel<InteractionTarget : Any>(
-    initialTargets: List<InteractionTarget>,
+class BackStackModel<NavTarget : Any>(
+    initialTargets: List<NavTarget>,
     savedStateMap: SavedStateMap?,
-) : BaseTransitionModel<InteractionTarget, State<InteractionTarget>>(
+) : BaseTransitionModel<NavTarget, State<NavTarget>>(
     savedStateMap = savedStateMap,
 ) {
     @Parcelize
-    data class State<InteractionTarget>(
+    data class State<NavTarget>(
         /**
          * Elements that have been created, but not yet moved to an active state
          */
-        val created: Elements<InteractionTarget> = listOf(),
+        val created: Elements<NavTarget> = listOf(),
 
         /**
          * The currently active element.
          * There should be only one such element in the stack.
          */
-        val active: Element<InteractionTarget>,
+        val active: Element<NavTarget>,
 
         /**
          * Elements stashed in the back stack (history).
          */
-        val stashed: Elements<InteractionTarget> = listOf(),
+        val stashed: Elements<NavTarget> = listOf(),
 
         /**
          * Elements that will be destroyed after reaching this state.
          */
-        val destroyed: Elements<InteractionTarget> = listOf(),
+        val destroyed: Elements<NavTarget> = listOf(),
     ) : Parcelable
 
     constructor(
-        initialTarget: InteractionTarget,
+        initialTarget: NavTarget,
         savedStateMap: SavedStateMap?,
     ) : this(
         initialTargets = listOf(initialTarget),
         savedStateMap = savedStateMap
     )
 
-    override fun State<InteractionTarget>.availableElements(): Set<Element<InteractionTarget>> =
+    override fun State<NavTarget>.availableElements(): Set<Element<NavTarget>> =
         (created + active + stashed + destroyed).toSet()
 
-    override fun State<InteractionTarget>.destroyedElements(): Set<Element<InteractionTarget>> =
+    override fun State<NavTarget>.destroyedElements(): Set<Element<NavTarget>> =
         destroyed.toSet()
 
-    override fun State<InteractionTarget>.removeDestroyedElement(
-        element: Element<InteractionTarget>
-    ): State<InteractionTarget> =
+    override fun State<NavTarget>.removeDestroyedElement(
+        element: Element<NavTarget>
+    ): State<NavTarget> =
         copy(destroyed = destroyed.filterNot { it == element })
 
-    override fun State<InteractionTarget>.removeDestroyedElements(): State<InteractionTarget> =
+    override fun State<NavTarget>.removeDestroyedElements(): State<NavTarget> =
         copy(destroyed = emptyList())
 
     override val initialState = State(

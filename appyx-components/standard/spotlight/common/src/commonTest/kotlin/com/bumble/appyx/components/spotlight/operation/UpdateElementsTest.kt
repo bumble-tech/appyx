@@ -1,11 +1,11 @@
 package com.bumble.appyx.components.spotlight.operation
 
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child1
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child3
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child4
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child5
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child6
+import com.bumble.appyx.components.spotlight.TestTarget.Child1
+import com.bumble.appyx.components.spotlight.TestTarget.Child2
+import com.bumble.appyx.components.spotlight.TestTarget.Child3
+import com.bumble.appyx.components.spotlight.TestTarget.Child4
+import com.bumble.appyx.components.spotlight.TestTarget.Child5
+import com.bumble.appyx.components.spotlight.TestTarget.Child6
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.DESTROYED
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD

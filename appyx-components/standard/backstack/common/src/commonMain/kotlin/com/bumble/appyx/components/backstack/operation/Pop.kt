@@ -13,17 +13,17 @@ import com.bumble.appyx.utils.multiplatform.Parcelize
  * [A, B, C] + Pop = [A, B]
  */
 @Parcelize
-class Pop<InteractionTarget : Any>(
+class Pop<NavTarget : Any>(
     override var mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<State<InteractionTarget>>() {
-    override fun isApplicable(state: State<InteractionTarget>): Boolean =
+) : BaseOperation<State<NavTarget>>() {
+    override fun isApplicable(state: State<NavTarget>): Boolean =
         state.stashed.isNotEmpty()
 
-    override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
         baseLineState
 
 
-    override fun createTargetState(fromState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
         fromState.copy(
             active = fromState.stashed.last(),
             destroyed = fromState.destroyed + fromState.active,
@@ -35,7 +35,7 @@ class Pop<InteractionTarget : Any>(
     override fun hashCode(): Int = this::class.hashCode()
 }
 
-fun <InteractionTarget : Any> BackStack<InteractionTarget>.pop(
+fun <NavTarget : Any> BackStack<NavTarget>.pop(
     mode: Operation.Mode = Operation.Mode.KEYFRAME,
     animationSpec: AnimationSpec<Float>? = null
 ) {

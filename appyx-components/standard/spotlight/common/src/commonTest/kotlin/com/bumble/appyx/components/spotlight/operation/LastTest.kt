@@ -1,12 +1,12 @@
 package com.bumble.appyx.components.spotlight.operation
 
-import com.bumble.appyx.components.spotlight.InteractionTarget
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child1
-import com.bumble.appyx.components.spotlight.InteractionTarget.Child2
+import com.bumble.appyx.components.spotlight.TestTarget.Child1
+import com.bumble.appyx.components.spotlight.TestTarget.Child2
 import com.bumble.appyx.interactions.model.asElement
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.ElementState.STANDARD
 import com.bumble.appyx.components.spotlight.SpotlightModel.State.Position
+import com.bumble.appyx.components.spotlight.TestTarget
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -21,7 +21,7 @@ class LastTest {
             ),
             activeIndex = 0f
         )
-        val last = Last<InteractionTarget>()
+        val last = Last<TestTarget>()
 
         assertEquals(
             actual = last.invoke(state).targetState.activeIndex,

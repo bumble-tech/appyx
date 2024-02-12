@@ -15,23 +15,23 @@ import com.bumble.appyx.utils.multiplatform.RawValue
  * [A, B, C] + NewRoot(D) = [ D ]
  */
 @Parcelize
-data class NewRoot<InteractionTarget>(
-    private val interactionTarget: @RawValue InteractionTarget,
+data class NewRoot<NavTarget>(
+    private val navTarget: @RawValue NavTarget,
     override var mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<BackStackModel.State<InteractionTarget>>() {
-    override fun isApplicable(state: BackStackModel.State<InteractionTarget>): Boolean =
+) : BaseOperation<BackStackModel.State<NavTarget>>() {
+    override fun isApplicable(state: BackStackModel.State<NavTarget>): Boolean =
         true
 
     override fun createFromState(
-        baseLineState: BackStackModel.State<InteractionTarget>
-    ): BackStackModel.State<InteractionTarget> =
+        baseLineState: BackStackModel.State<NavTarget>
+    ): BackStackModel.State<NavTarget> =
         baseLineState.copy(
-            created = baseLineState.created + interactionTarget.asElement()
+            created = baseLineState.created + navTarget.asElement()
         )
 
     override fun createTargetState(
-        fromState: BackStackModel.State<InteractionTarget>
-    ): BackStackModel.State<InteractionTarget> =
+        fromState: BackStackModel.State<NavTarget>
+    ): BackStackModel.State<NavTarget> =
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),
@@ -40,10 +40,10 @@ data class NewRoot<InteractionTarget>(
         )
 }
 
-fun <InteractionTarget : Any> BackStack<InteractionTarget>.newRoot(
-    interactionTarget: InteractionTarget,
+fun <NavTarget : Any> BackStack<NavTarget>.newRoot(
+    navTarget: NavTarget,
     mode: Operation.Mode = Operation.Mode.KEYFRAME,
     animationSpec: AnimationSpec<Float>? = null
 ) {
-    operation(operation = NewRoot(interactionTarget, mode), animationSpec = animationSpec)
+    operation(operation = NewRoot(navTarget, mode), animationSpec = animationSpec)
 }

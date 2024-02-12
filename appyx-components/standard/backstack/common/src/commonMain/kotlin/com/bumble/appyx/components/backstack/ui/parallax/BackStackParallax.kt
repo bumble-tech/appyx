@@ -20,10 +20,10 @@ import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 @Suppress("MagicNumber")
-class BackStackParallax<InteractionTarget : Any>(
+class BackStackParallax<NavTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
+) : BaseVisualisation<NavTarget, State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
@@ -51,7 +51,7 @@ class BackStackParallax<InteractionTarget : Any>(
         alpha = Alpha.Target(value = 1f, easing = { fraction -> if (fraction == 0f) 0f else 1f })
     )
 
-    override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> {
+    override fun State<NavTarget>.toUiTargets(): List<MatchedTargetUiState<NavTarget, TargetUiState>> {
         val stashed = stashed.mapIndexed { index, element ->
             MatchedTargetUiState(
                 element = element,
@@ -78,17 +78,17 @@ class BackStackParallax<InteractionTarget : Any>(
     ): MutableUiState =
         targetUiState.toMutableUiState(uiContext)
 
-    class Gestures<InteractionTarget : Any>(
+    class Gestures<NavTarget : Any>(
         private val transitionBounds: TransitionBounds,
-    ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
+    ) : GestureFactory<NavTarget, State<NavTarget>> {
 
         override val isContinuous: Boolean = false
 
         override fun createGesture(
-            state: State<InteractionTarget>,
+            state: State<NavTarget>,
             delta: Offset,
             density: Density
-        ): Gesture<InteractionTarget, State<InteractionTarget>> {
+        ): Gesture<NavTarget, State<NavTarget>> {
 
             return if (dragHorizontalDirection(delta) == Drag.HorizontalDirection.RIGHT) {
                 Gesture(

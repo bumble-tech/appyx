@@ -16,19 +16,19 @@ import com.bumble.appyx.utils.multiplatform.RawValue
  * [A, B, C] + Replace(D) = [A, B, D]
  */
 @Parcelize
-data class Replace<InteractionTarget : Any>(
-    private val interactionTarget: @RawValue InteractionTarget,
+data class Replace<NavTarget : Any>(
+    private val navTarget: @RawValue NavTarget,
     override var mode: Operation.Mode = Operation.Mode.KEYFRAME
-) : BaseOperation<State<InteractionTarget>>() {
-    override fun isApplicable(state: State<InteractionTarget>): Boolean =
-        interactionTarget != state.active.interactionTarget
+) : BaseOperation<State<NavTarget>>() {
+    override fun isApplicable(state: State<NavTarget>): Boolean =
+        navTarget != state.active.interactionTarget
 
-    override fun createFromState(baseLineState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createFromState(baseLineState: State<NavTarget>): State<NavTarget> =
         baseLineState.copy(
-            created = baseLineState.created + interactionTarget.asElement()
+            created = baseLineState.created + navTarget.asElement()
         )
 
-    override fun createTargetState(fromState: State<InteractionTarget>): State<InteractionTarget> =
+    override fun createTargetState(fromState: State<NavTarget>): State<NavTarget> =
         fromState.copy(
             active = fromState.created.last(),
             created = fromState.created.dropLast(1),
@@ -36,10 +36,10 @@ data class Replace<InteractionTarget : Any>(
         )
 }
 
-fun <InteractionTarget : Any> BackStack<InteractionTarget>.replace(
-    target: InteractionTarget,
+fun <NavTarget : Any> BackStack<NavTarget>.replace(
+    navTarget: NavTarget,
     mode: Operation.Mode = Operation.Mode.KEYFRAME,
     animationSpec: AnimationSpec<Float>? = null
 ) {
-    operation(operation = Replace(target, mode), animationSpec = animationSpec)
+    operation(operation = Replace(navTarget, mode), animationSpec = animationSpec)
 }

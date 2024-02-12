@@ -8,9 +8,9 @@ import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
-class BackStackSlider<InteractionTarget : Any>(
+class BackStackSlider<NavTarget : Any>(
     uiContext: UiContext,
-) : BaseVisualisation<InteractionTarget, BackStackModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
+) : BaseVisualisation<NavTarget, BackStackModel.State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
 ) {
 
@@ -26,8 +26,8 @@ class BackStackSlider<InteractionTarget : Any>(
             alpha = Alpha.Target(1f),
         )
 
-    override fun BackStackModel.State<InteractionTarget>.toUiTargets(
-    ): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun BackStackModel.State<NavTarget>.toUiTargets(
+    ): List<MatchedTargetUiState<NavTarget, TargetUiState>> =
         created.map { MatchedTargetUiState(it, visible.toOutsideRight()) } +
                 listOf(active).map { MatchedTargetUiState(it, visible.toNoOffset()) } +
                 stashed.mapIndexed { index, element ->

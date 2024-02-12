@@ -25,10 +25,10 @@ import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 
 @Suppress("MagicNumber")
-class BackStack3D<InteractionTarget : Any>(
+class BackStack3D<NavTarget : Any>(
     uiContext: UiContext,
     private val itemsInStack: Int = 3,
-) : BaseVisualisation<InteractionTarget, State<InteractionTarget>, TargetUiState, MutableUiState>(
+) : BaseVisualisation<NavTarget, State<NavTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
 ) {
 
@@ -65,7 +65,7 @@ class BackStack3D<InteractionTarget : Any>(
         zIndex = ZIndex.Target(itemsInStack + 1f),
     )
 
-    override fun State<InteractionTarget>.toUiTargets(): List<MatchedTargetUiState<InteractionTarget, TargetUiState>> =
+    override fun State<NavTarget>.toUiTargets(): List<MatchedTargetUiState<NavTarget, TargetUiState>> =
         created.mapIndexed { _, element -> MatchedTargetUiState(element, incoming) } +
                 listOf(active).map { MatchedTargetUiState(it, topMost) } +
                 stashed.mapIndexed { index, element ->
@@ -82,19 +82,19 @@ class BackStack3D<InteractionTarget : Any>(
     ): MutableUiState =
         targetUiState.toMutableUiState(uiContext)
 
-    class Gestures<InteractionTarget : Any>(
+    class Gestures<NavTarget : Any>(
         transitionBounds: TransitionBounds,
-    ) : GestureFactory<InteractionTarget, State<InteractionTarget>> {
+    ) : GestureFactory<NavTarget, State<NavTarget>> {
 
         override val isContinuous: Boolean = false
 
         private val height = transitionBounds.screenHeightDp
 
         override fun createGesture(
-            state: State<InteractionTarget>,
+            state: State<NavTarget>,
             delta: Offset,
             density: Density,
-        ): Gesture<InteractionTarget, State<InteractionTarget>> {
+        ): Gesture<NavTarget, State<NavTarget>> {
             val heightInPx = with(density) { height.toPx() }
 
             return if (dragVerticalDirection(delta) == Drag.VerticalDirection.DOWN) {
