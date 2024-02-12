@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.StateFlow
 class PermanentAppyxComponent<InteractionTarget : Any>(
     val model: PermanentModel<InteractionTarget>,
     val scope: CoroutineScope = CoroutineScope(SupervisorJob() + Dispatchers.Main),
-) : com.bumble.appyx.interactions.model.AppyxComponent<InteractionTarget, State<InteractionTarget>> {
+) : AppyxComponent<InteractionTarget, State<InteractionTarget>> {
 
 
     constructor(
@@ -34,9 +34,9 @@ class PermanentAppyxComponent<InteractionTarget : Any>(
 
     private val instant = InstantProgressController(model = model)
 
-    override val elements: StateFlow<com.bumble.appyx.interactions.model.AppyxComponent.Elements<InteractionTarget>>
+    override val elements: StateFlow<AppyxComponent.Elements<InteractionTarget>>
         get() = model.elements.mapState(scope) { elements ->
-            com.bumble.appyx.interactions.model.AppyxComponent.Elements(onScreen = elements)
+            AppyxComponent.Elements(onScreen = elements)
         }
 
     override fun onAddedToComposition(scope: CoroutineScope) = Unit

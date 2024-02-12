@@ -6,6 +6,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.saveable.SaverScope
 import androidx.compose.ui.Modifier
+import com.bumble.appyx.interactions.model.AppyxComponent
 import com.bumble.appyx.interactions.model.Element
 import com.bumble.appyx.interactions.plugin.Plugin
 import com.bumble.appyx.interactions.plugin.SavesInstanceState
@@ -54,7 +55,7 @@ import kotlin.reflect.KClass
 @Suppress("TooManyFunctions")
 @Stable
 abstract class Node<NavTarget : Any>(
-    val appyxComponent: com.bumble.appyx.interactions.model.AppyxComponent<NavTarget, *>,
+    val appyxComponent: AppyxComponent<NavTarget, *>,
     private val nodeContext: NodeContext,
     view: NodeView = EmptyNodeView(),
     childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
@@ -66,7 +67,7 @@ abstract class Node<NavTarget : Any>(
     ChildNodeBuilder<NavTarget> {
 
     constructor(
-        appyxComponent: com.bumble.appyx.interactions.model.AppyxComponent<NavTarget, *>,
+        appyxComponent: AppyxComponent<NavTarget, *>,
         nodeContext: NodeContext,
         view: NodeView = EmptyNodeView(),
         childKeepMode: ChildEntry.KeepMode = Appyx.defaultChildKeepMode,
