@@ -10,7 +10,7 @@ import androidx.activity.ComponentActivity
  * See [NodeActivity] for building upon [AppCompatActivity]
  *
  * Also offers base functionality to satisfy dependencies of Android-related functionality
- * down the tree via [appyxV2IntegrationPoint]:
+ * down the tree via [appyxIntegrationPoint]:
  * - [ActivityStarter]
  * - [PermissionRequester]
  *
@@ -19,7 +19,7 @@ import androidx.activity.ComponentActivity
  */
 open class NodeComponentActivity : ComponentActivity(), IntegrationPointProvider {
 
-    override lateinit var appyxV2IntegrationPoint: ActivityIntegrationPoint
+    override lateinit var appyxIntegrationPoint: ActivityIntegrationPoint
         protected set
 
     protected open fun createIntegrationPoint(savedInstanceState: Bundle?) =
@@ -30,13 +30,13 @@ open class NodeComponentActivity : ComponentActivity(), IntegrationPointProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        appyxV2IntegrationPoint = createIntegrationPoint(savedInstanceState)
+        appyxIntegrationPoint = createIntegrationPoint(savedInstanceState)
     }
 
     @Suppress("OVERRIDE_DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        appyxV2IntegrationPoint.onActivityResult(requestCode, resultCode, data)
+        appyxIntegrationPoint.onActivityResult(requestCode, resultCode, data)
     }
 
     @Suppress("OVERRIDE_DEPRECATION")
@@ -46,11 +46,11 @@ open class NodeComponentActivity : ComponentActivity(), IntegrationPointProvider
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        appyxV2IntegrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        appyxIntegrationPoint.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        appyxV2IntegrationPoint.onSaveInstanceState(outState)
+        appyxIntegrationPoint.onSaveInstanceState(outState)
     }
 }

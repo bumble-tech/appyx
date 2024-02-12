@@ -90,7 +90,7 @@ class MainActivity : NodeActivity() {
             YourAppTheme {
                 NodeHost(
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                    integrationPoint = appyxV2IntegrationPoint
+                    integrationPoint = appyxIntegrationPoint
                 ) {
                     RootNode(nodeContext = it)
                 }
