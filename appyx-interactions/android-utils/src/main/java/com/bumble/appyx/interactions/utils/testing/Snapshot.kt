@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.testing
+package com.bumble.appyx.interactions.utils.testing
 
 import android.os.Build
 import androidx.annotation.RequiresApi

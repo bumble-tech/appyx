@@ -5,7 +5,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import com.bumble.appyx.components.internal.testdrive.android.helper.createTestDrive
 import com.bumble.appyx.components.internal.testdrive.operation.Next
 import com.bumble.appyx.interactions.model.transition.Operation
-import com.bumble.appyx.interactions.testing.snapshot
+import com.bumble.appyx.interactions.utils.testing.snapshot
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestName

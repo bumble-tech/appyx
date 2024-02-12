@@ -9,8 +9,7 @@ appyx {
 
 dependencies {
     val composeBom = platform(libs.compose.bom)
-
-    api(project(":appyx-interactions:android"))
+    api(project(":appyx-interactions:android-utils"))
 
     implementation(project(":appyx-interactions:appyx-interactions"))
     implementation(project(":appyx-components:experimental:promoter:promoter"))

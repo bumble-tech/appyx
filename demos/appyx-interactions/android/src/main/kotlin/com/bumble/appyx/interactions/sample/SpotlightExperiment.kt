@@ -26,10 +26,10 @@ import com.bumble.appyx.components.spotlight.operation.updateElements
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.gesture.GestureSettleConfig
 import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.sample.android.Element
-import com.bumble.appyx.interactions.sample.android.SampleAppyxContainer
-import com.bumble.appyx.interactions.theme.appyx_dark
-import com.bumble.appyx.interactions.sample.InteractionTarget as Target
+import com.bumble.appyx.interactions.utils.testing.TestTarget
+import com.bumble.appyx.interactions.utils.ui.Element
+import com.bumble.appyx.interactions.utils.ui.SampleAppyxContainer
+import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 
 @Composable
 @Suppress("LongMethod", "MagicNumber")
@@ -40,27 +40,27 @@ fun SpotlightExperiment(
     visualisationType: SpotlightVisualisationType = SpotlightVisualisationType.SLIDER_ROTATION,
 ) {
     val items = listOf(
-        Target.Child1,
-        Target.Child2,
-        Target.Child3,
-        Target.Child4,
-        Target.Child5,
-        Target.Child6,
-        Target.Child7,
-        Target.Child1,
-        Target.Child2,
-        Target.Child3,
-        Target.Child4,
-        Target.Child5,
-        Target.Child6,
-        Target.Child7,
-        Target.Child1,
-        Target.Child2,
-        Target.Child3,
-        Target.Child4,
-        Target.Child5,
-        Target.Child6,
-        Target.Child7,
+        TestTarget.Child1,
+        TestTarget.Child2,
+        TestTarget.Child3,
+        TestTarget.Child4,
+        TestTarget.Child5,
+        TestTarget.Child6,
+        TestTarget.Child7,
+        TestTarget.Child1,
+        TestTarget.Child2,
+        TestTarget.Child3,
+        TestTarget.Child4,
+        TestTarget.Child5,
+        TestTarget.Child6,
+        TestTarget.Child7,
+        TestTarget.Child1,
+        TestTarget.Child2,
+        TestTarget.Child3,
+        TestTarget.Child4,
+        TestTarget.Child5,
+        TestTarget.Child6,
+        TestTarget.Child7,
     )
     val model = remember {
         SpotlightModel(

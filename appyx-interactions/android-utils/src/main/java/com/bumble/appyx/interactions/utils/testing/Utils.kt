@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.testing
+package com.bumble.appyx.interactions.utils.testing
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -14,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
 import com.bumble.appyx.interactions.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.sample.android.SampleAppyxContainer
-import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.interactions.utils.ui.SampleAppyxContainer
+import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlin.random.Random
 
 fun <InteractionTarget : Any, ModelState : Any> ComposeContentTestRule.setupAppyxComponent(

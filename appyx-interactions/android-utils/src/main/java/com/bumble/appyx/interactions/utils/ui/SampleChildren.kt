@@ -1,4 +1,4 @@
-package com.bumble.appyx.interactions.sample.android
+package com.bumble.appyx.interactions.utils.ui
 
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.runtime.Composable
@@ -10,7 +10,6 @@ import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
 import com.bumble.appyx.interactions.model.Element
 import com.bumble.appyx.interactions.model.BaseAppyxComponent
 import com.bumble.appyx.interactions.sample.SampleElement
-import com.bumble.appyx.interactions.sample.colors
 import kotlin.math.roundToInt
 
 /**
