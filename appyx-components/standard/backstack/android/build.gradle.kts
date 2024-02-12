@@ -12,7 +12,7 @@ dependencies {
 
     androidTestImplementation(composeBom)
     androidTestImplementation(project(":appyx-components:standard:backstack:backstack"))
-    androidTestImplementation(project(":appyx-interactions:android"))
+    androidTestImplementation(project(":appyx-interactions:android-utils"))
     androidTestImplementation(project(":appyx-interactions:appyx-interactions"))
     androidTestImplementation(libs.compose.ui.test.junit4)
     androidTestImplementation(libs.junit.api)

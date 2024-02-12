@@ -15,20 +15,20 @@ import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
-import com.bumble.appyx.interactions.sample.InteractionTarget
-import com.bumble.appyx.interactions.sample.android.Element
-import com.bumble.appyx.interactions.sample.android.SampleAppyxContainer
-import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.interactions.utils.testing.TestTarget
+import com.bumble.appyx.interactions.utils.ui.Element
+import com.bumble.appyx.interactions.utils.ui.SampleAppyxContainer
+import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 
 fun ComposeContentTestRule.createSpotlight(
-    items: List<InteractionTarget>,
+    items: List<TestTarget>,
     animationSpec: AnimationSpec<Float> = tween(
         durationMillis = 1000,
         easing = LinearEasing
     )
-): Spotlight<InteractionTarget> {
+): Spotlight<TestTarget> {
     val model = SpotlightModel(
         items = items,
         savedStateMap = null

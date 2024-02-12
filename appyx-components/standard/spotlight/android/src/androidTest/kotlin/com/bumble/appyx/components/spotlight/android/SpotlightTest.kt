@@ -7,9 +7,9 @@ import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.last
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
 import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.testing.TestTarget
-import com.bumble.appyx.interactions.testing.setupAppyxComponent
-import com.bumble.appyx.interactions.testing.waitUntilAnimationEnded
+import com.bumble.appyx.interactions.utils.testing.TestTarget
+import com.bumble.appyx.interactions.utils.testing.setupAppyxComponent
+import com.bumble.appyx.interactions.utils.testing.waitUntilAnimationEnded
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import org.junit.Assert.assertEquals

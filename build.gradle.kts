@@ -69,6 +69,12 @@ dependencyAnalysis {
                 exclude(":utils:testing-unit-common")
             }
         }
+        project(":appyx-interactions:android") {
+            onIncorrectConfiguration {
+                severity("fail")
+                exclude(":appyx-interactions:appyx-interactions")
+            }
+        }
         project(":utils:testing-junit5") {
             onUnusedDependencies {
                 severity("fail")
