@@ -27,6 +27,6 @@ interface GestureFactory<InteractionTarget, ModelState> {
             delta: Offset,
             density: Density
         ): Gesture<InteractionTarget, ModelState> =
-            com.bumble.appyx.interactions.gesture.Gesture.Noop()
+            Gesture.Noop()
     }
 }
