@@ -6,7 +6,7 @@ import com.bumble.appyx.components.spotlight.TestTarget.Child3
 import com.bumble.appyx.components.spotlight.TestTarget.Child4
 import com.bumble.appyx.components.spotlight.TestTarget.Child5
 import com.bumble.appyx.components.spotlight.TestTarget.Child6
-import com.bumble.appyx.interactions.core.asElement
+import com.bumble.appyx.interactions.model.asElement
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.TestTarget
 import kotlin.test.Test

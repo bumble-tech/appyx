@@ -12,8 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.test.junit4.ComposeContentTestRule
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.utils.ui.SampleAppyxContainer
 import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlin.random.Random

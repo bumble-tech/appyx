@@ -14,9 +14,9 @@ import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.ui.CardsVisualisation
 import com.bumble.appyx.demos.common.profile.Profile
 import com.bumble.appyx.demos.common.profile.ProfileCard
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.permissiveValidator
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.gesture.GestureValidator.Companion.permissiveValidator
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import kotlin.math.roundToInt
 

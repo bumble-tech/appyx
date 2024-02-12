@@ -3,9 +3,9 @@ package com.bumble.appyx.components.experimental.promoter.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.components.experimental.promoter.Promoter
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
-import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.interactions.core.model.transition.BaseOperation
-import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.model.asElement
+import com.bumble.appyx.interactions.model.transition.BaseOperation
+import com.bumble.appyx.interactions.model.transition.Operation
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue
 

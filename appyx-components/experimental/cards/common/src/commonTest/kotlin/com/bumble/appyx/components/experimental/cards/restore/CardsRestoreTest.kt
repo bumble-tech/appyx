@@ -3,7 +3,7 @@ package com.bumble.appyx.components.experimental.cards.restore
 import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.InteractionTarget
 import com.bumble.appyx.components.experimental.cards.operation.VotePass
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
+import com.bumble.appyx.interactions.state.MutableSavedStateMapImpl
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

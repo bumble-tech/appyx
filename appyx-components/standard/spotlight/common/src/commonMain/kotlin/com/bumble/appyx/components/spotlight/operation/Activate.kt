@@ -3,8 +3,8 @@ package com.bumble.appyx.components.spotlight.operation
 import androidx.compose.animation.core.AnimationSpec
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
-import com.bumble.appyx.interactions.core.model.transition.BaseOperation
-import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.model.transition.BaseOperation
+import com.bumble.appyx.interactions.model.transition.Operation
 import com.bumble.appyx.utils.multiplatform.Parcelize
 
 @Parcelize

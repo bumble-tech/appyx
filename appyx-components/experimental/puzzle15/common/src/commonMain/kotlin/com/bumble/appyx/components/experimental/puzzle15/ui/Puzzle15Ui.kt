@@ -37,9 +37,9 @@ import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Directio
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.LEFT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.RIGHT
 import com.bumble.appyx.components.experimental.puzzle15.operation.Swap.Direction.UP
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.gesture.GestureValidator
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.gesture.GestureValidator
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 
 @Suppress("MagicNumber", "LongMethod")
 @Composable

@@ -11,9 +11,9 @@ import com.bumble.appyx.components.backstack.ui.fader.BackStackFader
 import com.bumble.appyx.components.backstack.ui.parallax.BackStackParallax
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
 import com.bumble.appyx.components.backstack.ui.stack3d.BackStack3D
-import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.core.ui.Visualisation
-import com.bumble.appyx.interactions.core.ui.context.UiContext
+import com.bumble.appyx.interactions.model.transition.Operation
+import com.bumble.appyx.interactions.ui.Visualisation
+import com.bumble.appyx.interactions.ui.context.UiContext
 import com.bumble.appyx.interactions.utils.testing.setupAppyxComponent
 import com.bumble.appyx.interactions.utils.testing.waitUntilAnimationEnded
 import com.bumble.appyx.interactions.utils.testing.waitUntilAnimationStarted

@@ -11,7 +11,7 @@ import com.bumble.appyx.demos.navigation.node.checkout.NavTarget.CartItems
 import com.bumble.appyx.demos.navigation.node.checkout.NavTarget.Payment
 import com.bumble.appyx.demos.navigation.node.checkout.NavTarget.Shipping
 import com.bumble.appyx.demos.navigation.node.checkout.NavTarget.Success
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.GestureFactory
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.demos.navigation.platform.IOS_PLATFORM_NAME as IOS

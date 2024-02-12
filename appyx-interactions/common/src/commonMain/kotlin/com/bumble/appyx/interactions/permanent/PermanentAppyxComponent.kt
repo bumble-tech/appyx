@@ -1,9 +1,9 @@
 package com.bumble.appyx.interactions.permanent
 
-import com.bumble.appyx.interactions.core.model.AppyxComponent
-import com.bumble.appyx.interactions.core.model.progress.InstantProgressController
-import com.bumble.appyx.interactions.core.model.transition.Operation
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.model.AppyxComponent
+import com.bumble.appyx.interactions.model.progress.InstantProgressController
+import com.bumble.appyx.interactions.model.transition.Operation
+import com.bumble.appyx.interactions.state.MutableSavedStateMap
 import com.bumble.appyx.interactions.permanent.PermanentModel.State
 import com.bumble.appyx.mapState
 import com.bumble.appyx.utils.multiplatform.SavedStateMap

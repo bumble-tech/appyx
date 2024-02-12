@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.bumble.appyx.components.spotlight.Spotlight
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.ui.slider.SpotlightSlider
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.utils.testing.TestTarget
 import com.bumble.appyx.interactions.utils.ui.Element
 import com.bumble.appyx.interactions.utils.ui.SampleAppyxContainer

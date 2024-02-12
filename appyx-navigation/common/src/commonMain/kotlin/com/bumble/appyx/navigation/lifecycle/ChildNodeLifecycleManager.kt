@@ -1,6 +1,6 @@
 package com.bumble.appyx.navigation.lifecycle
 
-import com.bumble.appyx.interactions.core.model.AppyxComponent
+import com.bumble.appyx.interactions.model.AppyxComponent
 import com.bumble.appyx.navigation.children.ChildEntry
 import com.bumble.appyx.navigation.children.ChildEntryMap
 import com.bumble.appyx.navigation.children.nodeOrNull

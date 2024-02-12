@@ -6,7 +6,7 @@ import com.bumble.appyx.components.spotlight.TestTarget.Child3
 import com.bumble.appyx.components.spotlight.SpotlightModel
 import com.bumble.appyx.components.spotlight.operation.Next
 import com.bumble.appyx.components.spotlight.operation.UpdateElements
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
+import com.bumble.appyx.interactions.state.MutableSavedStateMapImpl
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

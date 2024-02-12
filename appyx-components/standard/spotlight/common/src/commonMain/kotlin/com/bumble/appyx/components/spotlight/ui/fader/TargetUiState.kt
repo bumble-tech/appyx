@@ -1,8 +1,8 @@
 package com.bumble.appyx.components.spotlight.ui.fader
 
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 
 @MutableUiStateSpecs
 class TargetUiState(

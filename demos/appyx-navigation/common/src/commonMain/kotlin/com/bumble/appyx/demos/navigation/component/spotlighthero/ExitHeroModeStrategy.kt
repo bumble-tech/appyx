@@ -2,7 +2,7 @@ package com.bumble.appyx.demos.navigation.component.spotlighthero
 
 
 import androidx.compose.animation.core.AnimationSpec
-import com.bumble.appyx.interactions.core.model.backpresshandlerstrategies.BaseBackPressHandlerStrategy
+import com.bumble.appyx.interactions.model.backpresshandlerstrategies.BaseBackPressHandlerStrategy
 import com.bumble.appyx.mapState
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel.Mode.HERO
 import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroModel.Mode.LIST

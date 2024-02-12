@@ -5,7 +5,7 @@ import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.stable.backstack.TestTarget
 import com.bumble.appyx.components.stable.backstack.TestTarget.Child1
 import com.bumble.appyx.components.stable.backstack.TestTarget.Child2
-import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.model.Element
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse

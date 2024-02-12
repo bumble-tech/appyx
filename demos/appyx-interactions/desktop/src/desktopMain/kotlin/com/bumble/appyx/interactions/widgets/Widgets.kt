@@ -22,10 +22,10 @@ import com.bumble.appyx.demos.common.widget.CalendarWidget
 import com.bumble.appyx.demos.common.widget.TimerWidget
 import com.bumble.appyx.demos.common.widget.WeatherWidget
 import com.bumble.appyx.interactions.Events
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.ui.gesture.GestureSettleConfig
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.gesture.GestureSettleConfig
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import com.bumble.appyx.interactions.widgets.ui.WidgetsStack3D
 import kotlinx.coroutines.flow.Flow
 

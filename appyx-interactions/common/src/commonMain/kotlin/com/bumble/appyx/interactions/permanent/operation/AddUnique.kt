@@ -1,8 +1,8 @@
 package com.bumble.appyx.interactions.permanent.operation
 
-import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.interactions.core.model.transition.BaseOperation
-import com.bumble.appyx.interactions.core.model.transition.Operation
+import com.bumble.appyx.interactions.model.asElement
+import com.bumble.appyx.interactions.model.transition.BaseOperation
+import com.bumble.appyx.interactions.model.transition.Operation
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.interactions.permanent.PermanentModel
 import com.bumble.appyx.utils.multiplatform.Parcelize

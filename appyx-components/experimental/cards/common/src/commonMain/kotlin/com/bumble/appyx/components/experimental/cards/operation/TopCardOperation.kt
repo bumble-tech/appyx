@@ -1,6 +1,6 @@
 package com.bumble.appyx.components.experimental.cards.operation
 
-import com.bumble.appyx.interactions.core.model.transition.BaseOperation
+import com.bumble.appyx.interactions.model.transition.BaseOperation
 import com.bumble.appyx.components.experimental.cards.CardsModel
 
 abstract class TopCardOperation<InteractionTarget> : BaseOperation<CardsModel.State<InteractionTarget>>() {

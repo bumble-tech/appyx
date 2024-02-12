@@ -2,7 +2,7 @@ package com.bumble.appyx.navigation.node
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.model.AppyxComponent
+import com.bumble.appyx.interactions.model.AppyxComponent
 import com.bumble.appyx.navigation.modality.NodeContext
 
 /**

@@ -1,7 +1,7 @@
 package com.bumble.appyx.navigation.node
 
-import com.bumble.appyx.interactions.core.model.EmptyAppyxComponent
-import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.model.EmptyAppyxComponent
+import com.bumble.appyx.interactions.plugin.Plugin
 import com.bumble.appyx.navigation.modality.NodeContext
 
 open class LeafNode(

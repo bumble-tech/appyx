@@ -29,14 +29,14 @@ import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationVisualisation
 import com.bumble.appyx.components.internal.testdrive.ui.rotation.TestDriveRotationVisualisation.Companion.toTargetUiState
 import com.bumble.appyx.components.internal.testdrive.ui.simple.TestDriveSimpleVisualisation
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.gesture.GestureValidator
-import com.bumble.appyx.interactions.core.gesture.GestureValidator.Companion.defaultValidator
-import com.bumble.appyx.interactions.core.model.transition.Keyframes
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
-import com.bumble.appyx.interactions.core.model.transition.Update
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.gesture.GestureValidator
+import com.bumble.appyx.interactions.gesture.GestureValidator.Companion.defaultValidator
+import com.bumble.appyx.interactions.model.transition.Keyframes
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.model.transition.Update
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 
 @Suppress("MagicNumber", "LongMethod")
 @Composable

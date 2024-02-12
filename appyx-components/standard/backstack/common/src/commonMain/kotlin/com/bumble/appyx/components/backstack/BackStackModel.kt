@@ -1,10 +1,10 @@
 package com.bumble.appyx.components.backstack
 
 import com.bumble.appyx.components.backstack.BackStackModel.State
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.Elements
-import com.bumble.appyx.interactions.core.asElement
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.model.Elements
+import com.bumble.appyx.interactions.model.asElement
+import com.bumble.appyx.interactions.model.transition.BaseTransitionModel
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.SavedStateMap

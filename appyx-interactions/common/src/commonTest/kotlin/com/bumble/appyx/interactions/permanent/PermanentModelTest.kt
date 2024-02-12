@@ -1,7 +1,7 @@
 package com.bumble.appyx.interactions.permanent
 
 import com.bumble.appyx.InteractionTarget
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
+import com.bumble.appyx.interactions.state.MutableSavedStateMapImpl
 import com.bumble.appyx.interactions.permanent.operation.AddUnique
 import kotlin.test.Test
 import kotlin.test.assertEquals
