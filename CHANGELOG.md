@@ -5,6 +5,7 @@
 ### API breaking changes
 
 - [#677](https://github.com/bumble-tech/appyx/pull/677) – Moved Builder, SimpleBuilder, Interactor to separate module
+- [#680](https://github.com/bumble-tech/appyx/pull/680) – Appyx interactions package reorg
 
 ### Fixed
 
