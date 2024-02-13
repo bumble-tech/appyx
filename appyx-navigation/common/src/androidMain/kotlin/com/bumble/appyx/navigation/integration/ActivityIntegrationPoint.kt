@@ -61,7 +61,7 @@ open class ActivityIntegrationPoint(
                 "Activity ${activity::class.qualifiedName} does not implement IntegrationPointProvider"
             )
 
-            return integrationPointProvider.appyxV2IntegrationPoint as? AndroidIntegrationPoint
+            return integrationPointProvider.appyxIntegrationPoint as? AndroidIntegrationPoint
                 ?: error(
                     "Activity ${activity::class.qualifiedName} does not provide AndroidIntegrationPoint"
                 )

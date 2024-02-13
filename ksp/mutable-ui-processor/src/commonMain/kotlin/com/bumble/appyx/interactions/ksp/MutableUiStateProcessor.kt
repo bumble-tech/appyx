@@ -2,10 +2,10 @@ package com.bumble.appyx.interactions.ksp
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.MotionProperty
-import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.property.MotionProperty
+import com.bumble.appyx.interactions.ui.state.BaseMutableUiState
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver

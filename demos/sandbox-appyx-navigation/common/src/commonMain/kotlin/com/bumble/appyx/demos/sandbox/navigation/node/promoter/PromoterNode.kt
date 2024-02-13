@@ -33,8 +33,8 @@ import com.bumble.appyx.components.experimental.promoter.ui.PromoterVisualisatio
 import com.bumble.appyx.demos.sandbox.navigation.colors
 import com.bumble.appyx.demos.sandbox.navigation.node.promoter.PromoterNode.NavTarget
 import com.bumble.appyx.demos.sandbox.navigation.node.promoter.PromoterNode.NavTarget.Child
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node

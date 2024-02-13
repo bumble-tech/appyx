@@ -1,7 +1,7 @@
 package com.bumble.appyx.navigation.children
 
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMap
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.state.MutableSavedStateMap
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node

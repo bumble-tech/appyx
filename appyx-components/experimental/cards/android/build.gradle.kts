@@ -12,8 +12,8 @@ dependencies {
 
     implementation(project(":demos:common"))
 
-    implementation(project(":appyx-interactions:android"))
     implementation(project(":appyx-interactions:appyx-interactions"))
+    implementation(project(":appyx-interactions:android-utils"))
     implementation(project(":appyx-components:experimental:cards:cards"))
     implementation(composeBom)
 

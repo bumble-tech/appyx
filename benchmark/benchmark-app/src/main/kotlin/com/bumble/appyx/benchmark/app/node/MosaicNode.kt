@@ -34,7 +34,7 @@ import com.bumble.appyx.benchmark.app.mosaic.operation.carousel
 import com.bumble.appyx.benchmark.app.mosaic.operation.flip
 import com.bumble.appyx.benchmark.app.mosaic.operation.scatter
 import com.bumble.appyx.benchmark.app.ui.FlashCard
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.KEYFRAME
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.KEYFRAME
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node

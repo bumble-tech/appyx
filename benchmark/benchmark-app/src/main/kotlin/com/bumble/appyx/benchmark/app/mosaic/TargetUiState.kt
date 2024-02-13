@@ -1,11 +1,11 @@
 package com.bumble.appyx.benchmark.app.mosaic
 
-import com.bumble.appyx.interactions.core.ui.property.impl.AngularPosition
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
+import com.bumble.appyx.interactions.ui.property.impl.AngularPosition
+import com.bumble.appyx.interactions.ui.property.impl.RotationY
+import com.bumble.appyx.interactions.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.ui.property.impl.RoundedCorners
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionOffset
 
 data class TargetUiState(
     val position: PositionAlignment.Target,

@@ -8,11 +8,11 @@ import com.bumble.appyx.demos.navigation.component.spotlighthero.SpotlightHeroMo
 import com.bumble.appyx.demos.navigation.component.spotlighthero.operation.Next
 import com.bumble.appyx.demos.navigation.component.spotlighthero.operation.Previous
 import com.bumble.appyx.demos.navigation.component.spotlighthero.operation.SetHeroMode
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.gesture.Drag
-import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragDirection4
+import com.bumble.appyx.interactions.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.gesture.Drag
+import com.bumble.appyx.interactions.gesture.Gesture
+import com.bumble.appyx.interactions.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.dragDirection4
 
 class SpotlightHeroGestures<NavTarget>(
     transitionBounds: TransitionBounds,

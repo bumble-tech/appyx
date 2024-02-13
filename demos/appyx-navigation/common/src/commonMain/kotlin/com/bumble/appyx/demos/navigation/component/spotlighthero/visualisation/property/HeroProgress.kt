@@ -1,6 +1,6 @@
 package com.bumble.appyx.demos.navigation.component.spotlighthero.visualisation.property
 
-import com.bumble.appyx.interactions.core.ui.property.impl.GenericFloatProperty
+import com.bumble.appyx.interactions.ui.property.impl.GenericFloatProperty
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -29,7 +29,7 @@ import com.bumble.appyx.demos.navigation.component.spotlighthero.visualisation.S
 import com.bumble.appyx.demos.navigation.component.spotlighthero.visualisation.default.SpotlightHeroDefaultVisualisation
 import com.bumble.appyx.demos.navigation.node.cakes.CakeListNode.NavTarget
 import com.bumble.appyx.demos.navigation.node.cart.Cart
-import com.bumble.appyx.interactions.core.ui.math.lerpFloat
+import com.bumble.appyx.interactions.ui.math.lerpFloat
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node

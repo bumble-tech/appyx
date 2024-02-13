@@ -24,11 +24,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumble.appyx.interactions.core.AppyxInteractionsContainer
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.model.BaseAppyxComponent
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 import kotlin.random.Random
+import com.bumble.appyx.demos.common.InteractionTarget.Element as SampleElement
 
 sealed class InteractionTarget {
     data class Element(val idx: Int = Random.nextInt(1, 100)) : InteractionTarget() {
@@ -136,7 +137,7 @@ fun <InteractionTarget : Any> ModalUi(
             .padding(if (isChildMaxSize) 0.dp else 8.dp)
             .background(
                 color = when (val target = element.interactionTarget) {
-                    is com.bumble.appyx.demos.common.InteractionTarget.Element -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
+                    is SampleElement -> colors.getOrElse(target.idx % colors.size) { Color.Cyan }
                     else -> {
                         Color.Cyan
                     }

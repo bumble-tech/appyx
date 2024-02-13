@@ -2,7 +2,19 @@
 
 ## Pending changes
 
-–
+### API breaking changes
+
+- [#677](https://github.com/bumble-tech/appyx/pull/677) – Moved Builder, SimpleBuilder, Interactor to separate module
+- [#680](https://github.com/bumble-tech/appyx/pull/680) – Appyx interactions package reorg
+
+### Fixed
+
+- [#670](https://github.com/bumble-tech/appyx/pull/670) - Fixes ios lifecycle
+- [#673](https://github.com/bumble-tech/appyx/pull/673) – Fix canHandeBackPress typo
+
+### Enhancement
+
+- [#679](https://github.com/bumble-tech/appyx/pull/679) – Simple api for backStackNode and spotlightNode
 
 ---
 

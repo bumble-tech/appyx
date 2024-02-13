@@ -10,6 +10,8 @@ appyx {
 
 dependencies {
     implementation(project(":appyx-components:internal:test-drive:test-drive"))
-    implementation(project(":appyx-interactions:android"))
+    implementation(project(":appyx-interactions:android-utils"))
 
+    androidTestImplementation(libs.compose.ui.test.junit4)
+    debugRuntimeOnly(libs.compose.ui.test.manifest)
 }

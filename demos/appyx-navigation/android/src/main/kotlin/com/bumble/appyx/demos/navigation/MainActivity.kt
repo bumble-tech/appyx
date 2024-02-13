@@ -46,7 +46,7 @@ class MainActivity : NodeActivity() {
                     CompositionLocalProvider(LocalNavigator provides navigator) {
                         NodeHost(
                             lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                            integrationPoint = appyxV2IntegrationPoint,
+                            integrationPoint = appyxIntegrationPoint,
                         ) {
                             RootNode(
                                 nodeContext = it,

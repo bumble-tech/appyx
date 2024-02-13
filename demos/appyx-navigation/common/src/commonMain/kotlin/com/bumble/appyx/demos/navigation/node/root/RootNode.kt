@@ -10,7 +10,7 @@ import com.bumble.appyx.demos.navigation.node.loggedout.LoggedOutNode
 import com.bumble.appyx.demos.navigation.node.main.MainNode
 import com.bumble.appyx.demos.navigation.node.profile.User
 import com.bumble.appyx.demos.navigation.node.root.RootNode.NavTarget
-import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.plugin.Plugin
 import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
 import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
