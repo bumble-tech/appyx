@@ -7,18 +7,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
-    name: Deploy documentation
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-      - run: sed -i 's/${POST_MERGE_RUN_ID}/${{ github.run_id }}/g' documentation/how-to-use-appyx/sample-apps.md
-      - run: pip install mkdocs-material
-      - run: mkdocs gh-deploy --force
-
   build-sample-app:
     name: Build sample app
     runs-on: ubuntu-latest
