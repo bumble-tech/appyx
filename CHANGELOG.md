@@ -4,7 +4,7 @@
 
 --
 
-## 1.5.0
+## 1.4.1-migrate-2.x
 
 - [#668](https://github.com/bumble-tech/appyx/pull/668) – **Breaking change**: Rename Appyx integration point.
 
