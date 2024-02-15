@@ -11,6 +11,7 @@
 
 - [#670](https://github.com/bumble-tech/appyx/pull/670) - Fixes ios lifecycle
 - [#673](https://github.com/bumble-tech/appyx/pull/673) – Fix canHandeBackPress typo
+- [#671](https://github.com/bumble-tech/appyx/issue/671) – Fix ui state saving issue
 
 ### Enhancement
 
