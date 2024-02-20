@@ -33,6 +33,6 @@ compose.experimental {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
-    add("kspJs", project(":ksp:mutable-ui-processor"))
+    add("kspCommonMainMetadata", project(":ksp:appyx-processor"))
+    add("kspJs", project(":ksp:appyx-processor"))
 }

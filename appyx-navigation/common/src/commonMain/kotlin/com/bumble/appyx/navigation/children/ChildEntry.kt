@@ -1,8 +1,8 @@
 package com.bumble.appyx.navigation.children
 
-import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.model.Element
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 
 // custom equals/hashCode for MutableStateFlow and equality checks
 sealed class ChildEntry<T> {
@@ -22,7 +22,7 @@ sealed class ChildEntry<T> {
     /** All public APIs should return this type of child which is ready to work with. */
     class Initialized<T>(
         override val key: Element<T>,
-        val node: Node,
+        val node: Node<*>,
     ) : ChildEntry<T>()
 
     class Suspended<T>(

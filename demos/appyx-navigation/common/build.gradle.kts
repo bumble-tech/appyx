@@ -7,7 +7,7 @@ plugins {
 }
 
 appyx {
-    androidNamespace.set("com.bumble.appyx.demos.appyxnavigation.common")
+    androidNamespace.set("com.bumble.appyx.demos.navigation.common")
 }
 
 kotlin {
@@ -38,12 +38,11 @@ kotlin {
                 api(project(":utils:utils-customisations"))
                 api(project(":utils:utils-material3"))
                 api(project(":utils:utils-multiplatform"))
-                api(project(":demos:image-loader:common"))
+                api(project(":demos:image-loader:image-loader"))
                 implementation(project(":appyx-components:experimental:cards:cards"))
-                implementation(project(":appyx-components:experimental:modal:modal"))
                 implementation(project(":appyx-components:experimental:promoter:promoter"))
-                implementation(project(":appyx-components:stable:backstack:backstack"))
-                implementation(project(":appyx-components:stable:spotlight:spotlight"))
+                implementation(project(":appyx-components:standard:backstack:backstack"))
+                implementation(project(":appyx-components:standard:spotlight:spotlight"))
             }
         }
         val commonTest by getting {
@@ -92,11 +91,11 @@ android {
 }
 
 dependencies {
-    add("kspCommonMainMetadata", project(":ksp:mutable-ui-processor"))
-    add("kspAndroid", project(":ksp:mutable-ui-processor"))
-    add("kspDesktop", project(":ksp:mutable-ui-processor"))
-    add("kspJs", project(":ksp:mutable-ui-processor"))
-    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
-    add("kspIosX64", project(":ksp:mutable-ui-processor"))
-    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
+    add("kspCommonMainMetadata", project(":ksp:appyx-processor"))
+    add("kspAndroid", project(":ksp:appyx-processor"))
+    add("kspDesktop", project(":ksp:appyx-processor"))
+    add("kspJs", project(":ksp:appyx-processor"))
+    add("kspIosArm64", project(":ksp:appyx-processor"))
+    add("kspIosX64", project(":ksp:appyx-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:appyx-processor"))
 }

@@ -10,13 +10,13 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.ExperimentalUnitApi
-import com.bumble.appyx.interactions.theme.AppyxTheme
-import com.bumble.appyx.interactions.theme.appyx_dark
+import com.bumble.appyx.interactions.bottomnav.MainNavItem
+import com.bumble.appyx.interactions.utils.ui.theme.AppyxTheme
+import com.bumble.appyx.interactions.utils.ui.theme.appyx_dark
 import com.bumble.appyx.navigation.integration.NodeActivity
 import com.bumble.appyx.navigation.integration.NodeHost
 import com.bumble.appyx.navigation.platform.AndroidLifecycle
 import com.bumble.appyx.utils.material3.AppyxMaterial3NavNode
-import com.bumble.appyx.interactions.bottomnav.MainNavItem
 
 
 @ExperimentalMaterialApi
@@ -38,11 +38,11 @@ class MainActivity : NodeActivity() {
                 ) {
                     NodeHost(
                         lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                        integrationPoint = appyxV2IntegrationPoint,
+                        integrationPoint = appyxIntegrationPoint,
                     ) {
                         AppyxMaterial3NavNode(
-                            buildContext = it,
-                            navTargets = MainNavItem.values().toList(),
+                            nodeContext = it,
+                            navTargets = MainNavItem.entries,
                             navTargetResolver = MainNavItem.resolver,
                             initialActiveElement = MainNavItem.CARDS
                         )

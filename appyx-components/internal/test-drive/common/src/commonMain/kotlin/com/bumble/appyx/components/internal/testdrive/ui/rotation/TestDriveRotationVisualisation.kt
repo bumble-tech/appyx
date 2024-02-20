@@ -10,20 +10,20 @@ import com.bumble.appyx.components.internal.testdrive.ui.md_light_blue_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_light_green_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_red_500
 import com.bumble.appyx.components.internal.testdrive.ui.md_yellow_500
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.BackgroundColor
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.DefaultAnimationSpec
+import com.bumble.appyx.interactions.ui.property.impl.BackgroundColor
+import com.bumble.appyx.interactions.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
 class TestDriveRotationVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     uiAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, TestDriveModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, TestDriveModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = uiAnimationSpec,
 ) {
@@ -74,6 +74,6 @@ class TestDriveRotationVisualisation<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 }
 

@@ -7,19 +7,19 @@ import com.bumble.appyx.components.experimental.cards.CardsModel
 import com.bumble.appyx.components.experimental.cards.CardsModel.State.Card.InvisibleCard.VotedCard.VOTED_CARD_STATE.LIKED
 import com.bumble.appyx.components.experimental.cards.operation.VoteLike
 import com.bumble.appyx.components.experimental.cards.operation.VotePass
-import com.bumble.appyx.interactions.core.ui.context.TransitionBounds
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.gesture.Drag
-import com.bumble.appyx.interactions.core.ui.gesture.Gesture
-import com.bumble.appyx.interactions.core.ui.gesture.GestureFactory
-import com.bumble.appyx.interactions.core.ui.gesture.dragHorizontalDirection
-import com.bumble.appyx.interactions.core.ui.helper.DefaultAnimationSpec
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.interactions.ui.context.TransitionBounds
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.gesture.Drag
+import com.bumble.appyx.interactions.gesture.Gesture
+import com.bumble.appyx.interactions.gesture.GestureFactory
+import com.bumble.appyx.interactions.gesture.dragHorizontalDirection
+import com.bumble.appyx.interactions.ui.DefaultAnimationSpec
+import com.bumble.appyx.interactions.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.ui.property.impl.Scale
+import com.bumble.appyx.interactions.ui.property.impl.ZIndex
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import com.bumble.appyx.utils.multiplatform.AppyxLogger
 
@@ -27,7 +27,7 @@ import com.bumble.appyx.utils.multiplatform.AppyxLogger
 class CardsVisualisation<InteractionTarget : Any>(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float> = DefaultAnimationSpec
-) : BaseVisualisation<InteractionTarget, CardsModel.State<InteractionTarget>, MutableUiState, TargetUiState>(
+) : BaseVisualisation<InteractionTarget, CardsModel.State<InteractionTarget>, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec,
 ) {
@@ -98,7 +98,7 @@ class CardsVisualisation<InteractionTarget : Any>(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
 
     class Gestures<InteractionTarget>(

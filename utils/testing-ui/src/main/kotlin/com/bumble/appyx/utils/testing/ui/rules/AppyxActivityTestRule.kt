@@ -14,7 +14,7 @@ import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
 
-open class AppyxActivityTestRule<T : Node>(
+open class AppyxActivityTestRule<T : Node<*>>(
     private val launchActivity: Boolean = true,
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule(),
     /** Add decorations like custom theme or CompositionLocalProvider. Do not forget to invoke `content()`. */
@@ -48,9 +48,9 @@ open class AppyxActivityTestRule<T : Node>(
             decorator {
                 NodeHost(
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                    integrationPoint = activity.appyxV2IntegrationPoint,
-                ) { buildContext ->
-                    node = nodeFactory.create(buildContext)
+                    integrationPoint = activity.appyxIntegrationPoint,
+                ) { nodeContext ->
+                    node = nodeFactory.create(nodeContext)
                     node
                 }
             }

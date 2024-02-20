@@ -54,7 +54,6 @@ kotlin {
 
                 implementation(libs.androidx.activity.compose)
                 implementation(libs.androidx.lifecycle.java8)
-
             }
         }
         val desktopMain by getting {
@@ -96,7 +95,6 @@ android {
         androidTestImplementation(libs.androidx.test.espresso.core)
         androidTestImplementation(libs.androidx.test.junit)
         androidTestImplementation(libs.compose.ui.test.junit4)
-        androidTestImplementation(libs.compose.foundation)
         androidTestImplementation(project(":utils:testing-ui"))
     }
 }

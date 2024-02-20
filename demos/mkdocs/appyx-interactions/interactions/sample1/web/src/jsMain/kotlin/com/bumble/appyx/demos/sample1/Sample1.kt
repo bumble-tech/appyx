@@ -36,9 +36,10 @@ import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.Eleme
 import com.bumble.appyx.components.internal.testdrive.TestDriveModel.State.ElementState.D
 import com.bumble.appyx.components.internal.testdrive.operation.next
 import com.bumble.appyx.demos.sample1.InteractionTarget.Child1
-import com.bumble.appyx.interactions.core.AppyxComponent
-import com.bumble.appyx.interactions.core.model.transition.Operation.Mode.IMMEDIATE
-import com.bumble.appyx.interactions.core.ui.helper.AppyxComponentSetup
+import com.bumble.appyx.interactions.composable.AppyxInteractionsContainer
+import com.bumble.appyx.interactions.gesture.GestureReferencePoint
+import com.bumble.appyx.interactions.model.transition.Operation.Mode.IMMEDIATE
+import com.bumble.appyx.interactions.ui.helper.AppyxComponentSetup
 
 enum class InteractionTarget {
     Child1
@@ -139,15 +140,15 @@ fun <InteractionTarget : Any> ModelUi(
         }
     )
 
-    AppyxComponent(
+    AppyxInteractionsContainer(
         appyxComponent = testDrive,
         screenWidthPx = screenWidthPx,
         screenHeightPx = screenHeightPx,
-    ) { elementUiModel ->
+        gestureRelativeTo = GestureReferencePoint.Element
+    ) {
         Box(
             modifier = Modifier
                 .size(60.dp)
-                .then(elementUiModel.modifier)
         ) {
             Text(
                 modifier = Modifier.align(Alignment.Center),

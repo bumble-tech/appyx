@@ -10,7 +10,7 @@ How can we go from one part of the tree to another? In almost all cases navigati
 
 !!! info "Relevant methods"
 
-    - `ParentNode.onChildFinished(child: Node)` can be overridden by client code to handle a child finishing
+    - `Node.onChildFinished(child: Node)` can be overridden by client code to handle a child finishing
     - `Node.finish()` invokes the above method on its parent
 
 

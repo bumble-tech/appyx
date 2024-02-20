@@ -1,18 +1,21 @@
 package com.bumble.appyx.navigation.plugin
 
-import com.bumble.appyx.interactions.core.plugin.Plugin
+import com.bumble.appyx.interactions.plugin.Plugin
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.plugin.BackPressHandler.OnBackPressedCallback
 
-inline fun <reified P : Plugin> Node.plugins(): List<P> =
+inline fun <reified P : Plugin> Node<*>.plugins(): List<P> =
     this.plugins.filterIsInstance<P>()
 
-interface NodeAware<N : Node> : NodeReadyObserver<N> {
+//inline fun <reified P : Plugin> Node<*>.plugins(): List<P> =
+//    this.plugins.filterIsInstance<P>()
+
+interface NodeAware<N : Node<*>> : NodeReadyObserver<N> {
     val node: N
 }
 
-fun interface NodeReadyObserver<N : Node> : Plugin {
+fun interface NodeReadyObserver<N : Node<*>> : Plugin {
     fun init(node: N)
 }
 
@@ -33,7 +36,7 @@ fun interface Destroyable : Plugin {
  *
  * Implement either [onBackPressedCallback] or [onBackPressedCallbackList], not both.
  * In case if both implemented, [onBackPressedCallback] will be ignored.
- * There is runtime check in [Node] to verify correctness.
+ * There is runtime check in [Node<*>] to verify correctness.
  */
 interface BackPressHandler : Plugin {
 

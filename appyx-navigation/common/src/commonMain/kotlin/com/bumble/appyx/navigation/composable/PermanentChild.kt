@@ -8,22 +8,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.mapState
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import kotlinx.coroutines.flow.SharingStarted
 
 @Composable
-fun <InteractionTarget : Any> ParentNode<InteractionTarget>.PermanentChild(
-    permanentAppyxComponent: PermanentAppyxComponent<InteractionTarget>,
-    interactionTarget: InteractionTarget,
+fun <NavTarget : Any> Node<NavTarget>.PermanentChild(
+    permanentAppyxComponent: PermanentAppyxComponent<NavTarget>,
+    navTarget: NavTarget,
     modifier: Modifier = Modifier
 ) {
     val scope = rememberCoroutineScope()
-    val child by remember(interactionTarget, permanentAppyxComponent) {
+    val child by remember(navTarget, permanentAppyxComponent) {
         children
             .mapState(scope, SharingStarted.WhileSubscribed()) { childrenMap ->
                 childrenMap
                     .keys
-                    .find { it.interactionTarget == interactionTarget }
+                    .find { it.interactionTarget == navTarget }
                     ?.let { childOrCreate(it) }
             }
     }.collectAsState()

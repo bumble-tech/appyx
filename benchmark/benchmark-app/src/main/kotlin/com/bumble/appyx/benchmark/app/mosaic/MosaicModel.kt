@@ -1,11 +1,11 @@
 package com.bumble.appyx.benchmark.app.mosaic
 
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.SCATTERED
-import com.bumble.appyx.interactions.core.Element
-import com.bumble.appyx.interactions.core.Elements
-import com.bumble.appyx.interactions.core.asElements
-import com.bumble.appyx.interactions.core.model.transition.BaseTransitionModel
-import com.bumble.appyx.navigation.state.SavedStateMap
+import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.model.Elements
+import com.bumble.appyx.interactions.model.asElements
+import com.bumble.appyx.interactions.model.transition.BaseTransitionModel
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import com.bumble.appyx.utils.multiplatform.RawValue

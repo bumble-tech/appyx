@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.integration
 
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import kotlin.system.exitProcess
 
 class MainIntegrationPoint : IntegrationPoint() {

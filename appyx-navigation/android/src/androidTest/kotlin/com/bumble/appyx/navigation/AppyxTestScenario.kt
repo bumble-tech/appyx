@@ -14,7 +14,7 @@ import com.bumble.appyx.utils.testing.ui.rules.AppyxTestActivity
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
-class AppyxTestScenario<T : Node>(
+class AppyxTestScenario<T : Node<*>>(
     private val composeTestRule: ComposeTestRule = createEmptyComposeRule(),
     /** Add decorations like custom theme or CompositionLocalProvider. Do not forget to invoke `content()`. */
     private val decorator: (@Composable (content: @Composable () -> Unit) -> Unit) = { content -> content() },
@@ -28,9 +28,9 @@ class AppyxTestScenario<T : Node>(
             decorator {
                 NodeHost(
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                    integrationPoint = activity.appyxV2IntegrationPoint,
-                ) { buildContext ->
-                    node = nodeFactory.create(buildContext)
+                    integrationPoint = activity.appyxIntegrationPoint,
+                ) { nodeContext ->
+                    node = nodeFactory.create(nodeContext)
                     awaitNode.countDown()
                     node
                 }

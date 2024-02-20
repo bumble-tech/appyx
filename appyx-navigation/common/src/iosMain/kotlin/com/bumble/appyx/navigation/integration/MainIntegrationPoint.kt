@@ -1,6 +1,5 @@
 package com.bumble.appyx.navigation.integration
 
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import platform.UIKit.UIViewController
 import platform.UIKit.navigationController
 

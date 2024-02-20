@@ -12,8 +12,8 @@ import com.bumble.appyx.interactions.permanent.PermanentAppyxComponent
 import com.bumble.appyx.navigation.AppyxTestScenario
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.composable.PermanentChild
-import com.bumble.appyx.navigation.modality.BuildContext
-import com.bumble.appyx.navigation.node.PermanentChildTest.TestParentNode.InteractionTarget
+import com.bumble.appyx.navigation.modality.NodeContext
+import com.bumble.appyx.navigation.node.PermanentChildTest.TestNode.Child
 import com.bumble.appyx.utils.multiplatform.Parcelable
 import com.bumble.appyx.utils.multiplatform.Parcelize
 import org.junit.Assert.assertEquals
@@ -22,13 +22,13 @@ import org.junit.Test
 
 class PermanentChildTest {
 
-    var nodeFactory: (buildContext: BuildContext) -> TestParentNode = {
-        TestParentNode(buildContext = it)
+    var nodeFactory: (nodeContext: NodeContext) -> TestNode = {
+        TestNode(nodeContext = it)
     }
 
     @get:Rule
-    val rule = AppyxTestScenario { buildContext ->
-        nodeFactory(buildContext)
+    val rule = AppyxTestScenario { nodeContext ->
+        nodeFactory(nodeContext)
     }
 
     @Test
@@ -36,14 +36,14 @@ class PermanentChildTest {
         createPermanentAppyxComponentWithInteractionKey()
         rule.start()
 
-        rule.onNode(hasTestTag(InteractionTarget::class.java.name)).assertExists()
+        rule.onNode(hasTestTag(Child::class.java.name)).assertExists()
     }
 
     @Test
     fun `WHEN_permanent_model_does_not_contain_relevant_nav_key_THEN_permanent_child_is_not_rendered`() {
         rule.start()
 
-        rule.onNode(hasTestTag(InteractionTarget::class.java.name))
+        rule.onNode(hasTestTag(Child::class.java.name))
             .assertDoesNotExist()
     }
 
@@ -54,57 +54,54 @@ class PermanentChildTest {
         rule.node.renderPermanentChild = false
         val childNodes = rule.node.children.value.values.map { it.nodeOrNull }
 
-        rule.onNode(hasTestTag(InteractionTarget::class.java.name))
+        rule.onNode(hasTestTag(Child::class.java.name))
             .assertDoesNotExist()
 
         rule.node.renderPermanentChild = true
 
-        rule.onNode(hasTestTag(InteractionTarget::class.java.name)).assertExists()
+        rule.onNode(hasTestTag(Child::class.java.name)).assertExists()
         assertEquals(childNodes, rule.node.children.value.values.map { it.nodeOrNull })
     }
 
     private fun createPermanentAppyxComponentWithInteractionKey() {
         nodeFactory = {
-            TestParentNode(
-                buildContext = it,
+            TestNode(
+                nodeContext = it,
                 permanentAppyxComponent = PermanentAppyxComponent(
                     savedStateMap = null,
-                    listOf(InteractionTarget)
+                    listOf(Child)
                 )
             )
         }
 
     }
 
-    class TestParentNode(
-        buildContext: BuildContext,
-        private val permanentAppyxComponent: PermanentAppyxComponent<InteractionTarget> =
-            PermanentAppyxComponent(savedStateMap = buildContext.savedStateMap)
-    ) : ParentNode<InteractionTarget>(
-        buildContext = buildContext,
+    class TestNode(
+        nodeContext: NodeContext,
+        private val permanentAppyxComponent: PermanentAppyxComponent<Child> =
+            PermanentAppyxComponent(savedStateMap = nodeContext.savedStateMap)
+    ) : Node<Child>(
+        nodeContext = nodeContext,
         appyxComponent = permanentAppyxComponent
     ) {
 
         @Parcelize
-        object InteractionTarget : Parcelable
+        object Child : Parcelable
 
         var renderPermanentChild by mutableStateOf(true)
 
-        override fun resolve(
-            interactionTarget: InteractionTarget,
-            buildContext: BuildContext
-        ): Node =
-            node(buildContext) { modifier ->
+        override fun buildChildNode(navTarget: Child, nodeContext: NodeContext): Node<*> =
+            node(nodeContext) { modifier ->
                 BasicText(
-                    text = interactionTarget.toString(),
-                    modifier = modifier.testTag(InteractionTarget::class.java.name),
+                    text = navTarget.toString(),
+                    modifier = modifier.testTag(Child::class.java.name),
                 )
             }
 
         @Composable
-        override fun View(modifier: Modifier) {
+        override fun Content(modifier: Modifier) {
             if (renderPermanentChild) {
-                PermanentChild(permanentAppyxComponent, InteractionTarget)
+                PermanentChild(permanentAppyxComponent, Child)
             }
         }
     }

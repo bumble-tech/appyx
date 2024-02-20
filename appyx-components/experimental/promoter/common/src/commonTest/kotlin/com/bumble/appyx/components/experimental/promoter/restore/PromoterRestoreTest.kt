@@ -3,7 +3,7 @@ package com.bumble.appyx.components.experimental.promoter.restore
 import com.bumble.appyx.components.experimental.promoter.PromoterModel
 import com.bumble.appyx.components.experimental.promoter.operation.AddFirst
 import com.bumble.appyx.components.experimental.promoter.InteractionTarget
-import com.bumble.appyx.interactions.core.state.MutableSavedStateMapImpl
+import com.bumble.appyx.interactions.state.MutableSavedStateMapImpl
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

@@ -24,10 +24,10 @@ class MainActivity : NodeActivity() {
             ) {
                 NodeHost(
                     lifecycle = AndroidLifecycle(LocalLifecycleOwner.current.lifecycle),
-                    integrationPoint = appyxV2IntegrationPoint,
+                    integrationPoint = appyxIntegrationPoint,
                 ) {
                     MosaicNode(
-                        buildContext = it,
+                        nodeContext = it,
                         MosaicConfig.MOSAIC1
                     )
                 }

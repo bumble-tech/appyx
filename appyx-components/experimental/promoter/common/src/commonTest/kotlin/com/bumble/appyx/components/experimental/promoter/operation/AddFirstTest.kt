@@ -15,7 +15,7 @@ import com.bumble.appyx.components.experimental.promoter.PromoterModel.State.Ele
 import com.bumble.appyx.components.experimental.promoter.PromoterModel.State.ElementState.STAGE3
 import com.bumble.appyx.components.experimental.promoter.PromoterModel.State.ElementState.STAGE4
 import com.bumble.appyx.components.experimental.promoter.PromoterModel.State.ElementState.STAGE5
-import com.bumble.appyx.interactions.core.Element
+import com.bumble.appyx.interactions.model.Element
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

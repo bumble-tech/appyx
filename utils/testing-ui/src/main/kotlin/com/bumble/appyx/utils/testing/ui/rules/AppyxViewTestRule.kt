@@ -10,7 +10,7 @@ import com.bumble.appyx.navigation.node.LocalNode
 import com.bumble.appyx.navigation.node.NodeView
 import com.bumble.appyx.navigation.node.ViewFactory
 import com.bumble.appyx.navigation.node.build
-import com.bumble.appyx.utils.testing.ui.utils.DummyParentNode
+import com.bumble.appyx.utils.testing.ui.utils.DummyNode
 import org.junit.rules.TestRule
 import org.junit.runner.Description
 import org.junit.runners.model.Statement
@@ -48,9 +48,9 @@ open class AppyxViewTestRule<View : NodeView>(
     override fun beforeActivityLaunched() {
         AppyxTestActivity.composableView = {
             CompositionLocalProvider(
-                LocalNode provides DummyParentNode<Any>().build(),
+                LocalNode provides DummyNode<Any>().build(),
             ) {
-                view.View(modifier = Modifier)
+                view.Content(modifier = Modifier)
             }
         }
     }

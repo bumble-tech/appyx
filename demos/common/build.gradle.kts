@@ -6,7 +6,7 @@ plugins {
 }
 
 appyx {
-    androidNamespace.set("com.bumble.appyx.samples.common")
+    androidNamespace.set("com.bumble.appyx.demos.common")
 }
 
 kotlin {

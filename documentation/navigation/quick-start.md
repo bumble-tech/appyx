@@ -34,12 +34,12 @@ For the scope of this quick start guide, you will need to add dependencies for:
 
 ```kotlin
 class RootNode(
-    buildContext: BuildContext
-) : Node(
-    buildContext = buildContext
+    nodeContext: NodeContext
+) : LeafNode(
+    nodeContext = nodeContext
 ) {
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Text("Hello world!")
     }
 }
@@ -85,25 +85,25 @@ sealed class NavTarget : Parcelable {
 }
 ```
 
-Next, let's modify `RootNode` so it extends `ParentNode`:
+Next, let's modify `RootNode` so it extends `Node` instead of `LeafNode`:
 
 ```kotlin
 class RootNode(
-    buildContext: BuildContext
-) : ParentNode<NavTarget>(
+    nodeContext: NodeContext
+) : Node<NavTarget>(
     appyxComponent = TODO("We will come back to this in Step 5"),
-    buildContext = buildContext
+    nodeContext = nodeContext
 ) {
 ```
 
-`ParentNode` expects us to implement the abstract method `resolve`. This is how we relate navigation targets to actual children. Let's use these helper methods to define some placeholders for the time being – we'll soon make them more appealing:
+`Node` expects us to implement the abstract method `buildChildNode`. This is how we relate navigation targets to actual children. Let's use these helper methods to define some placeholders for the time being – we'll soon make them more appealing:
 
 ```kotlin
-override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-    when (navTarget) {
-        NavTarget.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
-        NavTarget.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
-        NavTarget.Child3 -> node(buildContext) { Text(text = "Placeholder for child 3") }
+override fun buildChildNode(reference: NavTarget, nodeContext: NodeContext): Node =
+    when (reference) {
+        NavTarget.Child1 -> node(nodeContext) { Text(text = "Placeholder for child 1") }
+        NavTarget.Child2 -> node(nodeContext) { Text(text = "Placeholder for child 2") } 
+        NavTarget.Child3 -> node(nodeContext) { Text(text = "Placeholder for child 3") }
     }
 ```
 
@@ -111,20 +111,20 @@ Great! With this mapping created, we can now just refer to children using the se
 
 ## 5. Add a back stack
 
-The project wouldn't compile just yet. `ParentNode` expects us to pass an instance of an `AppyxComponent` – the main control structure in any case when we want to add children. No need to worry now – for simplicity, let's just go with a simple `BackStack` implementation here:
+The project wouldn't compile just yet. `Node` expects us to pass an instance of an `AppyxComponent` – the main control structure in any case when we want to add children. No need to worry now – for simplicity, let's just go with a simple `BackStack` implementation here:
 
 ```kotlin
 class RootNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val backStack: BackStack<NavTarget> = BackStack(
         model = BackStackModel(
             initialTarget = NavTarget.Child1,
-            savedStateMap = buildContext.savedStateMap,        
+            savedStateMap = nodeContext.savedStateMap,        
         ),
         visualisation = { BackStackFader(it) }
     )
-) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+) : Node<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = backStack // pass it here
 ) {
 ```
@@ -137,19 +137,16 @@ backStack.replace(NavTarget.Child3) // will replace the currently active child
 backStack.pop()                     // will remove the currently active child and restore the one before it
 ```
 
-Since we passed the back stack to the `ParentNode`, all such changes will be immediately reflected. We only need to add it to the composition:
+Since we passed the back stack to the `Node`, all such changes will be immediately reflected. We only need to add it to the composition:
 
 ```kotlin
-// Pay attention to the import:
-import com.bumble.appyx.navigation.composable.AppyxComponent
-
 @Composable
-override fun View(modifier: Modifier) {
+override fun Content(modifier: Modifier) {
     Column(
         modifier = modifier
     ) {
         // Let's include the elements of our component into the composition
-        AppyxComponent(
+        AppyxNavigationContainer(
             appyxComponent = backStack,
             modifier = Modifier.weight(0.9f)
         )
@@ -220,25 +217,25 @@ Let's create a dedicated class:
 
 ```kotlin
 class SomeChildNode(
-    buildContext: BuildContext
+    nodeContext: NodeContext
 ) : Node(
-    buildContext = buildContext
+    nodeContext = nodeContext
 ) {
     @Composable
-    override fun View(modifier: Modifier) {
+    override fun Content(modifier: Modifier) {
         Text("This is SomeChildNode")
     }
 }
 ```
 
-Now we can update the `resolve` method in `RootNode` so that the target `Child3` refers to this node. It should work out of the box:
+Now we can update the `buildChildNode` method in `RootNode` so that the target `Child3` refers to this node. It should work out of the box:
 
 ```kotlin
-override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
-    when (navTarget) {
-        NavTarget.Child1 -> node(buildContext) { Text(text = "Placeholder for child 1") }
-        NavTarget.Child2 -> node(buildContext) { Text(text = "Placeholder for child 2") } 
-        NavTarget.Child3 -> SomeChildNode(buildContext)
+override fun buildChildNode(reference: NavTarget, nodeContext: NodeContext): Node =
+    when (reference) {
+        NavTarget.Child1 -> node(nodeContext) { Text(text = "Placeholder for child 1") }
+        NavTarget.Child2 -> node(nodeContext) { Text(text = "Placeholder for child 2") } 
+        NavTarget.Child3 -> SomeChildNode(nodeContext)
     }
 ```
 
@@ -246,11 +243,11 @@ override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
 
 Congrats, you've just built your first Appyx tree!
 
-You can repeat the same pattern and make any embedded children also a `ParentNode` with their own children, navigation models, and transitions. As complexity grows, generally you would:
+You can repeat the same pattern and make any embedded children also a `Node` with their own children, navigation models, and transitions. As complexity grows, generally you would:
 
-1. Have a `Node`
-2. At some point make it a `ParentNode` and add children to it
-3. At some point extract the increasing complexity from a placeholder to another `Node` 
+1. Have a `LeafNode`
+2. At some point make it a `Node` and add children to it
+3. At some point extract the increasing complexity from a placeholder to another `LeafNode` 
 4. Repeat the same on children, go to `1.`
 
 

@@ -11,26 +11,25 @@ import androidx.compose.ui.Modifier
 import com.bumble.appyx.components.backstack.BackStack
 import com.bumble.appyx.components.backstack.BackStackModel
 import com.bumble.appyx.components.backstack.ui.slider.BackStackSlider
-import com.bumble.appyx.navigation.composable.AppyxComponent
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.composable.AppyxNavigationContainer
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
-import com.bumble.appyx.navigation.node.ParentNode
 import com.bumble.appyx.navigation.node.node
 import kotlinx.parcelize.Parcelize
 
 internal class ComposeNavigationContainerNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     private val onGoogleNavigationClick: () -> Unit,
     private val backStack: BackStack<InteractionTarget> = BackStack(
         model = BackStackModel(
             initialTargets = listOf(InteractionTarget.Main),
-            savedStateMap = buildContext.savedStateMap
+            savedStateMap = nodeContext.savedStateMap
         ),
         visualisation = { BackStackSlider(it) }
     )
-) : ParentNode<ComposeNavigationContainerNode.InteractionTarget>(
+) : Node<ComposeNavigationContainerNode.InteractionTarget>(
     appyxComponent = backStack,
-    buildContext = buildContext,
+    nodeContext = nodeContext,
 ) {
 
     sealed class InteractionTarget : Parcelable {
@@ -38,9 +37,9 @@ internal class ComposeNavigationContainerNode(
         object Main : InteractionTarget()
     }
 
-    override fun resolve(interactionTarget: InteractionTarget, buildContext: BuildContext): Node =
-        when (interactionTarget) {
-            is InteractionTarget.Main -> node(buildContext) {
+    override fun buildChildNode(navTarget: InteractionTarget, nodeContext: NodeContext): Node<*> =
+        when (navTarget) {
+            is InteractionTarget.Main -> node(nodeContext) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -54,8 +53,8 @@ internal class ComposeNavigationContainerNode(
         }
 
     @Composable
-    override fun View(modifier: Modifier) {
-        AppyxComponent(
+    override fun Content(modifier: Modifier) {
+        AppyxNavigationContainer(
             modifier = modifier.fillMaxWidth(),
             appyxComponent = backStack
         )

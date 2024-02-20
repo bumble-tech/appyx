@@ -12,7 +12,7 @@ To keep the framework agnostic of any specific approach / pattern you want to us
 
 ```kotlin
 abstract class Node(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     val view: NodeView = EmptyNodeView,
     plugins: List<Plugin> = emptyList() // <--
 )
@@ -73,7 +73,7 @@ class SomeClass(
 }
 ```
 
-⚠️ Note: the reference to ```node``` is set by ```Node``` automatically, and isn't available immediately after constructing your object, but only after the construction of the ```Node``` itself.
+⚠️ Note: the reference to `node` is set by `Node` automatically, and isn't available immediately after constructing your object, but only after the construction of the `Node` itself.
 
 
 ### Navigation plugins
@@ -102,9 +102,9 @@ You can read more about it [here](https://developer.android.com/guide/navigation
 
 ## Using Plugins 
 
-All plugins are designed to have empty ```{}``` default implementations (or other sensible defaults when a return value is defined), so it's convenient to implement them only if you need.
+All plugins are designed to have empty `{}` default implementations (or other sensible defaults when a return value is defined), so it's convenient to implement them only if you need.
 
-Don't forget to pass your ```Plugins``` to your ```Node```:
+Don't forget to pass your `Plugins` to your `Node`:
 
 ```kotlin
 internal class MyNode(
@@ -118,4 +118,4 @@ internal class MyNode(
 )
 ```
 
-⚠️ Note: ```plugins``` is a ```List```, as the order matters here. All ```Plugin``` instances are invoked in the order they appear in the list.
+⚠️ Note: `plugins` is a `List`, as the order matters here. All `Plugin` instances are invoked in the order they appear in the list.

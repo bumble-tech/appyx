@@ -4,15 +4,15 @@ import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.math.clamp
-import com.bumble.appyx.interactions.core.ui.math.smoothstep
-import com.bumble.appyx.interactions.core.ui.property.impl.Alpha
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationX
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.math.clamp
+import com.bumble.appyx.interactions.ui.math.smoothstep
+import com.bumble.appyx.interactions.ui.property.impl.Alpha
+import com.bumble.appyx.interactions.ui.property.impl.RotationX
+import com.bumble.appyx.interactions.ui.property.impl.Scale
+import com.bumble.appyx.interactions.ui.property.impl.ZIndex
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionOffset
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 import com.bumble.appyx.mapState
 import kotlinx.coroutines.flow.StateFlow
 
@@ -37,7 +37,7 @@ class TargetUiState(
         zIndex = base.zIndex,
     )
 
-    fun toMutableState(
+    fun toMutableUiState(
         uiContext: UiContext,
         scrollX: StateFlow<Float>,
         itemWidth: Dp,

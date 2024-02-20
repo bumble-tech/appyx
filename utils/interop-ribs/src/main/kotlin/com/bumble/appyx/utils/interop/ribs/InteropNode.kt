@@ -13,7 +13,7 @@ import com.bumble.appyx.utils.customisations.NodeCustomisation
 import com.bumble.appyx.utils.interop.ribs.InteropNode.Customisation
 import com.bumble.appyx.utils.interop.ribs.InteropViewImpl.Factory
 
-interface InteropNode<N : Node> : Rib {
+interface InteropNode<N : Node<*>> : Rib {
     val appyxNode: N
 
     class Customisation(
@@ -21,7 +21,7 @@ interface InteropNode<N : Node> : Rib {
     ) : NodeCustomisation
 }
 
-internal class InteropNodeImpl<N : Node>(
+internal class InteropNodeImpl<N : Node<*>>(
     buildParams: BuildParams<*>,
     override val appyxNode: N,
     private val backPressHandler: InteropBackPressHandler = InteropBackPressHandler(),

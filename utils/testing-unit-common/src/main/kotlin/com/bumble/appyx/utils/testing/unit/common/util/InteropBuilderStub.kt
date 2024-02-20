@@ -1,24 +1,24 @@
 package com.bumble.appyx.utils.testing.unit.common.util
 
-import com.bumble.appyx.navigation.builder.Builder
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
+import com.bumble.appyx.utils.ribshelpers.builder.Builder
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class InteropBuilderStub<P>(
-    val delegate: (BuildContext, P) -> Node = { _, _ -> NodeStub() },
+    val delegate: (NodeContext, P) -> Node<*> = { _, _ -> NodeStub() },
 ) : Builder<P>() {
 
-    var lastNode: Node? = null
+    var lastNode: Node<*>? = null
         private set
 
     var lastParam: P? = null
         private set
 
-    override fun build(buildContext: BuildContext, payload: P): Node =
-        delegate(buildContext, payload).also {
+    override fun build(nodeContext: NodeContext, payload: P): Node<*> =
+        delegate(nodeContext, payload).also {
             lastNode = it
             lastParam = payload
         }

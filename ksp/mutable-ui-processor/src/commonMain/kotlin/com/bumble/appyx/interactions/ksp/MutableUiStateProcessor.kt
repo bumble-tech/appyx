@@ -2,10 +2,10 @@ package com.bumble.appyx.interactions.ksp
 
 import androidx.compose.animation.core.SpringSpec
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.property.MotionProperty
-import com.bumble.appyx.interactions.core.ui.state.BaseMutableUiState
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.property.MotionProperty
+import com.bumble.appyx.interactions.ui.state.BaseMutableUiState
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
@@ -104,7 +104,7 @@ class MutableUiStateProcessor(
             .addImport(IMPORT_COROUTINES, IMPORT_ASYNC, IMPORT_AWAIT_ALL, IMPORT_LAUNCH)
             .addImport(IMPORT_COMPOSE_ANIMATION_CORE, IMPORT_SPRING_SPEC, IMPORT_SPRING)
             .addType(generateMutableUiStateType(classTypeName, animationMode, params))
-            .addFunction(generateToMutableStateFunction(classDeclaration, classTypeName, params))
+            .addFunction(generateToMutableUiStateFunction(classDeclaration, classTypeName, params))
             .build()
 
     private fun Resolver.generateMutableUiStateType(
@@ -258,15 +258,15 @@ class MutableUiStateProcessor(
             build()
         }
 
-    private fun Resolver.generateToMutableStateFunction(classDeclaration: KSClassDeclaration, classTypeName: TypeName, params: List<ParameterSpec>) =
-        FunSpec.builder(FUNCTION_TO_MUTABLE_STATE)
+    private fun Resolver.generateToMutableUiStateFunction(classDeclaration: KSClassDeclaration, classTypeName: TypeName, params: List<ParameterSpec>) =
+        FunSpec.builder(FUNCTION_TO_MUTABLE_UI_STATE)
             .receiver(classTypeName)
             .returns(ClassName(classDeclaration.packageName.asString(), MUTABLE_UI_STATE))
             .addParameter(PARAM_UI_CONTEXT, getTypeName(UiContext::class))
-            .addCode(generateToMutableStateCode(params))
+            .addCode(generateToMutableUiStateCode(params))
             .build()
 
-    private fun generateToMutableStateCode(params: List<ParameterSpec>) =
+    private fun generateToMutableUiStateCode(params: List<ParameterSpec>) =
         with(CodeBlock.builder()) {
             add("return $MUTABLE_UI_STATE(\n")
             indent()
@@ -312,7 +312,7 @@ class MutableUiStateProcessor(
         const val FUNCTION_ANIMATE_TO = "animateTo"
         const val FUNCTION_SNAP_TO = "snapTo"
         const val FUNCTION_LERP_TO = "lerpTo"
-        const val FUNCTION_TO_MUTABLE_STATE = "toMutableState"
+        const val FUNCTION_TO_MUTABLE_UI_STATE = "toMutableUiState"
     }
 
 }

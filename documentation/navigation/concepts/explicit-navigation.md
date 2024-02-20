@@ -8,8 +8,8 @@ When [Implicit navigation](implicit-navigation.md) doesn't fit your use case, yo
 
 !!! info "Relevant methods"
 
-    - ParentNode.attachChild()
-    - ParentNode.waitForChildAttached()
+    - Node.attachChild()
+    - Node.waitForChildAttached()
 
 Using these methods we can chain together a path which leads from the root of the tree to a specific `Node`.
 
@@ -41,10 +41,10 @@ First, we need to define how to programmatically attach `Onboarding` to the `Roo
 
 ```kotlin
 class RootNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     backStack: BackStack<NavTarget>
-) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+) : Node<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = backStack,
 ) {
     
@@ -87,10 +87,10 @@ Unlike `Root`, `Onboarding` uses [Spotlight](../../components/spotlight.md) inst
 
 ```kotlin
 class OnboardingNode(
-    buildContext: BuildContext,
+    nodeContext: NodeContext,
     spotlight: Spotlight<NavTarget>
-) : ParentNode<NavTarget>(
-    buildContext = buildContext,
+) : Node<NavTarget>(
+    nodeContext = nodeContext,
     appyxComponent = spotlight,
 ) {
 
@@ -145,7 +145,7 @@ class ExplicitNavigationExampleActivity : NodeActivity(), Navigator {
         setContent {
             NodeHost(integrationPoint = appyxIntegrationPoint) {
                 RootNode(
-                    buildContext = it,
+                    nodeContext = it,
                     navigator = this@ExplicitNavigationExampleActivity,
                     plugins = listOf(object : NodeReadyObserver<RootNode> {
                         override fun init(node: RootNode) {
@@ -172,7 +172,7 @@ It can pass it further down the tree as a dependency to other nodes. Those nodes
 
 There might be cases when we want to wait for a certain action to be _performed by the user_, rather than us, to result in a child being attached.
 
-In these cases we can use `ParentNode.waitForChildAttached()` instead.
+In these cases we can use `Node.waitForChildAttached()` instead.
 
 
 ### Use case – Wait for login
@@ -182,9 +182,9 @@ A typical case building an explicit navigation chain that relies on `Logged in` 
 
 ```kotlin
 class RootNode(
-    buildContext: BuildContext,
-) : ParentNode<NavTarget>(
-    buildContext = buildContext
+    nodeContext: NodeContext,
+) : Node<NavTarget>(
+    nodeContext = nodeContext
 ) {
     
     suspend fun waitForLoggedIn(): LoggedInNode = 

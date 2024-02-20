@@ -2,14 +2,14 @@ package com.bumble.appyx.utils.testing.unit.common.helper
 
 import com.bumble.appyx.navigation.children.nodeOrNull
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
-import com.bumble.appyx.navigation.node.ParentNode
+import com.bumble.appyx.navigation.node.Node
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-fun <InteractionTarget : Any, N : ParentNode<InteractionTarget>> N.parentNodeTestHelper() =
+fun <InteractionTarget : Any, N : Node<InteractionTarget>> N.parentNodeTestHelper() =
     ParentNodeTestHelper(this)
 
-class ParentNodeTestHelper<InteractionTarget : Any, N : ParentNode<InteractionTarget>>(
+class ParentNodeTestHelper<InteractionTarget : Any, N : Node<InteractionTarget>>(
     private val node: N
 ) : NodeTestHelper<N>(
     node = node

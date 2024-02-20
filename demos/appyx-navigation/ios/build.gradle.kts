@@ -45,13 +45,6 @@ kotlin {
     }
 }
 
-compose.experimental {
-    uikit.application {
-        projectName = "Appyx"
-        bundleIdPrefix = "com.bumble.appyx"
-    }
-}
-
 tasks.register<Copy>("copyResources") {
     // Dirs containing files we want to copy
     from("../common/src/commonMain/resources")
@@ -75,7 +68,7 @@ tasks.named("compileKotlinIosX64") {
 }
 
 dependencies {
-    add("kspIosArm64", project(":ksp:mutable-ui-processor"))
-    add("kspIosX64", project(":ksp:mutable-ui-processor"))
-    add("kspIosSimulatorArm64", project(":ksp:mutable-ui-processor"))
+    add("kspIosArm64", project(":ksp:appyx-processor"))
+    add("kspIosX64", project(":ksp:appyx-processor"))
+    add("kspIosSimulatorArm64", project(":ksp:appyx-processor"))
 }

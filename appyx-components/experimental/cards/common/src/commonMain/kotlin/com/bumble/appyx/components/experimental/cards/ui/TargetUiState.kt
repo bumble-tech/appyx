@@ -1,10 +1,10 @@
 package com.bumble.appyx.components.experimental.cards.ui
 
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.Scale
-import com.bumble.appyx.interactions.core.ui.property.impl.ZIndex
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.state.MutableUiStateSpecs
+import com.bumble.appyx.interactions.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.ui.property.impl.Scale
+import com.bumble.appyx.interactions.ui.property.impl.ZIndex
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.state.MutableUiStateSpecs
 
 @Suppress("unused")
 @MutableUiStateSpecs

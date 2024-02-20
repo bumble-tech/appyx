@@ -10,17 +10,17 @@ import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.CAROUSEL
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.FLIPPED
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.MosaicMode.SCATTERED
 import com.bumble.appyx.benchmark.app.mosaic.MosaicModel.State
-import com.bumble.appyx.interactions.core.ui.context.UiContext
-import com.bumble.appyx.interactions.core.ui.math.smoothstep
-import com.bumble.appyx.interactions.core.ui.property.impl.AngularPosition
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationY
-import com.bumble.appyx.interactions.core.ui.property.impl.RotationZ
-import com.bumble.appyx.interactions.core.ui.property.impl.RoundedCorners
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.Center
-import com.bumble.appyx.interactions.core.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.fractionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionAlignment
-import com.bumble.appyx.interactions.core.ui.property.impl.position.PositionOffset
-import com.bumble.appyx.interactions.core.ui.state.MatchedTargetUiState
+import com.bumble.appyx.interactions.ui.context.UiContext
+import com.bumble.appyx.interactions.ui.math.smoothstep
+import com.bumble.appyx.interactions.ui.property.impl.AngularPosition
+import com.bumble.appyx.interactions.ui.property.impl.RotationY
+import com.bumble.appyx.interactions.ui.property.impl.RotationZ
+import com.bumble.appyx.interactions.ui.property.impl.RoundedCorners
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.Center
+import com.bumble.appyx.interactions.ui.property.impl.position.BiasAlignment.InsideAlignment.Companion.fractionAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
+import com.bumble.appyx.interactions.ui.property.impl.position.PositionOffset
+import com.bumble.appyx.interactions.ui.state.MatchedTargetUiState
 import com.bumble.appyx.transitionmodel.BaseVisualisation
 import kotlin.math.min
 import kotlin.random.Random
@@ -29,7 +29,7 @@ import kotlin.random.Random
 class MosaicVisualisation(
     uiContext: UiContext,
     defaultAnimationSpec: SpringSpec<Float>
-) : BaseVisualisation<MosaicPiece, State, MutableUiState, TargetUiState>(
+) : BaseVisualisation<MosaicPiece, State, TargetUiState, MutableUiState>(
     uiContext = uiContext,
     defaultAnimationSpec = defaultAnimationSpec
 ) {
@@ -37,7 +37,7 @@ class MosaicVisualisation(
         uiContext: UiContext,
         targetUiState: TargetUiState
     ): MutableUiState =
-        targetUiState.toMutableState(uiContext)
+        targetUiState.toMutableUiState(uiContext)
 
     override fun State.toUiTargets(): List<MatchedTargetUiState<MosaicPiece, TargetUiState>> =
         pieces.mapIndexed { idx, piece ->

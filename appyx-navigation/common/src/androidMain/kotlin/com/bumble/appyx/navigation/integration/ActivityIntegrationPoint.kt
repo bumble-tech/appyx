@@ -9,7 +9,6 @@ import com.bumble.appyx.navigation.integration.activitystarter.ActivityBoundary
 import com.bumble.appyx.navigation.integration.activitystarter.ActivityStarter
 import com.bumble.appyx.navigation.integration.permissionrequester.PermissionRequestBoundary
 import com.bumble.appyx.navigation.integration.permissionrequester.PermissionRequester
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPointProvider
 
 open class ActivityIntegrationPoint(
     private val activity: Activity,
@@ -62,7 +61,7 @@ open class ActivityIntegrationPoint(
                 "Activity ${activity::class.qualifiedName} does not implement IntegrationPointProvider"
             )
 
-            return integrationPointProvider.appyxV2IntegrationPoint as? AndroidIntegrationPoint
+            return integrationPointProvider.appyxIntegrationPoint as? AndroidIntegrationPoint
                 ?: error(
                     "Activity ${activity::class.qualifiedName} does not provide AndroidIntegrationPoint"
                 )

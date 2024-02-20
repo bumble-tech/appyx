@@ -10,24 +10,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.mapSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import com.bumble.appyx.navigation.integrationpoint.IntegrationPoint
 import com.bumble.appyx.navigation.lifecycle.Lifecycle
 import com.bumble.appyx.navigation.lifecycle.PlatformLifecycleEventObserver
-import com.bumble.appyx.navigation.modality.BuildContext
+import com.bumble.appyx.navigation.modality.NodeContext
 import com.bumble.appyx.navigation.node.Node
 import com.bumble.appyx.navigation.node.build
-import com.bumble.appyx.navigation.state.SavedStateMap
+import com.bumble.appyx.utils.multiplatform.SavedStateMap
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectory
 import com.bumble.appyx.utils.customisations.NodeCustomisationDirectoryImpl
 
 /**
- * Composable function to host [Node].
+ * Composable function to host [Node<*>].
  *
  * Aligns lifecycle and manages state restoration.
  */
 @Suppress("ComposableParamOrder") // detekt complains as 'factory' param isn't a pure lambda
 @Composable
-fun <N : Node> NodeHost(
+fun <N : Node<*>> NodeHost(
     lifecycle: Lifecycle,
     integrationPoint: IntegrationPoint,
     screenSize: ScreenSize,
@@ -53,7 +52,7 @@ fun <N : Node> NodeHost(
 }
 
 @Composable
-internal fun <N : Node> rememberNode(
+internal fun <N : Node<*>> rememberNode(
     factory: NodeFactory<N>,
     customisations: NodeCustomisationDirectory,
     integrationPoint: IntegrationPoint,
@@ -62,7 +61,7 @@ internal fun <N : Node> rememberNode(
     fun createNode(savedStateMap: SavedStateMap?): N =
         factory
             .create(
-                buildContext = BuildContext.root(
+                nodeContext = NodeContext.root(
                     savedStateMap = savedStateMap,
                     customisations = customisations
                 ),
