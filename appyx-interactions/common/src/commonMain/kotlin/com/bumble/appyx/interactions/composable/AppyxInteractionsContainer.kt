@@ -16,6 +16,7 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.SaveableStateHolder
 import androidx.compose.runtime.saveable.rememberSaveableStateHolder
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,12 +35,13 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.round
-import com.bumble.appyx.interactions.model.Element
+import com.bumble.appyx.interactions.gesture.GestureReferencePoint
 import com.bumble.appyx.interactions.gesture.GestureValidator
 import com.bumble.appyx.interactions.gesture.GestureValidator.Companion.defaultValidator
 import com.bumble.appyx.interactions.gesture.detectDragGesturesOrCancellation
 import com.bumble.appyx.interactions.gesture.onPointerEvent
 import com.bumble.appyx.interactions.model.BaseAppyxComponent
+import com.bumble.appyx.interactions.model.Element
 import com.bumble.appyx.interactions.model.removedElements
 import com.bumble.appyx.interactions.ui.LocalBoxScope
 import com.bumble.appyx.interactions.ui.LocalMotionProperties
@@ -48,7 +50,6 @@ import com.bumble.appyx.interactions.ui.context.UiContext
 import com.bumble.appyx.interactions.ui.output.ElementUiModel
 import com.bumble.appyx.interactions.ui.property.impl.position.PositionAlignment
 import com.bumble.appyx.interactions.ui.property.motionPropertyRenderValue
-import com.bumble.appyx.interactions.gesture.GestureReferencePoint
 
 private val defaultExtraTouch = 48f.dp
 
@@ -126,35 +127,37 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
                 key(elementUiModel.element.id) {
                     val isVisible by elementUiModel.visibleState.collectAsState()
                     elementUiModel.persistentContainer()
-                    saveableStateHolder.SaveableStateProvider(key = elementUiModel.element) {
-                        if (isVisible) {
-                            CompositionLocalProvider(
-                                LocalMotionProperties provides elementUiModel.motionProperties,
-                            ) {
-                                when {
-                                    !isGesturesEnabled -> {
-                                        Box(modifier = elementUiModel.modifier) {
+                    if (isVisible) {
+                        CompositionLocalProvider(
+                            LocalMotionProperties provides elementUiModel.motionProperties,
+                        ) {
+                            when {
+                                !isGesturesEnabled -> {
+                                    Box(modifier = elementUiModel.modifier) {
+                                        saveableStateHolder.SaveableStateProvider(key = elementUiModel.element) {
                                             elementUi(elementUiModel.element)
                                         }
                                     }
-
-                                    gestureRelativeTo == GestureReferencePoint.Element ->
-                                        ElementWithGestureTransformedBoundingBox(
-                                            appyxComponent = appyxComponent,
-                                            containerSize = containerSize,
-                                            gestureExtraTouchAreaPx = gestureExtraTouchAreaPx,
-                                            gestureValidator = gestureValidator,
-                                            elementUiModel = elementUiModel,
-                                            elementUi = elementUi
-                                        )
-
-                                    gestureRelativeTo == GestureReferencePoint.Container ->
-                                        ElementWithGesture(
-                                            appyxComponent = appyxComponent,
-                                            elementUiModel = elementUiModel,
-                                            elementUi = elementUi
-                                        )
                                 }
+
+                                gestureRelativeTo == GestureReferencePoint.Element ->
+                                    ElementWithGestureTransformedBoundingBox(
+                                        saveableStateHolder = saveableStateHolder,
+                                        appyxComponent = appyxComponent,
+                                        containerSize = containerSize,
+                                        gestureExtraTouchAreaPx = gestureExtraTouchAreaPx,
+                                        gestureValidator = gestureValidator,
+                                        elementUiModel = elementUiModel,
+                                        elementUi = elementUi
+                                    )
+
+                                gestureRelativeTo == GestureReferencePoint.Container ->
+                                    ElementWithGesture(
+                                        saveableStateHolder = saveableStateHolder,
+                                        appyxComponent = appyxComponent,
+                                        elementUiModel = elementUiModel,
+                                        elementUi = elementUi
+                                    )
                             }
                         }
                     }
@@ -166,6 +169,7 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
 
 @Composable
 private fun <InteractionTarget : Any, ModelState : Any> ElementWithGesture(
+    saveableStateHolder: SaveableStateHolder,
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     elementUiModel: ElementUiModel<InteractionTarget>,
     elementUi: @Composable BoxScope.(Element<InteractionTarget>) -> Unit
@@ -192,12 +196,15 @@ private fun <InteractionTarget : Any, ModelState : Any> ElementWithGesture(
         }
         .then(elementUiModel.modifier)
     ) {
-        elementUi(elementUiModel.element)
+        saveableStateHolder.SaveableStateProvider(key = elementUiModel.element) {
+            elementUi(elementUiModel.element)
+        }
     }
 }
 
 @Composable
 private fun <InteractionTarget : Any, ModelState : Any> ElementWithGestureTransformedBoundingBox(
+    saveableStateHolder: SaveableStateHolder,
     appyxComponent: BaseAppyxComponent<InteractionTarget, ModelState>,
     containerSize: State<IntSize>,
     gestureExtraTouchAreaPx: Float,
@@ -257,7 +264,9 @@ private fun <InteractionTarget : Any, ModelState : Any> ElementWithGestureTransf
                 transformedBoundingBox.center - localCenter
         }
     ) {
-        elementUi(elementUiModel.element)
+        saveableStateHolder.SaveableStateProvider(key = elementUiModel.element) {
+            elementUi(elementUiModel.element)
+        }
     }
 }
 
