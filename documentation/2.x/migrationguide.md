@@ -79,6 +79,28 @@ Artifacts have a `utils-` prefix:
 +implementation("com.bumble.appyx:utils-testing-junit5")
 ```
 
+### MainActivity
+
+If you migrate all of your codebase from 1.x to 2.x in a single go, you should skip this step. However, if you intend to keep them in parallel for a gradual migration, you must do the following:
+
+- Update your 1.x version to `1.4.1-migrate-2.x`
+- Rename `appyxIntegrationPoint` usage in 1.x code to `appyxV1IntegrationPoint`:
+
+```diff
+    import com.bumble.appyx.core.integration.NodeHost
+    import com.bumble.appyx.core.integrationpoint.NodeActivity
+
+    class MainActivity : NodeActivity() {
+         super.onCreate(savedInstanceState)
+         setContent {
+             HelloAppyxTheme {
+-                NodeHost(integrationPoint = appyxIntegrationPoint) {
++                NodeHost(integrationPoint = appyxV1IntegrationPoint) {
+                     RootNode(it)
+                 }
+             }
+     }
+```
 
 ### Usage site (RootNode)
 
