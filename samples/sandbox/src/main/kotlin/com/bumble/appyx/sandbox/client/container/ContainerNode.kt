@@ -39,6 +39,7 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCore
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCoreLeafExample
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.ViewModelExample
 import com.bumble.appyx.sandbox.client.customisations.CustomisationsNode
 import com.bumble.appyx.sandbox.client.explicitnavigation.ExplicitNavigationExampleActivity
 import com.bumble.appyx.sandbox.client.integrationpoint.IntegrationPointExampleNode
@@ -47,6 +48,7 @@ import com.bumble.appyx.sandbox.client.list.LazyListContainerNode
 import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
 import com.bumble.appyx.sandbox.client.navmodels.NavModelExamplesNode
+import com.bumble.appyx.sandbox.client.viewmodel.ViewModelNode
 import com.bumble.appyx.utils.customisations.NodeCustomisation
 import kotlinx.parcelize.Parcelize
 
@@ -68,6 +70,9 @@ class ContainerNode internal constructor(
     sealed class NavTarget : Parcelable {
         @Parcelize
         object Picker : NavTarget()
+
+        @Parcelize
+        object ViewModelExample : NavTarget()
 
         @Parcelize
         object LazyExamples : NavTarget()
@@ -95,6 +100,7 @@ class ContainerNode internal constructor(
     override fun resolve(navTarget: NavTarget, buildContext: BuildContext): Node =
         when (navTarget) {
             is Picker -> node(buildContext) { modifier -> ExamplesList(modifier) }
+            is ViewModelExample -> ViewModelNode(buildContext)
             is NavModelExamples -> NavModelExamplesNode(buildContext)
             is LazyExamples -> LazyListContainerNode(buildContext)
             is IntegrationPointExample -> IntegrationPointExampleNode(buildContext)
@@ -137,6 +143,7 @@ class ContainerNode internal constructor(
                 label?.let {
                     Text(it, textAlign = TextAlign.Center)
                 }
+                TextButton("ViewModel Example") { backStack.push(ViewModelExample) }
                 TextButton("NavModel Examples") { backStack.push(NavModelExamples) }
                 TextButton("Customisations Example") { backStack.push(Customisations) }
                 TextButton("Explicit navigation example") {
