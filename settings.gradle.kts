@@ -83,6 +83,7 @@ include(
     ":demos:sandbox-appyx-navigation:web",
     ":ksp:mutable-ui-processor",
     ":utils:customisations",
+    ":utils:interop-coroutines",
     ":utils:interop-ribs",
     ":utils:interop-rx2",
     ":utils:interop-rx3",
