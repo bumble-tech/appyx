@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -30,6 +31,8 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.CanvasBasedWindow
 import com.bumble.appyx.demos.appyxSample
@@ -46,6 +49,16 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
+
+private val containerShape = RoundedCornerShape(8)
+private const val MAX_SCALE_RANGE_WIDTH = 2500f
+private const val MIN_SCALE_RANGE_WIDTH = 500f
+private const val MAX_SCALE_FONT = 1.6f
+private const val MIN_SCALE_FONT = 0.8f
+private const val MAX_SCALE_UI = 1.6f
+private const val MIN_SCALE_UI = 0.8f
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
@@ -58,11 +71,9 @@ fun main() {
     }
 }
 
-private val containerShape = RoundedCornerShape(8)
-
 @Composable
 private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
-    AppyxSampleAppTheme(darkTheme = true, themeTypography = webTypography) {
+    AppyxSampleAppTheme(darkTheme = true) {
         val requester = remember { FocusRequester() }
         var hasFocus by remember { mutableStateOf(false) }
 
@@ -81,7 +92,10 @@ private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
                 .onFocusChanged { hasFocus = it.hasFocus },
             color = MaterialTheme.colorScheme.background,
         ) {
-            CompositionLocalProvider(LocalNavigator provides navigator) {
+            CompositionLocalProvider(
+                LocalDensity provides screenSize.calculateDensityFromScreenSize(),
+                LocalNavigator provides navigator,
+            ) {
                 BlackContainer {
                     WebNodeHost(
                         screenSize = screenSize,
@@ -101,6 +115,8 @@ private fun CakeApp(events: Channel<Unit>, navigator: Navigator) {
                 requester.requestFocus()
             }
         }
+
+        Text("${LocalDensity.current.density}")
     }
 }
 
@@ -121,6 +137,17 @@ private fun BlackContainer(content: @Composable () -> Unit) {
             content()
         }
     }
+}
+
+private fun ScreenSize.calculateDensityFromScreenSize(): Density {
+    console.log("Width: ${widthDp.value}")
+    val normalisedWidth = max(min(widthDp.value, MAX_SCALE_RANGE_WIDTH), MIN_SCALE_RANGE_WIDTH)
+    console.log("NormalisedWidth: $normalisedWidth")
+    val coerceValue = (normalisedWidth - MIN_SCALE_RANGE_WIDTH) / (MAX_SCALE_RANGE_WIDTH - MIN_SCALE_RANGE_WIDTH)
+    console.log("Coerce Value: $coerceValue")
+    val uiScale = MIN_SCALE_UI + coerceValue * (MAX_SCALE_UI - MIN_SCALE_UI)
+    val fontScale = MIN_SCALE_FONT + coerceValue * (MAX_SCALE_FONT - MIN_SCALE_FONT)
+    return Density(uiScale, fontScale).also { console.log(it) }
 }
 
 private fun onKeyEvent(
