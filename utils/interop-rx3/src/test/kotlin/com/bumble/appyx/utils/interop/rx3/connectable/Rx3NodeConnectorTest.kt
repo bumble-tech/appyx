@@ -45,9 +45,9 @@ internal class Rx3NodeConnectorTest {
     }
 
     sealed class Output {
-        object Output1 : Output()
-        object Output2 : Output()
-        object Output3 : Output()
+        data object Output1 : Output()
+        data object Output2 : Output()
+        data object Output3 : Output()
     }
 
     @AfterEach
@@ -57,7 +57,7 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN nodeConnector onAttached is not called WHEN output is accepted THEN accepted output do not reach observer`() {
+    fun `GIVEN nodeConnector onCreate is not called WHEN output is accepted THEN accepted output do not reach observer`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
 
@@ -67,7 +67,7 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN an output is accepted before onAttached WHEN nodeConnector onAttached is called THEN accepted output reach the observer`() {
+    fun `GIVEN an output is accepted before onCreate WHEN nodeConnector onCreate is called THEN accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
 
@@ -78,7 +78,7 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN nodeConnector is attached WHEN output is accepted THEN every accepted output reach the observer`() {
+    fun `GIVEN nodeConnector is created WHEN output is accepted THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
 
@@ -89,7 +89,7 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN outputs accepted before and after onAttached WHEN node is attached THEN every accepted output reach the observer`() {
+    fun `GIVEN outputs accepted before and after onCreate WHEN node is created THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
 
@@ -102,7 +102,7 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `WHEN nodeConnector onAttached is called twice THEN error is raised`() {
+    fun `WHEN nodeConnector onCreate is called twice THEN error is raised`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
 
         nodeConnector.onCreate(lifecycle)
@@ -112,7 +112,7 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN multiple observers and output is accepted before OnAttached WHEN nodeConnector onAttached is called THEN every accepted output reach the observers`() {
+    fun `GIVEN multiple observers and output is accepted before onCreate WHEN nodeConnector onCreate is called THEN every accepted output reach the observers`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
         nodeConnector.output.subscribe(secondTestObserver)
@@ -125,7 +125,7 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN multiple observers and nodeConnector is attached WHEN output is accepted THEN every accepted output reach the observer`() {
+    fun `GIVEN multiple observers and nodeConnector is created WHEN output is accepted THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         nodeConnector.output.subscribe(firstTestObserver)
         nodeConnector.output.subscribe(secondTestObserver)
@@ -138,19 +138,19 @@ internal class Rx3NodeConnectorTest {
     }
 
     @Test
-    fun `GIVEN multiple observers that subscribe before and after onAttached  and outputs accepted before and after onAttached WHEN node is attached THEN every accepted output reach the observer`() {
+    fun `GIVEN multiple observers that subscribe before and after onCreate  and outputs accepted before and after onCreate WHEN node is created THEN every accepted output reach the observer`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
-        //First subscriber subscribe BEFORE onAttached
+        //First subscriber subscribe BEFORE onCreate
         nodeConnector.output.subscribe(firstTestObserver)
 
-        //Output accepted BEFORE onAttached
+        //Output accepted BEFORE onCreate
         nodeConnector.output.accept(Output1)
         nodeConnector.onCreate(lifecycle)
 
-        //Second subscriber subscribe AFTER onAttached
+        //Second subscriber subscribe AFTER onCreate
         nodeConnector.output.subscribe(secondTestObserver)
 
-        //Outputs accepted AFTER onAttached
+        //Outputs accepted AFTER onCreate
         nodeConnector.output.accept(Output2)
         nodeConnector.output.accept(Output3)
 
@@ -161,7 +161,7 @@ internal class Rx3NodeConnectorTest {
 
 
     @Test
-    fun `WHEN multiple output are accepted from multiple threads THEN output is correctly received when onAttached is called`() {
+    fun `WHEN multiple output are accepted from multiple threads THEN output is correctly received when onCreate is called`() {
         val nodeConnector = NodeConnector<Nothing, Output>()
         val threadNumber = 100
         val iterations = 10000
@@ -208,7 +208,7 @@ internal class Rx3NodeConnectorTest {
      * % of failure when race condition issue is present.
      */
     @RepeatedTest(1000)
-    fun `WHEN accept and onAttached are called by different thread at the same time THEN output is the expected`() {
+    fun `WHEN accept and onCreate are called by different thread at the same time THEN output is the expected`() {
         val nodeConnector1 = NodeConnector<Nothing, Output>()
         val nodeConnector2 = NodeConnector<Nothing, Output>()
         val threadNumber = 2

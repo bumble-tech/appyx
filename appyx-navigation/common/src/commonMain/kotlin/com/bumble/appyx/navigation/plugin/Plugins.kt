@@ -23,6 +23,10 @@ interface NodeLifecycleAware : Plugin {
     fun onCreate(lifecycle: Lifecycle) {}
 }
 
+interface Tooling : Plugin {
+    fun onSetupTooling(lifecycle: Lifecycle) {}
+}
+
 interface UpNavigationHandler : Plugin {
     fun handleUpNavigation(): Boolean = false
 }

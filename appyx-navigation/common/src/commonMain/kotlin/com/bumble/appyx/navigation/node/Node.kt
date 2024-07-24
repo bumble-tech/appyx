@@ -35,11 +35,7 @@ import com.bumble.appyx.navigation.lifecycle.NodeLifecycle
 import com.bumble.appyx.navigation.lifecycle.NodeLifecycleImpl
 import com.bumble.appyx.navigation.modality.AncestryInfo
 import com.bumble.appyx.navigation.platform.PlatformBackHandler
-import com.bumble.appyx.navigation.plugin.Destroyable
-import com.bumble.appyx.navigation.plugin.NodeLifecycleAware
-import com.bumble.appyx.navigation.plugin.NodeReadyObserver
-import com.bumble.appyx.navigation.plugin.UpNavigationHandler
-import com.bumble.appyx.navigation.plugin.plugins
+import com.bumble.appyx.navigation.plugin.*
 import com.bumble.appyx.navigation.store.RetainedInstanceStore
 import com.bumble.appyx.utils.multiplatform.BuildFlags
 import com.bumble.appyx.utils.multiplatform.SavedStateMap
@@ -153,6 +149,7 @@ abstract class Node<NavTarget : Any>(
         updateLifecycleState(Lifecycle.State.CREATED)
         plugins<NodeReadyObserver<Node<*>>>().forEach { it.init(this) }
         plugins<NodeLifecycleAware>().forEach { it.onCreate(lifecycle) }
+        plugins<Tooling>().forEach { it.onSetupTooling(lifecycle) }
         childNodeCreationManager.launch(this)
         childNodeLifecycleManager.launch()
     }
