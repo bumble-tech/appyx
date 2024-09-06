@@ -2,7 +2,9 @@
 
 ## Pending changes
 
-–
+### Fixed
+
+– [#600](https://github.com/bumble-tech/appyx/issues/600) - Fix Parent interaction is gone once it has a child on top
 
 ## 2.0.0
 

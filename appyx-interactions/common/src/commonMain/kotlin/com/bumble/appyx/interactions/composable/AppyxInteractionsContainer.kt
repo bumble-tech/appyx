@@ -113,11 +113,14 @@ fun <InteractionTarget : Any, ModelState : Any> AppyxInteractionsContainer(
                     )
                 )
             }
-            .onPointerEvent {
-                if (it.type == PointerEventType.Release) {
-                    appyxComponent.onRelease()
-                }
-            }
+            .then(if (appyxComponent.isGesturesEnabled) {
+                Modifier.onPointerEvent {
+                    if (it.type == PointerEventType.Release) {
+                        appyxComponent.onRelease()
+                } else {
+                    Modifier
+                }   
+            })
     ) {
         CompositionLocalProvider(LocalBoxScope provides this) {
             elementUiModels.forEach { elementUiModel ->
