@@ -2,7 +2,15 @@
 
 ## Pending changes
 
+-
+
+---
+
+## 1.7.1
+
 - [#730](https://github.com/bumble-tech/appyx/pull/730) – **Updated**: Jetpack Compose BOM to 1.8
+
+<div style="text-align: center"><small>2 May 2025</small></div>
 
 ---
 
