@@ -17,13 +17,13 @@ jobs:
           java-version: '17'
       - uses: gradle/wrapper-validation-action@v2
       - uses: gradle/actions/setup-gradle@v3
-        env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
         with:
           cache-read-only: true
-          arguments: |
-            publishAppyxReleasePublicationToOSSRHRepository
-            --no-parallel
-            -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
-            -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}
-            -Psonatype.password=${{ secrets.SONATYPE_PASSWORD }}
+      - name: Build & publish
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+        # Plugin requires "--no-configuration-cache" flag
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache

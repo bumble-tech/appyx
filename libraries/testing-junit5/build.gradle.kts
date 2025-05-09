@@ -4,7 +4,7 @@ plugins {
     id("com.android.library")
     alias(libs.plugins.compose.compiler)
     id("kotlin-android")
-    id("appyx-publish-android")
+    id("appyx-publish")
     id("appyx-lint")
     id("appyx-detekt")
 }
