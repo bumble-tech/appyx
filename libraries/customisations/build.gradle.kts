@@ -2,9 +2,8 @@ import org.jetbrains.kotlin.config.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    id("java-library")
-    id("kotlin")
-    id("appyx-publish-java")
+    id("org.jetbrains.kotlin.jvm")
+    id("appyx-publish")
     id("appyx-detekt")
 }
 

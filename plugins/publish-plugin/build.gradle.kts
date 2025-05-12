@@ -9,6 +9,8 @@ plugins {
 dependencies {
     implementation(libs.plugin.android)
     implementation(libs.plugin.kotlin)
+    implementation(libs.plugin.publish)
+    implementation(libs.plugin.dokka)
 }
 
 java {
@@ -27,13 +29,9 @@ detekt {
 
 gradlePlugin {
     plugins {
-        create("appyx-publish-android") {
-            id = "appyx-publish-android"
-            implementationClass = "AndroidAppyxPublishPlugin"
-        }
-        create("appyx-publish-java") {
-            id = "appyx-publish-java"
-            implementationClass = "JavaAppyxPublishPlugin"
+        create("appyx-publish") {
+            id = "appyx-publish"
+            implementationClass = "PublishPlugin"
         }
     }
 }

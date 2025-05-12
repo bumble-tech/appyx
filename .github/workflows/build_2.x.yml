@@ -38,15 +38,11 @@ jobs:
       - name: Deploy snapshot
         if: env.MAIN_BRANCH == 'true' && github.repository == 'bumble-tech/appyx'
         env:
-          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
-        run: >
-          ./gradlew
-          publishAllPublicationsToSonatypeSnapshotRepository
-          -Psnapshot=true
-          --no-parallel
-          -Psigning.password=${{ secrets.SIGNING_PASSWORD }}
-          -Psonatype.username=${{ secrets.SONATYPE_USERNAME }}
-          -Psonatype.password=${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.SONATYPE_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.SONATYPE_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository -Psnapshot=true
       - uses: github/codeql-action/upload-sarif@v3
         if: success() || failure()
         with:

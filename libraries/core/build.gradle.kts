@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     id("kotlin-android")
     id("kotlin-parcelize")
-    id("appyx-publish-android")
+    id("appyx-publish")
     id("appyx-lint")
     id("appyx-detekt")
 }

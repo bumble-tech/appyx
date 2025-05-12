@@ -76,6 +76,8 @@ junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref
 plugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
 plugin-detekt = { module = "io.gitlab.arturbosch.detekt:detekt-gradle-plugin", version.ref = "detekt" }
 plugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+plugin-publish = { module = "com.vanniktech.maven.publish:com.vanniktech.maven.publish.gradle.plugin", version = "0.31.0" }
+plugin-dokka = { module = "org.jetbrains.dokka:dokka-gradle-plugin", version = "2.0.0" }
 
 detekt-compose = "io.nlopez.compose.rules:detekt:0.1.6"
 toolargetool = "com.gu.android:toolargetool:0.3.0"
