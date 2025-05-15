@@ -40,6 +40,7 @@ import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.MviCore
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.NavModelExamples
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.Picker
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SharedElementExample
+import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SharedElementPager
 import com.bumble.appyx.sandbox.client.container.ContainerNode.NavTarget.SharedElementWithMovableContentExample
 import com.bumble.appyx.sandbox.client.customisations.CustomisationsNode
 import com.bumble.appyx.sandbox.client.explicitnavigation.ExplicitNavigationExampleActivity
@@ -50,6 +51,7 @@ import com.bumble.appyx.sandbox.client.mvicoreexample.MviCoreExampleBuilder
 import com.bumble.appyx.sandbox.client.mvicoreexample.leaf.MviCoreLeafBuilder
 import com.bumble.appyx.sandbox.client.navmodels.NavModelExamplesNode
 import com.bumble.appyx.sandbox.client.sharedelement.SharedElementExampleNode
+import com.bumble.appyx.sandbox.client.sharedelement.with_pager.SharedElementPagerParentNode
 import com.bumble.appyx.utils.customisations.NodeCustomisation
 import kotlinx.parcelize.Parcelize
 
@@ -98,6 +100,9 @@ class ContainerNode internal constructor(
 
         @Parcelize
         object MviCoreLeafExample : NavTarget()
+
+        @Parcelize
+        object SharedElementPager : NavTarget()
     }
 
     @Suppress("ComplexMethod")
@@ -124,6 +129,8 @@ class ContainerNode internal constructor(
                 buildContext,
                 "MVICore leaf initial state"
             )
+
+            is SharedElementPager -> SharedElementPagerParentNode(buildContext)
         }
 
     @Composable
@@ -156,6 +163,7 @@ class ContainerNode internal constructor(
                 label?.let {
                     Text(it, textAlign = TextAlign.Center)
                 }
+                TextButton("Shared element Pager") { backStack.push(SharedElementPager) }
                 TextButton("Shared element ") { backStack.push(SharedElementExample) }
                 TextButton("Shared element with movable content") {
                     backStack.push(
