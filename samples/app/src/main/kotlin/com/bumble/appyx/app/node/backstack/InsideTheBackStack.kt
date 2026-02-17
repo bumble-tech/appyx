@@ -1,5 +1,6 @@
 package com.bumble.appyx.app.node.backstack
 
+import android.os.Parcelable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import com.bumble.appyx.core.node.Node
 import com.bumble.appyx.core.node.ParentNode
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import kotlinx.parcelize.Parcelize
 
 class InsideTheBackStack(
     buildContext: BuildContext,
@@ -61,7 +63,8 @@ class InsideTheBackStack(
         }
     }
 
-    sealed class NavTarget {
+    sealed class NavTarget : Parcelable {
+        @Parcelize
         data class Child(val index: Int) : NavTarget() {
             override fun toString(): String = index.toString()
         }
