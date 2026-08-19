@@ -22,7 +22,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
         with:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
       - name: Build
@@ -70,7 +70,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
         with:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
       - name: Check publication setup
@@ -93,7 +93,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
         with:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
       - name: Setup Android SDK
@@ -130,7 +130,7 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - uses: gradle/actions/setup-gradle@v4
+      - uses: gradle/actions/setup-gradle@9c971963bec38e04b3d30dcc455b5382be2fdbfb # v6
         with:
           cache-read-only: ${{ env.MAIN_BRANCH != 'true' }}
       - name: Setup Android SDK
